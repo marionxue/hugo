@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Zabbix Api 简介和使用 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="Zabbix Api 简介和使用" />
+  <meta name="twitter:title" content="Zabbix Api 简介和使用" />
+  <meta name="description" content="Python 调用 Zabbix 的 Api">
+  <meta property="og:description" content="Python 调用 Zabbix 的 Api">
+  <meta name="twitter:description" content="Python 调用 Zabbix 的 Api">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net:443/posts/zabbix-api-introduce-and-use/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.33" />
+  <link rel="canonical" href="https://www.yangcs.net:443/posts/zabbix-api-introduce-and-use/" />
+  <link rel="alternate" href="https://www.yangcs.net:443/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net:443/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net:443/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/kubernetes-handbook">Kubernetes handbook</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="脚本推荐" href="/">脚本推荐</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="https://www.yangcs.net/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net:443/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search jimmysong.io</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
+var index = client.initIndex('hugo');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Zabbix Api 简介和使用</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">Python 调用 Zabbix 的 Api</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on January 5, 2017
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Zabbix Api 简介和使用</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">Python 调用 Zabbix 的 Api</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Jan 5, 2017</h4>
+    </section>
+    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/python/">python</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=22712173&auto=1&height=66"></iframe></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-api简介-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>API简介</strong></p></h2>
+
+<hr />
+
+<p><code>Zabbix API</code> 开始扮演着越来越重要的角色，尤其是在集成第三方软件和自动化日常任务时。很难想象管理数千台服务器而没有自动化是多么的困难。</p>
+
+<p><code>Zabbix API</code> 为批量操作、第三方软件集成以及其他作用提供可编程接口。</p>
+
+<p><code>Zabbix API</code> 是在1.8版本中开始引进并且已经被广泛应用。所有的Zabbix移动客户端都是基于API，甚至原生的WEB前端部分也是建立在它之上。</p>
+
+<p><code>Zabbix API</code> 中间件使得架构更加模块化也避免直接对数据库进行操作。它允许你通过 <code>JSON RPC</code> 协议来创建、更新和获取Zabbix对象并且做任何你喜欢的操作【当然前提是你拥有认证账户】。</p>
+
+<p><code>Zabbix API</code> 提供两项主要功能：</p>
+
+<ul>
+<li>远程管理 <code>Zabbix</code> 配置</li>
+<li>远程检索配置和历史数据</li>
+</ul>
+
+<blockquote>
+<p>API 采用JSON-RPC实现。这意味着调用任何函数，都需要发送POST请求，输入输出数据都是以JSON格式。</p>
+</blockquote>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-zabbix-api的使用流程-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>Zabbix API的使用流程</strong></p></h2>
+
+<hr />
+
+<h3 id="使用-api-的基本步骤">使用 <code>API</code> 的基本步骤</h3>
+
+<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
+1. 准备JSON对象，它描述了你想要做什么（创建主机，获取图像，更新监控项等）。<br />
+2. 采用POST方法向 <code>http://example.com/zabbix/api_jsonrpc.php</code> 发送此JSON对象，提供用户名和密码，<code>HTTP Header Content-Type</code> 必须为【application/jsonrequest，application/json-rpc，application/json】其中之一。
+<code>http://example.com/zabbix/</code> 是Zabbix前端地址。<code>api_jsonrpc.php</code> 是调用API的PHP脚本。可在安装可视化前端的目录下找到。<br />
+3. 获取 SESSIONID。<br />
+4. 通过 SESSIONID 建立后续的连接。<br />
+5. 提交 POST 数据，格式为 JSON，其中放对应的方法，获取需要的数据。
+</p>
+
+<h3 id="使用-curl-模拟-api-的使用">使用 <code>curl</code> 模拟 API 的使用</h3>
+
+<p><strong>获取 <code>SESSIONID</code></strong></p>
+
+<pre><code class="language-bash">$ curl -s -X POST -H 'Content-Type:application/json' -d '
+&gt; {
+&gt;    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+&gt;    &quot;method&quot;: &quot;host.get&quot;,
+&gt;    &quot;params&quot;: {
+&gt;       &quot;user&quot;: &quot;Admin&quot;,
+&gt;       &quot;password&quot;: &quot;zabbix&quot;
+&gt;    },
+&gt;    &quot;id&quot;: 1
+&gt;    }' http://172.16.241.130/zabbix/api_jsonrpc.php | python -m json.tool
+{
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;result&quot;: &quot;581cc92624202bddaeff3a90cca181dc&quot;,
+    &quot;id&quot;: 1
+}
+
+</code></pre>
+
+<p><strong>用获取的 <code>SESSIONID</code> 去调用 API 的 <code>host.get</code> 方法请求 hostid</strong></p>
+
+<pre><code class="language-bash">$ curl -s -X POST -H 'Content-Type:application/json' -d '
+&gt; {
+&gt;    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+&gt;    &quot;method&quot;: &quot;host.get&quot;,
+&gt;    &quot;params&quot;: {
+&gt;       &quot;output&quot;: [&quot;hostid&quot;]
+&gt;    },
+&gt;    &quot;auth&quot;: &quot;581cc92624202bddaeff3a90cca181dc&quot;,
+&gt;    &quot;id&quot;: 1
+&gt;    }' http://172.16.241.130/zabbix/api_jsonrpc.php | python -m json.tool
+{
+    &quot;jsonrpc&quot;: &quot;2.0&quot;,
+    &quot;result&quot;: [
+        {
+            &quot;hostid&quot;: &quot;10084&quot;
+        }
+    ],
+    &quot;id&quot;: 1
+}
+</code></pre>
+
+<p>参数解释：</p>
+
+<ul>
+<li><code>&quot;jsonrpc&quot;: &quot;2.0&quot;</code>-这是标准的 JSON RPC 参数以标示协议版本。所有的请求都会保持不变。</li>
+<li><code>&quot;method&quot;: &quot;method.name&quot;</code>-这个参数定义了真实执行的操作。例如：host.create、item.update 等等</li>
+<li><code>&quot;params&quot;</code>-这里通过传递JSON对象来作为特定方法的参数。如果你希望创建监控项，<code>&quot;name&quot;</code> 和 <code>&quot;key_&quot;</code> 参数是需要的，每个方法需要的参数在 Zabbix API 文档中都有描述。</li>
+<li><code>&quot;id&quot;: 1</code>-这个字段用于绑定 JSON 请求和响应。响应会跟请求有相同的 &ldquo;id&rdquo;。在一次性发送多个请求时很有用，这些也不需要唯一或者连续。</li>
+<li><code>&quot;auth&quot;: &quot;581cc92624202bddaeff3a90cca181dc&quot;</code>-这是一个认证令牌【authentication token】用以鉴别用户、访问API。这也是使用API进行相关操作的前提-获取认证ID。</li>
+</ul>
+
+<h3 id="使用-python-模拟-api-的使用">使用 <code>python</code> 模拟 API 的使用</h3>
+
+<p>这里我们使用python 3。</p>
+
+<h4 id="安装必要模块">安装必要模块</h4>
+
+<p>要使用 zabbix 的 API 接口，需要用 pip 安装 <code>zabbix-api</code> 模块。</p>
+
+<pre><code class="language-bash">$ pip install zabbix-api
+$ pip list
+iniparse (0.3.1)
+ordereddict (1.2)
+pip (8.1.0)
+pycurl (7.19.0)
+pygpgme (0.1)
+setuptools (19.6.2)
+urlgrabber (3.9.1)
+yum-metadata-parser (1.1.2)
+zabbix-api (0.4)
+</code></pre>
+
+<p><br /></p>
+
+<h4 id="查询某主机获取hostid">查询某主机获取hostid</h4>
+
+<p>写一个 <code>python</code> 脚本，内容如下：</p>
+
+<pre><code class="language-python">$ vim get_hostid.py
+#!/usr/bin/env python
+# encoding: utf-8
+
+from zabbix_api import ZabbixAPI
+server = &quot;http://172.16.241.130/zabbix&quot;
+username = &quot;Admin&quot;
+password = &quot;zabbix&quot;
+zapi = ZabbixAPI(server=server, path=&quot;&quot;, log_level=0)
+zapi.login(username, password)
+
+## 通过计算机名查找hostid
+hostinfo=zapi.host.get({&quot;output&quot;:&quot;extend&quot;,&quot;filter&quot;:{&quot;host&quot;:&quot;Zabbix server&quot;}})
+hostid_01=hostinfo[0]['hostid']
+print(hostid_01)
+
+## 通过主机可见名查找hostid
+hostinfo=zapi.host.get({&quot;output&quot;:&quot;extend&quot;,&quot;filter&quot;:{&quot;name&quot;:&quot;Zabbix server&quot;}})
+hostid_02=hostinfo[0]['hostid']
+print(hostid_02)
+</code></pre>
+
+<p>运行脚本，得到结果为</p>
+
+<pre><code class="language-bash">$ python get_hostid.py
+'10084'
+'10084'
+</code></pre>
+
+<p><br /></p>
+
+<h4 id="获取目标主机对应的监控项和监控项具体名称">获取目标主机对应的监控项和监控项具体名称</h4>
+
+<p>写一个 <code>python</code> 脚本，内容如下：</p>
+
+<pre><code class="language-python">$ vim get_items.py
+#!/usr/bin/env python
+# encoding: utf-8
+
+from zabbix_api import ZabbixAPI
+import pprint
+server = &quot;http://172.16.241.130/zabbix&quot;
+username = &quot;Admin&quot;
+password = &quot;zabbix&quot;
+zapi = ZabbixAPI(server=server, path=&quot;&quot;, log_level=0)
+zapi.login(username, password)
+
+result = zapi.item.get({&quot;output&quot;: [&quot;itemids&quot;, &quot;key_&quot;], &quot;host&quot;: &quot;Zabbix server&quot;})
+pprint.pprint(result)
+</code></pre>
+
+<p>运行脚本，得到结果为</p>
+
+<pre><code class="language-bash">$ python get_items.py
+[{'itemid': '23327', 'key_': 'agent.hostname'},
+ {'itemid': '23287', 'key_': 'agent.ping'},
+ {'itemid': '23288', 'key_': 'agent.version'},
+ {'itemid': '23289', 'key_': 'kernel.maxfiles'},
+ {'itemid': '23290', 'key_': 'kernel.maxproc'},
+ {'itemid': '23683', 'key_': 'mysql.ping'},
+ {'itemid': '23684', 'key_': 'mysql.status[Bytes_received]'},
+ {'itemid': '23685', 'key_': 'mysql.status[Bytes_sent]'},
+--snip--
+ {'itemid': '23635', 'key_': 'zabbix[vmware,buffer,pfree]'},
+ {'itemid': '23274', 'key_': 'zabbix[wcache,history,pfree]'},
+ {'itemid': '23275', 'key_': 'zabbix[wcache,index,pfree]'},
+ {'itemid': '23276', 'key_': 'zabbix[wcache,trend,pfree]'},
+ {'itemid': '23277', 'key_': 'zabbix[wcache,values]'}]
+</code></pre>
+
+<p><br /></p>
+
+<h4 id="获取对应监控项的历史数据">获取对应监控项的历史数据</h4>
+
+<p>写一个 <code>python</code> 脚本，内容如下：</p>
+
+<pre><code class="language-python">$ vim get_items.py
+#!/usr/bin/env python
+# encoding: utf-8
+
+from zabbix_api import ZabbixAPI
+import pprint
+server = &quot;http://172.16.241.130/zabbix&quot;
+username = &quot;Admin&quot;
+password = &quot;zabbix&quot;
+zapi = ZabbixAPI(server=server, path=&quot;&quot;, log_level=0)
+zapi.login(username, password)
+
+result = zapi.history.get({&quot;output&quot;: &quot;extend&quot;, &quot;history&quot;: 0, &quot;itemids&quot;: &quot;23296&quot;, &quot;sortfield&quot;: &quot;clock&quot;, &quot;sortorder&quot;: &quot;DESC&quot;, &quot;limit&quot;: 10})
+pprint.pprint(result)
+</code></pre>
+
+<p>运行脚本，得到结果为</p>
+
+<pre><code class="language-bash">$ python get_items.py
+[{'clock': '1483637416',
+  'itemid': '23296',
+  'ns': '833400783',
+  'value': '0.0100'},
+ {'clock': '1483637356',
+  'itemid': '23296',
+  'ns': '102860881',
+  'value': '0.0300'},
+ {'clock': '1483637296',
+  'itemid': '23296',
+  'ns': '609325047',
+  'value': '0.0800'},
+ {'clock': '1483637236',
+  'itemid': '23296',
+  'ns': '31887252',
+  'value': '0.1300'},
+--snip--
+</code></pre>
+
+<p><br /></p>
+
+<h4 id="获取对应监控项一段时间内的历史数据并格式化输出">获取对应监控项一段时间内的历史数据并格式化输出</h4>
+
+<p>写一个 <code>python</code> 脚本，内容如下：</p>
+
+<pre><code class="language-python">$ vim history_data.py
+#!/usr/bin/env python
+# encoding: utf-8
+
+&quot;&quot;&quot;
+Retrieves history data for a given numeric (either int or float) item_id
+&quot;&quot;&quot;
+
+from zabbix_api import ZabbixAPI
+import pprint
+from datetime import datetime
+import time
+server = &quot;http://172.16.241.130/zabbix&quot;
+username = &quot;Admin&quot;
+password = &quot;zabbix&quot;
+zapi = ZabbixAPI(server=server)
+zapi.login(username, password)
+item_id = &quot;23296&quot;
+
+# Create a time range
+time_till = time.mktime(datetime.now().timetuple())
+time_from = time_till - 60 * 60 * 24 * 10  # 10 days
+
+# Query item's history (integer) data
+history = zapi.history.get({&quot;itemids&quot;: item_id, &quot;time_from&quot;: time_from, &quot;time_till&quot;: time_till, &quot;output&quot;: &quot;extend&quot;, &quot;limit&quot;: &quot;10&quot;})
+
+# If nothing was found, try getting it from history (float) data
+if not len(history):
+    history = zapi.history.get({&quot;itemids&quot;: item_id, &quot;time_from&quot;: time_from, &quot;time_till&quot;: time_till, &quot;output&quot;: &quot;extend&quot;, &quot;limit&quot;: &quot;10&quot;, &quot;history&quot;: 0})
+
+for point in history:
+        print(&quot;{0}: {1}&quot;.format(datetime.fromtimestamp(int(point['clock']))
+                                .strftime(&quot;%x %X&quot;), point['value']))
+</code></pre>
+
+<p>运行脚本，得到结果为</p>
+
+<pre><code class="language-bash">$ python history_data.py
+12/29/16 09:40:16: 0.4900
+12/29/16 09:41:16: 0.1800
+12/29/16 09:42:16: 0.1600
+12/29/16 09:43:16: 0.2000
+12/29/16 09:44:16: 0.0700
+12/29/16 09:45:16: 0.1000
+12/29/16 09:46:16: 0.2100
+12/29/16 09:47:16: 0.0700
+12/29/16 09:48:16: 0.5100
+12/29/16 09:49:16: 0.2200
+</code></pre>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net:443/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" data-toggle="tooltip" data-placement="top" title="Python3 系列之文件读写">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net:443/posts/linux-gns3-start/" data-toggle="tooltip" data-placement="top" title="Linux 下 gns3 网络模拟器配置">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/">Python3 系列之文件读写</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Thu Jan 5, 2017</h4>
+    </section>
+    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/python/">python</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    <div>
+        <h2> Comments </h2>
+    </div>
+    <div id="container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    
+    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'rootsongjc', 
+            repo: 'rootsongjc.github.io', 
+            oauth: {
+                client_id: '93a0df08e0f93ff0c8a3',
+                client_secret: '3bdbf0b42c525f78582600bd38cf7f722ee40541',
+            },
+        })
+        gitment.render('container')
+    </script>
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net:443/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net:443/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  <script data-no-instant>document.write('<script src="/livereload.js?port=443&mindelay=10"></' + 'script>')</script></body>
+</html>
+

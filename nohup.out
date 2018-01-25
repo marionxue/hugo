@@ -1,0 +1,36 @@
+[?25lBuilding sites … [?25h[K
+                   | EN  
++------------------+----+
+  Pages            | 42  
+  Paginator pages  |  2  
+  Non-page files   |  0  
+  Static files     | 29  
+  Processed images |  0  
+  Aliases          | 11  
+  Sitemaps         |  1  
+  Cleaned          |  0  
+
+Total in 187 ms
+Watching for changes in /home/hugo/{content,layouts,static,themes}
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at https://www.yangcs.net:1313/ (bind address 0.0.0.0)
+Press Ctrl+C to stop
+[?25lBuilding sites … [?25h[K
+                   | EN  
++------------------+----+
+  Pages            | 42  
+  Paginator pages  |  2  
+  Non-page files   |  0  
+  Static files     | 29  
+  Processed images |  0  
+  Aliases          | 11  
+  Sitemaps         |  1  
+  Cleaned          |  0  
+
+Total in 195 ms
+Watching for changes in /home/hugo/{content,layouts,static,themes}
+Serving pages from memory
+Running in Fast Render Mode. For full rebuilds on change: hugo server --disableFastRender
+Web Server is available at http://www.yangcs.net:80/ (bind address 0.0.0.0)
+Press Ctrl+C to stop

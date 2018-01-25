@@ -1,0 +1,16 @@
+---
+baseurl: "http://www.yangcs.net/"
+DefaultContentLanguage: "zh-cn"
+hasCJKLanguage: true
+languageCode: "zh-cn"
+title: "Ryan Yang" 
+theme: "beautifulhugo"
+metaDataFormat: "yaml"
+subtitle: "I can help you building Cloud Native confidence"
+dateFormat: "January 2, 2006"
+description: "Cloud Native🤘 Big Data"
+algolia:
+  index: "hugo"
+  key: "0ba826b1f47a96e128409a6706d41e86"
+  appID: "MQX1EH3YCM"
+---

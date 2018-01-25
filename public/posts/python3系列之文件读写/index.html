@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Python3 系列之文件读写 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="Python3 系列之文件读写" />
+  <meta name="twitter:title" content="Python3 系列之文件读写" />
+  <meta name="description" content="通过 Python3 读写文件">
+  <meta property="og:description" content="通过 Python3 读写文件">
+  <meta name="twitter:description" content="通过 Python3 读写文件">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net:443/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.33" />
+  <link rel="canonical" href="https://www.yangcs.net:443/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/" />
+  <link rel="alternate" href="https://www.yangcs.net:443/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net:443/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net:443/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/kubernetes-handbook">Kubernetes handbook</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="脚本推荐" href="/">脚本推荐</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="https://www.yangcs.net/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net:443/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search jimmysong.io</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
+var index = client.initIndex('hugo');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/jimmysong/image/upload/images/20151122051.jpg" data-img-desc-1="The Forbidden City Nov 22,2015"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Python3 系列之文件读写</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">通过 Python3 读写文件</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on January 3, 2017
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Python3 系列之文件读写</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">通过 Python3 读写文件</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jan 3, 2017</h4>
+    </section>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/python/">python</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://other.web.rh01.sycdn.kuwo.cn/resource/n2/2/46/1567406567.mp3"></iframe></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-文件与文件路径-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>文件与文件路径</strong></p></h2>
+
+<hr />
+
+<p>用到的模块：<code>os</code></p>
+
+<h3 id="1-1-当前工作目录">1.1 当前工作目录</h3>
+
+<p>在交互模式下输入以下代码：</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; import os
+&gt;&gt;&gt; os.getcwd()
+'/tmp'
+&gt;&gt;&gt; os.chdir('/home/yang/test')
+&gt;&gt;&gt; os.getcwd()
+'/home/yang/test'
+</code></pre>
+
+<p>如果要更改的当前目录不存在，<code>Pyhton</code>就会显示一个错误</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; os.chdir('/user/bin')
+Traceback (most recent call last):
+  File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+FileNotFoundError: [Errno 2] No such file or directory: '/user/bin'
+</code></pre>
+
+<h3 id="1-2-创建新文件夹">1.2 创建新文件夹</h3>
+
+<pre><code class="language-python">&gt;&gt;&gt; os.makedirs('/tmp/test')
+</code></pre>
+
+<p>它会递归地创建文件夹，也就是说，<code>os.makedirs()</code> 将创建所有必要的中间文件夹。</p>
+
+<h3 id="1-3-处理绝对路径和相对路径">1.3 处理绝对路径和相对路径</h3>
+
+<ul>
+<li><code>os.path.abspath(path)</code>：返回参数的<code>绝对路径</code>的字符串</li>
+</ul>
+
+<pre><code class="language-python">&gt;&gt;&gt; os.path.abspath('.')
+'/tmp'
+&gt;&gt;&gt; os.path.abspath('./test')
+'/tmp/test'
+</code></pre>
+
+<ul>
+<li><code>os.path.isabs(path)</code>：如果参数是一个绝对路径，就返回True，如果参数是一个相对路径，就返回False</li>
+</ul>
+
+<pre><code class="language-python">&gt;&gt;&gt; os.path.isabs('.')
+False
+&gt;&gt;&gt; os.path.isabs(os.path.abspath('.'))
+True
+</code></pre>
+
+<ul>
+<li><code>os.path.relpath(path, start)</code>：返回从 start 路径到 path 的相对路径的字符串。如果没有提供 start，就使用当前工作目录作为开始路径。</li>
+</ul>
+
+<pre><code class="language-python">&gt;&gt;&gt; os.path.relpath('/home/yang', '/tmp')
+'../home/yang'
+</code></pre>
+
+<ul>
+<li><code>os.path.dirname(path)</code>：返回一个字符串，它包含<code>path</code>参数中最后一个斜杠<span id="inline-blue">之前</span>的所有内容。</li>
+<li><code>os.path.basename(path)</code>：返回一个字符串，它包含<code>path</code>参数中最后一个斜杠<span id="inline-blue">之后</span>的所有内容。</li>
+</ul>
+
+<pre><code class="language-python">&gt;&gt;&gt; path = '/usr/bin/vlc'
+&gt;&gt;&gt; os.path.basename(path)
+'vlc'
+&gt;&gt;&gt; os.path.dirname(path)
+'/usr/bin'
+</code></pre>
+
+<ul>
+<li><code>os.path.split()</code>：获取一个路径的<span id="inline-blue">目录名称和基本名称</span>这两个字符串的元组。</li>
+</ul>
+
+<pre><code class="language-python">&gt;&gt;&gt; path = '/usr/bin/vlc'
+&gt;&gt;&gt; os.path.split(path)
+('/usr/bin', 'vlc')
+</code></pre>
+
+<p><code>os.path.split()</code>不会接受一个文件路径并返回每个文件夹的字符串的列表。如果需要这样，请使用<code>split()</code>字符串方法。<code>os.path.sep</code>设置为正确的文件夹分割斜杠。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; path.split(os.path.sep)
+['', 'usr', 'bin', 'vlc']
+</code></pre>
+
+<h3 id="1-4-查看文件大小和文件夹内容">1.4 查看文件大小和文件夹内容</h3>
+
+<ul>
+<li>os.path.getsize(path)：返回path参数中文件的字节数。</li>
+<li>os.listdir(path)：返回文件名字符串的列表，包含path参数中的每个文件。</li>
+</ul>
+
+<pre><code class="language-python">&gt;&gt;&gt; os.path.getsize('/usr/bin/vlc')
+14712
+&gt;&gt;&gt; os.listdir('/etc')
+['ld.so.conf.d', 'skel', 'profile.d', 'fstab', 'shells', 'rpc', 'nscd.conf', 'gai.conf', 'locale.gen', 'ssl', 'dbus-1', 'ethertypes', 'iptables', 
+--snip--
+'logrotate.conf', 'man_db.conf', 'pacman.conf', 'wgetrc', 'cpufreq-bench.conf', 'papersize', 'nanorc', 'ld.so.cache']
+</code></pre>
+
+<p>如果想知道这个目录下所有文件的总字节数，就可以同时使用 os.path.getsize() 和 os.listdir()。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; totalSize = 0
+&gt;&gt;&gt; for filename in os.listdir('/etc'):
+        totalSize = totalSize + os.path.getsize(os.path.join('/etc', filename))
+&gt;&gt;&gt; print(totalSize)
+846656
+</code></pre>
+
+<h3 id="1-5-检查路径有效性">1.5 检查路径有效性</h3>
+
+<ul>
+<li><code>os.path.exists(path)</code>：如果path参数所指的文件或文件夹存在，将返回True，否则返回False。</li>
+<li><code>os.path.isfile(path)</code>：如果path参数存在，并且是一个文件，将返回True，否则返回False。</li>
+<li><code>os.path.isdir(path)</code>：如果path参数存在，并且是一个文件夹，将返回True，否则返回False。</li>
+</ul>
+
+<pre><code class="language-python">&gt;&gt;&gt; os.path.exists('/tmp')
+True
+&gt;&gt;&gt; os.path.exists('/user/bin')
+False
+&gt;&gt;&gt; os.path.isdir('/tmp')
+True
+&gt;&gt;&gt; os.path.isfile('/tmp')
+False
+&gt;&gt;&gt; os.path.isdir('/usr/bin/vlc')
+False
+&gt;&gt;&gt; os.path.isfile('/usr/bin/vlc')
+True
+</code></pre>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-文件读写过程-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. <strong>文件读写过程</strong></p></h2>
+
+<hr />
+
+<p>在 Python 中，读写文件有3个步骤：</p>
+
+<p>1、调用 <code>open()</code> 函数，返回一个 File 对象。<br />
+2、调用 File 对象的 <code>read()</code> 或 <code>write()</code> 方法。<br />
+3、调用 File 对象的 <code>close()</code> 方法，关闭该文件。</p>
+
+<h3 id="2-1-创建文件">2.1 创建文件</h3>
+
+<pre><code class="language-python">&gt;&gt;&gt; f = open('test.txt','w')
+&gt;&gt;&gt; f.write('Hello world!')
+# 因为此时写入的数据还在内存中，并没有被写入磁盘，所以要关闭之后才能读取到数据
+&gt;&gt;&gt; f.close()
+</code></pre>
+
+<p>如果想不关闭就能读取到数据，可以这样：</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; f.flush()
+</code></pre>
+
+<h3 id="2-2-读取文件">2.2 读取文件</h3>
+
+<pre><code class="language-python"># 默认以“r”模式打开文本（只读）
+&gt;&gt;&gt; f = open('test.txt')
+# 读取文本中所有内容
+&gt;&gt;&gt; f.read()
+</code></pre>
+
+<p>如果这时再用f.readline()读取文本，将会得到空字符串，因为它是以迭代器的方式打开这个文本，所以此时它的内存指针已经指向了文本的最后一行</p>
+
+<p>如果还想可以继续读，可以把它的内存指针指向第一行</p>
+
+<pre><code class="language-python"># 查看内存指针的位置
+&gt;&gt;&gt; f.tell()
+# 将内存指针指向第一行
+&gt;&gt;&gt; f.seek(0)
+</code></pre>
+
+<h3 id="2-3-遍历文件内容">2.3 遍历文件内容</h3>
+
+<pre><code class="language-python">&gt;&gt;&gt; a = open('user_info.txt')
+&gt;&gt;&gt; for line in a.readlines():
+    # 加上逗号可以避免打印换行符
+        print(line),
+&gt;&gt;&gt; a.close()
+</code></pre>
+
+<p><font color=#8A2BE2>readlines</font>将文本中的所有内容都读取到了内存中，对于大文本来说会很耗内存。
+为了解决这个问题，我们可以使用<font color=#8A2BE2>xreadlines。</font></p>
+
+<h3 id="2-4-追加">2.4 追加</h3>
+
+<pre><code class="language-python">&gt;&gt;&gt; F = open('test.txt','a')
+&gt;&gt;&gt; F.write(&quot;append to the end&quot;)
+&gt;&gt;&gt; f.close()
+</code></pre>
+
+<h3 id="2-5-用-pprint-pformat-函数保存变量">2.5 用 <code>pprint.pformat()</code> 函数保存变量</h3>
+
+<p><code>pprint.pformat()</code> 函数将返回同样的文本字符串，但不是打印它。这个字符串不仅是易于阅读的格式，同时也是语法上正确的 Pthon 代码。<code>pprint.pformat()</code> 函数将提供一个字符串，你可以将它写入.py文件，该文件将成为你字节的<span id="inline-blue">模块</span>，如果你需要使用存储在其中的变量，就可以导入它。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; import pprint
+&gt;&gt;&gt; cats = [{'name': 'Zophie', 'desc': 'chubby'}, {'name': 'Pooka', 'desc': 'fluffy'}]
+&gt;&gt;&gt; pprint.pformat(cats)
+&quot;[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]&quot;
+&gt;&gt;&gt; file = open('myCats.py', 'w')
+&gt;&gt;&gt; file.write('cats = ' + pprint.pformat(cats) + '\n')
+83
+&gt;&gt;&gt; file.close()
+</code></pre>
+
+<p>import 语句导入的模块本身就是 Python 脚本。如果来自 <code>pprint.pformat()</code> 的字符串保存为一个.py文件，该文件就是一个可以导入的模块，像其他模块一样。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; import myCats
+&gt;&gt;&gt; myCats.cats
+[{'desc': 'chubby', 'name': 'Zophie'}, {'desc': 'fluffy', 'name': 'Pooka'}]
+&gt;&gt;&gt; myCats.cats[0]
+{'desc': 'chubby', 'name': 'Zophie'}
+&gt;&gt;&gt; myCats.cats[0]['name']
+'Zophie'
+</code></pre>
+
+<h3 id="用-shelf-模块保存变量">用 <code>shelf</code> 模块保存变量</h3>
+
+<p>shelve类似于一个 <code>key-value</code> 数据库，可以很方便的用来保存Python的内存对象，其内部使用 <code>pickle</code> 来序列化数据，简单来说，使用者可以将一个列表、字典、或者用户自定义的类实例保存到 <code>shelve</code> 中，下次需要用的时候直接取出来，就是一个 Python 内存对象，不需要像传统数据库一样，先取出数据，然后用这些数据重新构造一遍所需要的对象。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; import shelve
+&gt;&gt;&gt; shelfFile = shelve.open('mydata')
+&gt;&gt;&gt; cats = ['Zophie', 'Pooka', 'Simon']
+&gt;&gt;&gt; shelfFile['cats'] = cats
+&gt;&gt;&gt; shelfFile.close()
+</code></pre>
+
+<p>shelf值不必使用读模式或写模式打开，因为它们在打开后，既能读又能写。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; shelfFile = shelve.open('mydata')
+&gt;&gt;&gt; type(shelfFile)
+&lt;class 'shelve.DbfilenameShelf'&gt;
+&gt;&gt;&gt; shelfFile['cats']
+['Zophie', 'Pooka', 'Simon']
+&gt;&gt;&gt; shelfFile.close()
+</code></pre>
+
+<p>像字典一样，<code>shelf</code> 值有 <code>keys()</code> 和 <code>values()</code> 方法，返回 shelf 中键和值的类似列表的值。因为这些方法返回类似列表的值，而不是真正的列表，所以应该将它们传递给 <code>list()</code> 函数，取得列表的形式。</p>
+
+<pre><code class="language-python">&gt;&gt;&gt; shelfFile = shelve.open('mydata')
+&gt;&gt;&gt; list(shelfFile.keys())
+['cats']
+&gt;&gt;&gt; list(shelfFile.values())
+[['Zophie', 'Pooka', 'Simon']]
+&gt;&gt;&gt; shelfFile.close()
+</code></pre>
+
+<p id="div-border-left-red">创建文件时，如果你需要在文本编辑器中读取它们，纯文本就非常有用。但是，如果想要保存 `Python` 程序中的数据，那就使用 `shelve` 模块</p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-3-项目-多重剪切板-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. <strong>项目：多重剪切板</strong></p></h2>
+
+<hr />
+
+<p>该程序被命名为 <code>mcb.py</code>，该程序将利用一个关键字保存每段剪切板文本。例如，当运行<code>python mcb.py spam</code>，这段文本稍后将重新加载到剪切板中。如果用户忘了有哪些关键字，他们可以运行 <code>python mcb.py list</code>，将所有关键字的列表复制到剪切板中。</p>
+
+<p>下面是程序要做的事：</p>
+
+<ul>
+<li>针对要检查的关键字，提供命令行参数。</li>
+<li>如果参数是 <code>save</code>，那么将剪切板的内容保存到关键字。</li>
+<li>如果参数是 <code>list</code>，就将所有的<span id="inline-purple">关键字</span>拷贝到剪切板。</li>
+<li>否则，就将关键词对应的文本拷贝到剪切板。</li>
+</ul>
+
+<p>这意味着代码要做下列事情：</p>
+
+<ul>
+<li>从 <code>sys.argv</code> 读取命令行参数。</li>
+<li>读写剪切板。</li>
+<li>保存并加载 <code>shelve</code> 文件。</li>
+</ul>
+
+<p>需要安装的软件（以Archlinux为例）：</p>
+
+<pre><code class="language-bash">$ pacman -S python-pyperclip
+</code></pre>
+
+<p>以下软件只需选择其中一种安装：</p>
+
+<pre><code class="language-bash">$ pacman -S xsel
+$ pacman -S xclip
+</code></pre>
+
+<p></p></p>
+
+<h3 id="3-1-注释和-shelve-设置">3.1 注释和 <code>shelve</code> 设置</h3>
+
+<pre><code class="language-python">   #! python3
+   # mcb.pyw - Save and loads pieces of text to the clipboard.
+   # Usage: py mcb.pyw save &lt;keyword&gt; - Save clipboard to keyword.
+   #        py mcb.pyw &lt;keyword&gt; - Load keyword to clipboard.
+   #        py mcb.pyw list - Loads all keywords to clipboard.
+(1)import shelve, pyperclip, sys
+
+(2)mcbShelf = shelve.open('mcb')
+
+   # TODO: Save clipboard content.
+
+   # TODO: Save clipboard content
+
+   mcbShelf.close()
+</code></pre>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(1)</span> 拷贝和粘贴需要 <code>pyperclip</code> 模块，读取命令行参数需要 <code>sys</code> 模块。<code>shelve</code> 模块也需要准备好，当用户希望保存一段剪切板文本时，你需要将它保存到一个 <code>shelf</code> 文件中。<br /></p>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(2)</span> 当用户希望将文本拷贝回剪切板时，你需要打开 shelf 文件，将它重新加载到程序中。这个 shelf 文件命名时带有前缀 <code>mcb</code>。</p>
+
+<h3 id="3-2-用一个关键字保存剪切板内容">3.2 用一个关键字保存剪切板内容</h3>
+
+<pre><code class="language-python">   #! python3
+   # mcb.pyw - Save and loads pieces of text to the clipboard.
+   --snip--
+   
+   # Save clipboard content.
+(1)if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':
+(2)    mcbShelf[sys.argv[2]] = pyperclip.paste()
+   elif len(sys.argv) == 2:
+(3)# TODO: List keywords and load content
+
+   mcbShelf.close()
+</code></pre>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(1)</span> 如果第一个命令行参数是字符串 <code>save</code>，<br /></p>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(2)</span> 那么第二个命令行参数就是保存剪切板内容的当前关键字。关键字将用作 <code>mcbShelf</code>中的键，值就是剪切板上的文本。<br /></p>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(3)</span> 如果只有一个命令行参数，就假定它要么是 <code>list</code>，要么是需要加载到剪切板上的关键字。</p>
+
+<h3 id="3-3-列出关键字和加载关键字的内容">3.3 列出关键字和加载关键字的内容</h3>
+
+<pre><code class="language-python">   #! python3
+   # mcb.pyw - Save and loads pieces of text to the clipboard.
+   --snip--
+   
+   # Save clipboard content.
+   if len(sys.argv) == 3 and sys.argv[1].lower() == 'save':
+       mcbShelf[sys.argv[2]] = pyperclip.paste()
+   elif len(sys.argv) == 2:
+   # List keywords and load content
+(1)if sys.argv[1].lower() == 'list':
+(2)     pyperclip.copy(str(list(mcbShelf.keys())))
+   elif sys.argv[1] in mcbShelf:
+(3)     pyperclip.copy(mcbShelf[sys.argv[1]])
+
+   mcbShelf.close()
+</code></pre>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(1)</span> 如果只有一个命令行参数，首先检查它是不是 <code>list</code>。<br /></p>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(2)</span> 如果是，表示 <code>shelf</code> 键的列表的字符串将被拷贝到剪切板。用户可以将这个列表拷贝到一个打开的文本编辑器，进行查看。<br /></p>
+
+<p><span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(3)</span> 否则，你可以假定该命令行参数是一个关键字。如果这个关键字是 <code>shelf</code> 中的一个键，就可以将对应的值加载到剪切板。</p>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net:443/posts/iptables%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B9%8Btcp-ip%E5%8D%8F%E8%AE%AE/" data-toggle="tooltip" data-placement="top" title="Iptables基础原理之tcp/ip协议">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net:443/posts/zabbix-api-introduce-and-use/" data-toggle="tooltip" data-placement="top" title="Zabbix Api 简介和使用">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jan 3, 2017</h4>
+    </section>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/python/">python</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    <div>
+        <h2> Comments </h2>
+    </div>
+    <div id="container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    
+    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'rootsongjc', 
+            repo: 'rootsongjc.github.io', 
+            oauth: {
+                client_id: '93a0df08e0f93ff0c8a3',
+                client_secret: '3bdbf0b42c525f78582600bd38cf7f722ee40541',
+            },
+        })
+        gitment.render('container')
+    </script>
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net:443/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net:443/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  <script data-no-instant>document.write('<script src="/livereload.js?port=443&mindelay=10"></' + 'script>')</script></body>
+</html>
+

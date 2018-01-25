@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 十分钟告诉你什么是最小二乘法 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="十分钟告诉你什么是最小二乘法" />
+  <meta name="twitter:title" content="十分钟告诉你什么是最小二乘法" />
+  <meta name="description" content="理解最小二乘法">
+  <meta property="og:description" content="理解最小二乘法">
+  <meta name="twitter:description" content="理解最小二乘法">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net:443/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.33" />
+  <link rel="canonical" href="https://www.yangcs.net:443/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/" />
+  <link rel="alternate" href="https://www.yangcs.net:443/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net:443/css/prism.css" />
+
+
+
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net:443/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/kubernetes-handbook">Kubernetes handbook</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="脚本推荐" href="/">脚本推荐</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="https://www.yangcs.net/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net:443/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search jimmysong.io</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
+var index = client.initIndex('hugo');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/jimmysong/image/upload/images/20151122051.jpg" data-img-desc-1="The Forbidden City Nov 22,2015"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>十分钟告诉你什么是最小二乘法</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">理解最小二乘法</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on June 4, 2016
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">十分钟告诉你什么是最小二乘法</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">理解最小二乘法</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Jun 4, 2016</h4>
+    </section>
+    <h5 id="wc">1400 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/math/">math</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<p>&emsp;&emsp;<strong>曾经看过国内各种关于讲解最小二乘法的教科书，但都是一大堆枯燥的推导公式，看起来很高深的样子，其实根本不知道它在说些什么！传授知识本来就应该告诉你这个东西到底是什么，它到底是干嘛的，就应该把复杂的问题简单化，可国内大多数教科书都是反其道而行，全是看起来很牛逼的样子，学生看了却什么也不懂。今天我就用最通俗易懂的方式，从线性代数和线性空间的角度告诉你什么是最小二乘法。</strong></p>
+
+<hr />
+
+<p>&emsp;&emsp;最小二乘法是一种最优化技术，它的做法是找到一组估计值，使得估计值与实际值的平方和的值最小，通过使误差的平方和最小，我们可以得到一下线性方程组，对这个线性方程组进行求解就可以得到拟合曲线。我们可以通过一个例子来进行讲解。</p>
+
+<p>假设有一组数据点$t_1$，$t_2$和$t_3$，它们的坐标分别是(1，1)，(2，2)，(3，2)，而我想找到最优的那条线，假设这条直线为：</p>
+
+<p>$$y = C + Dt\tag{1}$$</p>
+
+<p>它不会通过所有的点，因为不存在这样的直线，所以我要选一条最优的使总误差最小的直线。我们需要知道总误差怎么度量，因为它决定了哪条线胜出，我们必须先定出误差是什么，才能通过最小化这个量而找到C和D。在此我就不作图了，因为图像很简单，你们可以自己想象一下，或者自己拿笔画画。
+将这三个点带入方程，得到：
+$$\begin{cases}
+C + D = 1 \\<br />
+C + 2D =2 \\<br />
+C + 3D =2
+\end{cases}\tag{2}$$</p>
+
+<p>通过计算我们知道，它们联立是无解的，但可以有最优解。
+这个方程组可写成矩阵的形式
+$$AX = B\tag{3}$$</p>
+
+<p>其中，$A = \begin{bmatrix} 1 &amp; 1 \\1 &amp; 2 \\1 &amp; 3 \end{bmatrix}$，$X = \begin{bmatrix} C &amp; D \end{bmatrix}$，$B = \begin{bmatrix} 1 \\2 \\3 \end{bmatrix}$。</p>
+
+<p>&emsp;&emsp;A的列向量线性无关，所以它们构成了列空间的一组基，但列空间不包括向量B，所以方程无解。那么最优解是什么呢？
+我们将AX与B之间的差值相加，得到：</p>
+
+<p>$$AX - B = E\tag{4}$$</p>
+
+<p>其中，$E = \begin{bmatrix} e_1 \\e_2 \\e_3 \end{bmatrix}$，$e_1 = C + D - 1$，$e_2 = C + 2D - 2$，$e_3 = C + 3D - 2$，E称为误差向量。</p>
+
+<p>我们要求的是$\left|AX - B\right|^2$ = $\left|E\right|^2$的最小值。</p>
+
+<p>$$\left|E\right|^2 = \left|e_1\right|^2 + \left|e_2\right|^2 + \left|e_3\right|^2\tag{5}$$
+&emsp;&emsp;分别过点$t_1$,$t_2$和$t_3$作与x轴垂直的直线，与直线y=C+Dt的交点分别为$s_1$,$s_2$,$s_3$。于是
+$$\begin{cases}
+\left|e_1\right| = \left|t_1-s_1\right| \\<br />
+\left|e_2\right| = \left|t_2-s_2\right| \\<br />
+\left|e_3\right| = \left|t_3-s_3\right|
+\end{cases}\tag{6}$$</p>
+
+<p>假设$s_1$,$s_2$,$s_3$的纵坐标分别为$p_1$,$p_2$,$p_3$，令$p = \begin{bmatrix}p_1 \\p_2\\p_3\end{bmatrix}$。</p>
+
+<p>我们知道方程组$AX = B$是无解的，但方程组$AX = p$有解，我们来求解方程组$AX = p$。为了提醒自己这里表示的是最优的估计，而不是完美的结果，我们在X上面加个小帽子，使方程组变为</p>
+
+<p>$$A\hat{X} = p\tag{7}$$</p>
+
+<p>其中p是B在p向量这个方向上的投影，设投影矩阵为P，则</p>
+
+<p>$$p = PB\tag{8}$$</p>
+
+<p>如果不懂什么是投影矩阵，可以参考我的另一篇文章<a href="http://www.yangcs.net/posts/be9ff8b7/">子空间投影</a>，在此不作赘述。
+通过投影矩阵的知识我们知道投影矩阵P的表达式为</p>
+
+<p>$$P = A(A^TA)^{-1}A^T\tag{9}$$</p>
+
+<p>代入(8)，得：</p>
+
+<p>$$p = A(A^TA)^{-1}A^TB\tag{10}$$</p>
+
+<p>将(10)代入(7)，得：</p>
+
+<p>$$A\hat{X} = A(A^TA)^{-1}A^TB$$</p>
+
+<p>最后得到方程组为：</p>
+
+<p>$$A^TAX = A^TB\tag{11}$$</p>
+
+<p>解得</p>
+
+<p>$$\hat{X} = \begin{bmatrix} \frac{2}{3} \\ \frac{1}{2} \end{bmatrix}$$</p>
+
+<p>这就是最优解，所以最优的那条直线为：</p>
+
+<p>$$y = \frac{2}{3} + \frac{1}{2}t\tag{12}$$</p>
+            </article>
+
+            <ul class="pager blog-pager">
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net:443/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/" data-toggle="tooltip" data-placement="top" title="子空间投影">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Jun 4, 2016</h4>
+    </section>
+    <h5 id="wc">1400 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/math/">math</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    <div>
+        <h2> Comments </h2>
+    </div>
+    <div id="container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    
+    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'rootsongjc', 
+            repo: 'rootsongjc.github.io', 
+            oauth: {
+                client_id: '93a0df08e0f93ff0c8a3',
+                client_secret: '3bdbf0b42c525f78582600bd38cf7f722ee40541',
+            },
+        })
+        gitment.render('container')
+    </script>
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net:443/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net:443/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  <script data-no-instant>document.write('<script src="/livereload.js?port=443&mindelay=10"></' + 'script>')</script></body>
+</html>
+

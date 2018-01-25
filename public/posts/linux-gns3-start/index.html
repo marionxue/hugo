@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Linux 下 gns3 网络模拟器配置 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="Linux 下 gns3 网络模拟器配置" />
+  <meta name="twitter:title" content="Linux 下 gns3 网络模拟器配置" />
+  <meta name="description" content="配置使用思科网络模拟器">
+  <meta property="og:description" content="配置使用思科网络模拟器">
+  <meta name="twitter:description" content="配置使用思科网络模拟器">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net:443/posts/linux-gns3-start/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.33" />
+  <link rel="canonical" href="https://www.yangcs.net:443/posts/linux-gns3-start/" />
+  <link rel="alternate" href="https://www.yangcs.net:443/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net:443/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net:443/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/kubernetes-handbook">Kubernetes handbook</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="脚本推荐" href="/">脚本推荐</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="https://www.yangcs.net/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net:443/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search jimmysong.io</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
+var index = client.initIndex('hugo');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/jimmysong/image/upload/images/20151122051.jpg" data-img-desc-1="The Forbidden City Nov 22,2015"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Linux 下 gns3 网络模拟器配置</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">配置使用思科网络模拟器</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on January 23, 2017
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Linux 下 gns3 网络模拟器配置</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">配置使用思科网络模拟器</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jan 23, 2017</h4>
+    </section>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=32507038&auto=1&height=66"></iframe></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-gns3-简介-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>GNS3 简介</strong></p></h2>
+
+<hr />
+
+<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
+<code>GNS3</code> 是一款具有图形化界面可以运行在多平台（包括 Windows, Linux, and MacOS 等）的网络虚拟软件。Cisco 网络设备管理员或是想要通过 <code>CCNA</code>,<code>CCNP</code>,<code>CCIE</code> 等 Cisco 认证考试的相关人士可以通过它来完成相关的实验模拟操作。同时它也可以用于虚拟体验 Cisco 网际操作系统 IOS 或者是检验将要在真实的路由器上部署实施的相关配置。
+</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/gns3.png" alt="" /></center></p>
+
+<p><code>Windows</code> 平台下的安装配置非常简单，下载一体化的安装包安装就可以了。但是考虑系统的资源和兼容性，<code>linux</code> 平台是最好的选择，以下的安装配置基于 <code>Archlinux</code> 的 64 位系统和<code>GNS1.5.2</code>版本。</p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-gns3-安装-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. <strong>GNS3 安装</strong></p></h2>
+
+<hr />
+
+<h3 id="安装python3">安装Python3</h3>
+
+<p>新版本的 <code>GNS3</code> 使用的是 <code>python3</code>（最好是 <code>python3.3</code> 以上版本）</p>
+
+<pre><code class="language-bash">$ sudo pacman -S python
+</code></pre>
+
+<h3 id="安装-sip-包">安装 sip 包</h3>
+
+<p><code>sip</code> 包是 <code>python</code> 用于调用的扩展库，详情参考：
+<a href="http://www.riverbankcomputing.com/software/sip/intro">http://www.riverbankcomputing.com/software/sip/intro</a>。</p>
+
+<p>如果SIP没有安装或GNS3无法正确调用，它在启动的时候会提示找不到 SIP 或是调用 SIP 失败。</p>
+
+<pre><code class="language-bash">$ sudo pacman -S sip
+</code></pre>
+
+<h3 id="安装-pyqt4-包">安装 pyqt4 包</h3>
+
+<pre><code class="language-bash">$ sudo pacman -S python-pyqt4
+</code></pre>
+
+<h3 id="安装-pip-支持包">安装 <code>pip</code> 支持包</h3>
+
+<p><code>pip</code> 是 <code>python</code> 下安装扩展包的工具，<code>GNS3</code> 需要调用很多的 <code>python</code> 扩展组件，可以通过以下指令安装。<code>pip</code> 要和 <code>python</code> 的版本对应。</p>
+
+<pre><code class="language-bash">$ sudo pacman -S python-pip
+</code></pre>
+
+<h3 id="安装-gns3">安装 <code>GNS3</code></h3>
+
+<p>可以通过 <code>yaourt</code> 安装，也可以通过 <code>pip</code> 指令方式安装，以下内容以 <code>yaourt</code> 方式安装。</p>
+
+<p>注意：<code>gns3-server</code> 与 <code>gns3-gui</code> 的默认配置文件在 home 目录下，比如我的配置文件在 <code>/home/yang/.config/GNS3/</code> 目录下</p>
+
+<pre><code class="language-bash">$ yaourt -S gns3-server
+</code></pre>
+
+<ul>
+<li>编写 gns3-server 服务脚本</li>
+</ul>
+
+<pre><code class="language-bash">$ vim /usr/lib/systemd/system/gns3-server.service
+[Unit]
+Description=GNS3 server
+Wants=network-online.target
+After=network.target network-online.target
+
+[Service]
+Type=forking
+User=yang
+Group=users
+ExecStart=/usr/sbin/gns3server --config /home/yang/.config/GNS3/gns3_server.conf --local --log /home/yang/.config/GNS3/gns3.log \
+ --pid /home/yang/.config/GNS3/gns3.pid --daemon
+Restart=on-abort
+PIDFile=/home/yang/.config/GNS3/gns3.pid
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<pre><code class="language-bash">$ yaourt -S gns3-gui
+</code></pre>
+
+<p>报错：AttributeError: module &lsquo;aiohttp.web&rsquo; has no attribute &lsquo;RequestHandler&rsquo;</p>
+
+<p>解决方案：强制安装指定版本的 <code>pyton</code> 模块 <code>aiohttp</code></p>
+
+<pre><code class="language-bash">$ pip install aiohttp==1.1.6
+</code></pre>
+
+<h3 id="安装-dynamips">安装 <code>dynamips</code></h3>
+
+<p><code>Dynamips</code> 的原始名称为 <code>Cisco 7200 Simulator</code>，源于 <code>Christophe Fillot</code> 在2005年8月开始的一个项目，其目的是在传统的 PC 机上模拟（emulate）Cisco 的 7200 路由器。发展到现在，该模拟器已经能够支持 Cisco 的 3600 系列（包括3620，3640，3660），3700 系列（包括3725，3745）和 2600 系列（包括2610到2650XM，2691）路由器平台。</p>
+
+<pre><code class="language-bash">$ yaourt -S dynamips
+</code></pre>
+
+<h3 id="启动gns3">启动GNS3</h3>
+
+<ul>
+<li>修改gns3-server的配置文件，将 <code>host</code> 的值改为 <code>127.0.0.1</code>。</li>
+</ul>
+
+<pre><code class="language-bash">$ vim /home/yang/.config/GNS3/gns3_server.conf
+[Server]
+host = 127.0.0.1
+port = 3080
+--snip--
+</code></pre>
+
+<ul>
+<li>启动gns3-server服务。</li>
+</ul>
+
+<pre><code class="language-bash">$ systemctl start gns3-server
+</code></pre>
+
+<ul>
+<li>如果所有的组件都已正常安装，接下来在图形界面下的终端输入 <code>gns3</code> 就可以启动应用了。</li>
+</ul>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E5%B7%A5%E4%BD%9C%E5%8C%BA%201_432.png" alt="" /></center></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-gns3-配置-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. <strong>GNS3 配置</strong></p></h2>
+
+<hr />
+
+<h3 id="gns3-基本配置">GNS3 基本配置</h3>
+
+<p>点击“<code>edit</code>”-“<code>preferences</code>”找到“<code>general</code>”检查相关设置是否正确，可以根据实际系统的配置和自己的喜好设置，例如“<code>console application</code>”中我把 <code>telnet</code> 的指令设成 <code>Gnome terminal</code>,设置好后如图所示。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/gns3-console%E8%AE%BE%E7%BD%AE.png" alt="" /></center></p>
+
+<p>点击“<code>edit</code>”-“<code>preferences</code>”找到“<code>server</code>”主要用于设置系统和 <code>console</code> 绑定的端口。通过设定相应的端口，远程用户可以 <code>telnet</code> 主机的指定端口进行配置。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/gns3-server.png" alt="" /></center></p>
+
+<h3 id="配置ios路由">配置IOS路由</h3>
+
+<p><code>gns3</code> 通过图形界面调用 <code>dynamips</code> 来实现对 <code>cisco</code> 路由器的模拟操作，它可以模拟的设备可以参考 <code>dynamips</code> 的指令说明。</p>
+
+<p>cisco 路由器的映像可以通过各种不同的方式获取，网上有很多这样的下载地址。这里给出一个 ios 镜像比较全的地址：<a href="http://www.networkvn.net/2014/06/cisco-ios-image-for-gns3.html">http://www.networkvn.net/2014/06/cisco-ios-image-for-gns3.html</a></p>
+
+<p>这是我看到过最全的ios 站点，俄国人FTP站点收集的：<a href="http://sobek.su/Cisco/">http://sobek.su/Cisco/</a></p>
+
+<p>经常用到的镜像可以从我的 dropbox 里下载：<a href="https://www.dropbox.com/sh/0g6wjuq0kw4x9by/AAAAegYzrhB4uayzm9d0F2oba?dl=0">ios</a></p>
+
+<ul>
+<li>点击“<code>edit</code>”-“<code>preferences</code>”找到“<code>dynamips</code>”检查相关设置是否正确，然后选取“<code>IOS routers</code>”找到已解压好的IOS映像，设置好后如图所示。</li>
+</ul>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Preferences_435.png" alt="" /></center></p>
+
+<p>这里需要指定3个地方： 【镜像文件】、【平台】、【型号】，然后 Apply。</p>
+
+<p>很多人对于型号可能有疑问？ 3620, 3640 有什么差异呢？  不同之处在于支持多少板卡。3620（2个插槽），3640（4个插槽），3660（6个插槽）。</p>
+
+<p>注意，记得点击&rdquo;保存&rdquo;，然后回到刚才的界面，我们可以看到，Router <code>c3640</code> 可选了。</p>
+
+<ul>
+<li>添加模块</li>
+</ul>
+
+<p>我们知道cisco路由器采用模块化的结构，路由器上面有额外的插槽，这些插槽可以安装各种模块，以提供更多的端口或其他东西，悲催的事儿就是当你需要添加更多的模块时，你必须为每个模块支付相应的费用，也就是按模块收费。
+<center><img src="http://o7z41ciog.bkt.clouddn.com/wKioL1QFRSDytnjOAAHgwQqfNBg933.jpg" alt="" /></center></p>
+
+<p>我们可以拖拽左侧相应的设备（路由器或交换机）至工作区，然后对其 <code>右键</code> - <code>配置</code>， 在 <code>solt</code> 中选择合适的模块。
+<center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_447.png" alt="" /></center></p>
+
+<p>可以按照实验需求自行添加所需模块，T 结尾的为 <code>Serial 接口</code>，E 为 <code>Ethernet 接口</code>，FE 为 <code>fast-Ethernet 接口</code>。
+那么各个模块都是什么含义呢？</p>
+
+<p><code>光口</code>：SX(传输距离550m)、LX（10km）、ZX(70km)</p>
+
+<p><code>电口</code>：TX</p>
+
+<p><code>网络模块</code>： NM(network module)</p>
+
+<blockquote>
+<p><code>常用模块</code>：</p>
+
+<ul>
+<li>NM-1FE-TX &mdash;-&gt; 快速以太网</li>
+<li>NM-16ESW &mdash;-&gt; 16口以太网交换机模块</li>
+<li>NM-4T &mdash;-&gt; 2M线端口，同轴电缆</li>
+</ul>
+</blockquote>
+
+<p><br \>
+需要注意的是 <code>Idle-PC</code> 值的选取，只有配置了合适的 <code>idle-pc</code> 值，<code>dynamips</code> 的运行才正常（CPU的值在 <code>20%</code> 以内），如果 CPU 占用过高可以重新获取 <code>idle-pc</code> 值。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_436.png" alt="" /></center></p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_437.png" alt="" /></center></p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/top.png" alt="" /></p>
+
+<p>回到 <code>gns3</code> 界面选择刚配置好的路由器（例如 <code>C3640</code>）拖至中间空白区域，然后选中它右击“<code>start</code>”启动，启动后可以选择“<code>console</code>”进入配置模式。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_440.png" alt="" /></center></p>
+
+<h3 id="配置vpcs">配置vpcs</h3>
+
+<p><code>vpcs</code> 主要用来模拟 <code>PC</code> 的网络操作，它的功能最简单，只有基本的网络指令，没有 <code>qemu</code> 下的 <code>tinycore</code> 的功能多。但是 <code>vpcs</code> 占用的资源更少，启动速度更快。需要注意的是 <code>vpcs</code> 没法单独启动，一定要将网线连接后才可以进入 <code>console</code> 界面。<a href="http://sourceforge.net/projects/vpcs/">http://sourceforge.net/projects/vpcs/</a></p>
+
+<p>安装也很简单，如下所示：</p>
+
+<pre><code class="language-bash">$ yaourt -S vpcs
+</code></pre>
+
+<p>安装成功后，在gns3的设置界面选取 <code>VPCS</code> 的选项，找到已经编译好的 <code>vpcs</code> 执行文件，如下图所示。
+<center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project%20-%20GNS3_441.png" alt="" /></center></p>
+
+<p>注意：启动 <code>vpcs</code> 之前，必须要把 <code>VPCS</code> 和其他设备用网线连接起来，不然会报错 Server error from <a href="http://127.0.0.1:3080:">http://127.0.0.1:3080:</a> PC1: This VPCS instance must be connected in order to start</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_446.png" alt="" /></center></p>
+
+<ul>
+<li><code>vpcs</code> 必须连接路由的 <code>Fast-Ethernet</code> 接口</li>
+</ul>
+
+<h3 id="docker-支持">Docker 支持</h3>
+
+<p><code>GNS3 1.5</code> 中增加了对 <code>Docker</code> 的支持。它的目标不是模拟生产中容器的部署，而是为了替代笨重的 <code>qemu</code> 和 <code>vpcs</code> 用来模拟 pc。
+<br \></p>
+
+<ul>
+<li>在使用 Docker 之前，需要先安装ubridge</li>
+</ul>
+
+<pre><code class="language-bash">$ yaourt -S ubridge
+</code></pre>
+
+<ul>
+<li>添加一个 Docker 模板</li>
+</ul>
+
+<p>点击 <code>Preferences</code> - <code>Docker containers</code> - <code>New</code>，新建一个Docker 容器模板。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/79452a76c6a569b251929440a96b3c31.jpg" alt="" /></center>
+<br \></p>
+
+<p>选择一个镜像。你可以选择 &ldquo;<code>Existing image</code>&ldquo;，用的是本机已经存在的镜像，也可以选择 &ldquo;<code>New image</code>&ldquo;，它会自动去官方仓库拉取你需要的镜像。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/d895f4c984286d4169008eb95af66617.jpg" alt="" /></center>
+<br \></p>
+
+<p>选择一个启动命令，通常我们只想要一个 <code>shell</code>。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/655343e3e4d84b1d54764c4bec8ca397.jpg" alt="" /></center>
+<br \></p>
+
+<p>设置环境变量。容器启动后你会在容器里看到你设置的这些环境变量。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/711e7a83854868f97f4987fac0e0fea8.jpg" alt="" /></center>
+<br \></p>
+
+<p>设置好了之后，你可以将容器模板拖到中间区域，如果这个镜像在本地不存在，就会自动从官方仓库拉取这个镜像。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_448.png" alt="" /></center>
+<br \></p>
+
+<p>现在你可以启动这个容器并打开 <code>console</code>。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/alpine-1_449.png" alt="" /></center></p>
+
+<p>需要注意的是：一般情况下，容器会启动一个后台守护进程并开放一些端口，但在 GNS3 中并不是这样，因为我们需要到容器中去手动设置 ip。</p>
+
+<h3 id="网络抓包配置">网络抓包配置</h3>
+
+<p>抓包主要作用是查找、定位网络通讯中存在的问题，一般情况下可以是额头 <code>tcpdump</code> 或是 <code>wireshark</code>。<code>tcpdump</code> 主要的操作方式通过命令行，<code>wireshark</code> 提供图形界面，操作及查看方式更加直观，这里以 <code>wireshark</code> 为例。</p>
+
+<pre><code class="language-bash">$ pacman -S wireshark-gtk
+</code></pre>
+
+<p>安装成功后，<code>GNS3</code> 的配置如下图所示。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Preferences_450.png" alt="" /></center></p>
+
+<p>在需要抓包的设备上右键选择“<code>Capture</code>”进行抓包操作，如果设备有多块网卡会提示选择那块。</p>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net:443/posts/zabbix-api-introduce-and-use/" data-toggle="tooltip" data-placement="top" title="Zabbix Api 简介和使用">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net:443/posts/2017-targets/" data-toggle="tooltip" data-placement="top" title="2017 年的小目标">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jan 23, 2017</h4>
+    </section>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
+    <h5 id="tags">Tags: 
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    <div>
+        <h2> Comments </h2>
+    </div>
+    <div id="container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    
+    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'rootsongjc', 
+            repo: 'rootsongjc.github.io', 
+            oauth: {
+                client_id: '93a0df08e0f93ff0c8a3',
+                client_secret: '3bdbf0b42c525f78582600bd38cf7f722ee40541',
+            },
+        })
+        gitment.render('container')
+    </script>
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net:443/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net:443/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  <script data-no-instant>document.write('<script src="/livereload.js?port=443&mindelay=10"></' + 'script>')</script></body>
+</html>
+

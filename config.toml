@@ -1,0 +1,140 @@
+baseurl = "http://www.yangcs.net/"
+DefaultContentLanguage = "en"
+hasCJKLanguage = true
+languageCode = "zh-cn"
+title = "Ryan Yang" 
+theme = "beautifulhugo"
+metaDataFormat = "yaml"
+pygmentsUseClasses = false
+pygmentCodeFences = true
+#googleAnalytics = "XXX"
+
+[Params]
+hello = "Hi,I'm Ryan"
+subtitle = "我可以给你提供容器云方面的知识以及帮助你提高资源整合能力"
+logo = "http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg"
+favicon = "http://o7z41ciog.bkt.clouddn.com/favicon.png"
+dateFormat = "January 2, 2006"
+commit = false
+rss = true
+comments = true
+sharebutton = true
+algolia = "0ba826b1f47a96e128409a6706d41e86" # API key
+#gcse = "012737790962522169780:fd1izxsfgrs" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
+description = "yangcs.net|杨传胜的博客|Kubernetes|Big Data"
+errorpage = "https://res.cloudinary.com/jimmysong/image/upload/images/404-not-found-cat.png"
+
+[algolia]
+index = "hugo"
+key = "0ba826b1f47a96e128409a6706d41e86"
+appID = "MQX1EH3YCM"
+
+[[Params.bigimg]]
+src = "https://res.cloudinary.com/jimmysong/image/upload/banners/cloud-computing.jpg"
+desc = "Democratizing the Cloud Computing for every one"
+
+[[Params.bigimg]]
+src = "https://res.cloudinary.com/jimmysong/image/upload/banners/great-wall-01.jpg"
+desc = "Insight throught the Great Wall to the world"
+
+[[Params.bigimg]]
+src = "https://res.cloudinary.com/jimmysong/image/upload/banners/big-data-1.jpg"
+desc = "Using Big Data to make business decision"
+
+[Author]
+  name = "Ryan Yang"
+ # website = "https://www.yangcs.net"
+ # email = "yangchuansheng33@gmail.com"
+  film = "https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M"
+  facebook = "ryanyangio"
+  googleplus = "111949124259063786697" # or xxxxxxxxxxxxxxxxxxxxx
+  github = "yangchuansheng"
+  twitter = "Paranoid_yang"
+ # linkedin = "jimmysongio"
+ # 简历 = "https://www.yangcs.net/resume/"
+
+[[menu.main]]
+    identifier = "Categories"
+    name = "文章分类"
+    weight = 1
+
+[[menu.main]]
+    parent = "Categories"
+    name = "kubernetes"
+    url = "categories/kubernetes"
+    weight = 1
+
+[[menu.main]]
+    parent = "Categories"
+    name = "Docker"
+    url = "categories/docker"
+    weight = 2
+
+[[menu.main]]
+    parent = "Categories"
+    name = "Python"
+    url = "categories/python"
+    weight = 3
+    
+[[menu.main]]
+    parent = "Categories"
+    name = "科学上网"
+    url = "categories/gfw"
+    weight = 4
+
+[[menu.main]]
+    parent = "Categories"
+    name = "数学"
+    url = "categories/math"
+    weight = 5
+
+[[menu.main]]
+    parent = "Categories"
+    name = "Tags"
+    url = "tags"
+    weight = 6
+
+[[menu.main]]
+    identifier = "Books"
+    name = "书籍推荐"
+    weight = 2
+
+[[menu.main]]
+    parent = "Books"
+    name = "Kubernetes handbook"
+    url = "kubernetes-handbook"
+    weight = 1 
+
+[[menu.main]]
+    parent = "Books"
+    name = "Docker handbook"
+    url = "https://www.gitbook.com/book/yeasy/docker_practice"
+    weight = 2
+
+[[menu.main]]
+    parent = "Books"
+    name = "Istio service mesh"
+    url = "http://istio.doczh.cn"
+    weight = 3 
+
+[[menu.main]]
+    parent = "Books"
+    name = "阮一峰书单"
+    url = "https://github.com/ruanyf/reading-list"
+    weight = 4
+
+[[menu.main]]
+    parent = "Books"
+    name = "机器学习笔记"
+    url = "https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes"
+    weight = 5
+
+[[menu.main]]
+    identifier = "脚本推荐"
+    name = "脚本推荐"
+    weight = 4
+
+[[menu.main]]
+    name = "关于我"
+    url = "https://www.yangcs.net/resume/"
+    weight = 5

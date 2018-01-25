@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Linux全局智能分流方案 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="Linux全局智能分流方案" />
+  <meta name="twitter:title" content="Linux全局智能分流方案" />
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net:443/posts/linux%E5%85%A8%E5%B1%80%E6%99%BA%E8%83%BD%E5%88%86%E6%B5%81%E6%96%B9%E6%A1%88/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.33" />
+  <link rel="canonical" href="https://www.yangcs.net:443/posts/linux%E5%85%A8%E5%B1%80%E6%99%BA%E8%83%BD%E5%88%86%E6%B5%81%E6%96%B9%E6%A1%88/" />
+  <link rel="alternate" href="https://www.yangcs.net:443/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net:443/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net:443/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/kubernetes-handbook">Kubernetes handbook</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="脚本推荐" href="/">脚本推荐</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="https://www.yangcs.net/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net:443/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search jimmysong.io</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
+var index = client.initIndex('hugo');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Linux全局智能分流方案</h1>
+                     
+                    <span class="post-meta">
+  
+  Posted on January 23, 2018
+  
+  
+</span>
+
+
+                    
+                  
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Linux全局智能分流方案</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jan 23, 2018</h4>
+    </section>
+    <h5 id="wc">4300 Words|Read in about 9 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/gfw/">gfw</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>
+<strong>本来我是决定不再写这样的文章了的。但是呢，最近连续配置了两次 <code>ArchLinux</code>，在配置这种东西的时候连续撞到了同样的坑，加上这段时间经常有人问我关于 <code>Linux</code> 下的 <code>shadowsocks</code> 的问题，所以我想了想还是写一篇记录一下吧，也免得自己以后再忘记了。</strong></p>
+
+<hr />
+
+<p>这里有两种方案，都可以实现全局智能分流。第一种方案的思路是使用 <code>ipset</code> 载入 <code>chnroute</code> 的 <code>IP</code> 列表并使用 <code>iptables</code> 实现带自动分流国内外流量的全局代理。为什么不用 <code>PAC</code> 呢？因为 <code>PAC</code> 这种东西只对浏览器有用。难道你在浏览器之外就不需要科学上网了吗？反正我是不信的……</p>
+
+<p><strong><font color=Blue>本教程所用系统为 <code>Archlinux</code>，其他发型版类似，请自行参考相关资料。</font></strong></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-通过-iptables-实现智能分流-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. 通过 iptables 实现智能分流</p></h2>
+
+<h3 id="1-1-安装相关软件">1.1 安装相关软件</h3>
+
+<ul>
+<li>shadowsocks-libev</li>
+<li>ipset</li>
+</ul>
+
+<pre><code class="language-bash">$ pacman -S shadowsocks-libev ipset
+</code></pre>
+
+<h3 id="1-2-配置shadowsocks-libev-略过">1.2 配置shadowsocks-libev（略过）</h3>
+
+<p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
+
+<h3 id="1-3-获取中国ip段">1.3 获取中国IP段</h3>
+
+<p>将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：</p>
+
+<pre><code class="language-bash">#!/bin/sh
+wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
+cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
+</code></pre>
+
+<h3 id="1-4-创建启动和关闭脚本">1.4 创建启动和关闭脚本</h3>
+
+<pre><code class="language-bash">$ vim /home/yang/bin/shadowsocks/ss-up.sh
+</code></pre>
+
+<pre><code class="language-bash">#!/bin/bash
+
+SOCKS_SERVER=$SERVER_IP # SOCKS 服务器的 IP 地址
+# Setup the ipset
+ipset -N chnroute hash:net maxelem 65536
+
+for ip in $(cat '/home/yang/bin/路由表/cn_rules.conf'); do
+  ipset add chnroute $ip
+done
+
+# 在nat表中新增一个链，名叫：SHADOWSOCKS
+iptables -t nat -N SHADOWSOCKS
+
+# Allow connection to the server
+iptables -t nat -A SHADOWSOCKS -d $SOCKS_SERVER -j RETURN
+
+# Allow connection to reserved networks
+iptables -t nat -A SHADOWSOCKS -d 0.0.0.0/8 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 10.0.0.0/8 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 127.0.0.0/8 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 169.254.0.0/16 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 172.16.0.0/12 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 192.168.0.0/16 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 224.0.0.0/4 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 240.0.0.0/4 -j RETURN
+
+# Allow connection to chinese IPs
+iptables -t nat -A SHADOWSOCKS -p tcp -m set --match-set chnroute dst -j RETURN
+# 如果你想对 icmp 协议也实现智能分流，可以加上下面这一条
+# iptables -t nat -A SHADOWSOCKS -p icmp -m set --match-set chnroute dst -j RETURN
+
+# Redirect to Shadowsocks
+# 把1081改成你的shadowsocks本地端口
+iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-port 1081
+# 如果你想对 icmp 协议也实现智能分流，可以加上下面这一条
+# iptables -t nat -A SHADOWSOCKS -p icmp -j REDIRECT --to-port 1081
+
+# 将SHADOWSOCKS链中所有的规则追加到OUTPUT链中
+iptables -t nat -A OUTPUT -p tcp -j SHADOWSOCKS
+# 如果你想对 icmp 协议也实现智能分流，可以加上下面这一条
+# iptables -t nat -A OUTPUT -p icmp -j SHADOWSOCKS
+
+# 内网流量流经 shadowsocks 规则链
+iptables -t nat -A PREROUTING -s 192.168/16 -j SHADOWSOCKS
+# 内网流量源NAT
+iptables -t nat -A POSTROUTING -s 192.168/16 -j MASQUERADE
+</code></pre>
+
+<p>&emsp;&emsp;这是在启动 <code>shadowsocks</code> 之前执行的脚本，用来设置 <code>iptables</code> 规则，对全局应用代理并将 <code>chnroute</code> 导入 <code>ipset</code> 来实现自动分流。注意要把服务器 <code>IP</code> 和本地端口相关的代码全部替换成你自己的。
+&emsp;&emsp;这里就有一个坑了，就是在把 <code>chnroute.txt</code> 加入 <code>ipset</code> 的时候。因为 <code>chnroute.txt</code> 是一个 <code>IP</code> 段列表，而中国持有的 <code>IP</code> 数量上还是比较大的，所以如果使用 <code>hash:ip</code> 来导入的话会使内存溢出。我在第二次重新配置的时候就撞进了这个大坑……
+&emsp;&emsp;但是你也不能尝试把整个列表导入 <code>iptables</code>。虽然导入 <code>iptables</code> 不会导致内存溢出，但是 <code>iptables</code> 是线性查表，即使你全部导入进去，也会因为低下的性能而抓狂。
+<br \>
+然后再创建 <code>/home/yang/bin/shadowsocks/ss-down.sh</code>, 这是用来清除上述规则的脚本，比较简单</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+# iptables -t nat -D OUTPUT -p icmp -j SHADOWSOCKS
+iptables -t nat -D OUTPUT -p tcp -j SHADOWSOCKS
+iptables -t nat -F SHADOWSOCKS
+iptables -t nat -X SHADOWSOCKS
+ipset destroy chnroute
+</code></pre>
+
+<p>接着执行</p>
+
+<pre><code class="language-bash">$ chmod +x ss-up.sh
+$ chmod +x ss-down.sh
+</code></pre>
+
+<h3 id="1-5-配置ss-redir服务">1.5 配置ss-redir服务</h3>
+
+<p>首先，默认的 <code>ss-local</code> 并不能用来作为 <code>iptables</code> 流量转发的目标，因为它是 <code>socks5</code> 代理而非透明代理。我们至少要把 <code>systemd</code> 执行的程序改成 <code>ss-redir</code>。其次，上述两个脚本还不能自动执行，必须让 <code>systemd</code> 分别在启动 <code>shadowsocks</code> 之前和关闭之后将脚本执行，这样才能自动配置好 <code>iptables</code> 规则。</p>
+
+<pre><code class="language-bash">$ vim /usr/lib/systemd/system/shadowsocks-libev@.service
+</code></pre>
+
+<pre><code class="language-bash">[Unit]
+Description=Shadowsocks-Libev Client Service
+After=network.target
+
+[Service]
+User=root
+CapabilityBoundingSet=~CAP_SYS_ADMIN
+ExecStart=
+ExecStartPre=/home/yang/bin/shadowsocks/ss-up.sh
+ExecStart=/usr/bin/ss-redir -u -c /etc/%i.json
+ExecStopPost=/home/yang/bin/shadowsocks/ss-down.sh
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>然后启动服务</p>
+
+<pre><code class="language-bash">$ systemctl start shadowsocks-libev@shadowsocks
+</code></pre>
+
+<p>开机自启</p>
+
+<pre><code class="language-bash">$ systemctl enable shadowsocks-libev@shadowsocks
+</code></pre>
+
+<h3 id="1-6-配置智能-dns-服务">1.6 配置智能 DNS 服务</h3>
+
+<p>完成了以上工作之后是不是就可以实现全局科学上网了呢？答案是否定的，我们还有最后一项工作需要完成，那就是解决 <code>DNS</code> 污染问题。如果你不知道什么是 <code>DNS</code> 污染，我可以简单地给你普及一下：</p>
+
+<blockquote>
+<p><code>DNS</code> 污染是一种让一般用户由于得到虚假目标主机 <code>IP</code> 而不能与其通信的方法，是一种 <code>DNS</code> 缓存投毒攻击（DNS cache poisoning）。其工作方式是：由于通常的 <code>DNS</code> 查询没有任何认证机制，而且 <code>DNS</code> 查询通常基于的 <code>UDP</code> 是无连接不可靠的协议，因此 <code>DNS</code> 的查询非常容易被篡改，通过对 <code>UDP</code> 端口 53 上的 <code>DNS</code> 查询进行入侵检测，一经发现与关键词相匹配的请求则立即伪装成目标域名的解析服务器（NS，Name Server）给查询者返回虚假结果。</p>
+</blockquote>
+
+<p><code>DNS</code> 污染症状：目前一些被禁止访问的网站很多就是通过 <code>DNS</code> 污染来实现的，例如 <code>YouTube</code>、<code>Facebook</code> 等网站。</p>
+
+<p><strong>应对dns污染的方法</strong></p>
+
+<ul>
+<li>对于 <code>DNS</code> 污染，可以说，个人用户很难单单靠设置解决，通常可以使用 <code>VPN</code> 或者域名远程解析的方法解决，但这大多需要购买付费的 <code>VPN</code> 或 <code>SSH</code> 等</li>
+<li>修改 <code>Hosts</code> 的方法，手动设置域名正确的 <code>IP</code> 地址</li>
+<li><code>dns</code> 加密解析：<a href="https://dnscrypt.org/">DNSCrypt</a></li>
+<li>忽略 <code>DNS</code> 投毒污染小工具：<a href="https://github.com/chengr28/Pcap_DNSProxy">Pcap_DNSProxy</a></li>
+</ul>
+
+<p>我们选择用 <code>Pcap_DNSProxy</code> 来解决这个问题，以前用的是 <code>Pdnsd + Dnsmasq</code> 组合， 后来发现 <code>TCP</code> 请求效率太低加上家里网络与那些国外的 <code>DNS</code> 丢包实在是严重， 所以打算用 <code>Pcap_DNSProxy</code> 代替 <code>Pdnsd</code>。</p>
+
+<p>关于 <code>Pcap_DNSProxy</code> 的详细介绍，可以参考:
+<a href="https://github.com/chengr28/Pcap_DNSProxy">https://github.com/chengr28/Pcap_DNSProxy</a>
+安装过程可以参考：
+<a href="https://github.com/chengr28/Pcap_DNSProxy/blob/master/Documents/ReadMe_Linux.zh-Hans.txt">https://github.com/chengr28/Pcap_DNSProxy/blob/master/Documents/ReadMe_Linux.zh-Hans.txt</a>
+更详细的使用说明可以参考：
+<a href="https://github.com/chengr28/Pcap_DNSProxy/blob/master/Documents/ReadMe.zh-Hans.txt">https://github.com/chengr28/Pcap_DNSProxy/blob/master/Documents/ReadMe.zh-Hans.txt</a></p>
+
+<p>这里主要重点强调一些需要注意的配置项：</p>
+
+<ul>
+<li><code>DNS</code> - 境外域名解析参数区域（这是最关键的一项配置）</li>
+</ul>
+
+<pre><code class="language-bash">[DNS]
+# 这里一定要填 IPv4 + TCP！！！表示只使用 TCP 协议向境外远程 DNS 服务器发出请求
+Outgoing Protocol = IPv4 + TCP
+# 建议当系统使用全局代理功能时启用，程序将除境内服务器外的所有请求直接交给系统而不作任何过滤等处理，系统会将请求自动发往远程服务器进行解析
+Direct Request = IPv4
+...
+...
+</code></pre>
+
+<ul>
+<li><code>Local DNS</code> - 境内域名解析参数区域</li>
+</ul>
+
+<pre><code class="language-bash">[Local DNS]
+# 发送请求到境内 DNS 服务器时所使用的协议
+Local Protocol = IPv4 + UDP
+...
+...
+</code></pre>
+
+<ul>
+<li><code>Addresses</code> - 普通模式地址区域</li>
+</ul>
+
+<pre><code class="language-bash">[Addresses]
+...
+...
+# IPv4 主要境外 DNS 服务器地址
+IPv4 Main DNS Address = 8.8.4.4:53
+# IPv4 备用境外 DNS 服务器地址
+IPv4 Alternate DNS Address = 8.8.8.8:53|208.67.220.220:443|208.67.222.222:5353
+# IPv4 主要境内 DNS 服务器地址，用于境内域名解析，推荐使用 onedns
+IPv4 Local Main DNS Address = 112.124.47.27:53
+# IPv4 备用境内 DNS 服务器地址，用于境内域名解析
+IPv4 Local Alternate DNS Address = 114.215.126.16:53
+...
+...
+</code></pre>
+
+<h3 id="1-7-配置系统-dns-服务器设置">1.7 配置系统 DNS 服务器设置</h3>
+
+<ul>
+<li><p>可参见 <a href="https://developers.google.com/speed/public-dns/docs/using">https://developers.google.com/speed/public-dns/docs/using</a> 中 <code>Changing your DNS servers settings</code> 中 <code>Linux</code> 一节</p></li>
+
+<li><p>图形界面以 <code>GNOME 3</code> 为例：</p></li>
+
+<li><p>打开所有程序列表，并 -&gt; 设置 – 硬件分类 – 网络</p></li>
+
+<li><p>如果要对当前的网络配置进行编辑 -&gt; 单击齿轮按钮</p></li>
+
+<li><p>选中 <code>IPv4</code></p></li>
+
+<li><p><code>DNS</code> 栏目中，将自动拨向关闭</p></li>
+
+<li><p>在服务器中填入 <code>127.0.0.1</code> （或103.214.195.99:7300）并应用</p></li>
+
+<li><p>选中 <code>IPv6</code></p></li>
+
+<li><p><code>DNS</code> 栏目中，将自动拨向关闭</p></li>
+
+<li><p>在服务器中填入 ::1 并应用</p></li>
+
+<li><p>请务必确保只填入这两个地址，填入其它地址可能会导致系统选择其它 DNS 服务器绕过程序的代理</p></li>
+
+<li><p>重启网络连接</p></li>
+
+<li><p>直接修改系统文件修改 DNS 服务器设置：</p></li>
+
+<li><p>自动获取地址(DHCP)时：</p></li>
+
+<li><p>以 <code>root</code> 权限进入 <code>/etc/dhcp</code> 或 <code>/etc/dhcp3</code> 目录（视乎 dhclient.conf 文件位置）</p></li>
+
+<li><p>直接修改 <code>dhclient.conf</code> 文件，修改或添加 <code>prepend domain-name-servers</code> 一项即可</p></li>
+
+<li><p>如果 <code>prepend domain-name-servers</code> 一项被 # 注释则需要把注释去掉以使配置生效，不需要添加新的条目</p></li>
+
+<li><p><code>dhclient.conf</code> 文件可能存在多个 <code>prepend domain-name-servers</code> 项，是各个网络接口的配置项目，直接修改总的配置项目即可</p></li>
+
+<li><p>使用 <code>service network(/networking) restart</code> 或 <code>ifdown/ifup</code> 或 <code>ifconfig stop/start</code> 重启网络服务/网络端口</p></li>
+
+<li><p>非自动获取地址(DHCP)时：</p></li>
+
+<li><p>以 <code>root</code> 权限进入 <code>/etc</code> 目录</p></li>
+
+<li><p>直接修改 <code>resolv.conf</code> 文件里的 <code>nameserver</code> 即可</p></li>
+
+<li><p>如果重启后配置被覆盖，则需要修改或新建 <code>/etc/resolvconf/resolv.conf.d</code> 文件，内容和 <code>resolv.conf</code> 一样</p></li>
+
+<li><p>使用 <code>service network(/networking) restart</code> 或 <code>ifdown/ifup</code> 或 <code>ifconfig stop/start</code> 重启网络服务/网络端口</p></li>
+</ul>
+
+<h3 id="1-8-打开流量转发">1.8 打开流量转发</h3>
+
+<pre><code class="language-bash">$ cat /etc/sysctl.d/30-ipforward.conf
+</code></pre>
+
+<pre><code class="language-bash">net.ipv4.ip_forward=1
+
+net.ipv6.conf.all.forwarding = 1
+
+net.ipv4.tcp_congestion_control=westwood
+
+net.ipv4.tcp_syn_retries = 5
+
+net.ipv4.tcp_synack_retries = 5
+</code></pre>
+
+<p>编辑完成后，执行以下命令使变动立即生效</p>
+
+<pre><code class="language-bash">$ sysctl -p
+</code></pre>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-通过-nftables-实现智能分流-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. 通过 nftables 实现智能分流</p></h2>
+
+<h3 id="2-1-安装相关软件">2.1 安装相关软件</h3>
+
+<ul>
+<li>shadowsocks-libev</li>
+<li>nftables</li>
+</ul>
+
+<pre><code class="language-bash">$ pacman -S shadowsocks-libev nftables
+</code></pre>
+
+<h3 id="2-2-配置shadowsocks-libev-略过">2.2 配置shadowsocks-libev（略过）</h3>
+
+<p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
+
+<h3 id="2-3-获取中国ip段">2.3 获取中国IP段</h3>
+
+<p>将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：</p>
+
+<pre><code class="language-bash">#!/bin/sh
+wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
+cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
+cat cn_rules.conf|sed ':label;N;s/\n/, /;b label'|sed 's/$/&amp; }/g'|sed 's/^/{ &amp;/g' &gt; /home/yang/bin/路由表/cn_rules1.conf
+</code></pre>
+
+<h3 id="2-4-创建启动和关闭脚本">2.4 创建启动和关闭脚本</h3>
+
+<pre><code class="language-bash">$ vim /home/yang/bin/shadowsocks/nftables-up.sh
+</code></pre>
+
+<pre><code class="language-bash">#! /bin/bash
+
+nft_pre=&quot;/usr/sbin/nft add rule nat prerouting&quot;
+nft_out=&quot;/usr/sbin/nft add rule nat output&quot;
+chnroute=$(cat '/home/yang/bin/路由表/cn_rules1.conf')
+
+/usr/bin/nft -f /etc/nftables.conf
+
+${nft_pre} tcp dport 8385 return
+${nft_pre} ip daddr 139.162.87.98 return
+${nft_pre} ip daddr { 0.0.0.0/8, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/4, 240.0.0.0/4, 172.16.39.0/24} return
+${nft_pre} ip daddr $chnroute return
+${nft_pre} tcp sport { 32768-61000} redirect to 1081
+#${nft_pre} ip protocol icmp redirect to 1081
+# 内网流量源NAT
+nft add rule nat postrouting ip saddr 192.168.0.0/12 masquerade
+
+${nft_out} tcp dport 8385 return
+${nft_out} ip daddr 139.162.87.98 return
+${nft_out} ip daddr { 0.0.0.0/8, 10.0.0.0/8, 127.0.0.0/8, 169.254.0.0/16, 172.16.0.0/12, 192.168.0.0/16, 224.0.0.0/4, 240.0.0.0/4, 172.16.39.0/24} return
+${nft_out} ip daddr $chnroute return
+# /proc/sys/net/ipv4/ip_local_port_range，本地发起的连接的端口范围
+${nft_out} tcp sport { 32768-61000} redirect to 1081
+${nft_out} ip protocol icmp redirect to 1081
+</code></pre>
+
+<p>&emsp;&emsp;这是在启动 <code>shadowsocks</code> 之前执行的脚本，用来设置 <code>nftables</code> 规则。
+然后再创建 <code>/home/yang/bin/shadowsocks/nftables-down.sh</code>, 这是用来清除上述规则的脚本，比较简单</p>
+
+<pre><code class="language-bash">#!/bin/bash
+
+sudo nft flush table nat
+#sudo nft flush table filter
+</code></pre>
+
+<p>接着执行</p>
+
+<pre><code class="language-bash">$ chmod +x nftables-up.sh
+$ chmod +x nftables-down.sh
+</code></pre>
+
+<h3 id="2-5-配置ss-redir服务">2.5 配置ss-redir服务</h3>
+
+<p>首先，默认的 <code>ss-local</code> 并不能用来作为 <code>nftables</code> 流量转发的目标，因为它是 <code>socks5</code> 代理而非透明代理。我们至少要把 <code>systemd</code> 执行的程序改成 <code>ss-redir</code>。其次，上述两个脚本还不能自动执行，必须让 <code>systemd</code> 分别在启动 <code>shadowsocks</code> 之前和关闭之后将脚本执行，这样才能自动配置好 <code>nftables</code> 规则。</p>
+
+<pre><code class="language-bash">$ vim /usr/lib/systemd/system/shadowsocks-libev@.service
+</code></pre>
+
+<pre><code class="language-bash">[Unit]
+Description=Shadowsocks-Libev Client Service
+After=network.target
+
+[Service]
+User=root
+CapabilityBoundingSet=~CAP_SYS_ADMIN
+ExecStart=
+ExecStartPre=/home/yang/bin/shadowsocks/nftables-up.sh
+ExecStart=/usr/bin/ss-redir -u -c /etc/%i.json
+ExecStopPost=/home/yang/bin/shadowsocks/nftables-down.sh
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>然后启动服务</p>
+
+<pre><code class="language-bash">$ systemctl start nftables
+$ systemctl start shadowsocks-libev@shadowsocks
+</code></pre>
+
+<p>开机自启</p>
+
+<pre><code class="language-bash">$ systemctl enable nftables
+$ systemctl enable shadowsocks-libev@shadowsocks
+</code></pre>
+
+<h3 id="2-6-配置智能-dns-服务">2.6 配置智能 DNS 服务</h3>
+
+<p>同上</p>
+
+<h3 id="2-7-配置系统-dns-服务器设置">2.7 配置系统 DNS 服务器设置</h3>
+
+<p>同上</p>
+
+<h3 id="2-8-打开流量转发">2.8 打开流量转发</h3>
+
+<p>同上</p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-3-通过策略路由实现智能分流-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. 通过策略路由实现智能分流</p></h2>
+
+<h3 id="3-1-安装相关软件">3.1 安装相关软件</h3>
+
+<ul>
+<li>badvpn</li>
+<li>shadowsocks</li>
+</ul>
+
+<pre><code class="language-bash">$ pacman -S badvpn shadowsocks
+</code></pre>
+
+<h3 id="3-2-配置shadowsocks-略过">3.2 配置shadowsocks（略过）</h3>
+
+<p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
+
+<h3 id="3-3-获取中国ip段">3.3 获取中国IP段</h3>
+
+<p>将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：</p>
+
+<pre><code class="language-bash">#!/bin/sh
+wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
+cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
+</code></pre>
+
+<h3 id="3-4-配置智能-dns-服务">3.4 配置智能 DNS 服务</h3>
+
+<p>同上</p>
+
+<h3 id="3-5-配置系统-dns-服务器设置">3.5 配置系统 DNS 服务器设置</h3>
+
+<p>同上</p>
+
+<h3 id="3-6-写路由表启动和终止脚本">3.6 写路由表启动和终止脚本</h3>
+
+<pre><code class="language-bash">$ vim /usr/local/bin/socksfwd
+</code></pre>
+
+<pre><code class="language-bash">#!/bin/bash
+SOCKS_SERVER=$SERVER_IP # SOCKS 服务器的 IP 地址
+SOCKS_PORT=1081 # 本地SOCKS 服务器的端口
+GATEWAY_IP=$(ip route|grep &quot;default&quot;|awk '{print $3}') # 家用网关（路由器）的 IP 地址，你也可以手动指定
+TUN_NETWORK_DEV=tun0 # 选一个不冲突的 tun 设备号
+TUN_NETWORK_PREFIX=10.0.0 # 选一个不冲突的内网 IP 段的前缀
+
+
+start_fwd() {
+ip tuntap del dev &quot;$TUN_NETWORK_DEV&quot; mode tun
+# 添加虚拟网卡
+ip tuntap add dev &quot;$TUN_NETWORK_DEV&quot; mode tun
+# 给虚拟网卡绑定IP地址
+ip addr add &quot;$TUN_NETWORK_PREFIX.1/24&quot; dev &quot;$TUN_NETWORK_DEV&quot;
+# 启动虚拟网卡
+ip link set &quot;$TUN_NETWORK_DEV&quot; up
+ip route del default via &quot;$GATEWAY_IP&quot;
+ip route add &quot;$SOCKS_SERVER&quot; via &quot;$GATEWAY_IP&quot;
+# 特殊ip段走家用网关（路由器）的 IP 地址（如局域网联机）
+# ip route add &quot;172.16.39.0/24&quot; via &quot;$GATEWAY_IP&quot;
+# 国内网段走家用网关（路由器）的 IP 地址
+for i in $(cat /home/yang/bin/路由表/cn_rules.conf)
+do
+ip route add &quot;$i&quot; via &quot;$GATEWAY_IP&quot;
+done
+# 将默认网关设为虚拟网卡的IP地址
+ip route add 0.0.0.0/1 via &quot;$TUN_NETWORK_PREFIX.1&quot;
+ip route add 128.0.0.0/1 via &quot;$TUN_NETWORK_PREFIX.1&quot;
+# 将socks5转为vpn
+badvpn-tun2socks --tundev &quot;$TUN_NETWORK_DEV&quot; --netif-ipaddr &quot;$TUN_NETWORK_PREFIX.2&quot; --netif-netmask 255.255.255.0 --socks-server-addr &quot;127.0.0.1:$SOCKS_PORT&quot;
+TUN2SOCKS_PID=&quot;$!&quot;
+}
+
+
+stop_fwd() {
+ip route del 128.0.0.0/1 via &quot;$TUN_NETWORK_PREFIX.1&quot;
+ip route del 0.0.0.0/1 via &quot;$TUN_NETWORK_PREFIX.1&quot;
+for i in $(cat /home/yang/bin/路由表/cn_rules.conf)
+do
+ip route del &quot;$i&quot; via &quot;$GATEWAY_IP&quot;
+done
+ip route del &quot;172.16.39.0/24&quot; via &quot;$GATEWAY_IP&quot;
+ip route del &quot;$SOCKS_SERVER&quot; via &quot;$GATEWAY_IP&quot;
+ip route add default via &quot;$GATEWAY_IP&quot;
+ip link set &quot;$TUN_NETWORK_DEV&quot; down
+ip addr del &quot;$TUN_NETWORK_PREFIX.1/24&quot; dev &quot;$TUN_NETWORK_DEV&quot;
+ip tuntap del dev &quot;$TUN_NETWORK_DEV&quot; mode tun
+}
+
+
+
+start_fwd
+trap stop_fwd INT TERM
+wait &quot;$TUN2SOCKS_PID&quot;
+</code></pre>
+
+<pre><code class="language-bash">$ vim /etc/systemd/system/socksfwd.service
+</code></pre>
+
+<pre><code class="language-bash">[Unit]
+
+Description=Transparent SOCKS5 forwarding
+
+After=network-online.target
+
+[Service]
+
+Type=simple
+
+ExecStart=/usr/local/bin/socksfwd
+
+LimitNOFILE=1048576
+
+
+[Install]
+
+WantedBy=multi-user.target
+</code></pre>
+
+<p>启动服务</p>
+
+<pre><code class="language-bash">$ systemctl start socksfwd
+</code></pre>
+
+<p>开机自启</p>
+
+<pre><code class="language-bash">$ systemctl enable socksfwd
+</code></pre>
+
+<h3 id="3-7-打开流量转发">3.7 打开流量转发</h3>
+
+<pre><code class="language-bash">$ cat /etc/sysctl.d/30-ipforward.conf
+</code></pre>
+
+<pre><code class="language-bash">net.ipv4.ip_forward=1
+
+net.ipv6.conf.all.forwarding = 1
+
+net.ipv4.tcp_congestion_control=westwood
+
+net.ipv4.tcp_syn_retries = 5
+
+net.ipv4.tcp_synack_retries = 5
+</code></pre>
+
+<p>编辑完成后，执行以下命令使变动立即生效</p>
+
+<pre><code class="language-bash">$ sysctl -p
+</code></pre>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net:443/posts/second/" data-toggle="tooltip" data-placement="top" title="Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动">&larr; Previous Post</a>
+                </li>
+                 
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Jan 23, 2018</h4>
+    </section>
+    <h5 id="wc">4300 Words|Read in about 9 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/gfw/">gfw</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    <div>
+        <h2> Comments </h2>
+    </div>
+    <div id="container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    
+    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'rootsongjc', 
+            repo: 'rootsongjc.github.io', 
+            oauth: {
+                client_id: '93a0df08e0f93ff0c8a3',
+                client_secret: '3bdbf0b42c525f78582600bd38cf7f722ee40541',
+            },
+        })
+        gitment.render('container')
+    </script>
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net:443/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net:443/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  <script data-no-instant>document.write('<script src="/livereload.js?port=443&mindelay=10"></' + 'script>')</script></body>
+</html>
+

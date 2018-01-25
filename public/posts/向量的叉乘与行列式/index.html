@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 向量的叉乘与行列式 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="向量的叉乘与行列式" />
+  <meta name="twitter:title" content="向量的叉乘与行列式" />
+  <meta name="description" content="向量叉乘的几何意义解析">
+  <meta property="og:description" content="向量叉乘的几何意义解析">
+  <meta name="twitter:description" content="向量叉乘的几何意义解析">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net:443/posts/%E5%90%91%E9%87%8F%E7%9A%84%E5%8F%89%E4%B9%98%E4%B8%8E%E8%A1%8C%E5%88%97%E5%BC%8F/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.33" />
+  <link rel="canonical" href="https://www.yangcs.net:443/posts/%E5%90%91%E9%87%8F%E7%9A%84%E5%8F%89%E4%B9%98%E4%B8%8E%E8%A1%8C%E5%88%97%E5%BC%8F/" />
+  <link rel="alternate" href="https://www.yangcs.net:443/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net:443/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net:443/css/prism.css" />
+
+
+
+
+<script type="text/javascript" async
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre','code'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net:443/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net:443/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net:443/kubernetes-handbook">Kubernetes handbook</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="脚本推荐" href="/">脚本推荐</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="https://www.yangcs.net/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net:443/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search jimmysong.io</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
+var index = client.initIndex('hugo');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://res.cloudinary.com/jimmysong/image/upload/images/20151122051.jpg" data-img-desc-1="The Forbidden City Nov 22,2015"></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>向量的叉乘与行列式</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">向量叉乘的几何意义解析</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on December 3, 2016
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">向量的叉乘与行列式</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">向量叉乘的几何意义解析</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Dec 3, 2016</h4>
+    </section>
+    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/math/">math</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p>
+<strong>为了循序渐进，先从二维开始讲起，然后过渡到三维</strong></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-二维空间-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>二维空间</strong></p></h2>
+
+<hr />
+
+<p>我们从一个五边形的面积开始说起</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E6%AD%A3%E4%BA%94%E8%BE%B9%E5%BD%A2.png" alt="" /></center></p>
+
+<p>比如我们要求这个正五边形的面积，该怎样用向量求呢？</p>
+
+<p>先简化这个问题，不用考虑五边形，只需考虑三角形。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E4%BA%94%E8%BE%B9%E5%BD%A22.png" alt="" /></center></p>
+
+<p>现在，我们把正五边形分割成三个三角形，再把三角形的面积加起来，就得到了五边形的面积。</p>
+
+<p>那么问题来了：<strong>怎样求三角形的面积？</strong></p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E4%B8%89%E8%A7%92%E5%BD%A2.png" alt="" /></center></p>
+
+<p>设三角形的面积为S，那么</p>
+
+<p>$$
+S = \frac{1}{2}\left|\vec{A}\right|\left|\vec{MN}\right| = \frac{1}{2}\left|\vec{A}\right|\left|\vec{B}\right|\sin(\theta) \tag{1}
+$$</p>
+
+<p>$\sin(\theta)$该如何求呢？</p>
+
+<p>如果你学过向量的点积，应该知道$\vec{a}\cdot\vec{b}=\left|\vec{a}\right|\left|\vec{b}\right|\cos(\theta)$.
+所以为了求$\sin(\theta)$，我们可以先求出$\cos(\theta)$</p>
+
+<p>$$
+\cos(\theta)=\frac{\vec{a}\cdot\vec{b}}{\left|\vec{a}\right|\left|\vec{b}\right|} \tag{2}
+$$</p>
+
+<p>再利用公式</p>
+
+<p>$$
+\cos^2(\theta)+\sin^2(\theta)=1 \tag{3}
+$$</p>
+
+<p>便可以求出$\sin(\theta)$的值。</p>
+
+<p><br \>
+<strong>通过以上步骤，可以看出这样做很麻烦，有没有更简单的办法呢？当然有</strong>
+<br \>
+求$\sin(\theta)$太麻烦了，但是求$\cos(\theta)$却很简单，为了避免求$\sin(\theta)$，我们能否找到一个角，使这个角的余弦等于$\sin(\theta)$ ?</p>
+
+<p>作向量$\vec{A}$、$\vec{B}$，夹角记为$\theta$，将向量$\vec{A}$逆时针旋转$90^\circ$得到$\vec{A^\prime}$，如下图所示：</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E9%80%89%E5%8C%BA_347.png" alt="" /></center></p>
+
+<p>通过上图给的条件，我们已知：</p>
+
+<p>$$
+\begin{cases}
+\beta=\frac{\pi}{2}-\theta \\<br />
+\cos(\beta)=\sin(\theta)
+\end{cases}
+$$</p>
+
+<p>这意味着$\vec{A}$的模长乘以$\vec{B}$的模长，再乘以$\sin(\theta)$，等于$\vec{A^\prime}$的模长乘以$\vec{B}$的模长，再乘以$\cos(\beta)$，得到：</p>
+
+<p>\begin{aligned}
+&amp; \left|\vec{A}\right|\left|\vec{B}\right|\sin(\theta) \\<br />
+= &amp; \left|\vec{A^\prime}\right|\left|\vec{B}\right|\cos(\beta) \\<br />
+= &amp; \vec{A^\prime}\cdot\vec{B}
+\end{aligned}</p>
+
+<p>即：</p>
+
+<p>$$
+\left|\vec{A}\right|\left|\vec{B}\right|\sin(\theta)=\vec{A^\prime}\cdot\vec{B} \tag{4}
+$$</p>
+
+<p>这个方法看起来不错，不过还有一点是不知道的，就是怎么求$\vec{A^\prime}$呢?</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E9%80%89%E5%8C%BA_348.png" alt="" /></center></p>
+
+<p>假设$\vec{A}$的坐标为$\left\langle a_1,a_2 \right\rangle$，由我画的图可知，逆时针旋转$90^\circ$后，得到：$A^\prime=\left\langle -a_2,a_1 \right\rangle$ 。</p>
+
+<p>同时再假设$\vec{B}$的坐标为$\left\langle b_1,b_2 \right\rangle$，现在将$\vec{A}$和$\vec{B}$的坐标分别带入(4)式，得到：</p>
+
+<p>\begin{aligned}
+&amp; \vec{A^\prime}\cdot\vec{B} \\<br />
+= &amp; \left\langle -a_2,a_1 \right\rangle \cdot \left\langle b_1,b_2 \right\rangle \\<br />
+= &amp; a_1b_2-a_2b_1
+\end{aligned}</p>
+
+<p>如果你学过行列式，应该知道</p>
+
+<p>\begin{aligned}
+&amp; a_1b_2-a_2b_1 \\<br />
+= &amp; \begin{vmatrix} a_1 &amp; a_2 \\ b_1 &amp; b_2 \end{vmatrix} \\<br />
+= &amp; det(\vec{A},\vec{B})
+\end{aligned}</p>
+
+<p>由此可知，三角形的面积</p>
+
+<p>$$
+S=\frac{1}{2}det(\vec{A},\vec{B}) \tag{5}
+$$</p>
+
+<p>现在可以得出结论：</p>
+
+<blockquote>
+<p>向量$\vec{A}$与向量$\vec{B}$的行列式表示一个以$\vec{A}$和$\vec{B}$为边构成的平行四边形的面积</p>
+</blockquote>
+
+<p>还可以表述得更严格一点，因为面积没有负数，而行列式的值有正有负，符号取决于两个向量之间的夹角，所以我们可以这样描述：</p>
+
+<blockquote>
+<p>向量$\vec{A}$与向量$\vec{B}$的行列式的绝对值表示一个以$\vec{A}$和$\vec{B}$为边构成的平行四边形的面积</p>
+</blockquote>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-三维空间-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>三维空间</strong></p></h2>
+
+<hr />
+
+<p>在空间中，从简单的开始，我们可以做两件事情：</p>
+
+<ul>
+<li>求平行六面体的体积</li>
+<li>求平行六面体的表面积</li>
+</ul>
+
+<p>咱们先来求平行六面体的体积。</p>
+
+<h3 id="平行六面体的体积">平行六面体的体积</h3>
+
+<p>求体积之前，需要了解几个定义</p>
+
+<h4 id="空间中的行列式">空间中的行列式</h4>
+
+<p>空间中也有行列式的概念，假设有三个向量$\vec{A}$、$\vec{B}$和$\vec{C}$，定义：</p>
+
+<p>\begin{aligned}
+det(\vec{A},\vec{B},\vec{C}) &amp; = \begin{vmatrix} a_1 &amp; a_2 &amp; a_3 \\ b_1 &amp; b_2 &amp; b_3 \\ c_1 &amp; c_2 &amp; c_3 \end{vmatrix} \\<br />
+&amp; = a_1\begin{vmatrix} b_2 &amp; b_3 \\ c_2 &amp; c_3 \end{vmatrix} - a_2\begin{vmatrix} b_1 &amp; b_3 \\ c_1 &amp; c_3 \end{vmatrix} + a_3\begin{vmatrix} b_1 &amp; b_2 \\ c_1 &amp; c_2 \end{vmatrix}
+\end{aligned}</p>
+
+<p>如果你学过行列式的知识，上面的计算过程应该很容易理解，我就不作过多解释了。</p>
+
+<h4 id="叉乘">叉乘</h4>
+
+<p>叉乘适用于两个在空间内的向量（这里我指的是三维空间），定义：</p>
+
+<p>\begin{aligned}
+\vec{A}\times\vec{B}=\begin{vmatrix} \hat{i} &amp; \hat{j} &amp; \hat{k} \\ a_1 &amp; a_2 &amp; a_3 \\ b_1 &amp; b_2 &amp; b_3 \end{vmatrix}
+\end{aligned}</p>
+
+<p>其中，$\hat{i}$,$\hat{j}$,$\hat{k}$分别为三维空间中的三个坐标轴上的单位向量。</p>
+
+<p>我们把$\vec{A}\times\vec{B}$称为向量$\vec{A}$与$\vec{B}$的<font size=4>$\color{blue}{叉乘！}$</font></p>
+
+<p>如果你仔细观察，你会发现，这个行列式的第二行和第三行分别是向量$\vec{A}$和$\vec{B}$的坐标，但是第一行却是三个单位向量，这意味着后面两行的元素都是数值，而第一行的元素都是向量。这意味着什么？这不是常理上的行列式，如果你尝试在计算器中这样计算，它会显示这是错误的，向量不该出现在这里。
+<br \>
+那么，为什么要这么做呢？</p>
+
+<p>如果使用上面提到的空间中的行列式的定义，可以得到：</p>
+
+<p>$$
+\begin{vmatrix} \hat{i} &amp; \hat{j} &amp; \hat{k} \\ a_1 &amp; a_2 &amp; a_3 \\ b_1 &amp; b_2 &amp; b_3 \end{vmatrix}=\begin{vmatrix} a_2 &amp; a_3 \\ b_2 &amp; b_3 \end{vmatrix}\hat{i}-\begin{vmatrix} a_1 &amp; a_3 \\ b_1 &amp; b_3 \end{vmatrix}\hat{j}+\begin{vmatrix} a_1 &amp; a_2 \\ b_1 &amp; b_2 \end{vmatrix}\hat{k} \tag{6}
+$$</p>
+
+<p>你发现了什么？没错，我们得到的结果不是一个数，而是一个<font size=4>$\color{blue}{向量}$</font>，这就是向量叉乘的定义。
+<br \>
+那么问题在于，这样定义有什么好处呢？这种怪异计算的几何意义在哪里？为什么我们要费心去这样做？</p>
+
+<p>下面我们对上面的式子进行转化，看看会出现什么神奇的结果。</p>
+
+<p>将式(6)进一步化简，得到：</p>
+
+<p>\begin{aligned}
+\vec{A}\times\vec{B}=(a_2b_3-a_3b_2)\hat{i}-(a_1b_3-a_3b_1)\hat{j}+(a_1b_2-a_2b_1)\hat{k}
+\end{aligned}</p>
+
+<p>看起来没什么特别的，试着求一下$\vec{A}\times\vec{B}$的模，为了方便计算，我们求$\vec{A}\times\vec{B}$的模的平方</p>
+
+<p>\begin{aligned}
+\left| \vec{A}\times\vec{B} \right|^2 &amp; = (a_2b_3-a_3b_2)^2+(a_1b_3-a_3b_1)^2+(a_1b_2-a_2b_1)^2 \\<br />
+&amp; = (a_1^2b_2^2+a_1^2b_3^2)+(a_2^2b_1^2+a_2^2b_3^2)+(a_3^2b_1^2+a_3^2b_2^2) \\<br />
+&amp; - 2(a_1a_2b_1b_2+a_1a_3b_1b_3+a_2a_3b_2b_3) \\<br />
+&amp; = (\underbrace{a_1^2b_2^2+a_1^2b_3^2}+a_1^2b_1^2)+(\underbrace{a_2^2b_1^2+a_2^2b_3^2}+a_2^2b_2^2)+(\underbrace{a_3^2b_1^2+a_3^2b_2^2}+a_3^2b_3^2)-(a_1^2b_1^2+a_2^2b_2^2+a_3^2b_3^2) \\<br />
+&amp; - 2(a_1a_2b_1b_2+a_1a_3b_1b_3+a_2a_3b_2b_3) \\<br />
+&amp; = {(\underbrace{a_1^2b_1^2+a_1^2b_2^2+a_1^2b_3^2)+(a_2^2b_1^2+a_2^2b_2^2+a_2^2b_3^2)+(a_3^2b_1^2+a_3^2b_2^2+a_3^2b_3^2)}} \\<br />
+&amp; - {\underbrace{(a_1^2b_1^2+a_2^2b_2^2+a_3^2b_3^2)+2(a_1a_2b_1b_2+a_1a_3b_1b_3+a_2a_3b_2b_3)}} \\<br />
+&amp; = (a_1^2+a_2^2+a_3^2)(b_1^2+b_2^2+b_3^2)-(a_1b_1+a_2b_2+a_3b_3)^2 \\<br />
+&amp; = \left|\vec{A}\right|^2\cdot\left|\vec{B}\right|^2-\left|\vec{A}\cdot\vec{B}\right|^2 \\<br />
+&amp; = \left|\vec{A}\right|^2\cdot\left|\vec{B}\right|^2\cdot1-\left|\vec{A}\right|^2\cdot\left|\vec{B}\right|^2\cdot\frac{\left|\vec{A}\cdot\vec{B}\right|^2}{\left|\vec{A}\right|^2\cdot\left|\vec{B}\right|^2} \\<br />
+&amp; = \left|\vec{A}\right|^2\cdot\left|\vec{B}\right|^2(1-\frac{\left|\vec{A}\cdot\vec{B}\right|^2}{\left|\vec{A}\right|^2\cdot\left|\vec{B}\right|^2}) \\<br />
+&amp; = \left|\vec{A}\right|^2\cdot\left|\vec{B}\right|^2(1-cos^2\left\langle\vec{A},\vec{B}\right\rangle) \\<br />
+&amp; = (\left|\vec{A}\right|\cdot\left|\vec{B}\right|\cdot\sin\left\langle\vec{A},\vec{B}\right\rangle)
+\end{aligned}</p>
+
+<p>发现了什么？<strong>原来$\vec{A}\times\vec{B}$的模长等于一个以$\vec{A}$和$\vec{B}$为边构成的平行四边形的面积</strong>。
+<br \>
+接下来的问题是：既然$\vec{A}\times\vec{B}$的结果是一个向量，那么这个向量的方向是什么呢？</p>
+
+<p>答案是：它的方向垂直于向量$\vec{A}$与$\vec{B}$构成的平面，并且遵循右手定则。</p>
+
+<p>如果你不知道右手定则，我可以解释一下：</p>
+
+<blockquote>
+<p>首先，你的右手平行于向量$\vec{A}$的方向，然后，你的手指向向量$\vec{B}$的方向弯曲，这时，你的大拇指竖直的方向就是$\vec{A}\times\vec{B}$的方向。</p>
+</blockquote>
+
+<p>下面我们来证明一下为什么$\vec{A}\times\vec{B}$的方向垂直于向量$\vec{A}$与$\vec{B}$构成的平面。
+为了简化，令</p>
+
+<p>$$
+\begin{cases}
+m_1=a_2b_3-a_3b_2 \\<br />
+m_2=a_1b_3-a_3b_1 \\<br />
+m_3=a_1b_2-a_2b_1
+\end{cases}
+$$
+于是可以得到
+$$
+\vec{A}\times\vec{B}=m_1\hat{i}-m_2\hat{j}+m_3\hat{k} \tag{7}
+$$
+基本思路是这样：<strong>我们从$\vec{A}$与$\vec{B}$构成的平面中找两个方向不在同一条直线上的向量，如果$\vec{A}\times\vec{B}$与这两个向量均垂直,那么它就垂直于$\vec{A}$与$\vec{B}$构成的平面</strong>
+<br \>
+为了方便计算，我们这样定义三个互相垂直的单位向量：其中，向量$\hat{i}$与$\hat{j}$在$\vec{A}$与$\vec{B}$构成的平面上，而向量$\hat{k}$垂直于这个平面。</p>
+
+<p>现在问题简单了，只要我们能证明$\hat{i}\times\hat{j}$的方向平行于$\hat{k}$，就说明$\vec{A}\times\vec{B}$的方向垂直于向量$\vec{A}$与$\vec{B}$构成的平面。</p>
+
+<p>设$\hat{i}=\left\langle1,0,0\right\rangle$,$\hat{j}=\left\langle0,1,0\right\rangle$,$\hat{k}=\left\langle0,0,1\right\rangle$，那么</p>
+
+<p>\begin{aligned}
+\hat{i}\times\hat{j} &amp; = \begin{vmatrix} \hat{i} &amp; \hat{j} &amp; \hat{k} \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \end{vmatrix} \\<br />
+&amp; = \begin{vmatrix} 0 &amp; 0 \\ 1 &amp; 0 \end{vmatrix}\hat{i}-\begin{vmatrix} 1 &amp; 0 \\ 0 &amp; 0 \end{vmatrix}\hat{j}+\begin{vmatrix} 1 &amp; 0 \\ 0 &amp; 1 \end{vmatrix}\hat{k} \\<br />
+&amp; = \hat{k}
+\end{aligned}</p>
+
+<p>太神奇了，$\hat{i}\times\hat{j}$竟然等于$\hat{k}$，所以当然也平行于$\hat{k}$，所以$\vec{A}\times\vec{B}$的方向垂直于向量$\vec{A}$与$\vec{B}$构成的平面，并且遵循右手定则。
+<br \>
+于是可以得到如下的结论：</p>
+
+<ul>
+<li>$\left|\vec{A}\times\vec{B}\right|$等于一个以$\vec{A}$和$\vec{B}$为边构成的平行四边形的面积</li>
+<li>$\vec{A}\times\vec{B}$的方向垂直于向量$\vec{A}$与$\vec{B}$构成的平面，并且遵循右手定则
+<br \>
+下面我们回到最初提出的问题：<strong>求平行六面体的体积</strong></li>
+</ul>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E9%80%89%E5%8C%BA_351.png" alt="" /></center>
+如上图所示，我们要求由三个向量$\vec{A}$,$\vec{B}$与$\vec{C}$构成的平行六面体的体积。</p>
+
+<p>设体积为V，向量$\vec{A}$与$\vec{B}$构成的平行四边形的面积为S，高为h，那么：</p>
+
+<p>$$
+V=S \cdot h \tag{8}
+$$</p>
+
+<p>通过上面的分析，可以得知$S=\left|\vec{A}\times\vec{B}\right|$，那么高度h该怎么求呢？
+假设高度h的方向为$\vec{H}$，那么h等于向量$\vec{C}$在向量$\vec{H}$上的投影，所以</p>
+
+<p>\begin{aligned}
+h &amp; = \left|\vec{C}\cdot\right|\cos\left\langle\vec{C},\vec{H}\right\rangle \\<br />
+&amp; = \left|\vec{C}\right|\cdot\frac{\vec{C}\cdot\vec{H}}{\left|\vec{C}\right|\left|\vec{H}\right|} \\<br />
+&amp; = \vec{C}\cdot\frac{\vec{H}}{\left|\vec{H}\right|} \\<br />
+&amp; = \vec{C}\cdot\vec{h}, &amp; \text{设$\vec{h}$为向量$\vec{H}$方向上的单位向量}
+\end{aligned}</p>
+
+<p>带入(8)式，得：</p>
+
+<p>\begin{aligned}
+V &amp; = \left|\vec{A}\times\vec{B}\right|\cdot(\vec{C}\cdot\vec{h}) \\<br />
+&amp; = \left|\vec{A}\times\vec{B}\right|\cdot(\vec{C}\cdot\frac{\vec{A}\times\vec{B}}{\left|\vec{A}\times\vec{B}\right|}) \\<br />
+&amp; = \vec{C}\cdot(\vec{A}\times\vec{B}) \\<br />
+&amp; = \left\langle c_1,c_2,c_3 \right\rangle\cdot{(a_2b_3-a_3b_2)\hat{i}-(a_1b_3-a_3b_1)\hat{j}+(a_1b_2-a_2b_1)\hat{k}} \\<br />
+&amp; = c_1\begin{vmatrix} a_2 &amp; a_3 \\ b_2 &amp; b_3 \end{vmatrix}\hat{i}-c_2\begin{vmatrix} a_1 &amp; a_3 \\ b_1 &amp; b_3 \end{vmatrix}\hat{j}+c_3\begin{vmatrix} a_1 &amp; a_2 \\ b_1 &amp; b_2 \end{vmatrix}\hat{k} \\<br />
+&amp; = det(\vec{A},\vec{B},\vec{C})
+\end{aligned}</p>
+
+<p>即：</p>
+
+<p>$$
+V=det(\vec{A},\vec{B},\vec{C})=\vec{C}\cdot(\vec{A}\times\vec{B}) \tag{9}
+$$</p>
+
+<p>$\vec{C}\cdot(\vec{A}\times\vec{B})$称为向量的<font size=4>$\color{blue}{混合积}$</font>。
+<br \>
+现在可以得出结论：</p>
+
+<blockquote>
+<p>向量$\vec{A}$、$\vec{B}$与$\vec{C}$的行列式等于由向量$\vec{A}$、$\vec{B}$与$\vec{C}$构成的平行六面体的体积</p>
+</blockquote>
+
+<p><br \>
+体积的部分暂时就讲到这里，接下来的一篇将会介绍平行六面体的面积。</p>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net:443/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/" data-toggle="tooltip" data-placement="top" title="子空间投影">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net:443/posts/iptables%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B9%8Btcp-ip%E5%8D%8F%E8%AE%AE/" data-toggle="tooltip" data-placement="top" title="Iptables基础原理之tcp/ip协议">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/">子空间投影</a></li>
+                    
+                    <li><a href="/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/">十分钟告诉你什么是最小二乘法</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Dec 3, 2016</h4>
+    </section>
+    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net:443/tags/math/">math</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    <div>
+        <h2> Comments </h2>
+    </div>
+    <div id="container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    
+    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'rootsongjc', 
+            repo: 'rootsongjc.github.io', 
+            oauth: {
+                client_id: '93a0df08e0f93ff0c8a3',
+                client_secret: '3bdbf0b42c525f78582600bd38cf7f722ee40541',
+            },
+        })
+        gitment.render('container')
+    </script>
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net:443/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net:443/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  <script data-no-instant>document.write('<script src="/livereload.js?port=443&mindelay=10"></' + 'script>')</script></body>
+</html>
+
