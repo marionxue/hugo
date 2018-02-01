@@ -1030,10 +1030,10 @@ RR4 and RR5 both using the cluster ID 1.0.0.3&lt;/li&gt;
     
     <item>
       <title>Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</title>
-      <link>https://www.yangcs.net/posts/second/</link>
+      <link>https://www.yangcs.net/posts/use-devicemapper/</link>
       <pubDate>Mon, 22 Jan 2018 16:17:11 +0800</pubDate>
       
-      <guid>https://www.yangcs.net/posts/second/</guid>
+      <guid>https://www.yangcs.net/posts/use-devicemapper/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-准备条件-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;&#34;&gt;1. &lt;strong&gt;准备条件&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
@@ -1702,19 +1702,19 @@ xvdf                    202:80   0  100G  0 disk
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/f233d871/&#34;&gt;Device Mapper系列 (1)：Device Mapper 技术&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/devicemapper-theory/&#34;&gt;Device Mapper系列 (1)：Device Mapper 技术&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/5be9f42/&#34;&gt;Device Mapper系列 (2)：Thin Provisioning 实践&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/thin-provisioning/&#34;&gt;Device Mapper系列 (2)：Thin Provisioning 实践&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/7635fcc/&#34;&gt;Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/calico-rr/&#34;&gt;Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Device Mapper系列 (2)：Thin Provisioning 实践</title>
-      <link>https://www.yangcs.net/posts/first/</link>
+      <link>https://www.yangcs.net/posts/thin-provisioning/</link>
       <pubDate>Mon, 22 Jan 2018 16:00:22 +0800</pubDate>
       
-      <guid>https://www.yangcs.net/posts/first/</guid>
+      <guid>https://www.yangcs.net/posts/thin-provisioning/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-thin-provisioning-snapshot-演示-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;&#34;&gt;1. &lt;strong&gt;Thin Provisioning Snapshot 演示&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
@@ -2022,11 +2022,11 @@ TARGET                SOURCE
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/f233d871/&#34;&gt;Device Mapper系列 (1)：Device Mapper 技术&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/devicemapper-theory/&#34;&gt;Device Mapper系列 (1)：Device Mapper 技术&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/5be9f42/&#34;&gt;Device Mapper系列 (2)：Thin Provisioning 实践&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/thin-provisioning/&#34;&gt;Device Mapper系列 (2)：Thin Provisioning 实践&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/7635fcc/&#34;&gt;Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/calico-rr/&#34;&gt;Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -2136,11 +2136,11 @@ TARGET                SOURCE
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/f233d871/&#34;&gt;Device Mapper系列 (1)：Device Mapper 技术&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/devicemapper-theory/&#34;&gt;Device Mapper系列 (1)：Device Mapper 技术&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/5be9f42/&#34;&gt;Device Mapper系列 (2)：Thin Provisioning 实践&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/thin-provisioning/&#34;&gt;Device Mapper系列 (2)：Thin Provisioning 实践&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/7635fcc/&#34;&gt;Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/calico-rr/&#34;&gt;Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;</description>
     </item>
     
     <item>

@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动" />
+  <meta name="twitter:title" content="Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动" />
+  <meta name="description" content="配置 Docker 使用 devicemapper">
+  <meta property="og:description" content="配置 Docker 使用 devicemapper">
+  <meta name="twitter:description" content="配置 Docker 使用 devicemapper">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/use-devicemapper/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.33" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/use-devicemapper/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="脚本推荐" href="/">脚本推荐</a>
+              
+              
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search jimmysong.io</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
+var index = client.initIndex('hugo');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">配置 Docker 使用 devicemapper</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on January 22, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">配置 Docker 使用 devicemapper</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jan 22, 2018</h4>
+    </section>
+    <h5 id="wc">5800 Words|Read in about 12 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-准备条件-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>准备条件</strong></p></h2>
+
+<hr />
+
+<ul>
+<li><p><code>devicemapper</code> 存储驱动是 <code>RHEL</code>, <code>CentOS</code> 和 <code>Oracle Linux</code> 系统上唯一一个支持 <code>Docker EE</code> 和 <code>Commercially Supported Docker Engine</code> (CS-Engine) 的存储驱动，具体参考 <a href="https://success.docker.com/Policies/Compatibility_Matrix">Product compatibility matrix</a>.</p></li>
+
+<li><p><code>devicemapper</code> 在 <code>CentOS</code>, <code>Fedora</code>, <code>Ubuntu</code> 和 <code>Debian</code> 上也支持 <code>Docker CE</code>。</p></li>
+
+<li><p>如果你更改了 <code>Docker</code> 的存储驱动，那么你之前在本地创建的所有容器都将无法访问。</p></li>
+</ul>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-配置docker使用devicemapper-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. <strong>配置Docker使用devicemapper</strong></p></h2>
+
+<hr />
+
+<p>Docker 主机运行 <code>devicemapper</code> 存储驱动时，默认的配置模式为 <code>loop-lvm</code>。此模式使用空闲的文件来构建用于镜像和容器快照的精简存储池。该模式设计为无需额外配置开箱即用(out-of-the-box)。不过生产部署不应该以 <code>loop-lvm</code> 模式运行。</p>
+
+<h3 id="2-1-生产环境配置direct-lvm模式"><strong>2.1 生产环境配置direct-lvm模式</strong></h3>
+
+<p>CentOS7 从 <code>Docker 17.06</code> 开始支持通过 Docker 自动配置  <code>direct-lvm</code>，所以推荐使用该工具配置。当然也可以手动配置 <code>lvm</code>，添加相关配置选项，不过过程较为繁琐一点。</p>
+
+<h4 id="自动配置-direct-lvm-模式"><strong>自动配置 direct-lvm 模式</strong></h4>
+
+<p>该方法只适用于一个块设备，如果你有多个块设备，请通过手动配置 <code>direct-lvm</code> 模式。</p>
+
+<p>示例配置文件位置 <code>/usr/lib/docker-storage-setup/docker-storage-setup</code>，可以查看其中相关配置的详细说明，或者通过 <code>man docker-storage-setup</code> 获取帮助，以下介绍几个关键的选项：</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">参数</th>
+<th align="left">解释</th>
+<th align="left">是否必须</th>
+<th align="left">默认值</th>
+<th align="left">示例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">dm.directlvm_device</td>
+<td align="left">准备配置 direct-lvm 的块设备的路径</td>
+<td align="left">是</td>
+<td align="left"></td>
+<td align="left">dm.directlvm_device=&ldquo;/dev/xvdf&rdquo;</td>
+</tr>
+
+<tr>
+<td align="left">dm.thinp_percent</td>
+<td align="left">定义创建 data thin pool 的大小</td>
+<td align="left">否</td>
+<td align="left">95</td>
+<td align="left">dm.thinp_percent=95</td>
+</tr>
+
+<tr>
+<td align="left">dm.thinp_metapercent</td>
+<td align="left">定义创建 metadata thin pool 的大小</td>
+<td align="left">否</td>
+<td align="left">1</td>
+<td align="left">dm.thinp_metapercent=1</td>
+</tr>
+
+<tr>
+<td align="left">dm.thinp_autoextend_threshold</td>
+<td align="left">定义自动扩容的百分比，100 表示 disable，最小为 50，参考 <a href="http://man7.org/linux/man-pages/man7/lvmthin.7.html">lvmthin — LVM thin provisioning</a></td>
+<td align="left">否</td>
+<td align="left">80</td>
+<td align="left">dm.thinp_autoextend_threshold=80</td>
+</tr>
+
+<tr>
+<td align="left">dm.thinp_autoextend_percent</td>
+<td align="left">定义每次扩容的大小，100 表示 disable</td>
+<td align="left">否</td>
+<td align="left">20</td>
+<td align="left">dm.thinp_autoextend_percent=20</td>
+</tr>
+
+<tr>
+<td align="left">dm.directlvm_device_force</td>
+<td align="left">当块设备已经存在文件系统时，是否格式化块设备</td>
+<td align="left">否</td>
+<td align="left">false</td>
+<td align="left">dm.directlvm_device_force=true</td>
+</tr>
+</tbody>
+</table>
+
+<p>编辑 <code>/etc/docker/daemon.json</code>，设置好参数后重新启动 Docker 使更改生效。下面是一个示例：</p>
+
+<pre><code class="language-bash">{
+  &quot;storage-driver&quot;: &quot;devicemapper&quot;,
+  &quot;storage-opts&quot;: [
+    &quot;dm.directlvm_device=/dev/xdf&quot;,
+    &quot;dm.thinp_percent=95&quot;,
+    &quot;dm.thinp_metapercent=1&quot;,
+    &quot;dm.thinp_autoextend_threshold=80&quot;,
+    &quot;dm.thinp_autoextend_percent=20&quot;,
+    &quot;dm.directlvm_device_force=false&quot;
+  ]
+}
+</code></pre>
+
+<p>关于存储的更多参数请参考：</p>
+
+<ul>
+<li><p><a href="https://docs.docker.com/engine/reference/commandline/dockerd/#storage-driver-options">Stable</a></p></li>
+
+<li><p><a href="https://docs.docker.com/edge/engine/reference/commandline/dockerd/#storage-driver-options">Edge</a></p></li>
+</ul>
+
+<h4 id="手动配置-direct-lvm-模式"><strong>手动配置 direct-lvm 模式</strong></h4>
+
+<p>下面的步骤创建一个逻辑卷，配置用作存储池的后端。我们假设你有在 <code>/dev/xvdf</code> 的充足空闲空间的块设备。也假设你的 Docker daemon 已停止。</p>
+
+<ul>
+<li>1.登录你要配置的 <code>Docker</code> 主机并停止 <code>Docker daemon</code>。</li>
+
+<li><p>2.安装LVM2软件包。LVM2软件包含管理Linux上逻辑卷的用户空间工具集。</p>
+
+<ul>
+<li><strong>RHEL / CentOS:</strong> <code>device-mapper-persistent-data</code>, <code>lvm2</code> 以及相关依赖</li>
+<li><strong>Ubuntu / Debian:</strong> <code>thin-provisioning-tools</code>, <code>lvm2</code> 以及相关依赖</li>
+</ul></li>
+
+<li><p>3.创建物理卷。</p></li>
+</ul>
+
+<pre><code class="language-bash">$ pvcreate /dev/xvdf
+
+Physical volume &quot;/dev/xvdf&quot; successfully created.
+</code></pre>
+
+<ul>
+<li>4.创建一个 “docker” 卷组。</li>
+</ul>
+
+<pre><code class="language-bash">$ vgcreate docker /dev/xvdf
+
+Volume group &quot;docker&quot; successfully created
+</code></pre>
+
+<ul>
+<li>5.创建一个名为thinpool的存储池。</li>
+</ul>
+
+<p>在此示例中，设置池大小为 “docker” 卷组大小的 <code>95％</code>。 其余的空闲空间可以用来自动扩展数据或元数据。</p>
+
+<pre><code class="language-bash">$ lvcreate --wipesignatures y -n thinpool docker -l 95%VG
+
+Logical volume &quot;thinpool&quot; created.
+
+$ lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
+
+Logical volume &quot;thinpoolmeta&quot; created.
+</code></pre>
+
+<ul>
+<li>6.将存储池转换为 <code>thinpool</code> 格式。</li>
+</ul>
+
+<pre><code class="language-bash">$ lvconvert -y \
+--zero n \
+-c 512K \
+--thinpool docker/thinpool \
+--poolmetadata docker/thinpoolmeta
+
+WARNING: Converting logical volume docker/thinpool and docker/thinpoolmeta to
+thin pool's data and metadata volumes with metadata wiping.
+THIS WILL DESTROY CONTENT OF LOGICAL VOLUME (filesystem etc.)
+Converted docker/thinpool to thin pool.
+</code></pre>
+
+<ul>
+<li>7.通过 <code>lvm profile</code> 配置存储池的自动扩展。</li>
+</ul>
+
+<pre><code class="language-bash">$ vi /etc/lvm/profile/docker-thinpool.profile
+</code></pre>
+
+<ul>
+<li>8.设置参数 <code>thin_pool_autoextend_threshold</code> 和 <code>thin_pool_autoextend_percent</code> 的值。</li>
+</ul>
+
+<blockquote>
+<p>设置 <code>thin_pool_autoextend_threshold</code> 值。这个值应该是之前设置存储池余下空间的百分比(100 = disabled)。</p>
+</blockquote>
+
+<pre><code class="language-bash">thin_pool_autoextend_threshold = 80
+</code></pre>
+
+<blockquote>
+<p>设置当存储池自动扩容时，增加存储池的空间百分比（100 =禁用）</p>
+</blockquote>
+
+<pre><code class="language-bash">thin_pool_autoextend_percent = 20
+</code></pre>
+
+<p>检查你的 <code>docker-thinpool.profile</code> 的设置。一个示例 <code>/etc/lvm/profile/docker-thinpool.profile</code> 应该类似如下：</p>
+
+<pre><code class="language-bash">activation {
+  thin_pool_autoextend_threshold=80
+  thin_pool_autoextend_percent=20
+}
+</code></pre>
+
+<ul>
+<li>9.应用新的 <code>lvm</code> 配置。</li>
+</ul>
+
+<pre><code class="language-bash">$ lvchange --metadataprofile docker-thinpool docker/thinpool
+
+Logical volume docker/thinpool changed.
+</code></pre>
+
+<ul>
+<li>10.查看卷的信息，验证 lv 是否受监控。</li>
+</ul>
+
+<pre><code class="language-bash">$ lvs -o+seg_monitor
+
+LV       VG     Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert Monitor
+thinpool docker twi-a-t--- 95.00g             0.00   0.01                             monitored
+</code></pre>
+
+<ul>
+<li>11.备份 <code>Docker</code> 存储。</li>
+</ul>
+
+<pre><code class="language-bash">$ mkdir /var/lib/docker.bk
+$ mv /var/lib/docker/* /var/lib/docker.bk
+</code></pre>
+
+<ul>
+<li>12.配置一些特定的 <code>devicemapper</code> 选项。</li>
+</ul>
+
+<pre><code class="language-bash">$ cat /etc/docker/daemon.json
+
+{
+    &quot;storage-driver&quot;: &quot;devicemapper&quot;,
+    &quot;storage-opts&quot;: [
+    &quot;dm.thinpooldev=/dev/mapper/docker-thinpool&quot;,
+    &quot;dm.use_deferred_removal=true&quot;,
+    &quot;dm.use_deferred_deletion=true&quot;
+    ]
+}
+</code></pre>
+
+<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
+<strong>【注意事项】</strong>
+
+Note: Always set both dm.use_deferred_removal=true and dm.use_deferred_deletion=true to prevent unintentionally leaking mount points.
+<br />
+启用上述2个参数来阻止可能意外产生的挂载点泄漏问题
+</p>
+
+<h4 id="检查主机上的-devicemapper-结构"><strong>检查主机上的 <code>devicemapper</code> 结构</strong></h4>
+
+<p>你可以使用 <code>lsblk</code> 命令来查看以上创建的设备文件和存储池。</p>
+
+<pre><code class="language-bash">$ lsblk
+NAME               MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+xvda               202:0    0    8G  0 disk
+└─xvda1            202:1    0    8G  0 part /
+xvdf               202:80   0   10G  0 disk
+├─vg--docker-data          253:0    0   90G  0 lvm
+│ └─docker-202:1-1032-pool 253:2    0   10G  0 dm
+└─vg--docker-metadata      253:1    0    4G  0 lvm
+  └─docker-202:1-1032-pool 253:2    0   10G  0 dm
+</code></pre>
+
+<p>下图显示由 <code>lsblk</code> 命令输出的之前镜像的详细信息。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic4.jpg" alt="" /></center></p>
+
+<p>可以看出，名为 <code>Docker-202:1-1032-pool</code> 的 pool 横跨在 <code>data</code> 和 <code>metadata</code> 设备之上。pool 的命名规则为：</p>
+
+<blockquote>
+<p>Docker-主设备号:二级设备号-inode号-pool</p>
+</blockquote>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-3-管理-devicemapper-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. <strong>管理 devicemapper</strong></p></h2>
+
+<hr />
+
+<h3 id="3-1-监控-thin-pool">3.1 <strong>监控 thin pool</strong></h3>
+
+<p>不要过于依赖 <code>lvm</code> 的自动扩展，通常情况下 <code>Volume Group</code> 会自动扩展，但有时候 <code>volume</code> 还是会被塞满，你可以通过命令 <code>lvs</code> 或 <code>lvs -a</code> 来监控 volume 剩余的空间。也可以考虑使用 <code>nagios</code> 等监控工具来进行监控。</p>
+
+<blockquote>
+<p>可以查看 <code>lvm</code> 日志，了解 <code>thin pool</code> 在自动扩容触及阈值时的状态：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ journalctl -fu dm-event.service
+</code></pre>
+
+<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
+如果你在使用精简池（thin pool）的过程中频繁遇到问题，你可以在 <code>/etc/docker.daemon.json</code> 中设置参数 <code>dm.min_free_space</code> 的值（表示百分比）。例如将其设置为 10，以确保当可用空间达到或接近 10％ 时操作失败，并发出警告。参考 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/#storage-driver-options">storage driver options in the Engine daemon reference</a>.
+</p>
+
+<h3 id="3-2-为正在运行的设备增加容量">3.2 <strong>为正在运行的设备增加容量</strong></h3>
+
+<p>如果 lv 的存储空间已满，并且 vg 处于满负荷状态，你可以为正在运行的 <code>thin-pool</code> 设备增加存储卷的容量，具体过程取决于您是使用 <code>loop-lvm</code> 精简池还是使用 <code>direct-lvm</code> 精简池。</p>
+
+<h4 id="调整-loop-lvm-精简池的大小"><strong>调整 <code>loop-lvm</code> 精简池的大小</strong></h4>
+
+<p>调整 <code>loop-lvm</code> 精简池的最简单方法是使用 <code>device_tool</code> 工具，你也可以使用操作系统自带的工具。</p>
+
+<h5 id="a-使用-device-tool-工具">a. <strong>使用 <code>device_tool</code> 工具</strong></h5>
+
+<p>在 <code>docker</code> 官方 <code>github</code> 仓库的 <code>contrib/</code> 目录中有一个社区贡献的脚本 <a href="https://raw.githubusercontent.com/docker/docker-ce/master/components/engine/contrib/docker-device-tool/device_tool.go">device_tool.go</a>，你可以通过此工具免去繁琐的步骤来调整 <code>loop-lvm</code> 精简池的大小。这个工具不能保证 100% 有效，最好不要在生产环境中使用 <code>loop-lvm</code> 模式。</p>
+
+<ol>
+<li><p><code>clone</code> 整个仓库 <a href="https://github.com/docker/docker-ce">docker-ce</a>，切换到目录 <code>contrib/docker-device-tool</code> ，按照 <code>README.md</code> 中的说明编译该工具。</p></li>
+
+<li><p>使用该工具。例如调整 <code>thin pool</code> 的大小为 200GB。</p></li>
+</ol>
+
+<pre><code class="language-bash">$ ./device_tool resize 200GB
+</code></pre>
+
+<h5 id="b-使用操作系统工具">b. <strong>使用操作系统工具</strong></h5>
+
+<p>如果你不想使用 <code>device_tool</code> 工具，可以通过操作系统工具手动调整 <code>loop-lvm</code> 精简池的大小。</p>
+
+<blockquote>
+<p>在 <code>loop-lvm</code> 模式中，Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:</p>
+</blockquote>
+
+<pre><code class="language-bash">$ ls -lsh /var/lib/docker/devicemapper/devicemapper/
+总用量 510M
+508M -rw-------. 1 root root 100G 10月 30 00:00 data
+1.9M -rw-------. 1 root root 2.0G 10月 30 00:00 metadata
+</code></pre>
+
+<p><code>data</code> [存放数据] 和 <code>metadata</code> [存放元数据] 的大小从输出可以看出初始化默认为 100G 和 2G 大小，都是稀疏文件，使用多少占用多少。</p>
+
+<p>Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 <code>/dev/loop0</code> 和 <code>/dev/loop1</code> 上，然后基于回环设备创建 thin pool。 默认一个 container 最大存放数据不超过 10G。</p>
+
+<blockquote>
+<p>查看 <code>data</code> 和 <code>metadata</code> 的文件路径：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ docker info |grep 'loop file'
+
+ Data loop file: /var/lib/docker/devicemapper/data
+ Metadata loop file: /var/lib/docker/devicemapper/metadata
+</code></pre>
+
+<p>按照以下步骤来增加精简池的大小。在这个例子中，thin-pool 原来的容量为 100GB，增加到200GB。</p>
+
+<ol>
+<li><p>查看 data 和 metadata 的大小。</p>
+
+<pre><code class="language-bash">$ ls -lh /var/lib/docker/devicemapper/
+
+total 1175492
+-rw------- 1 root root 100G Mar 30 05:22 data
+-rw------- 1 root root 2.0G Mar 31 11:17 metadata
+</code></pre></li>
+
+<li><p>使用 truncate 命令将数据文件的大小增加到 200G。</p>
+
+<pre><code class="language-bash">$ truncate -s 200G /var/lib/docker/devicemapper/data
+</code></pre>
+
+<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
+注意：减小数据文件的大小有可能会对数据造成破坏，请慎重考虑。
+</p> 
+  </li>
+
+<li><p>验证文件大小。</p>
+
+<pre><code class="language-bash">$ ls -lh /var/lib/docker/devicemapper/
+
+total 1.2G
+-rw------- 1 root root 200G Apr 14 08:47 data
+-rw------- 1 root root 2.0G Apr 19 13:27 metadata
+</code></pre>
+
+<p>可以看到 <code>loopback</code> 文件的大小已经改变，但还没有保存到内存中。</p></li>
+
+<li><p>在内存中列出环回设备的大小，重新加载该设备，然后再次列出大小。</p>
+
+<pre><code class="language-bash">$ echo $[ $(sudo blockdev --getsize64 /dev/loop0) / 1024 / 1024 / 1024 ]
+
+100
+
+$ losetup -c /dev/loop0
+
+$ echo $[ $(sudo blockdev --getsize64 /dev/loop0) / 1024 / 1024 / 1024 ]
+
+200
+</code></pre>
+
+<p>重新加载之后，<code>loopback</code> 设备的大小变为 200GB。</p></li>
+
+<li><p>重新加载 <code>devicemapper thin pool</code>。</p>
+
+<ul>
+<li>查看 thin pool 的名称</li>
+</ul>
+
+<pre><code class="language-bash">$ dmsetup status | grep ' thin-pool ' | awk -F ': ' {'print $1'}
+</code></pre>
+
+<ul>
+<li>查看当前卷的信息表</li>
+</ul>
+
+<pre><code class="language-bash">$ dmsetup table docker-8:1-123141-pool
+  
+0 209715200 thin-pool 7:1 7:0 128 32768 1 skip_block_zeroing
+</code></pre>
+
+<blockquote>
+<ul>
+<li>第二个数字是设备的大小，表示有多少个 512－bytes 的扇区。<br /></li>
+<li>128 是最小的可分配的 sector 数。<br /></li>
+<li>32768 是最少可用 sector 的 water mark，也就是一个 threshold。</li>
+<li>1 代表有一个附加参数。</li>
+<li>skip_block_zeroing是个附加参数，表示略过用0填充的块。</li>
+</ul>
+</blockquote>
+
+<ul>
+<li><p>使用输出的第二个字段计算扩展后的 <code>thin pool</code> 总大小，该字段表示有多少个扇区。100G 的文件含有 209715200 个扇区，扩展到 200G 后，扇区数为 419430400。</p></li>
+
+<li><p>使用新的扇区数重新加载 thin pool。</p></li>
+</ul>
+
+<pre><code class="language-bash">$ dmsetup suspend docker-8:1-123141-pool
+  
+$ dmsetup reload docker-8:1-123141-pool --table '0 419430400 thin-pool 7:1 7:0 128 32768 1 skip_block_zeroing'
+  
+$ dmsetup resume docker-8:1-123141-pool
+</code></pre></li>
+</ol>
+
+<h4 id="调整-direct-lvm-精简池的大小"><strong>调整 <code>direct-lvm</code> 精简池的大小</strong></h4>
+
+<p>要调整 <code>direct-lvm</code> 精简池的大小，需要添加一块新的块设备到 Docker 的宿主机。并记下内核分配给它的设备名称。例如新的块设备名称为 <code>/dev/xvdg</code>。</p>
+
+<p>按照以下步骤来增加 <code>direct-lvm</code> 精简池的大小，请根据实际情况替换以下部分参数。</p>
+
+<ol>
+<li><p>查看卷组的信息。</p>
+
+<blockquote>
+<p>使用 <code>pvdisplay</code> 命令查看精简池当前正在使用的物理块设备以及卷组的名称</p>
+</blockquote>
+
+<pre><code class="language-bash">$ pvdisplay |grep 'VG Name'
+
+PV Name               /dev/xvdf
+VG Name               docker
+</code></pre></li>
+
+<li><p>扩展卷组。</p>
+
+<pre><code class="language-bash">$ vgextend docker /dev/xvdg
+
+Physical volume &quot;/dev/xvdg&quot; successfully created.
+Volume group &quot;docker&quot; successfully extended
+</code></pre></li>
+
+<li><p>扩展逻辑卷 <code>docker/thinpool</code>。</p>
+
+<pre><code class="language-bash">$ lvextend -l+100%FREE -n docker/thinpool
+     
+ Size of logical volume docker/thinpool_tdata changed from 95.00 GiB (24319 extents) to 198.00 GiB (50688 extents).
+Logical volume docker/thinpool_tdata successfully resized.
+</code></pre>
+
+<p>该命令使用了存储卷的全部空间，没有配置自动扩展。如果要扩展 metadata 精简池，请使用 <code>docker/thinpool_tmeta</code> 替换 <code>docker/thinpool</code>。</p></li>
+
+<li><p>验证新的 <code>thin pool</code> 的大小。</p>
+
+<pre><code class="language-bash">$ docker info
+    
+......
+Storage Driver: devicemapper
+ Pool Name: docker-thinpool
+ Pool Blocksize: 524.3 kB
+ Base Device Size: 10.74 GB
+ Backing Filesystem: xfs
+ Data file:
+ Metadata file:
+ Data Space Used: 212.3 MB
+ Data Space Total: 212.6 GB
+ Data Space Available: 212.4 GB
+ Metadata Space Used: 286.7 kB
+ Metadata Space Total: 1.07 GB
+ Metadata Space Available: 1.069 GB
+&lt;output truncated&gt;
+</code></pre>
+
+<p>通过 <code>Data Space Available</code> 字段的值查看 <code>thin pool</code> 的大小。</p></li>
+</ol>
+
+<h4 id="重启操作系统后重新激活-devicemapper"><strong>重启操作系统后重新激活 devicemapper</strong></h4>
+
+<p>如果重启系统后发现 docker 服务启动失败，你会看到像 “Non existing device” 这样的报错信息。这时需要重新激活逻辑卷。</p>
+
+<pre><code class="language-bash">$ lvchange -ay docker/thinpool
+</code></pre>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-4-devicemapper-存储驱动的工作原理-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">4. <strong>devicemapper 存储驱动的工作原理</strong></p></h2>
+
+<hr />
+
+<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
+<strong>注意</strong>：不要直接操作 <code>/var/lib/docker/</code> 中的任何文件或目录，这些文件和目录由 docker 自动管理。
+</p>
+
+<blockquote>
+<p>查看设备和存储池：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ lsblk
+
+NAME                    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+xvda                    202:0    0    8G  0 disk
+└─xvda1                 202:1    0    8G  0 part /
+xvdf                    202:80   0  100G  0 disk
+├─docker-thinpool_tmeta 253:0    0 1020M  0 lvm
+│ └─docker-thinpool     253:2    0   95G  0 lvm
+└─docker-thinpool_tdata 253:1    0   95G  0 lvm
+  └─docker-thinpool     253:2    0   95G  0 lvm
+</code></pre>
+
+<blockquote>
+<p>查看 docker 正在使用的挂载点：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ mount |grep devicemapper
+/dev/xvda1 on /var/lib/docker/devicemapper type xfs (rw,relatime,seclabel,attr2,inode64,noquota)
+</code></pre>
+
+<p>使用 <code>devicemapper</code> 后，Docker 将镜像和层级内容存储在 thin pool 中，并将它们挂载到 <code>/var/lib/docker/devicemapper/</code> 目录中暴露给容器使用。</p>
+
+<h3 id="4-1-磁盘上的镜像和容器层">4.1 <strong>磁盘上的镜像和容器层</strong></h3>
+
+<p><code>/var/lib/docker/devicemapper/metadata/</code> 目录中包含了有关 devicemapper 配置本身的元数据，以及卷、快照和每个卷的块或者快照同存储池中块的映射信息。<code>devicemapper</code> 使用了快照技术，元数据中也包含了这些快照的信息，以 json 格式保存在文本中。</p>
+
+<p><code>/var/lib/devicemapper/mnt/</code> 目录包含了所有镜像和容器层的挂载点。镜像层的挂载点表现为空目录，容器层的挂载点显示的是容器内部的文件系统。</p>
+
+<h3 id="4-2-镜像分层与共享">4.2 <strong>镜像分层与共享</strong></h3>
+
+<p><code>devicemapper</code> 存储驱动使用专用块设备而不是格式化的文件系统，通过在块级别上对文件进行操作，能够在写时复制（CoW）期间实现最佳性能。</p>
+
+<p><code>devicemapper</code> 驱动将所有的镜像和容器存储到 <code>/var/lib/docker/devicemapper/</code> 目录，该目录由一个或多个块级设备、环回设备（仅测试）或物理硬盘组成。</p>
+
+<p>使用 <code>devicemapper</code> 创建一个镜像的过程如下：</p>
+
+<ul>
+<li><p><code>devicemapper</code> 存储驱动创建一个精简池(thin pool)。这个池是从块设备或循环挂载的文件。</p></li>
+
+<li><p>下一步是创建一个 base 设备。一个 base 设备是具有文件系统的精简设备。你可以通过运行 <code>docker info</code> 命令检查 <code>Backing filesystem</code> 来查看使用的是哪个文件系统。</p></li>
+
+<li><p>每一个新镜像(和镜像数据层)是这个 base 设备的一个快照。这些是精简置备写时拷贝快照。这意味着它们初始为空，只在往它们写入数据时才消耗池中的空间。</p></li>
+</ul>
+
+<p>使用 <code>devicemapper</code> 驱动时，容器数据层是从其创建的镜像的快照。与镜像一样，容器快照是精简置备写时拷贝快照。容器快照存储着容器的所有更改。当数据写入容器时，<code>devicemapper</code> 从存储池按需分配空间。</p>
+
+<p>下图显示一个具有一个base设备和两个镜像的精简池。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic1.jpg" alt="" /></center></p>
+
+<p>如果你仔细查看图表你会发现快照一个连着一个。每一个镜像数据层是它下面数据层的一个快照。每个镜像的最底端数据层是存储池中 <code>base</code> 设备的快照。此 <code>base</code> 设备是 <code>Device Mapper</code> 的工件，而不是 Docker 镜像数据层。</p>
+
+<p>一个容器是从其创建的镜像的一个快照。下图显示两个容器： 一个基于 <code>Ubuntu</code> 镜像和另一个基于 <code>Busybox</code> 镜像。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic2.jpg" alt="" /></center></p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-5-devicemapper-读写数据的过程-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">5. <strong>devicemapper 读写数据的过程</strong></p></h2>
+
+<hr />
+
+<h3 id="5-1-读数据">5.1 <strong>读数据</strong></h3>
+
+<p>我们来看下使用 <code>devicemapper</code> 存储驱动如何进行读文件。下图显示在示例容器中读取一个单独的块 [0x44f] 的过程。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic3.jpg" alt="" /></center></p>
+
+<ol>
+<li><p>一个应用程序请求读取容器中 <code>0x44f</code> 数据块。由于容器是一个镜像的一个精简快照，它没有那个数据，只有一个指向镜像存储的地方的指针。</p></li>
+
+<li><p>存储驱动根据指针，到镜像快照的 <code>a005e</code> 镜像层寻找 <code>0xf33</code> 块区。</p></li>
+
+<li><p><code>devicemapper</code> 从镜像快照复制数据块 <code>0xf33</code> 的内容到容器内存中。</p></li>
+
+<li><p>存储驱动最后将数据返回给请求的应用。</p></li>
+</ol>
+
+<h3 id="5-2-写数据">5.2 <strong>写数据</strong></h3>
+
+<ul>
+<li><strong>写入新数据：</strong>使用 <code>devicemapper</code> 驱动，通过按需分配（allocate-on-demand）操作来实现写入新数据到容器，所有的新数据都被写入容器的可写层中。</li>
+</ul>
+
+<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
+例如要写入 56KB 的新数据到容器：
+
+  &emsp;1. 一个应用程序请求写入56KB的新数据到容器。
+
+  &emsp;2. 按需分配操作给容器快照分配一个新的64KB数据块。如果写操作大于64KB，就分配多个新数据块给容器快照。
+
+  &emsp;3. 新的数据写入到新分配的数据块。
+</p>
+
+<ul>
+<li><p><strong>覆盖存在的数据：</strong>更新存在的数据使用写时拷贝（copy-on-write）操作，先从最近的镜像层中读取与该文件相关的数据块；然后分配新的空白数据块给容器快照并复制数据到这些数据块；最后更新好的数据写入到新分配的数据块。</p></li>
+
+<li><p><strong>删除数据：</strong>当从容器的可写层中删除文件或目录时，或者从镜像层中删除其父层镜像中已存在的文件时，<code>devicemapper</code> 存储驱动会截获对该文件或目录的进一步读取尝试，并响应该文件或目录不存在。</p></li>
+
+<li><p><strong>写入新数据并删除旧数据：</strong>当你向容器中写入新数据并删除旧数据时，所有这些操作都发生在容器的可写层。如果你使用的是 <code>direct-lvm</code> 模式，删除的数据块将会被释放；如果你使用的是 <code>loop-lvm</code> 模式，那么这些数据块就不会被释放。因此不建议在生产环境中使用 <code>loop-lvm</code> 模式。</p></li>
+</ul>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-6-device-mapper-对-docker-性能的影响-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">6. <strong>Device Mapper 对 Docker 性能的影响</strong></p></h2>
+
+<hr />
+
+<p>了解按需分配和写时拷贝操作对整体容器性能的影响很重要。</p>
+
+<h3 id="6-1-按需分配对性能的影响">6.1 <strong>按需分配对性能的影响</strong></h3>
+
+<p><code>devicemapper</code> 存储驱动通过按需分配操作给容器分配新的数据块。这意味着每次应用程序写入容器内的某处时，一个或多个空数据块从存储池中分配并映射到容器中。</p>
+
+<p>所有数据块为 <code>64KB</code>。 写小于 <code>64KB</code> 的数据仍然分配一个 <code>64KB</code> 数据块。写入超过 <code>64KB</code> 的数据分配多个 <code>64KB</code> 数据块。所以，特别是当发生很多小的写操作时，就会比较影响容器的性能。不过一旦数据块分配给容器，后续的读和写可以直接在该数据块上操作。</p>
+
+<h3 id="6-2-写时拷贝对性能的影响">6.2 <strong>写时拷贝对性能的影响</strong></h3>
+
+<p>每当容器首次更新现有数据时，<code>devicemapper</code> 存储驱动必须执行写时拷贝操作。这会从镜像快照复制数据到容器快照。此过程对容器性能产生显着影响。因此，更新一个 <code>1GB</code> 文件的 <code>32KB</code> 数据只复制一个 <code>64KB</code> 数据块到容器快照。这比在文件级别操作需要复制整个 <code>1GB</code> 文件到容器数据层有明显的性能优势。</p>
+
+<p>不过在实践中，当容器执行很多小于 <code>64KB</code> 的写操作时，<code>devicemapper</code> 的性能会比 <code>AUFS</code> 要差。</p>
+
+<h3 id="6-3-其他注意事项">6.3 <strong>其他注意事项</strong></h3>
+
+<p>还有其他一些影响 <code>devicemapper</code> 存储驱动性能的因素。</p>
+
+<ul>
+<li><strong>模式</strong></li>
+</ul>
+
+<p>Docker 使用的 devicemapper 存储驱动的默认模式是 <code>loop-lvm</code>。这个模式使用空闲文件来构建存储池，性能非常低。不建议用到生产环境。推荐用在生产环境的模式是 <code>direct-lvm</code>。</p>
+
+<ul>
+<li><strong>存取速度</strong></li>
+</ul>
+
+<p>如果希望获得更佳的性能，可以将数据文件和元数据文件放在 <code>SSD</code> 这样的高速存储上。</p>
+
+<ul>
+<li><strong>内存使用</strong></li>
+</ul>
+
+<p><code>devicemapper</code> 并不是一个有效使用内存的存储驱动。当一个容器运行 n 个时，它的文件也会被拷贝 n 份到内存中，这对 <code>docker</code> 宿主机的内存使用会造成明显影响。因此，不建议在 <code>PaaS</code> 或者资源密集场合使用。</p>
+
+<p><strong>对于写操作较大的，可以采用挂载 <code>data volumes</code>。使用 <code>data volumes</code> 可以绕过存储驱动，从而避免 <code>thin provisioning</code> 和 <code>copy-on-write</code> 引入的额外开销。</strong></p>
+
+<p><br /></p>
+
+<p><center><a href="https://www.yangcs.net/posts/devicemapper-theory/">Device Mapper系列 (1)：Device Mapper 技术</a></center></p>
+
+<p><center><a href="https://www.yangcs.net/posts/thin-provisioning/">Device Mapper系列 (2)：Thin Provisioning 实践</a></center></p>
+
+<p><center><a href="https://www.yangcs.net/posts/calico-rr/">Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</a></center></p>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/thin-provisioning/" data-toggle="tooltip" data-placement="top" title="Device Mapper系列 (2)：Thin Provisioning 实践">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/calico-rr/" data-toggle="tooltip" data-placement="top" title="calico Router reflection(RR) 模式介绍及部署">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/thin-provisioning/">Device Mapper系列 (2)：Thin Provisioning 实践</a></li>
+                    
+                    <li><a href="/posts/devicemapper-theory/">Device Mapper系列 (1)：Device Mapper 技术</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jan 22, 2018</h4>
+    </section>
+    <h5 id="wc">5800 Words|Read in about 12 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    <div>
+        <h2> Comments </h2>
+    </div>
+    <div id="container"></div>
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    
+    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
+    <script>
+        var gitment = new Gitment({
+            owner: 'yangchuansheng', 
+            repo: 'hugo-gitment', 
+            oauth: {
+                client_id: '6eb551e8b04b1f8ff095',
+                client_secret: '27c15dcbb6fcb6ef33d4dfaef7302e2eb59529b8',
+            },
+        })
+        gitment.render('container')
+    </script>
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  </body>
+</html>
+

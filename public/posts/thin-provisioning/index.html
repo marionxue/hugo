@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Device Mapper系列 (1)：Device Mapper 技术 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> Device Mapper系列 (2)：Thin Provisioning 实践 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Device Mapper系列 (1)：Device Mapper 技术" />
-  <meta name="twitter:title" content="Device Mapper系列 (1)：Device Mapper 技术" />
-  <meta name="description" content="Device Mapper 原理剖析">
-  <meta property="og:description" content="Device Mapper 原理剖析">
-  <meta name="twitter:description" content="Device Mapper 原理剖析">
+  <meta property="og:title" content="Device Mapper系列 (2)：Thin Provisioning 实践" />
+  <meta name="twitter:title" content="Device Mapper系列 (2)：Thin Provisioning 实践" />
+  <meta name="description" content="Thin Provisioning Snapshot 演练">
+  <meta property="og:description" content="Thin Provisioning Snapshot 演练">
+  <meta name="twitter:description" content="Thin Provisioning Snapshot 演练">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/devicemapper-theory/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/thin-provisioning/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.33" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/devicemapper-theory/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/thin-provisioning/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -297,7 +297,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>Device Mapper系列 (1)：Device Mapper 技术</h1>
+                     <h1>Device Mapper系列 (2)：Thin Provisioning 实践</h1>
                      
                      
                   
@@ -305,13 +305,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">Device Mapper 原理剖析</span>
+                      <span class="post-subheading">Thin Provisioning Snapshot 演练</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on January 21, 2018
+  Posted on January 22, 2018
   
   
 </span>
@@ -332,10 +332,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">Device Mapper系列 (1)：Device Mapper 技术</h1>
+                <h1 align="center">Device Mapper系列 (2)：Thin Provisioning 实践</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">Device Mapper 原理剖析</h2>
+                    <h2 align="center" class="posts-subheading">Thin Provisioning Snapshot 演练</h2>
                   
                 
                 
@@ -356,9 +356,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Sun Jan 21, 2018</h4>
+        <h4 id="date"> Mon Jan 22, 2018</h4>
     </section>
-    <h5 id="wc">2500 Words|Read in about 5 Min</h5>
+    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
@@ -369,102 +369,308 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-device-mapper-简介-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>Device Mapper 简介</strong></p></h2>
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-thin-provisioning-snapshot-演示-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>Thin Provisioning Snapshot 演示</strong></p></h2>
 
 <hr />
 
-<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
-&emsp;&emsp; <code>Device Mapper</code> 是 linux 的内核用来将块设备映射到虚拟块设备的 framework，它支持许多高级卷管理技术。docker 的 devicemapper 存储驱动程序利用此框架的<code>自动精简配置</code>(thin provisioning) 和快照功能来管理 docker 镜像和容器。本文将 Device Mapper 存储驱动称为 <code>devicemapper</code>，将它的内核框架称为 <code>Device Mapper</code>。
-</p>
+<p>上一篇我们介绍了 <code>Device Mapper</code> 框架的技术原理及其核心概念，下面，我们用一系列的命令来演示一下 Device Mapper 的 <code>Thin Provisioning Snapshot</code> 是怎么玩的。</p>
 
-<p><br />
-&emsp;&emsp;<code>Device Mapper</code> 不同于 AUFS、ext4、NFS 等，因为它并不是一个文件系统（File System），而是 Linux 内核映射块设备的一种技术框架。提供的一种从逻辑设备（虚拟设备）到物理设备的映射框架机制，在该机制下，用户可以很方便的根据自己的需要制定实现存储资源的管理策略。</p>
+<blockquote>
+<p>首先，我们需要先建两个文件，一个是data.img，一个是meta.data.img：</p>
+</blockquote>
 
-<p>&emsp;&emsp;当前比较流行的 Linux 下的逻辑卷管理器如 <code>LVM2</code>（Linux Volume Manager 2 version)、<code>EVMS</code>(Enterprise Volume Management System)、<code>dmraid</code>(Device Mapper Raid Tool)等都是基于该机制实现的。</p>
+<pre><code class="language-bash">$ dd if=/dev/zero of=/tmp/data.img bs=1K count=1 seek=10M
 
-<p>&emsp;&emsp;值得一提的是 <code>Device Mapper</code> 工作在块级别（block），并不工作在文件级别（file）。<code>Device Mapper</code> 自 Linux 2.6.9 后编入 Linux 内核，所有基于 Linux 内核 2.6.9 以后的发行版都内置 <code>Device Mapper</code>，但你需要进行一些额外的配置才能在 <code>docker</code> 中使用它。比如在 <code>RHEL</code> 和 <code>CentOS</code> 系统中，<code>docker</code> 默认使用的存储驱动是 <code>overlay</code>。</p>
+1+0 records in
+1+0 records out
+1024 bytes (1.0 kB) copied, 0.000621428 s, 1.6 MB/s
 
-<p>&emsp;&emsp;<code>devicemapper</code> 存储驱动使用专用于 <code>docker</code> 的块设备，它运行在块级别上而不是文件级别。使用块设备比直接使用文件系统性能更好，通过向 <code>Docker</code> 的宿主机添加物理存储可以扩展块设备的存储空间。</p>
+$ dd if=/dev/zero of=/tmp/meta.data.img bs=1K count=1 seek=1G
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-用户空间和内核空间-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. <strong>用户空间和内核空间</strong></p></h2>
+1+0 records in
+1+0 records out
+1024 bytes (1.0 kB) copied, 0.000140858 s, 7.3 MB/s
+</code></pre>
 
-<hr />
+<p>注意命令中 <code>seek</code> 选项，其表示为略过 <code>of</code> 选项指定的输出文件的前 10G 个 output 的 <code>bloksize</code> 的空间后再写入内容。</p>
 
-<p><strong>Device Mapper主要分为用户空间部分和内核空间部分</strong></p>
+<p>因为 bs 是 1 个字节，所以也就是 10G 的尺寸，但其实在硬盘上是没有占有空间的，占有空间只有 1k 的内容。当向其写入内容时，才会在硬盘上为其分配空间。</p>
 
-<p>用户空间相关部分主要负责配置具体的策略和控制逻辑，比如逻辑设备和哪些物理设备建立映射，怎么建立这些映射关系等，包含 <code>device mapper</code> 库和 <code>dmsetup</code> 工具。对用户空间创建删除 <code>device mapper</code> 设备的操作进行封装。</p>
+<blockquote>
+<p>我们可以用 <code>ls</code> 命令看一下，实际分配了 12K 和 4K。</p>
+</blockquote>
 
-<p>内核中主要提供完成这些用户空间策略所需要的机制，负责具体过滤和重定向 IO 请求。通过不同的驱动插件，转发 IO 请求至目的设备上。附上 <code>Device Mapper</code> 架构图。</p>
+<pre><code class="language-bash">$ ls -lsh /tmp/data.img
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/device.mapper.2.gif" alt="" /></center></p>
+12K -rw-r--r--. 1 root root 11G Aug 25 23:01 /tmp/data.img
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-3-device-mapper-技术分析-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. <strong>Device Mapper 技术分析</strong></p></h2>
+$ ls -slh /tmp/meta.data.img
 
-<hr />
+4.0K -rw-r--r--. 1 root root 101M Aug 25 23:17 /tmp/meta.data.img
+</code></pre>
 
-<p><strong><code>Device Mapper</code></strong> 作为 Linux 块设备映射技术框架，向外部提供逻辑设备。包含三个重要概念，映射设备（mapped device），映射表（map table），目标设备（target device）。</p>
+<blockquote>
+<p>然后，我们为这个文件创建一个 <code>loopback</code> 设备。（loop2015 和 loop2016 是我乱取的两个名字）</p>
+</blockquote>
+
+<pre><code class="language-bash">$ losetup /dev/loop2015 /tmp/data.img
+$ losetup /dev/loop2016 /tmp/meta.data.img
+
+$ losetup -a
+
+/dev/loop2015: [64768]:103991768 (/tmp/data.img)
+/dev/loop2016: [64768]:103991765 (/tmp/meta.data.img)
+</code></pre>
+
+<blockquote>
+<p>现在，我们为这个设备建一个 <code>Thin Provisioning</code> 的 Pool，用 <code>dmsetup</code> 命令：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ dmsetup create hchen-thin-pool \
+  --table &quot;0 20971522 thin-pool /dev/loop2016 /dev/loop2015 \
+  128 65536 1 skip_block_zeroing&quot;
+</code></pre>
+
+<p>其中的参数解释如下（更多信息可参看 <code>Thin Provisioning</code> 的 man page）:</p>
 
 <ul>
-<li><p>映射设备即对外提供的逻辑设备，映射设备向下寻找必须找到支撑的目标设备。</p></li>
+<li><code>dmsetup create</code> 是用来创建 thin pool 的命令</li>
+<li><code>hchen-thin-pool</code> 是自定义的一个 pool 名，不冲突就好。</li>
+<li><code>–-table</code> 是这个 pool 的参数设置
 
-<li><p>映射表存储映射设备和目标设备的映射关系。</p></li>
-
-<li><p>目标设备可以是映射设备或者物理设备，如果目标设备是一块映射设备，则属于嵌套，理论上可以无限迭代下去。</p></li>
+<ul>
+<li><code>0</code> 代表起的 sector 位置</li>
+<li><code>20971522</code> 代表结尾的 sector 号，前面说过，一个 sector 是 512 字节，所以，20971522 个正好是 10GB</li>
+<li><code>/dev/loop2016</code> 是 meta 文件的设备（前面我们建好了）</li>
+<li><code>/dev/loop2015</code> 是 data 文件的设备</li>
+<li><code>128</code> 是最小的可分配的 sector 数</li>
+<li><code>65536</code> 是最少可用 sector 的 water mark，也就是一个 threshold</li>
+<li><code>1</code> 代表有一个附加参数</li>
+<li><code>skip_block_zeroing</code> 是个附加参数，表示略过用 0 填充的块</li>
+</ul></li>
 </ul>
 
-<p>简而言之，<code>Device Mapper</code> 对外提供一个虚拟设备供使用，而这块虚拟设备可以通过映射表找到相应的地址，该地址可以指向一块物理设备，也可以指向一个虚拟设备。</p>
+<blockquote>
+<p>然后，我们就可以看到一个 <code>Device Mapper</code> 的设备了：</p>
+</blockquote>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/device.mapper.3.png" alt="" /></center></p>
+<pre><code class="language-bash">$ ll /dev/mapper/hchen-thin-pool
 
-<p>映射表，是由用户空间创建，传递到内核空间。映射表里有映射设备逻辑的起始地址、范围、和表示在目标设备所在物理设备的地址偏移量以及Target 类型等信息（注：这些地址和偏移量都是以磁盘的扇区为单位的，即 512 个字节大小，所以，当你看到 128 的时候，其实表示的是 128*512=64K）。</p>
+lrwxrwxrwx. 1 root root 7 Aug 25 23:24 /dev/mapper/hchen-thin-pool -&gt; ../dm-4
+</code></pre>
 
-<p>映射驱动在内核空间是插件，<code>Device Mapper</code> 在内核中通过一个一个模块化的 <code>Target Driver</code> 插件实现对 IO 请求的过滤或者重新定向等工作，当前已经实现的插件包括软 Raid、加密、多路径、镜像、快照等，这体现了在 Linux 内核设计中策略和机制分离的原则。</p>
+<blockquote>
+<p>接下来，我们的初始还没有完成，还要创建一个 <code>Thin Provisioning</code> 的 Volume：</p>
+</blockquote>
 
-<p><code>Device Mapper</code> 中的 IO 流处理，从虚拟设备（逻辑设备）根据映射表并指定特定的映射驱动转发到目标设备上。</p>
+<pre><code class="language-bash">$ dmsetup message /dev/mapper/hchen-thin-pool 0 &quot;create_thin 0&quot;
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-4-docker-中的-device-mapper-核心技术-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">4. <strong>Docker 中的 Device Mapper 核心技术</strong></p></h2>
+$ dmsetup create hchen-thin-volumn-001 \
+  --table &quot;0 2097152 thin /dev/mapper/hchen-thin-pool 0&quot;
+</code></pre>
+
+<p>其中：
++ 第一个命令中的 <code>create_thin</code> 是关键字，后面的 0 表示这个 Volume 的 device 的  id。</p>
+
+<ul>
+<li>第二个命令，是真正的为这个 Volumn 创建一个可以 mount 的设备，名字叫 <code>hchen-thin-volumn-001</code>。<code>2097152</code> 只有 1GB。</li>
+</ul>
+
+<blockquote>
+<p>好了，在 mount 前，我们还要格式化一下：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ mkfs.ext4 /dev/mapper/hchen-thin-volumn-001
+
+mke2fs 1.42.9 (28-Dec-2013)
+Discarding device blocks: done
+Filesystem label=
+OS type: Linux
+Block size=4096 (log=2)
+Fragment size=4096 (log=2)
+Stride=16 blocks, Stripe width=16 blocks
+65536 inodes, 262144 blocks
+13107 blocks (5.00%) reserved for the super user
+First data block=0
+Maximum filesystem blocks=268435456
+8 block groups
+32768 blocks per group, 32768 fragments per group
+8192 inodes per group
+Superblock backups stored on blocks:
+32768, 98304, 163840, 229376
+ 
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (8192 blocks): done
+Writing superblocks and filesystem accounting information: done
+</code></pre>
+
+<blockquote>
+<p>好了，我们可以 mount 了（下面的命令中，我还创建了一个文件）</p>
+</blockquote>
+
+<pre><code class="language-zsh">$ mkdir -p /mnt/base
+
+$ mount /dev/mapper/hchen-thin-volumn-001 /mnt/base
+
+$ echo &quot;hello world, I am a base&quot; &gt; /mnt/base/id.txt
+
+$ cat /mnt/base/id.txt
+
+hello world, I am a base
+</code></pre>
+
+<blockquote>
+<p>好了，接下来，我们来看看 snapshot 怎么搞：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ dmsetup message /dev/mapper/hchen-thin-pool 0 &quot;create_snap 1 0&quot;
+
+$ dmsetup create mysnap1 \
+  --table &quot;0 2097152 thin /dev/mapper/hchen-thin-pool 1&quot;
+  
+$ ll /dev/mapper/mysnap1
+
+lrwxrwxrwx. 1 root root 7 Aug 25 23:49 /dev/mapper/mysnap1 -&gt; ../dm-5
+</code></pre>
+
+<p>上面的命令中：
++ 第一条命令是向 <code>hchen-thin-pool</code> 发一个 <code>create_snap</code> 的消息，后面跟两个 <code>id</code>，第一个是新的 dev id，第二个是要从哪个已有的 dev id 上做 <code>snapshot</code>（0 这个 dev id 是我们前面就创建了了）</p>
+
+<ul>
+<li>第二条命令是创建一个 <code>mysnap1</code> 的 device，并可以被 mount。</li>
+</ul>
+
+<blockquote>
+<p>下面我们来看看：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ mkdir -p /mnt/mysnap1
+
+$ mount /dev/mapper/mysnap1 /mnt/mysnap1
+
+$ ll /mnt/mysnap1/
+
+total 20
+-rw-r--r--. 1 root root 25 Aug 25 23:46 id.txt
+drwx------. 2 root root 16384 Aug 25 23:43 lost+found
+
+$ cat /mnt/mysnap1/id.txt
+
+hello world, I am a base
+</code></pre>
+
+<blockquote>
+<p>我们来修改一下 <code>/mnt/mysnap1/id.txt</code>，并加上一个 <code>snap1.txt</code> 的文件：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ echo &quot;I am snap1&quot; &gt;&gt; /mnt/mysnap1/id.txt
+
+$ echo &quot;I am snap1&quot; &gt; /mnt/mysnap1/snap1.txt
+
+$ cat /mnt/mysnap1/id.txt
+
+hello world, I am a base
+I am snap1
+
+$ cat /mnt/mysnap1/snap1.txt
+
+I am snap1
+</code></pre>
+
+<blockquote>
+<p>我们再看一下 <code>/mnt/base</code>，你会发现没有什么变化：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ ls /mnt/base
+
+id.txt      lost+found
+
+$ cat /mnt/base/id.txt
+
+hello world, I am a base
+</code></pre>
+
+<p>好了，我相信你看到了分层镜像的样子了。</p>
+
+<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-docker-的-devicemapper-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. <strong>Docker 的 devicemapper</strong></p></h2>
 
 <hr />
 
-<p>Docker 的 <code>devicemapper</code> 驱动有三个核心概念，<code>copy on-write（写复制）</code>，<code>thin-provisioning（精简配置）</code>。<code>snapshot（快照）</code>，首先简单介绍一下这三种技术。</p>
+<blockquote>
+<p>上面基本上就是 Docker 的玩法了，我们可以看一下 docker 的 loopback 设备：</p>
+</blockquote>
 
-<ul>
-<li><strong><code>CoW（copy on write）写复制</code></strong>：一些文件系统提供的写时复制策略。</li>
-</ul>
+<pre><code class="language-bash">$ losetup -a
 
-<p><code>aufs</code> 的 cow 原理如下：</p>
+/dev/loop0: [64768]:38050288 (/var/lib/docker/devicemapper/devicemapper/data)
+/dev/loop1: [64768]:38050289 (/var/lib/docker/devicemapper/devicemapper/metadata)
+</code></pre>
 
-<p>当容器需要修改一个文件，而该文件位于低层 <code>branch</code> 时，顶层 <code>branch</code> 会直接复制低层 <code>branch</code> 的文件至顶层再进行修改，而低层的文件不变，这种方式即是 CoW 技术（写复制）。</p>
+<blockquote>
+<p>其中 data <code>100GB</code>，metadata <code>2.0GB</code></p>
+</blockquote>
 
-<p>当容器删除一个低层 <code>branch</code> 文件时，只是在顶层 <code>branch</code> 对该文件进行重命名并隐藏，实际并未删除文件，只是不可见。</p>
+<pre><code class="language-bash">$ ls -alsh /var/lib/docker/devicemapper/devicemapper
 
-<p>下图所示，容器层所见 file1 文件为镜像层文件，当需要修改 file1 时，会从镜像层把文件复制到容器层，然后进行修改，从而保证镜像层数据的完整性和复用性。</p>
+506M -rw-------. 1 root root 100G Sep 10 20:15 data
+1.1M -rw-------. 1 root root 2.0G Sep 10 20:15 metadata
+</code></pre>
 
-<p><img src="http://o7z41ciog.bkt.clouddn.com/cow-1.png" alt="" /></p>
+<blockquote>
+<p>下面是相关的 <code>thin-pool</code>。其中，有个当一大串 hash 串的 device 是正在启动的容器：</p>
+</blockquote>
 
-<p>下图所示，当需要删除 file1 时，由于 file1 是镜像层文件，容器层会创建一个 .wh 前置的隐藏文件，从而实现对 file1 的隐藏，实际并未删除 file1，从而保证镜像层数据的完整性和复用性。</p>
+<pre><code class="language-bash">$ ll /dev/mapper/dock*
 
-<p><img src="http://o7z41ciog.bkt.clouddn.com/cow-2.png" alt="" /></p>
+lrwxrwxrwx. 1 root root 7 Aug 25 07:57 /dev/mapper/docker-253:0-104108535-pool -&gt; ../dm-2
+lrwxrwxrwx. 1 root root 7 Aug 25 11:13 /dev/mapper/docker-253:0-104108535-deefcd630a60aa5ad3e69249f58a68e717324be4258296653406ff062f605edf -&gt; ../dm-3
+</code></pre>
 
-<p><code>devicemapper</code> 支持在块级别（block）写复制。</p>
+<blockquote>
+<p>我们可以看一下它的 <code>device id</code>（Docker 都把它们记下来了）：</p>
+</blockquote>
 
-<ul>
-<li><p><strong><code>Snapshot（快照技术）</code></strong>：关于指定数据集合的一个完全可用拷贝，该拷贝包括相应数据在某个时间点（拷贝开始的时间点）的映像。快照可以是其所表示的数据的一个副本，也可以是数据的一个复制品。而从具体的技术细节来讲，快照是指向保存在存储设备中的数据的引用标记或指针。</p></li>
+<pre><code class="language-bash">$ cat /var/lib/docker/devicemapper/metadata/deefcd630a60aa5ad3e69249f58a68e717324be4258296653406ff062f605edf
+</code></pre>
 
-<li><p><strong><code>Thin-provisioning（精简配置）</code></strong>，直译为精简配置。<code>Thin-provisioning</code> 是动态分配，需要多少分配多少，区别于传统分配固定空间从而造成的资源浪费。</p></li>
-</ul>
+<p><code>device_id</code> 是 24，size 是 <code>10737418240</code>，除以 512，就是 <code>20971520</code> 个 <code>sector</code>。</p>
 
-<p>它是什么意思呢？你可以联想一下我们计算机中的内存管理中用到的——“虚拟内存技术”——操作系统给每个进程 N 多 N 多用不完的内址地址（32 位下，每个进程可以有最多 2GB 的内存空间），但是呢，我们知道，物理内存是没有那么多的，如果按照进程内存和物理内存一一映射来玩的话，那么，我们得要多少的物理内存啊。所以，操作系统引入了虚拟内存的设计，意思是，我逻辑上给你无限多的内存，但是实际上是实报实销，因为我知道你一定用不了那么多，于是，达到了内存使用率提高的效果。（今天云计算中很多所谓的虚拟化其实完全都是在用和“虚拟内存”相似的 <code>Thin Provisioning</code> 的技术，所谓的超配，或是超卖）。</p>
+<blockquote>
+<p>我们用这些信息来做个 <code>snapshot</code> 看看（注：我用了一个比较大的 dev id – 1024）：</p>
+</blockquote>
 
-<p>好了，话题拉回来，我们这里说的是存储。看下面两个图，第一个是 <code>Fat Provisioning</code>，第二个是 <code>Thin Provisioning</code>，其很好的说明了是个怎么一回事（和虚拟内存是一个概念）。</p>
+<pre><code class="language-bash">$ dmsetup message &quot;/dev/mapper/docker-253:0-104108535-pool&quot; 0 \
+  &quot;create_snap 1024 24&quot;
+  
+$ dmsetup create dockersnap --table \
+  &quot;0 20971520 thin /dev/mapper/docker-253:0-104108535-pool 1024&quot;
+  
+$ mkdir /mnt/docker
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/thin-provisioning-1.jpg" alt="" /></center></p>
+$ mount /dev/mapper/dockersnap /mnt/docker/
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/thin-provisioning-2.jpg" alt="" /></center></p>
+$ ls /mnt/docker/
 
-<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
-那么，Docker 是怎么使用 <code>Thin Provisioning</code> 这个技术做到像 UnionFS 那样的分层镜像的呢？答案是，Docker 使用了 <code>Thin Provisioning</code> 的 <code>Snapshot</code> 的技术。下面一篇我们来介绍一下 <code>Thin Provisioning</code> 的 <code>Snapshot</code>。
-</p>
+id lost+found rootfs
+
+$ ls /mnt/docker/rootfs/
+
+bin dev etc home lib lib64 lost+found media mnt opt proc root run sbin srv sys tmp usr var
+</code></pre>
+
+<blockquote>
+<p>我们在 docker 的容器里用 <code>findmnt</code> 命令也可以看到相关的 mount 的情况（因为太长，下面只是摘要）：</p>
+</blockquote>
+
+<pre><code class="language-bash">$ findmnt
+
+TARGET                SOURCE               
+/                 /dev/mapper/docker-253:0-104108535-deefcd630a60[/rootfs]
+/etc/resolv.conf  /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/resolv.conf]
+/etc/hostname     /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hostname]
+/etc/hosts        /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hosts]
+</code></pre>
 
 <p><br /></p>
 
@@ -478,17 +684,24 @@ autocomplete('#aa-search-input',
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/python3-iterator-and-generator/" data-toggle="tooltip" data-placement="top" title="Python3 系列之迭代器 &amp; 生成器">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/devicemapper-theory/" data-toggle="tooltip" data-placement="top" title="Device Mapper系列 (1)：Device Mapper 技术">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/thin-provisioning/" data-toggle="tooltip" data-placement="top" title="Device Mapper系列 (2)：Thin Provisioning 实践">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/use-devicemapper/" data-toggle="tooltip" data-placement="top" title="Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动">Next Post &rarr;</a>
                 </li>
                 
             </ul>
             
             <div>
                  
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/devicemapper-theory/">Device Mapper系列 (1)：Device Mapper 技术</a></li>
+                    
+                </ul>
+                
             </div>
             
             
@@ -496,9 +709,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Sun Jan 21, 2018</h4>
+        <h4 id="date"> Mon Jan 22, 2018</h4>
     </section>
-    <h5 id="wc">2500 Words|Read in about 5 Min</h5>
+    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;

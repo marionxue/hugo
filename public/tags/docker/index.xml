@@ -22,19 +22,19 @@
     
     <item>
       <title>Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</title>
-      <link>https://www.yangcs.net/posts/second/</link>
+      <link>https://www.yangcs.net/posts/use-devicemapper/</link>
       <pubDate>Mon, 22 Jan 2018 16:17:11 +0800</pubDate>
       
-      <guid>https://www.yangcs.net/posts/second/</guid>
+      <guid>https://www.yangcs.net/posts/use-devicemapper/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Device Mapper系列 (2)：Thin Provisioning 实践</title>
-      <link>https://www.yangcs.net/posts/first/</link>
+      <link>https://www.yangcs.net/posts/thin-provisioning/</link>
       <pubDate>Mon, 22 Jan 2018 16:00:22 +0800</pubDate>
       
-      <guid>https://www.yangcs.net/posts/first/</guid>
+      <guid>https://www.yangcs.net/posts/thin-provisioning/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     

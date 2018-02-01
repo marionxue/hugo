@@ -98,8 +98,8 @@ Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复�
 
 <br />
 
-<center>[Device Mapper系列 (1)：Device Mapper 技术](https://www.yangcs.net/posts/f233d871/)</center>
+<center>[Device Mapper系列 (1)：Device Mapper 技术](https://www.yangcs.net/posts/devicemapper-theory/)</center>
 
-<center>[Device Mapper系列 (2)：Thin Provisioning 实践](https://www.yangcs.net/posts/5be9f42/)</center>
+<center>[Device Mapper系列 (2)：Thin Provisioning 实践](https://www.yangcs.net/posts/thin-provisioning/)</center>
 
-<center>[Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动](https://www.yangcs.net/posts/7635fcc/)</center>
+<center>[Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动](https://www.yangcs.net/posts/calico-rr/)</center>
