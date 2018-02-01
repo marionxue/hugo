@@ -3,7 +3,7 @@ title: "Linux 下 gns3 网络模拟器配置"
 subtitle: "配置使用思科网络模拟器"
 date: 2017-01-23T11:42:11Z
 draft: true
-bigimg: [{src: "https://res.cloudinary.com/jimmysong/image/upload/images/20151122051.jpg", desc: "The Forbidden City Nov 22,2015"}]
+bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
 <!--more-->

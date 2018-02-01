@@ -2,7 +2,7 @@
 title: "2017 年的小目标"
 date: 2017-07-26T19:09:28Z
 draft: false
-bigimg: [{src: "https://res.cloudinary.com/jimmysong/image/upload/images/20151122051.jpg", desc: "The Forbidden City Nov 22,2015"}]
+bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
 <!--more-->

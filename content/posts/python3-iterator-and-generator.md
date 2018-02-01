@@ -5,7 +5,7 @@ date: 2017-07-27T18:38:59Z
 draft: false
 categories: "python"
 tags: ["python"]
-bigimg: [{src: "https://res.cloudinary.com/jimmysong/image/upload/images/20151122051.jpg", desc: "The Forbidden City Nov 22,2015"}]
+bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
 <!--more-->

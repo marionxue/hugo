@@ -2,129 +2,138 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Ryan Yang</title>
-    <link>https://www.yangcs.net:443/posts/</link>
+    <link>https://www.yangcs.net/posts/</link>
     <description>Recent content in Posts on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     <lastBuildDate>Tue, 23 Jan 2018 08:26:58 +0000</lastBuildDate>
     
-	<atom:link href="https://www.yangcs.net:443/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.yangcs.net/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Linux全局智能分流方案</title>
-      <link>https://www.yangcs.net:443/posts/linux%E5%85%A8%E5%B1%80%E6%99%BA%E8%83%BD%E5%88%86%E6%B5%81%E6%96%B9%E6%A1%88/</link>
+      <link>https://www.yangcs.net/posts/linux-circumvent/</link>
       <pubDate>Tue, 23 Jan 2018 08:26:58 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/linux%E5%85%A8%E5%B1%80%E6%99%BA%E8%83%BD%E5%88%86%E6%B5%81%E6%96%B9%E6%A1%88/</guid>
+      <guid>https://www.yangcs.net/posts/linux-circumvent/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>calico Router reflection(RR) 模式介绍及部署</title>
+      <link>https://www.yangcs.net/posts/calico-rr/</link>
+      <pubDate>Thu, 01 Feb 2018 11:03:49 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/calico-rr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</title>
-      <link>https://www.yangcs.net:443/posts/second/</link>
+      <link>https://www.yangcs.net/posts/second/</link>
       <pubDate>Mon, 22 Jan 2018 16:17:11 +0800</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/second/</guid>
+      <guid>https://www.yangcs.net/posts/second/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Device Mapper系列 (2)：Thin Provisioning 实践</title>
-      <link>https://www.yangcs.net:443/posts/first/</link>
+      <link>https://www.yangcs.net/posts/first/</link>
       <pubDate>Mon, 22 Jan 2018 16:00:22 +0800</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/first/</guid>
+      <guid>https://www.yangcs.net/posts/first/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Device Mapper系列 (1)：Device Mapper 技术</title>
-      <link>https://www.yangcs.net:443/posts/devicemapper-theory/</link>
+      <link>https://www.yangcs.net/posts/devicemapper-theory/</link>
       <pubDate>Sun, 21 Jan 2018 09:28:41 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/devicemapper-theory/</guid>
+      <guid>https://www.yangcs.net/posts/devicemapper-theory/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Python3 系列之迭代器 &amp; 生成器</title>
-      <link>https://www.yangcs.net:443/posts/python3-iterator-and-generator/</link>
+      <link>https://www.yangcs.net/posts/python3-iterator-and-generator/</link>
       <pubDate>Thu, 27 Jul 2017 18:38:59 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/python3-iterator-and-generator/</guid>
+      <guid>https://www.yangcs.net/posts/python3-iterator-and-generator/</guid>
       <description></description>
     </item>
     
     <item>
       <title>2017 年的小目标</title>
-      <link>https://www.yangcs.net:443/posts/2017-targets/</link>
+      <link>https://www.yangcs.net/posts/2017-targets/</link>
       <pubDate>Wed, 26 Jul 2017 19:09:28 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/2017-targets/</guid>
+      <guid>https://www.yangcs.net/posts/2017-targets/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Linux 下 gns3 网络模拟器配置</title>
-      <link>https://www.yangcs.net:443/posts/linux-gns3-start/</link>
+      <link>https://www.yangcs.net/posts/linux-gns3-start/</link>
       <pubDate>Mon, 23 Jan 2017 11:42:11 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/linux-gns3-start/</guid>
+      <guid>https://www.yangcs.net/posts/linux-gns3-start/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Zabbix Api 简介和使用</title>
-      <link>https://www.yangcs.net:443/posts/zabbix-api-introduce-and-use/</link>
+      <link>https://www.yangcs.net/posts/zabbix-api-introduce-and-use/</link>
       <pubDate>Thu, 05 Jan 2017 10:19:18 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/zabbix-api-introduce-and-use/</guid>
+      <guid>https://www.yangcs.net/posts/zabbix-api-introduce-and-use/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Python3 系列之文件读写</title>
-      <link>https://www.yangcs.net:443/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/</link>
+      <link>https://www.yangcs.net/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/</link>
       <pubDate>Tue, 03 Jan 2017 08:51:06 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/</guid>
+      <guid>https://www.yangcs.net/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Iptables基础原理之tcp/ip协议</title>
-      <link>https://www.yangcs.net:443/posts/iptables%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B9%8Btcp-ip%E5%8D%8F%E8%AE%AE/</link>
+      <link>https://www.yangcs.net/posts/iptables%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B9%8Btcp-ip%E5%8D%8F%E8%AE%AE/</link>
       <pubDate>Mon, 26 Dec 2016 09:17:42 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/iptables%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B9%8Btcp-ip%E5%8D%8F%E8%AE%AE/</guid>
+      <guid>https://www.yangcs.net/posts/iptables%E5%9F%BA%E7%A1%80%E5%8E%9F%E7%90%86%E4%B9%8Btcp-ip%E5%8D%8F%E8%AE%AE/</guid>
       <description></description>
     </item>
     
     <item>
       <title>向量的叉乘与行列式</title>
-      <link>https://www.yangcs.net:443/posts/%E5%90%91%E9%87%8F%E7%9A%84%E5%8F%89%E4%B9%98%E4%B8%8E%E8%A1%8C%E5%88%97%E5%BC%8F/</link>
+      <link>https://www.yangcs.net/posts/%E5%90%91%E9%87%8F%E7%9A%84%E5%8F%89%E4%B9%98%E4%B8%8E%E8%A1%8C%E5%88%97%E5%BC%8F/</link>
       <pubDate>Sat, 03 Dec 2016 23:59:48 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/%E5%90%91%E9%87%8F%E7%9A%84%E5%8F%89%E4%B9%98%E4%B8%8E%E8%A1%8C%E5%88%97%E5%BC%8F/</guid>
+      <guid>https://www.yangcs.net/posts/%E5%90%91%E9%87%8F%E7%9A%84%E5%8F%89%E4%B9%98%E4%B8%8E%E8%A1%8C%E5%88%97%E5%BC%8F/</guid>
       <description></description>
     </item>
     
     <item>
       <title>子空间投影</title>
-      <link>https://www.yangcs.net:443/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/</link>
+      <link>https://www.yangcs.net/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/</link>
       <pubDate>Sat, 04 Jun 2016 17:18:59 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/</guid>
+      <guid>https://www.yangcs.net/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/</guid>
       <description></description>
     </item>
     
     <item>
       <title>十分钟告诉你什么是最小二乘法</title>
-      <link>https://www.yangcs.net:443/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/</link>
+      <link>https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/</link>
       <pubDate>Sat, 04 Jun 2016 13:28:25 +0000</pubDate>
       
-      <guid>https://www.yangcs.net:443/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/</guid>
+      <guid>https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     

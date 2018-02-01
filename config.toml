@@ -101,8 +101,8 @@ desc = "Using Big Data to make business decision"
 
 [[menu.main]]
     parent = "Books"
-    name = "Kubernetes handbook"
-    url = "kubernetes-handbook"
+    name = "天才源自刻意练习"
+    url = "talent-is-overrated"
     weight = 1 
 
 [[menu.main]]
