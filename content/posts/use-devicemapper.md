@@ -9,7 +9,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
 <!--more-->
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. **准备条件**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **准备条件**</p>
 ------
 
 + `devicemapper` 存储驱动是 `RHEL`, `CentOS` 和 `Oracle Linux` 系统上唯一一个支持 `Docker EE` 和 `Commercially Supported Docker Engine` (CS-Engine) 的存储驱动，具体参考 [Product compatibility matrix](https://success.docker.com/Policies/Compatibility_Matrix).
@@ -18,7 +18,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 + 如果你更改了 `Docker` 的存储驱动，那么你之前在本地创建的所有容器都将无法访问。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. **配置Docker使用devicemapper**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **配置Docker使用devicemapper**</p>
 ------
 
 Docker 主机运行 `devicemapper` 存储驱动时，默认的配置模式为 `loop-lvm`。此模式使用空闲的文件来构建用于镜像和容器快照的精简存储池。该模式设计为无需额外配置开箱即用(out-of-the-box)。不过生产部署不应该以 `loop-lvm` 模式运行。
@@ -218,7 +218,7 @@ xvdf               202:80   0   10G  0 disk
 
 > Docker-主设备号:二级设备号-inode号-pool
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. **管理 devicemapper**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. **管理 devicemapper**</p>
 ------
 
 ### 3.1 **监控 thin pool**
@@ -433,7 +433,7 @@ $ docker info |grep 'loop file'
 $ lvchange -ay docker/thinpool
 ```
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">4. **devicemapper 存储驱动的工作原理**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. **devicemapper 存储驱动的工作原理**</p>
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
@@ -496,7 +496,7 @@ $ mount |grep devicemapper
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic2.jpg)</center>
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">5. **devicemapper 读写数据的过程**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">5. **devicemapper 读写数据的过程**</p>
 ------
 
 ### 5.1 **读数据**
@@ -533,7 +533,7 @@ $ mount |grep devicemapper
 
 + **写入新数据并删除旧数据：**当你向容器中写入新数据并删除旧数据时，所有这些操作都发生在容器的可写层。如果你使用的是 `direct-lvm` 模式，删除的数据块将会被释放；如果你使用的是 `loop-lvm` 模式，那么这些数据块就不会被释放。因此不建议在生产环境中使用 `loop-lvm` 模式。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">6. **Device Mapper 对 Docker 性能的影响**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">6. **Device Mapper 对 Docker 性能的影响**</p>
 ------
 
 了解按需分配和写时拷贝操作对整体容器性能的影响很重要。

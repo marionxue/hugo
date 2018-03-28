@@ -8,6 +8,7 @@ metaDataFormat = "yaml"
 pygmentsUseClasses = false
 pygmentCodeFences = true
 #googleAnalytics = "XXX"
+enableEmoji = true
 
 [Params]
 hello = "Hi,I'm Ryan"
@@ -19,10 +20,15 @@ commit = false
 rss = true
 comments = true
 sharebutton = true
+toc = true
 algolia = "0ba826b1f47a96e128409a6706d41e86" # API key
 #gcse = "012737790962522169780:fd1izxsfgrs" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 description = "yangcs.net|杨传胜的博客|Kubernetes|Big Data"
 errorpage = "https://res.cloudinary.com/jimmysong/image/upload/images/404-not-found-cat.png"
+
+[blackfriday]
+hrefTargetBlank = true
+extensions = []
 
 [algolia]
 index = "hugo"
@@ -128,6 +134,12 @@ desc = "Using Big Data to make business decision"
     name = "机器学习笔记"
     url = "https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes"
     weight = 5
+
+[[menu.main]]
+    parent = "Books"
+    name = "Go 入门指南"
+    url = "the-way-to-go"
+    weight = 6
 
 [[menu.main]]
     identifier = "脚本推荐"

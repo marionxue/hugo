@@ -10,7 +10,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. **Thin Provisioning Snapshot 演示**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **Thin Provisioning Snapshot 演示**</p>
 ------
 
 上一篇我们介绍了 `Device Mapper` 框架的技术原理及其核心概念，下面，我们用一系列的命令来演示一下 Device Mapper 的 `Thin Provisioning Snapshot` 是怎么玩的。
@@ -212,7 +212,7 @@ hello world, I am a base
 
 好了，我相信你看到了分层镜像的样子了。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. **Docker 的 devicemapper**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **Docker 的 devicemapper**</p>
 ------
 
 > 上面基本上就是 Docker 的玩法了，我们可以看一下 docker 的 loopback 设备：

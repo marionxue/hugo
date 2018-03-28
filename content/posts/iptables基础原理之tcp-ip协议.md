@@ -9,7 +9,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 <!--more-->
 <iframe width="0" height="0" frameborder="no" border="0" marginwidth="0" marginheight="0" src="http://yangchuansheng-netease.daoapp.io/player?type=2&amp;id=405597568&amp;auto=1&amp;height=66"></iframe>
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. **IP 首部**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **IP 首部**</p>
 ------
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/ipv4header.png)</center>
@@ -45,7 +45,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 报文首部在发送过程中可能会发生差错，所以需要通过校验和来进行验证，一旦验证出现错误，便进行重传。
 - `options`：可变长度的可选数据。很少使用。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. **TCP 首部**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **TCP 首部**</p>
 ------
 
 &emsp;&emsp;要想真正承载应用协议从一个主机到另一个主机，那我们就应该知道两台主机上的哪些`进程`之间在进行通信。所以众多的上层应用协议都是基于`tcp`或者`udp`来完成数据报文的再次封装以标记通信的两个进程。
@@ -76,7 +76,7 @@ URG = 0，表示紧急指针无效
 - `TCP Checksum`：校验和。
 - `Urgent Pointer`：紧急指针。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. **建立连接**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. **建立连接**</p>
 ------
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/tcp%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5.gif)</center>
@@ -89,7 +89,7 @@ URG = 0，表示紧急指针无效
   
   3、最后，客户端再发送一个`ACK`。当服务端受到这个`ACK`的时候，就完成了三路握手，并进入了连接建立状态。此时包序号被设定为收到的确认号A+1，而响应则为B+1。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">4. **断开连接**</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. **断开连接**</p>
 ------
 
 那如何断开连接呢？简单的过程如下：

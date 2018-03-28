@@ -23,7 +23,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.33" />
+  <meta name="generator" content="Hugo 0.37" />
   <link rel="canonical" href="https://www.yangcs.net/posts/calico-rr/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
@@ -169,6 +169,9 @@
                 
                 
                   <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go">Go 入门指南</a>
                 
               </div>
             </li>
@@ -372,12 +375,12 @@ autocomplete('#aa-search-input',
                 <p>
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=31654478&auto=1&height=66"></iframe></p>
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-名词解释-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. 名词解释</p></h2>
+<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-名词解释-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. 名词解释</p></h2>
 
 <hr />
 
 <ul>
-<li><code>endpoint</code>：接入到网络中的设备称为 endpoint :smile:</li>
+<li><code>endpoint</code>：接入到网络中的设备称为 endpoint ❤️</li>
 <li><code>AS</code>：网络自治系统，一个完全自治的网络，通过 BGP 协议与其它 AS 交换路由信息</li>
 <li><code>ibgp</code>：AS 内部的 BGP Speaker，与同一个 AS 内部的 ibgp、ebgp 交换路由信息</li>
 
@@ -388,7 +391,7 @@ autocomplete('#aa-search-input',
 <li><p><code>hostEndpoints</code>：Calico 网络中的物理机(node)的地址</p></li>
 </ul>
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-组网原理-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. 组网原理</p></h2>
+<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-2-组网原理-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. 组网原理</p></h2>
 
 <hr />
 
@@ -435,7 +438,7 @@ autocomplete('#aa-search-input',
 
 <p>通过这种方式每个 node 知晓了每个 <code>workload-endpoint</code> 的下一跳地址。</p>
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-3-bgp-与-as-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. BGP 与 AS</p></h2>
+<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-3-bgp-与-as-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. BGP 与 AS</p></h2>
 
 <hr />
 
@@ -493,7 +496,7 @@ $ calicoctl config set nodeTonodeMesh on
 
 <p>关闭了全互联模式后，再将 RR 作为 <code>Global Peers</code> 添加到 Calico 中，Calico 网络就切换到了 RR 模式，可以支撑容纳更多的 node。</p>
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-4-rr-模式部署-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">4. RR 模式部署</p></h2>
+<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-4-rr-模式部署-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. RR 模式部署</p></h2>
 
 <hr />
 
@@ -786,7 +789,7 @@ protocol bgp Global_10_10_31_168 from bgp_template {
 
 <p><br /></p>
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-5-多-cluster-id-实例拓扑-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">5. 多 cluster ID 实例拓扑</p></h2>
+<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-5-多-cluster-id-实例拓扑-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">5. 多 cluster ID 实例拓扑</p></h2>
 
 <hr />
 
@@ -828,7 +831,7 @@ RR4 and RR5 both using the cluster ID 1.0.0.3</li>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/k8s-network-expand/" data-toggle="tooltip" data-placement="top" title="Kubernetes 网络扩展">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -971,7 +974,7 @@ RR4 and RR5 both using the cluster ID 1.0.0.3</li>
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.37</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           
         </p>
       </div>

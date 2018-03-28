@@ -11,10 +11,10 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 <!--more-->
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=31654478&auto=1&height=66"></iframe>
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. 名词解释</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. 名词解释</p>
 ------
 
-- `endpoint`：接入到网络中的设备称为 endpoint :smile:
+- `endpoint`：接入到网络中的设备称为 endpoint :heart:
 - `AS`：网络自治系统，一个完全自治的网络，通过 BGP 协议与其它 AS 交换路由信息
 - `ibgp`：AS 内部的 BGP Speaker，与同一个 AS 内部的 ibgp、ebgp 交换路由信息
 - `ebgp`：AS 边界的 BGP Speaker，与同一个 AS 内部的 ibgp、其它 AS 的 ebgp 交换路由信息
@@ -22,7 +22,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 - `workloadEndpoint`：Calico 网络中的分配虚拟机、容器使用的 endpoint
 - `hostEndpoints`：Calico 网络中的物理机(node)的地址
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. 组网原理</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. 组网原理</p>
 ------
 
 `Calico` 组网的核心原理就是IP路由，每个容器或者虚拟机会分配一个 `workload-endpoint`(wl)。
@@ -67,7 +67,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 通过这种方式每个 node 知晓了每个 `workload-endpoint` 的下一跳地址。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">3. BGP 与 AS</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. BGP 与 AS</p>
 ------
 
 `BGP` 是路由器之间的通信协议，主要用于 `AS`（Autonomous System,自治系统）之间的互联。
@@ -125,7 +125,7 @@ RR 必须与所有的 `BGP Speaker` 建立 BGP 连接，以保证能够得到全
 
 关闭了全互联模式后，再将 RR 作为 `Global Peers` 添加到 Calico 中，Calico 网络就切换到了 RR 模式，可以支撑容纳更多的 node。
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">4. RR 模式部署</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. RR 模式部署</p>
 ------
 
 集群环境：
@@ -404,7 +404,7 @@ protocol bgp Global_10_10_31_168 from bgp_template {
 ```
 <br />
 
-## <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">5. 多 cluster ID 实例拓扑</p>
+## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">5. 多 cluster ID 实例拓扑</p>
 ------
 
 当拓扑包含了多个反射路由时,BGP 利用集群 id 来保证分配路由时不陷入循环路由。
