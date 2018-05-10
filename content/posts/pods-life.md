@@ -1,5 +1,5 @@
 ---
-title: "Pods 的生命周期管理"
+title: "Pod 的生命周期管理"
 subtitle: "探究 Pod 的启动关闭流程以及快速 DEBUG"
 date: 2018-05-03T12:08:01Z
 draft: false
