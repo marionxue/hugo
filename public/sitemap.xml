@@ -8,6 +8,36 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/pods-life/</loc>
+    <lastmod>2018-05-03T12:08:01+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/posts/kube-router/</loc>
+    <lastmod>2018-04-20T04:36:40+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/posts/lvs-persistent-connection/</loc>
+    <lastmod>2018-04-18T11:18:06+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/posts/cri-o/</loc>
+    <lastmod>2018-04-03T08:11:38+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/posts/container-runtime/</loc>
+    <lastmod>2018-04-03T06:50:43+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/posts/how-manage-image/</loc>
+    <lastmod>2018-04-02T05:12:18+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/federation/</loc>
     <lastmod>2018-03-22T09:36:27+00:00</lastmod>
   </url>
@@ -94,13 +124,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/docker/</loc>
-    <lastmod>2018-02-11T10:40:33+00:00</lastmod>
+    <lastmod>2018-04-03T08:11:38+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/docker/</loc>
-    <lastmod>2018-01-22T16:17:11+08:00</lastmod>
+    <lastmod>2018-04-02T05:12:18+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -118,13 +148,25 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
-    <lastmod>2018-03-22T09:36:27+00:00</lastmod>
+    <lastmod>2018-05-03T12:08:01+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/kubernetes/</loc>
-    <lastmod>2018-03-22T09:36:27+00:00</lastmod>
+    <lastmod>2018-05-03T12:08:01+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/categories/loadbalance/</loc>
+    <lastmod>2018-04-18T11:18:06+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/tags/lvs/</loc>
+    <lastmod>2018-04-20T04:36:40+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -160,7 +202,7 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/</loc>
-    <lastmod>2018-02-11T10:40:33+00:00</lastmod>
+    <lastmod>2018-04-03T08:11:38+00:00</lastmod>
     <priority>0</priority>
   </url>
   

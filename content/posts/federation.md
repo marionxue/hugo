@@ -126,24 +126,74 @@ $ kubectl config use-context kubernetes
 
 生成的 kubeconfig 被保存到 `~/.kube/config` 文件。
 
-<p id="div-border-top-purple">注意：~/.kube/config 文件拥有对该集群的最高权限，请妥善保管。</p>
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>~/.kube/config 文件拥有对该集群的最高权限，请妥善保管。</p>
+</div>
 
 配置结果如下：
 
 ```bash
 $ kubectl config get-contexts
 
-CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE    
+CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
 *         kubernetes    kubernetes    admin
 ```
 
 ### 设置 CoreDNS 作为集群联邦的 DNS 提供商
 #### 1. 前提
 
-+ 为启用 `CoreDNS` 来实现跨联邦集群的服务发现，联邦的成员集群中必须支持 `LoadBalancer` 服务。（<font color="red">本地集群暂不支持 `LoadBalancer` 服务，所以不能使用 `coredns` 来实现 federation 的服务发现功能！！！</font>）
++ 为启用 `CoreDNS` 来实现跨联邦集群的服务发现，联邦的成员集群中必须支持 `LoadBalancer` 服务。（<font color="red">本地集群默认不支持 `LoadBalancer` 服务，所以要让本地集群支持 `LoadBalancer` 服务才能使用 `coredns` 来实现 federation 的服务发现功能！！！</font>）
 + 我们可以利用 `helm charts` 来部署 CoreDNS。 CoreDNS 部署时会以 etcd 作为后端，并且 etcd 应预先安装。 etcd 也可以利用 helm charts 进行部署。
++ 所有加入 federation 的集群的 node 必须打上以下的标签：<br />
+   `failure-domain.beta.kubernetes.io/region=<region>`<br />
+   `failure-domain.beta.kubernetes.io/zone=<zone>`
 
-#### 2. 安装 helm
+#### 2. 使本地集群支持 LoadBalancer 服务
+
+为了使本地集群支持 `LoadBalancer` 服务，可以参考以下两种实现方案：
+
++ [keepalived-cloud-provider](https://github.com/munnerz/keepalived-cloud-provider)
++ [metalLB](https://github.com/google/metallb)
+
+这里我们选择使用 `metalLB`。
+
+metalLB 的部署很简单，直接使用 yaml 文件部署：
+
+```bash
+$ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.5.0/manifests/metallb.yaml
+```
+
+具体参考 [https://metallb.universe.tf/installation/](https://metallb.universe.tf/installation/)
+
+部署完成后需要为 LoadBalancer 服务选择一个特定的 IP 地址池，这里通过 configmap 来创建。
+
+下面是一个简单示例：
+
+```bash
+$ cat metallb-cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: metallb-system
+  name: config
+data:
+  config: |
+    address-pools:
+    - name: default
+      protocol: layer2
+      addresses:
+      - 192.168.1.58-192.168.1.60
+
+$ kubectl create -f metallb-cm.yaml
+```
+
+更多高级配置请参考：[https://metallb.universe.tf/configuration/](https://metallb.universe.tf/configuration/)
+
+现在本地集群已经支持 LoadBalancer 服务了，下面我们开始 federation 的旅程吧！:clap:
+
+#### 3. 安装 helm
 
 首先需要安装 `helm` 客户端
 
@@ -184,8 +234,9 @@ $ helm version
 Client: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920a8e346f6de844", GitTreeState:"clean"}
 Server: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920a8e346f6de844", GitTreeState:"clean"}
 ```
+<br />
 
-#### 3. 部署 etcd
+#### 4. 部署 etcd
 
 下载 `helm charts` 仓库
 
@@ -258,7 +309,7 @@ kubernetes              ClusterIP   10.254.0.1       <none>        443/TCP      
 
 部署成功后，可以在 host 集群内通过 http://etcd-cluster-client.default:2379 端点访问 etcd。
 
-#### 4. 部署 CoreDNS
+#### 5. 部署 CoreDNS
 
 首先需要定制 `CoreDNS chart` 模板的默认配置，它会覆盖 `CoreDNS chart` 的默认配置参数。
 
@@ -306,7 +357,9 @@ NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)             
 coredns-coredns   NodePort   10.254.198.211   <none>        53:27165/UDP,53:27165/TCP,9153:26492/TCP   1d
 ```
 
-#### 5. 使用 CoreDNS 作为 DNS 提供商来部署 Federation
+<br />
+
+#### 6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation
 
 可以使用 `kubefed init` 来部署联邦控制平面。 可以通过指定两个附加参数来选择 CoreDNS 作为 DNS 提供商。
 
@@ -328,7 +381,21 @@ coredns-endpoints = <coredns-server-ip>:<port>
 + `zones` 是 CoreDNS 被授权的联邦区域，其值与 `kubefed init` 的 –-dns-zone-name 参数相同。
 + `coredns-endpoints` 是访问 CoreDNS 服务器的端点。 这是一个 1.7 版本开始引入的可选参数。
 
-<p id="div-border-top-purple">注意：CoreDNS 配置中的 <code>plugins.etcd.zones</code> 与 kubefed init 的 –-dns-zone-name 参数应匹配。</p>
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>CoreDNS 配置中的 <code>plugins.etcd.zones</code> 与 kubefed init 的 –-dns-zone-name 参数应匹配。</p>
+</div>
+
+给所有 node 打上 `region` 和 `zone` 的标签：
+
+```bash
+$ kubectl label nodes 192.168.123.248 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
+
+$ kubectl label nodes 192.168.123.249 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
+
+$ kubectl label nodes 192.168.123.250 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
+```
 
 通过本条命令初始化 federation 控制平面，参数如下：
 
@@ -413,9 +480,13 @@ $ kubefed init federation \ # 联邦的名字
     *         kubernetes   kubernetes   admin
 ```
 
-<p id="div-border-top-purple"><strong>注意：</strong>默认情况下，<code>kubefed init</code> 通过动态创建 PV 的方式为 etcd 创建持久化存储。如果 kubernetes 集群不支持动态创建 PV，则可以预先创建 PV，注意 PV 要匹配 `kubefed` 的 PVC。或者使用 <code>hostpath</code>，同时指定调度节点。</p>
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>默认情况下，<code>kubefed init</code> 通过动态创建 PV 的方式为 etcd 创建持久化存储。如果 kubernetes 集群不支持动态创建 PV，则可以预先创建 PV，注意 PV 要匹配 `kubefed` 的 PVC。或者使用 <code>hostpath</code>，同时指定调度节点。</p>
+</div>
 
-#### 6. 添加集群至 federation
+#### 7. 添加集群至 federation
 
 目前为止您已经成功的初始化好了 `Federation` 的控制平面。接下来需要将各个子集群加入到 Federation 集群中。
 
@@ -514,7 +585,7 @@ $ kubectl delete ns federation-system
 
 示例：
 
-创建 `deployment`
+**创建 `deployment`**
 
 ```bash
 $ cat nginx-deployment.yaml
@@ -536,6 +607,7 @@ spec:
         ports:
         - containerPort: 80
 
+$ kubectl --context=federation create ns default
 $ kubectl --context=federation create -f nginx-deployment.yaml
 ```
 
@@ -545,7 +617,77 @@ $ kubectl --context=federation create -f nginx-deployment.yaml
 $ kubectl --context=kubernetes get deploy
 ```
 
-**目前由于在私有环境上无法实现跨集群服务发现的功能，所以无法使用 `Federated Service`。**
+**通过 Federated Service 来实现跨集群服务发现**
+
+```bash
+$ cat nginx-svc.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
+    name: http
+  selector:
+    app: nginx
+
+# 这会在所有注册到联邦的 kubernetes 集群中创建服务
+$ kubectl --context=federation create -f nginx-svc.yaml
+
+# 查看服务状态
+$ kubectl --context=federation describe services nginx
+
+Name:                     nginx
+Namespace:                default
+Labels:                   app=nginx
+Annotations:              federation.kubernetes.io/service-ingresses={"items":[{"cluster":"kubernetes","items":[{"ip":"192.168.1.58"}]}]}
+Selector:                 app=nginx
+Type:                     LoadBalancer
+IP:
+LoadBalancer Ingress:     192.168.1.58
+Port:                     http  80/TCP
+TargetPort:               80/TCP
+Endpoints:                <none>
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+```
+
+可以通过 DNS 来访问联邦服务，访问格式包括以下几种：
+
++ `<service name>.<namespace>.<federation>`
++ `<service name>.<namespace>.<federation>.svc.<domain>`
++ `<service name>.<namespace>.<federation>.svc.<region>.<domain>`
++ `<service name>.<namespace>.<federation>.svc.<zone>.<region>.<domain>`
+
+本例中可以通过以下几个域名来访问：
+
++ `nginx.default.federation`
++ `nginx.default.federation.svc.example.com`
++ `nginx.default.federation.svc.shanghai.example.com`
++ `nginx.default.federation.svc.shanghai.yangpu.example.com`
+
+DNS 在 etcd 下的存储路径为：`/skydns`
+
+```bash
+$ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/
+
+/skydns/com/example/kubernetes
+/skydns/com/example/svc
+/skydns/com/example/yangpu
+
+$ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/yangpu/
+
+/skydns/com/example/yangpu/shanghai
+/skydns/com/example/yangpu/svc
+```
 
 ## <p id="h2">4. 参考文档</p>
 ------
@@ -553,19 +695,46 @@ $ kubectl --context=kubernetes get deploy
 + [Kubernetes federation](https://kubernetes.io/docs/concepts/cluster-administration/federation/)
 + [Set up CoreDNS as DNS provider for Cluster Federation](https://kubernetes.io/docs/tasks/federation/set-up-coredns-provider-federation/)
 
+<br />
+
 <style>
 #h2 {
-    margin-bottom:2em; 
-    margin-right: 5px; 
-    padding: 8px 15px; 
-    letter-spacing: 2px; 
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); 
-    background-color: rgb(63, 81, 181); 
-    color: rgb(255, 255, 255); 
-    border-left: 10px solid rgb(51, 51, 51); 
-    border-radius:5px; 
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px; 
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
     box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
 }
 #inline-yellow {
 display:inline;

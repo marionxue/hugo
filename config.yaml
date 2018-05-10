@@ -10,7 +10,7 @@ subtitle: "I can help you building Cloud Native confidence"
 dateFormat: "January 2, 2006"
 description: "Cloud Native🤘 Big Data"
 algolia:
-  index: "hugo"
-  key: "0ba826b1f47a96e128409a6706d41e86"
-  appID: "MQX1EH3YCM"
+  index: "blog"
+  key: "62fd06bd949abb4211bfab0aa288f67b"
+  appID: "4BELQK2TOI"
 ---

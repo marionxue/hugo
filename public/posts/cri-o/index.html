@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Device Mapper系列 (2)：Thin Provisioning 实践 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> CRI-O 简介 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Device Mapper系列 (2)：Thin Provisioning 实践" />
-  <meta name="twitter:title" content="Device Mapper系列 (2)：Thin Provisioning 实践" />
-  <meta name="description" content="Thin Provisioning Snapshot 演练">
-  <meta property="og:description" content="Thin Provisioning Snapshot 演练">
-  <meta name="twitter:description" content="Thin Provisioning Snapshot 演练">
+  <meta property="og:title" content="CRI-O 简介" />
+  <meta name="twitter:title" content="CRI-O 简介" />
+  <meta name="description" content="轻量级容器运行时 CRI-O 解析">
+  <meta property="og:description" content="轻量级容器运行时 CRI-O 解析">
+  <meta name="twitter:description" content="轻量级容器运行时 CRI-O 解析">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/first/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/cri-o/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.33" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/first/" />
+  <meta name="generator" content="Hugo 0.37" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/cri-o/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -138,6 +138,9 @@
                   <a href="https://www.yangcs.net/categories/python">Python</a>
                 
                 
+                  <a href="https://www.yangcs.net/categories/loadbalance"> 负载均衡</a>
+                
+                
                   <a href="https://www.yangcs.net/categories/gfw">科学上网</a>
                 
                 
@@ -169,6 +172,9 @@
                 
                 
                   <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go">Go 入门指南</a>
                 
               </div>
             </li>
@@ -226,7 +232,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Search jimmysong.io</h4>
+          <h4 class="modal-title">Search www.yangcs.net</h4>
         </div>
         <div class="modal-body">
             
@@ -243,8 +249,8 @@
 <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
 
 <script>
-var client = algoliasearch("MQX1EH3YCM", "0ba826b1f47a96e128409a6706d41e86");
-var index = client.initIndex('hugo');
+var client = algoliasearch("4BELQK2TOI", "bb53f9d51f88373ba37e56a4730aca4c");
+var index = client.initIndex('blog');
 
 autocomplete('#aa-search-input',
 { hint: false}, {
@@ -297,7 +303,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>Device Mapper系列 (2)：Thin Provisioning 实践</h1>
+                     <h1>CRI-O 简介</h1>
                      
                      
                   
@@ -305,13 +311,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">Thin Provisioning Snapshot 演练</span>
+                      <span class="post-subheading">轻量级容器运行时 CRI-O 解析</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on January 22, 2018
+  Posted on April 3, 2018
   
   
 </span>
@@ -332,10 +338,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">Device Mapper系列 (2)：Thin Provisioning 实践</h1>
+                <h1 align="center">CRI-O 简介</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">Thin Provisioning Snapshot 演练</h2>
+                    <h2 align="center" class="posts-subheading">轻量级容器运行时 CRI-O 解析</h2>
                   
                 
                 
@@ -356,10 +362,12 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Mon Jan 22, 2018</h4>
+        <h4 id="date"> Tue Apr 3, 2018</h4>
     </section>
-    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
+    <h5 id="wc">2000 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
         
         <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
     </h5>
@@ -369,326 +377,293 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-1-thin-provisioning-snapshot-演示-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">1. <strong>Thin Provisioning Snapshot 演示</strong></p></h2>
+<p>上一篇 <a href="https://www.yangcs.net/posts/container-runtime" target="_blank">https://www.yangcs.net/posts/container-runtime/</a> 介绍了什么是容器运行时，并列出了不同的容器运行时。本篇重点介绍其中的一种容器运行时 <code>CRI-O</code>。</p>
+
+<h2 id="p-id-h2-1-cri-o-的诞生-p"><p id="h2">1. CRI-O 的诞生</p></h2>
 
 <hr />
 
-<p>上一篇我们介绍了 <code>Device Mapper</code> 框架的技术原理及其核心概念，下面，我们用一系列的命令来演示一下 Device Mapper 的 <code>Thin Provisioning Snapshot</code> 是怎么玩的。</p>
+<p>当容器运行时（Container Runtime）的标准被提出以后，Red Hat 的一些人开始想他们可以构建一个更简单的运行时，而且这个运行时仅仅为 Kubernetes 所用。这样就有了 <code>skunkworks</code>项目，最后定名为 <code>CRI-O</code>， 它实现了一个最小的 CRI 接口。在 2017 Kubecon Austin 的一个演讲中， Walsh 解释说， ”CRI-O 被设计为比其他的方案都要小，遵从 Unix 只做一件事并把它做好的设计哲学，实现组件重用“。</p>
 
-<blockquote>
-<p>首先，我们需要先建两个文件，一个是data.img，一个是meta.data.img：</p>
-</blockquote>
+<p>根据 Red Hat 的 CRI-O 开发者 Mrunal Patel 在研究里面说的， 最开始 Red Hat 在 2016 年底为它的 OpenShift 平台启动了这个项目，同时项目也得到了 <code>Intel</code> 和 <code>SUSE</code> 的支持。CRI-O 与 <code>CRI</code> 规范兼容，并且与 <code>OCI</code> 和 Docker 镜像的格式也兼容。它也支持校验镜像的 GPG 签名。 它使用容器网络接口 Container Network Interface（CNI）处理网络，以便任何兼容 CNI 的网络插件可与该项目一起使用，OpenShift 也用它来做软件定义存储层。 它支持多个 CoW 文件系统，比如常见的 overlay，aufs，也支持不太常见的 Btrfs。</p>
 
-<pre><code class="language-bash">$ dd if=/dev/zero of=/tmp/data.img bs=1K count=1 seek=10M
-
-1+0 records in
-1+0 records out
-1024 bytes (1.0 kB) copied, 0.000621428 s, 1.6 MB/s
-
-$ dd if=/dev/zero of=/tmp/meta.data.img bs=1K count=1 seek=1G
-
-1+0 records in
-1+0 records out
-1024 bytes (1.0 kB) copied, 0.000140858 s, 7.3 MB/s
-</code></pre>
-
-<p>注意命令中 <code>seek</code> 选项，其表示为略过 <code>of</code> 选项指定的输出文件的前 10G 个 output 的 <code>bloksize</code> 的空间后再写入内容。</p>
-
-<p>因为 bs 是 1 个字节，所以也就是 10G 的尺寸，但其实在硬盘上是没有占有空间的，占有空间只有 1k 的内容。当向其写入内容时，才会在硬盘上为其分配空间。</p>
-
-<blockquote>
-<p>我们可以用 <code>ls</code> 命令看一下，实际分配了 12K 和 4K。</p>
-</blockquote>
-
-<pre><code class="language-bash">$ ls -lsh /tmp/data.img
-
-12K -rw-r--r--. 1 root root 11G Aug 25 23:01 /tmp/data.img
-
-$ ls -slh /tmp/meta.data.img
-
-4.0K -rw-r--r--. 1 root root 101M Aug 25 23:17 /tmp/meta.data.img
-</code></pre>
-
-<blockquote>
-<p>然后，我们为这个文件创建一个 <code>loopback</code> 设备。（loop2015 和 loop2016 是我乱取的两个名字）</p>
-</blockquote>
-
-<pre><code class="language-bash">$ losetup /dev/loop2015 /tmp/data.img
-$ losetup /dev/loop2016 /tmp/meta.data.img
-
-$ losetup -a
-
-/dev/loop2015: [64768]:103991768 (/tmp/data.img)
-/dev/loop2016: [64768]:103991765 (/tmp/meta.data.img)
-</code></pre>
-
-<blockquote>
-<p>现在，我们为这个设备建一个 <code>Thin Provisioning</code> 的 Pool，用 <code>dmsetup</code> 命令：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ dmsetup create hchen-thin-pool \
-  --table &quot;0 20971522 thin-pool /dev/loop2016 /dev/loop2015 \
-  128 65536 1 skip_block_zeroing&quot;
-</code></pre>
-
-<p>其中的参数解释如下（更多信息可参看 <code>Thin Provisioning</code> 的 man page）:</p>
-
-<ul>
-<li><code>dmsetup create</code> 是用来创建 thin pool 的命令</li>
-<li><code>hchen-thin-pool</code> 是自定义的一个 pool 名，不冲突就好。</li>
-<li><code>–-table</code> 是这个 pool 的参数设置
-
-<ul>
-<li><code>0</code> 代表起的 sector 位置</li>
-<li><code>20971522</code> 代表结尾的 sector 号，前面说过，一个 sector 是 512 字节，所以，20971522 个正好是 10GB</li>
-<li><code>/dev/loop2016</code> 是 meta 文件的设备（前面我们建好了）</li>
-<li><code>/dev/loop2015</code> 是 data 文件的设备</li>
-<li><code>128</code> 是最小的可分配的 sector 数</li>
-<li><code>65536</code> 是最少可用 sector 的 water mark，也就是一个 threshold</li>
-<li><code>1</code> 代表有一个附加参数</li>
-<li><code>skip_block_zeroing</code> 是个附加参数，表示略过用 0 填充的块</li>
-</ul></li>
-</ul>
-
-<blockquote>
-<p>然后，我们就可以看到一个 <code>Device Mapper</code> 的设备了：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ ll /dev/mapper/hchen-thin-pool
-
-lrwxrwxrwx. 1 root root 7 Aug 25 23:24 /dev/mapper/hchen-thin-pool -&gt; ../dm-4
-</code></pre>
-
-<blockquote>
-<p>接下来，我们的初始还没有完成，还要创建一个 <code>Thin Provisioning</code> 的 Volume：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ dmsetup message /dev/mapper/hchen-thin-pool 0 &quot;create_thin 0&quot;
-
-$ dmsetup create hchen-thin-volumn-001 \
-  --table &quot;0 2097152 thin /dev/mapper/hchen-thin-pool 0&quot;
-</code></pre>
-
-<p>其中：
-+ 第一个命令中的 <code>create_thin</code> 是关键字，后面的 0 表示这个 Volume 的 device 的  id。</p>
-
-<ul>
-<li>第二个命令，是真正的为这个 Volumn 创建一个可以 mount 的设备，名字叫 <code>hchen-thin-volumn-001</code>。<code>2097152</code> 只有 1GB。</li>
-</ul>
-
-<blockquote>
-<p>好了，在 mount 前，我们还要格式化一下：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ mkfs.ext4 /dev/mapper/hchen-thin-volumn-001
-
-mke2fs 1.42.9 (28-Dec-2013)
-Discarding device blocks: done
-Filesystem label=
-OS type: Linux
-Block size=4096 (log=2)
-Fragment size=4096 (log=2)
-Stride=16 blocks, Stripe width=16 blocks
-65536 inodes, 262144 blocks
-13107 blocks (5.00%) reserved for the super user
-First data block=0
-Maximum filesystem blocks=268435456
-8 block groups
-32768 blocks per group, 32768 fragments per group
-8192 inodes per group
-Superblock backups stored on blocks:
-32768, 98304, 163840, 229376
- 
-Allocating group tables: done
-Writing inode tables: done
-Creating journal (8192 blocks): done
-Writing superblocks and filesystem accounting information: done
-</code></pre>
-
-<blockquote>
-<p>好了，我们可以 mount 了（下面的命令中，我还创建了一个文件）</p>
-</blockquote>
-
-<pre><code class="language-zsh">$ mkdir -p /mnt/base
-
-$ mount /dev/mapper/hchen-thin-volumn-001 /mnt/base
-
-$ echo &quot;hello world, I am a base&quot; &gt; /mnt/base/id.txt
-
-$ cat /mnt/base/id.txt
-
-hello world, I am a base
-</code></pre>
-
-<blockquote>
-<p>好了，接下来，我们来看看 snapshot 怎么搞：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ dmsetup message /dev/mapper/hchen-thin-pool 0 &quot;create_snap 1 0&quot;
-
-$ dmsetup create mysnap1 \
-  --table &quot;0 2097152 thin /dev/mapper/hchen-thin-pool 1&quot;
-  
-$ ll /dev/mapper/mysnap1
-
-lrwxrwxrwx. 1 root root 7 Aug 25 23:49 /dev/mapper/mysnap1 -&gt; ../dm-5
-</code></pre>
-
-<p>上面的命令中：
-+ 第一条命令是向 <code>hchen-thin-pool</code> 发一个 <code>create_snap</code> 的消息，后面跟两个 <code>id</code>，第一个是新的 dev id，第二个是要从哪个已有的 dev id 上做 <code>snapshot</code>（0 这个 dev id 是我们前面就创建了了）</p>
-
-<ul>
-<li>第二条命令是创建一个 <code>mysnap1</code> 的 device，并可以被 mount。</li>
-</ul>
-
-<blockquote>
-<p>下面我们来看看：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ mkdir -p /mnt/mysnap1
-
-$ mount /dev/mapper/mysnap1 /mnt/mysnap1
-
-$ ll /mnt/mysnap1/
-
-total 20
--rw-r--r--. 1 root root 25 Aug 25 23:46 id.txt
-drwx------. 2 root root 16384 Aug 25 23:43 lost+found
-
-$ cat /mnt/mysnap1/id.txt
-
-hello world, I am a base
-</code></pre>
-
-<blockquote>
-<p>我们来修改一下 <code>/mnt/mysnap1/id.txt</code>，并加上一个 <code>snap1.txt</code> 的文件：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ echo &quot;I am snap1&quot; &gt;&gt; /mnt/mysnap1/id.txt
-
-$ echo &quot;I am snap1&quot; &gt; /mnt/mysnap1/snap1.txt
-
-$ cat /mnt/mysnap1/id.txt
-
-hello world, I am a base
-I am snap1
-
-$ cat /mnt/mysnap1/snap1.txt
-
-I am snap1
-</code></pre>
-
-<blockquote>
-<p>我们再看一下 <code>/mnt/base</code>，你会发现没有什么变化：</p>
-</blockquote>
-
-<pre><code class="language-bash">$ ls /mnt/base
-
-id.txt      lost+found
-
-$ cat /mnt/base/id.txt
-
-hello world, I am a base
-</code></pre>
-
-<p>好了，我相信你看到了分层镜像的样子了。</p>
-
-<h2 id="p-markdown-1-style-display-block-padding-10px-margin-10px-0-border-1px-solid-ccc-border-left-width-5px-border-radius-3px-border-left-color-df3e3e-2-docker-的-devicemapper-p"><p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-left-width: 5px;border-radius: 3px;border-left-color: #df3e3e;">2. <strong>Docker 的 devicemapper</strong></p></h2>
+<h2 id="p-id-h2-2-cri-o-的原理及架构-p"><p id="h2">2. CRI-O 的原理及架构</p></h2>
 
 <hr />
 
-<blockquote>
-<p>上面基本上就是 Docker 的玩法了，我们可以看一下 docker 的 loopback 设备：</p>
-</blockquote>
+<p>CRI-O 最出名的特点是它支持“受信容器”和“非受信容器”的混合工作负载。比如，CRI-O 可以使用 <a href="https://clearlinux.org/containers" target="_blank">Clear Containers</a> 做强隔离，这样在多租户配置或者运行非信任代码时很有用。这个功能如何集成进 Kubernetes 现在还不太清楚，Kubernetes 现在认为所有的后端都是一样的。</p>
 
-<pre><code class="language-bash">$ losetup -a
+<p>当 Kubernetes 需要运行容器时，它会与 CRI-O 进行通信，CRI-O 守护程序与 <code>runc</code>（或另一个符合 OCI 标准的运行时）一起启动容器。当 Kubernetes 需要停止容器时，CRI-O 会来处理，它只是在幕后管理 Linux 容器，以便用户不需要担心这个关键的容器编排。</p>
 
-/dev/loop0: [64768]:38050288 (/var/lib/docker/devicemapper/devicemapper/data)
-/dev/loop1: [64768]:38050289 (/var/lib/docker/devicemapper/devicemapper/metadata)
-</code></pre>
+<p><img src="https://dn-linuxcn.qbox.me/data/attachment/album/201710/31/234945ee5euzn7hu0cnu4u.png" alt="" /></p>
 
-<blockquote>
-<p>其中 data <code>100GB</code>，metadata <code>2.0GB</code></p>
-</blockquote>
+<p>CRI-O 有一个有趣的架构（见下图），它重用了很多基础组件，下面我们来看一下各个组件的功能及工作流程。</p>
 
-<pre><code class="language-bash">$ ls -alsh /var/lib/docker/devicemapper/devicemapper
+<p><img src="http://o7z41ciog.bkt.clouddn.com/crio-architecture.png" alt="" /></p>
 
-506M -rw-------. 1 root root 100G Sep 10 20:15 data
-1.1M -rw-------. 1 root root 2.0G Sep 10 20:15 metadata
-</code></pre>
+<ul>
+<li><p>Kubernetes 通知 <code>kubelet</code> 启动一个 pod。</p></li>
 
-<blockquote>
-<p>下面是相关的 <code>thin-pool</code>。其中，有个当一大串 hash 串的 device 是正在启动的容器：</p>
-</blockquote>
+<li><p>kubelet 通过 <code>CRI</code>(Container runtime interface) 将请求转发给 <code>CRI-O daemon</code>。</p></li>
 
-<pre><code class="language-bash">$ ll /dev/mapper/dock*
+<li><p>CRI-O 利用 <code>containers/image</code> 库从镜像仓库拉取镜像。</p></li>
 
-lrwxrwxrwx. 1 root root 7 Aug 25 07:57 /dev/mapper/docker-253:0-104108535-pool -&gt; ../dm-2
-lrwxrwxrwx. 1 root root 7 Aug 25 11:13 /dev/mapper/docker-253:0-104108535-deefcd630a60aa5ad3e69249f58a68e717324be4258296653406ff062f605edf -&gt; ../dm-3
-</code></pre>
+<li><p>下载好的镜像被解压到容器的根文件系统中，并通过 <code>containers/storage</code> 库存储到 COW 文件系统中。</p></li>
 
-<blockquote>
-<p>我们可以看一下它的 <code>device id</code>（Docker 都把它们记下来了）：</p>
-</blockquote>
+<li><p>在为容器创建 <code>rootfs</code> 之后，CRI-O 通过 <a href="https://github.com/opencontainers/runtime-tools" target="_blank">oci-runtime-tool</a> 生成一个 OCI 运行时规范 json 文件，描述如何使用 OCI Generate tools 运行容器。</p></li>
 
-<pre><code class="language-bash">$ cat /var/lib/docker/devicemapper/metadata/deefcd630a60aa5ad3e69249f58a68e717324be4258296653406ff062f605edf
-</code></pre>
+<li><p>然后 CRI-O 使用规范启动一个兼容 CRI 的运行时来运行容器进程。默认的运行时是 <code>runc</code>。</p></li>
 
-<p><code>device_id</code> 是 24，size 是 <code>10737418240</code>，除以 512，就是 <code>20971520</code> 个 <code>sector</code>。</p>
+<li><p>每个容器都由一个独立的 <code>conmon</code> 进程监控，conmon 为容器中 pid 为 1 的进程提供一个 <code>pty</code>。同时它还负责处理容器的日志记录并记录容器进程的退出代码。</p></li>
 
-<blockquote>
-<p>我们用这些信息来做个 <code>snapshot</code> 看看（注：我用了一个比较大的 dev id – 1024）：</p>
-</blockquote>
+<li><p>网络是通过 CNI 接口设置的，所以任何 CNI 插件都可以与 CRI-O 一起使用。</p></li>
+</ul>
 
-<pre><code class="language-bash">$ dmsetup message &quot;/dev/mapper/docker-253:0-104108535-pool&quot; 0 \
-  &quot;create_snap 1024 24&quot;
-  
-$ dmsetup create dockersnap --table \
-  &quot;0 20971520 thin /dev/mapper/docker-253:0-104108535-pool 1024&quot;
-  
-$ mkdir /mnt/docker
+<h3 id="隆重介绍一下-conmon">隆重介绍一下 conmon</h3>
 
-$ mount /dev/mapper/dockersnap /mnt/docker/
+<p>根据 Patel 所说，conmon 程序是“纯C编写的，用来提高稳定性和性能”，conmon 负责监控，日志，TTY 分配，以及类似 <code>out-of-memory</code> 情况的杂事。</p>
 
-$ ls /mnt/docker/
+<p>conmon 需要去做所有 <code>systemd</code> 不做或者不想做的事情。即使 CRI-O 不直接使用 systemd 来管理容器，它也将容器分配到 sytemd 兼容的 <code>cgroup</code> 中，这样常规的 systemd 工具比如 <code>systemctl</code> 就可以看见容器资源使用情况了。</p>
 
-id lost+found rootfs
+<p>因为 conmon（不是CRI daemon）是容器的父进程，它允许 CRI-O 的部分组件重启而不会影响容器，这样可以保证更加平滑的升级。<strong>现在 Docker 部署的问题就是 Docker 升级需要重起所有的容器</strong>。 通常这对于 Kubernetes 集群来说不是问题，但因为它可以将容器迁移来滚动升级。</p>
 
-$ ls /mnt/docker/rootfs/
+<h2 id="p-id-h2-3-下一步-p"><p id="h2">3. 下一步</p></h2>
 
-bin dev etc home lib lib64 lost+found media mnt opt proc root run sbin srv sys tmp usr var
-</code></pre>
+<hr />
 
-<blockquote>
-<p>我们在 docker 的容器里用 <code>findmnt</code> 命令也可以看到相关的 mount 的情况（因为太长，下面只是摘要）：</p>
-</blockquote>
+<p><code>CRI-O 1.0</code> 在2017年10月发布，支持 Kubernetes 1.7，后来 CRI-O 1.8，1.9 相继发布，支持 Kubernetes 的 1.8， 1.9（此时版本命名规则改为与Kubernetes一致）。</p>
 
-<pre><code class="language-bash">$ findmnt
+<p>CRI-O 在 <code>Openshift 3.7</code> 中作为 beta 版提供，Patel 考虑在 <code>Openshift 3.9</code> 中让它进步一步稳定，在 3.10 中成为缺省的运行时，同时让 Docker 作为候选的运行时。</p>
 
-TARGET                SOURCE               
-/                 /dev/mapper/docker-253:0-104108535-deefcd630a60[/rootfs]
-/etc/resolv.conf  /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/resolv.conf]
-/etc/hostname     /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hostname]
-/etc/hosts        /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hosts]
-</code></pre>
+<p>下一步的工作包括集成新的 <code>Kata Containers</code> 的这个基于 VM 的运行时，增加 <code>kube-spawn</code> 的支持，支持更多类似 NFS， GlusterFS 的存储后端等。 团队也在讨论如何通过支持 <code>casync</code> 或者 <code>libtorrent</code> 来优化多节点间的镜像同步。</p>
+
+<p>如果你想贡献或者关注开发，就去 <a href="https://github.com/kubernetes-incubator/cri-o" target="_blank">CRI-O 项目的 GitHub 仓库</a>，然后关注 <a href="https://medium.com/cri-o" target="_blank">CRI-O 博客</a>。</p>
+
+<h2 id="p-id-h2-4-参考-p"><p id="h2">4. 参考</p></h2>
+
+<hr />
+
+<ul>
+<li><a href="https://www.projectatomic.io/blog/2017/02/crio-runtimes/" target="_blank">CRI-O and Alternative Runtimes in Kubernetes</a></li>
+<li><a href="http://cri-o.io/" target="_blank">Lightweight Container Runtime for Kubernetes</a></li>
+<li><a href="https://medium.com/cri-o/cri-o-support-for-kubernetes-4934830eb98e" target="_blank">CRI-O Support for Kubernetes</a></li>
+<li><a href="https://linux.cn/article-9015-1.html" target="_blank">CRI-O 1.0 简介</a></li>
+</ul>
 
 <p><br /></p>
 
-<p><center><a href="https://www.yangcs.net/posts/f233d871/">Device Mapper系列 (1)：Device Mapper 技术</a></center></p>
-
-<p><center><a href="https://www.yangcs.net/posts/5be9f42/">Device Mapper系列 (2)：Thin Provisioning 实践</a></center></p>
-
-<p><center><a href="https://www.yangcs.net/posts/7635fcc/">Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</a></center></p>
+<style>
+#h2{
+    margin-bottom:2em; 
+    margin-right: 5px; 
+    padding: 8px 15px; 
+    letter-spacing: 2px; 
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); 
+    background-color: rgb(63, 81, 181); 
+    color: rgb(255, 255, 255); 
+    border-left: 10px solid rgb(51, 51, 51); 
+    border-radius:5px; 
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px; 
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
             </article>
 
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/devicemapper-theory/" data-toggle="tooltip" data-placement="top" title="Device Mapper系列 (1)：Device Mapper 技术">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/container-runtime/" data-toggle="tooltip" data-placement="top" title="Kubernetes 中的容器运行时">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/second/" data-toggle="tooltip" data-placement="top" title="Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/lvs-persistent-connection/" data-toggle="tooltip" data-placement="top" title="LVS负载均衡之持久性连接介绍">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -698,7 +673,15 @@ TARGET                SOURCE
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/devicemapper-theory/">Device Mapper系列 (1)：Device Mapper 技术</a></li>
+                    <li><a href="/posts/container-runtime/">Kubernetes 中的容器运行时</a></li>
+                    
+                    <li><a href="/posts/k8s-network-expand/">Kubernetes 网络扩展</a></li>
+                    
+                    <li><a href="/posts/calico-rr/">calico Router reflection(RR) 模式介绍及部署</a></li>
+                    
+                    <li><a href="/posts/how-manage-image/">docker 在本地如何管理 image（镜像）?</a></li>
+                    
+                    <li><a href="/posts/federation/">Kubernetes 使用集群联邦实现多集群管理</a></li>
                     
                 </ul>
                 
@@ -709,10 +692,12 @@ TARGET                SOURCE
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Mon Jan 22, 2018</h4>
+        <h4 id="date"> Tue Apr 3, 2018</h4>
     </section>
-    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
+    <h5 id="wc">2000 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
         
         <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
     </h5>
@@ -725,24 +710,21 @@ TARGET                SOURCE
                 
                  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 <aside id=comments>
-    <div>
-        <h2> Comments </h2>
-    </div>
-    <div id="container"></div>
-    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
     
-    <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/gitment.browser.js"></script>
-    <script>
-        var gitment = new Gitment({
-            owner: 'yangchuansheng', 
-            repo: 'hugo-gitment', 
-            oauth: {
-                client_id: '6eb551e8b04b1f8ff095',
-                client_secret: '27c15dcbb6fcb6ef33d4dfaef7302e2eb59529b8',
-            },
-        })
-        gitment.render('container')
-    </script>
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
 </aside>
 </div>
 
@@ -825,8 +807,8 @@ TARGET                SOURCE
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.33</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
-          
+          <a href="http://gohugo.io">Hugo v0.37</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
         </p>
       </div>
     </div>
@@ -844,8 +826,6 @@ TARGET                SOURCE
 <script> renderMathInElement(document.body); </script>
 
 
-
-  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
 
 
 

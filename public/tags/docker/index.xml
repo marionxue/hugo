@@ -6,10 +6,37 @@
     <description>Recent content in Docker on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 11 Feb 2018 10:40:33 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 03 Apr 2018 08:11:38 +0000</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CRI-O 简介</title>
+      <link>https://www.yangcs.net/posts/cri-o/</link>
+      <pubDate>Tue, 03 Apr 2018 08:11:38 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/cri-o/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Kubernetes 中的容器运行时</title>
+      <link>https://www.yangcs.net/posts/container-runtime/</link>
+      <pubDate>Tue, 03 Apr 2018 06:50:43 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/container-runtime/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>docker 在本地如何管理 image（镜像）?</title>
+      <link>https://www.yangcs.net/posts/how-manage-image/</link>
+      <pubDate>Mon, 02 Apr 2018 05:12:18 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/how-manage-image/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Kubernetes 网络扩展</title>
