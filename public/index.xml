@@ -576,9 +576,8 @@ net.ipv4.tcp_synack_retries = 5
       <pubDate>Wed, 23 May 2018 10:23:29 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</guid>
-      <description>
-
-&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 是 Kubernetes 中负责调度的组件，它本身的调度功能已经很强大了。但由于 Kubernetes 集群非常活跃，它的状态会随时间而改变，由于各种原因，你可能需要将已经运行的 Pod 移动到其他节点：&lt;/p&gt;
+      <description>&lt;p&gt;
+&lt;code&gt;kube-scheduler&lt;/code&gt; 是 Kubernetes 中负责调度的组件，它本身的调度功能已经很强大了。但由于 Kubernetes 集群非常活跃，它的状态会随时间而改变，由于各种原因，你可能需要将已经运行的 Pod 移动到其他节点：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;某些节点负载过高&lt;/li&gt;
@@ -1011,8 +1010,7 @@ border-top-width: 5px;
 border-radius: 3px;
 border-top-color: #9954bb;
 }
-&lt;/style&gt;
-</description>
+&lt;/style&gt;</description>
     </item>
     
     <item>

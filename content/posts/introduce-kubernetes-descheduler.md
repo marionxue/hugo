@@ -8,6 +8,7 @@ tags: ["kubernetes"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
+<!--more-->
 `kube-scheduler` 是 Kubernetes 中负责调度的组件，它本身的调度功能已经很强大了。但由于 Kubernetes 集群非常活跃，它的状态会随时间而改变，由于各种原因，你可能需要将已经运行的 Pod 移动到其他节点：
 
 + 某些节点负载过高

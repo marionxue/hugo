@@ -26,7 +26,7 @@
       <pubDate>Wed, 23 May 2018 10:23:29 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</guid>
-      <description>kube-scheduler 是 Kubernetes 中负责调度的组件，它本身的调度功能已经很强大了。但由于 Kubernetes 集群非常活跃，它的状态会随时间而改变，由于各种原因，你可能需要将已经运行的 Pod 移</description>
+      <description></description>
     </item>
     
     <item>
