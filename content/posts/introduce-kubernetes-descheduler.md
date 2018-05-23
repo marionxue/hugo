@@ -21,7 +21,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 ----
 
-[Descheduler]() 会检查 Pod 的状态，并根据自定义的策略将不满足要求的 Pod 从该节点上驱逐出去。Descheduler 并不是 `kube-scheduler` 的替代品，而是要依赖于它。该项目目前放在 Kubernetes 的孵化项目中，还没准备投入生产，但经过我实验发现它的运行效果很好，而且非常稳定。那么该如何安装呢？
+[Descheduler](https://github.com/kubernetes-incubator/descheduler) 会检查 Pod 的状态，并根据自定义的策略将不满足要求的 Pod 从该节点上驱逐出去。Descheduler 并不是 `kube-scheduler` 的替代品，而是要依赖于它。该项目目前放在 Kubernetes 的孵化项目中，还没准备投入生产，但经过我实验发现它的运行效果很好，而且非常稳定。那么该如何安装呢？
 
 ## <p id="h2">2. 部署方法</p>
 

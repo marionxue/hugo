@@ -591,7 +591,7 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;hr /&gt;
 
-&lt;p&gt;[Descheduler]() 会检查 Pod 的状态，并根据自定义的策略将不满足要求的 Pod 从该节点上驱逐出去。Descheduler 并不是 &lt;code&gt;kube-scheduler&lt;/code&gt; 的替代品，而是要依赖于它。该项目目前放在 Kubernetes 的孵化项目中，还没准备投入生产，但经过我实验发现它的运行效果很好，而且非常稳定。那么该如何安装呢？&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes-incubator/descheduler&#34; target=&#34;_blank&#34;&gt;Descheduler&lt;/a&gt; 会检查 Pod 的状态，并根据自定义的策略将不满足要求的 Pod 从该节点上驱逐出去。Descheduler 并不是 &lt;code&gt;kube-scheduler&lt;/code&gt; 的替代品，而是要依赖于它。该项目目前放在 Kubernetes 的孵化项目中，还没准备投入生产，但经过我实验发现它的运行效果很好，而且非常稳定。那么该如何安装呢？&lt;/p&gt;
 
 &lt;h2 id=&#34;p-id-h2-2-部署方法-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 部署方法&lt;/p&gt;&lt;/h2&gt;
 
