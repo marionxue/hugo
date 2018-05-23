@@ -6,10 +6,19 @@
     <description>Recent content in Kubernetes on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 03 May 2018 12:08:01 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 23 May 2018 10:23:29 +0000</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/categories/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>走进 Descheduler</title>
+      <link>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</link>
+      <pubDate>Wed, 23 May 2018 10:23:29 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</guid>
+      <description>kube-scheduler 是 Kubernetes 中负责调度的组件，它本身的调度功能已经很强大了。但由于 Kubernetes 集群非常活跃，它的状态会随时间而改变，由于各种原因，你可能需要将已经运行的 Pod 移</description>
+    </item>
     
     <item>
       <title>Pod 的生命周期管理</title>
