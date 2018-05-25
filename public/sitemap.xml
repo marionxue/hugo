@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/learn-english/</loc>
+    <lastmod>2018-05-25T06:46:19+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</loc>
     <lastmod>2018-05-23T10:23:29+00:00</lastmod>
   </url>
@@ -120,10 +125,6 @@
   <url>
     <loc>https://www.yangcs.net/</loc>
     <lastmod>2018-01-23T08:26:58+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://www.yangcs.net/posts/learn-english/</loc>
   </url>
   
   <url>

@@ -1,3 +1,13 @@
+---
+description: "英语学习终极秘诀 - 把你的英语用起来"
+title: "英语学习终极秘诀"
+subtitle: "把你的英语用起来"
+date: 2018-05-25T06:46:19Z
+draft: false
+postmeta: false
+nocomment: true
+---
+
 很久很久以前，当网易还在做梦幻西游和大话西游的时候，网易有道教研部诞生了一位大牛，他是**国内最知名，最有影响力的英语学习研究者，新东方口语大赛评委、网易有道教研总监<span id="inline-purple">@恶魔奶爸Sam</span>**。不过他现在已经不在网易了，可能是不想陪丁磊一起养猪 :smile:
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/naiba.png?imageView/2/w/300/q/100)</center>
