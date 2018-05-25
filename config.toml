@@ -159,6 +159,12 @@ desc = "Using Big Data to make business decision"
     weight = 1
 
 [[menu.main]]
+    parent = "Cheats"
+    name = "A Day in the life of Jeff"
+    url = "https://www.yangcs.net/a-day-in-the-life-of-jeff"
+    weight = 2
+
+[[menu.main]]
     name = "关于我"
     url = "https://www.yangcs.net/resume/"
     weight = 5
