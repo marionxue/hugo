@@ -148,9 +148,15 @@ desc = "Using Big Data to make business decision"
     weight = 6
 
 [[menu.main]]
-    identifier = "脚本推荐"
-    name = "脚本推荐"
+    identifier = "Cheats"
+    name = "葵花宝典"
     weight = 4
+
+[[menu.main]]
+    parent = "Cheats"
+    name = " 英语学习终极秘诀"
+    url = "learn-english"
+    weight = 1
 
 [[menu.main]]
     name = "关于我"
