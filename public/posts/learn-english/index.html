@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> LVS负载均衡之持久性连接介绍 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> Ryan Yang - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="LVS负载均衡之持久性连接介绍" />
-  <meta name="twitter:title" content="LVS负载均衡之持久性连接介绍" />
-  <meta name="description" content="如何根据业务场景来设置 lvs 持久性">
-  <meta property="og:description" content="如何根据业务场景来设置 lvs 持久性">
-  <meta name="twitter:description" content="如何根据业务场景来设置 lvs 持久性">
+  <meta property="og:title" content="Ryan Yang" />
+  <meta name="twitter:title" content="Ryan Yang" />
+  <meta name="description" content="很久很久以前，当网易还在做梦幻西游和大话西游的时候，网易有道教研部诞生了一位大牛，他是国内最知名，最有影响力的英语学习研究者，新东方口语大赛">
+  <meta property="og:description" content="很久很久以前，当网易还在做梦幻西游和大话西游的时候，网易有道教研部诞生了一位大牛，他是国内最知名，最有影响力的英语学习研究者，新东方口语大赛">
+  <meta name="twitter:description" content="很久很久以前，当网易还在做梦幻西游和大话西游的时候，网易有道教研部诞生了一位大牛，他是国内最知名，最有影响力的英语学习研究者，新东方口语大赛">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/lvs-persistent-connection/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/learn-english/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.37" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/lvs-persistent-connection/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/learn-english/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -291,70 +291,7 @@ autocomplete('#aa-search-input',
 
 
 
-  
-    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
-  
-
-  <header class="header-section has-img">
-    
-      <div class="intro-header big-img">
-        
-        
-        <div class="container">
-          <div class="row">
-              <div class="col-lg-12 col-md-12 col-md-offset-0">
-                
-                <div class="post-heading">
-                
-                  
-                     <h1>LVS负载均衡之持久性连接介绍</h1>
-                     
-                     
-                  
-                  
-                  
-                    
-                      <hr class="small">
-                      <span class="post-subheading">如何根据业务场景来设置 lvs 持久性</span>
-                    
-                  
-                  
-                    <span class="post-meta">
-  
-  Posted on April 18, 2018
-  
-  
-</span>
-
-
-                  
-                
-              </div>
-            </div>
-          </div>
-        </div>
-        <span class="img-desc" style="display: inline;"></span>
-      </div>
-    
-    <div class="intro-header no-img">
-      
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="posts-heading">
-                <h1 align="center">LVS负载均衡之持久性连接介绍</h1>
-                
-                  
-                    <h2 align="center" class="posts-subheading">如何根据业务场景来设置 lvs 持久性</h2>
-                  
-                
-                
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
+  <div class="intro-header"></div>
 
 
     
@@ -366,221 +303,114 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Wed Apr 18, 2018</h4>
+        <h4 id="date"> Mon Jan 1, 0001</h4>
     </section>
-    <h5 id="wc">3800 Words|Read in about 8 Min</h5>
+    <h5 id="wc">3100 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
-        
-        <a href="https://www.yangcs.nettags/lvs/">lvs</a> &nbsp;
     </h5>
 </div>
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
-                <p></p>
+                
 
-<h2 id="p-id-h2-1-前言-p"><p id="h2">1. 前言</p></h2>
+<p>很久很久以前，当网易还在做梦幻西游和大话西游的时候，网易有道教研部诞生了一位大牛，他是<strong>国内最知名，最有影响力的英语学习研究者，新东方口语大赛评委、网易有道教研总监<span id="inline-purple">@恶魔奶爸Sam</span></strong>。不过他现在已经不在网易了，可能是不想陪丁磊一起养猪 😄</p>
 
-<hr />
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/naiba.png?imageView/2/w/300/q/100" alt="" /></center>
+<center>- 恶魔奶爸Sam -</center>
+<center>前网易有道教研总监</center>
+<center>新东方全国口语大赛评委</center>
+<center>知乎英语学习领域百万赞答主</center></p>
 
-<p>在实际生产环境中，往往需要根据业务应用场景来设置 <code>lvs</code> 的会话超时时间以及防 <code>session</code> 连接丢失的问题提，如在业务支付环节，如若 <code>session</code> 丢失会导致重复扣款问题，严重影响到安全性，本小节解将会讲到关于 <code>lvs</code> 持久性连接问题。</p>
+<p><br /></p>
 
-<h3 id="为什么用到持久连接">为什么用到持久连接？</h3>
+<p>辜鸿铭曾说过，“今人学英文十年，张目仅能读报，伸手仅能修函。”，那是一百多年前的事情，如今呢？“今人学英文十年，张目不能读报，伸手不能修函。”</p>
 
-<p>在 Web 服务通信中，当用户在一个网站浏览了A网页并跳转到B网页，此时服务器就认为B网页是一个新的用户请求，你之前的登陆的信息就都丢失了。</p>
+<p>实用能力，可谓一塌糊涂。</p>
 
-<p>为了记录用户的会话信息，我们的开发者就在客户端/服务器端软件提供了 <code>cookie/session</code> 机制，当你访问网站时，服务器端建立一个 session 会话区，并建立一个 cookie 与这个 session 绑定，将信息发送给你的浏览器。</p>
+<p>在此之前，我还在英语学习的艰苦道路上徘徊不前，我自己个人在大学时期苦修英文，同样不得其法，非常苦闷，不论怎么学习，英语水平就是局限在某个瓶颈，就是突破不了。</p>
 
-<p>这样，只要你的 cookie 存在，服务器端的 session 存在，那么当你打开新页面的时候，服务器依然会认识你。</p>
+<p>因为现在的英语材料和英语方法是在太多了，美剧，新闻，新概念，听写，跟读，模仿，仿写，复述，这个名师讲课，那个名师课堂，等等等等，让人眼花缭乱，目不衔接，根本不知道如何选择，所以更加感觉无从下手。</p>
 
-<p><strong>在做了负载均衡的时候，上面的机制就出现了问题。假设有以下场景：</strong></p>
+<p>我以为我的英语学习生涯到此应该就止步了，可就在我将要丧失斗志之际，我读到了奶爸的文章，他那高屋建瓴，纵览全局的英语学习方法论让我感到醍醐灌顶，跳出之前二十年英语学习的误区，重新燃起了斗志！</p>
 
-<p id="div-border-top-red">某电商网站为了实现更多用户的访问，提供了A、B两台服务器，并在前面做了 LVS 负载均衡。于是某用户打开了该购物网站，选中了一件衣服，并加入了购物车(此时背后的操作是：LVS 负载均衡器接受了用户请求，并将其分发到了选中的服务器，并将用户添加了一件衣服记录到这个会话的 session 中)。这时当用户打开了第二个网页，又选中了一件帽子并加入购物车(此时背后的操作是：LVS 负载均衡器接受了用户请求，进行计算，将其发送到选中的服务器上，该服务器将用户添加了一件帽子记录到 session 中)。<br /><br />由于 LVS 是一个四层负载均衡器，仅能根据 <code>IP:Port</code> 对数据报文进行分发，不能确保将同一用户根据 session 发往同一个服务器，也就是用户第一次被分配到了A服务器，而第二次可能分配到了B服务器，但是B服务器并没有A服务器用户的 session 记录，直接导致这个例子里的用户发现自己的购物车没有了之前的衣服，而仅有帽子。这是不可接受的。</p>
+<p>至于具体的方法论，由于篇幅有限，再此不多作介绍，本文末尾会放出详细的链接。</p>
 
-<p>为了避免上面的问题，一般站点会有两种方法解决该问题：</p>
-
-<p><font color="#2780e3">
-1. 将来自于同一个用户的请求发往同一个服务器<br />
-2. 将 session 信息在服务器集群内共享，每个服务器都保存整个集群的 session 信息<br />
-3. 建立一个 session 存储池，所有 session 信息都保存到存储池中
-</font></p>
-
-<p><br />
-当然通过 session 共享解决是比较完美的，但实现起来相对复杂：</p>
+<p>大家可以通过以下几个途径关注他：</p>
 
 <ul>
-<li>一需要额外增加服务器设备</li>
-<li>二需要代码改动，在用户操作前，需要先获取该用户的session信息</li>
+<li><a href="https://site.douban.com/195274/" target="_blank">豆瓣学习小组：奶爸的英语教室</a></li>
+<li>微信公众号：恶魔奶爸Sam</li>
 </ul>
 
-<p>总结下来，第一种方法是最简单的。</p>
+<p>奶爸的方法论大多借鉴了 <a href="http://blog.sina.com.cn/u/1264366955" target="_blank">伍君仪</a> 的方法论，并加以改进。而伍君仪的主要方法论都集中在他和奶爸合作写的一本教材《把你的英语用起来》中。本文节选出该教材的前言部分，大家感受一下：</p>
 
-<h3 id="hash算法与持久连接">hash算法与持久连接</h3>
+<h2 id="p-id-h2-奶爸-这是一本游戏指南-p"><p id="h2">奶爸：这是一本游戏指南</p></h2>
 
-<p>LVS 的八种轮询算法中有（Source Hashing）源地址 hash，它和持久连接的作用都是<font color="#df3e3e">将来自同一个IP的请求都转发到同一个 Server</font>，从而保证了 session 会话定位的问题。两者的不同是：</p>
+<p>这是一本游戏指南。没错，你没有看错，这就是一本游戏指南。当然，这本指南针对的只是名为“英文”的游戏。</p>
 
-<h4 id="source-hashing-算法">Source Hashing 算法</h4>
+<p>把英文和电子游戏比较一下，我们会发现，这两者有惊人的相似之处。</p>
 
-<p>该算法在内核中会自动维护一个哈希表，此哈希表中用每一个请求的源IP地址经过哈希计算得出的值作为键，把请求所到达的 RS 的地址作为值。</p>
+<p><strong>第一</strong>，它们都需要你耗费大量的时间、投入很多精力去练级，磨炼你的技能，唯一不同的是电脑游戏要你练的是魔法和剑术技能，而英文要你练的是听、说、读、写的技能。</p>
 
-<p>在后面的请求中，每一个请求会先经过此哈希表，如果请求在此哈希表中有键值，那么直接定向至特定 RS，如没有，则会新生成一个键值，以便后续请求的定向。</p>
+<p><strong>第二</strong>，它们都要求你积累大量的经验值，游戏要求你打怪和做各种任务，而英语要求你完成大量的听力、跟读、阅读、写作等练习。</p>
 
-<p>但是此种方法在时间的记录上比较模糊（依据TCP的连接时长计算）。而且通过 hash 算法无法公平均担后端 real server 的请求，即不能与 rr 等算法同时使用。</p>
+<p><strong>第三</strong>，这两者都有严格的等级分别，不同的等级从某种程度上说，代表着你可以在这个世界上“为非作歹”、“为所欲为”的程度。游戏中的等级高，你可以在 PK 时处处取胜，带着美眉做任务，博得她们的芳心。英文等级高了，你可以出国，找份不错的工作，去英语角博得美眉的芳心或者干脆直接去泡外国妞，这两者在这方面真是有异曲同工之妙。</p>
 
-<h4 id="持久连接">持久连接</h4>
+<p><strong>第四</strong>，不管是打游戏还是学英语，你都必须闯过多重关卡，而每个关卡都有你不得不面对的 boss。不管这个 boss 是名为暗黑破坏神巫妖王，还是四六级托福雅思 GRE，每个关卡你是非过不可，要么你打死 boss，要么被 boss 打死。</p>
 
-<p>此种方法实现了无论使用哪一种调度方法，持久连接功能都能保证在指定时间范围之内，来自于同一个IP的请求将始终被定向至同一个 RS，还可以把多种服务绑定后统一进行调度。</p>
+<p><strong>第五</strong>，在游戏级数升到一定级别之后，你都会遇到很严重的瓶颈，级数再往上升会很困难，因为它需要更多的经验值、更多的时间投入。英文同样如此，很多人学到一定层次之后都很容易陷入平台期，不知道如何进一步提高，耗费很多时间却没多大进展，甚至干脆放弃。</p>
 
-<p>在 director 内有一个 LVS 持久连接模板，模板中记录了每一个请求的来源、调度至的 RS、维护时长等等，所以，在新的请求进入时，首先在此模板中检查是否有记录（有内置的时间限制，比如限制是300秒，当在到达300秒时依然有用户访问，那么持久连接模板就会将时间增加两分钟，再计数，依次类推，每次只延长2分钟），如果该记录未超时，则使用该记录所指向的 RS，如果是超时记录或者是新请求，则会根据调度算法先调度至特定 RS，再将调度的记录添加至此表中。</p>
+<p><strong>第六</strong>，在打游戏和学英语的过程中，你都有可能发生意外。游戏中，你可能会膝盖中了一箭，而如果英语学得不好，你可能学位证都拿不到，升职机会就抓不住。为了避免这些意外发生，我们都应该好好想一想，用什么样的攻略和方法去达到自己的目标。</p>
 
-<p>这并不与 SH 算法冲突，lvs 持久连接会在新请求达到时，检查后端 RS 的负载状况，这就是比较精细的调度和会话保持方法。</p>
+<p>这两者的相似程度如此之高，以至于我们有理由相信：学英语，也可以像玩游戏一样充满乐趣，越玩越想玩！</p>
 
-<h2 id="p-id-h2-2-lvs-的持久性连接有两方面-p"><p id="h2">2. lvs 的持久性连接有两方面</p></h2>
+<p>因此，本书的目的有四：</p>
 
-<hr />
+<p><strong>第一，给出一个完整的英文学习攻略，涵盖了从ABC初级入门，到轻松看懂无字幕影视、原版专业教材的各个等级和阶段。</strong></p>
 
-<p><strong>1、把同一个 <code>client</code> 的请求信息记录到 lvs 的 <code>hash</code> 表里，保存时间使用 <code>persistence_timeout</code> 控制，单位为秒。</strong></p>
+<p>不管你是一个新人还是一个小有名气的高手，我们都会提供循序渐进的、详细且完整的步骤供你参考，而不像任何一本其他攻略那样只告诉你某一个任务关的攻略（比如只偏重听说而没有涵盖读写之类的学习方法指南）。我们涵盖的是全部流程，每一步都稳扎稳打，让你从一名 newbie（菜鸟）变成一个真正的骨灰级高手。</p>
 
-<p><code>persistence_granularity</code> 参数是配合 <code>persistence_timeout</code> 的，在某些情况特别有用。他的值是子网掩码，表示持久连接的粒度，默认是 <code>255.255.255.255</code>，也就是单独的 client ip，如果改成 <code>255.255.255.0</code>，和 client ip 在同一个网段的都会被分配到同一个 <code>real server</code>。</p>
+<p><strong>第二，教你如何迅速突破英文学习的平台期和瓶颈——这也是本书的核心内容。</strong></p>
 
-<p><strong>2、一个连接创建后空闲时的超时时间，这个时间为3种。</strong></p>
+<p>如果你英文水平还算不错的话，肯定会明白平台期的痛苦——苦学三个月毫无进步，那这本攻略就正是你所需要的。它可以帮你扫清一切学习上的迷思和痛苦，迅速把你带到真正高水平的世界。事实上，这本攻略是如此有效，以至于你在用它来指导自己学习的时候，进步的速度会快得让你自己都感到吃惊。</p>
+
+<p><strong>第三，让大家能够坚持下去学好英文——这也是本书最大的特色。</strong></p>
+
+<p>讲英文学习的方法有很多，我们在这里不仅仅是告诉大家如何学习，更重要的是，我们还会告诉大家如何去“坚持学习”。换言之，我们会手把手地教会大家正确的陶冶心智的方法，杜绝不当或者错误的自我认知，一步步地通过自我管理和心智培养，来实现人生满足。</p>
+
+<p><strong>第四，让大家学英文像打电子游戏一样，充满乐趣，不再为英文头痛，快速通关！</strong></p>
+
+<p>我们在书中设置了中级、中高级、听说进阶级、高级四大关卡，让大家好像打游戏一样来闯关得分，提高自己的英文水准！这四大关卡分别涵盖了英文的听力、口语交际、原版书阅读、语法、词汇、写作等各个部分，大家在学习自己喜欢和感兴趣的材料时，不知不觉中这些能力都能够得到高效的提高</p>
+
+<p>正是抱着这样的目的，伍君仪老师和不才二人汇总了各自的一些粗浅经验，写出了这一本英文游戏攻略。我们虽不算是功力震古烁今的绝顶高手，但作为浸淫英文游戏多年的过来人，也算是略有心得。在这本书中，我们竭尽所能，将这个名为“英文”的游戏中的各种法门、陷阱、弯路一一道来，让诸君的英文能力升级像开外挂那么迅速，一路闯过各种关卡，灭掉名为“英文听、说、读、写”的四大魔王也好，打败各类名为“四六级”的boss也好，击退各种名为“英文会议”或是“英文面试”的小卒也好，请拿出你的汗水、勇气、智慧去努力奋斗，直至你有能力去挑战名为“流利英语，母语水平”的超级大魔王，让“美女剑豪带着酒来了”的热血故事广为流传！</p>
+
+<h2 id="p-id-h2-福利-p"><p id="h2">福利</p></h2>
+
+<p>本书完整版可以到当当或亚马逊购买，我这里也提供了免费的电子版：</p>
 
 <ul>
-<li><strong>tcp:</strong> tcp的空闲超时时间</li>
-<li><strong>tcpfin:</strong> lvs收到客户端tcp fin的超时时间</li>
-<li><strong>udp:</strong> udp的超时时间</li>
+<li><a href="http://default-1252251317.cossh.myqcloud.com/%E6%8A%8A%E4%BD%A0%E7%9A%84%E8%8B%B1%E8%AF%AD%E7%94%A8%E8%B5%B7%E6%9D%A5.pdf" target="_blank">pdf</a></li>
+<li><a href="http://default-1252251317.cossh.myqcloud.com/%E6%8A%8A%E4%BD%A0%E7%9A%84%E8%8B%B1%E8%AF%AD%E7%94%A8%E8%B5%B7%E6%9D%A5.epub" target="_blank">epub</a></li>
 </ul>
 
-<h2 id="p-id-h2-3-lvs-相关超时时间查看-p"><p id="h2">3. lvs 相关超时时间查看</p></h2>
+<p>关于本书中推荐的 Podcast: 《A Day in the life of Jeff》，我已经将其录音材料免费分享到互联网上，同时也将录音内容整理成电子书，大家可以免费下载：</p>
 
-<hr />
+<h4 id="录音材料">录音材料</h4>
 
-<p>通过 <code>ipvsadm -Ln</code> 可以查看 persistence_timeout 超时时间(默认超时时间 360s)</p>
+<p><a id="download" href="https://pan.baidu.com/s/1K0v274ULsghYmjjyWe93Bw"><i class="fa fa-download"></i><span> Download Now</span>
+</a></p>
 
-<pre><code class="language-bash">$ ipvsadm -Ln
-
-IP Virtual Server version 1.2.1 (size=4096)
-Prot LocalAddress:Port Scheduler Flags
-  -&gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
-TCP  10.254.66.97:8080 rr persistent 10800
-  -&gt; 172.20.104.7:8080            Masq    1      0          0
-  -&gt; 172.20.135.6:8080            Masq    1      0          0
-  -&gt; 172.20.135.7:8080            Masq    1      0          0
-</code></pre>
-
-<p>通过 <code>ipvsadm -Ln --timeout</code> 可以查看 <code>tcp tcpfin udp</code> 的超时时间（默认: 900 120 300)</p>
-
-<pre><code class="language-bash">$ ipvsadm -Ln --timeout
-
-Timeout (tcp tcpfin udp): 900 120 300
-</code></pre>
-
-<h2 id="p-id-h2-4-lvs-如何控制这些超时时间工作-p"><p id="h2">4. lvs 如何控制这些超时时间工作</p></h2>
-
-<hr />
-
-<pre><code class="language-bash">$ ipvsadm -Lnc
-
-IPVS connection entries
-pro expire state       source             virtual            destination
-TCP 01:54  TIME_WAIT   192.168.123.248:35672 10.254.66.97:8080  172.20.135.6:8080
-TCP 180:03 NONE        192.168.123.248:0  10.254.66.97:8080  172.20.135.6:8080
-</code></pre>
+<h4 id="电子书">电子书</h4>
 
 <ul>
-<li><p>当一个 client 访问 vip 的时候，这时 ipvs 就会记录一条状态为 <code>NONE</code> 的信息，如述上所示，<code>expire</code> 初始值为 <code>persistence_timeout</code> 的值，然后根据时钟主键变小，在以下记录存在期间，同一 client ip 连接上来，都会被分配到同一个后端。</p></li>
-
-<li><p><code>TIME_WAIT</code> 的值就是 tcp tcpfin udp 中的 <code>tcpfin</code> 的超时时间，当 <code>NONE</code> 的值为0时，如果 TIME_WAIT 还存在，那么 NONE 的值会从新变成 <code>persistence_timeout</code> 的值，再减少，直到 TIME_WAIT 消失以后，NONE 才会消失，只要 NONE 存在，同一 client 的访问，都会分配到统一 real server。</p></li>
+<li><a href="https://www.yangcs.net/a-day-in-the-life-of-jeff/" target="_blank">在线阅读</a></li>
+<li><a href="http://default-1252251317.cossh.myqcloud.com/a-day-in-the-life-of-jeff.pdf" target="_blank">pdf</a></li>
+<li><a href="http://default-1252251317.cossh.myqcloud.com/a-day-in-the-life-of-jeff.epub" target="_blank">epub</a></li>
+<li><a href="http://default-1252251317.cossh.myqcloud.com/a-day-in-the-life-of-jeff.mobi" target="_blank">mobi</a></li>
 </ul>
 
-<h2 id="p-id-h2-5-lvs-关于相关超时时间的设置-p"><p id="h2">5. lvs 关于相关超时时间的设置</p></h2>
-
-<hr />
-
-<p><code>persistence_timeout</code> 可以通过 <code>ipvsadm -p timeout</code> 来设置，默认 360 秒。</p>
-
-<pre><code class="language-bash">$ ipvsadm -A -t 192.168.20.154:80 -s rr -p 60
-</code></pre>
-
-<p id="div-border-top-purple">上面命令中红色标记的 80 端口，表示如果是同一客户端访问服务器的 80 端口，会被定义到同一个 real server，如果把 80 端口改为 <code>0</code>，那么同一客户端访问服务器的任何服务都会被转发到同一个 real server。</p>
-
-<p><code>tcp tcpfin udp</code> 可以通过 <code>ipvsadm --set 对应超时时间</code> 来设置。</p>
-
-<pre><code class="language-bash">$ ipvsadm --set tcp tcpfin udp
-</code></pre>
-
-<div id="note">
-<p id="note-title">Note</p>
-<br />
-<p><code>tcpfin</code> 的值最好小于 <code>persistence_timeout</code> 的值，这样比较方便计算，也有利于 <code>tcpfin</code> 回收</p>
-</div>
-
-<h2 id="p-id-h2-6-持久连接定义与原理-p"><p id="h2">6. 持久连接定义与原理</p></h2>
-
-<hr />
-
-<h3 id="定义">定义</h3>
-
-<blockquote>
-<p>持久连接是指无论使用什么算法，LVS 持久都能实现在一定时间内，将来自同一个客户端请求派发至此前选定的 <code>RS</code>。</p>
-</blockquote>
-
-<h3 id="原理">原理</h3>
-
-<p>当使用 LVS 持久性的时候，Director 在内部使用一个连接根据记录称之为 <code>持久连接模板</code> 来确保所有来自同一个客户端的请求被分发到同一台 <code>Real Server</code> 上。</p>
-
-<div id="note">
-<p id="note-title">Note</p>
-<br />
-<p>持久连接模板是指每一个客户端及分配给它的 <code>RS</code> 的映射关系。</p>
-</div>
-
-<h3 id="持久连接分类">持久连接分类</h3>
-
-<p><strong>1、 <font color="red">持久端口连接，</font>简称 PPC（Persistent Port Connections）</strong>：将来自于同一个客户端对同一个集群某个服务的请求，始终定向至此前选定的 <code>RS</code></p>
-
-<p><strong>例如：</strong><code>client----&gt;LVS(80)----&gt;RS1 或 client----&gt;LVS(23)----&gt;RS2</code><br />
-<strong>缺陷：</strong>期望访问不同的端口到同一台 <code>RS</code> 上，无法实现。</p>
-
-<p>配置：</p>
-
-<pre><code class="language-bash">$ ipvsadm -A -t 172.16.100.1:80 -s rr -p 3600
-$ ipvsadm -a -t 172.16.100.1:80 -r 172.16.100.10 -g -w 2
-$ ipvsadm -a -t 172.16.100.1:80 -r 172.16.100.11 -g -w 2
-</code></pre>
-
-<p><strong>2、<font color="red">持久客户端连接，</font>简称 PCC（Persistent Client Connections）：</strong>将来自于同一个客户端对所有端口的请求，始终定向至此前选定的 <code>RS</code></p>
-
-<p><strong>说明：</strong><code>PCC</code> 是一个虚拟服务没有端口号（或者端口号为 0），以 <code>-p</code> 来标识服务。<br />
-<strong>缺陷：</strong>定向所有服务，期望访问不同的 Real Server 无法实现。</p>
-
-<p>配置：</p>
-
-<pre><code class="language-bash">$ ipvsadm -A -t 172.16.100.1:0 -s rr -p 3600
-$ ipvsadm -a -t 172.16.100.1:0 -r 172.16.100.10 -g -w 2
-$ ipvsadm -a -t 172.16.100.1:0 -r 172.16.100.11 -g -w 2
-</code></pre>
-
-<p><strong>3、<font color="red">基于防火墙设置端口绑定的持久连接，</font>简称 PNMPP（Persistent Netfilter Marked Packet Persistence）：</strong>例如后台 real server 同时提供 <code>80</code> 和 <code>443</code> 端口的服务，并且两个服务之间有联系，这时就要用到 PNMPC</p>
-
-<p>先对某一特定类型的数据包打上标记，然后再将基于某一类标记的服务送到后台的 <code>Real Server</code> 上去，后台的 Real Server 并不识别这些标记。将<code>持久连接</code>和<code>防火墙标记</code>结合起来就能够实现端口姻亲功能，只要是来自某一客户端的对某一特定服务（需要不同的端口）的访问都定义到同一台 Real Server 上去。</p>
-
-<p><strong>案例：</strong>一个用户在访问购物网站时同时使用 <code>HTTP（80）</code>和 <code>HTTPS（443）</code>两种协议，我们需要将其定义到同一台 Real Server 上，而其他的服务不受限制。</p>
-
-<p>配置：</p>
-
-<pre><code class="language-bash">$ iptables -t mangle -A PREROUTING -d 172.16.100.1 -i eth0 -p tcp --dport 80 -j MARK --set-mark 8
-$ iptables -t mangle -A PREROUTING -d 172.16.100.1 -i eth0 -p tcp --dport 443 -j MARK --set-mark 8
-$ ipvsadm -A -f 8 -s rr -p 600
-$ ipvsadm -a -f 8 -r 172.16.100.10 -g -w 2
-$ ipvsadm -a -f 8 -r 172.16.100.11 -g -w 1
-</code></pre>
-
-<h2 id="p-id-h2-7-总结-p"><p id="h2">7. 总结</p></h2>
-
-<hr />
-
-<p>如何设置 <code>lvs</code> 持久性连接需要根据业务场景来选择，比如电商平台，对应的持久性连接应该是 <code>PNMPP</code>，另外还需要根据连接类型，比如长连接和短连接，来设置相关超时时间，总之,根据应用场景来选择！</p>
+<p>如果后续还有整理好的福利，将会在这里补充 😊</p>
 
 <style>
 #h2{
@@ -809,16 +639,13 @@ border-radius: 3px;
 border-top-color: #9954bb;
 }
 </style>
+
             </article>
 
             <ul class="pager blog-pager">
-                
-                <li class="previous">
-                    <a href="https://www.yangcs.net/posts/cri-o/" data-toggle="tooltip" data-placement="top" title="CRI-O 简介">&larr; Previous Post</a>
-                </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/kube-router/" data-toggle="tooltip" data-placement="top" title="Kube-router 实战">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="十分钟告诉你什么是最小二乘法">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -832,12 +659,10 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Wed Apr 18, 2018</h4>
+        <h4 id="date"> Mon Jan 1, 0001</h4>
     </section>
-    <h5 id="wc">3800 Words|Read in about 8 Min</h5>
+    <h5 id="wc">3100 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
-        
-        <a href="https://www.yangcs.nettags/lvs/">lvs</a> &nbsp;
     </h5>
 </div>
 
