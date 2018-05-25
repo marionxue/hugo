@@ -4,6 +4,7 @@ title: "英语学习终极秘诀"
 subtitle: "把你的英语用起来"
 date: 2018-05-25T06:46:19Z
 draft: false
+bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 postmeta: false
 nocomment: true
 ---
