@@ -21,16 +21,6 @@
     </item>
     
     <item>
-      <title>Fuck</title>
-      <link>https://www.yangcs.net/posts/fuck/</link>
-      <pubDate>Mon, 28 May 2018 03:48:47 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/fuck/</guid>
-      <description>Incoming traffic           APP   Pod 1   APP   Pod 2   Node 1  Node 2  Node 3      FORWARDED TRAFFIC    
- (function() { const svg = document.querySelector(&#39;#iptables&#39;) const wrapper = document.</description>
-    </item>
-    
-    <item>
       <title>走进 Descheduler</title>
       <link>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</link>
       <pubDate>Wed, 23 May 2018 10:23:29 +0000</pubDate>
