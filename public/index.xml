@@ -4297,29 +4297,30 @@ border-top-color: #9954bb;
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
 .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
 .tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
-.tg .tg-yw4l{vertical-align:top}
+.tg .tg-l711{border-color:inherit}
+.tg .tg-us36{border-color:inherit;vertical-align:top}
 &lt;/style&gt;
 &lt;table class=&#34;tg&#34;&gt;
   &lt;tr&gt;
-    &lt;th class=&#34;tg-031e&#34;&gt;功能组件&lt;/th&gt;
-    &lt;th class=&#34;tg-031e&#34;&gt;系统组件&lt;/th&gt;
-    &lt;th class=&#34;tg-yw4l&#34;&gt;系统版本&lt;/th&gt;
-    &lt;th class=&#34;tg-yw4l&#34;&gt;设备数量&lt;/th&gt;
-    &lt;th class=&#34;tg-yw4l&#34;&gt;备注&lt;/th&gt;
+    &lt;th class=&#34;tg-l711&#34;&gt;功能组件&lt;/th&gt;
+    &lt;th class=&#34;tg-l711&#34;&gt;系统组件&lt;/th&gt;
+    &lt;th class=&#34;tg-us36&#34;&gt;系统版本&lt;/th&gt;
+    &lt;th class=&#34;tg-us36&#34;&gt;设备数量&lt;/th&gt;
+    &lt;th class=&#34;tg-us36&#34;&gt;备注&lt;/th&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-    &lt;td class=&#34;tg-031e&#34;&gt;联邦集群控制平面&lt;/td&gt;
-    &lt;td class=&#34;tg-031e&#34;&gt;k8s 1.9+Federation&lt;/td&gt;
-    &lt;td class=&#34;tg-yw4l&#34;&gt;CentOS 7.3&lt;/td&gt;
-    &lt;td class=&#34;tg-yw4l&#34;&gt;3台&lt;/td&gt;
-    &lt;td class=&#34;tg-yw4l&#34;&gt;联邦集群控制平面&lt;/td&gt;
+    &lt;td class=&#34;tg-l711&#34;&gt;联邦集群控制平面&lt;/td&gt;
+    &lt;td class=&#34;tg-l711&#34;&gt;k8s 1.9+Federation&lt;/td&gt;
+    &lt;td class=&#34;tg-us36&#34;&gt;CentOS 7.3&lt;/td&gt;
+    &lt;td class=&#34;tg-us36&#34;&gt;3台&lt;/td&gt;
+    &lt;td class=&#34;tg-us36&#34;&gt;联邦集群控制平面&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-    &lt;td class=&#34;tg-031e&#34;&gt;K8s集群01&lt;/td&gt;
-    &lt;td class=&#34;tg-031e&#34;&gt;k8s 1.9 master+node&lt;/td&gt;
-    &lt;td class=&#34;tg-yw4l&#34;&gt;CentOS 7.3&lt;/td&gt;
-    &lt;td class=&#34;tg-yw4l&#34;&gt;3台&lt;/td&gt;
-    &lt;td class=&#34;tg-yw4l&#34;&gt;联邦集群节点&lt;/td&gt;
+    &lt;td class=&#34;tg-l711&#34;&gt;K8s集群01&lt;/td&gt;
+    &lt;td class=&#34;tg-l711&#34;&gt;k8s 1.9 master+node&lt;/td&gt;
+    &lt;td class=&#34;tg-us36&#34;&gt;CentOS 7.3&lt;/td&gt;
+    &lt;td class=&#34;tg-us36&#34;&gt;3台&lt;/td&gt;
+    &lt;td class=&#34;tg-us36&#34;&gt;联邦集群节点&lt;/td&gt;
   &lt;/tr&gt;
 &lt;/table&gt;&lt;/p&gt;
 
