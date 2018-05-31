@@ -78,6 +78,36 @@ Kubernetes 服务是由一组 kubernetes POD 组成的，这些 POD 是一些已
 | 联邦集群控制平面 | k8s 1.9+Federation | CentOS 7.3 | 3台 | 联邦集群控制平面
 | K8s集群01 | k8s 1.9 master+node | CentOS 7.3 | 3台 | 联邦集群节点
 
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">功能组件</th>
+    <th class="tg-031e">系统组件</th>
+    <th class="tg-yw4l">系统版本</th>
+    <th class="tg-yw4l">设备数量</th>
+    <th class="tg-yw4l">备注</th>
+  </tr>
+  <tr>
+    <td class="tg-031e">联邦集群控制平面</td>
+    <td class="tg-031e">k8s 1.9+Federation</td>
+    <td class="tg-yw4l">CentOS 7.3</td>
+    <td class="tg-yw4l">3台</td>
+    <td class="tg-yw4l">联邦集群控制平面</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">K8s集群01</td>
+    <td class="tg-031e">k8s 1.9 master+node</td>
+    <td class="tg-yw4l">CentOS 7.3</td>
+    <td class="tg-yw4l">3台</td>
+    <td class="tg-yw4l">联邦集群节点</td>
+  </tr>
+</table>
+
 ### 安装 kubefed
 
 选择其中的一个集群作为主集群，这个主集群将运行组成联邦控制面板的所有组件。

@@ -371,7 +371,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Thu Mar 22, 2018</h4>
     </section>
-    <h5 id="wc">4900 Words|Read in about 10 Min</h5>
+    <h5 id="wc">5200 Words|Read in about 11 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
@@ -483,31 +483,64 @@ autocomplete('#aa-search-input',
 </tbody>
 </table>
 
-<h3 id="安装-kubefed">安装 kubefed</h3>
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-031e">功能组件</th>
+    <th class="tg-031e">系统组件</th>
+    <th class="tg-yw4l">系统版本</th>
+    <th class="tg-yw4l">设备数量</th>
+    <th class="tg-yw4l">备注</th>
+  </tr>
+  <tr>
+    <td class="tg-031e">联邦集群控制平面</td>
+    <td class="tg-031e">k8s 1.9+Federation</td>
+    <td class="tg-yw4l">CentOS 7.3</td>
+    <td class="tg-yw4l">3台</td>
+    <td class="tg-yw4l">联邦集群控制平面</td>
+  </tr>
+  <tr>
+    <td class="tg-031e">K8s集群01</td>
+    <td class="tg-031e">k8s 1.9 master+node</td>
+    <td class="tg-yw4l">CentOS 7.3</td>
+    <td class="tg-yw4l">3台</td>
+    <td class="tg-yw4l">联邦集群节点</td>
+  </tr>
+</table>
 
-<p>选择其中的一个集群作为主集群，这个主集群将运行组成联邦控制面板的所有组件。</p>
+### 安装 kubefed
 
-<p>使用下列命令下载对应最新发行的 <code>kubefed</code> 安装包并将安装包里的二进制文件解压出来：</p>
+选择其中的一个集群作为主集群，这个主集群将运行组成联邦控制面板的所有组件。
 
-<pre><code class="language-bash">$ curl -LO https://storage.cloud.google.com/kubernetes-federation-release/release/${RELEASE-VERSION}/federation-client-linux-amd64.tar.gz
+使用下列命令下载对应最新发行的 `kubefed` 安装包并将安装包里的二进制文件解压出来：
+
+```bash
+$ curl -LO https://storage.cloud.google.com/kubernetes-federation-release/release/${RELEASE-VERSION}/federation-client-linux-amd64.tar.gz
 $ tar -xzvf federation-client-linux-amd64.tar.gz
-</code></pre>
+```
 
-<p>请用<a href="https://github.com/kubernetes/federation/releases" target="_blank">federation release page</a>页面实际的版本号替换变量 <code>RELEASE-VERSION</code>。</p>
+请用[federation release page](https://github.com/kubernetes/federation/releases)页面实际的版本号替换变量 `RELEASE-VERSION`。
 
-<p>将解压出来的内容复制到你的环境变量 <code>$PATH</code> 里的随便一个路径， 并设置可执行权限。</p>
+将解压出来的内容复制到你的环境变量 `$PATH` 里的随便一个路径， 并设置可执行权限。
 
-<pre><code class="language-bash">$ cp federation/client/bin/kubefed /usr/local/bin
+```bash
+$ cp federation/client/bin/kubefed /usr/local/bin
 $ chmod +x /usr/local/bin/kubefed
-</code></pre>
+```
 
-<h3 id="配置-context">配置 context</h3>
+### 配置 context
 
-<p>在准备配置联邦集群的 DCE 集群中配置两个 DCE 集群的 <code>context</code>。让改节点能通过切换 <code>context</code> 连接不同的子集群。</p>
+在准备配置联邦集群的 DCE 集群中配置两个 DCE 集群的 `context`。让改节点能通过切换 `context` 连接不同的子集群。
 
-<p>先创建本地集群的 <code>kubeconfig</code> 文件</p>
+先创建本地集群的 `kubeconfig` 文件
 
-<pre><code class="language-bash">$ export KUBE_APISERVER=&quot;https://192.168.123.250:6443&quot;
+```bash
+$ export KUBE_APISERVER="https://192.168.123.250:6443"
 # 设置集群参数
 $ kubectl config set-cluster kubernetes \
   --certificate-authority=/etc/kubernetes/ssl/ca.pem \
@@ -524,9 +557,9 @@ $ kubectl config set-context kubernetes \
   --user=admin
 # 设置默认上下文
 $ kubectl config use-context kubernetes
-</code></pre>
+```
 
-<p>生成的 kubeconfig 被保存到 <code>~/.kube/config</code> 文件。</p>
+生成的 kubeconfig 被保存到 `~/.kube/config` 文件。
 
 <div id="note">
 <p id="note-title">Note</p>
@@ -534,49 +567,47 @@ $ kubectl config use-context kubernetes
 <p>~/.kube/config 文件拥有对该集群的最高权限，请妥善保管。</p>
 </div>
 
-<p>配置结果如下：</p>
+配置结果如下：
 
-<pre><code class="language-bash">$ kubectl config get-contexts
+```bash
+$ kubectl config get-contexts
 
 CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
 *         kubernetes    kubernetes    admin
-</code></pre>
+```
 
-<h3 id="设置-coredns-作为集群联邦的-dns-提供商">设置 CoreDNS 作为集群联邦的 DNS 提供商</h3>
+### 设置 CoreDNS 作为集群联邦的 DNS 提供商
+#### 1. 前提
 
-<h4 id="1-前提">1. 前提</h4>
++ 为启用 `CoreDNS` 来实现跨联邦集群的服务发现，联邦的成员集群中必须支持 `LoadBalancer` 服务。（<font color="red">本地集群默认不支持 `LoadBalancer` 服务，所以要让本地集群支持 `LoadBalancer` 服务才能使用 `coredns` 来实现 federation 的服务发现功能！！！</font>）
++ 我们可以利用 `helm charts` 来部署 CoreDNS。 CoreDNS 部署时会以 etcd 作为后端，并且 etcd 应预先安装。 etcd 也可以利用 helm charts 进行部署。
++ 所有加入 federation 的集群的 node 必须打上以下的标签：<br />
+   `failure-domain.beta.kubernetes.io/region=<region>`<br />
+   `failure-domain.beta.kubernetes.io/zone=<zone>`
 
-<ul>
-<li>为启用 <code>CoreDNS</code> 来实现跨联邦集群的服务发现，联邦的成员集群中必须支持 <code>LoadBalancer</code> 服务。（<font color="red">本地集群默认不支持 <code>LoadBalancer</code> 服务，所以要让本地集群支持 <code>LoadBalancer</code> 服务才能使用 <code>coredns</code> 来实现 federation 的服务发现功能！！！</font>）</li>
-<li>我们可以利用 <code>helm charts</code> 来部署 CoreDNS。 CoreDNS 部署时会以 etcd 作为后端，并且 etcd 应预先安装。 etcd 也可以利用 helm charts 进行部署。</li>
-<li>所有加入 federation 的集群的 node 必须打上以下的标签：<br />
-<code>failure-domain.beta.kubernetes.io/region=&lt;region&gt;</code><br />
-<code>failure-domain.beta.kubernetes.io/zone=&lt;zone&gt;</code></li>
-</ul>
+#### 2. 使本地集群支持 LoadBalancer 服务
 
-<h4 id="2-使本地集群支持-loadbalancer-服务">2. 使本地集群支持 LoadBalancer 服务</h4>
+为了使本地集群支持 `LoadBalancer` 服务，可以参考以下两种实现方案：
 
-<p>为了使本地集群支持 <code>LoadBalancer</code> 服务，可以参考以下两种实现方案：</p>
++ [keepalived-cloud-provider](https://github.com/munnerz/keepalived-cloud-provider)
++ [metalLB](https://github.com/google/metallb)
 
-<ul>
-<li><a href="https://github.com/munnerz/keepalived-cloud-provider" target="_blank">keepalived-cloud-provider</a></li>
-<li><a href="https://github.com/google/metallb" target="_blank">metalLB</a></li>
-</ul>
+这里我们选择使用 `metalLB`。
 
-<p>这里我们选择使用 <code>metalLB</code>。</p>
+metalLB 的部署很简单，直接使用 yaml 文件部署：
 
-<p>metalLB 的部署很简单，直接使用 yaml 文件部署：</p>
+```bash
+$ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.5.0/manifests/metallb.yaml
+```
 
-<pre><code class="language-bash">$ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.5.0/manifests/metallb.yaml
-</code></pre>
+具体参考 [https://metallb.universe.tf/installation/](https://metallb.universe.tf/installation/)
 
-<p>具体参考 <a href="https://metallb.universe.tf/installation/" target="_blank">https://metallb.universe.tf/installation/</a></p>
+部署完成后需要为 LoadBalancer 服务选择一个特定的 IP 地址池，这里通过 configmap 来创建。
 
-<p>部署完成后需要为 LoadBalancer 服务选择一个特定的 IP 地址池，这里通过 configmap 来创建。</p>
+下面是一个简单示例：
 
-<p>下面是一个简单示例：</p>
-
-<pre><code class="language-bash">$ cat metallb-cm.yaml
+```bash
+$ cat metallb-cm.yaml
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -591,68 +622,75 @@ data:
       - 192.168.1.58-192.168.1.60
 
 $ kubectl create -f metallb-cm.yaml
-</code></pre>
+```
 
-<p>更多高级配置请参考：<a href="https://metallb.universe.tf/configuration/" target="_blank">https://metallb.universe.tf/configuration/</a></p>
+更多高级配置请参考：[https://metallb.universe.tf/configuration/](https://metallb.universe.tf/configuration/)
 
-<p>现在本地集群已经支持 LoadBalancer 服务了，下面我们开始 federation 的旅程吧！👏</p>
+现在本地集群已经支持 LoadBalancer 服务了，下面我们开始 federation 的旅程吧！👏
 
-<h4 id="3-安装-helm">3. 安装 helm</h4>
+#### 3. 安装 helm
 
-<p>首先需要安装 <code>helm</code> 客户端</p>
+首先需要安装 `helm` 客户端
 
-<pre><code class="language-bash">$ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get &gt; get_helm.sh
+```bash
+$ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
 $ chmod 700 get_helm.sh
 $ ./get_helm.sh
-</code></pre>
+```
 
-<p>创建 tiller 的 <code>serviceaccount</code> 和 <code>clusterrolebinding</code></p>
+创建 tiller 的 `serviceaccount` 和 `clusterrolebinding`
 
-<pre><code class="language-bash">$ kubectl create serviceaccount --namespace kube-system tiller
+```bash
+$ kubectl create serviceaccount --namespace kube-system tiller
 $ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-</code></pre>
+```
 
-<p>然后安装 helm 服务端 <code>tiller</code></p>
+然后安装 helm 服务端 `tiller`
 
-<pre><code class="language-bash">$ helm init
-</code></pre>
+```bash
+$ helm init
+```
 
-<p>为应用程序设置 <code>serviceAccount</code>：</p>
+为应用程序设置 `serviceAccount`：
 
-<pre><code class="language-bash">$ kubectl patch deploy --namespace kube-system tiller-deploy -p '{&quot;spec&quot;:{&quot;template&quot;:{&quot;spec&quot;:{&quot;serviceAccount&quot;:&quot;tiller&quot;}}}}'
-</code></pre>
+```bash
+$ kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+```
 
-<p>检查是否安装成功：</p>
+检查是否安装成功：
 
-<pre><code class="language-bash">$ kubectl -n kube-system get pods|grep tiller
+```bash
+$ kubectl -n kube-system get pods|grep tiller
 
 tiller-deploy-7bf964fff8-sklts                1/1       Running   0          7h
 
 $ helm version
 
-Client: &amp;version.Version{SemVer:&quot;v2.8.2&quot;, GitCommit:&quot;a80231648a1473929271764b920a8e346f6de844&quot;, GitTreeState:&quot;clean&quot;}
-Server: &amp;version.Version{SemVer:&quot;v2.8.2&quot;, GitCommit:&quot;a80231648a1473929271764b920a8e346f6de844&quot;, GitTreeState:&quot;clean&quot;}
-</code></pre>
+Client: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920a8e346f6de844", GitTreeState:"clean"}
+Server: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920a8e346f6de844", GitTreeState:"clean"}
+```
+<br />
 
-<p><br /></p>
+#### 4. 部署 etcd
 
-<h4 id="4-部署-etcd">4. 部署 etcd</h4>
+下载 `helm charts` 仓库
 
-<p>下载 <code>helm charts</code> 仓库</p>
+```bash
+$ git clone https://github.com/kubernetes/charts.git
+```
 
-<pre><code class="language-bash">$ git clone https://github.com/kubernetes/charts.git
-</code></pre>
+部署 `etcd-operator`（etcd-operator 会通过 kubernetes 的 `CustomResourceDefinition` 自动创建 `etcd cluster`）
 
-<p>部署 <code>etcd-operator</code>（etcd-operator 会通过 kubernetes 的 <code>CustomResourceDefinition</code> 自动创建 <code>etcd cluster</code>）</p>
-
-<pre><code class="language-bash">$ cd charts
+```bash
+$ cd charts
 
 $ helm install --name etcd-operator stable/etcd-operator --set rbac.install=true,rbac.apiVersion=v1,customResources.createEtcdClusterCRD=true
-</code></pre>
+```
 
-<p>检查是否部署成功</p>
+检查是否部署成功
 
-<pre><code class="language-bash">$ kubectl get pods
+```bash
+$ kubectl get pods
 
 NAME                                                              READY     STATUS    RESTARTS   AGE
 etcd-cluster-6skfqj9mwp                                           1/1       Running   0          7m
@@ -698,51 +736,52 @@ etcd-cluster   11m
 $ kubectl get svc
 
 NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-etcd-cluster            ClusterIP   None             &lt;none&gt;        2379/TCP,2380/TCP   17m
-etcd-cluster-client     ClusterIP   10.254.140.7     &lt;none&gt;        2379/TCP            17m
-etcd-restore-operator   ClusterIP   10.254.177.113   &lt;none&gt;        19999/TCP           18m
-kubernetes              ClusterIP   10.254.0.1       &lt;none&gt;        443/TCP             16d
-</code></pre>
+etcd-cluster            ClusterIP   None             <none>        2379/TCP,2380/TCP   17m
+etcd-cluster-client     ClusterIP   10.254.140.7     <none>        2379/TCP            17m
+etcd-restore-operator   ClusterIP   10.254.177.113   <none>        19999/TCP           18m
+kubernetes              ClusterIP   10.254.0.1       <none>        443/TCP             16d
+```
 
-<p>部署成功后，可以在 host 集群内通过 <a href="http://etcd-cluster-client.default:2379" target="_blank">http://etcd-cluster-client.default:2379</a> 端点访问 etcd。</p>
+部署成功后，可以在 host 集群内通过 http://etcd-cluster-client.default:2379 端点访问 etcd。
 
-<h4 id="5-部署-coredns">5. 部署 CoreDNS</h4>
+#### 5. 部署 CoreDNS
 
-<p>首先需要定制 <code>CoreDNS chart</code> 模板的默认配置，它会覆盖 <code>CoreDNS chart</code> 的默认配置参数。</p>
+首先需要定制 `CoreDNS chart` 模板的默认配置，它会覆盖 `CoreDNS chart` 的默认配置参数。
 
-<pre><code class="language-bash">$ cat Value.yaml
+```bash
+$ cat Value.yaml
 
 isClusterService: false
-serviceType: &quot;NodePort&quot;
+serviceType: "NodePort"
 plugins:
   kubernetes:
     enabled: false
   etcd:
     enabled: true
     zones:
-    - &quot;example.com.&quot;
-    endpoint: &quot;http://etcd-cluster-client.default:2379&quot;
-</code></pre>
+    - "example.com."
+    endpoint: "http://etcd-cluster-client.default:2379"
+```
 
-<p>参数说明：</p>
+参数说明：
 
-<ul>
-<li><code>isClusterService</code>: 指定 CoreDNS 是否以集群服务的形式部署（默认为是）。 需要将其设置为 “false”，以使 CoreDNS 以 Kubernetes 应用服务的形式部署，否则会与集群的 dns 服务 kubedns 冲突。</li>
-<li><code>serviceType</code>: 指定为 CoreDNS 创建的 Kubernetes 服务类型。 选择 “NodePort”，以使得 CoreDNS 服务能够从 Kubernetes 集群外部访问。</li>
-<li><code>plugins.kubernetes</code>: 默认是启用的，通过将 <code>plugins.kubernetes.enabled</code> 设置为 “false” 来禁用 plugins.kubernetes。</li>
-<li>通过将 plugins.etcd.enabled 设置为 “true” 来启用 plugins.etcd。</li>
-<li>通过设置 <code>plugins.etcd.zones</code> 来配置 CoreDNS 被授权的 DNS 区域（联邦区域）。</li>
-<li>通过设置 <code>plugins.etcd.endpoint</code> 来设置先前部署的 etcd 的端点。</li>
-</ul>
++ `isClusterService`: 指定 CoreDNS 是否以集群服务的形式部署（默认为是）。 需要将其设置为 “false”，以使 CoreDNS 以 Kubernetes 应用服务的形式部署，否则会与集群的 dns 服务 kubedns 冲突。
++ `serviceType`: 指定为 CoreDNS 创建的 Kubernetes 服务类型。 选择 “NodePort”，以使得 CoreDNS 服务能够从 Kubernetes 集群外部访问。
++ `plugins.kubernetes`: 默认是启用的，通过将 `plugins.kubernetes.enabled` 设置为 “false” 来禁用 plugins.kubernetes。
++ 通过将 plugins.etcd.enabled 设置为 “true” 来启用 plugins.etcd。
++ 通过设置 `plugins.etcd.zones` 来配置 CoreDNS 被授权的 DNS 区域（联邦区域）。
++ 通过设置 `plugins.etcd.endpoint` 来设置先前部署的 etcd 的端点。
 
-<p>现在运行以下命令来部署 CoreDNS：</p>
+现在运行以下命令来部署 CoreDNS：
 
-<pre><code class="language-bash">$ helm install --name coredns -f Values.yaml stable/coredns
-</code></pre>
+```bash
+$ helm install --name coredns -f Values.yaml stable/coredns
+```
 
-<p>验证部署：</p>
+验证部署：
 
-<pre><code class="language-bash">$ kubectl get pods -l app=coredns-coredns
+```bash
+$ kubectl get pods -l app=coredns-coredns
 
 NAME                               READY     STATUS    RESTARTS   AGE
 coredns-coredns-57b54ddb97-xffnc   1/1       Running   0          1d
@@ -750,32 +789,32 @@ coredns-coredns-57b54ddb97-xffnc   1/1       Running   0          1d
 $ kubectl get svc -l app=coredns-coredns
 
 NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                                    AGE
-coredns-coredns   NodePort   10.254.198.211   &lt;none&gt;        53:27165/UDP,53:27165/TCP,9153:26492/TCP   1d
-</code></pre>
+coredns-coredns   NodePort   10.254.198.211   <none>        53:27165/UDP,53:27165/TCP,9153:26492/TCP   1d
+```
 
-<p><br /></p>
+<br />
 
-<h4 id="6-使用-coredns-作为-dns-提供商来部署-federation">6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation</h4>
+#### 6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation
 
-<p>可以使用 <code>kubefed init</code> 来部署联邦控制平面。 可以通过指定两个附加参数来选择 CoreDNS 作为 DNS 提供商。</p>
+可以使用 `kubefed init` 来部署联邦控制平面。 可以通过指定两个附加参数来选择 CoreDNS 作为 DNS 提供商。
 
-<pre><code class="language-bash">--dns-provider=coredns
+```bash
+--dns-provider=coredns
 --dns-provider-config=coredns-provider.conf
-</code></pre>
+```
 
-<p>coredns-provider.conf 内容如下：</p>
+coredns-provider.conf 内容如下：
 
-<pre><code class="language-bash">[Global]
+```bash
+[Global]
 etcd-endpoints = http://etcd-cluster-client.default:2379
 zones = example.com.
-coredns-endpoints = &lt;coredns-server-ip&gt;:&lt;port&gt;
-</code></pre>
+coredns-endpoints = <coredns-server-ip>:<port>
+```
 
-<ul>
-<li><code>etcd-endpoints</code> 是访问 etcd 的端点。</li>
-<li><code>zones</code> 是 CoreDNS 被授权的联邦区域，其值与 <code>kubefed init</code> 的 –-dns-zone-name 参数相同。</li>
-<li><code>coredns-endpoints</code> 是访问 CoreDNS 服务器的端点。 这是一个 1.7 版本开始引入的可选参数。</li>
-</ul>
++ `etcd-endpoints` 是访问 etcd 的端点。
++ `zones` 是 CoreDNS 被授权的联邦区域，其值与 `kubefed init` 的 –-dns-zone-name 参数相同。
++ `coredns-endpoints` 是访问 CoreDNS 服务器的端点。 这是一个 1.7 版本开始引入的可选参数。
 
 <div id="note">
 <p id="note-title">Note</p>
@@ -783,24 +822,26 @@ coredns-endpoints = &lt;coredns-server-ip&gt;:&lt;port&gt;
 <p>CoreDNS 配置中的 <code>plugins.etcd.zones</code> 与 kubefed init 的 –-dns-zone-name 参数应匹配。</p>
 </div>
 
-<p>给所有 node 打上 <code>region</code> 和 <code>zone</code> 的标签：</p>
+给所有 node 打上 `region` 和 `zone` 的标签：
 
-<pre><code class="language-bash">$ kubectl label nodes 192.168.123.248 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
+```bash
+$ kubectl label nodes 192.168.123.248 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
 
 $ kubectl label nodes 192.168.123.249 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
 
 $ kubectl label nodes 192.168.123.250 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
-</code></pre>
+```
 
-<p>通过本条命令初始化 federation 控制平面，参数如下：</p>
+通过本条命令初始化 federation 控制平面，参数如下：
 
-<pre><code class="language-bash">$ kubefed init federation \ # 联邦的名字
+```bash
+$ kubefed init federation \ # 联邦的名字
   --host-cluster-context=kubernetes \ # 主集群的context名字
   --dns-provider=coredns \ # DNS服务提供商
-  --dns-zone-name=&quot;example.com.&quot; \ # 前面注册好的域名，必须以.结束
-  --dns-provider-config=&quot;coredns-provider.conf&quot; \ # coredns 配置文件
-  --api-server-service-type=&quot;NodePort&quot; \
-  --api-server-advertise-address=&quot;192.168.123.250&quot;
+  --dns-zone-name="example.com." \ # 前面注册好的域名，必须以.结束
+  --dns-provider-config="coredns-provider.conf" \ # coredns 配置文件
+  --api-server-service-type="NodePort" \
+  --api-server-advertise-address="192.168.123.250"
 
   Creating a namespace federation-system for federation system components... done
   Creating federation control plane service..... done
@@ -809,66 +850,70 @@ $ kubectl label nodes 192.168.123.250 failure-domain.beta.kubernetes.io/zone=sha
   Updating kubeconfig... done
   Waiting for federation control plane to come up..................................................................................................................................................... done
   Federation API server is running at: 10.110.151.216
-</code></pre>
+```
 
-<p>观察以上输出信息，该命令做了以下几件事情：</p>
+观察以上输出信息，该命令做了以下几件事情：
 
-<ol>
-<li><p>创建一个 namespace <code>federation-system</code></p>
+  1. 创建一个 namespace `federation-system`
 
-<pre><code class="language-bash">$ kubectl get ns
+    ```bash
+    $ kubectl get ns
 
-NAME                STATUS    AGE
-default             Active    8d
-federation-system   Active    8s
-kube-public         Active    8d
-kube-system         Active    8d
-my-namespace        Active    7d
-</code></pre></li>
+    NAME                STATUS    AGE
+    default             Active    8d
+    federation-system   Active    8s
+    kube-public         Active    8d
+    kube-system         Active    8d
+    my-namespace        Active    7d
+    ```
 
-<li><p>创建两个服务 <code>federation-apiserver</code> 和 <code>federation-controller-manager</code></p>
+  2. 创建两个服务 `federation-apiserver` 和 `federation-controller-manager`
 
-<pre><code class="language-bash">$ kubectl -n federation-system get pods
+    ```bash
+    $ kubectl -n federation-system get pods
 
-NAME                                             READY     STATUS         RESTARTS   AGE
-federation-apiserver-909415585-wktmw             1/1       Running   0          2s
-federation-controller-manager-4247980660-c8ls5   1/1       Running   1          3s
-</code></pre></li>
+    NAME                                             READY     STATUS         RESTARTS   AGE
+    federation-apiserver-909415585-wktmw             1/1       Running   0          2s
+    federation-controller-manager-4247980660-c8ls5   1/1       Running   1          3s
+    ```
 
-<li><p>创建一个 ServiceAccount <code>federation-controller-manager</code></p>
+  3. 创建一个 ServiceAccount `federation-controller-manager`
 
-<pre><code class="language-bash">$ kubectl -n federation-system get sa
+    ```bash
+    $ kubectl -n federation-system get sa
 
-NAME                            SECRETS   AGE
-default                         1         31m
-federation-controller-manager   1         31m
-</code></pre></li>
+    NAME                            SECRETS   AGE
+    default                         1         31m
+    federation-controller-manager   1         31m
+    ```
 
-<li><p>创建一个 Role <code>federation-system:federation-controller-manager</code></p>
+  4. 创建一个 Role `federation-system:federation-controller-manager`
 
-<pre><code class="language-bash">$ kubectl -n federation-system get role
+    ```bash
+    $ kubectl -n federation-system get role
 
-NAME                                              AGE
-federation-system:federation-controller-manager   38m
-</code></pre></li>
+    NAME                                              AGE
+    federation-system:federation-controller-manager   38m
+    ```
 
-<li><p>创建一个 RoleBinding <code>federation-system:federation-controller-manager</code></p>
+  5. 创建一个 RoleBinding `federation-system:federation-controller-manager`
 
-<pre><code class="language-bash">$ kubectl -n federation-system get rolebinding
+    ```bash
+    $ kubectl -n federation-system get rolebinding
 
-NAME                                              AGE
-federation-system:federation-controller-manager   39m
-</code></pre></li>
+    NAME                                              AGE
+    federation-system:federation-controller-manager   39m
+    ```
 
-<li><p>创建一个 context <code>federation</code></p></li>
-</ol>
+  6. 创建一个 context `federation`
 
-<pre><code class="language-bash">    $ kubectl config get-contexts
+```bash
+    $ kubectl config get-contexts
 
     CURRENT   NAME         CLUSTER      AUTHINFO     NAMESPACE
               federation   federation   federation
     *         kubernetes   kubernetes   admin
-</code></pre>
+```
 
 <div id="note">
 <p id="note-title">Note</p>
@@ -876,13 +921,14 @@ federation-system:federation-controller-manager   39m
 <p>默认情况下，<code>kubefed init</code> 通过动态创建 PV 的方式为 etcd 创建持久化存储。如果 kubernetes 集群不支持动态创建 PV，则可以预先创建 PV，注意 PV 要匹配 `kubefed` 的 PVC。或者使用 <code>hostpath</code>，同时指定调度节点。</p>
 </div>
 
-<h4 id="7-添加集群至-federation">7. 添加集群至 federation</h4>
+#### 7. 添加集群至 federation
 
-<p>目前为止您已经成功的初始化好了 <code>Federation</code> 的控制平面。接下来需要将各个子集群加入到 Federation 集群中。</p>
+目前为止您已经成功的初始化好了 `Federation` 的控制平面。接下来需要将各个子集群加入到 Federation 集群中。
 
-<p>添加集群 <code>kubernetes</code>：</p>
+添加集群 `kubernetes`：
 
-<pre><code class="language-bash">$ kubefed join kubernetes \ #加入联邦的集群命名名字
+```bash
+$ kubefed join kubernetes \ #加入联邦的集群命名名字
   --context=federation \ #联邦的context
   --cluster-context=kubernetes \ #要添加集群的context
   --host-cluster-context=kubernetes #主集群的context
@@ -891,91 +937,93 @@ $ kubectl --context=federation get cluster
 
 NAME          STATUS    AGE
 kubernetes    Ready     6d
-</code></pre>
+```
 
-<p>通过我的观察，以上过程在 <code>加入 federation 的 kubernetes 集群中</code> 做了以下几件事情：</p>
+通过我的观察，以上过程在 `加入 federation 的 kubernetes 集群中` 做了以下几件事情：
 
-<ol>
-<li><p>在 namespace <code>federation-system</code> 中创建一个 ServiceAccount <code>kubernetes-kubernetes</code></p>
+  1. 在 namespace `federation-system` 中创建一个 ServiceAccount `kubernetes-kubernetes`
 
-<pre><code class="language-bash">$ kubectl -n federation-system get sa
+    ```bash
+    $ kubectl -n federation-system get sa
 
-NAME                            SECRETS   AGE
-default                         1         45m
-federation-controller-manager   1         45m
-kubernetes-kubernetes           1         8m
-</code></pre></li>
+    NAME                            SECRETS   AGE
+    default                         1         45m
+    federation-controller-manager   1         45m
+    kubernetes-kubernetes           1         8m
+    ```
 
-<li><p>创建一个 ClusterRole <code>federation-controller-manager:federation-kubernetes-kubernetes</code></p>
+  2. 创建一个 ClusterRole `federation-controller-manager:federation-kubernetes-kubernetes`
 
-<pre><code class="language-bash">$ kubectl get clusterrole|egrep &quot;NAME|federation&quot;
+    ```bash
+    $ kubectl get clusterrole|egrep "NAME|federation"
 
-NAME                                                                   AGE
-federation-controller-manager:federation-kubernetes-kubernetes         10m
-</code></pre></li>
+    NAME                                                                   AGE
+    federation-controller-manager:federation-kubernetes-kubernetes         10m
+    ```
 
-<li><p>创建一个 ClusterRoleBinding <code>federation-controller-manager:federation-kubernetes-kubernetes</code></p>
+  3. 创建一个 ClusterRoleBinding `federation-controller-manager:federation-kubernetes-kubernetes`
 
-<pre><code class="language-bash">$ kubectl get clusterrolebinding|egrep &quot;NAME|federation&quot;
+    ```bash
+    $ kubectl get clusterrolebinding|egrep "NAME|federation"
 
-NAME                                                             AGE
-federation-controller-manager:federation-kubernetes-kubernetes   11m
-</code></pre></li>
-</ol>
+    NAME                                                             AGE
+    federation-controller-manager:federation-kubernetes-kubernetes   11m
+    ```
 
-<p>整个过程是否还进行了其他操作，暂时没有发现，有待继续研究。</p>
+整个过程是否还进行了其他操作，暂时没有发现，有待继续研究。
 
-<p><strong>介绍下集群查询，移除集群，删除联邦等命令：</strong></p>
+**介绍下集群查询，移除集群，删除联邦等命令：**
 
-<p>查询注册到 Federation 的 kubernetes 集群列表</p>
+查询注册到 Federation 的 kubernetes 集群列表
 
-<pre><code class="language-bash">$ kubectl --context=federation get clusters
+```bash
+$ kubectl --context=federation get clusters
 
 NAME          STATUS    AGE
 kubernetes    Ready     8m
-</code></pre>
+```
 
-<p>移除 <code>kubernetes</code> 集群</p>
+移除 `kubernetes` 集群
 
-<pre><code class="language-bash">$ kubefed unjoin kubernetes --host-cluster-context=kubernetes --context=federation
+```bash
+$ kubefed unjoin kubernetes --host-cluster-context=kubernetes --context=federation
 
-Successfully removed cluster &quot;kubernetes&quot; from federation
+Successfully removed cluster "kubernetes" from federation
 
 $ kubectl --context=federation get clusters
 
 No resources found.
-</code></pre>
+```
 
-<p>集群联邦控制平面的删除功能还在开发中，目前可以通过删除 namespace <code>federation-system</code> 的方法来清理（注意pv不会删除）。命令在 host-cluster-context 上执行。</p>
+集群联邦控制平面的删除功能还在开发中，目前可以通过删除 namespace `federation-system` 的方法来清理（注意pv不会删除）。命令在 host-cluster-context 上执行。
 
-<pre><code class="language-bash">$ kubectl delete ns federation-system
-</code></pre>
+```bash
+$ kubectl delete ns federation-system
+```
 
-<h2 id="p-id-h2-3-federation-支持的服务-p"><p id="h2">3. Federation 支持的服务</p></h2>
+## <p id="h2">3. Federation 支持的服务</p>
+------
 
-<hr />
+集群联邦支持以下联邦资源，这些资源会自动在所有注册的 `kubernetes` 集群中创建。
 
-<p>集群联邦支持以下联邦资源，这些资源会自动在所有注册的 <code>kubernetes</code> 集群中创建。</p>
++ Federated ConfigMap
++ Federated Service
++ Federated DaemonSet
++ Federated Deployment
++ Federated Ingress
++ Federated Namespaces
++ Federated ReplicaSets
++ Federated Secrets
++ Federated Events（仅存在federation控制平面）
++ Federated Jobs（v1.8+）
++ Federated Horizontal Pod Autoscaling (HPA，v1.8+)
 
-<ul>
-<li>Federated ConfigMap</li>
-<li>Federated Service</li>
-<li>Federated DaemonSet</li>
-<li>Federated Deployment</li>
-<li>Federated Ingress</li>
-<li>Federated Namespaces</li>
-<li>Federated ReplicaSets</li>
-<li>Federated Secrets</li>
-<li>Federated Events（仅存在federation控制平面）</li>
-<li>Federated Jobs（v1.8+）</li>
-<li>Federated Horizontal Pod Autoscaling (HPA，v1.8+)</li>
-</ul>
+示例：
 
-<p>示例：</p>
+**创建 `deployment`**
 
-<p><strong>创建 <code>deployment</code></strong></p>
-
-<pre><code class="language-bash">$ cat nginx-deployment.yaml
+```bash
+$ cat nginx-deployment.yaml
 
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -996,16 +1044,18 @@ spec:
 
 $ kubectl --context=federation create ns default
 $ kubectl --context=federation create -f nginx-deployment.yaml
-</code></pre>
+```
 
-<p>可以通过 <code>kubectl scale deploy nginx --replicas=3 --context=federation</code> 来扩展 nginx 副本，然后观察 nginx 应用在各个子集群中的分布情况。</p>
+可以通过 `kubectl scale deploy nginx --replicas=3 --context=federation` 来扩展 nginx 副本，然后观察 nginx 应用在各个子集群中的分布情况。
 
-<pre><code class="language-bash">$ kubectl --context=kubernetes get deploy
-</code></pre>
+```bash
+$ kubectl --context=kubernetes get deploy
+```
 
-<p><strong>通过 Federated Service 来实现跨集群服务发现</strong></p>
+**通过 Federated Service 来实现跨集群服务发现**
 
-<pre><code class="language-bash">$ cat nginx-svc.yaml
+```bash
+$ cat nginx-svc.yaml
 
 apiVersion: v1
 kind: Service
@@ -1032,40 +1082,37 @@ $ kubectl --context=federation describe services nginx
 Name:                     nginx
 Namespace:                default
 Labels:                   app=nginx
-Annotations:              federation.kubernetes.io/service-ingresses={&quot;items&quot;:[{&quot;cluster&quot;:&quot;kubernetes&quot;,&quot;items&quot;:[{&quot;ip&quot;:&quot;192.168.1.58&quot;}]}]}
+Annotations:              federation.kubernetes.io/service-ingresses={"items":[{"cluster":"kubernetes","items":[{"ip":"192.168.1.58"}]}]}
 Selector:                 app=nginx
 Type:                     LoadBalancer
 IP:
 LoadBalancer Ingress:     192.168.1.58
 Port:                     http  80/TCP
 TargetPort:               80/TCP
-Endpoints:                &lt;none&gt;
+Endpoints:                <none>
 Session Affinity:         None
 External Traffic Policy:  Cluster
-Events:                   &lt;none&gt;
-</code></pre>
+Events:                   <none>
+```
 
-<p>可以通过 DNS 来访问联邦服务，访问格式包括以下几种：</p>
+可以通过 DNS 来访问联邦服务，访问格式包括以下几种：
 
-<ul>
-<li><code>&lt;service name&gt;.&lt;namespace&gt;.&lt;federation&gt;</code></li>
-<li><code>&lt;service name&gt;.&lt;namespace&gt;.&lt;federation&gt;.svc.&lt;domain&gt;</code></li>
-<li><code>&lt;service name&gt;.&lt;namespace&gt;.&lt;federation&gt;.svc.&lt;region&gt;.&lt;domain&gt;</code></li>
-<li><code>&lt;service name&gt;.&lt;namespace&gt;.&lt;federation&gt;.svc.&lt;zone&gt;.&lt;region&gt;.&lt;domain&gt;</code></li>
-</ul>
++ `<service name>.<namespace>.<federation>`
++ `<service name>.<namespace>.<federation>.svc.<domain>`
++ `<service name>.<namespace>.<federation>.svc.<region>.<domain>`
++ `<service name>.<namespace>.<federation>.svc.<zone>.<region>.<domain>`
 
-<p>本例中可以通过以下几个域名来访问：</p>
+本例中可以通过以下几个域名来访问：
 
-<ul>
-<li><code>nginx.default.federation</code></li>
-<li><code>nginx.default.federation.svc.example.com</code></li>
-<li><code>nginx.default.federation.svc.shanghai.example.com</code></li>
-<li><code>nginx.default.federation.svc.shanghai.yangpu.example.com</code></li>
-</ul>
++ `nginx.default.federation`
++ `nginx.default.federation.svc.example.com`
++ `nginx.default.federation.svc.shanghai.example.com`
++ `nginx.default.federation.svc.shanghai.yangpu.example.com`
 
-<p>DNS 在 etcd 下的存储路径为：<code>/skydns</code></p>
+DNS 在 etcd 下的存储路径为：`/skydns`
 
-<pre><code class="language-bash">$ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/
+```bash
+$ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/
 
 /skydns/com/example/kubernetes
 /skydns/com/example/svc
@@ -1075,18 +1122,15 @@ $ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/yangpu/
 
 /skydns/com/example/yangpu/shanghai
 /skydns/com/example/yangpu/svc
-</code></pre>
+```
 
-<h2 id="p-id-h2-4-参考文档-p"><p id="h2">4. 参考文档</p></h2>
+## <p id="h2">4. 参考文档</p>
+------
 
-<hr />
++ [Kubernetes federation](https://kubernetes.io/docs/concepts/cluster-administration/federation/)
++ [Set up CoreDNS as DNS provider for Cluster Federation](https://kubernetes.io/docs/tasks/federation/set-up-coredns-provider-federation/)
 
-<ul>
-<li><a href="https://kubernetes.io/docs/concepts/cluster-administration/federation/" target="_blank">Kubernetes federation</a></li>
-<li><a href="https://kubernetes.io/docs/tasks/federation/set-up-coredns-provider-federation/" target="_blank">Set up CoreDNS as DNS provider for Cluster Federation</a></li>
-</ul>
-
-<p><br /></p>
+<br />
 
 <style>
 #h2 {
@@ -1349,7 +1393,7 @@ border-top-color: #9954bb;
     <section id="datecount">
         <h4 id="date"> Thu Mar 22, 2018</h4>
     </section>
-    <h5 id="wc">4900 Words|Read in about 10 Min</h5>
+    <h5 id="wc">5200 Words|Read in about 11 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
