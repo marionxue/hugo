@@ -78,6 +78,7 @@ Kubernetes 服务是由一组 kubernetes POD 组成的，这些 POD 是一些已
 | 联邦集群控制平面 | k8s 1.9+Federation | CentOS 7.3 | 3台 | 联邦集群控制平面
 | K8s集群01 | k8s 1.9 master+node | CentOS 7.3 | 3台 | 联邦集群节点
 
+<br />
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
 .tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
@@ -107,6 +108,8 @@ Kubernetes 服务是由一组 kubernetes POD 组成的，这些 POD 是一些已
     <td class="tg-yw4l">联邦集群节点</td>
   </tr>
 </table>
+
+<br />
 
 ### 安装 kubefed
 
