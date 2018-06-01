@@ -5,7 +5,7 @@ date: 2018-06-01T11:36:45Z
 draft: false
 categories: "kubernetes"
 tags: ["kubernetes"]
-bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/kubernetes5.png"}]
+bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/kubernetes4.png"}]
 ---
 
 <!--more-->
