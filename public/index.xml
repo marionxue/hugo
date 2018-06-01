@@ -1006,6 +1006,12 @@ initializers:
 
 &lt;p&gt;如果上面一切顺利，现在你的集群上应该会运行三个容器，所有的网络，数据卷和秘钥都被通过 CRI 接口添加到容器中并配置成功。&lt;/p&gt;
 
+&lt;h2 id=&#34;p-id-h2-8-原文链接-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;8. 原文链接&lt;/p&gt;&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/jamiehannaford/what-happens-when-k8s&#34; target=&#34;_blank&#34;&gt;What happens when &amp;hellip; Kubernetes edition!&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;style&gt;
