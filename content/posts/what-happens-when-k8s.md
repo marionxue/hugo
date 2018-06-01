@@ -276,7 +276,7 @@ $ kubectl get <PODNAME> -o go-template='{{range .status.conditions}}{{if eq .typ
 <div id="note">
 <p id="note-title">Note</p>
 <br />
-<p>预选策略和优选策略都可以通过 <code>--policy-config-file</code> 参数来扩展，如果默认的调度器不满足要求，还可以部署自定义的调度器。如果  <code>podSpec.schedulerName</code></p> 的值设置为其他的调度器，则 Kubernetes 会将该 Pod 的调度转交给那个调度器。
+<p>预选策略和优选策略都可以通过 <code>--policy-config-file</code> 参数来扩展，如果默认的调度器不满足要求，还可以部署自定义的调度器。如果  <code>podSpec.schedulerName</code> 的值设置为其他的调度器，则 Kubernetes 会将该 Pod 的调度转交给那个调度器。</p>
 </div>
 
 ## <p id="h2">6. Kubelet</p>
