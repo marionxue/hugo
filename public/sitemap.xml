@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/what-happens-when-k8s/</loc>
+    <lastmod>2018-06-01T11:36:45+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/learn-english/</loc>
     <lastmod>2018-05-25T06:46:19+00:00</lastmod>
   </url>
@@ -158,13 +163,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
-    <lastmod>2018-05-23T10:23:29+00:00</lastmod>
+    <lastmod>2018-06-01T11:36:45+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/kubernetes/</loc>
-    <lastmod>2018-05-23T10:23:29+00:00</lastmod>
+    <lastmod>2018-06-01T11:36:45+00:00</lastmod>
     <priority>0</priority>
   </url>
   

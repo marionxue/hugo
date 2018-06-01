@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>kubectl run 背后到底发生了什么？</title>
+      <link>https://www.yangcs.net/posts/what-happens-when-k8s/</link>
+      <pubDate>Fri, 01 Jun 2018 11:36:45 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/what-happens-when-k8s/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>走进 Descheduler</title>
       <link>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</link>
       <pubDate>Wed, 23 May 2018 10:23:29 +0000</pubDate>
