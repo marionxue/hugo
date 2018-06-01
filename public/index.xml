@@ -702,9 +702,11 @@ net.ipv4.tcp_synack_retries = 5
 &lt;p&gt;大部分准入控制器都比较容易理解，接下来着重介绍 &lt;code&gt;SecurityContextDeny&lt;/code&gt;、&lt;code&gt;ResourceQuota&lt;/code&gt; 及 &lt;code&gt;LimitRanger&lt;/code&gt; 这三个准入控制器。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;SecurityContextDeny&lt;/span&gt; 该插件将禁止创建设置了 Security Context 的 Pod。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;ResourceQuota&lt;/span&gt; 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 &lt;code&gt;ResourceQuota&lt;/code&gt; 一起实现了资源配额管理。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;LimitRanger&lt;/span&gt; 作用类似于上面的 ResourceQuota 控制器，针对 Namespace 资源的每个个体（Pod 与 Container 等）的资源配额。该插件和资源对象 &lt;code&gt;LimitRange&lt;/code&gt; 一起实现资源配额管理。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;SecurityContextDeny&lt;/span&gt; 该插件将禁止创建设置了 Security Context 的 Pod。&lt;br /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;ResourceQuota&lt;/span&gt; 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 &lt;code&gt;ResourceQuota&lt;/code&gt; 一起实现了资源配额管理。&lt;br /&gt;&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;LimitRanger&lt;/span&gt; 作用类似于上面的 ResourceQuota 控制器，针对 Namespace 资源的每个个体（Pod 与 Container 等）的资源配额。该插件和资源对象 &lt;code&gt;LimitRange&lt;/code&gt; 一起实现资源配额管理。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&#34;p-id-h2-3-etcd-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. etcd&lt;/p&gt;&lt;/h2&gt;
@@ -1003,6 +1005,8 @@ initializers:
 &lt;hr /&gt;
 
 &lt;p&gt;如果上面一切顺利，现在你的集群上应该会运行三个容器，所有的网络，数据卷和秘钥都被通过 CRI 接口添加到容器中并配置成功。&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{

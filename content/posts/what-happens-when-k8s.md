@@ -127,7 +127,9 @@ kube-apiserver 目前支持以下几种授权方法：
 大部分准入控制器都比较容易理解，接下来着重介绍 `SecurityContextDeny`、`ResourceQuota` 及 `LimitRanger` 这三个准入控制器。
 
 + <span id="inline-blue">SecurityContextDeny</span> 该插件将禁止创建设置了 Security Context 的 Pod。<br />
+
 + <span id="inline-blue">ResourceQuota</span> 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 `ResourceQuota` 一起实现了资源配额管理。<br />
+
 + <span id="inline-blue">LimitRanger</span> 作用类似于上面的 ResourceQuota 控制器，针对 Namespace 资源的每个个体（Pod 与 Container 等）的资源配额。该插件和资源对象 `LimitRange` 一起实现资源配额管理。
 
 ## <p id="h2">3. etcd</p>
@@ -401,6 +403,8 @@ CNI 插件还会通过 `CNI_ARGS` 环境变量为 Pod 指定其他的元数据�
 ----
 
 如果上面一切顺利，现在你的集群上应该会运行三个容器，所有的网络，数据卷和秘钥都被通过 CRI 接口添加到容器中并配置成功。
+
+<br />
 
 <style>
 #h2{
