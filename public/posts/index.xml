@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Kubernetes 的奇技淫巧</title>
+      <link>https://www.yangcs.net/posts/kubernetes-fucking-trick/</link>
+      <pubDate>Mon, 11 Jun 2018 04:35:48 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-fucking-trick/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>kubectl run 背后到底发生了什么？</title>
       <link>https://www.yangcs.net/posts/what-happens-when-k8s/</link>
       <pubDate>Fri, 01 Jun 2018 11:36:45 +0000</pubDate>
