@@ -592,7 +592,7 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;p&gt;大多数用户的 shell 使用的是 &lt;code&gt;bash&lt;/code&gt;，Linux 系统可以通过下面的命令来设置：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ echo &amp;quot;source &amp;lt;(kubectl completion bash)&amp;quot; &amp;gt;&amp;gt; ~/.bashrc
+&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;source &amp;lt;(kubectl completion bash)&amp;quot; &amp;gt;&amp;gt; ~/.bashrc
 $ source ~/.bashrc
 &lt;/code&gt;&lt;/pre&gt;
 

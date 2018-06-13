@@ -23,7 +23,7 @@ Kubernetes 作为云原生时代的“操作系统”，熟悉和是用它是每
 ### bash 用户
 大多数用户的 shell 使用的是 `bash`，Linux 系统可以通过下面的命令来设置：
 
-```bash
+```
 $ echo "source <(kubectl completion bash)" >> ~/.bashrc
 $ source ~/.bashrc
 ```
