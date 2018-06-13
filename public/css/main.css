@@ -788,20 +788,42 @@ table tr th {
 }
 /*================表格结束================*/
 
-.toc
-{/*总目录*/
-  margin-left:25px;
+/*================任务列表开始================*/
+.task-list-list {
+  list-style-type: none;
 }
-.toc_item
-{/*每条目录*/
-  display:block;
-
-}
-.toc_left
-{/*每级目录的缩进*/
-  margin-left:25px;
+.task-list-list.checked {/*已完成*/
+  color: #3e3e3e;
 }
 
+.task-list-list.uncheck {/*未完成*/
+  color: #bfc1bf;
+}
+.task-list-list .icon_uncheck, .task-list-list .icon_check {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.task-list-list .icon_check:before
+{/*已完成*/
+    content: "√";
+    border: 2px solid #3e3e3e;
+    color:red;
+}
+.task-list-list .icon_uncheck:before
+{/*未完成*/
+   content: "x";
+   border: 2px solid #bfc1bf;
+    color: #bfc1bf;
+}
+.task-list-list .icon_check:before, .task-list-list .icon_uncheck:before
+{/*标志框*/
+  padding:2px;
+  padding-left: 5px;
+  padding-right: 8px;
+  border-radius:5px;
+}
+/*================任务列表结束================*/
 
 /* --- Code blocks --- */
 

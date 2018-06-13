@@ -578,8 +578,6 @@ net.ipv4.tcp_synack_retries = 5
       <guid>https://www.yangcs.net/posts/kubernetes-fucking-trick/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
-&lt;p&gt;[toc]&lt;/p&gt;
-
 &lt;p&gt;Kubernetes 作为云原生时代的“操作系统”，熟悉和是用它是每名用户（User）的必备技能。如果你正在 Kubernetes 上工作，你需要正确的工具和技巧来确保 Kubernetes 集群的高可用以及工作负载的稳定运行。&lt;/p&gt;
 
 &lt;p&gt;随着 Kubernetes 的发展和演变，人们可以从内部来驯服它的无节制行为。但有些人并不情愿干等 Kubernetes 变得易于使用，并且为已投入生产的 Kubernetes 中遇到的很多常见问题制定了自己的解决方案。&lt;/p&gt;
