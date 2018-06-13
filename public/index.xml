@@ -584,7 +584,7 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;p&gt;这里我们将介绍一些提高操作效率的技巧，同时列举几个比较有用的开源 Kubernetes 工具，这些工具以各种方式简化 Kubernetes，包括简化命令行交互，简化应用程序部署语法等。&lt;/p&gt;
 
-&lt;h2 id=&#34;p-id-h2-kubectl-自动补全-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;kubectl 自动补全&lt;/p&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;kubectl-自动补全&#34;&gt;kubectl 自动补全&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;kubectl&lt;/code&gt; 这个命令行工具非常重要，与之相关的命令也很多，我们也记不住那么多的命令，而且也会经常写错，所以命令自动补全是很有必要的，kubectl 工具本身就支持自动补全，只需简单设置一下即可。&lt;/p&gt;
 
