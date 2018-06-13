@@ -42,10 +42,15 @@ h3/*增加对h3标题属性的修改*/
 {
   border-bottom: 2px solid rgb(63,63,63);
   margin-bottom:50px;
+  font-size: 1em;
 }
 h3 span{/*增加对h3标题字体的修改*/
   display:inline-block;
-  padding:  10px  0px;
+  background: rgb(63,63,63);
+  color:#ffffff;
+  padding:  10px  16px;
+  border-radius:5px;
+  box-shadow: 5px 5px 10px black;
 }
 
 a {
