@@ -788,6 +788,20 @@ table tr th {
 }
 /*================表格结束================*/
 
+.toc
+{/*总目录*/
+  margin-left:25px;
+}
+.toc_item
+{/*每条目录*/
+  display:block;
+
+}
+.toc_left
+{/*每级目录的缩进*/
+  margin-left:25px;
+}
+
 
 /* --- Code blocks --- */
 
