@@ -10,9 +10,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/kubernetes4.png"}]
 
 <!--more-->
 
-**任务列表:**
-
-- [x] 任务1，已完成;
+我是注脚[^10]。点点就能知到我跳到了那儿。
 
 Kubernetes 作为云原生时代的“操作系统”，熟悉和是用它是每名用户（User）的必备技能。如果你正在 Kubernetes 上工作，你需要正确的工具和技巧来确保 Kubernetes 集群的高可用以及工作负载的稳定运行。
 
