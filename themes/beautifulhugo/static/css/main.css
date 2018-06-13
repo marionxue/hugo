@@ -48,7 +48,6 @@ a:focus {
     color: #2a55f4;
 }
 
-/*
 blockquote {
     color: #808080;
     font-style: italic;
@@ -56,26 +55,6 @@ blockquote {
 
 blockquote p:first-child {
     margin-top: 0;
-}
-*/
-
-blockquote { /*引用块*/
-  display: block;
-  padding: 15px 1rem;
-  font-size: 0.8em; /*修改默认字体大小*/
-  padding-right: 15px;
-  margin: 1em 0;
-  color: rgb(102, 102, 102);/*修改默认颜色*/
-  border-left: 6px solid rgb(33, 152, 99);/*修改默认的左边框的颜色*/
-  background: rgb(247, 247, 247);/*修改默认的背景色*/
-  overflow: auto;
-  overflow-scrolling: touch; 
-  word-wrap: normal;
-  word-break: normal;  
-}
-
-blockquote p {
-    margin: 0px;
 }
 
 hr.small {
