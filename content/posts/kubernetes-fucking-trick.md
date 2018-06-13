@@ -16,7 +16,7 @@ Kubernetes 作为云原生时代的“操作系统”，熟悉和是用它是每
 
 这里我们将介绍一些提高操作效率的技巧，同时列举几个比较有用的开源 Kubernetes 工具，这些工具以各种方式简化 Kubernetes，包括简化命令行交互，简化应用程序部署语法等。
 
-## kubectl 自动补全 
+## <p id="h2">kubectl 自动补全</p>
 
 `kubectl` 这个命令行工具非常重要，与之相关的命令也很多，我们也记不住那么多的命令，而且也会经常写错，所以命令自动补全是很有必要的，kubectl 工具本身就支持自动补全，只需简单设置一下即可。
 
@@ -41,7 +41,7 @@ $ source ~/.zshrc
 
 <br />
 
-## 自定义 kubectl get 输出
+## <p id="h2">自定义 kubectl get 输出</p>
 
 `kubectl get` 相关资源，默认输出为 kubectl 内置，一般我们也可以使用 `-o json` 或者 `-o yaml` 查看其完整的资源信息。但是很多时候，我们需要关心的信息并不全面，因此我们需要自定义输出的列，那么可以使用 `go-template` 来进行实现。
 
@@ -163,7 +163,7 @@ coredns-64b597b598-7547d   192.168.123.250
 
 <br />
 
-## [Kube-prompt](https://github.com/c-bata/kube-prompt)：交互式 Kubernetes 客户端
+## <p id="h2">[Kube-prompt](https://github.com/c-bata/kube-prompt)：交互式 Kubernetes 客户端</p>
 
 `Kube-prompt` 可以让你在 Kubernetes 客户端输入相当于交互式命令会话的东西，并为每个命令提供自动填充的背景信息，你不必键入 kubectl 来为每个命令添加前缀。
 
@@ -171,7 +171,7 @@ coredns-64b597b598-7547d   192.168.123.250
 
 <br />
 
-## [Kubectl Aliases](https://github.com/ahmetb/kubectl-aliases)：生成 kubectl 别名
+## <p id="h2">[Kubectl Aliases](https://github.com/ahmetb/kubectl-aliases)：生成 kubectl 别名</p>
 
 如果你需要频繁地使用 kubectl 和 kubernetes api 进行交互，使用别名将会为你节省大量的时间，开源项目 [kubectl-aliases](https://github.com/ahmetb/kubectl-aliases) 可以通过编程的方式生成 kubectl 别名，别名生成规则如下：
 
@@ -187,7 +187,7 @@ coredns-64b597b598-7547d   192.168.123.250
 
 <br />
 
-## [Kubeval](https://github.com/garethr/kubeval)：校验配置文件
+## <p id="h2">[Kubeval](https://github.com/garethr/kubeval)：校验配置文件</p>
 
 如果你手动写 Kubernetes manifest 文件，检查 manifest 文件的语法是很困难的，特别是当你有多个不同版本的 Kubernetes 集群时，确认配置文件语法是否正确更是难上加难。
 
@@ -204,7 +204,7 @@ The document nginx.yaml contains an invalid Deployment
 
 <br />
 
-## [Kedge](http://kedgeproject.org/)：简化 Kubernetes 部署定义
+## <p id="h2">[Kedge](http://kedgeproject.org/)：简化 Kubernetes 部署定义</p>
 
 很多人都抱怨 Kubernetes manifest 文件的定义太复杂和冗长。它们很难写，而且很难维护，如果能够简化部署定义就会极大地降低维护难度。
 
@@ -272,7 +272,7 @@ status: {}
 
 <br />
 
-## 参考
+## <p id="h2">参考</p>
 
 ----
 
