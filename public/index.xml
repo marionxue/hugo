@@ -608,7 +608,7 @@ $ source ~/.zshrc
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;p-id-h2-自定义-kubectl-get-输出-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;自定义 kubectl get 输出&lt;/p&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;自定义-kubectl-get-输出&#34;&gt;自定义 kubectl get 输出&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;kubectl get&lt;/code&gt; 相关资源，默认输出为 kubectl 内置，一般我们也可以使用 &lt;code&gt;-o json&lt;/code&gt; 或者 &lt;code&gt;-o yaml&lt;/code&gt; 查看其完整的资源信息。但是很多时候，我们需要关心的信息并不全面，因此我们需要自定义输出的列，那么可以使用 &lt;code&gt;go-template&lt;/code&gt; 来进行实现。&lt;/p&gt;
 
@@ -725,7 +725,7 @@ coredns-64b597b598-7547d   192.168.123.250
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;p-id-h2-kube-prompt-https-github-com-c-bata-kube-prompt-交互式-kubernetes-客户端-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;https://github.com/c-bata/kube-prompt&#34; target=&#34;_blank&#34;&gt;Kube-prompt&lt;/a&gt;：交互式 Kubernetes 客户端&lt;/p&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;kube-prompt-https-github-com-c-bata-kube-prompt-交互式-kubernetes-客户端&#34;&gt;&lt;a href=&#34;https://github.com/c-bata/kube-prompt&#34; target=&#34;_blank&#34;&gt;Kube-prompt&lt;/a&gt;：交互式 Kubernetes 客户端&lt;/h2&gt;
 
 &lt;p&gt;&lt;code&gt;Kube-prompt&lt;/code&gt; 可以让你在 Kubernetes 客户端输入相当于交互式命令会话的东西，并为每个命令提供自动填充的背景信息，你不必键入 kubectl 来为每个命令添加前缀。&lt;/p&gt;
 
@@ -733,7 +733,7 @@ coredns-64b597b598-7547d   192.168.123.250
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;p-id-h2-kubectl-aliases-https-github-com-ahmetb-kubectl-aliases-生成-kubectl-别名-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;https://github.com/ahmetb/kubectl-aliases&#34; target=&#34;_blank&#34;&gt;Kubectl Aliases&lt;/a&gt;：生成 kubectl 别名&lt;/p&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;kubectl-aliases-https-github-com-ahmetb-kubectl-aliases-生成-kubectl-别名&#34;&gt;&lt;a href=&#34;https://github.com/ahmetb/kubectl-aliases&#34; target=&#34;_blank&#34;&gt;Kubectl Aliases&lt;/a&gt;：生成 kubectl 别名&lt;/h2&gt;
 
 &lt;p&gt;如果你需要频繁地使用 kubectl 和 kubernetes api 进行交互，使用别名将会为你节省大量的时间，开源项目 &lt;a href=&#34;https://github.com/ahmetb/kubectl-aliases&#34; target=&#34;_blank&#34;&gt;kubectl-aliases&lt;/a&gt; 可以通过编程的方式生成 kubectl 别名，别名生成规则如下：&lt;/p&gt;
 
@@ -757,7 +757,7 @@ coredns-64b597b598-7547d   192.168.123.250
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;p-id-h2-kubeval-https-github-com-garethr-kubeval-校验配置文件-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;https://github.com/garethr/kubeval&#34; target=&#34;_blank&#34;&gt;Kubeval&lt;/a&gt;：校验配置文件&lt;/p&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;kubeval-https-github-com-garethr-kubeval-校验配置文件&#34;&gt;&lt;a href=&#34;https://github.com/garethr/kubeval&#34; target=&#34;_blank&#34;&gt;Kubeval&lt;/a&gt;：校验配置文件&lt;/h2&gt;
 
 &lt;p&gt;如果你手动写 Kubernetes manifest 文件，检查 manifest 文件的语法是很困难的，特别是当你有多个不同版本的 Kubernetes 集群时，确认配置文件语法是否正确更是难上加难。&lt;/p&gt;
 
@@ -775,7 +775,7 @@ The document nginx.yaml contains an invalid Deployment
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;p-id-h2-kedge-http-kedgeproject-org-简化-kubernetes-部署定义-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;http://kedgeproject.org/&#34; target=&#34;_blank&#34;&gt;Kedge&lt;/a&gt;：简化 Kubernetes 部署定义&lt;/p&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;kedge-http-kedgeproject-org-简化-kubernetes-部署定义&#34;&gt;&lt;a href=&#34;http://kedgeproject.org/&#34; target=&#34;_blank&#34;&gt;Kedge&lt;/a&gt;：简化 Kubernetes 部署定义&lt;/h2&gt;
 
 &lt;p&gt;很多人都抱怨 Kubernetes manifest 文件的定义太复杂和冗长。它们很难写，而且很难维护，如果能够简化部署定义就会极大地降低维护难度。&lt;/p&gt;
 
@@ -843,7 +843,7 @@ status: {}
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h2 id=&#34;p-id-h2-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;参考&lt;/p&gt;&lt;/h2&gt;
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
 
 &lt;hr /&gt;
 
