@@ -825,6 +825,16 @@ table tr th {
 }
 /*================任务列表结束================*/
 
+a[href^="#"] sup
+{/*注脚*/
+  vertical-align:super;
+  margin:0 2px;  
+  padding:1px 3px; 
+  color: #ffffff;
+  background:#666666;
+  font-size:0.7em;
+}
+
 /* --- Code blocks --- */
 
 pre {
