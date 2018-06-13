@@ -396,7 +396,7 @@ autocomplete('#aa-search-input',
 
 <p>大多数用户的 shell 使用的是 <code>bash</code>，Linux 系统可以通过下面的命令来设置：</p>
 
-<pre><code>$ echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc
+<pre><code class="language-ini">$ echo &quot;source &lt;(kubectl completion bash)&quot; &gt;&gt; ~/.bashrc
 $ source ~/.bashrc
 </code></pre>
 
@@ -420,7 +420,7 @@ $ source ~/.zshrc
 
 <p>比如仅仅想要查看获取的 pods 中的各个 pod 的 <code>uid</code>，则可以使用以下命令：</p>
 
-<pre><code class="language-bash">$ kubectl get pods --all-namespaces -o go-template='{{range .items}}{{.metadata.uid}}
+<pre><code class="language-ini">$ kubectl get pods --all-namespaces -o go-template='{{range .items}}{{.metadata.uid}}
 {{end}}'
 
 2ea418d4-533e-11e8-b722-005056a1bc83

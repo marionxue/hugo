@@ -592,7 +592,7 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;p&gt;大多数用户的 shell 使用的是 &lt;code&gt;bash&lt;/code&gt;，Linux 系统可以通过下面的命令来设置：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;$ echo &amp;quot;source &amp;lt;(kubectl completion bash)&amp;quot; &amp;gt;&amp;gt; ~/.bashrc
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;$ echo &amp;quot;source &amp;lt;(kubectl completion bash)&amp;quot; &amp;gt;&amp;gt; ~/.bashrc
 $ source ~/.bashrc
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -616,7 +616,7 @@ $ source ~/.zshrc
 
 &lt;p&gt;比如仅仅想要查看获取的 pods 中的各个 pod 的 &lt;code&gt;uid&lt;/code&gt;，则可以使用以下命令：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods --all-namespaces -o go-template=&#39;{{range .items}}{{.metadata.uid}}
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;$ kubectl get pods --all-namespaces -o go-template=&#39;{{range .items}}{{.metadata.uid}}
 {{end}}&#39;
 
 2ea418d4-533e-11e8-b722-005056a1bc83
