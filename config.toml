@@ -1,7 +1,7 @@
-baseurl = "http://www.yangcs.net/"
+baseurl = "https://www.yangcs.net/"
 DefaultContentLanguage = "en"
 hasCJKLanguage = true
-languageCode = "zh-cn"
+languageCode = "zh"
 title = "Ryan Yang" 
 theme = "beautifulhugo"
 metaDataFormat = "yaml"
