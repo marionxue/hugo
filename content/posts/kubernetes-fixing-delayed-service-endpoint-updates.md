@@ -48,6 +48,14 @@ Endpoint Controller 内部运行了一组 `workers` 来处理这些事件并更�
 <p><code>--kube-api-qps</code> 和 <code>--kube-api-burst</code> 参数的值越大，kube-apiserver 和 etcd 的负载就越高。在我的集群中，通过适当地增加一些负载来解决这个问题是很值得的。</p>
 </div>
 
+## <p id="h2">原文链接</p>
+
+----
+
++ [Kubernetes: Fixing Delayed Service Endpoint Updates](https://engineering.dollarshaveclub.com/kubernetes-fixing-delayed-service-endpoint-updates-fd4d0a31852c)
+
+<br />
+
 <style>
 #h2{
     margin-bottom:2em;
