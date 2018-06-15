@@ -5,10 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Posts - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title>  修复 Service Endpoint 更新的延迟 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Posts" />
-  <meta name="twitter:title" content="Posts" />
+  <meta property="og:title" content=" 修复 Service Endpoint 更新的延迟" />
+  <meta name="twitter:title" content=" 修复 Service Endpoint 更新的延迟" />
+  <meta name="description" content="Kube-controller-manager 调优">
+  <meta property="og:description" content="Kube-controller-manager 调优">
+  <meta name="twitter:description" content="Kube-controller-manager 调优">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -16,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.37" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -284,14 +287,71 @@ autocomplete('#aa-search-input',
 
 
     
-  <header class="header-section ">
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1> 修复 Service Endpoint 更新的延迟</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">Kube-controller-manager 调优</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on June 15, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
     <div class="intro-header no-img">
+      
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="page-heading">
-              <h1>Posts</h1>
-              <hr class="small">
+            <div class="posts-heading">
+                <h1 align="center"> 修复 Service Endpoint 更新的延迟</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">Kube-controller-manager 调优</h2>
+                  
+                
+                
             </div>
           </div>
         </div>
@@ -299,403 +359,370 @@ autocomplete('#aa-search-input',
     </div>
   </header>
 
+
     
-  <div class="container" role="main">
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="posts-list">
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/how-manage-image/">
-                <h2 class="post-title">docker 在本地如何管理 image（镜像）?</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    探索 image 的获取和存储方式
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on April 2, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/how-manage-image/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/federation/">
-                <h2 class="post-title">Kubernetes 使用集群联邦实现多集群管理</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用联邦服务进行跨集群服务发现
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on March 22, 2018
-              </p>
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/federation/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/k8s-network-expand/">
-                <h2 class="post-title">Kubernetes 网络扩展</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过边界网关和边界 DNS 直接访问 k8s 中的服务
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on February 11, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/k8s-network-expand/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.nettags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/calico-rr/">
-                <h2 class="post-title">calico Router reflection(RR) 模式介绍及部署</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过 calico RR 模式来使 K8S 支撑容纳更多的 node
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on February 1, 2018
-              </p>
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/calico-rr/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.nettags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/use-devicemapper/">
-                <h2 class="post-title">Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    配置 Docker 使用 devicemapper
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on January 22, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/use-devicemapper/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/thin-provisioning/">
-                <h2 class="post-title">Device Mapper系列 (2)：Thin Provisioning 实践</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    Thin Provisioning Snapshot 演练
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on January 22, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/thin-provisioning/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/devicemapper-theory/">
-                <h2 class="post-title">Device Mapper系列 (1)：Device Mapper 技术</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    Device Mapper 原理剖析
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on January 21, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/devicemapper-theory/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/python3-iterator-and-generator/">
-                <h2 class="post-title">Python3 系列之迭代器 &amp; 生成器</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用迭代器和生成器实现单线程异步并发
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on July 27, 2017
-              </p>
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/python3-iterator-and-generator/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.nettags/python/">python</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/2017-targets/">
-                <h2 class="post-title">2017 年的小目标</h2>
-
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on July 26, 2017
-              </p>
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/2017-targets/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/linux-gns3-start/">
-                <h2 class="post-title">Linux 下 gns3 网络模拟器配置</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    配置使用思科网络模拟器
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on January 23, 2017
-              </p>
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/linux-gns3-start/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-
-            </article>
-          
-        </div>
-        
-          <ul class="pager main-pager">
-            
-              <li class="previous">
-                <a href="/posts/page/1">&larr; Newer Posts</a>
-              </li>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
             
-              <li class="next">
-                <a href="/posts/page/3">Older Posts &rarr;</a>
-              </li>
             
-          </ul>
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Jun 15, 2018</h4>
+    </section>
+    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
         
-      </div>
-    <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
+        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
 
-<ul class="pagination">
-    
-    <li>
-        <a href="/posts/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li
-    >
-    <a href="/posts/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/posts/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    class="active"><a href="/posts/page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/posts/page/3/">3</a></li>
-    
-    
-    <li
-    >
-    <a href="/posts/page/3/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li>
-        <a href="/posts/page/3/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
-</ul>
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
 
+<p>几个月前，我在更新 Kubernetes 集群中的 <code>Deployment</code> 时发现了一个很奇怪的连接超时现象，在更新 Deployment 之后的 30 秒到两分钟左右，所有与以该 Deployment 作为服务后端的 <code>Service</code> 的连接都会超时或失败。同时我还注意到其他应用在这段时间内也会出现莫名其妙的延迟现象。</p>
+
+<p>一开始我怀疑是<a href="https://hackernoon.com/graceful-shutdown-in-kubernetes-435b98794461" target="_blank">应用没有优雅删除</a>导致的，但当我在更新 Deployment 的过程中（删除旧的 Pod，启动新的 Pod）通过 <code>curl</code> 来测试该应用的健康检查（liveness）和就绪检查（readiness）<code>Endpoints</code> 时，很快就排除了这个可能性。</p>
+
+<p>我开始怀疑人生，开始怀疑我的职业选择，几个小时之后我忽然想起来 <code>Service</code> 并不是直接与 Deployment 关联的，而是按照标签对一组提供相同功能的 Pods 的抽象，并为它们提供一个统一的入口。更重要的是，Service 是由一组 <code>Endpoint</code> 组成的，只要 Service 中的一组 Pod 发生变更，Endpoint 就会被更新。</p>
+
+<p>想到这里，就可以继续排查问题了。下面在更新 Deployment 的过程中通过 <code>watch</code> 命令来观察有问题的 Service 的 Endpoint。</p>
+
+<pre><code class="language-bash">$ watch kubectl describe endpoints [endpoint name]
+</code></pre>
+
+<p>然后我就发现了罪魁祸首，在旧 Pod 被移除的 30 秒到几分钟左右的时间段内，这些被删除的 Pod 的 <code>IP:Port</code> 仍然出现在 Endpoint 的就绪列表中，同时新启动的 Pod 的 <code>IP:Port</code> 也没有被添加到 Endpoint 中。终于发现了连接失败的根源，但是为什么会出现这种状况呢？仍然无解。</p>
+
+<p>又经历了几天折腾之后，我又有了新点子，那就是调试负责更新 Endpoint 的组件：<code>kube-controller-manager</code>，最后终于在 kube-controller-manager 的日志输出中发现了如下可疑的信息：</p>
+
+<pre><code class="language-ini">I0412 22:59:59.914517       1 request.go:638] Throttling request took 2.489742918s, request: GET:https://10.3.0.1:443/api/v1/namespaces/[some namespace]/endpoints/[some endpoints]&quot;
+</code></pre>
+
+<p>但还是感觉那里不对劲，明明延迟了几分钟，为什么这里显示的只有两秒？</p>
+
+<p>在阅读了 kube-controller-manager 的源码后，我发现了问题所在。Kube-controller-manager 的主要职责是通过内部的众多 <code>Controller</code> 将集群的当前状态调整到期望状态，其中 <code>Endpoint Controller</code> 用于监控 Pod 的生命周期事件并根据这些事件更新 Endpoint。</p>
+
+<p>Endpoint Controller 内部运行了一组 <code>workers</code> 来处理这些事件并更新 Endpoint，如果有足够多的对 Endpoint 发起的请求被阻塞，那么所有的 workers 都会忙于等待被阻塞的请求，这时候新事件只能被添加到队列中排队等待，如果该队列很长，就会花很长时间来更新 Endpoint。</p>
+
+<p>为了解决这个问题，首先我通过调整 kube-controller-manager 的 参数 <code>--concurrent-endpoints-syncs</code> 来增加 Endpoint Controller 的 workers，但收效甚微。</p>
+
+<p>再次仔细阅读源码后，我找到了两个可以可以扭转战局的参数：<code>--kube-api-qps</code> 和 <code>--kube-api-burst</code>。kube-controller-manager 可以通过这两个参数来限制任何 Controller（包括 Endpoint Controller）对 kube-apiserver 发起的请求的速率。</p>
+
+<p>这两个参数的默认值是 20，但当集群中的主机数量非常多时，默认值显然不满足集群运行的工作负载。经过不断调试之后，我将参数 <code>--kube-api-qps</code> 的值设置为 300，将 <code>--kube-api-burst</code> 的值设置为 325，上面的日志信息便消失了，同时添加或移除 Pod 时 Endpoint 也能够立即更新。</p>
+
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p><code>--kube-api-qps</code> 和 <code>--kube-api-burst</code> 参数的值越大，kube-apiserver 和 etcd 的负载就越高。在我的集群中，通过适当地增加一些负载来解决这个问题是很值得的。</p>
+</div>
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/kubernetes-fucking-trick/" data-toggle="tooltip" data-placement="top" title="Kubernetes 的奇技淫巧">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/kubernetes-fucking-trick/">Kubernetes 的奇技淫巧</a></li>
+                    
+                    <li><a href="/posts/what-happens-when-k8s/">kubectl run 背后到底发生了什么？</a></li>
+                    
+                    <li><a href="/posts/introduce-kubernetes-descheduler/">走进 Descheduler</a></li>
+                    
+                    <li><a href="/posts/pods-life/">Pod 的生命周期管理</a></li>
+                    
+                    <li><a href="/posts/kube-router/">Kube-router 实战</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Jun 15, 2018</h4>
+    </section>
+    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </div>
+        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
     </div>
-  </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
 
     <footer>
   <div class="container">

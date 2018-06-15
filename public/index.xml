@@ -571,6 +571,279 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title> 修复 Service Endpoint 更新的延迟</title>
+      <link>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</link>
+      <pubDate>Fri, 15 Jun 2018 14:02:11 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;几个月前，我在更新 Kubernetes 集群中的 &lt;code&gt;Deployment&lt;/code&gt; 时发现了一个很奇怪的连接超时现象，在更新 Deployment 之后的 30 秒到两分钟左右，所有与以该 Deployment 作为服务后端的 &lt;code&gt;Service&lt;/code&gt; 的连接都会超时或失败。同时我还注意到其他应用在这段时间内也会出现莫名其妙的延迟现象。&lt;/p&gt;
+
+&lt;p&gt;一开始我怀疑是&lt;a href=&#34;https://hackernoon.com/graceful-shutdown-in-kubernetes-435b98794461&#34; target=&#34;_blank&#34;&gt;应用没有优雅删除&lt;/a&gt;导致的，但当我在更新 Deployment 的过程中（删除旧的 Pod，启动新的 Pod）通过 &lt;code&gt;curl&lt;/code&gt; 来测试该应用的健康检查（liveness）和就绪检查（readiness）&lt;code&gt;Endpoints&lt;/code&gt; 时，很快就排除了这个可能性。&lt;/p&gt;
+
+&lt;p&gt;我开始怀疑人生，开始怀疑我的职业选择，几个小时之后我忽然想起来 &lt;code&gt;Service&lt;/code&gt; 并不是直接与 Deployment 关联的，而是按照标签对一组提供相同功能的 Pods 的抽象，并为它们提供一个统一的入口。更重要的是，Service 是由一组 &lt;code&gt;Endpoint&lt;/code&gt; 组成的，只要 Service 中的一组 Pod 发生变更，Endpoint 就会被更新。&lt;/p&gt;
+
+&lt;p&gt;想到这里，就可以继续排查问题了。下面在更新 Deployment 的过程中通过 &lt;code&gt;watch&lt;/code&gt; 命令来观察有问题的 Service 的 Endpoint。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ watch kubectl describe endpoints [endpoint name]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后我就发现了罪魁祸首，在旧 Pod 被移除的 30 秒到几分钟左右的时间段内，这些被删除的 Pod 的 &lt;code&gt;IP:Port&lt;/code&gt; 仍然出现在 Endpoint 的就绪列表中，同时新启动的 Pod 的 &lt;code&gt;IP:Port&lt;/code&gt; 也没有被添加到 Endpoint 中。终于发现了连接失败的根源，但是为什么会出现这种状况呢？仍然无解。&lt;/p&gt;
+
+&lt;p&gt;又经历了几天折腾之后，我又有了新点子，那就是调试负责更新 Endpoint 的组件：&lt;code&gt;kube-controller-manager&lt;/code&gt;，最后终于在 kube-controller-manager 的日志输出中发现了如下可疑的信息：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;I0412 22:59:59.914517       1 request.go:638] Throttling request took 2.489742918s, request: GET:https://10.3.0.1:443/api/v1/namespaces/[some namespace]/endpoints/[some endpoints]&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但还是感觉那里不对劲，明明延迟了几分钟，为什么这里显示的只有两秒？&lt;/p&gt;
+
+&lt;p&gt;在阅读了 kube-controller-manager 的源码后，我发现了问题所在。Kube-controller-manager 的主要职责是通过内部的众多 &lt;code&gt;Controller&lt;/code&gt; 将集群的当前状态调整到期望状态，其中 &lt;code&gt;Endpoint Controller&lt;/code&gt; 用于监控 Pod 的生命周期事件并根据这些事件更新 Endpoint。&lt;/p&gt;
+
+&lt;p&gt;Endpoint Controller 内部运行了一组 &lt;code&gt;workers&lt;/code&gt; 来处理这些事件并更新 Endpoint，如果有足够多的对 Endpoint 发起的请求被阻塞，那么所有的 workers 都会忙于等待被阻塞的请求，这时候新事件只能被添加到队列中排队等待，如果该队列很长，就会花很长时间来更新 Endpoint。&lt;/p&gt;
+
+&lt;p&gt;为了解决这个问题，首先我通过调整 kube-controller-manager 的 参数 &lt;code&gt;--concurrent-endpoints-syncs&lt;/code&gt; 来增加 Endpoint Controller 的 workers，但收效甚微。&lt;/p&gt;
+
+&lt;p&gt;再次仔细阅读源码后，我找到了两个可以可以扭转战局的参数：&lt;code&gt;--kube-api-qps&lt;/code&gt; 和 &lt;code&gt;--kube-api-burst&lt;/code&gt;。kube-controller-manager 可以通过这两个参数来限制任何 Controller（包括 Endpoint Controller）对 kube-apiserver 发起的请求的速率。&lt;/p&gt;
+
+&lt;p&gt;这两个参数的默认值是 20，但当集群中的主机数量非常多时，默认值显然不满足集群运行的工作负载。经过不断调试之后，我将参数 &lt;code&gt;--kube-api-qps&lt;/code&gt; 的值设置为 300，将 &lt;code&gt;--kube-api-burst&lt;/code&gt; 的值设置为 325，上面的日志信息便消失了，同时添加或移除 Pod 时 Endpoint 也能够立即更新。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;&lt;code&gt;--kube-api-qps&lt;/code&gt; 和 &lt;code&gt;--kube-api-burst&lt;/code&gt; 参数的值越大，kube-apiserver 和 etcd 的负载就越高。在我的集群中，通过适当地增加一些负载来解决这个问题是很值得的。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Kubernetes 的奇技淫巧</title>
       <link>https://www.yangcs.net/posts/kubernetes-fucking-trick/</link>
       <pubDate>Mon, 11 Jun 2018 04:35:48 +0000</pubDate>
@@ -7775,687 +8048,6 @@ RR1 and RR2 both using the cluster ID 1.0.0.1
 RR2 and RR3 both using the cluster ID 1.0.0.2
 RR4 and RR5 both using the cluster ID 1.0.0.3&lt;/li&gt;
 &lt;/ul&gt;</description>
-    </item>
-    
-    <item>
-      <title>Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</title>
-      <link>https://www.yangcs.net/posts/use-devicemapper/</link>
-      <pubDate>Mon, 22 Jan 2018 16:17:11 +0800</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/use-devicemapper/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-准备条件-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;1. &lt;strong&gt;准备条件&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 存储驱动是 &lt;code&gt;RHEL&lt;/code&gt;, &lt;code&gt;CentOS&lt;/code&gt; 和 &lt;code&gt;Oracle Linux&lt;/code&gt; 系统上唯一一个支持 &lt;code&gt;Docker EE&lt;/code&gt; 和 &lt;code&gt;Commercially Supported Docker Engine&lt;/code&gt; (CS-Engine) 的存储驱动，具体参考 &lt;a href=&#34;https://success.docker.com/Policies/Compatibility_Matrix&#34; target=&#34;_blank&#34;&gt;Product compatibility matrix&lt;/a&gt;.&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 在 &lt;code&gt;CentOS&lt;/code&gt;, &lt;code&gt;Fedora&lt;/code&gt;, &lt;code&gt;Ubuntu&lt;/code&gt; 和 &lt;code&gt;Debian&lt;/code&gt; 上也支持 &lt;code&gt;Docker CE&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;如果你更改了 &lt;code&gt;Docker&lt;/code&gt; 的存储驱动，那么你之前在本地创建的所有容器都将无法访问。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-2-配置docker使用devicemapper-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;2. &lt;strong&gt;配置Docker使用devicemapper&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Docker 主机运行 &lt;code&gt;devicemapper&lt;/code&gt; 存储驱动时，默认的配置模式为 &lt;code&gt;loop-lvm&lt;/code&gt;。此模式使用空闲的文件来构建用于镜像和容器快照的精简存储池。该模式设计为无需额外配置开箱即用(out-of-the-box)。不过生产部署不应该以 &lt;code&gt;loop-lvm&lt;/code&gt; 模式运行。&lt;/p&gt;
-
-&lt;h3 id=&#34;2-1-生产环境配置direct-lvm模式&#34;&gt;&lt;strong&gt;2.1 生产环境配置direct-lvm模式&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;CentOS7 从 &lt;code&gt;Docker 17.06&lt;/code&gt; 开始支持通过 Docker 自动配置  &lt;code&gt;direct-lvm&lt;/code&gt;，所以推荐使用该工具配置。当然也可以手动配置 &lt;code&gt;lvm&lt;/code&gt;，添加相关配置选项，不过过程较为繁琐一点。&lt;/p&gt;
-
-&lt;h4 id=&#34;自动配置-direct-lvm-模式&#34;&gt;&lt;strong&gt;自动配置 direct-lvm 模式&lt;/strong&gt;&lt;/h4&gt;
-
-&lt;p&gt;该方法只适用于一个块设备，如果你有多个块设备，请通过手动配置 &lt;code&gt;direct-lvm&lt;/code&gt; 模式。&lt;/p&gt;
-
-&lt;p&gt;示例配置文件位置 &lt;code&gt;/usr/lib/docker-storage-setup/docker-storage-setup&lt;/code&gt;，可以查看其中相关配置的详细说明，或者通过 &lt;code&gt;man docker-storage-setup&lt;/code&gt; 获取帮助，以下介绍几个关键的选项：&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;参数&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;解释&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;是否必须&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;默认值&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;示例&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;dm.directlvm_device&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;准备配置 direct-lvm 的块设备的路径&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;是&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;dm.directlvm_device=&amp;ldquo;/dev/xvdf&amp;rdquo;&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_percent&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;定义创建 data thin pool 的大小&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;否&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;95&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_percent=95&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_metapercent&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;定义创建 metadata thin pool 的大小&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;否&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;1&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_metapercent=1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_autoextend_threshold&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;定义自动扩容的百分比，100 表示 disable，最小为 50，参考 &lt;a href=&#34;http://man7.org/linux/man-pages/man7/lvmthin.7.html&#34; target=&#34;_blank&#34;&gt;lvmthin — LVM thin provisioning&lt;/a&gt;&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;否&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;80&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_autoextend_threshold=80&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_autoextend_percent&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;定义每次扩容的大小，100 表示 disable&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;否&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;20&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;dm.thinp_autoextend_percent=20&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;dm.directlvm_device_force&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;当块设备已经存在文件系统时，是否格式化块设备&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;否&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;false&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;dm.directlvm_device_force=true&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;编辑 &lt;code&gt;/etc/docker/daemon.json&lt;/code&gt;，设置好参数后重新启动 Docker 使更改生效。下面是一个示例：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;{
-  &amp;quot;storage-driver&amp;quot;: &amp;quot;devicemapper&amp;quot;,
-  &amp;quot;storage-opts&amp;quot;: [
-    &amp;quot;dm.directlvm_device=/dev/xdf&amp;quot;,
-    &amp;quot;dm.thinp_percent=95&amp;quot;,
-    &amp;quot;dm.thinp_metapercent=1&amp;quot;,
-    &amp;quot;dm.thinp_autoextend_threshold=80&amp;quot;,
-    &amp;quot;dm.thinp_autoextend_percent=20&amp;quot;,
-    &amp;quot;dm.directlvm_device_force=false&amp;quot;
-  ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;关于存储的更多参数请参考：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://docs.docker.com/engine/reference/commandline/dockerd/#storage-driver-options&#34; target=&#34;_blank&#34;&gt;Stable&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://docs.docker.com/edge/engine/reference/commandline/dockerd/#storage-driver-options&#34; target=&#34;_blank&#34;&gt;Edge&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;手动配置-direct-lvm-模式&#34;&gt;&lt;strong&gt;手动配置 direct-lvm 模式&lt;/strong&gt;&lt;/h4&gt;
-
-&lt;p&gt;下面的步骤创建一个逻辑卷，配置用作存储池的后端。我们假设你有在 &lt;code&gt;/dev/xvdf&lt;/code&gt; 的充足空闲空间的块设备。也假设你的 Docker daemon 已停止。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;1.登录你要配置的 &lt;code&gt;Docker&lt;/code&gt; 主机并停止 &lt;code&gt;Docker daemon&lt;/code&gt;。&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;2.安装LVM2软件包。LVM2软件包含管理Linux上逻辑卷的用户空间工具集。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;RHEL / CentOS:&lt;/strong&gt; &lt;code&gt;device-mapper-persistent-data&lt;/code&gt;, &lt;code&gt;lvm2&lt;/code&gt; 以及相关依赖&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Ubuntu / Debian:&lt;/strong&gt; &lt;code&gt;thin-provisioning-tools&lt;/code&gt;, &lt;code&gt;lvm2&lt;/code&gt; 以及相关依赖&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;3.创建物理卷。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ pvcreate /dev/xvdf
-
-Physical volume &amp;quot;/dev/xvdf&amp;quot; successfully created.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;4.创建一个 “docker” 卷组。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vgcreate docker /dev/xvdf
-
-Volume group &amp;quot;docker&amp;quot; successfully created
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;5.创建一个名为thinpool的存储池。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;在此示例中，设置池大小为 “docker” 卷组大小的 &lt;code&gt;95％&lt;/code&gt;。 其余的空闲空间可以用来自动扩展数据或元数据。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lvcreate --wipesignatures y -n thinpool docker -l 95%VG
-
-Logical volume &amp;quot;thinpool&amp;quot; created.
-
-$ lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
-
-Logical volume &amp;quot;thinpoolmeta&amp;quot; created.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;6.将存储池转换为 &lt;code&gt;thinpool&lt;/code&gt; 格式。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lvconvert -y \
---zero n \
--c 512K \
---thinpool docker/thinpool \
---poolmetadata docker/thinpoolmeta
-
-WARNING: Converting logical volume docker/thinpool and docker/thinpoolmeta to
-thin pool&#39;s data and metadata volumes with metadata wiping.
-THIS WILL DESTROY CONTENT OF LOGICAL VOLUME (filesystem etc.)
-Converted docker/thinpool to thin pool.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;7.通过 &lt;code&gt;lvm profile&lt;/code&gt; 配置存储池的自动扩展。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vi /etc/lvm/profile/docker-thinpool.profile
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;8.设置参数 &lt;code&gt;thin_pool_autoextend_threshold&lt;/code&gt; 和 &lt;code&gt;thin_pool_autoextend_percent&lt;/code&gt; 的值。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;设置 &lt;code&gt;thin_pool_autoextend_threshold&lt;/code&gt; 值。这个值应该是之前设置存储池余下空间的百分比(100 = disabled)。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;thin_pool_autoextend_threshold = 80
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;设置当存储池自动扩容时，增加存储池的空间百分比（100 =禁用）&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;thin_pool_autoextend_percent = 20
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;检查你的 &lt;code&gt;docker-thinpool.profile&lt;/code&gt; 的设置。一个示例 &lt;code&gt;/etc/lvm/profile/docker-thinpool.profile&lt;/code&gt; 应该类似如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;activation {
-  thin_pool_autoextend_threshold=80
-  thin_pool_autoextend_percent=20
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;9.应用新的 &lt;code&gt;lvm&lt;/code&gt; 配置。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lvchange --metadataprofile docker-thinpool docker/thinpool
-
-Logical volume docker/thinpool changed.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;10.查看卷的信息，验证 lv 是否受监控。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lvs -o+seg_monitor
-
-LV       VG     Attr       LSize  Pool Origin Data%  Meta%  Move Log Cpy%Sync Convert Monitor
-thinpool docker twi-a-t--- 95.00g             0.00   0.01                             monitored
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;11.备份 &lt;code&gt;Docker&lt;/code&gt; 存储。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mkdir /var/lib/docker.bk
-$ mv /var/lib/docker/* /var/lib/docker.bk
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;12.配置一些特定的 &lt;code&gt;devicemapper&lt;/code&gt; 选项。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat /etc/docker/daemon.json
-
-{
-    &amp;quot;storage-driver&amp;quot;: &amp;quot;devicemapper&amp;quot;,
-    &amp;quot;storage-opts&amp;quot;: [
-    &amp;quot;dm.thinpooldev=/dev/mapper/docker-thinpool&amp;quot;,
-    &amp;quot;dm.use_deferred_removal=true&amp;quot;,
-    &amp;quot;dm.use_deferred_deletion=true&amp;quot;
-    ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p markdown=&#34;1&#34; style=&#34;display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;&#34;&gt;
-&lt;strong&gt;【注意事项】&lt;/strong&gt;
-
-Note: Always set both dm.use_deferred_removal=true and dm.use_deferred_deletion=true to prevent unintentionally leaking mount points.
-&lt;br /&gt;
-启用上述2个参数来阻止可能意外产生的挂载点泄漏问题
-&lt;/p&gt;
-
-&lt;h4 id=&#34;检查主机上的-devicemapper-结构&#34;&gt;&lt;strong&gt;检查主机上的 &lt;code&gt;devicemapper&lt;/code&gt; 结构&lt;/strong&gt;&lt;/h4&gt;
-
-&lt;p&gt;你可以使用 &lt;code&gt;lsblk&lt;/code&gt; 命令来查看以上创建的设备文件和存储池。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lsblk
-NAME               MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
-xvda               202:0    0    8G  0 disk
-└─xvda1            202:1    0    8G  0 part /
-xvdf               202:80   0   10G  0 disk
-├─vg--docker-data          253:0    0   90G  0 lvm
-│ └─docker-202:1-1032-pool 253:2    0   10G  0 dm
-└─vg--docker-metadata      253:1    0    4G  0 lvm
-  └─docker-202:1-1032-pool 253:2    0   10G  0 dm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;下图显示由 &lt;code&gt;lsblk&lt;/code&gt; 命令输出的之前镜像的详细信息。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic4.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;可以看出，名为 &lt;code&gt;Docker-202:1-1032-pool&lt;/code&gt; 的 pool 横跨在 &lt;code&gt;data&lt;/code&gt; 和 &lt;code&gt;metadata&lt;/code&gt; 设备之上。pool 的命名规则为：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;Docker-主设备号:二级设备号-inode号-pool&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-3-管理-devicemapper-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;3. &lt;strong&gt;管理 devicemapper&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;3-1-监控-thin-pool&#34;&gt;3.1 &lt;strong&gt;监控 thin pool&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;不要过于依赖 &lt;code&gt;lvm&lt;/code&gt; 的自动扩展，通常情况下 &lt;code&gt;Volume Group&lt;/code&gt; 会自动扩展，但有时候 &lt;code&gt;volume&lt;/code&gt; 还是会被塞满，你可以通过命令 &lt;code&gt;lvs&lt;/code&gt; 或 &lt;code&gt;lvs -a&lt;/code&gt; 来监控 volume 剩余的空间。也可以考虑使用 &lt;code&gt;nagios&lt;/code&gt; 等监控工具来进行监控。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;可以查看 &lt;code&gt;lvm&lt;/code&gt; 日志，了解 &lt;code&gt;thin pool&lt;/code&gt; 在自动扩容触及阈值时的状态：&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ journalctl -fu dm-event.service
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p markdown=&#34;1&#34; style=&#34;display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;&#34;&gt;
-如果你在使用精简池（thin pool）的过程中频繁遇到问题，你可以在 &lt;code&gt;/etc/docker.daemon.json&lt;/code&gt; 中设置参数 &lt;code&gt;dm.min_free_space&lt;/code&gt; 的值（表示百分比）。例如将其设置为 10，以确保当可用空间达到或接近 10％ 时操作失败，并发出警告。参考 &lt;a href=&#34;https://docs.docker.com/engine/reference/commandline/dockerd/#storage-driver-options&#34;&gt;storage driver options in the Engine daemon reference&lt;/a&gt;.
-&lt;/p&gt;
-
-&lt;h3 id=&#34;3-2-为正在运行的设备增加容量&#34;&gt;3.2 &lt;strong&gt;为正在运行的设备增加容量&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;如果 lv 的存储空间已满，并且 vg 处于满负荷状态，你可以为正在运行的 &lt;code&gt;thin-pool&lt;/code&gt; 设备增加存储卷的容量，具体过程取决于您是使用 &lt;code&gt;loop-lvm&lt;/code&gt; 精简池还是使用 &lt;code&gt;direct-lvm&lt;/code&gt; 精简池。&lt;/p&gt;
-
-&lt;h4 id=&#34;调整-loop-lvm-精简池的大小&#34;&gt;&lt;strong&gt;调整 &lt;code&gt;loop-lvm&lt;/code&gt; 精简池的大小&lt;/strong&gt;&lt;/h4&gt;
-
-&lt;p&gt;调整 &lt;code&gt;loop-lvm&lt;/code&gt; 精简池的最简单方法是使用 &lt;code&gt;device_tool&lt;/code&gt; 工具，你也可以使用操作系统自带的工具。&lt;/p&gt;
-
-&lt;h5 id=&#34;a-使用-device-tool-工具&#34;&gt;a. &lt;strong&gt;使用 &lt;code&gt;device_tool&lt;/code&gt; 工具&lt;/strong&gt;&lt;/h5&gt;
-
-&lt;p&gt;在 &lt;code&gt;docker&lt;/code&gt; 官方 &lt;code&gt;github&lt;/code&gt; 仓库的 &lt;code&gt;contrib/&lt;/code&gt; 目录中有一个社区贡献的脚本 &lt;a href=&#34;https://raw.githubusercontent.com/docker/docker-ce/master/components/engine/contrib/docker-device-tool/device_tool.go&#34; target=&#34;_blank&#34;&gt;device_tool.go&lt;/a&gt;，你可以通过此工具免去繁琐的步骤来调整 &lt;code&gt;loop-lvm&lt;/code&gt; 精简池的大小。这个工具不能保证 100% 有效，最好不要在生产环境中使用 &lt;code&gt;loop-lvm&lt;/code&gt; 模式。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;clone&lt;/code&gt; 整个仓库 &lt;a href=&#34;https://github.com/docker/docker-ce&#34; target=&#34;_blank&#34;&gt;docker-ce&lt;/a&gt;，切换到目录 &lt;code&gt;contrib/docker-device-tool&lt;/code&gt; ，按照 &lt;code&gt;README.md&lt;/code&gt; 中的说明编译该工具。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用该工具。例如调整 &lt;code&gt;thin pool&lt;/code&gt; 的大小为 200GB。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ./device_tool resize 200GB
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h5 id=&#34;b-使用操作系统工具&#34;&gt;b. &lt;strong&gt;使用操作系统工具&lt;/strong&gt;&lt;/h5&gt;
-
-&lt;p&gt;如果你不想使用 &lt;code&gt;device_tool&lt;/code&gt; 工具，可以通过操作系统工具手动调整 &lt;code&gt;loop-lvm&lt;/code&gt; 精简池的大小。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;在 &lt;code&gt;loop-lvm&lt;/code&gt; 模式中，Docker 使用的 Device Mapper 设备默认使用 loopback 设备，后端为自动生成的稀疏文件，如下:&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ls -lsh /var/lib/docker/devicemapper/devicemapper/
-总用量 510M
-508M -rw-------. 1 root root 100G 10月 30 00:00 data
-1.9M -rw-------. 1 root root 2.0G 10月 30 00:00 metadata
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;data&lt;/code&gt; [存放数据] 和 &lt;code&gt;metadata&lt;/code&gt; [存放元数据] 的大小从输出可以看出初始化默认为 100G 和 2G 大小，都是稀疏文件，使用多少占用多少。&lt;/p&gt;
-
-&lt;p&gt;Docker 在初始化的过程中，创建 data 和 metadata 这两个稀疏文件，并分别附加到回环设备 &lt;code&gt;/dev/loop0&lt;/code&gt; 和 &lt;code&gt;/dev/loop1&lt;/code&gt; 上，然后基于回环设备创建 thin pool。 默认一个 container 最大存放数据不超过 10G。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查看 &lt;code&gt;data&lt;/code&gt; 和 &lt;code&gt;metadata&lt;/code&gt; 的文件路径：&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker info |grep &#39;loop file&#39;
-
- Data loop file: /var/lib/docker/devicemapper/data
- Metadata loop file: /var/lib/docker/devicemapper/metadata
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;按照以下步骤来增加精简池的大小。在这个例子中，thin-pool 原来的容量为 100GB，增加到200GB。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;查看 data 和 metadata 的大小。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ls -lh /var/lib/docker/devicemapper/
-
-total 1175492
--rw------- 1 root root 100G Mar 30 05:22 data
--rw------- 1 root root 2.0G Mar 31 11:17 metadata
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用 truncate 命令将数据文件的大小增加到 200G。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ truncate -s 200G /var/lib/docker/devicemapper/data
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p markdown=&#34;1&#34; style=&#34;display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;&#34;&gt;
-注意：减小数据文件的大小有可能会对数据造成破坏，请慎重考虑。
-&lt;/p&gt; 
-  &lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;验证文件大小。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ls -lh /var/lib/docker/devicemapper/
-
-total 1.2G
--rw------- 1 root root 200G Apr 14 08:47 data
--rw------- 1 root root 2.0G Apr 19 13:27 metadata
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看到 &lt;code&gt;loopback&lt;/code&gt; 文件的大小已经改变，但还没有保存到内存中。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;在内存中列出环回设备的大小，重新加载该设备，然后再次列出大小。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ echo $[ $(sudo blockdev --getsize64 /dev/loop0) / 1024 / 1024 / 1024 ]
-
-100
-
-$ losetup -c /dev/loop0
-
-$ echo $[ $(sudo blockdev --getsize64 /dev/loop0) / 1024 / 1024 / 1024 ]
-
-200
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重新加载之后，&lt;code&gt;loopback&lt;/code&gt; 设备的大小变为 200GB。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;重新加载 &lt;code&gt;devicemapper thin pool&lt;/code&gt;。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;查看 thin pool 的名称&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ dmsetup status | grep &#39; thin-pool &#39; | awk -F &#39;: &#39; {&#39;print $1&#39;}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;查看当前卷的信息表&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ dmsetup table docker-8:1-123141-pool
-  
-0 209715200 thin-pool 7:1 7:0 128 32768 1 skip_block_zeroing
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;第二个数字是设备的大小，表示有多少个 512－bytes 的扇区。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;128 是最小的可分配的 sector 数。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;32768 是最少可用 sector 的 water mark，也就是一个 threshold。&lt;/li&gt;
-&lt;li&gt;1 代表有一个附加参数。&lt;/li&gt;
-&lt;li&gt;skip_block_zeroing是个附加参数，表示略过用0填充的块。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;使用输出的第二个字段计算扩展后的 &lt;code&gt;thin pool&lt;/code&gt; 总大小，该字段表示有多少个扇区。100G 的文件含有 209715200 个扇区，扩展到 200G 后，扇区数为 419430400。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用新的扇区数重新加载 thin pool。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ dmsetup suspend docker-8:1-123141-pool
-  
-$ dmsetup reload docker-8:1-123141-pool --table &#39;0 419430400 thin-pool 7:1 7:0 128 32768 1 skip_block_zeroing&#39;
-  
-$ dmsetup resume docker-8:1-123141-pool
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&#34;调整-direct-lvm-精简池的大小&#34;&gt;&lt;strong&gt;调整 &lt;code&gt;direct-lvm&lt;/code&gt; 精简池的大小&lt;/strong&gt;&lt;/h4&gt;
-
-&lt;p&gt;要调整 &lt;code&gt;direct-lvm&lt;/code&gt; 精简池的大小，需要添加一块新的块设备到 Docker 的宿主机。并记下内核分配给它的设备名称。例如新的块设备名称为 &lt;code&gt;/dev/xvdg&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;按照以下步骤来增加 &lt;code&gt;direct-lvm&lt;/code&gt; 精简池的大小，请根据实际情况替换以下部分参数。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;查看卷组的信息。&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;使用 &lt;code&gt;pvdisplay&lt;/code&gt; 命令查看精简池当前正在使用的物理块设备以及卷组的名称&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ pvdisplay |grep &#39;VG Name&#39;
-
-PV Name               /dev/xvdf
-VG Name               docker
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;扩展卷组。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vgextend docker /dev/xvdg
-
-Physical volume &amp;quot;/dev/xvdg&amp;quot; successfully created.
-Volume group &amp;quot;docker&amp;quot; successfully extended
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;扩展逻辑卷 &lt;code&gt;docker/thinpool&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lvextend -l+100%FREE -n docker/thinpool
-     
- Size of logical volume docker/thinpool_tdata changed from 95.00 GiB (24319 extents) to 198.00 GiB (50688 extents).
-Logical volume docker/thinpool_tdata successfully resized.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;该命令使用了存储卷的全部空间，没有配置自动扩展。如果要扩展 metadata 精简池，请使用 &lt;code&gt;docker/thinpool_tmeta&lt;/code&gt; 替换 &lt;code&gt;docker/thinpool&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;验证新的 &lt;code&gt;thin pool&lt;/code&gt; 的大小。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker info
-    
-......
-Storage Driver: devicemapper
- Pool Name: docker-thinpool
- Pool Blocksize: 524.3 kB
- Base Device Size: 10.74 GB
- Backing Filesystem: xfs
- Data file:
- Metadata file:
- Data Space Used: 212.3 MB
- Data Space Total: 212.6 GB
- Data Space Available: 212.4 GB
- Metadata Space Used: 286.7 kB
- Metadata Space Total: 1.07 GB
- Metadata Space Available: 1.069 GB
-&amp;lt;output truncated&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过 &lt;code&gt;Data Space Available&lt;/code&gt; 字段的值查看 &lt;code&gt;thin pool&lt;/code&gt; 的大小。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h4 id=&#34;重启操作系统后重新激活-devicemapper&#34;&gt;&lt;strong&gt;重启操作系统后重新激活 devicemapper&lt;/strong&gt;&lt;/h4&gt;
-
-&lt;p&gt;如果重启系统后发现 docker 服务启动失败，你会看到像 “Non existing device” 这样的报错信息。这时需要重新激活逻辑卷。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lvchange -ay docker/thinpool
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-4-devicemapper-存储驱动的工作原理-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;4. &lt;strong&gt;devicemapper 存储驱动的工作原理&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p markdown=&#34;1&#34; style=&#34;display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;&#34;&gt;
-&lt;strong&gt;注意&lt;/strong&gt;：不要直接操作 &lt;code&gt;/var/lib/docker/&lt;/code&gt; 中的任何文件或目录，这些文件和目录由 docker 自动管理。
-&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查看设备和存储池：&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ lsblk
-
-NAME                    MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
-xvda                    202:0    0    8G  0 disk
-└─xvda1                 202:1    0    8G  0 part /
-xvdf                    202:80   0  100G  0 disk
-├─docker-thinpool_tmeta 253:0    0 1020M  0 lvm
-│ └─docker-thinpool     253:2    0   95G  0 lvm
-└─docker-thinpool_tdata 253:1    0   95G  0 lvm
-  └─docker-thinpool     253:2    0   95G  0 lvm
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;查看 docker 正在使用的挂载点：&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mount |grep devicemapper
-/dev/xvda1 on /var/lib/docker/devicemapper type xfs (rw,relatime,seclabel,attr2,inode64,noquota)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;使用 &lt;code&gt;devicemapper&lt;/code&gt; 后，Docker 将镜像和层级内容存储在 thin pool 中，并将它们挂载到 &lt;code&gt;/var/lib/docker/devicemapper/&lt;/code&gt; 目录中暴露给容器使用。&lt;/p&gt;
-
-&lt;h3 id=&#34;4-1-磁盘上的镜像和容器层&#34;&gt;4.1 &lt;strong&gt;磁盘上的镜像和容器层&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;/var/lib/docker/devicemapper/metadata/&lt;/code&gt; 目录中包含了有关 devicemapper 配置本身的元数据，以及卷、快照和每个卷的块或者快照同存储池中块的映射信息。&lt;code&gt;devicemapper&lt;/code&gt; 使用了快照技术，元数据中也包含了这些快照的信息，以 json 格式保存在文本中。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;/var/lib/devicemapper/mnt/&lt;/code&gt; 目录包含了所有镜像和容器层的挂载点。镜像层的挂载点表现为空目录，容器层的挂载点显示的是容器内部的文件系统。&lt;/p&gt;
-
-&lt;h3 id=&#34;4-2-镜像分层与共享&#34;&gt;4.2 &lt;strong&gt;镜像分层与共享&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 存储驱动使用专用块设备而不是格式化的文件系统，通过在块级别上对文件进行操作，能够在写时复制（CoW）期间实现最佳性能。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 驱动将所有的镜像和容器存储到 &lt;code&gt;/var/lib/docker/devicemapper/&lt;/code&gt; 目录，该目录由一个或多个块级设备、环回设备（仅测试）或物理硬盘组成。&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;devicemapper&lt;/code&gt; 创建一个镜像的过程如下：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 存储驱动创建一个精简池(thin pool)。这个池是从块设备或循环挂载的文件。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;下一步是创建一个 base 设备。一个 base 设备是具有文件系统的精简设备。你可以通过运行 &lt;code&gt;docker info&lt;/code&gt; 命令检查 &lt;code&gt;Backing filesystem&lt;/code&gt; 来查看使用的是哪个文件系统。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;每一个新镜像(和镜像数据层)是这个 base 设备的一个快照。这些是精简置备写时拷贝快照。这意味着它们初始为空，只在往它们写入数据时才消耗池中的空间。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;使用 &lt;code&gt;devicemapper&lt;/code&gt; 驱动时，容器数据层是从其创建的镜像的快照。与镜像一样，容器快照是精简置备写时拷贝快照。容器快照存储着容器的所有更改。当数据写入容器时，&lt;code&gt;devicemapper&lt;/code&gt; 从存储池按需分配空间。&lt;/p&gt;
-
-&lt;p&gt;下图显示一个具有一个base设备和两个镜像的精简池。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;如果你仔细查看图表你会发现快照一个连着一个。每一个镜像数据层是它下面数据层的一个快照。每个镜像的最底端数据层是存储池中 &lt;code&gt;base&lt;/code&gt; 设备的快照。此 &lt;code&gt;base&lt;/code&gt; 设备是 &lt;code&gt;Device Mapper&lt;/code&gt; 的工件，而不是 Docker 镜像数据层。&lt;/p&gt;
-
-&lt;p&gt;一个容器是从其创建的镜像的一个快照。下图显示两个容器： 一个基于 &lt;code&gt;Ubuntu&lt;/code&gt; 镜像和另一个基于 &lt;code&gt;Busybox&lt;/code&gt; 镜像。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-5-devicemapper-读写数据的过程-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;5. &lt;strong&gt;devicemapper 读写数据的过程&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;5-1-读数据&#34;&gt;5.1 &lt;strong&gt;读数据&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;我们来看下使用 &lt;code&gt;devicemapper&lt;/code&gt; 存储驱动如何进行读文件。下图显示在示例容器中读取一个单独的块 [0x44f] 的过程。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic3.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;一个应用程序请求读取容器中 &lt;code&gt;0x44f&lt;/code&gt; 数据块。由于容器是一个镜像的一个精简快照，它没有那个数据，只有一个指向镜像存储的地方的指针。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;存储驱动根据指针，到镜像快照的 &lt;code&gt;a005e&lt;/code&gt; 镜像层寻找 &lt;code&gt;0xf33&lt;/code&gt; 块区。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 从镜像快照复制数据块 &lt;code&gt;0xf33&lt;/code&gt; 的内容到容器内存中。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;存储驱动最后将数据返回给请求的应用。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;5-2-写数据&#34;&gt;5.2 &lt;strong&gt;写数据&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;写入新数据：&lt;/strong&gt;使用 &lt;code&gt;devicemapper&lt;/code&gt; 驱动，通过按需分配（allocate-on-demand）操作来实现写入新数据到容器，所有的新数据都被写入容器的可写层中。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p markdown=&#34;1&#34; style=&#34;display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;&#34;&gt;
-例如要写入 56KB 的新数据到容器：
-
-  &amp;emsp;1. 一个应用程序请求写入56KB的新数据到容器。
-
-  &amp;emsp;2. 按需分配操作给容器快照分配一个新的64KB数据块。如果写操作大于64KB，就分配多个新数据块给容器快照。
-
-  &amp;emsp;3. 新的数据写入到新分配的数据块。
-&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;覆盖存在的数据：&lt;/strong&gt;更新存在的数据使用写时拷贝（copy-on-write）操作，先从最近的镜像层中读取与该文件相关的数据块；然后分配新的空白数据块给容器快照并复制数据到这些数据块；最后更新好的数据写入到新分配的数据块。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;删除数据：&lt;/strong&gt;当从容器的可写层中删除文件或目录时，或者从镜像层中删除其父层镜像中已存在的文件时，&lt;code&gt;devicemapper&lt;/code&gt; 存储驱动会截获对该文件或目录的进一步读取尝试，并响应该文件或目录不存在。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;写入新数据并删除旧数据：&lt;/strong&gt;当你向容器中写入新数据并删除旧数据时，所有这些操作都发生在容器的可写层。如果你使用的是 &lt;code&gt;direct-lvm&lt;/code&gt; 模式，删除的数据块将会被释放；如果你使用的是 &lt;code&gt;loop-lvm&lt;/code&gt; 模式，那么这些数据块就不会被释放。因此不建议在生产环境中使用 &lt;code&gt;loop-lvm&lt;/code&gt; 模式。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-6-device-mapper-对-docker-性能的影响-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;6. &lt;strong&gt;Device Mapper 对 Docker 性能的影响&lt;/strong&gt;&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;了解按需分配和写时拷贝操作对整体容器性能的影响很重要。&lt;/p&gt;
-
-&lt;h3 id=&#34;6-1-按需分配对性能的影响&#34;&gt;6.1 &lt;strong&gt;按需分配对性能的影响&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 存储驱动通过按需分配操作给容器分配新的数据块。这意味着每次应用程序写入容器内的某处时，一个或多个空数据块从存储池中分配并映射到容器中。&lt;/p&gt;
-
-&lt;p&gt;所有数据块为 &lt;code&gt;64KB&lt;/code&gt;。 写小于 &lt;code&gt;64KB&lt;/code&gt; 的数据仍然分配一个 &lt;code&gt;64KB&lt;/code&gt; 数据块。写入超过 &lt;code&gt;64KB&lt;/code&gt; 的数据分配多个 &lt;code&gt;64KB&lt;/code&gt; 数据块。所以，特别是当发生很多小的写操作时，就会比较影响容器的性能。不过一旦数据块分配给容器，后续的读和写可以直接在该数据块上操作。&lt;/p&gt;
-
-&lt;h3 id=&#34;6-2-写时拷贝对性能的影响&#34;&gt;6.2 &lt;strong&gt;写时拷贝对性能的影响&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;每当容器首次更新现有数据时，&lt;code&gt;devicemapper&lt;/code&gt; 存储驱动必须执行写时拷贝操作。这会从镜像快照复制数据到容器快照。此过程对容器性能产生显着影响。因此，更新一个 &lt;code&gt;1GB&lt;/code&gt; 文件的 &lt;code&gt;32KB&lt;/code&gt; 数据只复制一个 &lt;code&gt;64KB&lt;/code&gt; 数据块到容器快照。这比在文件级别操作需要复制整个 &lt;code&gt;1GB&lt;/code&gt; 文件到容器数据层有明显的性能优势。&lt;/p&gt;
-
-&lt;p&gt;不过在实践中，当容器执行很多小于 &lt;code&gt;64KB&lt;/code&gt; 的写操作时，&lt;code&gt;devicemapper&lt;/code&gt; 的性能会比 &lt;code&gt;AUFS&lt;/code&gt; 要差。&lt;/p&gt;
-
-&lt;h3 id=&#34;6-3-其他注意事项&#34;&gt;6.3 &lt;strong&gt;其他注意事项&lt;/strong&gt;&lt;/h3&gt;
-
-&lt;p&gt;还有其他一些影响 &lt;code&gt;devicemapper&lt;/code&gt; 存储驱动性能的因素。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;模式&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Docker 使用的 devicemapper 存储驱动的默认模式是 &lt;code&gt;loop-lvm&lt;/code&gt;。这个模式使用空闲文件来构建存储池，性能非常低。不建议用到生产环境。推荐用在生产环境的模式是 &lt;code&gt;direct-lvm&lt;/code&gt;。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;存取速度&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如果希望获得更佳的性能，可以将数据文件和元数据文件放在 &lt;code&gt;SSD&lt;/code&gt; 这样的高速存储上。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;内存使用&lt;/strong&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code&gt;devicemapper&lt;/code&gt; 并不是一个有效使用内存的存储驱动。当一个容器运行 n 个时，它的文件也会被拷贝 n 份到内存中，这对 &lt;code&gt;docker&lt;/code&gt; 宿主机的内存使用会造成明显影响。因此，不建议在 &lt;code&gt;PaaS&lt;/code&gt; 或者资源密集场合使用。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;对于写操作较大的，可以采用挂载 &lt;code&gt;data volumes&lt;/code&gt;。使用 &lt;code&gt;data volumes&lt;/code&gt; 可以绕过存储驱动，从而避免 &lt;code&gt;thin provisioning&lt;/code&gt; 和 &lt;code&gt;copy-on-write&lt;/code&gt; 引入的额外开销。&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/devicemapper-theory/&#34; target=&#34;_blank&#34;&gt;Device Mapper系列 (1)：Device Mapper 技术&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/thin-provisioning/&#34; target=&#34;_blank&#34;&gt;Device Mapper系列 (2)：Thin Provisioning 实践&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;a href=&#34;https://www.yangcs.net/posts/calico-rr/&#34; target=&#34;_blank&#34;&gt;Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动&lt;/a&gt;&lt;/center&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title> 修复 Service Endpoint 更新的延迟</title>
+      <link>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</link>
+      <pubDate>Fri, 15 Jun 2018 14:02:11 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Kubernetes 的奇技淫巧</title>
       <link>https://www.yangcs.net/posts/kubernetes-fucking-trick/</link>
       <pubDate>Mon, 11 Jun 2018 04:35:48 +0000</pubDate>
