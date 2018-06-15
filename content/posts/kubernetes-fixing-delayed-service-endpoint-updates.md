@@ -30,7 +30,7 @@ $ watch kubectl describe endpoints [endpoint name]
 I0412 22:59:59.914517       1 request.go:638] Throttling request took 2.489742918s, request: GET:https://10.3.0.1:443/api/v1/namespaces/[some namespace]/endpoints/[some endpoints]"
 ```
 
-但还是感觉那里不对劲，明明延迟了几分钟，为什么这里显示的只有两秒？
+但还是感觉哪里不对劲，明明延迟了几分钟，为什么这里显示的只有两秒？
 
 在阅读了 kube-controller-manager 的源码后，我发现了问题所在。Kube-controller-manager 的主要职责是通过内部的众多 `Controller` 将集群的当前状态调整到期望状态，其中 `Endpoint Controller` 用于监控 Pod 的生命周期事件并根据这些事件更新 Endpoint。
 
