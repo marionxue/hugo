@@ -422,7 +422,7 @@ cfssl cfssl-bundle cfssl-certinfo cfssljson cfssl-newkey cfssl-scan
 
 <p>在 <code>$GOPATH/bin</code> 目录下得到以 cfssl 开头的几个命令。</p>
 
-<p>注意：以下文章中出现的cat的文件名如果不存在需要手工创建。</p>
+<p>注意：以下文章中出现的 cat 的文件名如果不存在需要手工创建。</p>
 
 <h3 id="创建-ca-certificate-authority">创建 CA (Certificate Authority)</h3>
 
@@ -504,6 +504,8 @@ $ ls ca*
 ca-config.json  ca.csr  ca-csr.json  ca-key.pem  ca.pem
 </code></pre>
 
+<p><br /></p>
+
 <h3 id="创建-kubernetes-证书">创建 kubernetes 证书</h3>
 
 <p>创建 aggregator 证书签名请求文件 <code>aggregator-csr.json</code> ：</p>
@@ -550,6 +552,8 @@ $ ls aggregator*
 aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 </code></pre>
 
+<p><br /></p>
+
 <h3 id="分发证书">分发证书</h3>
 
 <p>将生成的证书和秘钥文件（后缀名为.pem）拷贝到 Master 节点的 <code>/etc/kubernetes/ssl</code> 目录下备用。</p>
@@ -584,6 +588,8 @@ $ systemctl restart kube-apiserver
 
 <pre><code class="language-bash">--enable-aggregator-routing=true
 </code></pre>
+
+<p><br /></p>
 
 <h2 id="p-id-h2-3-参考-p"><p id="h2">3. 参考</p></h2>
 

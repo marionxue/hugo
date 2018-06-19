@@ -618,7 +618,7 @@ cfssl cfssl-bundle cfssl-certinfo cfssljson cfssl-newkey cfssl-scan
 
 &lt;p&gt;在 &lt;code&gt;$GOPATH/bin&lt;/code&gt; 目录下得到以 cfssl 开头的几个命令。&lt;/p&gt;
 
-&lt;p&gt;注意：以下文章中出现的cat的文件名如果不存在需要手工创建。&lt;/p&gt;
+&lt;p&gt;注意：以下文章中出现的 cat 的文件名如果不存在需要手工创建。&lt;/p&gt;
 
 &lt;h3 id=&#34;创建-ca-certificate-authority&#34;&gt;创建 CA (Certificate Authority)&lt;/h3&gt;
 
@@ -700,6 +700,8 @@ $ ls ca*
 ca-config.json  ca.csr  ca-csr.json  ca-key.pem  ca.pem
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;创建-kubernetes-证书&#34;&gt;创建 kubernetes 证书&lt;/h3&gt;
 
 &lt;p&gt;创建 aggregator 证书签名请求文件 &lt;code&gt;aggregator-csr.json&lt;/code&gt; ：&lt;/p&gt;
@@ -746,6 +748,8 @@ $ ls aggregator*
 aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;分发证书&#34;&gt;分发证书&lt;/h3&gt;
 
 &lt;p&gt;将生成的证书和秘钥文件（后缀名为.pem）拷贝到 Master 节点的 &lt;code&gt;/etc/kubernetes/ssl&lt;/code&gt; 目录下备用。&lt;/p&gt;
@@ -780,6 +784,8 @@ $ systemctl restart kube-apiserver
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;--enable-aggregator-routing=true
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h2 id=&#34;p-id-h2-3-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 参考&lt;/p&gt;&lt;/h2&gt;
 
