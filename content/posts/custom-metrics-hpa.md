@@ -10,7 +10,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制器使用(例如，Horizontal Pod Autoscale 可以使用这些指标作出决策)。
+从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）可以通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制器使用(例如，Horizontal Pod Autoscale 可以使用这些指标作出决策)。
 
 例如，可以使用 `kubectl top node` 和 `kubectl top pod` 查看资源使用情况：
 
@@ -68,6 +68,7 @@ Metrics Server 从每个节点上的 `Kubelet` 公开的 Summary API 中采集�
 自动伸缩是一种根据资源使用情况自动伸缩工作负载的方法。自动伸缩在 Kubernetes 中有两个维度：
 
 + <span id="inline-blue">Cluster Autoscaler</span> : 用来处理节点扩容。
+
 + <span id="inline-blue">Horizontal Pod Autoscaler</span> : 自动缩放 rs 或 rc 中的 pod。
 
 Cluster Autoscaler 和 Horizontal Pod Autoscaler 一起可用于动态调整集群的计算能力。虽然 Cluster Autoscaler 高度依赖于托管集群的云服务商提供的底层功能，但是 HPA 可以独立于你的 IaaS/PaaS 提供商进行操作。

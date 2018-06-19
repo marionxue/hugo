@@ -578,7 +578,7 @@ net.ipv4.tcp_synack_retries = 5
       <guid>https://www.yangcs.net/posts/custom-metrics-hpa/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
-&lt;p&gt;从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制器使用(例如，Horizontal Pod Autoscale 可以使用这些指标作出决策)。&lt;/p&gt;
+&lt;p&gt;从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）可以通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制器使用(例如，Horizontal Pod Autoscale 可以使用这些指标作出决策)。&lt;/p&gt;
 
 &lt;p&gt;例如，可以使用 &lt;code&gt;kubectl top node&lt;/code&gt; 和 &lt;code&gt;kubectl top pod&lt;/code&gt; 查看资源使用情况：&lt;/p&gt;
 
@@ -635,8 +635,9 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 &lt;p&gt;自动伸缩是一种根据资源使用情况自动伸缩工作负载的方法。自动伸缩在 Kubernetes 中有两个维度：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Cluster Autoscaler&lt;/span&gt; : 用来处理节点扩容。&lt;/li&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Horizontal Pod Autoscaler&lt;/span&gt; : 自动缩放 rs 或 rc 中的 pod。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Cluster Autoscaler&lt;/span&gt; : 用来处理节点扩容。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Horizontal Pod Autoscaler&lt;/span&gt; : 自动缩放 rs 或 rc 中的 pod。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Cluster Autoscaler 和 Horizontal Pod Autoscaler 一起可用于动态调整集群的计算能力。虽然 Cluster Autoscaler 高度依赖于托管集群的云服务商提供的底层功能，但是 HPA 可以独立于你的 IaaS/PaaS 提供商进行操作。&lt;/p&gt;
