@@ -571,6 +571,621 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>使用自定义指标进行弹性伸缩</title>
+      <link>https://www.yangcs.net/posts/custom-metrics-hpa/</link>
+      <pubDate>Tue, 19 Jun 2018 09:02:52 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/custom-metrics-hpa/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制器使用(例如，Horizontal Pod Autoscale 可以使用这些指标作出决策)。&lt;/p&gt;
+
+&lt;p&gt;例如，可以使用 &lt;code&gt;kubectl top node&lt;/code&gt; 和 &lt;code&gt;kubectl top pod&lt;/code&gt; 查看资源使用情况：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl top node
+
+NAME              CPU(cores)   CPU%      MEMORY(bytes)   MEMORY%
+192.168.123.248   245m         12%       2687Mi          34%
+192.168.123.249   442m         22%       3270Mi          42%
+192.168.123.250   455m         22%       4014Mi          52%
+
+$ kubectl top pod
+
+NAME                              CPU(cores)   MEMORY(bytes)
+details-v1-64b86cd49-52g82        0m           11Mi
+podinfo-6b86c8ccc9-5qr8b          0m           7Mi
+podinfo-6b86c8ccc9-hlxm7          0m           12Mi
+podinfo-6b86c8ccc9-qxhng          0m           6Mi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-1-resource-metrics-api-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Resource Metrics API&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;通过 &lt;code&gt;Metrics API&lt;/code&gt;，您可以获取指定 node 或 pod 当前使用的资源量。这个 API 不存储指标值， 因此想要获取某个指定 node 10分钟前的资源使用量是不可能的。&lt;/p&gt;
+
+&lt;p&gt;Metrics API 和其他的 API 没有什么不同，它可以通过与 &lt;code&gt;/apis/metrics.k8s.io/&lt;/code&gt; 路径下的其他 Kubernetes API 相同的端点来发现，并且提供了相同的安全性、可扩展性和可靠性保证，Metrics API 在 &lt;a href=&#34;https://github.com/kubernetes/metrics/blob/master/pkg/apis/metrics/v1beta1/types.go&#34; target=&#34;_blank&#34;&gt;k8s.io/metrics&lt;/a&gt; 仓库中定义，你可以在这里找到关于 Metrics API 的更多信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt; Metrics API 需要在集群中部署 Metrics Server。否则它将不可用。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-2-metrics-server-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. Metrics Server&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;code&gt;Metrics Server&lt;/code&gt; 实现了Resource Metrics API。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes-incubator/metrics-server&#34; target=&#34;_blank&#34;&gt;Metrics Server&lt;/a&gt; 是集群范围资源使用数据的聚合器。 从 Kubernetes 1.8 开始，它作为一个 Deployment 对象默认部署在由 kube-up.sh 脚本创建的集群中。 如果你使用了其他的 Kubernetes 安装方法，您可以使用 Kubernetes 1.7+ (请参阅下面的详细信息) 中引入的 &lt;a href=&#34;https://github.com/kubernetes-incubator/metrics-server/tree/master/deploy&#34; target=&#34;_blank&#34;&gt;deployment yamls&lt;/a&gt; 文件来部署。&lt;/p&gt;
+
+&lt;p&gt;Metrics Server 从每个节点上的 &lt;code&gt;Kubelet&lt;/code&gt; 公开的 Summary API 中采集指标信息。&lt;/p&gt;
+
+&lt;p&gt;通过在主 API server 中注册的 Metrics Server &lt;a href=&#34;https://kubernetes.io/docs/concepts/api-extension/apiserver-aggregation/&#34; target=&#34;_blank&#34;&gt;Kubernetes 聚合器&lt;/a&gt; 来采集指标信息， 这是在 Kubernetes 1.7 中引入的。在 &lt;a href=&#34;https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md&#34; target=&#34;_blank&#34;&gt;设计文档&lt;/a&gt; 中可以了解到有关 Metrics Server 的更多信息。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-3-custom-metrics-api-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. custom metrics api&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;该 API 允许消费者访问通过任意指标描述的 Kubernetes 资源。如果你想实现这个 API Service，请参阅 &lt;a href=&#34;https://github.com/kubernetes-incubator/custom-metrics-apiserver&#34; target=&#34;_blank&#34;&gt;kubernetes-incubator/custom-metrics-apiserver&lt;/a&gt;，这是一个用来实现 Kubernetes 自定义指标的框架。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-4-hpa-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. HPA&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;自动伸缩是一种根据资源使用情况自动伸缩工作负载的方法。自动伸缩在 Kubernetes 中有两个维度：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Cluster Autoscaler&lt;/span&gt; : 用来处理节点扩容。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Horizontal Pod Autoscaler&lt;/span&gt; : 自动缩放 rs 或 rc 中的 pod。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Cluster Autoscaler 和 Horizontal Pod Autoscaler 一起可用于动态调整集群的计算能力。虽然 Cluster Autoscaler 高度依赖于托管集群的云服务商提供的底层功能，但是 HPA 可以独立于你的 IaaS/PaaS 提供商进行操作。&lt;/p&gt;
+
+&lt;p&gt;Kubernetes 自 1.2 版本引入 &lt;code&gt;HPA&lt;/code&gt; 机制，到 1.6 版本之前一直是通过 &lt;code&gt;kubelet&lt;/code&gt; 来获取监控指标来判断是否需要扩缩容，1.6 版本之后必须通过 API server、Heapseter 或者 kube-aggregator 来获取监控指标。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Kubernetes 1.7&lt;/code&gt; 引入了聚合层，允许第三方应用程序通过注册为 API 附加组件来扩展 Kubernetes API。 自定义指标 API 以及聚合层使得像 &lt;code&gt;Prometheus&lt;/code&gt; 这样的监控系统可以向 HPA 控制器公开针对特定应用程序的指标。&lt;/p&gt;
+
+&lt;p&gt;hpa 实现了一个控制环，可以周期性的从 Resource Metrics API 查询特定应用的 CPU 和内存信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-5-实战-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 实战&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;以下是一份为 Kubernetes 1.9 或更高版本配置 HPA v2 的分步指南。首先将会安装提供核心指标的 &lt;code&gt;Metrics Server&lt;/code&gt; 附件组件，然后使用一个 demo 来演示基于 CPU 和内存使用的 Pod 的自动伸缩。在指南的第二部分，将会部署 Prometheus 和一个 &lt;code&gt;custom metrics apiserver&lt;/code&gt;。聚合层会自动注册 custom metrics apiserver，然后通过一个 demo 来演示自定义指标的 HPA。&lt;/p&gt;
+
+&lt;h3 id=&#34;前提&#34;&gt;前提&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.yangcs.net/posts/api-aggregation/&#34; target=&#34;_blank&#34;&gt;开启聚合层 API&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;go 1.8+&lt;/li&gt;
+&lt;li&gt;克隆 &lt;a href=&#34;https://github.com/stefanprodan/k8s-prom-hpa&#34; target=&#34;_blank&#34;&gt;k8s-prom-hpa&lt;/a&gt; 仓库&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd $GOPATH
+$ git clone https://github.com/stefanprodan/k8s-prom-hpa
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装-metrics-server&#34;&gt;安装 Metrics Server&lt;/h3&gt;
+
+&lt;p&gt;Kubernetes Metrics Server 是一个集群范围内的资源使用量的聚合器，它是 Heapster 的继承者。Metrics Server 通过汇集来自 &lt;code&gt;kubernetes.summary_api&lt;/code&gt; 的数据来收集 node 和 pod 的 CPU 和内存使用情况。&lt;code&gt;summary API&lt;/code&gt; 是用于将数据从 Kubelet/cAdvisor 传递到 Metrics Server 的高效内存 API。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa-ms.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;在安装 Metrics Server 之前需要先进行如下配置：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;将 kube-controller-manager 的启动参数 &lt;code&gt;--horizontal-pod-autoscaler-use-rest-clients&lt;/code&gt; 的值设置为 true。&lt;/li&gt;
+&lt;li&gt;在 kube-controller-manager 的启动参数 &amp;ndash;master 设置为 kube-apiserver 的地址，如：&lt;code&gt;--master=http://172.20.0.113:8080&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在 &lt;code&gt;kube-system&lt;/code&gt; 命名空间部署 metrics-server：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./metrics-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;一分钟后，度量服务器开始报告节点和 Pod 的 CPU 和内存使用情况。 查看 nodes 指标：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get --raw &amp;quot;/apis/metrics.k8s.io/v1beta1/nodes&amp;quot; | jq .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看 pods 指标：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get --raw &amp;quot;/apis/metrics.k8s.io/v1beta1/pods&amp;quot; | jq .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;基于-cpu-和内存使用的自动缩放&#34;&gt;基于 CPU 和内存使用的自动缩放&lt;/h3&gt;
+
+&lt;p&gt;下面使用一个基于 golang 的小程序来测试 HPA。&lt;/p&gt;
+
+&lt;p&gt;在 &lt;code&gt;default&lt;/code&gt; 命名空间中部署 podinfo：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./podinfo/podinfo-svc.yaml,./podinfo/podinfo-dep.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以通过 &lt;code&gt;http://PODINFO_SVC_IP:9898&lt;/code&gt; 来访问 podinfo。&lt;/p&gt;
+
+&lt;p&gt;接下来定义一个保持最少两个副本的 HPA，如果 CPU 平均使用量超过 80％ 或内存超过 200Mi，则最高可扩展到 10 个副本：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: podinfo
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: podinfo
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 80
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageValue: 200Mi
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;创建 HPA：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./podinfo/podinfo-hpa.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;几秒钟之后，HPA 控制器与 metrics server 进行通信，然后获取 CPU 和内存使用情况。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get hpa
+
+NAME      REFERENCE            TARGETS                      MINPODS   MAXPODS   REPLICAS   AGE
+podinfo   Deployment/podinfo   2826240 / 200Mi, 15% / 80%   2         10        2          5m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为了提高 CPU 使用率、运行 &lt;code&gt;rakyll/hey&lt;/code&gt; 进行压力测试：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#install hey
+$ go get -u github.com/rakyll/hey
+
+#do 10K requests
+hey -n 10000 -q 10 -c 5 http://PODINFO_SVC_IP:9898/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;你可以通过以下命令获取 HPA event：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl describe hpa podinfo
+
+Events:
+  Type    Reason             Age   From                       Message
+  ----    ------             ----  ----                       -------
+  Normal  SuccessfulRescale  7m    horizontal-pod-autoscaler  New size: 4; reason: cpu resource utilization (percentage of request) above target
+  Normal  SuccessfulRescale  3m    horizontal-pod-autoscaler  New size: 8; reason: cpu resource utilization (percentage of request) above target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;先将 podinfo 删除，稍后将会重新部署：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl delete -f ./podinfo/podinfo-hpa.yaml,./podinfo/podinfo-dep.yaml,./podinfo/podinfo-svc.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;安装-custom-metrics-server&#34;&gt;安装 Custom Metrics Server&lt;/h3&gt;
+
+&lt;p&gt;为了让 HPA 可以根据 custom metrics 进行扩展，你需要有两个组件：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Prometheus&lt;/span&gt; : 从应用程序中收集指标并将其存储为 Prometheus 时间序列数据库。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;custom-metrics-apiserver&lt;/span&gt; : 使用 &lt;a href=&#34;https://github.com/DirectXMan12/k8s-prometheus-adapter&#34; target=&#34;_blank&#34;&gt;k8s-prometheus-adapter&lt;/a&gt; 提供的 metrics 来扩展 Kubernetes 自定义指标 API。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa-prom.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;创建 &lt;code&gt;monitoring&lt;/code&gt; 命名空间：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./namespaces.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将 Prometheus v2 部署到 monitoring 命名空间：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./prometheus
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;生成 Prometheus adapter 所需的 TLS 证书：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ make certs
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;部署 custom-metrics-apiserver：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./custom-metrics-api
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;列出由 Prometheus 提供的自定义指标：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get --raw &amp;quot;/apis/custom.metrics.k8s.io/v1beta1&amp;quot; | jq .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;获取 monitoring 命名空间中所有 pod 的 &lt;code&gt;FS&lt;/code&gt; 信息：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get --raw &amp;quot;/apis/custom.metrics.k8s.io/v1beta1/namespaces/monitoring/pods/*/fs_usage_bytes&amp;quot; | jq .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;基于自定义指标的自动扩容&#34;&gt;基于自定义指标的自动扩容&lt;/h3&gt;
+
+&lt;p&gt;在 &lt;code&gt;default&lt;/code&gt; 命名空间中部署 podinfo：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./podinfo/podinfo-svc.yaml,./podinfo/podinfo-dep.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;podinfo 应用暴露了一个自定义的度量指标：&lt;code&gt;http_requests_total&lt;/code&gt;。Prometheus adapter（即 custom-metrics-apiserver）删除了 &lt;code&gt;_total&lt;/code&gt; 后缀并将该指标标记为 &lt;code&gt;counter metric&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;从自定义指标 API 获取每秒的总请求数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get --raw &amp;quot;/apis/custom.metrics.k8s.io/v1beta1/namespaces/default/pods/*/http_requests&amp;quot; | jq .
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;kind&amp;quot;: &amp;quot;MetricValueList&amp;quot;,
+  &amp;quot;apiVersion&amp;quot;: &amp;quot;custom.metrics.k8s.io/v1beta1&amp;quot;,
+  &amp;quot;metadata&amp;quot;: {
+    &amp;quot;selfLink&amp;quot;: &amp;quot;/apis/custom.metrics.k8s.io/v1beta1/namespaces/default/pods/%2A/http_requests&amp;quot;
+  },
+  &amp;quot;items&amp;quot;: [
+    {
+      &amp;quot;describedObject&amp;quot;: {
+        &amp;quot;kind&amp;quot;: &amp;quot;Pod&amp;quot;,
+        &amp;quot;namespace&amp;quot;: &amp;quot;default&amp;quot;,
+        &amp;quot;name&amp;quot;: &amp;quot;podinfo-6b86c8ccc9-kv5g9&amp;quot;,
+        &amp;quot;apiVersion&amp;quot;: &amp;quot;/__internal&amp;quot;
+      },
+      &amp;quot;metricName&amp;quot;: &amp;quot;http_requests&amp;quot;,
+      &amp;quot;timestamp&amp;quot;: &amp;quot;2018-01-10T16:49:07Z&amp;quot;,
+      &amp;quot;value&amp;quot;: &amp;quot;901m&amp;quot;
+    },
+    {
+      &amp;quot;describedObject&amp;quot;: {
+        &amp;quot;kind&amp;quot;: &amp;quot;Pod&amp;quot;,
+        &amp;quot;namespace&amp;quot;: &amp;quot;default&amp;quot;,
+        &amp;quot;name&amp;quot;: &amp;quot;podinfo-6b86c8ccc9-nm7bl&amp;quot;,
+        &amp;quot;apiVersion&amp;quot;: &amp;quot;/__internal&amp;quot;
+      },
+      &amp;quot;metricName&amp;quot;: &amp;quot;http_requests&amp;quot;,
+      &amp;quot;timestamp&amp;quot;: &amp;quot;2018-01-10T16:49:07Z&amp;quot;,
+      &amp;quot;value&amp;quot;: &amp;quot;898m&amp;quot;
+    }
+  ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;m&lt;/code&gt; 表示 &lt;code&gt;毫&lt;/code&gt;，例如，&lt;code&gt;901m&lt;/code&gt; 表示 901 毫次/每秒。&lt;/p&gt;
+
+&lt;p&gt;创建一个 HPA，如果请求数超过每秒 10 次将扩大 podinfo 副本数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: podinfo
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: podinfo
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Pods
+    pods:
+      metricName: http_requests
+      targetAverageValue: 10
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 default 命名空间部署 podinfo HPA：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ./podinfo/podinfo-hpa-custom.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;几秒钟后 HPA 从 metrics API 获取 &lt;code&gt;http_requests&lt;/code&gt; 的值：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get hpa
+
+NAME      REFERENCE            TARGETS     MINPODS   MAXPODS   REPLICAS   AGE
+podinfo   Deployment/podinfo   899m / 10   2         10        2          1m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以每秒 25 个请求数的速度给 podinfo 加压：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#install hey
+$ go get -u github.com/rakyll/hey
+
+#do 10K requests rate limited at 25 QPS
+$ hey -n 10000 -q 5 -c 5 http://PODINFO_SVC_IP:9898/healthz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;几分钟后，HPA 开始扩大 podinfo 的副本数：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl describe hpa podinfo
+
+Name:                       podinfo
+Namespace:                  default
+Reference:                  Deployment/podinfo
+Metrics:                    ( current / target )
+  &amp;quot;http_requests&amp;quot; on pods:  9059m / 10
+Min replicas:               2
+Max replicas:               10
+
+Events:
+  Type    Reason             Age   From                       Message
+  ----    ------             ----  ----                       -------
+  Normal  SuccessfulRescale  2m    horizontal-pod-autoscaler  New size: 3; reason: pods metric http_requests above target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;以目前的请求速度，podinfo 的副本数永远不会扩展到最大值，三个副本足以让每个 Pod 的请求速度保持在每秒 10 次以下。&lt;/p&gt;
+
+&lt;p&gt;停止加压后，HPA 会将副本数缩减成最小值：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;Events:
+  Type    Reason             Age   From                       Message
+  ----    ------             ----  ----                       -------
+  Normal  SuccessfulRescale  5m    horizontal-pod-autoscaler  New size: 3; reason: pods metric http_requests above target
+  Normal  SuccessfulRescale  21s   horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-6-总结-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;6. 总结&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;并非所有的系统都可以仅依靠 CPU 和内存指标来满足 SLA，大多数 Web 应用的后端都需要基于每秒的请求数量进行弹性伸缩来处理突发流量。对于 ETL 应用程序，可以通过设置 Job 队列长度超过某个阈值来触发弹性伸缩。通过 Prometheus 来监控应用程序并暴露出用于弹性伸缩的指标，可以微调应用程序以更好地处理突发事件，从而确保其高可用性。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-7-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;7. 参考&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/stefanprodan/k8s-prom-hpa&#34; target=&#34;_blank&#34;&gt;Kubernetes Horizontal Pod Autoscaler with Prometheus custom metrics&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/DirectXMan12/k8s-prometheus-adapter&#34; target=&#34;_blank&#34;&gt;k8s-prometheus-adapter&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Kubernetes API 扩展</title>
       <link>https://www.yangcs.net/posts/api-aggregation/</link>
       <pubDate>Tue, 19 Jun 2018 06:15:06 +0000</pubDate>
@@ -6868,1013 +7483,6 @@ $ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/yangpu/
     -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
     -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
     transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes 网络扩展</title>
-      <link>https://www.yangcs.net/posts/k8s-network-expand/</link>
-      <pubDate>Sun, 11 Feb 2018 10:40:33 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/k8s-network-expand/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-kubernetes-中服务暴露的方式-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Kubernetes 中服务暴露的方式&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;k8s 的服务暴露分为以下几种情况：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;hostNetwork&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;hostPort&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;NodePort&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;LoadBalancer&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;Ingress&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;说是暴露 Pod 其实跟暴露 Service 是一回事，因为 Pod 就是 Service 的 backend。&lt;/p&gt;
-
-&lt;h3 id=&#34;hostnetwork&#34;&gt;HostNetwork&lt;/h3&gt;
-
-&lt;p&gt;这是一种直接定义 Pod 网络的方式。&lt;/p&gt;
-
-&lt;p&gt;如果在 Pod 中使用 &lt;code&gt;hostNotwork:true&lt;/code&gt; 配置的话，在这种 pod 中运行的应用程序可以直接看到 pod 启动的主机的网络接口。在主机的所有网络接口上都可以访问到该应用程序。以下是使用主机网络的 pod 的示例定义：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;apiVersion: v1
-kind: Pod
-metadata:
-  name: influxdb
-spec:
-  hostNetwork: true
-  containers:
-    - name: influxdb
-      image: influxdb
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这种 Pod 的网络模式有一个用处就是可以将网络插件包装在 Pod 中然后部署在每个宿主机上，这样该 Pod 就可以控制该宿主机上的所有网络。&lt;/p&gt;
-
-&lt;p id=&#34;div-border-top-purple&#34;&gt;&lt;font color=&#34;red&#34;&gt;缺点：&lt;/font&gt;每次启动这个Pod的时候都可能被调度到不同的节点上，所有外部访问Pod的IP也是变化的，而且调度Pod的时候还需要考虑是否与宿主机上的端口冲突，因此一般情况下除非您知道需要某个特定应用占用特定宿主机上的特定端口时才使用 &lt;code&gt;hostNetwork: true&lt;/code&gt; 的方式。&lt;/p&gt;
-
-&lt;h3 id=&#34;hostport&#34;&gt;hostPort&lt;/h3&gt;
-
-&lt;p&gt;这是一种直接定义 Pod 网络的方式。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;hostPort&lt;/code&gt; 是直接将容器的端口与所调度的节点上的端口路由，这样用户就可以通过宿主机的 IP 加上来访问 Pod 了，如:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;apiVersion: v1
-kind: Pod
-metadata:
-  name: influxdb
-spec:
-  containers:
-    - name: influxdb
-      image: influxdb
-      ports:
-        - containerPort: 8086
-          hostPort: 8086
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p id=&#34;div-border-top-purple&#34;&gt;&lt;font color=&#34;red&#34;&gt;缺点：&lt;/font&gt;因为 Pod 重新调度的时候该Pod被调度到的宿主机可能会变动，这样就变化了，用户必须自己维护一个 Pod 与所在宿主机的对应关系。&lt;/p&gt;
-
-&lt;h3 id=&#34;nodeport&#34;&gt;NodePort&lt;/h3&gt;
-
-&lt;p&gt;NodePort 在 kubenretes 里是一个广泛应用的服务暴露方式。Kubernetes 中的 service 默认情况下都是使用的 ClusterIP 这种类型，这样的 service 会产生一个 ClusterIP，这个 IP 只能在集群内部访问，要想让外部能够直接访问 service，需要将 service type 修改为  &lt;code&gt;nodePort&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;apiVersion: v1
-kind: Pod
-metadata:
-  name: influxdb
-  labels:
-    name: influxdb
-spec:
-  containers:
-    - name: influxdb
-      image: influxdb
-      ports:
-        - containerPort: 8086
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;同时还可以给 service 指定一个 &lt;code&gt;nodePort&lt;/code&gt; 值，范围是 30000-32767，这个值在 API server 的配置文件中，用&amp;ndash; &lt;code&gt;service-node-port-range&lt;/code&gt; 定义。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kind: Service
-apiVersion: v1
-metadata:
-  name: influxdb
-spec:
-  type: NodePort
-  ports:
-    - port: 8086
-      nodePort: 30000
-  selector:
-    name: influxdb
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;集群外就可以使用 kubernetes 任意一个节点的 IP 加上 30000 端口访问该服务了。kube-proxy 会自动将流量以 round-robin 的方式转发给该 service 的每一个 pod。&lt;/p&gt;
-
-&lt;p id=&#34;div-border-top-purple&#34;&gt;&lt;font color=&#34;red&#34;&gt;缺点：&lt;/font&gt;所有 node 上都会开启端口监听，且需要记住端口号。&lt;/p&gt;
-
-&lt;h3 id=&#34;loadbalancer&#34;&gt;LoadBalancer&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;LoadBalancer&lt;/code&gt; 只能在 service 上定义。这是公有云提供的负载均衡器，如 AWS、Azure、CloudStack、GCE 等。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;kind: Service
-apiVersion: v1
-metadata:
-  name: influxdb
-spec:
-  type: LoadBalancer
-  ports:
-    - port: 8086
-  selector:
-    name: influxdb
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看服务：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get svc influxdb
-
-NAME       CLUSTER-IP     EXTERNAL-IP     PORT(S)          AGE
-influxdb   10.97.121.42   10.13.242.236   8086:30051/TCP   39s
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;内部可以使用 ClusterIP 加端口来访问服务，如 19.97.121.42:8086。&lt;/p&gt;
-
-&lt;p&gt;外部可以用以下两种方式访问该服务：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;使用任一节点的 IP 加 30051 端口访问该服务&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;使用 &lt;code&gt;EXTERNAL-IP&lt;/code&gt; 来访问，这是一个 VIP，是云供应商提供的负载均衡器 IP，如 &lt;code&gt;10.13.242.236:8086&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p id=&#34;div-border-top-purple&#34;&gt;&lt;font color=&#34;red&#34;&gt;缺点：&lt;/font&gt;需要云服务商支持。&lt;/p&gt;
-
-&lt;h3 id=&#34;ingress&#34;&gt;Ingress&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;Ingress&lt;/code&gt; 是自 kubernetes1.1 版本后引入的资源类型。必须要部署 Ingress controller 才能创建 Ingress 资源，Ingress controller 是以一种插件的形式提供。Ingress controller 是部署在 Kubernetes 之上的 Docker 容器。它的 Docker 镜像包含一个像 &lt;code&gt;nginx&lt;/code&gt; 或 &lt;code&gt;HAProxy&lt;/code&gt; 的负载均衡器和一个控制器守护进程。控制器守护程序从 Kubernetes 接收所需的 Ingress 配置。它会生成一个 nginx 或 HAProxy 配置文件，并重新启动负载平衡器进程以使更改生效。换句话说，Ingress controller 是由 Kubernetes 管理的负载均衡器。&lt;/p&gt;
-
-&lt;p&gt;Kubernetes Ingress 提供了负载平衡器的典型特性：HTTP 路由，粘性会话，SSL 终止，SSL 直通，TCP 和 UDP 负载平衡等。目前并不是所有的 Ingress controller 都实现了这些功能，需要查看具体的 Ingress controller 文档。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: influxdb
-spec:
-  rules:
-    - host: influxdb.kube.example.com
-      http:
-        paths:
-          - backend:
-              serviceName: influxdb
-              servicePort: 8086
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;外部访问 URL  &lt;a href=&#34;http://influxdb.kube.example.com/ping&#34; target=&#34;_blank&#34;&gt;http://influxdb.kube.example.com/ping&lt;/a&gt; 访问该服务，入口就是 80 端口，然后 &lt;code&gt;Ingress controller&lt;/code&gt; 直接将流量转发给后端 Pod，不需再经过 kube-proxy 的转发，比 LoadBalancer 方式更高效。&lt;/p&gt;
-
-&lt;p id=&#34;div-border-top-purple&#34;&gt;&lt;font color=&#34;red&#34;&gt;缺点：&lt;/font&gt;80 端口暴露 必需通过域名引入，而且一次只能一条规则，很麻烦。&lt;/p&gt;
-
-&lt;p&gt;但是在正常的虚拟机环境下，我们只需要一个 &lt;code&gt;IP 地址+端口&lt;/code&gt; 即可访问服务。&lt;/p&gt;
-
-&lt;p&gt;为什么我们不能做到像访问虚拟机一样直接访问 k8s 集群服务呢？当然可以，以下架构可以实现：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;打通 k8s 网络和物理网络直通&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;物理网络的 dns 域名服务直接调用 k8s-dns 域名服务直接互访&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-集群环境-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 集群环境&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;架构环境&#34;&gt;架构环境&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;k8s 集群网络：&lt;code&gt;172.28.0.0/16&lt;/code&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;k8s-service 网络：&lt;code&gt;10.96.0.0/12&lt;/code&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;物理机网络：&lt;code&gt;192.168.0.0/16&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;k8s-集群节点&#34;&gt;k8s 集群节点&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get cs
-
-NAME                 STATUS    MESSAGE              ERROR
-scheduler            Healthy   ok                   
-controller-manager   Healthy   ok                   
-etcd-0               Healthy   {&amp;quot;health&amp;quot;: &amp;quot;true&amp;quot;}
-
-$ kubectl get nodes -owide
-
-NAME      STATUS    AGE       VERSION   EXTERNAL-IP   OS-IMAGE                KERNEL-VERSION
-node1     Ready     13d       v1.7.11   &amp;lt;none&amp;gt;        CentOS Linux 7 (Core)   3.10.0-514.el7.x86_64
-node2     Ready     13d       v1.7.11   &amp;lt;none&amp;gt;        CentOS Linux 7 (Core)   3.10.0-514.el7.x86_64
-node3     Ready     13d       v1.7.11   &amp;lt;none&amp;gt;        CentOS Linux 7 (Core)   3.10.0-514.el7.x86_64
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;角色定义：&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;角色名称&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;IP 地址&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;主机名&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;边界网关路由器&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;192.168.2.173&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;calico-gateway&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;边界 dns 代理服务器&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;192.168.1.62&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;node3&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;假设我们要访问 k8s 中的 &lt;code&gt;dao-2048&lt;/code&gt; 服务：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get svc|egrep &#39;NAME|2048&#39;
-
-NAME                              CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
-dao-2048                          10.98.217.155    &amp;lt;none&amp;gt;        80/TCP           13m
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;该方案的架构原理如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;          +-----------------+
-          |                 |
-          |  192.168.0.0/16 |          # 物理网络以域名或tcp方式发起访问k8s service以及端口
-          |                 |
-          +-----------------+
-                   |
-                   |
-+------------------------------------+
-| dao-2048.default.svc.cluster.local |  # 请求k8s服务所在空间的服务名，完整域名
-+------------------------------------+
-                   |
-                   |
-          +-----------------+
-          |                 |           # dns代理服务以ingress-udp pod的模式运行在此节点udp53号端口上，
-          |   192.168.1.62  |           # 为物理网络提供仿问k8s-dns的桥梁解析dns
-          |                 |           # 此节点应固定做为一个节点布署，所有外部机器设置dns为此 192.168.1.62
-          +-----------------+
-                   |
-                   |
-          +-----------------+
-          |                 |
-          |  10.98.217.155  |           # 获取 svc 的实际 clusterip
-          |                 |
-          +-----------------+
-                   |
-                   |
-          +-----------------+           # 边界网关,用于物理网络连接k8s集群，需要开启内核转发：net.ipv4.ip_forward=1
-          |                 |           # 所有外部物理机加一条静态路由：访问 k8s 网络 10.96.0.0/12 网段必需经过网关 192.168.2.173
-          |  192.168.2.173  |           # ip route add 10.96.0.0/12 via 192.168.2.173
-          |                 |           # 边界网关运行 kube-proxy 用于防火墙规则同步实现 svc 分流，此节点不运行 kubele 服务，不受 k8s 管控
-          +-----------------+
-                   |
-                   |
-         +-------------------+
-         |                   |
-         |  calico-Iface接口  |
-         |                   |
-         +-------------------+
-                   |
-                   |
-          +-----------------+
-          |   k8s 集群网络   |            # 流量最终到达 k8s 集群
-          +-----------------+
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;以下为该方案的实施步骤。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-部署边界-dns-代理服务器-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 部署边界 dns 代理服务器&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;布署 dns 代理服务节点为外部提供 dns 服务,以 &lt;code&gt;hostNetwork: true&lt;/code&gt; 为非 k8s 集群网络物理机节点提供 dns 服务&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd ~/dns-udp; ll ./
-
-total 20K
--rw-r--r--. 1 root root 1.2K Feb 12 05:13 default-backend.yaml
--rw-r--r--. 1 root root  140 Feb 12 05:14 nginx-udp-ingress-configmap.yaml
--rw-r--r--. 1 root root 1.8K Feb 12 05:35 nginx-udp-ingress-controller.yaml
--rw-r--r--. 1 root root 2.4K Feb 12 05:15 rbac.yaml
-
-$ cat default-backend.yaml
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: default-http-backend
-  labels:
-    app: default-http-backend
-  namespace: kube-system
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: default-http-backend
-  template:
-    metadata:
-      labels:
-        app: default-http-backend
-    spec:
-      terminationGracePeriodSeconds: 60
-      containers:
-      - name: default-http-backend
-        # Any image is permissible as long as:
-        # 1. It serves a 404 page at /
-        # 2. It serves 200 on a /healthz endpoint
-        image: gcr.io/google_containers/defaultbackend:1.4
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8080
-            scheme: HTTP
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
-        ports:
-        - containerPort: 8080
-        resources:
-          limits:
-            cpu: 10m
-            memory: 20Mi
-          requests:
-            cpu: 10m
-            memory: 20Mi
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: default-http-backend
-  namespace: kube-system
-  labels:
-    app: default-http-backend
-spec:
-  ports:
-  - port: 80
-    targetPort: 8080
-  selector:
-    app: default-http-backend
-    
-$ cat nginx-udp-ingress-configmap.yaml
-
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: nginx-udp-ingress-configmap
-  namespace: kube-system
-data:
-  53: &amp;quot;kube-system/kube-dns:53&amp;quot;
-  
-$ cat nginx-udp-ingress-controller.yaml
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: nginx-udp-ingress-controller
-  labels:
-    k8s-app: nginx-udp-ingress-lb
-  namespace: kube-system
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      k8s-app: nginx-udp-ingress-lb
-  template:
-    metadata:
-      labels:
-        k8s-app: nginx-udp-ingress-lb
-        name: nginx-udp-ingress-lb
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - node3
-      hostNetwork: true
-      serviceAccountName: nginx-ingress-serviceaccount
-      terminationGracePeriodSeconds: 60
-      containers:
-      - image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.10.2
-        name: nginx-udp-ingress-lb
-        readinessProbe:
-          httpGet:
-            path: /healthz
-            port: 10254
-            scheme: HTTP
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 10254
-            scheme: HTTP
-          initialDelaySeconds: 10
-          timeoutSeconds: 1
-        env:
-          - name: POD_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.name
-          - name: POD_NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-        ports:
-        - containerPort: 80
-          hostPort: 80
-        - containerPort: 443
-          hostPort: 443
-        - containerPort: 53
-          hostPort: 53
-        args:
-        - /nginx-ingress-controller
-        - --default-backend-service=$(POD_NAMESPACE)/default-http-backend
-        - --udp-services-configmap=$(POD_NAMESPACE)/nginx-udp-ingress-configmap
-
-$ cat rbac.yaml
-
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: nginx-ingress-serviceaccount
-  namespace: kube-system
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: nginx-ingress-clusterrole
-rules:
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-      - configmaps
-      - endpoints
-      - nodes
-      - pods
-      - secrets
-    verbs:
-      - list
-      - watch
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-      - nodes
-    verbs:
-      - get
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-      - services
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - &amp;quot;extensions&amp;quot;
-    resources:
-      - ingresses
-    verbs:
-      - get
-      - list
-      - watch
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-        - events
-    verbs:
-        - create
-        - patch
-  - apiGroups:
-      - &amp;quot;extensions&amp;quot;
-    resources:
-      - ingresses/status
-    verbs:
-      - update
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: Role
-metadata:
-  name: nginx-ingress-role
-  namespace: kube-system
-rules:
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-      - configmaps
-      - pods
-      - secrets
-      - namespaces
-    verbs:
-      - get
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-      - configmaps
-    resourceNames:
-      # Defaults to &amp;quot;&amp;lt;election-id&amp;gt;-&amp;lt;ingress-class&amp;gt;&amp;quot;
-      # Here: &amp;quot;&amp;lt;ingress-controller-leader&amp;gt;-&amp;lt;nginx&amp;gt;&amp;quot;
-      # This has to be adapted if you change either parameter
-      # when launching the nginx-ingress-controller.
-      - &amp;quot;ingress-controller-leader-nginx&amp;quot;
-    verbs:
-      - get
-      - update
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-      - configmaps
-    verbs:
-      - create
-  - apiGroups:
-      - &amp;quot;&amp;quot;
-    resources:
-      - endpoints
-    verbs:
-      - get
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: RoleBinding
-metadata:
-  name: nginx-ingress-role-nisa-binding
-  namespace: kube-system
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: nginx-ingress-role
-subjects:
-  - kind: ServiceAccount
-    name: nginx-ingress-serviceaccount
-    namespace: kube-system
-
----
-
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRoleBinding
-metadata:
-  name: nginx-ingress-clusterrole-nisa-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: nginx-ingress-clusterrole
-subjects:
-  - kind: ServiceAccount
-    name: nginx-ingress-serviceaccount
-    namespace: kube-system
-    
-$ kubectl create -f ./
-
-deployment &amp;quot;default-http-backend&amp;quot; created
-service &amp;quot;default-http-backend&amp;quot; created
-configmap &amp;quot;nginx-udp-ingress-configmap&amp;quot; created
-deployment &amp;quot;nginx-udp-ingress-controller&amp;quot; created
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过 nginx 反向代理 &lt;code&gt;kube-dns&lt;/code&gt; 服务，同时以 &lt;code&gt;hostNetwork: true&lt;/code&gt; 向集群外部暴露 53 端口，为非 k8s 集群网络物理机节点提供 dns 服务。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-部署-gateway-边界网关节点-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 部署 gateway 边界网关节点&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;此节点只运行 &lt;code&gt;calico&lt;/code&gt; 和 &lt;code&gt;kube-proxy&lt;/code&gt;。&lt;/p&gt;
-
-&lt;h3 id=&#34;首先开启内核转发&#34;&gt;首先开启内核转发&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ echo &#39;net.ipv4.ip_forward=1&#39; &amp;gt;&amp;gt;/etc/sysctl.conf
-$ sysctl -p
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;运行-calico&#34;&gt;运行 calico&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker run --net=host --privileged --name=calico-node -d --restart=always \
-  -v /etc/etcd/ssl:/etc/kubernetes/ssl \
-  -e ETCD_ENDPOINTS=https://192.168.1.60:12379 \
-  -e ETCD_KEY_FILE=/etc/kubernetes/ssl/peer-key.pem \
-  -e ETCD_CERT_FILE=/etc/kubernetes/ssl/peer-cert.pem \
-  -e ETCD_CA_CERT_FILE=/etc/kubernetes/ssl/ca.pem \
-  -e NODENAME=${HOSTNAME} \
-  -e IP= \
-  -e CALICO_IPV4POOL_CIDR=172.28.0.0/16 \
-  -e NO_DEFAULT_POOLS= \
-  -e AS= \
-  -e CALICO_LIBNETWORK_ENABLED=true \
-  -e IP6= \
-  -e CALICO_NETWORKING_BACKEND=bird \
-  -e FELIX_DEFAULTENDPOINTTOHOSTACTION=ACCEPT \
-  -v /var/run/calico:/var/run/calico \
-  -v /lib/modules:/lib/modules \
-  -v /run/docker/plugins:/run/docker/plugins \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  -v /var/log/calico:/var/log/calico \
-  calico/node:v2.6.7
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要提前将相关证书拷贝到 &lt;code&gt;/etc/kubernetes/ssl/&lt;/code&gt; 目录下。&lt;/p&gt;
-
-&lt;p id=&#34;div-border-top-red&#34;&gt;&lt;font color=&#34;blue&#34;&gt;注意：&lt;/font&gt;此处的 &lt;code&gt;-e CALICO_IPV4POOL_CIDR=172.28.0.0/16&lt;/code&gt; 要与 k8s 集群网络的网段一致&lt;/p&gt;
-
-&lt;h3 id=&#34;创建边界路由器&#34;&gt;创建边界路由器&lt;/h3&gt;
-
-&lt;p&gt;以下命令在 k8s 的 master 节点上进行操作&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat bgpPeer.yaml
-
-apiVersion: v1
-kind: bgpPeer
-metadata:
-  peerIP: 192.168.2.173
-  scope: global
-spec:
-  asNumber: 64512
-  
-$ calicoctl  create -f bgpPeer.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看 node 情况&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ calicoctl node status
-
-Calico process is running.
-
-IPv4 BGP status
-+---------------+-------------------+-------+------------+-------------+
-| PEER ADDRESS  |     PEER TYPE     | STATE |   SINCE    |    INFO     |
-+---------------+-------------------+-------+------------+-------------+
-| 192.168.1.61  | node-to-node mesh | up    | 2018-01-29 | Established |
-| 192.168.1.62  | node-to-node mesh | up    | 2018-02-09 | Established |
-| 192.168.2.173 | node-to-node mesh | up    | 2018-02-09 | Established |
-| 192.168.2.173 | global            | start | 2018-02-09 | Idle        |
-+---------------+-------------------+-------+------------+-------------+
-
-IPv6 BGP status
-No IPv6 peers found.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看全局对等体节点&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ calicoctl get bgpPeer --scope=global
-
-SCOPE    PEERIP          NODE   ASN     
-global   192.168.2.173          64512
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;部署-kube-proxy&#34;&gt;部署 kube-proxy&lt;/h3&gt;
-
-&lt;h4 id=&#34;安装-conntrack&#34;&gt;安装 conntrack&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ yum install -y conntrack-tools
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;创建-kube-proxy-的-service-配置文件&#34;&gt;创建 kube-proxy 的 service 配置文件&lt;/h4&gt;
-
-&lt;p&gt;文件路径 &lt;code&gt;/usr/lib/systemd/system/kube-proxy.service&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[Unit]
-Description=Kubernetes Kube-Proxy Server
-Documentation=https://github.com/GoogleCloudPlatform/kubernetes
-After=network.target
-
-[Service]
-EnvironmentFile=-/etc/kubernetes/config
-EnvironmentFile=-/etc/kubernetes/proxy
-ExecStart=/usr/local/bin/kube-proxy \
-        --logtostderr=true \
-        --v=2 \
-        --bind-address=192.168.2.173 \
-        --hostname-override=192.168.2.173 \
-        --kubeconfig=/etc/kubernetes/kube-proxy.kubeconfig \
-        --proxy-mode=iptables \
-        --cluster-cidr=172.28.0.0/16
-Restart=on-failure
-LimitNOFILE=65536
-
-[Install]
-WantedBy=multi-user.target
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;需要提前将 &lt;code&gt;kube-proxy.kubeconfig&lt;/code&gt; 文件拷贝到 &lt;code&gt;/etc/kubernetes/&lt;/code&gt; 目录下。&lt;/p&gt;
-
-&lt;h4 id=&#34;启动-kube-proxy&#34;&gt;启动 kube-proxy&lt;/h4&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl daemon-reload
-$ systemctl enable kube-proxy
-$ systemctl start kube-proxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-5-测试网关和-dns-解析以及服务访问情况-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 测试网关和 dns 解析以及服务访问情况&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;找台集群外的机器来验证，这台机器只有一个网卡，没有安装 &lt;code&gt;calico&lt;/code&gt;。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;添加路由&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ip route add 10.96.0.0/12 via 192.168.2.173 dev ens160
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;修改 dns 为 &lt;code&gt;192.168.1.62&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat /etc/resolv.conf
-
-nameserver 192.168.1.62
-search default.svc.cluster.local svc.cluster.local cluster.local
-nameserver 223.5.5.5
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;解析 &lt;code&gt;dao-2048&lt;/code&gt; 服务的域名&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ dig dao-2048.default.svc.cluster.local
-
-; &amp;lt;&amp;lt;&amp;gt;&amp;gt; DiG 9.9.4-RedHat-9.9.4-51.el7_4.2 &amp;lt;&amp;lt;&amp;gt;&amp;gt; dao-2048.default.svc.cluster.local
-;; global options: +cmd
-;; Got answer:
-;; -&amp;gt;&amp;gt;HEADER&amp;lt;&amp;lt;- opcode: QUERY, status: NOERROR, id: 57053
-;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
-
-;; OPT PSEUDOSECTION:
-; EDNS: version: 0, flags:; udp: 4096
-;; QUESTION SECTION:
-;dao-2048.default.svc.cluster.local. IN A
-
-;; ANSWER SECTION:
-dao-2048.default.svc.cluster.local. 5 IN A      10.98.217.155
-
-;; Query time: 1 msec
-;; SERVER: 192.168.1.62#53(192.168.1.62)
-;; WHEN: Mon Feb 12 06:46:38 EST 2018
-;; MSG SIZE  rcvd: 79
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;访问 &lt;code&gt;dao-2048&lt;/code&gt; 服务&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl dao-2048.default.svc.cluster.local
-
-* About to connect() to dao-2048.default.svc.cluster.local port 80 (#0)
-*   Trying 10.98.217.155...
-* Connected to dao-2048.default.svc.cluster.local (10.98.217.155) port 80 (#0)
-&amp;gt; GET / HTTP/1.1
-&amp;gt; User-Agent: curl/7.29.0
-&amp;gt; Host: dao-2048.default.svc.cluster.local
-&amp;gt; Accept: */*
-&amp;gt; 
-&amp;lt; HTTP/1.1 200 OK
-&amp;lt; Server: nginx/1.10.1
-&amp;lt; Date: Mon, 12 Feb 2018 11:47:58 GMT
-&amp;lt; Content-Type: text/html
-&amp;lt; Content-Length: 4085
-&amp;lt; Last-Modified: Sun, 11 Feb 2018 11:31:27 GMT
-&amp;lt; Connection: keep-alive
-&amp;lt; ETag: &amp;quot;5a80298f-ff5&amp;quot;
-&amp;lt; Accept-Ranges: bytes
-&amp;lt; 
-&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html&amp;gt;
-&amp;lt;head&amp;gt;
-  &amp;lt;meta charset=&amp;quot;utf-8&amp;quot;&amp;gt;
-  &amp;lt;title&amp;gt;2048&amp;lt;/title&amp;gt;
-.........
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;&lt;font color=&#34;red&#34;&gt;成功访问！&lt;/font&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;如果是 windows 用户，添加路由可以用管理员打开 cmd 命令运行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ route ADD -p 172.28.0.0 MASK 255.255.0.0 192.168.2.173
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p id=&#34;div-border-top-red&#34;&gt;&lt;font color=&#34;blue&#34;&gt;PS：&lt;/font&gt;如果你不想一台台机器加路由和 dns，你可以把路由信息加入物理路由器上，这样就不用每台机都加路由和 dns 了，直接打通所有链路。&lt;/p&gt;
-
-&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://blog.csdn.net/idea77/article/details/73863822&#34; target=&#34;_blank&#34;&gt;k8s-dns-gateway 网关网络扩展实战&lt;/a&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em; 
-    margin-right: 5px; 
-    padding: 8px 15px; 
-    letter-spacing: 2px; 
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); 
-    background-color: rgb(63, 81, 181); 
-    color: rgb(255, 255, 255); 
-    border-left: 10px solid rgb(51, 51, 51); 
-    border-radius:5px; 
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px; 
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
 }
 #inline-yellow {
 display:inline;

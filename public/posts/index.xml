@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>使用自定义指标进行弹性伸缩</title>
+      <link>https://www.yangcs.net/posts/custom-metrics-hpa/</link>
+      <pubDate>Tue, 19 Jun 2018 09:02:52 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/custom-metrics-hpa/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Kubernetes API 扩展</title>
       <link>https://www.yangcs.net/posts/api-aggregation/</link>
       <pubDate>Tue, 19 Jun 2018 06:15:06 +0000</pubDate>

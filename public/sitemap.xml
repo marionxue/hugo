@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/custom-metrics-hpa/</loc>
+    <lastmod>2018-06-19T09:02:52+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/api-aggregation/</loc>
     <lastmod>2018-06-19T06:15:06+00:00</lastmod>
   </url>
@@ -178,13 +183,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
-    <lastmod>2018-06-19T06:15:06+00:00</lastmod>
+    <lastmod>2018-06-19T09:02:52+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/kubernetes/</loc>
-    <lastmod>2018-06-19T06:15:06+00:00</lastmod>
+    <lastmod>2018-06-19T09:02:52+00:00</lastmod>
     <priority>0</priority>
   </url>
   
