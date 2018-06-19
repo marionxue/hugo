@@ -209,6 +209,12 @@ $ cp *.pem /etc/kubernetes/ssl
 --proxy-client-key-file=/etc/kubernetes/ssl/aggregator-key.pem
 ```
 
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>前面创建的证书的 <code>CN</code> 字段的值必须和参数 <code>--requestheader-allowed-names</code> 指定的值 `aggregator` 相同。</p>
+</div>
+
 重启 kube-apiserver：
 
 ```bash
