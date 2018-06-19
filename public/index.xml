@@ -571,6 +571,458 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>Kubernetes API 扩展</title>
+      <link>https://www.yangcs.net/posts/api-aggregation/</link>
+      <pubDate>Tue, 19 Jun 2018 06:15:06 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/api-aggregation/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Aggregated（聚合的）API server&lt;/code&gt; 是为了将原来的 API server 这个巨石（monolithic）应用给拆分成，为了方便用户开发自己的 API server 集成进来，而不用直接修改 Kubernetes 官方仓库的代码，这样一来也能将 API server 解耦，方便用户使用实验特性。这些 API server 可以跟 &lt;code&gt;core API server&lt;/code&gt; 无缝衔接，使用 kubectl 也可以管理它们。&lt;/p&gt;
+
+&lt;p&gt;在 &lt;code&gt;1.7+&lt;/code&gt; 版本中，聚合层和 kube-apiserver 一起运行。在扩展资源被注册前，聚合层不执行任何操，要注册其 API,用户必选添加一个 &lt;code&gt;APIService&lt;/code&gt; 对象，该对象需在 Kubernetes API 中声明 URL 路径。 在这一点上，聚合层将发送到该 API 路径(e.g. /apis/myextension.mycompany.io/v1/…)的所有对象代理到注册的 APIService。&lt;/p&gt;
+
+&lt;p&gt;通常，通过在集群中的一个 Pod 中运行一个 &lt;code&gt;extension-apiserver&lt;/code&gt; 来实现 APIService。如果已添加的资源需要主动管理，这个 extension-apiserver 通常需要和一个或多个控制器配对。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-1-创建聚合层-api-证书-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 创建聚合层 API 证书&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;如果想开启聚合层 API，需要创建几个与聚合层 API 相关的证书。&lt;/p&gt;
+
+&lt;h3 id=&#34;安装-cfssl&#34;&gt;安装 cfssl&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;方式一：直接使用二进制源码包安装&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
+$ chmod +x cfssl_linux-amd64
+$ mv cfssl_linux-amd64 /usr/local/bin/cfssl
+
+$ wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
+$ chmod +x cfssljson_linux-amd64
+$ mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
+
+$ wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64
+$ chmod +x cfssl-certinfo_linux-amd64
+$ mv cfssl-certinfo_linux-amd64 /usr/local/bin/cfssl-certinfo
+
+$ export PATH=/usr/local/bin:$PATH
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;方式二：使用go命令安装&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ go get -u github.com/cloudflare/cfssl/cmd/...
+$ls $GOPATH/bin/cfssl*
+cfssl cfssl-bundle cfssl-certinfo cfssljson cfssl-newkey cfssl-scan
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 &lt;code&gt;$GOPATH/bin&lt;/code&gt; 目录下得到以 cfssl 开头的几个命令。&lt;/p&gt;
+
+&lt;p&gt;注意：以下文章中出现的cat的文件名如果不存在需要手工创建。&lt;/p&gt;
+
+&lt;h3 id=&#34;创建-ca-certificate-authority&#34;&gt;创建 CA (Certificate Authority)&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;创建 CA 配置文件&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mkdir /root/ssl
+$ cd /root/ssl
+$ cfssl print-defaults config &amp;gt; config.json
+$ cfssl print-defaults csr &amp;gt; csr.json
+# 根据config.json文件的格式创建如下的ca-config.json文件
+# 过期时间设置成了 87600h
+$ cat &amp;gt; ca-config.json &amp;lt;&amp;lt;EOF
+{
+  &amp;quot;signing&amp;quot;: {
+    &amp;quot;default&amp;quot;: {
+      &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
+    },
+    &amp;quot;profiles&amp;quot;: {
+      &amp;quot;aggregator&amp;quot;: {
+        &amp;quot;usages&amp;quot;: [
+            &amp;quot;signing&amp;quot;,
+            &amp;quot;key encipherment&amp;quot;,
+            &amp;quot;server auth&amp;quot;,
+            &amp;quot;client auth&amp;quot;
+        ],
+        &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
+      }
+    }
+  }
+}
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;字段说明：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;profiles&lt;/code&gt; : 可以定义多个 profiles，分别指定不同的过期时间、使用场景等参数；后续在签名证书时使用某个 profile。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;signing&lt;/code&gt; ：表示该证书可用于签名其它证书；生成的 aggregator-ca.pem 证书中 &lt;code&gt;CA=TRUE&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;server auth&lt;/code&gt; ：表示 Client 可以用该 CA 对 Server 提供的证书进行验证。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;client auth&lt;/code&gt; ：表示 Server 可以用该 CA 对 Client 提供的证书进行验证。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;创建 CA 证书签名请求&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;创建 &lt;code&gt;ca-csr.json&lt;/code&gt; 文件，内容如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;CN&amp;quot;: &amp;quot;aggregator&amp;quot;,
+  &amp;quot;key&amp;quot;: {
+    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+    &amp;quot;size&amp;quot;: 2048
+  },
+  &amp;quot;names&amp;quot;: [
+    {
+      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+      &amp;quot;ST&amp;quot;: &amp;quot;Shanghai&amp;quot;,
+      &amp;quot;L&amp;quot;: &amp;quot;Shanghai&amp;quot;,
+      &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
+      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+    }
+  ],
+    &amp;quot;ca&amp;quot;: {
+       &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;字段说明：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;&amp;ldquo;CN&amp;rdquo;&lt;/span&gt; ：&lt;code&gt;Common Name&lt;/code&gt;，kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name)；浏览器使用该字段验证网站是否合法。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;&amp;ldquo;O&amp;rdquo;&lt;/span&gt; ：&lt;code&gt;Organization&lt;/code&gt;，kube-apiserver 从证书中提取该字段作为请求用户所属的组 (Group)；&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;生成 CA 证书和私钥&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
+$ ls ca*
+ca-config.json  ca.csr  ca-csr.json  ca-key.pem  ca.pem
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;创建-kubernetes-证书&#34;&gt;创建 kubernetes 证书&lt;/h3&gt;
+
+&lt;p&gt;创建 aggregator 证书签名请求文件 &lt;code&gt;aggregator-csr.json&lt;/code&gt; ：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+    &amp;quot;CN&amp;quot;: &amp;quot;aggregator&amp;quot;,
+    &amp;quot;hosts&amp;quot;: [
+      &amp;quot;127.0.0.1&amp;quot;,
+      &amp;quot;192.168.123.250&amp;quot;,
+      &amp;quot;192.168.123.248&amp;quot;,
+      &amp;quot;192.168.123.249&amp;quot;,
+      &amp;quot;10.254.0.1&amp;quot;,
+      &amp;quot;kubernetes&amp;quot;,
+      &amp;quot;kubernetes.default&amp;quot;,
+      &amp;quot;kubernetes.default.svc&amp;quot;,
+      &amp;quot;kubernetes.default.svc.cluster&amp;quot;,
+      &amp;quot;kubernetes.default.svc.cluster.local&amp;quot;
+    ],
+    &amp;quot;key&amp;quot;: {
+        &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
+        &amp;quot;size&amp;quot;: 2048
+    },
+    &amp;quot;names&amp;quot;: [
+        {
+            &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
+            &amp;quot;ST&amp;quot;: &amp;quot;Shanghai&amp;quot;,
+            &amp;quot;L&amp;quot;: &amp;quot;Shanghai&amp;quot;,
+            &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
+            &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
+        }
+    ]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;如果 hosts 字段不为空则需要指定授权使用该证书的 IP 或域名列表，由于该证书后续被 etcd 集群和 kubernetes master 集群使用，所以上面分别指定了 &lt;code&gt;etcd&lt;/code&gt; 集群、&lt;code&gt;kubernetes master&lt;/code&gt; 集群的主机 IP 和 kubernetes 服务的服务 IP（一般是 kube-apiserver 指定的 &lt;code&gt;service-cluster-ip-range&lt;/code&gt; 网段的第一个 IP，如 10.254.0.1）。&lt;/li&gt;
+&lt;li&gt;以上物理节点的 IP 也可以更换为主机名。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;生成 aggregator 证书和私钥&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=aggregator aggregator-csr.json | cfssljson -bare aggregator
+$ ls aggregator*
+aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;分发证书&#34;&gt;分发证书&lt;/h3&gt;
+
+&lt;p&gt;将生成的证书和秘钥文件（后缀名为.pem）拷贝到 Master 节点的 &lt;code&gt;/etc/kubernetes/ssl&lt;/code&gt; 目录下备用。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cp *.pem /etc/kubernetes/ssl
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-2-开启聚合层-api-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 开启聚合层 API&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;code&gt;kube-apiserver&lt;/code&gt; 增加以下配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;--requestheader-client-ca-file=/etc/kubernetes/ssl/aggregator-ca.pem
+--requestheader-allowed-names=aggregator
+--requestheader-extra-headers-prefix=X-Remote-Extra-
+--requestheader-group-headers=X-Remote-Group
+--requestheader-username-headers=X-Remote-User
+--proxy-client-cert-file=/etc/kubernetes/ssl/aggregator.pem
+--proxy-client-key-file=/etc/kubernetes/ssl/aggregator-key.pem
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重启 kube-apiserver：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl daemon-reload
+$ systemctl restart kube-apiserver
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果 &lt;code&gt;kube-proxy&lt;/code&gt; 没有在 Master 上面运行，&lt;code&gt;kube-proxy&lt;/code&gt; 还需要添加配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;--enable-aggregator-routing=true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;p-id-h2-3-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 参考&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/&#34; target=&#34;_blank&#34;&gt;Extending the Kubernetes API with the aggregation layer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/&#34; target=&#34;_blank&#34;&gt;Configure the aggregation layer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/kubernetes-handbook/practice/create-tls-and-secret-key.html&#34; target=&#34;_blank&#34;&gt;创建TLS证书和秘钥&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title> 修复 Service Endpoint 更新的延迟</title>
       <link>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</link>
       <pubDate>Fri, 15 Jun 2018 14:02:11 +0000</pubDate>
@@ -7600,464 +8052,6 @@ border-radius: 3px;
 border-top-color: #9954bb;
 }
 &lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>calico Router reflection(RR) 模式介绍及部署</title>
-      <link>https://www.yangcs.net/posts/calico-rr/</link>
-      <pubDate>Thu, 01 Feb 2018 11:03:49 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/calico-rr/</guid>
-      <description>&lt;p&gt;
-&lt;iframe frameborder=&#34;no&#34; border=&#34;0&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; width=0 height=0 src=&#34;http://o7z41ciog.bkt.clouddn.com/Two%20Steps%20From%20Hell%20-%20Star%20Sky.mp3&#34;&gt;&lt;/iframe&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-名词解释-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;1. 名词解释&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;endpoint&lt;/code&gt;：接入到网络中的设备称为 endpoint ❤️&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;AS&lt;/code&gt;：网络自治系统，一个完全自治的网络，通过 BGP 协议与其它 AS 交换路由信息&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ibgp&lt;/code&gt;：AS 内部的 BGP Speaker，与同一个 AS 内部的 ibgp、ebgp 交换路由信息&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;ebgp&lt;/code&gt;：AS 边界的 BGP Speaker，与同一个 AS 内部的 ibgp、其它 AS 的 ebgp 交换路由信息&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;workloadEndpoint&lt;/code&gt;：Calico 网络中的分配虚拟机、容器使用的 endpoint&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;hostEndpoints&lt;/code&gt;：Calico 网络中的物理机(node)的地址&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-2-组网原理-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;2. 组网原理&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;code&gt;Calico&lt;/code&gt; 组网的核心原理就是IP路由，每个容器或者虚拟机会分配一个 &lt;code&gt;workload-endpoint&lt;/code&gt;(wl)。&lt;/p&gt;
-
-&lt;p&gt;从 nodeA 上的容器 A 内访问 nodeB 上的容器 B 时:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-config&#34;&gt;+--------------------+              +--------------------+ 
-|   +------------+   |              |   +------------+   | 
-|   |            |   |              |   |            |   | 
-|   |    ConA    |   |              |   |    ConB    |   | 
-|   |            |   |              |   |            |   | 
-|   +-----+------+   |              |   +-----+------+   | 
-|         |          |              |         |          | 
-|       wl-A         |              |       wl-B         | 
-|         |          |              |         |          |
-+-------node-A-------+              +-------node-B-------+ 
-        |    |                               |    |
-        |    | type1.  in the same lan       |    |
-        |    +-------------------------------+    |
-        |                                         |
-        |      type2. in different network        |
-        |             +-------------+             |
-        |             |             |             |
-        +-------------+   Routers   |-------------+
-                      |             |
-                      +-------------+
-
-从 ConA 中发送给 ConB 的报文被 nodeA 的 wl-A 接收，根据 nodeA 上的路由规则，经过各种 iptables 规则后，转发到 nodeB。
-
-如果 nodeA 和 nodeB 在同一个二层网段，下一条地址直接就是 node-B，经过二层交换机即可到达。
-如果 nodeA 和 nodeB 在不同的网段，报文被路由到下一跳，经过三层交换或路由器，一步步跳转到 node-B。
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p id=&#34;div-border-left-red&#34;&gt;核心问题是，nodeA 怎样得知下一跳的地址？答案是 node 之间通过 BGP 协议交换路由信息。&lt;/p&gt;
-
-&lt;p&gt;每个 node 上运行一个软路由软件 &lt;code&gt;bird&lt;/code&gt;，并且被设置成 &lt;code&gt;BGP Speaker&lt;/code&gt;，与其它 node 通过 BGP 协议交换路由信息。&lt;/p&gt;
-
-&lt;p&gt;可以简单理解为，每一个 node 都会向其它 node 通知这样的信息:&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;我是X.X.X.X，某个IP或者网段在我这里，它们的下一跳地址是我。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;通过这种方式每个 node 知晓了每个 &lt;code&gt;workload-endpoint&lt;/code&gt; 的下一跳地址。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-3-bgp-与-as-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;3. BGP 与 AS&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;code&gt;BGP&lt;/code&gt; 是路由器之间的通信协议，主要用于 &lt;code&gt;AS&lt;/code&gt;（Autonomous System,自治系统）之间的互联。&lt;/p&gt;
-
-&lt;p&gt;AS，自治系统，是一个自治的网络，拥有独立的交换机、路由器等，可以独立运转。&lt;/p&gt;
-
-&lt;p&gt;每个 AS 拥有一个全球统一分配的 16 位的 ID 号，其中 64512 到 65535 共 1023 个 AS 号码被预留用于本地或者私用。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# calico默认使用的AS号是64512，可以修改：
-
-# 查看
-$ calicoctl config get asNumber
-
-# 设置
-$ calicoctl config set asNumber 64512
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;AS 内部有多个 &lt;code&gt;BGP speaker&lt;/code&gt;，分为 &lt;code&gt;ibgp&lt;/code&gt;、&lt;code&gt;ebgp&lt;/code&gt;，&lt;code&gt;ebgp&lt;/code&gt; 还与其它的 AS 中的 &lt;code&gt;ebgp&lt;/code&gt; 建立 BGP 连接。&lt;/p&gt;
-
-&lt;p&gt;AS 内部的 &lt;code&gt;BGP speaker&lt;/code&gt; 通过 BGP 协议交换路由信息，最终每一个 &lt;code&gt;BGP speaker&lt;/code&gt; 拥有整个 AS 的路由信息。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;BGP speaker&lt;/code&gt; 一般是网络中的物理路由器，calico 将 node 改造成了一个路由器（软件bird)，node 上的虚拟机、容器等就是接入这个路由器的设备。&lt;/p&gt;
-
-&lt;p&gt;AS 内部的 &lt;code&gt;BGP Speaker&lt;/code&gt; 之间有两种互联方式:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;全互联模式模式&lt;/li&gt;
-&lt;li&gt;Router reflection(RR) 模式&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;3-1-bgp-speaker全互联模式&#34;&gt;3.1 BGP Speaker全互联模式&lt;/h3&gt;
-
-&lt;p&gt;全互联模式，就是一个 &lt;code&gt;BGP Speaker&lt;/code&gt; 需要与其它所有的 &lt;code&gt;BGP Speaker&lt;/code&gt; 建立 bgp 连接（形成一个bgp mesh）。&lt;/p&gt;
-
-&lt;p&gt;网络中 bgp 总连接数是按照 O(n^2) 增长的，有太多的 &lt;code&gt;BGP Speaker&lt;/code&gt; 时，会消耗大量的连接。&lt;/p&gt;
-
-&lt;p&gt;Calico 默认使用全互联的方式，扩展性比较差，只能支持小规模集群，可以打开/关闭全互联模式：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ calicoctl config set nodeTonodeMesh off
-$ calicoctl config set nodeTonodeMesh on
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;3-2-bgp-speaker-rr-模式&#34;&gt;3.2 BGP Speaker RR 模式&lt;/h3&gt;
-
-&lt;p&gt;RR模式，就是在网络中指定一个或多个 &lt;code&gt;BGP Speaker&lt;/code&gt; 作为 反射路由（Router Reflector），RR 与所有的 &lt;code&gt;BGP Speaker&lt;/code&gt; 建立 bgp 连接。&lt;/p&gt;
-
-&lt;p&gt;每个 &lt;code&gt;BGP Speaker&lt;/code&gt; 只需要与 RR 交换路由信息，就可以得到全网路由信息。&lt;/p&gt;
-
-&lt;p&gt;RR 必须与所有的 &lt;code&gt;BGP Speaker&lt;/code&gt; 建立 BGP 连接，以保证能够得到全网路由信息。&lt;/p&gt;
-
-&lt;p&gt;在 Calico 中可以通过 &lt;code&gt;Global Peer&lt;/code&gt; 实现 RR 模式。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Global Peer&lt;/code&gt; 是一个 &lt;code&gt;BGP Speaker&lt;/code&gt; ，需要手动在 Calico 中创建，所有的 node 都会与 &lt;code&gt;Global peer&lt;/code&gt; 建立 BGP 连接。&lt;/p&gt;
-
-&lt;p&gt;关闭了全互联模式后，再将 RR 作为 &lt;code&gt;Global Peers&lt;/code&gt; 添加到 Calico 中，Calico 网络就切换到了 RR 模式，可以支撑容纳更多的 node。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-4-rr-模式部署-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;4. RR 模式部署&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;集群环境：&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;IP&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;主机名&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;10.10.31.190&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;kube-master&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;10.10.31.193&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;kube-node1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;10.10.31.194&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;kube-node2&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;10.10.31.168&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;node1&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;4-1-在-node1-节点上启动反射路由实例&#34;&gt;4.1 在 node1 节点上启动反射路由实例&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker run --privileged --net=host -d \
-             -e IP=&amp;lt;IPv4_RR&amp;gt; \
-             [-e IP6=&amp;lt;IPv6_RR&amp;gt;] \
-             -e ETCD_ENDPOINTS=&amp;lt;https://ETCD_IP:PORT&amp;gt; \
-             -v &amp;lt;FULL_PATH_TO_CERT_DIR&amp;gt;:&amp;lt;MOUNT_DIR&amp;gt; \
-             -e ETCD_CA_CERT_FILE=&amp;lt;MOUNT_DIR&amp;gt;/&amp;lt;CA_FILE&amp;gt; \
-             -e ETCD_CERT_FILE=&amp;lt;MOUNT_DIR&amp;gt;/&amp;lt;CERT_FILE&amp;gt; \
-             -e ETCD_KEY_FILE=&amp;lt;MOUNT_DIR&amp;gt;/&amp;lt;KEY_FILE&amp;gt; \
-             calico/routereflector:v0.4.0
-
-# &amp;lt;FULL_PATH_TO_CERT_DIR&amp;gt; 是你的宿主机的 etcd 证书和秘钥的存放目录
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;4-2-配置反射路由的集群&#34;&gt;4.2 配置反射路由的集群&lt;/h3&gt;
-
-&lt;p&gt;反射路由关于 ipv4 的配置在 etcd 中的存储路径为：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/calico/bgp/v1/rr_v4/&amp;lt;RR IPv4 address&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ipv6 的配置在 etcd 中的存储路径为：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;/calico/bgp/v1/rr_v6/&amp;lt;RR IPv6 address&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;数据格式为 json：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
-  &amp;quot;ip&amp;quot;: &amp;quot;&amp;lt;IP address of Route Reflector&amp;gt;&amp;quot;,
-  &amp;quot;cluster_id&amp;quot;: &amp;quot;&amp;lt;Cluster ID for this RR (see notes)&amp;gt;&amp;quot;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过 curl 将该条目添加到 etcd 中&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# IPv4 entries
-$ curl --cacert &amp;lt;path_to_ca_cert&amp;gt; --cert &amp;lt;path_to_cert&amp;gt; --key &amp;lt;path_to_key&amp;gt; -L https://&amp;lt;ETCD_IP:PORT&amp;gt;:2379/v2/keys/calico/bgp/v1/rr_v4/&amp;lt;IPv4_RR&amp;gt; -XPUT -d value=&amp;quot;{\&amp;quot;ip\&amp;quot;:\&amp;quot;&amp;lt;IPv4_RR&amp;gt;\&amp;quot;,\&amp;quot;cluster_id\&amp;quot;:\&amp;quot;&amp;lt;CLUSTER_ID&amp;gt;\&amp;quot;}&amp;quot;
-# IPv6 entries
-$ curl --cacert &amp;lt;path_to_ca_cert&amp;gt; --cert &amp;lt;path_to_cert&amp;gt; --key &amp;lt;path_to_key&amp;gt; -L https://&amp;lt;ETCD_IP:PORT&amp;gt;:2379/v2/keys/calico/bgp/v1/rr_v6/&amp;lt;IPv6_RR&amp;gt; -XPUT -d value=&amp;quot;{\&amp;quot;ip\&amp;quot;:\&amp;quot;&amp;lt;IPv6_RR&amp;gt;\&amp;quot;,\&amp;quot;cluster_id\&amp;quot;:\&amp;quot;&amp;lt;CLUSTER_ID&amp;gt;\&amp;quot;}&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;例如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl --cacert &amp;lt;path_to_ca_cert&amp;gt; --cert &amp;lt;path_to_cert&amp;gt; --key &amp;lt;path_to_key&amp;gt; -L https://10.10.31.190:2379/v2/keys/calico/bgp/v1/rr_v4/10.10.31.168 -XPUT -d value=&amp;quot;{\&amp;quot;ip\&amp;quot;:\&amp;quot;10.10.31.168\&amp;quot;,\&amp;quot;cluster_id\&amp;quot;:\&amp;quot;1.0.0.1\&amp;quot;}&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;4-3-配置-calico-使用反射路由&#34;&gt;4.3 配置 calico 使用反射路由&lt;/h3&gt;
-
-&lt;p&gt;关闭全互联模式&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ calicoctl config set nodeToNodeMesh off
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;确定你的网络的 AS 号码&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ calicoctl get nodes --output=wide
-
-# 或者使用以下命令
-$ calicoctl config get asNumber
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;将 RR 作为 &lt;code&gt;Global Peers&lt;/code&gt; 添加到 Calico 中&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ calicoctl create -f - &amp;lt;&amp;lt; EOF
-apiVersion: v1
-kind: bgpPeer
-metadata:
-  peerIP: &amp;lt;IP_RR&amp;gt;
-  scope: global
-spec:
-  asNumber: &amp;lt;AS_NUM&amp;gt;
-EOF
-
-# &amp;lt;IP_RR&amp;gt;：反射路由的 ipv4 或 ipv6 地址
-# &amp;lt;AS_NUM&amp;gt;：网络的 AS 号码
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;由于 BGP 协议使用 TCP 179 端口进行通信，可以在 node1 上查看一下&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ss -tnp|grep 179
-ESTAB      0      0      10.10.31.168:179                10.10.31.196:55967               users:((&amp;quot;bird&amp;quot;,pid=10601,fd=8))
-ESTAB      0      0      10.10.31.168:56393              10.10.31.193:179                 users:((&amp;quot;bird&amp;quot;,pid=10601,fd=9))
-ESTAB      0      0      10.10.31.168:41164              10.10.31.194:179                 users:((&amp;quot;bird&amp;quot;,pid=10601,fd=10))
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 node1 上查看反射路由配置&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker exec 52e584f5bcf3 cat /config/bird.cfg
-# Generated by confd
-router id 10.10.31.168;
-
-# Watch interface up/down events.
-protocol device {
-  scan time 2;    # Scan interfaces every 2 seconds
-}
-
-# Template for all BGP clients
-template bgp bgp_template {
-  debug off;
-  description &amp;quot;Connection to BGP peer&amp;quot;;
-  multihop;
-  import all;        # Import all routes, since we don&#39;t know what the upstream
-                     # topology is and therefore have to trust the ToR/RR.
-  export all;        # Export all.
-  source address 10.10.31.168;  # The local address we use for the TCP connection
-  graceful restart;  # See comment in kernel section about graceful restart.
-}
-
-
-
-# ------------- RR-to-RR full mesh -------------
-
-
-
-# For RR 10.10.31.168
-# Skipping ourselves
-
-
-
-
-# ------------- RR as a global peer -------------
-
-
-
-# This RR is a global peer with *all* calico nodes.
-
-
-
-
-# Peering with Calico node node1
-protocol bgp Global_10_10_31_193 from bgp_template {
-  local as 64512;
-  neighbor 10.10.31.193 as 64512;
-  rr client;
-  rr cluster id 1.0.0.1;
-}
-
-
-
-
-# Peering with Calico node node2
-protocol bgp Global_10_10_31_194 from bgp_template {
-  local as 64512;
-  neighbor 10.10.31.194 as 64512;
-  rr client;
-  rr cluster id 1.0.0.1;
-}
-
-
-
-
-# Peering with Calico node node3
-protocol bgp Global_10_10_31_196 from bgp_template {
-  local as 64512;
-  neighbor 10.10.31.196 as 64512;
-  rr client;
-  rr cluster id 1.0.0.1;
-}
-
-
-
-
-
-
-# ------------- RR as a node-specific peer -------------
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 kube-node1 上查看 calico 的配置&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker exec 7fcb072515d6 cat /etc/calico/confd/config/bird.cfg
-# Generated by confd
-include &amp;quot;bird_aggr.cfg&amp;quot;;
-include &amp;quot;custom_filters.cfg&amp;quot;;
-include &amp;quot;bird_ipam.cfg&amp;quot;;
-
-
-router id 10.10.31.193;
-
-
-
-# Configure synchronization between routing tables and kernel.
-protocol kernel {
-  learn;             # Learn all alien routes from the kernel
-  persist;           # Don&#39;t remove routes on bird shutdown
-  scan time 2;       # Scan kernel routing table every 2 seconds
-  import all;
-  export filter calico_ipip; # Default is export none
-  graceful restart;  # Turn on graceful restart to reduce potential flaps in
-                     # routes when reloading BIRD configuration.  With a full
-                     # automatic mesh, there is no way to prevent BGP from
-                     # flapping since multiple nodes update their BGP
-                     # configuration at the same time, GR is not guaranteed to
-
-# Watch interface up/down events.
-protocol device {
-  
-
-  debug { states };
-
-
-  scan time 2;    # Scan interfaces every 2 seconds
-}
-
-protocol direct {
-  
-
-  debug { states };
-
-
-  interface -&amp;quot;cali*&amp;quot;, &amp;quot;*&amp;quot;; # Exclude cali* but include everything else.
-}
-
-
-# Template for all BGP clients
-template bgp bgp_template {
-  
-
-  debug { states };
-
-
-  description &amp;quot;Connection to BGP peer&amp;quot;;
-  local as 64512;
-  multihop;
-  gateway recursive; # This should be the default, but just in case.
-  import all;        # Import all routes, since we don&#39;t know what the upstream
-                     # topology is and therefore have to trust the ToR/RR.
-  export filter calico_pools;  # Only want to export routes for workloads.
-  next hop self;     # Disable next hop processing and always advertise our
-                     # local address as nexthop
-  source address 10.10.31.193;  # The local address we use for the TCP connection
-  add paths on;
-  graceful restart;  # See comment in kernel section about graceful restart.
-}
-
-
-# ------------- Global peers -------------
-
-
-
-# For peer /global/peer_v4/10.10.31.168
-protocol bgp Global_10_10_31_168 from bgp_template {
-  neighbor 10.10.31.168 as 64512;
-}
-
-
-
-
-# ------------- Node-specific peers -------------
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-5-多-cluster-id-实例拓扑-p&#34;&gt;&lt;p markdown=&#34;1&#34; style=&#34;margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;&#34;&gt;5. 多 cluster ID 实例拓扑&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;当拓扑包含了多个反射路由时,BGP 利用集群 id 来保证分配路由时不陷入循环路由。
-反射路由镜像帮助每个反射路由提供固定的集群 id 而不是依赖单一平行原则进行配置,这简化了整个网络的配置,但也给拓扑带来了一些限制:&lt;/p&gt;
-
-&lt;p&gt;The Route Reflector image provided assumes that it has a fixed cluster ID for each Route Reflector rather than being configurable on a per peer basis.&lt;/p&gt;
-
-&lt;p&gt;For example, the topology outlined in the diagram below is based on the Top of Rack model:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Each rack is assigned its own cluster ID (a unique number in IPv4 address format).&lt;/li&gt;
-&lt;li&gt;Each node (server in the rack) peers with a redundant set of route reflectors specific to that rack.&lt;/li&gt;
-&lt;li&gt;All of the ToR route reflectors form a full mesh with each other.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/mesh-topology.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;For example, to set up the topology described above, you would:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Spin up nodes N1 - N9&lt;/li&gt;
-&lt;li&gt;Spin up Route Reflectors RR1 - RR6&lt;/li&gt;
-&lt;li&gt;Add node specific peers, peering:
-N1, N2 and N3 with RR1 and RR2
-N4, N5 and N6 with RR3 and RR4
-N7, N8 and N9 with RR5 and RR6&lt;/li&gt;
-&lt;li&gt;Add etcd config for the Route Reflectors:
-RR1 and RR2 both using the cluster ID 1.0.0.1
-RR2 and RR3 both using the cluster ID 1.0.0.2
-RR4 and RR5 both using the cluster ID 1.0.0.3&lt;/li&gt;
-&lt;/ul&gt;</description>
     </item>
     
   </channel>

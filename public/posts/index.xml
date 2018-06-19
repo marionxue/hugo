@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Kubernetes API 扩展</title>
+      <link>https://www.yangcs.net/posts/api-aggregation/</link>
+      <pubDate>Tue, 19 Jun 2018 06:15:06 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/api-aggregation/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title> 修复 Service Endpoint 更新的延迟</title>
       <link>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</link>
       <pubDate>Fri, 15 Jun 2018 14:02:11 +0000</pubDate>
