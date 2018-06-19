@@ -68,7 +68,6 @@ Metrics Server 从每个节点上的 `Kubelet` 公开的 Summary API 中采集�
 自动伸缩是一种根据资源使用情况自动伸缩工作负载的方法。自动伸缩在 Kubernetes 中有两个维度：
 
 + <span id="inline-blue">Cluster Autoscaler</span> : 用来处理节点扩容。
-
 + <span id="inline-blue">Horizontal Pod Autoscaler</span> : 自动缩放 rs 或 rc 中的 pod。
 
 Cluster Autoscaler 和 Horizontal Pod Autoscaler 一起可用于动态调整集群的计算能力。虽然 Cluster Autoscaler 高度依赖于托管集群的云服务商提供的底层功能，但是 HPA 可以独立于你的 IaaS/PaaS 提供商进行操作。

@@ -635,9 +635,8 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 &lt;p&gt;自动伸缩是一种根据资源使用情况自动伸缩工作负载的方法。自动伸缩在 Kubernetes 中有两个维度：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Cluster Autoscaler&lt;/span&gt; : 用来处理节点扩容。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Horizontal Pod Autoscaler&lt;/span&gt; : 自动缩放 rs 或 rc 中的 pod。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Cluster Autoscaler&lt;/span&gt; : 用来处理节点扩容。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Horizontal Pod Autoscaler&lt;/span&gt; : 自动缩放 rs 或 rc 中的 pod。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Cluster Autoscaler 和 Horizontal Pod Autoscaler 一起可用于动态调整集群的计算能力。虽然 Cluster Autoscaler 高度依赖于托管集群的云服务商提供的底层功能，但是 HPA 可以独立于你的 IaaS/PaaS 提供商进行操作。&lt;/p&gt;
