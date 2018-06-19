@@ -777,7 +777,7 @@ aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 &lt;div id=&#34;note&#34;&gt;
 &lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
 &lt;br /&gt;
-&lt;p&gt;前面创建的证书的 &lt;code&gt;CN&lt;/code&gt; 字段的值必须和参数 &lt;code&gt;--requestheader-allowed-names&lt;/code&gt; 指定的值 `aggregator` 相同。&lt;/p&gt;
+&lt;p&gt;前面创建的证书的 &lt;code&gt;CN&lt;/code&gt; 字段的值必须和参数 &lt;code&gt;--requestheader-allowed-names&lt;/code&gt; 指定的值 &lt;code&gt;aggregator&lt;/code&gt; 相同。&lt;/p&gt;
 &lt;/div&gt;
 
 &lt;p&gt;重启 kube-apiserver：&lt;/p&gt;
