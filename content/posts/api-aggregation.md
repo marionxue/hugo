@@ -10,9 +10,9 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-`Aggregated（聚合的）API server` 是为了将原来的 API server 这个巨石（monolithic）应用给拆分成，为了方便用户开发自己的 API server 集成进来，而不用直接修改 Kubernetes 官方仓库的代码，这样一来也能将 API server 解耦，方便用户使用实验特性。这些 API server 可以跟 `core API server` 无缝衔接，使用 kubectl 也可以管理它们。
+`Aggregated（聚合的）API server` 是为了将原来的 API server 这个巨石（monolithic）应用给拆分开，为了方便用户开发自己的 API server 集成进来，而不用直接修改 Kubernetes 官方仓库的代码，这样一来也能将 API server 解耦，方便用户使用实验特性。这些 API server 可以跟 `core API server` 无缝衔接，使用 kubectl 也可以管理它们。
 
-在 `1.7+` 版本中，聚合层和 kube-apiserver 一起运行。在扩展资源被注册前，聚合层不执行任何操，要注册其 API,用户必选添加一个 `APIService` 对象，该对象需在 Kubernetes API 中声明 URL 路径。 在这一点上，聚合层将发送到该 API 路径(e.g. /apis/myextension.mycompany.io/v1/…)的所有对象代理到注册的 APIService。
+在 `1.7+` 版本中，聚合层和 kube-apiserver 一起运行。在扩展资源被注册前，聚合层不执行任何操，要注册其 API,用户必需添加一个 `APIService` 对象，该对象需在 Kubernetes API 中声明 URL 路径，聚合层将发送到该 API 路径(e.g. /apis/myextension.mycompany.io/v1/…)的所有对象代理到注册的 APIService。
 
 通常，通过在集群中的一个 Pod 中运行一个 `extension-apiserver` 来实现 APIService。如果已添加的资源需要主动管理，这个 extension-apiserver 通常需要和一个或多个控制器配对。
 
@@ -65,7 +65,7 @@ $ cfssl print-defaults config > config.json
 $ cfssl print-defaults csr > csr.json
 # 根据config.json文件的格式创建如下的ca-config.json文件
 # 过期时间设置成了 87600h
-$ cat > ca-config.json <<EOF
+$ cat > aggregator-ca-config.json <<EOF
 {
   "signing": {
     "default": {
@@ -96,7 +96,7 @@ EOF
 
 **创建 CA 证书签名请求**
 
-创建 `ca-csr.json` 文件，内容如下：
+创建 `aggregator-ca-csr.json` 文件，内容如下：
 
 ```json
 {
@@ -128,9 +128,9 @@ EOF
 **生成 CA 证书和私钥**
 
 ```bash
-$ cfssl gencert -initca ca-csr.json | cfssljson -bare ca
-$ ls ca*
-ca-config.json  ca.csr  ca-csr.json  ca-key.pem  ca.pem
+$ cfssl gencert -initca aggregator-ca-csr.json | cfssljson -bare aggregator-ca
+$ ls aggregator-ca*
+aggregator-ca-config.json  aggregator-ca.csr  aggregator-ca-csr.json  aggregator-ca-key.pem  aggregator-ca.pem
 ```
 
 <br />
