@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 使用自定义指标进行弹性伸缩 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> 使用 envoy-docker-shim 替代 docker-proxy - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="使用自定义指标进行弹性伸缩" />
-  <meta name="twitter:title" content="使用自定义指标进行弹性伸缩" />
-  <meta name="description" content="通过 Prometheus adaptor 来自定义监控指标">
-  <meta property="og:description" content="通过 Prometheus adaptor 来自定义监控指标">
-  <meta name="twitter:description" content="通过 Prometheus adaptor 来自定义监控指标">
+  <meta property="og:title" content="使用 envoy-docker-shim 替代 docker-proxy" />
+  <meta name="twitter:title" content="使用 envoy-docker-shim 替代 docker-proxy" />
+  <meta name="description" content="Docker 端口映射的新姿势">
+  <meta property="og:description" content="Docker 端口映射的新姿势">
+  <meta name="twitter:description" content="Docker 端口映射的新姿势">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/custom-metrics-hpa/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/envoy-docker-shim/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.37" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/custom-metrics-hpa/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/envoy-docker-shim/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -310,7 +310,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>使用自定义指标进行弹性伸缩</h1>
+                     <h1>使用 envoy-docker-shim 替代 docker-proxy</h1>
                      
                      
                   
@@ -318,13 +318,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">通过 Prometheus adaptor 来自定义监控指标</span>
+                      <span class="post-subheading">Docker 端口映射的新姿势</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on June 19, 2018
+  Posted on June 22, 2018
   
   
 </span>
@@ -345,10 +345,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">使用自定义指标进行弹性伸缩</h1>
+                <h1 align="center">使用 envoy-docker-shim 替代 docker-proxy</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">通过 Prometheus adaptor 来自定义监控指标</h2>
+                    <h2 align="center" class="posts-subheading">Docker 端口映射的新姿势</h2>
                   
                 
                 
@@ -369,12 +369,12 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Tue Jun 19, 2018</h4>
+        <h4 id="date"> Fri Jun 22, 2018</h4>
     </section>
-    <h5 id="wc">3200 Words|Read in about 7 Min</h5>
+    <h5 id="wc">2100 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
+        <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
     </h5>
 </div>
 
@@ -382,383 +382,137 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）可以通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制器使用(例如，Horizontal Pod Autoscale 可以使用这些指标作出决策)。</p>
+<p>在过去一年中，服务网格技术的崛起引发了吃瓜群众对 Istio 的持续关注，而 Istio 的核心组件 <a href="https://github.com/envoyproxy/envoy" target="_blank">Envoy</a> 是一款由 Lyft 开源的，使用 C++ 编写的 L7 代理和通信总线，目前是 <a href="https://cncf.io/" target="_blank">CNCF</a> 旗下的开源项目，代码托管在 GitHub 上，它也是 Istio service mesh 中默认的 data plane。</p>
 
-<p>例如，可以使用 <code>kubectl top node</code> 和 <code>kubectl top pod</code> 查看资源使用情况：</p>
-
-<pre><code class="language-bash">$ kubectl top node
-
-NAME              CPU(cores)   CPU%      MEMORY(bytes)   MEMORY%
-192.168.123.248   245m         12%       2687Mi          34%
-192.168.123.249   442m         22%       3270Mi          42%
-192.168.123.250   455m         22%       4014Mi          52%
-
-$ kubectl top pod
-
-NAME                              CPU(cores)   MEMORY(bytes)
-details-v1-64b86cd49-52g82        0m           11Mi
-podinfo-6b86c8ccc9-5qr8b          0m           7Mi
-podinfo-6b86c8ccc9-hlxm7          0m           12Mi
-podinfo-6b86c8ccc9-qxhng          0m           6Mi
-</code></pre>
-
-<p><br /></p>
-
-<h2 id="p-id-h2-1-resource-metrics-api-p"><p id="h2">1. Resource Metrics API</p></h2>
-
-<hr />
-
-<p>通过 <code>Metrics API</code>，您可以获取指定 node 或 pod 当前使用的资源量。这个 API 不存储指标值， 因此想要获取某个指定 node 10分钟前的资源使用量是不可能的。</p>
-
-<p>Metrics API 和其他的 API 没有什么不同，它可以通过与 <code>/apis/metrics.k8s.io/</code> 路径下的其他 Kubernetes API 相同的端点来发现，并且提供了相同的安全性、可扩展性和可靠性保证，Metrics API 在 <a href="https://github.com/kubernetes/metrics/blob/master/pkg/apis/metrics/v1beta1/types.go" target="_blank">k8s.io/metrics</a> 仓库中定义，你可以在这里找到关于 Metrics API 的更多信息。</p>
-
-<p><strong>注意：</strong> Metrics API 需要在集群中部署 Metrics Server。否则它将不可用。</p>
-
-<h2 id="p-id-h2-2-metrics-server-p"><p id="h2">2. Metrics Server</p></h2>
-
-<hr />
-
-<p><code>Metrics Server</code> 实现了Resource Metrics API。</p>
-
-<p><a href="https://github.com/kubernetes-incubator/metrics-server" target="_blank">Metrics Server</a> 是集群范围资源使用数据的聚合器。 从 Kubernetes 1.8 开始，它作为一个 Deployment 对象默认部署在由 kube-up.sh 脚本创建的集群中。 如果你使用了其他的 Kubernetes 安装方法，您可以使用 Kubernetes 1.7+ (请参阅下面的详细信息) 中引入的 <a href="https://github.com/kubernetes-incubator/metrics-server/tree/master/deploy" target="_blank">deployment yamls</a> 文件来部署。</p>
-
-<p>Metrics Server 从每个节点上的 <code>Kubelet</code> 公开的 Summary API 中采集指标信息。</p>
-
-<p>通过在主 API server 中注册的 Metrics Server <a href="https://kubernetes.io/docs/concepts/api-extension/apiserver-aggregation/" target="_blank">Kubernetes 聚合器</a> 来采集指标信息， 这是在 Kubernetes 1.7 中引入的。在 <a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md" target="_blank">设计文档</a> 中可以了解到有关 Metrics Server 的更多信息。</p>
-
-<h2 id="p-id-h2-3-custom-metrics-api-p"><p id="h2">3. custom metrics api</p></h2>
-
-<hr />
-
-<p>该 API 允许消费者访问通过任意指标描述的 Kubernetes 资源。如果你想实现这个 API Service，请参阅 <a href="https://github.com/kubernetes-incubator/custom-metrics-apiserver" target="_blank">kubernetes-incubator/custom-metrics-apiserver</a>，这是一个用来实现 Kubernetes 自定义指标的框架。</p>
-
-<h2 id="p-id-h2-4-hpa-p"><p id="h2">4. HPA</p></h2>
-
-<hr />
-
-<p>自动伸缩是一种根据资源使用情况自动伸缩工作负载的方法。自动伸缩在 Kubernetes 中有两个维度：</p>
+<p>目前网上关于 Envoy 的文档非常少，能够找到的比较权威的资料只有官方文档，但官方文档的痛点是只有理论概念，没有实际应用指南。</p>
 
 <ul>
-<li><span id="inline-blue">Cluster Autoscaler</span> : 用来处理节点扩容。</li>
-<li><span id="inline-blue">Horizontal Pod Autoscaler</span> : 自动缩放 rs 或 rc 中的 pod。</li>
+<li><a href="https://www.envoyproxy.io/docs/envoy/latest/" target="_blank">Envoy 官方文档</a></li>
+<li><a href="https://servicemesher.github.io/envoy/" target="_blank">Envoy 官方文档中文版</a></li>
 </ul>
 
-<p>Cluster Autoscaler 和 Horizontal Pod Autoscaler 一起可用于动态调整集群的计算能力。虽然 Cluster Autoscaler 高度依赖于托管集群的云服务商提供的底层功能，但是 HPA 可以独立于你的 IaaS/PaaS 提供商进行操作。</p>
+<p>要想真正掌握 Envoy，只有通过实践融入该语境才能真正理解这门技术，而目前能够找到的最佳实践项目就是 <a href="https://github.com/Nitro/envoy-docker-shim" target="_blank">Envoy Docker Shim</a>。在实践该项目之前，你需要了解 Envoy 中的基本术语和概念，可以参考 Jimmy Song 的文章：<a href="https://jimmysong.io/posts/envoy-archiecture-and-terminology/" target="_blank">Envoy 的架构与基本术语</a>。下面我就为大家简单地介绍下这个项目。</p>
 
-<p>Kubernetes 自 1.2 版本引入 <code>HPA</code> 机制，到 1.6 版本之前一直是通过 <code>kubelet</code> 来获取监控指标来判断是否需要扩缩容，1.6 版本之后必须通过 API server、Heapseter 或者 kube-aggregator 来获取监控指标。</p>
-
-<p><code>Kubernetes 1.7</code> 引入了聚合层，允许第三方应用程序通过注册为 API 附加组件来扩展 Kubernetes API。 自定义指标 API 以及聚合层使得像 <code>Prometheus</code> 这样的监控系统可以向 HPA 控制器公开针对特定应用程序的指标。</p>
-
-<p>hpa 实现了一个控制环，可以周期性的从 Resource Metrics API 查询特定应用的 CPU 和内存信息。</p>
-
-<p><center><img src="https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa.png" alt="" /></center></p>
-
-<h2 id="p-id-h2-5-实战-p"><p id="h2">5. 实战</p></h2>
+<h2 id="p-id-h2-1-envoy-docker-shim-p"><p id="h2">1. Envoy Docker Shim</p></h2>
 
 <hr />
 
-<p>以下是一份为 Kubernetes 1.9 或更高版本配置 HPA v2 的分步指南。首先将会安装提供核心指标的 <code>Metrics Server</code> 附件组件，然后使用一个 demo 来演示基于 CPU 和内存使用的 Pod 的自动伸缩。在指南的第二部分，将会部署 Prometheus 和一个 <code>custom metrics apiserver</code>。聚合层会自动注册 custom metrics apiserver，然后通过一个 demo 来演示自定义指标的 HPA。</p>
-
-<h3 id="前提">前提</h3>
+<p><code>Envoy Docker Shim</code> 是一个预生产项目，它使用 Envoy 来替代 Docker 的 <code>docker-proxy</code>，这样做的目的是为在 Docker 上运行的服务启用 Envoy 的指标收集和分布式路由跟踪功能。使用了 Envoy Docker Shim，就相当于获得了服务网格的一半功能。该项目由以下四个组件组成：</p>
 
 <ul>
-<li><a href="https://www.yangcs.net/posts/api-aggregation/" target="_blank">开启聚合层 API</a></li>
-<li>go 1.8+</li>
-<li>克隆 <a href="https://github.com/stefanprodan/k8s-prom-hpa" target="_blank">k8s-prom-hpa</a> 仓库</li>
+<li><code>envoy-docker-server</code> : 运行在 Docker 主机上的注册中心，用来向 Envoy 提供 服务发现 API。</li>
+<li><code>envoy-docker-shim</code> : 命令行应用程序，采用与 <code>docker-proxy</code> 相同的命令参数，但它的作用是将新的端点（endpoint）注册到注册中心。</li>
+<li><code>Envoy 实例</code> : 以 host 网络模式运行在 Docker 容器中。</li>
+<li><code>resync</code> : shell 脚本，当容器重启时用来恢复注册中心的状态。</li>
 </ul>
 
-<pre><code class="language-bash">$ cd $GOPATH
-$ git clone https://github.com/stefanprodan/k8s-prom-hpa
-</code></pre>
+<p>通过将这些组件结合在一起，就形成了一个通过 Envoy 来代理 HTTP 和 TCP 流量的系统，对 <code>UDP</code> 流量的处理继续使用 docker-proxy 的代码逻辑，目前暂不支持 <code>SCTP</code> 协议。</p>
 
-<p><br /></p>
-
-<h3 id="安装-metrics-server">安装 Metrics Server</h3>
-
-<p>Kubernetes Metrics Server 是一个集群范围内的资源使用量的聚合器，它是 Heapster 的继承者。Metrics Server 通过汇集来自 <code>kubernetes.summary_api</code> 的数据来收集 node 和 pod 的 CPU 和内存使用情况。<code>summary API</code> 是用于将数据从 Kubelet/cAdvisor 传递到 Metrics Server 的高效内存 API。</p>
-
-<p><center><img src="https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa-ms.png" alt="" /></center></p>
-
-<p>在安装 Metrics Server 之前需要先进行如下配置：</p>
-
-<ul>
-<li>将 kube-controller-manager 的启动参数 <code>--horizontal-pod-autoscaler-use-rest-clients</code> 的值设置为 true。</li>
-<li>在 kube-controller-manager 的启动参数 &ndash;master 设置为 kube-apiserver 的地址，如：<code>--master=http://172.20.0.113:8080</code>。</li>
-</ul>
-
-<p>在 <code>kube-system</code> 命名空间部署 metrics-server：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./metrics-server
-</code></pre>
-
-<p>一分钟后，度量服务器开始报告节点和 Pod 的 CPU 和内存使用情况。 查看 nodes 指标：</p>
-
-<pre><code class="language-bash">$ kubectl get --raw &quot;/apis/metrics.k8s.io/v1beta1/nodes&quot; | jq .
-</code></pre>
-
-<p>查看 pods 指标：</p>
-
-<pre><code class="language-bash">$ kubectl get --raw &quot;/apis/metrics.k8s.io/v1beta1/pods&quot; | jq .
-</code></pre>
-
-<p><br /></p>
-
-<h3 id="基于-cpu-和内存使用的自动缩放">基于 CPU 和内存使用的自动缩放</h3>
-
-<p>下面使用一个基于 golang 的小程序来测试 HPA。</p>
-
-<p>在 <code>default</code> 命名空间中部署 podinfo：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./podinfo/podinfo-svc.yaml,./podinfo/podinfo-dep.yaml
-</code></pre>
-
-<p>可以通过 <code>http://PODINFO_SVC_IP:9898</code> 来访问 podinfo。</p>
-
-<p>接下来定义一个保持最少两个副本的 HPA，如果 CPU 平均使用量超过 80％ 或内存超过 200Mi，则最高可扩展到 10 个副本：</p>
-
-<pre><code class="language-yaml">apiVersion: autoscaling/v2beta1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: podinfo
-spec:
-  scaleTargetRef:
-    apiVersion: extensions/v1beta1
-    kind: Deployment
-    name: podinfo
-  minReplicas: 2
-  maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      targetAverageUtilization: 80
-  - type: Resource
-    resource:
-      name: memory
-      targetAverageValue: 200Mi
-</code></pre>
-
-<p>创建 HPA：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./podinfo/podinfo-hpa.yaml
-</code></pre>
-
-<p>几秒钟之后，HPA 控制器与 metrics server 进行通信，然后获取 CPU 和内存使用情况。</p>
-
-<pre><code class="language-bash">$ kubectl get hpa
-
-NAME      REFERENCE            TARGETS                      MINPODS   MAXPODS   REPLICAS   AGE
-podinfo   Deployment/podinfo   2826240 / 200Mi, 15% / 80%   2         10        2          5m
-</code></pre>
-
-<p>为了提高 CPU 使用率、运行 <code>rakyll/hey</code> 进行压力测试：</p>
-
-<pre><code class="language-bash">#install hey
-$ go get -u github.com/rakyll/hey
-
-#do 10K requests
-hey -n 10000 -q 10 -c 5 http://PODINFO_SVC_IP:9898/
-</code></pre>
-
-<p>你可以通过以下命令获取 HPA event：</p>
-
-<pre><code class="language-bash">$ kubectl describe hpa podinfo
-
-Events:
-  Type    Reason             Age   From                       Message
-  ----    ------             ----  ----                       -------
-  Normal  SuccessfulRescale  7m    horizontal-pod-autoscaler  New size: 4; reason: cpu resource utilization (percentage of request) above target
-  Normal  SuccessfulRescale  3m    horizontal-pod-autoscaler  New size: 8; reason: cpu resource utilization (percentage of request) above target
-</code></pre>
-
-<p>先将 podinfo 删除，稍后将会重新部署：</p>
-
-<pre><code class="language-bash">$ kubectl delete -f ./podinfo/podinfo-hpa.yaml,./podinfo/podinfo-dep.yaml,./podinfo/podinfo-svc.yaml
-</code></pre>
-
-<p><br /></p>
-
-<h3 id="安装-custom-metrics-server">安装 Custom Metrics Server</h3>
-
-<p>为了让 HPA 可以根据 custom metrics 进行扩展，你需要有两个组件：</p>
-
-<ul>
-<li><span id="inline-blue">Prometheus</span> : 从应用程序中收集指标并将其存储为 Prometheus 时间序列数据库。</li>
-<li><span id="inline-blue">custom-metrics-apiserver</span> : 使用 <a href="https://github.com/DirectXMan12/k8s-prometheus-adapter" target="_blank">k8s-prometheus-adapter</a> 提供的 metrics 来扩展 Kubernetes 自定义指标 API。</li>
-</ul>
-
-<p><center><img src="https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa-prom.png" alt="" /></center></p>
-
-<p>创建 <code>monitoring</code> 命名空间：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./namespaces.yaml
-</code></pre>
-
-<p>将 Prometheus v2 部署到 monitoring 命名空间：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./prometheus
-</code></pre>
-
-<p>生成 Prometheus adapter 所需的 TLS 证书：</p>
-
-<pre><code class="language-bash">$ make certs
-</code></pre>
-
-<p>部署 custom-metrics-apiserver：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./custom-metrics-api
-</code></pre>
-
-<p>列出由 Prometheus 提供的自定义指标：</p>
-
-<pre><code class="language-bash">$ kubectl get --raw &quot;/apis/custom.metrics.k8s.io/v1beta1&quot; | jq .
-</code></pre>
-
-<p>获取 monitoring 命名空间中所有 pod 的 <code>FS</code> 信息：</p>
-
-<pre><code class="language-bash">$ kubectl get --raw &quot;/apis/custom.metrics.k8s.io/v1beta1/namespaces/monitoring/pods/*/fs_usage_bytes&quot; | jq .
-</code></pre>
-
-<p><br /></p>
-
-<h3 id="基于自定义指标的自动扩容">基于自定义指标的自动扩容</h3>
-
-<p>在 <code>default</code> 命名空间中部署 podinfo：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./podinfo/podinfo-svc.yaml,./podinfo/podinfo-dep.yaml
-</code></pre>
-
-<p>podinfo 应用暴露了一个自定义的度量指标：<code>http_requests_total</code>。Prometheus adapter（即 custom-metrics-apiserver）删除了 <code>_total</code> 后缀并将该指标标记为 <code>counter metric</code>。</p>
-
-<p>从自定义指标 API 获取每秒的总请求数：</p>
-
-<pre><code class="language-bash">$ kubectl get --raw &quot;/apis/custom.metrics.k8s.io/v1beta1/namespaces/default/pods/*/http_requests&quot; | jq .
-</code></pre>
-
-<pre><code class="language-json">{
-  &quot;kind&quot;: &quot;MetricValueList&quot;,
-  &quot;apiVersion&quot;: &quot;custom.metrics.k8s.io/v1beta1&quot;,
-  &quot;metadata&quot;: {
-    &quot;selfLink&quot;: &quot;/apis/custom.metrics.k8s.io/v1beta1/namespaces/default/pods/%2A/http_requests&quot;
-  },
-  &quot;items&quot;: [
-    {
-      &quot;describedObject&quot;: {
-        &quot;kind&quot;: &quot;Pod&quot;,
-        &quot;namespace&quot;: &quot;default&quot;,
-        &quot;name&quot;: &quot;podinfo-6b86c8ccc9-kv5g9&quot;,
-        &quot;apiVersion&quot;: &quot;/__internal&quot;
-      },
-      &quot;metricName&quot;: &quot;http_requests&quot;,
-      &quot;timestamp&quot;: &quot;2018-01-10T16:49:07Z&quot;,
-      &quot;value&quot;: &quot;901m&quot;
-    },
-    {
-      &quot;describedObject&quot;: {
-        &quot;kind&quot;: &quot;Pod&quot;,
-        &quot;namespace&quot;: &quot;default&quot;,
-        &quot;name&quot;: &quot;podinfo-6b86c8ccc9-nm7bl&quot;,
-        &quot;apiVersion&quot;: &quot;/__internal&quot;
-      },
-      &quot;metricName&quot;: &quot;http_requests&quot;,
-      &quot;timestamp&quot;: &quot;2018-01-10T16:49:07Z&quot;,
-      &quot;value&quot;: &quot;898m&quot;
-    }
-  ]
-}
-</code></pre>
-
-<p><code>m</code> 表示 <code>毫</code>，例如，<code>901m</code> 表示 901 毫次/每秒。</p>
-
-<p>创建一个 HPA，如果请求数超过每秒 10 次将扩大 podinfo 副本数：</p>
-
-<pre><code class="language-yaml">apiVersion: autoscaling/v2beta1
-kind: HorizontalPodAutoscaler
-metadata:
-  name: podinfo
-spec:
-  scaleTargetRef:
-    apiVersion: extensions/v1beta1
-    kind: Deployment
-    name: podinfo
-  minReplicas: 2
-  maxReplicas: 10
-  metrics:
-  - type: Pods
-    pods:
-      metricName: http_requests
-      targetAverageValue: 10
-</code></pre>
-
-<p>在 default 命名空间部署 podinfo HPA：</p>
-
-<pre><code class="language-bash">$ kubectl create -f ./podinfo/podinfo-hpa-custom.yaml
-</code></pre>
-
-<p>几秒钟后 HPA 从 metrics API 获取 <code>http_requests</code> 的值：</p>
-
-<pre><code class="language-bash">$ kubectl get hpa
-
-NAME      REFERENCE            TARGETS     MINPODS   MAXPODS   REPLICAS   AGE
-podinfo   Deployment/podinfo   899m / 10   2         10        2          1m
-</code></pre>
-
-<p>以每秒 25 个请求数的速度给 podinfo 加压：</p>
-
-<pre><code class="language-bash">#install hey
-$ go get -u github.com/rakyll/hey
-
-#do 10K requests rate limited at 25 QPS
-$ hey -n 10000 -q 5 -c 5 http://PODINFO_SVC_IP:9898/healthz
-</code></pre>
-
-<p>几分钟后，HPA 开始扩大 podinfo 的副本数：</p>
-
-<pre><code class="language-bash">$ kubectl describe hpa podinfo
-
-Name:                       podinfo
-Namespace:                  default
-Reference:                  Deployment/podinfo
-Metrics:                    ( current / target )
-  &quot;http_requests&quot; on pods:  9059m / 10
-Min replicas:               2
-Max replicas:               10
-
-Events:
-  Type    Reason             Age   From                       Message
-  ----    ------             ----  ----                       -------
-  Normal  SuccessfulRescale  2m    horizontal-pod-autoscaler  New size: 3; reason: pods metric http_requests above target
-</code></pre>
-
-<p>以目前的请求速度，podinfo 的副本数永远不会扩展到最大值，三个副本足以让每个 Pod 的请求速度保持在每秒 10 次以下。</p>
-
-<p>停止加压后，HPA 会将副本数缩减成最小值：</p>
-
-<pre><code class="language-bash">Events:
-  Type    Reason             Age   From                       Message
-  ----    ------             ----  ----                       -------
-  Normal  SuccessfulRescale  5m    horizontal-pod-autoscaler  New size: 3; reason: pods metric http_requests above target
-  Normal  SuccessfulRescale  21s   horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
-</code></pre>
-
-<p><br /></p>
-
-<h2 id="p-id-h2-6-总结-p"><p id="h2">6. 总结</p></h2>
+<h2 id="p-id-h2-2-安装步骤-p"><p id="h2">2. 安装步骤</p></h2>
 
 <hr />
 
-<p>并非所有的系统都可以仅依靠 CPU 和内存指标来满足 SLA，大多数 Web 应用的后端都需要基于每秒的请求数量进行弹性伸缩来处理突发流量。对于 ETL 应用程序，可以通过设置 Job 队列长度超过某个阈值来触发弹性伸缩。通过 Prometheus 来监控应用程序并暴露出用于弹性伸缩的指标，可以微调应用程序以更好地处理突发事件，从而确保其高可用性。</p>
+<p>要想使用 Envoy Docker Shim，首先需要修改 <code>dockerd</code> 的启动参数：</p>
 
-<h2 id="p-id-h2-7-参考-p"><p id="h2">7. 参考</p></h2>
+<ul>
+<li><code>--userland-proxy-path=/path/to/envoy-docker-shim</code> : 使用 envoy-docker-shim 替换 <code>docker-proxy</code>，用来告诉 Envoy 需要监听的服务以及如何转发。</li>
+<li><code>--iptables=false</code> : 禁用 Iptables 来转发 Docker 的流量，强制使用 Envoy 来转发 Docker 流量。</li>
+</ul>
+
+<p>一旦设置了 &ndash;iptables=false，Docker 流量就不会再通过内核直接流入桥接网络。通过配置不同的代理模式，所有的流量都会在 4 层或 7 层进行代理。</p>
+
+<p>修改完启动参数后，就可以重启 Docker 服务了：</p>
+
+<pre><code class="language-bash">$ systemctl daemon-reload
+$ systemctl restart docker
+</code></pre>
+
+<h3 id="下载二进制文件和脚本">下载二进制文件和脚本</h3>
+
+<p>安装 <code>envoy-docker-server</code>：</p>
+
+<pre><code class="language-bash">$ go get github.com/Nitro/envoy-docker-shim/cmd/envoy-docker-server
+</code></pre>
+
+<p>安装 <code>envoy-docker-shim</code>：</p>
+
+<pre><code class="language-bash">$ go get github.com/Nitro/envoy-docker-shim/cmd/envoy-docker-shim
+</code></pre>
+
+<p>克隆 envoy-docker-shim 项目：</p>
+
+<pre><code class="language-bash">$ git clone https://github.com/Nitro/envoy-docker-shim
+</code></pre>
+
+<p>将脚本 <code>resync</code> 复制到 /usr/local/bin 目录下：</p>
+
+<pre><code class="language-bash">$ cd envoy-docker-shim
+$ cp scripts/resync /usr/local/bin
+</code></pre>
+
+<h3 id="配置-envoy-docker-server-和-resync">配置 envoy-docker-server 和 resync</h3>
+
+<p>修改 examples 目录下的 <code>envoy-docker-server.service</code> 文件：</p>
+
+<pre><code>[Unit]
+Description=Envoy Docker Shim
+PartOf=docker.service
+
+[Service]
+ExecStart=$GOPATH/bin/envoy-docker-server
+ExecStartPost=/usr/local/bin/resync
+ExecReload=/usr/local/bin/resync
+KillMode=process
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+</code></pre>
+
+<p>为了防止出现状态不同步的问题，envoy-docker-server 仅将状态存储在内存中，一旦重启了 envoy-docker-server，就需要执行脚本 resync 来同步容器的状态。</p>
+
+<p>将 envoy-docker-server.service 文件复制到 <code>/etc/systemd/system/</code> 目录下并启动该服务：</p>
+
+<pre><code class="language-bash">$ cp examples/envoy-docker-server.service /etc/systemd/system/
+$ systemctl start envoy-docker-server
+</code></pre>
+
+<h3 id="启动-envoy-实例">启动 Envoy 实例</h3>
+
+<p>在 examples 目录中包含了一个 <code>envoy.yaml</code> 文件，你可以通过该配置文件启动 Envoy 实例（在 1.6 和 1.7 版本上测试通过）。你也可以选择通过 Docker 容器来运行 Envoy 实例，这里我们通过容器的方式来启动 Envoy：</p>
+
+<pre><code class="language-bash">$ docker run -d --name envoyproxy --restart always --net host --cap-add NET_ADMIN -e ENVOY_BASE_ID=100 -e ENVOY_PORT=9902 -e ENVOY_UI_LISTEN_PORT=8081 gonitro/envoyproxy:1.7.0-27960f3-tracing
+</code></pre>
+
+<p>该 Envoy 容器还提供了一个 UI 来展示指标和路由，可以通过在浏览器中输入 url：<code>http://host_ip:8081</code> 来打开 UI 界面：</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/envoy.jpg" alt="" /></p>
+
+<p>至此，Envoy Docker Shim 已经完美地完成了替代 docker-proxy 的工作，接下来就可以不通过 iptables 而使用 Envoy 来实现 Docker 容器的端口映射啦！</p>
+
+<h2 id="p-id-h2-3-容器配置-p"><p id="h2">3. 容器配置</p></h2>
 
 <hr />
 
+<p>一切准备就绪后，就可以启动一个容器试试了。如果想完美地使用 envoy-docker-shim，你需要在启动容器时指定两个或三个标签，虽然这不是必须的，但可以更方便地跟踪流量。这些 Docker 标签被映射成报告给 <code>Zipkin</code> 或 <code>Jaeger</code> 的服务的标签。这三个标签是从 <a href="https://github.com/Nitro/sidecar" target="_blank">Sidecar</a> 项目集成而来的：</p>
+
 <ul>
-<li><a href="https://github.com/stefanprodan/k8s-prom-hpa" target="_blank">Kubernetes Horizontal Pod Autoscaler with Prometheus custom metrics</a></li>
-<li><a href="https://github.com/DirectXMan12/k8s-prometheus-adapter" target="_blank">k8s-prometheus-adapter</a></li>
+<li><code>EnvironmentName</code> : 这个标签可以成某个客户的名字，或者表示这是生产项目还是测试项目，反正只要对你来说有意义就行。</li>
+<li><code>ServiceName</code> : 设置 Envoy 跟踪的服务名。例如，如果你将这个标签设置为 <code>nginx</code>，将 EnvironmentName 标签设置为 <code>prod</code>，那么该服务名为 <code>nginx-prod</code>。</li>
+<li><code>ProxyMode</code> : 设置 Envoy 的代理模式。默认使用 <code>http</code> 代理模式，如果想使用 tcp 代理模式，需要指定该标签值为 <code>tcp</code>。</li>
 </ul>
 
-<p><br /></p>
+<p>示例：</p>
+
+<pre><code class="language-bash">$ docker run -d -p 80:80 -p 443:443 -l EnvironmentName=proxy -l ServiceName=nginx -l ProxyMode=tcp nginx:alpine
+</code></pre>
+
+<p>打开 Envoy UI：</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/envoy-nginx.jpg" alt="" /></p>
+
+<p>可以看到 nginx 的服务名为 <code>nginx-proxy</code>。</p>
 
 <style>
 #h2{
@@ -992,11 +746,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/api-aggregation/" data-toggle="tooltip" data-placement="top" title="Kubernetes API 扩展">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/custom-metrics-hpa/" data-toggle="tooltip" data-placement="top" title="使用自定义指标进行弹性伸缩">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/envoy-docker-shim/" data-toggle="tooltip" data-placement="top" title="使用 envoy-docker-shim 替代 docker-proxy">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -1006,15 +760,15 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/api-aggregation/">Kubernetes API 扩展</a></li>
+                    <li><a href="/posts/cri-o/">CRI-O 简介</a></li>
                     
-                    <li><a href="/posts/kubernetes-fixing-delayed-service-endpoint-updates/"> 修复 Service Endpoint 更新的延迟</a></li>
+                    <li><a href="/posts/container-runtime/">Kubernetes 中的容器运行时</a></li>
                     
-                    <li><a href="/posts/kubernetes-fucking-trick/">Kubernetes 的奇技淫巧</a></li>
+                    <li><a href="/posts/how-manage-image/">docker 在本地如何管理 image（镜像）?</a></li>
                     
-                    <li><a href="/posts/what-happens-when-k8s/">kubectl run 背后到底发生了什么？</a></li>
+                    <li><a href="/posts/k8s-network-expand/">Kubernetes 网络扩展</a></li>
                     
-                    <li><a href="/posts/introduce-kubernetes-descheduler/">走进 Descheduler</a></li>
+                    <li><a href="/posts/calico-rr/">calico Router reflection(RR) 模式介绍及部署</a></li>
                     
                 </ul>
                 
@@ -1025,12 +779,12 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Tue Jun 19, 2018</h4>
+        <h4 id="date"> Fri Jun 22, 2018</h4>
     </section>
-    <h5 id="wc">3200 Words|Read in about 7 Min</h5>
+    <h5 id="wc">2100 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
+        <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
     </h5>
 </div>
 

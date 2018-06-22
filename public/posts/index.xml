@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>使用 envoy-docker-shim 替代 docker-proxy</title>
+      <link>https://www.yangcs.net/posts/envoy-docker-shim/</link>
+      <pubDate>Fri, 22 Jun 2018 08:22:07 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/envoy-docker-shim/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>使用自定义指标进行弹性伸缩</title>
       <link>https://www.yangcs.net/posts/custom-metrics-hpa/</link>
       <pubDate>Tue, 19 Jun 2018 09:02:52 +0000</pubDate>

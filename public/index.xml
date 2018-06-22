@@ -571,6 +571,375 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>使用 envoy-docker-shim 替代 docker-proxy</title>
+      <link>https://www.yangcs.net/posts/envoy-docker-shim/</link>
+      <pubDate>Fri, 22 Jun 2018 08:22:07 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/envoy-docker-shim/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;在过去一年中，服务网格技术的崛起引发了吃瓜群众对 Istio 的持续关注，而 Istio 的核心组件 &lt;a href=&#34;https://github.com/envoyproxy/envoy&#34; target=&#34;_blank&#34;&gt;Envoy&lt;/a&gt; 是一款由 Lyft 开源的，使用 C++ 编写的 L7 代理和通信总线，目前是 &lt;a href=&#34;https://cncf.io/&#34; target=&#34;_blank&#34;&gt;CNCF&lt;/a&gt; 旗下的开源项目，代码托管在 GitHub 上，它也是 Istio service mesh 中默认的 data plane。&lt;/p&gt;
+
+&lt;p&gt;目前网上关于 Envoy 的文档非常少，能够找到的比较权威的资料只有官方文档，但官方文档的痛点是只有理论概念，没有实际应用指南。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://servicemesher.github.io/envoy/&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档中文版&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;要想真正掌握 Envoy，只有通过实践融入该语境才能真正理解这门技术，而目前能够找到的最佳实践项目就是 &lt;a href=&#34;https://github.com/Nitro/envoy-docker-shim&#34; target=&#34;_blank&#34;&gt;Envoy Docker Shim&lt;/a&gt;。在实践该项目之前，你需要了解 Envoy 中的基本术语和概念，可以参考 Jimmy Song 的文章：&lt;a href=&#34;https://jimmysong.io/posts/envoy-archiecture-and-terminology/&#34; target=&#34;_blank&#34;&gt;Envoy 的架构与基本术语&lt;/a&gt;。下面我就为大家简单地介绍下这个项目。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-1-envoy-docker-shim-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Envoy Docker Shim&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;code&gt;Envoy Docker Shim&lt;/code&gt; 是一个预生产项目，它使用 Envoy 来替代 Docker 的 &lt;code&gt;docker-proxy&lt;/code&gt;，这样做的目的是为在 Docker 上运行的服务启用 Envoy 的指标收集和分布式路由跟踪功能。使用了 Envoy Docker Shim，就相当于获得了服务网格的一半功能。该项目由以下四个组件组成：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;envoy-docker-server&lt;/code&gt; : 运行在 Docker 主机上的注册中心，用来向 Envoy 提供 服务发现 API。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;envoy-docker-shim&lt;/code&gt; : 命令行应用程序，采用与 &lt;code&gt;docker-proxy&lt;/code&gt; 相同的命令参数，但它的作用是将新的端点（endpoint）注册到注册中心。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Envoy 实例&lt;/code&gt; : 以 host 网络模式运行在 Docker 容器中。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;resync&lt;/code&gt; : shell 脚本，当容器重启时用来恢复注册中心的状态。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;通过将这些组件结合在一起，就形成了一个通过 Envoy 来代理 HTTP 和 TCP 流量的系统，对 &lt;code&gt;UDP&lt;/code&gt; 流量的处理继续使用 docker-proxy 的代码逻辑，目前暂不支持 &lt;code&gt;SCTP&lt;/code&gt; 协议。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-2-安装步骤-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 安装步骤&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;要想使用 Envoy Docker Shim，首先需要修改 &lt;code&gt;dockerd&lt;/code&gt; 的启动参数：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;--userland-proxy-path=/path/to/envoy-docker-shim&lt;/code&gt; : 使用 envoy-docker-shim 替换 &lt;code&gt;docker-proxy&lt;/code&gt;，用来告诉 Envoy 需要监听的服务以及如何转发。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--iptables=false&lt;/code&gt; : 禁用 Iptables 来转发 Docker 的流量，强制使用 Envoy 来转发 Docker 流量。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;一旦设置了 &amp;ndash;iptables=false，Docker 流量就不会再通过内核直接流入桥接网络。通过配置不同的代理模式，所有的流量都会在 4 层或 7 层进行代理。&lt;/p&gt;
+
+&lt;p&gt;修改完启动参数后，就可以重启 Docker 服务了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl daemon-reload
+$ systemctl restart docker
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;下载二进制文件和脚本&#34;&gt;下载二进制文件和脚本&lt;/h3&gt;
+
+&lt;p&gt;安装 &lt;code&gt;envoy-docker-server&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ go get github.com/Nitro/envoy-docker-shim/cmd/envoy-docker-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装 &lt;code&gt;envoy-docker-shim&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ go get github.com/Nitro/envoy-docker-shim/cmd/envoy-docker-shim
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;克隆 envoy-docker-shim 项目：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/Nitro/envoy-docker-shim
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将脚本 &lt;code&gt;resync&lt;/code&gt; 复制到 /usr/local/bin 目录下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd envoy-docker-shim
+$ cp scripts/resync /usr/local/bin
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;配置-envoy-docker-server-和-resync&#34;&gt;配置 envoy-docker-server 和 resync&lt;/h3&gt;
+
+&lt;p&gt;修改 examples 目录下的 &lt;code&gt;envoy-docker-server.service&lt;/code&gt; 文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[Unit]
+Description=Envoy Docker Shim
+PartOf=docker.service
+
+[Service]
+ExecStart=$GOPATH/bin/envoy-docker-server
+ExecStartPost=/usr/local/bin/resync
+ExecReload=/usr/local/bin/resync
+KillMode=process
+Restart=on-failure
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;为了防止出现状态不同步的问题，envoy-docker-server 仅将状态存储在内存中，一旦重启了 envoy-docker-server，就需要执行脚本 resync 来同步容器的状态。&lt;/p&gt;
+
+&lt;p&gt;将 envoy-docker-server.service 文件复制到 &lt;code&gt;/etc/systemd/system/&lt;/code&gt; 目录下并启动该服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cp examples/envoy-docker-server.service /etc/systemd/system/
+$ systemctl start envoy-docker-server
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;启动-envoy-实例&#34;&gt;启动 Envoy 实例&lt;/h3&gt;
+
+&lt;p&gt;在 examples 目录中包含了一个 &lt;code&gt;envoy.yaml&lt;/code&gt; 文件，你可以通过该配置文件启动 Envoy 实例（在 1.6 和 1.7 版本上测试通过）。你也可以选择通过 Docker 容器来运行 Envoy 实例，这里我们通过容器的方式来启动 Envoy：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker run -d --name envoyproxy --restart always --net host --cap-add NET_ADMIN -e ENVOY_BASE_ID=100 -e ENVOY_PORT=9902 -e ENVOY_UI_LISTEN_PORT=8081 gonitro/envoyproxy:1.7.0-27960f3-tracing
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该 Envoy 容器还提供了一个 UI 来展示指标和路由，可以通过在浏览器中输入 url：&lt;code&gt;http://host_ip:8081&lt;/code&gt; 来打开 UI 界面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/envoy.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此，Envoy Docker Shim 已经完美地完成了替代 docker-proxy 的工作，接下来就可以不通过 iptables 而使用 Envoy 来实现 Docker 容器的端口映射啦！&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-3-容器配置-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 容器配置&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;一切准备就绪后，就可以启动一个容器试试了。如果想完美地使用 envoy-docker-shim，你需要在启动容器时指定两个或三个标签，虽然这不是必须的，但可以更方便地跟踪流量。这些 Docker 标签被映射成报告给 &lt;code&gt;Zipkin&lt;/code&gt; 或 &lt;code&gt;Jaeger&lt;/code&gt; 的服务的标签。这三个标签是从 &lt;a href=&#34;https://github.com/Nitro/sidecar&#34; target=&#34;_blank&#34;&gt;Sidecar&lt;/a&gt; 项目集成而来的：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;EnvironmentName&lt;/code&gt; : 这个标签可以成某个客户的名字，或者表示这是生产项目还是测试项目，反正只要对你来说有意义就行。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ServiceName&lt;/code&gt; : 设置 Envoy 跟踪的服务名。例如，如果你将这个标签设置为 &lt;code&gt;nginx&lt;/code&gt;，将 EnvironmentName 标签设置为 &lt;code&gt;prod&lt;/code&gt;，那么该服务名为 &lt;code&gt;nginx-prod&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ProxyMode&lt;/code&gt; : 设置 Envoy 的代理模式。默认使用 &lt;code&gt;http&lt;/code&gt; 代理模式，如果想使用 tcp 代理模式，需要指定该标签值为 &lt;code&gt;tcp&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;示例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker run -d -p 80:80 -p 443:443 -l EnvironmentName=proxy -l ServiceName=nginx -l ProxyMode=tcp nginx:alpine
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;打开 Envoy UI：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/envoy-nginx.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以看到 nginx 的服务名为 &lt;code&gt;nginx-proxy&lt;/code&gt;。&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>使用自定义指标进行弹性伸缩</title>
       <link>https://www.yangcs.net/posts/custom-metrics-hpa/</link>
       <pubDate>Tue, 19 Jun 2018 09:02:52 +0000</pubDate>
@@ -6504,949 +6873,6 @@ drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
 
 &lt;style&gt;
 #h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes 使用集群联邦实现多集群管理</title>
-      <link>https://www.yangcs.net/posts/federation/</link>
-      <pubDate>Thu, 22 Mar 2018 09:36:27 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/federation/</guid>
-      <description>&lt;p&gt;
-在云计算环境中，服务的作用距离范围从近到远一般可以有：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;同主机（Host，Node）&lt;/li&gt;
-&lt;li&gt;跨主机同可用区（Available Zone）&lt;/li&gt;
-&lt;li&gt;跨可用区同地区（Region）&lt;/li&gt;
-&lt;li&gt;跨地区同服务商（Cloud Service Provider）&lt;/li&gt;
-&lt;li&gt;跨云平台&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;K8s 的设计定位是单一集群在同一个地域内，因为同一个地区的网络性能才能满足 K8s 的调度和计算存储连接要求。&lt;/p&gt;
-
-&lt;p&gt;但是实际情况中经常遇到的一些问题，就是单个集群通常无法跨单个云厂商的多个 Region，更不用说支持跨跨域不同的云厂商。这样会给企业带来一些担忧，如何应对可用区级别的 Fail，以及容灾备份？是否会造成厂商锁定，增加迁移成本？如何应对线上线下突发流量？如何统一管理调度容器资源？单个集群规模的上限等等。&lt;/p&gt;
-
-&lt;p&gt;集群联邦（Federation）可以一定程度上解决这些问题。&lt;code&gt;Federation&lt;/code&gt; 是可以将分布在多个 Region 或者多个云厂商的 Kubernetes 集群整合成一个大的集群，统一管理与调度。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-kubernetes集群联邦介绍-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Kubernetes集群联邦介绍&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;管理多个-kuberntes-集群&#34;&gt;管理多个 kuberntes 集群&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;集群联邦&lt;/strong&gt;在架构上同 kubernetes 集群很相似。有一个&lt;strong&gt;集群联邦&lt;/strong&gt;的 API server 提供一个标准的 Kubernetes API，并且通过 etcd 来存储状态。不同的是，一个通常的Kubernetes 只是管理节点计算，而&lt;strong&gt;集群联邦&lt;/strong&gt;管理所有的 kubernetes 集群。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/federation-api-4x.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;Federation主要包括三个组件：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;federation-apiserver：&lt;/strong&gt;类似 &lt;code&gt;kube-apiserver&lt;/code&gt;，但提供的是跨集群的 REST API&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;federation-controller-manager：&lt;/strong&gt;类似 &lt;code&gt;kube-controller-manager&lt;/code&gt;，但提供多集群状态的同步机制&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;kubefed：&lt;/strong&gt;Federation 管理命令行工具&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;用户可以通过 Federation 的 API Server 注册该 Federation 的成员 &lt;code&gt;K8s Cluster&lt;/code&gt;。当用户通过 Federation 的 API Server 创建、更改 API 对象时，&lt;code&gt;Federation API Server&lt;/code&gt; 会在自己所有注册的子 K8s Cluster 都创建一份对应的 API 对象。&lt;/p&gt;
-
-&lt;p&gt;在提供业务请求服务时，&lt;code&gt;K8s Federation&lt;/code&gt; 会先在自己的各个子 Cluster 之间做负载均衡，而对于发送到某个具体 &lt;code&gt;K8s Cluster&lt;/code&gt; 的业务请求，会依照这个 K8s Cluster 独立提供服务时一样的调度模式去做 K8s Cluster 内部的负载均衡。而Cluster 之间的负载均衡是通过域名服务的负载均衡来实现的。&lt;/p&gt;
-
-&lt;p&gt;所有的设计都尽量不影响 K8s Cluster 现有的工作机制，这样对于每个子 K8s 集群来说，并不需要更外层的有一个 K8s Federation，也就是意味着所有现有的 K8s 代码和机制不需要因为 &lt;code&gt;Federation&lt;/code&gt; 功能有任何变化。&lt;/p&gt;
-
-&lt;h3 id=&#34;跨集群服务发现&#34;&gt;跨集群服务发现&lt;/h3&gt;
-
-&lt;p&gt;Kubernetes 有一个标准的插件：&lt;code&gt;kube-dns&lt;/code&gt;，这个插件可以在集群内部提供 DNS 服务，通过 DNS 解析 service 名字来访问 kubernetes 服务。&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;Kubernetes 服务是由一组 kubernetes POD 组成的，这些 POD 是一些已经容器化了的应用，这些 POD 前面使用到了负载均衡器。&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;假如我们有一个 kubernetes 集群，这个集群里面有一个服务叫做 mysql，这个服务是由一组 mysql POD 组成的。在这个 kubernetes 集群中，其他应用可以通过 DNS 来访问这个 mysql 服务。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/federation-dns.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;跨集群调度&#34;&gt;跨集群调度&lt;/h3&gt;
-
-&lt;p id=&#34;div-border-top-red&#34;&gt;为了追求高可用性和更高的性能，集群联邦能够把不同 POD 指定给不同的 Kubernetes 集群中。集群联邦调度器将决定如何在不同 kubernetes 集群中分配工作负载。&lt;/p&gt;
-
-&lt;p&gt;通过跨集群调度，我们可以：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;跨 kubernetes 集群均匀的调度任务负载&lt;/li&gt;
-&lt;li&gt;将各个 kubernetes 集群的工作负载进行最大化，如果当前 kubernetes 集群超出了承受能力，那么将额外的工作负载路由到另一个比较空闲的 kubernetes 集群中&lt;/li&gt;
-&lt;li&gt;根据应用地理区域需求，调度工作负载到不同的 kubernetes 集群中，对于不同的终端用户，提供更高的带宽和更低的延迟。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;集群高可用-故障自动迁移&#34;&gt;集群高可用，故障自动迁移&lt;/h3&gt;
-
-&lt;p&gt;集群联邦可以跨集群冗馀部署，当某个集群所在区域出现故障时，并不影响整个服务。集群联邦还可以检测集群是否为不可用状态，如果发现某个集群为不可用状态时，可以将失败的任务重新分配给集群联邦中其他可用状态的集群上。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-使用集群联邦实现多集群管理-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 使用集群联邦实现多集群管理&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;系统环境&#34;&gt;系统环境&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;功能组件&lt;/th&gt;
-&lt;th align=&#34;center&#34;&gt;系统组件&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;系统版本&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;设备数量&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;备注&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;联邦集群控制平面&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;k8s 1.9+Federation&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;CentOS 7.3&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;3台&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;联邦集群控制平面&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;K8s集群01&lt;/td&gt;
-&lt;td align=&#34;center&#34;&gt;k8s 1.9 master+node&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;CentOS 7.3&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;3台&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;联邦集群节点&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;安装-kubefed&#34;&gt;安装 kubefed&lt;/h3&gt;
-
-&lt;p&gt;选择其中的一个集群作为主集群，这个主集群将运行组成联邦控制面板的所有组件。&lt;/p&gt;
-
-&lt;p&gt;使用下列命令下载对应最新发行的 &lt;code&gt;kubefed&lt;/code&gt; 安装包并将安装包里的二进制文件解压出来：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl -LO https://storage.cloud.google.com/kubernetes-federation-release/release/${RELEASE-VERSION}/federation-client-linux-amd64.tar.gz
-$ tar -xzvf federation-client-linux-amd64.tar.gz
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;请用&lt;a href=&#34;https://github.com/kubernetes/federation/releases&#34; target=&#34;_blank&#34;&gt;federation release page&lt;/a&gt;页面实际的版本号替换变量 &lt;code&gt;RELEASE-VERSION&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;将解压出来的内容复制到你的环境变量 &lt;code&gt;$PATH&lt;/code&gt; 里的随便一个路径， 并设置可执行权限。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cp federation/client/bin/kubefed /usr/local/bin
-$ chmod +x /usr/local/bin/kubefed
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;配置-context&#34;&gt;配置 context&lt;/h3&gt;
-
-&lt;p&gt;在准备配置联邦集群的 DCE 集群中配置两个 DCE 集群的 &lt;code&gt;context&lt;/code&gt;。让改节点能通过切换 &lt;code&gt;context&lt;/code&gt; 连接不同的子集群。&lt;/p&gt;
-
-&lt;p&gt;先创建本地集群的 &lt;code&gt;kubeconfig&lt;/code&gt; 文件&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ export KUBE_APISERVER=&amp;quot;https://192.168.123.250:6443&amp;quot;
-# 设置集群参数
-$ kubectl config set-cluster kubernetes \
-  --certificate-authority=/etc/kubernetes/ssl/ca.pem \
-  --embed-certs=true \
-  --server=${KUBE_APISERVER}
-# 设置客户端认证参数
-$ kubectl config set-credentials admin \
-  --client-certificate=/etc/kubernetes/ssl/admin.pem \
-  --embed-certs=true \
-  --client-key=/etc/kubernetes/ssl/admin-key.pem
-# 设置上下文参数
-$ kubectl config set-context kubernetes \
-  --cluster=kubernetes \
-  --user=admin
-# 设置默认上下文
-$ kubectl config use-context kubernetes
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;生成的 kubeconfig 被保存到 &lt;code&gt;~/.kube/config&lt;/code&gt; 文件。&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;~/.kube/config 文件拥有对该集群的最高权限，请妥善保管。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;配置结果如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl config get-contexts
-
-CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
-*         kubernetes    kubernetes    admin
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;设置-coredns-作为集群联邦的-dns-提供商&#34;&gt;设置 CoreDNS 作为集群联邦的 DNS 提供商&lt;/h3&gt;
-
-&lt;h4 id=&#34;1-前提&#34;&gt;1. 前提&lt;/h4&gt;
-
-&lt;ul&gt;
-&lt;li&gt;为启用 &lt;code&gt;CoreDNS&lt;/code&gt; 来实现跨联邦集群的服务发现，联邦的成员集群中必须支持 &lt;code&gt;LoadBalancer&lt;/code&gt; 服务。（&lt;font color=&#34;red&#34;&gt;本地集群默认不支持 &lt;code&gt;LoadBalancer&lt;/code&gt; 服务，所以要让本地集群支持 &lt;code&gt;LoadBalancer&lt;/code&gt; 服务才能使用 &lt;code&gt;coredns&lt;/code&gt; 来实现 federation 的服务发现功能！！！&lt;/font&gt;）&lt;/li&gt;
-&lt;li&gt;我们可以利用 &lt;code&gt;helm charts&lt;/code&gt; 来部署 CoreDNS。 CoreDNS 部署时会以 etcd 作为后端，并且 etcd 应预先安装。 etcd 也可以利用 helm charts 进行部署。&lt;/li&gt;
-&lt;li&gt;所有加入 federation 的集群的 node 必须打上以下的标签：&lt;br /&gt;
-&lt;code&gt;failure-domain.beta.kubernetes.io/region=&amp;lt;region&amp;gt;&lt;/code&gt;&lt;br /&gt;
-&lt;code&gt;failure-domain.beta.kubernetes.io/zone=&amp;lt;zone&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;2-使本地集群支持-loadbalancer-服务&#34;&gt;2. 使本地集群支持 LoadBalancer 服务&lt;/h4&gt;
-
-&lt;p&gt;为了使本地集群支持 &lt;code&gt;LoadBalancer&lt;/code&gt; 服务，可以参考以下两种实现方案：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/munnerz/keepalived-cloud-provider&#34; target=&#34;_blank&#34;&gt;keepalived-cloud-provider&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/google/metallb&#34; target=&#34;_blank&#34;&gt;metalLB&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;这里我们选择使用 &lt;code&gt;metalLB&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;metalLB 的部署很简单，直接使用 yaml 文件部署：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.5.0/manifests/metallb.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;具体参考 &lt;a href=&#34;https://metallb.universe.tf/installation/&#34; target=&#34;_blank&#34;&gt;https://metallb.universe.tf/installation/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;部署完成后需要为 LoadBalancer 服务选择一个特定的 IP 地址池，这里通过 configmap 来创建。&lt;/p&gt;
-
-&lt;p&gt;下面是一个简单示例：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat metallb-cm.yaml
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  namespace: metallb-system
-  name: config
-data:
-  config: |
-    address-pools:
-    - name: default
-      protocol: layer2
-      addresses:
-      - 192.168.1.58-192.168.1.60
-
-$ kubectl create -f metallb-cm.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;更多高级配置请参考：&lt;a href=&#34;https://metallb.universe.tf/configuration/&#34; target=&#34;_blank&#34;&gt;https://metallb.universe.tf/configuration/&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;现在本地集群已经支持 LoadBalancer 服务了，下面我们开始 federation 的旅程吧！👏&lt;/p&gt;
-
-&lt;h4 id=&#34;3-安装-helm&#34;&gt;3. 安装 helm&lt;/h4&gt;
-
-&lt;p&gt;首先需要安装 &lt;code&gt;helm&lt;/code&gt; 客户端&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get &amp;gt; get_helm.sh
-$ chmod 700 get_helm.sh
-$ ./get_helm.sh
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;创建 tiller 的 &lt;code&gt;serviceaccount&lt;/code&gt; 和 &lt;code&gt;clusterrolebinding&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create serviceaccount --namespace kube-system tiller
-$ kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后安装 helm 服务端 &lt;code&gt;tiller&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm init
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;为应用程序设置 &lt;code&gt;serviceAccount&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl patch deploy --namespace kube-system tiller-deploy -p &#39;{&amp;quot;spec&amp;quot;:{&amp;quot;template&amp;quot;:{&amp;quot;spec&amp;quot;:{&amp;quot;serviceAccount&amp;quot;:&amp;quot;tiller&amp;quot;}}}}&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;检查是否安装成功：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n kube-system get pods|grep tiller
-
-tiller-deploy-7bf964fff8-sklts                1/1       Running   0          7h
-
-$ helm version
-
-Client: &amp;amp;version.Version{SemVer:&amp;quot;v2.8.2&amp;quot;, GitCommit:&amp;quot;a80231648a1473929271764b920a8e346f6de844&amp;quot;, GitTreeState:&amp;quot;clean&amp;quot;}
-Server: &amp;amp;version.Version{SemVer:&amp;quot;v2.8.2&amp;quot;, GitCommit:&amp;quot;a80231648a1473929271764b920a8e346f6de844&amp;quot;, GitTreeState:&amp;quot;clean&amp;quot;}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;4-部署-etcd&#34;&gt;4. 部署 etcd&lt;/h4&gt;
-
-&lt;p&gt;下载 &lt;code&gt;helm charts&lt;/code&gt; 仓库&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/kubernetes/charts.git
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;部署 &lt;code&gt;etcd-operator&lt;/code&gt;（etcd-operator 会通过 kubernetes 的 &lt;code&gt;CustomResourceDefinition&lt;/code&gt; 自动创建 &lt;code&gt;etcd cluster&lt;/code&gt;）&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd charts
-
-$ helm install --name etcd-operator stable/etcd-operator --set rbac.install=true,rbac.apiVersion=v1,customResources.createEtcdClusterCRD=true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;检查是否部署成功&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods
-
-NAME                                                              READY     STATUS    RESTARTS   AGE
-etcd-cluster-6skfqj9mwp                                           1/1       Running   0          7m
-etcd-cluster-6w8ntzvkwm                                           1/1       Running   0          8m
-etcd-cluster-mclzhqrldf                                           1/1       Running   0          7m
-etcd-operator-etcd-operator-etcd-backup-operator-5df985959bvvkw   1/1       Running   0          9m
-etcd-operator-etcd-operator-etcd-operator-58d98b95c-x44bz         1/1       Running   0          9m
-etcd-operator-etcd-operator-etcd-restore-operator-8688c7684nmdh   1/1       Running   0          9m
-
-$ kubectl get crd
-
-NAME                                    AGE
-etcdbackups.etcd.database.coreos.com    1d
-etcdclusters.etcd.database.coreos.com   1d
-etcdrestores.etcd.database.coreos.com   1d
-
-$ kubectl get crd etcdclusters.etcd.database.coreos.com -o yaml
-
-apiVersion: apiextensions.k8s.io/v1beta1
-kind: CustomResourceDefinition
-metadata:
-...
-...
-spec:
-  group: etcd.database.coreos.com
-  names:
-    kind: EtcdCluster
-    listKind: EtcdClusterList
-    plural: etcdclusters
-    shortNames:
-    - etcd
-    singular: etcdcluster
-  scope: Namespaced
-  version: v1beta2
-...
-...
-
-$ kubectl get EtcdCluster
-
-NAME           AGE
-etcd-cluster   11m
-
-$ kubectl get svc
-
-NAME                    TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-etcd-cluster            ClusterIP   None             &amp;lt;none&amp;gt;        2379/TCP,2380/TCP   17m
-etcd-cluster-client     ClusterIP   10.254.140.7     &amp;lt;none&amp;gt;        2379/TCP            17m
-etcd-restore-operator   ClusterIP   10.254.177.113   &amp;lt;none&amp;gt;        19999/TCP           18m
-kubernetes              ClusterIP   10.254.0.1       &amp;lt;none&amp;gt;        443/TCP             16d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;部署成功后，可以在 host 集群内通过 &lt;a href=&#34;http://etcd-cluster-client.default:2379&#34; target=&#34;_blank&#34;&gt;http://etcd-cluster-client.default:2379&lt;/a&gt; 端点访问 etcd。&lt;/p&gt;
-
-&lt;h4 id=&#34;5-部署-coredns&#34;&gt;5. 部署 CoreDNS&lt;/h4&gt;
-
-&lt;p&gt;首先需要定制 &lt;code&gt;CoreDNS chart&lt;/code&gt; 模板的默认配置，它会覆盖 &lt;code&gt;CoreDNS chart&lt;/code&gt; 的默认配置参数。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat Value.yaml
-
-isClusterService: false
-serviceType: &amp;quot;NodePort&amp;quot;
-plugins:
-  kubernetes:
-    enabled: false
-  etcd:
-    enabled: true
-    zones:
-    - &amp;quot;example.com.&amp;quot;
-    endpoint: &amp;quot;http://etcd-cluster-client.default:2379&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;参数说明：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;isClusterService&lt;/code&gt;: 指定 CoreDNS 是否以集群服务的形式部署（默认为是）。 需要将其设置为 “false”，以使 CoreDNS 以 Kubernetes 应用服务的形式部署，否则会与集群的 dns 服务 kubedns 冲突。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;serviceType&lt;/code&gt;: 指定为 CoreDNS 创建的 Kubernetes 服务类型。 选择 “NodePort”，以使得 CoreDNS 服务能够从 Kubernetes 集群外部访问。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;plugins.kubernetes&lt;/code&gt;: 默认是启用的，通过将 &lt;code&gt;plugins.kubernetes.enabled&lt;/code&gt; 设置为 “false” 来禁用 plugins.kubernetes。&lt;/li&gt;
-&lt;li&gt;通过将 plugins.etcd.enabled 设置为 “true” 来启用 plugins.etcd。&lt;/li&gt;
-&lt;li&gt;通过设置 &lt;code&gt;plugins.etcd.zones&lt;/code&gt; 来配置 CoreDNS 被授权的 DNS 区域（联邦区域）。&lt;/li&gt;
-&lt;li&gt;通过设置 &lt;code&gt;plugins.etcd.endpoint&lt;/code&gt; 来设置先前部署的 etcd 的端点。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;现在运行以下命令来部署 CoreDNS：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm install --name coredns -f Values.yaml stable/coredns
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;验证部署：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods -l app=coredns-coredns
-
-NAME                               READY     STATUS    RESTARTS   AGE
-coredns-coredns-57b54ddb97-xffnc   1/1       Running   0          1d
-
-$ kubectl get svc -l app=coredns-coredns
-
-NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                                    AGE
-coredns-coredns   NodePort   10.254.198.211   &amp;lt;none&amp;gt;        53:27165/UDP,53:27165/TCP,9153:26492/TCP   1d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;6-使用-coredns-作为-dns-提供商来部署-federation&#34;&gt;6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation&lt;/h4&gt;
-
-&lt;p&gt;可以使用 &lt;code&gt;kubefed init&lt;/code&gt; 来部署联邦控制平面。 可以通过指定两个附加参数来选择 CoreDNS 作为 DNS 提供商。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;--dns-provider=coredns
---dns-provider-config=coredns-provider.conf
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;coredns-provider.conf 内容如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;[Global]
-etcd-endpoints = http://etcd-cluster-client.default:2379
-zones = example.com.
-coredns-endpoints = &amp;lt;coredns-server-ip&amp;gt;:&amp;lt;port&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;etcd-endpoints&lt;/code&gt; 是访问 etcd 的端点。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;zones&lt;/code&gt; 是 CoreDNS 被授权的联邦区域，其值与 &lt;code&gt;kubefed init&lt;/code&gt; 的 –-dns-zone-name 参数相同。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;coredns-endpoints&lt;/code&gt; 是访问 CoreDNS 服务器的端点。 这是一个 1.7 版本开始引入的可选参数。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;CoreDNS 配置中的 &lt;code&gt;plugins.etcd.zones&lt;/code&gt; 与 kubefed init 的 –-dns-zone-name 参数应匹配。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;给所有 node 打上 &lt;code&gt;region&lt;/code&gt; 和 &lt;code&gt;zone&lt;/code&gt; 的标签：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl label nodes 192.168.123.248 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
-
-$ kubectl label nodes 192.168.123.249 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
-
-$ kubectl label nodes 192.168.123.250 failure-domain.beta.kubernetes.io/zone=shanghai failure-domain.beta.kubernetes.io/region=yangpu
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过本条命令初始化 federation 控制平面，参数如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubefed init federation \ # 联邦的名字
-  --host-cluster-context=kubernetes \ # 主集群的context名字
-  --dns-provider=coredns \ # DNS服务提供商
-  --dns-zone-name=&amp;quot;example.com.&amp;quot; \ # 前面注册好的域名，必须以.结束
-  --dns-provider-config=&amp;quot;coredns-provider.conf&amp;quot; \ # coredns 配置文件
-  --api-server-service-type=&amp;quot;NodePort&amp;quot; \
-  --api-server-advertise-address=&amp;quot;192.168.123.250&amp;quot;
-
-  Creating a namespace federation-system for federation system components... done
-  Creating federation control plane service..... done
-  Creating federation control plane objects (credentials, persistent volume claim)... done
-  Creating federation component deployments... done
-  Updating kubeconfig... done
-  Waiting for federation control plane to come up..................................................................................................................................................... done
-  Federation API server is running at: 10.110.151.216
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;观察以上输出信息，该命令做了以下几件事情：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;创建一个 namespace &lt;code&gt;federation-system&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get ns
-
-NAME                STATUS    AGE
-default             Active    8d
-federation-system   Active    8s
-kube-public         Active    8d
-kube-system         Active    8d
-my-namespace        Active    7d
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;创建两个服务 &lt;code&gt;federation-apiserver&lt;/code&gt; 和 &lt;code&gt;federation-controller-manager&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n federation-system get pods
-
-NAME                                             READY     STATUS         RESTARTS   AGE
-federation-apiserver-909415585-wktmw             1/1       Running   0          2s
-federation-controller-manager-4247980660-c8ls5   1/1       Running   1          3s
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;创建一个 ServiceAccount &lt;code&gt;federation-controller-manager&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n federation-system get sa
-
-NAME                            SECRETS   AGE
-default                         1         31m
-federation-controller-manager   1         31m
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;创建一个 Role &lt;code&gt;federation-system:federation-controller-manager&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n federation-system get role
-
-NAME                                              AGE
-federation-system:federation-controller-manager   38m
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;创建一个 RoleBinding &lt;code&gt;federation-system:federation-controller-manager&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n federation-system get rolebinding
-
-NAME                                              AGE
-federation-system:federation-controller-manager   39m
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;创建一个 context &lt;code&gt;federation&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;    $ kubectl config get-contexts
-
-    CURRENT   NAME         CLUSTER      AUTHINFO     NAMESPACE
-              federation   federation   federation
-    *         kubernetes   kubernetes   admin
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;默认情况下，&lt;code&gt;kubefed init&lt;/code&gt; 通过动态创建 PV 的方式为 etcd 创建持久化存储。如果 kubernetes 集群不支持动态创建 PV，则可以预先创建 PV，注意 PV 要匹配 `kubefed` 的 PVC。或者使用 &lt;code&gt;hostpath&lt;/code&gt;，同时指定调度节点。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h4 id=&#34;7-添加集群至-federation&#34;&gt;7. 添加集群至 federation&lt;/h4&gt;
-
-&lt;p&gt;目前为止您已经成功的初始化好了 &lt;code&gt;Federation&lt;/code&gt; 的控制平面。接下来需要将各个子集群加入到 Federation 集群中。&lt;/p&gt;
-
-&lt;p&gt;添加集群 &lt;code&gt;kubernetes&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubefed join kubernetes \ #加入联邦的集群命名名字
-  --context=federation \ #联邦的context
-  --cluster-context=kubernetes \ #要添加集群的context
-  --host-cluster-context=kubernetes #主集群的context
-
-$ kubectl --context=federation get cluster
-
-NAME          STATUS    AGE
-kubernetes    Ready     6d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过我的观察，以上过程在 &lt;code&gt;加入 federation 的 kubernetes 集群中&lt;/code&gt; 做了以下几件事情：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;在 namespace &lt;code&gt;federation-system&lt;/code&gt; 中创建一个 ServiceAccount &lt;code&gt;kubernetes-kubernetes&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n federation-system get sa
-
-NAME                            SECRETS   AGE
-default                         1         45m
-federation-controller-manager   1         45m
-kubernetes-kubernetes           1         8m
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;创建一个 ClusterRole &lt;code&gt;federation-controller-manager:federation-kubernetes-kubernetes&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get clusterrole|egrep &amp;quot;NAME|federation&amp;quot;
-
-NAME                                                                   AGE
-federation-controller-manager:federation-kubernetes-kubernetes         10m
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;创建一个 ClusterRoleBinding &lt;code&gt;federation-controller-manager:federation-kubernetes-kubernetes&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get clusterrolebinding|egrep &amp;quot;NAME|federation&amp;quot;
-
-NAME                                                             AGE
-federation-controller-manager:federation-kubernetes-kubernetes   11m
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;整个过程是否还进行了其他操作，暂时没有发现，有待继续研究。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;介绍下集群查询，移除集群，删除联邦等命令：&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;查询注册到 Federation 的 kubernetes 集群列表&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl --context=federation get clusters
-
-NAME          STATUS    AGE
-kubernetes    Ready     8m
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;移除 &lt;code&gt;kubernetes&lt;/code&gt; 集群&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubefed unjoin kubernetes --host-cluster-context=kubernetes --context=federation
-
-Successfully removed cluster &amp;quot;kubernetes&amp;quot; from federation
-
-$ kubectl --context=federation get clusters
-
-No resources found.
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;集群联邦控制平面的删除功能还在开发中，目前可以通过删除 namespace &lt;code&gt;federation-system&lt;/code&gt; 的方法来清理（注意pv不会删除）。命令在 host-cluster-context 上执行。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl delete ns federation-system
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-federation-支持的服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. Federation 支持的服务&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;集群联邦支持以下联邦资源，这些资源会自动在所有注册的 &lt;code&gt;kubernetes&lt;/code&gt; 集群中创建。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;Federated ConfigMap&lt;/li&gt;
-&lt;li&gt;Federated Service&lt;/li&gt;
-&lt;li&gt;Federated DaemonSet&lt;/li&gt;
-&lt;li&gt;Federated Deployment&lt;/li&gt;
-&lt;li&gt;Federated Ingress&lt;/li&gt;
-&lt;li&gt;Federated Namespaces&lt;/li&gt;
-&lt;li&gt;Federated ReplicaSets&lt;/li&gt;
-&lt;li&gt;Federated Secrets&lt;/li&gt;
-&lt;li&gt;Federated Events（仅存在federation控制平面）&lt;/li&gt;
-&lt;li&gt;Federated Jobs（v1.8+）&lt;/li&gt;
-&lt;li&gt;Federated Horizontal Pod Autoscaling (HPA，v1.8+)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;示例：&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;创建 &lt;code&gt;deployment&lt;/code&gt;&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat nginx-deployment.yaml
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: nginx-deployment
-spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: nginx
-    spec:
-      containers:
-      - name: nginx
-        image: nginx:alpine
-        ports:
-        - containerPort: 80
-
-$ kubectl --context=federation create ns default
-$ kubectl --context=federation create -f nginx-deployment.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以通过 &lt;code&gt;kubectl scale deploy nginx --replicas=3 --context=federation&lt;/code&gt; 来扩展 nginx 副本，然后观察 nginx 应用在各个子集群中的分布情况。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl --context=kubernetes get deploy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;通过 Federated Service 来实现跨集群服务发现&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat nginx-svc.yaml
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx
-  labels:
-    app: nginx
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-    targetPort: 80
-    protocol: TCP
-    name: http
-  selector:
-    app: nginx
-
-# 这会在所有注册到联邦的 kubernetes 集群中创建服务
-$ kubectl --context=federation create -f nginx-svc.yaml
-
-# 查看服务状态
-$ kubectl --context=federation describe services nginx
-
-Name:                     nginx
-Namespace:                default
-Labels:                   app=nginx
-Annotations:              federation.kubernetes.io/service-ingresses={&amp;quot;items&amp;quot;:[{&amp;quot;cluster&amp;quot;:&amp;quot;kubernetes&amp;quot;,&amp;quot;items&amp;quot;:[{&amp;quot;ip&amp;quot;:&amp;quot;192.168.1.58&amp;quot;}]}]}
-Selector:                 app=nginx
-Type:                     LoadBalancer
-IP:
-LoadBalancer Ingress:     192.168.1.58
-Port:                     http  80/TCP
-TargetPort:               80/TCP
-Endpoints:                &amp;lt;none&amp;gt;
-Session Affinity:         None
-External Traffic Policy:  Cluster
-Events:                   &amp;lt;none&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以通过 DNS 来访问联邦服务，访问格式包括以下几种：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;service name&amp;gt;.&amp;lt;namespace&amp;gt;.&amp;lt;federation&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;service name&amp;gt;.&amp;lt;namespace&amp;gt;.&amp;lt;federation&amp;gt;.svc.&amp;lt;domain&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;service name&amp;gt;.&amp;lt;namespace&amp;gt;.&amp;lt;federation&amp;gt;.svc.&amp;lt;region&amp;gt;.&amp;lt;domain&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;&amp;lt;service name&amp;gt;.&amp;lt;namespace&amp;gt;.&amp;lt;federation&amp;gt;.svc.&amp;lt;zone&amp;gt;.&amp;lt;region&amp;gt;.&amp;lt;domain&amp;gt;&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;本例中可以通过以下几个域名来访问：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;nginx.default.federation&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;nginx.default.federation.svc.example.com&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;nginx.default.federation.svc.shanghai.example.com&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;nginx.default.federation.svc.shanghai.yangpu.example.com&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;DNS 在 etcd 下的存储路径为：&lt;code&gt;/skydns&lt;/code&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/
-
-/skydns/com/example/kubernetes
-/skydns/com/example/svc
-/skydns/com/example/yangpu
-
-$ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/yangpu/
-
-/skydns/com/example/yangpu/shanghai
-/skydns/com/example/yangpu/svc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-参考文档-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 参考文档&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/concepts/cluster-administration/federation/&#34; target=&#34;_blank&#34;&gt;Kubernetes federation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/federation/set-up-coredns-provider-federation/&#34; target=&#34;_blank&#34;&gt;Set up CoreDNS as DNS provider for Cluster Federation&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2 {
     margin-bottom:2em;
     margin-right: 5px;
     padding: 8px 15px;
