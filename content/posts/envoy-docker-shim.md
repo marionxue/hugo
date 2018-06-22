@@ -85,7 +85,7 @@ $ cp scripts/resync /usr/local/bin
 
 修改 examples 目录下的 `envoy-docker-server.service` 文件：
 
-```
+```ini
 [Unit]
 Description=Envoy Docker Shim
 PartOf=docker.service

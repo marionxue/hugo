@@ -654,7 +654,7 @@ $ cp scripts/resync /usr/local/bin
 
 &lt;p&gt;修改 examples 目录下的 &lt;code&gt;envoy-docker-server.service&lt;/code&gt; 文件：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;[Unit]
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;[Unit]
 Description=Envoy Docker Shim
 PartOf=docker.service
 
