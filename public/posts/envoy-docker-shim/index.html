@@ -427,6 +427,8 @@ autocomplete('#aa-search-input',
 $ systemctl restart docker
 </code></pre>
 
+<p><br /></p>
+
 <h3 id="下载二进制文件和脚本">下载二进制文件和脚本</h3>
 
 <p>安装 <code>envoy-docker-server</code>：</p>
@@ -449,6 +451,8 @@ $ systemctl restart docker
 <pre><code class="language-bash">$ cd envoy-docker-shim
 $ cp scripts/resync /usr/local/bin
 </code></pre>
+
+<p><br /></p>
 
 <h3 id="配置-envoy-docker-server-和-resync">配置 envoy-docker-server 和 resync</h3>
 
@@ -477,6 +481,8 @@ WantedBy=multi-user.target
 <pre><code class="language-bash">$ cp examples/envoy-docker-server.service /etc/systemd/system/
 $ systemctl start envoy-docker-server
 </code></pre>
+
+<p><br /></p>
 
 <h3 id="启动-envoy-实例">启动 Envoy 实例</h3>
 

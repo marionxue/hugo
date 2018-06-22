@@ -50,6 +50,8 @@ $ systemctl daemon-reload
 $ systemctl restart docker
 ```
 
+<br />
+
 ### 下载二进制文件和脚本
 
 安装 `envoy-docker-server`：
@@ -76,6 +78,8 @@ $ git clone https://github.com/Nitro/envoy-docker-shim
 $ cd envoy-docker-shim
 $ cp scripts/resync /usr/local/bin
 ```
+
+<br />
 
 ### 配置 envoy-docker-server 和 resync
 
@@ -106,6 +110,8 @@ WantedBy=multi-user.target
 $ cp examples/envoy-docker-server.service /etc/systemd/system/
 $ systemctl start envoy-docker-server
 ```
+
+<br />
 
 ### 启动 Envoy 实例
 

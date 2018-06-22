@@ -623,6 +623,8 @@ net.ipv4.tcp_synack_retries = 5
 $ systemctl restart docker
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h3 id=&#34;下载二进制文件和脚本&#34;&gt;下载二进制文件和脚本&lt;/h3&gt;
 
 &lt;p&gt;安装 &lt;code&gt;envoy-docker-server&lt;/code&gt;：&lt;/p&gt;
@@ -645,6 +647,8 @@ $ systemctl restart docker
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd envoy-docker-shim
 $ cp scripts/resync /usr/local/bin
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;配置-envoy-docker-server-和-resync&#34;&gt;配置 envoy-docker-server 和 resync&lt;/h3&gt;
 
@@ -673,6 +677,8 @@ WantedBy=multi-user.target
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cp examples/envoy-docker-server.service /etc/systemd/system/
 $ systemctl start envoy-docker-server
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;启动-envoy-实例&#34;&gt;启动 Envoy 实例&lt;/h3&gt;
 
