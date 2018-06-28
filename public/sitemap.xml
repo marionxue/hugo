@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/run-envoy-on-your-laptop/</loc>
+    <lastmod>2018-06-28T08:54:18+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/envoy-docker-shim/</loc>
     <lastmod>2018-06-22T08:22:07+00:00</lastmod>
   </url>
@@ -175,6 +180,12 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/tags/envoy/</loc>
+    <lastmod>2018-06-28T08:54:18+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/tags/gfw/</loc>
     <lastmod>2018-01-23T08:26:58+00:00</lastmod>
     <priority>0</priority>
@@ -237,6 +248,12 @@
   <url>
     <loc>https://www.yangcs.net/categories/python/</loc>
     <lastmod>2017-07-27T18:38:59+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/categories/servicemesh/</loc>
+    <lastmod>2018-06-28T08:54:18+00:00</lastmod>
     <priority>0</priority>
   </url>
   

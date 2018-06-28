@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Kubernetes 中的容器运行时 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> 在你的笔记本上运行 Envoy - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Kubernetes 中的容器运行时" />
-  <meta name="twitter:title" content="Kubernetes 中的容器运行时" />
-  <meta name="description" content="容器运行时接口解析">
-  <meta property="og:description" content="容器运行时接口解析">
-  <meta name="twitter:description" content="容器运行时接口解析">
+  <meta property="og:title" content="在你的笔记本上运行 Envoy" />
+  <meta name="twitter:title" content="在你的笔记本上运行 Envoy" />
+  <meta name="description" content="Envoy 入门">
+  <meta property="og:description" content="Envoy 入门">
+  <meta name="twitter:description" content="Envoy 入门">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='http://o7z41ciog.bkt.clouddn.com/favicon.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/container-runtime/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.37" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/container-runtime/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -313,7 +313,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>Kubernetes 中的容器运行时</h1>
+                     <h1>在你的笔记本上运行 Envoy</h1>
                      
                      
                   
@@ -321,13 +321,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">容器运行时接口解析</span>
+                      <span class="post-subheading">Envoy 入门</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on April 3, 2018
+  Posted on June 28, 2018
   
   
 </span>
@@ -348,10 +348,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">Kubernetes 中的容器运行时</h1>
+                <h1 align="center">在你的笔记本上运行 Envoy</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">容器运行时接口解析</h2>
+                    <h2 align="center" class="posts-subheading">Envoy 入门</h2>
                   
                 
                 
@@ -372,14 +372,12 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Tue Apr 3, 2018</h4>
+        <h4 id="date"> Thu Jun 28, 2018</h4>
     </section>
-    <h5 id="wc">1400 Words|Read in about 3 Min</h5>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
-        
-        <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
+        <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
     </h5>
 </div>
 
@@ -387,101 +385,378 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>容器运行时（Container Runtime）是 Kubernetes 最重要的组件之一，负责真正管理镜像和容器的生命周期。Kubelet 通过 <code>Container Runtime Interface (CRI)</code> 与容器运行时交互，以管理镜像和容器。</p>
-
-<p>容器运行时接口(<code>Container Runtime Interface (CRI)</code>) 是 Kubelet 1.5 和 kubelet 1.6 中主要负责的一块项目，它重新定义了 Kubelet Container Runtime API，将原来完全面向 Pod 级别的 API 拆分成面向 <code>Sandbox</code> 和 <code>Container</code> 的 API，并分离镜像管理和容器引擎到不同的服务。</p>
-
-<p><img src="https://kubernetes.feisky.xyz/zh/plugins/images/cri.png" alt="" /></p>
-
-<p>CRI 最早从从 1.4 版就开始设计讨论和开发，在 v1.5 中发布第一个测试版。在 v1.6 时已经有了很多外部容器运行时，如 frakti、cri-o 的 alpha 支持。v1.7 版本新增了 <code>cri-containerd</code> 的 alpha 支持，而 <code>frakti</code> 和 <code>cri-o</code> 则升级到 beta 支持。</p>
-
-<h2 id="p-id-h2-1-cri-接口-p"><p id="h2">1. CRI 接口</p></h2>
+<h2 id="p-id-h2-1-前言-p"><p id="h2">1. 前言</p></h2>
 
 <hr />
 
-<p>CRI 基于 <code>gRPC</code> 定义了 <code>RuntimeService</code> 和 <code>ImageService</code>，分别用于容器运行时和镜像的管理。其定义在</p>
+<p>过去一年中，Kubernetes 已经赢得了容器编排大战，如果说 2017 年是 Kubernetes 的元年，那么 2018 将会是 <code>Service Mesh</code>（服务网格） 的元年，在未来两年中，Service Mesh 将迎来爆发式增长，成为下一代的微服务架构。</p>
+
+<p><a href="https://istio.io/" target="_blank">Istio</a> 作为 Service Mesh 新秀，初出茅庐便声势浩荡，前有 Google，IBM 和 Lyft 倾情奉献，后有业界大佬俯首膜拜。作为一名<strong>斜杠青年</strong>，如果再不停下脚步认真审视一下这位后起之秀，未免显得太不符合潮流了。</p>
+
+<p>Istio 这个大家庭的家庭成员很多，为了能够顺利打入 Istio 内部，我们先从它的核心家庭成员 <code>Envoy</code> 入手。</p>
+
+<p>从今天起，我将带领大家从零开始学习和使用 Envoy，着重于经验分享和总结，同时也会有相关的概念解析，希望能够帮助大家少走弯路，能不采坑尽量不采坑。</p>
+
+<p>本篇是 Envoy 系列教程的第一篇，介绍如何在笔记本电脑上运行 Envoy、测试代理配置并观察结果，让我们开始吧！</p>
+
+<h2 id="p-id-h2-2-前提-p"><p id="h2">2. 前提</p></h2>
+
+<hr />
+
+<p>你可以选择从源代码构建 Envoy，但最简单的办法是通过 <code>Docker</code> 容器来运行。所以在开始之前，你需要安装并配置以下工具：</p>
 
 <ul>
-<li><strong>v1.10+:</strong> <a href="https://github.com/kubernetes/kubernetes/blob/release-1.10/pkg/kubelet/apis/cri/runtime/v1alpha2" target="_blank">pkg/kubelet/apis/cri/v1alpha2/runtime</a></li>
-<li><strong>v1.7~v1.9:</strong> <a href="https://github.com/kubernetes/kubernetes/tree/release-1.9/pkg/kubelet/apis/cri/v1alpha1/runtime" target="_blank">pkg/kubelet/apis/cri/v1alpha1/runtime</a></li>
-<li><strong>v1.6:</strong> <a href="https://github.com/kubernetes/kubernetes/tree/release-1.6/pkg/kubelet/api/v1alpha1/runtime" target="_blank">pkg/kubelet/api/v1alpha1/runtime</a></li>
+<li><a href="https://docs.docker.com/install/" target="_blank">Docker</a></li>
+<li><a href="https://docs.docker.com/compose/install/" target="_blank">Docker Compose</a></li>
+<li><a href="https://help.github.com/articles/set-up-git/" target="_blank">Git</a></li>
+<li><a href="https://curl.haxx.se/" target="_blank">curl</a></li>
 </ul>
 
-<p>Kubelet 作为 CRI 的客户端，而 Runtime 维护者则需要实现 CRI 服务端，并在启动 kubelet 时将其传入：</p>
+<p>我们使用 Docker 和 Docker Compose 来编排和运行 Envoy 的示例服务，使用 curl 来访问 Envoy 示例服务。</p>
 
-<pre><code class="language-bash">$ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock ..
+<h2 id="p-id-h2-3-部署-envoy-p"><p id="h2">3. 部署 Envoy</p></h2>
+
+<hr />
+
+<p><a href="https://github.com/envoyproxy/envoy" target="_blank">Envoy 官方</a>提供了一组 Envoy 的用例，我们将要使用的用例是前端代理，它会将流量发送到两个服务后端。首先克隆 Envoy 的代码仓库并转到 <code>examples/front-proxy</code> 目录：</p>
+
+<pre><code class="language-bash">$ git clone https://github.com/envoyproxy/envoy
+$ cd envoy/examples/front-proxy
 </code></pre>
 
-<h2 id="p-id-h2-2-如何开发新的-container-runtime-p"><p id="h2">2. 如何开发新的 Container Runtime</p></h2>
+<p><span id="inline-blue">后端服务</span> 是一个非常简单的 <code>Flask</code> 应用程序，在 <code>service.py</code> 中定义。其中 Envoy 作为一个边车（Sidecar）伴随每个服务一起运行在同一个容器中，所有的规则配置都通过 YAML 文件 <code>service-envoy.yaml</code> 来完成。最后 <code>Dockerfile-service</code> 创建一个在启动时同时运行服务和 Envoy 的容器。</p>
+
+<p><span id="inline-blue">前端代理</span> 比后端服务更简单，它使用配置文件 <code>front-envoy.yaml</code> 来运行 Envoy，使用 <code>Dockerfile-frontenvoy</code> 来构建容器镜像。</p>
+
+<p><code>docker-compose.yaml</code> 文件描述了如何构建、打包和运行前端代理与服务。</p>
+
+<p>整体架构如下：</p>
+
+<p><img src="https://jimmysong.io/kubernetes-handbook/images/envoyproxy-docker-compose.png" alt="" /></p>
+
+<p>使用 docker-compose 启动容器：</p>
+
+<pre><code class="language-bash">$ docker-compose up --build -d
+$ docker-compose ps
+
+          Name                        Command               State                      Ports
+----------------------------------------------------------------------------------------------------------------
+frontproxy_front-envoy_1   /bin/sh -c /usr/local/bin/ ...   Up      0.0.0.0:8000-&gt;80/tcp, 0.0.0.0:8001-&gt;8001/tcp
+frontproxy_service1_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
+frontproxy_service2_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
+</code></pre>
+
+<p>该命令将会启动一个前端代理和两个服务实例：service1 和 service2。</p>
+
+<h2 id="p-id-h2-3-配置-envoy-p"><p id="h2">3. 配置 Envoy</p></h2>
 
 <hr />
 
-<p>开发新的 Container Runtime 只需要实现 <code>CRI gRPC Server</code>，包括 <code>RuntimeService</code> 和 <code>ImageService</code>。该 gRPC Server 需要监听在本地的 <code>unix socket</code>（Linux 支持 unix socket 格式，Windows 支持 tcp 格式）。</p>
+<p>为了达到演示的目的，本文采用的是 Envoy 的静态配置。后续教程将会告诉你们如何使用动态配置来发挥 Envoy 的强大功能。</p>
 
-<p>具体的实现方法可以参考下面已经支持的 Container Runtime 列表。</p>
+<p>为了了解 Envoy 是如何配置的，先来看看 <code>docker-compose.yaml</code> 文件的前端代理部分的配置：</p>
 
-<h2 id="p-id-h2-3-目前支持的-container-runtime-p"><p id="h2">3. 目前支持的 Container Runtime</p></h2>
+<pre><code class="language-yaml">  front-envoy:
+    build:
+      context: ../
+      dockerfile: front-proxy/Dockerfile-frontenvoy
+    volumes:
+      - ./front-envoy.yaml:/etc/front-envoy.yaml
+    networks:
+      - envoymesh
+    expose:
+      - &quot;80&quot;
+      - &quot;8001&quot;
+    ports:
+      - &quot;8000:80&quot;
+      - &quot;8001:8001&quot;
+</code></pre>
+
+<p>从上到下做了这么几件事：</p>
+
+<ol>
+<li>使用位于当前目录中的 <code>Dockerfile-frontenvoy</code> 构建镜像。</li>
+<li>将 <code>front-envoy.yaml</code> 文件作为 <code>/etc/front-envoy.yaml</code> 挂载到容器中的 <code>/etc</code> 目录。</li>
+<li>为这个容器创建并使用名为 <code>envoymesh</code> 的 Docker 网络。</li>
+<li>暴露 80 端口（用于一般通用流量）和 8001 端口（用于管理服务）。</li>
+<li>将主机的 8000 端口和 8001 端口分别映射到容器的 80 端口和 8001 端口。</li>
+</ol>
+
+<p>前面已经了解到了前端代理使用 front-envoy.yaml 来配置 Envoy，下面来深入了解一下。该配置文件有两大配置项：<code>static_resources</code> 和 <code>admin</code>：</p>
+
+<pre><code class="language-yaml">static_resources:
+admin:
+</code></pre>
+
+<p>admin 配置项的内容非常简单：</p>
+
+<pre><code class="language-yaml">admin:
+  access_log_path: &quot;/dev/null&quot;
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001
+</code></pre>
+
+<p><code>access_log_path</code> 字段的值设置为 <code>/dev/null</code>，意味着 admin 服务的访问日志将会被丢弃，在测试或生产环境中，你最好将这个值修改为不同的目录。socket_address 字段告诉 Envoy 创建一个监听在 8001 端口的 admin 服务。</p>
+
+<p><code>static_resources</code> 配置项定义了一组静态配置的集群（Cluster）和侦听器（Listener）。</p>
+
+<p><strong>集群</strong>是 Envoy 连接到的一组逻辑上相似的上游主机。Envoy 通过服务发现发现集群中的成员。Envoy 可以通过主动运行状况检查来确定集群成员的健康状况。Envoy 如何将请求路由到集群成员由负载均衡策略确定。</p>
+
+<p><strong>侦听器</strong>是服务(程序)监听者，就是真正干活的。 它是可以由下游客户端连接的命名网络位置（例如，端口、unix域套接字等）。</p>
+
+<h3 id="listener-配置">Listener 配置</h3>
+
+<p>该示例中的前端代理有一个监听在 80 端口的侦听器，并配置了一个<strong>监听器过滤器链</strong>（filter_chains），用来管理 HTTP 流量：</p>
+
+<pre><code class="language-yaml">  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+</code></pre>
+
+<p>在 HTTP 连接管理过滤器中，每一个虚拟主机都有单独的配置，并且都配置为接收所有域的流量：</p>
+
+<pre><code class="language-yaml">            virtual_hosts:
+            - name: backend
+              domains:
+              - &quot;*&quot;
+              routes:
+              - match:
+                  prefix: &quot;/service/1&quot;
+                route:
+                  cluster: service1
+              - match:
+                  prefix: &quot;/service/2&quot; 
+                route:
+                  cluster: service2
+</code></pre>
+
+<p>HTTP 路由规则将 <code>/service/1</code> 和 <code>/service/1</code> 的流量转发到各自的 Cluster。</p>
+
+<h3 id="cluster-配置">Cluster 配置</h3>
+
+<p>接下来看一下静态 Cluster 的定义：</p>
+
+<pre><code class="language-yaml">  clusters:
+  - name: service1
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service1
+        port_value: 80
+  - name: service2
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service2
+        port_value: 80
+</code></pre>
+
+<p>在 Cluster 的配置中，你可以自定义超时、断路器和服务发现等。Cluster 由 Endpoint（端点）组成，其中 Endpoint 是一组可以为 Cluster 的请求提供服务的网络位置。本例中的 Endpoint 是通过 DNS 域名的方式定义的，Envoy 可以从域名中读取 Endpoint。Endpoint 也可以直接定义为 socket 地址，或者通过 <code>EDS</code>（Endpoint Discovery Service）动态读取。</p>
+
+<h3 id="修改配置">修改配置</h3>
+
+<p>你可以通过修改配置文件重新构建镜像来进行测试。<code>Listener filter</code>（监听器过滤器）的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。例如，如果想要将访问日志添加到 HTTP 过滤器中，可以在 filter 的配置中添加 <code>access_log</code> 配置项：</p>
+
+<pre><code class="language-yaml">    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          access_log:
+            - name: envoy.file_access_log
+              config:
+                path: &quot;/var/log/access.log&quot;
+          route_config:
+</code></pre>
+
+<p>然后停止服务，重新构建并运行容器：</p>
+
+<pre><code class="language-bash">$ docker-compose down
+$ docker-compose up --build -d
+</code></pre>
+
+<p>通过 <code>curl</code> 访问服务，然后通过 <code>docker-compose exec front-envoy /bin/bash</code> 命令进入容器的终端，你会看到 <code>/var/log/access.log</code> 文件记录着你的请求结果。</p>
+
+<h3 id="admin-server">Admin Server</h3>
+
+<p>Envoy 的一大特色是内置的 Admin 服务，如果你在浏览器中访问 <code>http://localhost:8001</code> ，可以看到 Envoy admin 提供以下管理 API 端点。</p>
+
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>/</td>
+<td>Admin 主页</td>
+</tr>
+
+<tr>
+<td>/certs</td>
+<td>打印机器上的 certs</td>
+</tr>
+
+<tr>
+<td>/clusters</td>
+<td>upstream cluster 状态</td>
+</tr>
+
+<tr>
+<td>/config_dump</td>
+<td>输出当前的 Envoy 配置</td>
+</tr>
+
+<tr>
+<td>/cpuprofiler</td>
+<td>开启/关闭 CPU profiler</td>
+</tr>
+
+<tr>
+<td>/healthcheck/fail</td>
+<td>导致服务失败健康检查</td>
+</tr>
+
+<tr>
+<td>/healthcheck/ok</td>
+<td>导致服务通过健康检查</td>
+</tr>
+
+<tr>
+<td>/help</td>
+<td>打印管理命令的帮助信息</td>
+</tr>
+
+<tr>
+<td>/hot_restart_version</td>
+<td>打印热重启兼容版本</td>
+</tr>
+
+<tr>
+<td>/listeners</td>
+<td>打印 listener 地址</td>
+</tr>
+
+<tr>
+<td>/logging</td>
+<td>查询/更改日志级别</td>
+</tr>
+
+<tr>
+<td>/quitquitquit</td>
+<td>退出服务</td>
+</tr>
+
+<tr>
+<td>/reset_counters</td>
+<td>将计数器重置为 1</td>
+</tr>
+
+<tr>
+<td>/runtime</td>
+<td>打印运行时值</td>
+</tr>
+
+<tr>
+<td>/runtime_modify</td>
+<td>修改运行时值</td>
+</tr>
+
+<tr>
+<td>/server_info</td>
+<td>打印服务器版本/状态信息</td>
+</tr>
+
+<tr>
+<td>/stats</td>
+<td>打印服务器状态统计信息</td>
+</tr>
+
+<tr>
+<td>/stats/prometheus</td>
+<td>打印 prometheus 格式的服务器状态统计信息</td>
+</tr>
+</tbody>
+</table>
+
+<p>通过 API 管理端可以对 Envoy 进行动态配置，参考 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api" target="_blank">v2 API reference</a>。</p>
+
+<h2 id="p-id-h2-4-进一步探索-p"><p id="h2">4. 进一步探索</p></h2>
 
 <hr />
 
-<p>目前，有多家厂商都在基于 CRI 集成自己的容器引擎，其中包括:</p>
+<p>如果你有兴趣探索 Envoy 的更多其他功能，<a href="https://github.com/envoyproxy/envoy/tree/master/examples" target="_blank">Envoy 官方示例</a>还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 <a href="https://www.learnenvoy.io/articles/service-discovery.html" target="_blank">Integrating Service Discovery with Envoy</a> 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 <a href="https://www.learnenvoy.io/articles/getting-help.html" target="_blank">Getting Help</a> 页面以获取更多的帮助信息。</p>
+
+<h2 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h2>
+
+<hr />
 
 <ul>
-<li><p><strong>Docker:</strong> 核心代码依然保留在 kubelet 内部（<code>pkg/kubelet/dockershim</code>），依然是最稳定和特性支持最好的 Runtime</p></li>
-
-<li><p><strong><a href="https://github.com/kubernetes/frakti" target="_blank">HyperContainer</a>:</strong> 支持 Kubernetes v1.6+，提供基于 <code>hypervisor</code> 和 docker 的混合运行时，适用于运行非可信应用，如多租户和 <code>NFV</code> 等场景</p></li>
-
-<li><p><strong>Runc</strong> 有两个实现，cri-o 和 cri-containerd</p>
-
-<ul>
-<li><a href="https://github.com/kubernetes-incubator/cri-containerd" target="_blank">cri-containerd</a>: 支持 kubernetes v1.7+</li>
-<li><a href="https://github.com/kubernetes-incubator/cri-o" target="_blank">cri-o</a>: 支持 Kubernetes v1.6+，底层运行时支持 runc 和 intel clear container</li>
-</ul></li>
-
-<li><p><strong><a href="https://github.com/kubernetes-incubator/rktlet" target="_blank">Rkt</a>:</strong> 开发中</p></li>
-
-<li><p><strong><a href="https://github.com/Mirantis/virtlet" target="_blank">Mirantis</a>:</strong> 直接管理 <code>libvirt</code> 虚拟机，镜像须是 <code>qcow2</code> 格式</p></li>
-
-<li><p><strong><a href="https://github.com/apporbit/infranetes" target="_blank">Infranetes</a>:</strong> 直接管理 IaaS 平台虚拟机，如 GCE、AWS 等</p></li>
+<li><a href="https://jimmysong.io/posts/envoy-archiecture-and-terminology/" target="_blank">Envoy 的架构与基本术语</a></li>
+<li><a href="https://jimmysong.io/posts/envoy-as-front-proxy/" target="_blank">使用 Envoy 作为前端代理</a></li>
 </ul>
 
-<h3 id="cri-containerd">cri-containerd</h3>
-
-<p>以 containerd 为例，它将 <code>dockershim</code> 和 <code>docker daemon</code> 替换为 <code>cri-containerd</code> 服务。</p>
-
-<p><img src="https://kubernetes.feisky.xyz/zh/plugins/images/cri-containerd.png" alt="" /></p>
-
-<p>而 cri-containerd 则实现了 Kubelet CRI 接口，对 Kubelet 暴露 Image Service 和 Runtime Service。在内部，它通过 containerd 的 gRPC 接口管理容器和镜像，并通过 CNI 插件给 Pod 配置网络。
-<img src="https://kubernetes.feisky.xyz/zh/plugins/images/containerd.png" alt="" /></p>
-
-<h2 id="p-id-h2-4-cri-tools-p"><p id="h2">4. CRI Tools</p></h2>
-
-<hr />
-
-<p>为了方便开发、调试和验证新的 Container Runtime，社区还维护了一个 <a href="https://github.com/kubernetes-incubator/cri-tools" target="_blank">cri-tools</a> 工具，它提供两个组件</p>
-
-<ul>
-<li><code>crictl:</code> 类似于 docker 的命令行工具，不需要通过 Kubelet 就可以跟 Container Runtime 通信，可用来调试或排查问题</li>
-<li><code>critest:</code> CRI 的验证测试工具，用来验证新的 Container Runtime 是否实现了 CRI 需要的功能</li>
-</ul>
-
-<p>另外一个工具是 <a href="https://github.com/projectatomic/libpod" target="_blank">libpod</a>，它也提供了一个组件：<a href="https://github.com/projectatomic/libpod/blob/master/cmd/podman" target="_blank">podman</a>，功能和 <code>crictl</code> 类似。</p>
-
-<p>如果想构建 oci 格式的镜像，可以使用工具：<a href="https://github.com/projectatomic/buildah" target="_blank">buildah</a></p>
+<p><br /></p>
 
 <style>
 #h2{
-    margin-bottom:2em; 
-    margin-right: 5px; 
-    padding: 8px 15px; 
-    letter-spacing: 2px; 
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); 
-    background-color: rgb(63, 81, 181); 
-    color: rgb(255, 255, 255); 
-    border-left: 10px solid rgb(51, 51, 51); 
-    border-radius:5px; 
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px; 
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
     box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
 }
 #inline-yellow {
 display:inline;
@@ -676,32 +951,17 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/how-manage-image/" data-toggle="tooltip" data-placement="top" title="docker 在本地如何管理 image（镜像）?">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/envoy-docker-shim/" data-toggle="tooltip" data-placement="top" title="使用 envoy-docker-shim 替代 docker-proxy">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/cri-o/" data-toggle="tooltip" data-placement="top" title="CRI-O 简介">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
             
             <div>
                  
-                <h2>See Also</h2>
-                <ul>
-                    
-                    <li><a href="/posts/k8s-network-expand/">Kubernetes 网络扩展</a></li>
-                    
-                    <li><a href="/posts/calico-rr/">calico Router reflection(RR) 模式介绍及部署</a></li>
-                    
-                    <li><a href="/posts/how-manage-image/">docker 在本地如何管理 image（镜像）?</a></li>
-                    
-                    <li><a href="/posts/federation/">Kubernetes 使用集群联邦实现多集群管理</a></li>
-                    
-                    <li><a href="/posts/use-devicemapper/">Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</a></li>
-                    
-                </ul>
-                
             </div>
             
             
@@ -709,14 +969,12 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Tue Apr 3, 2018</h4>
+        <h4 id="date"> Thu Jun 28, 2018</h4>
     </section>
-    <h5 id="wc">1400 Words|Read in about 3 Min</h5>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a> &nbsp;
-        
-        <a href="https://www.yangcs.nettags/docker/">docker</a> &nbsp;
+        <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
     </h5>
 </div>
 

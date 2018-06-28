@@ -72,39 +72,45 @@ desc = "Using Big Data to make business decision"
 
 [[menu.main]]
     parent = "Categories"
+    name = "Service Mesh"
+    url = "categories/servicemesh"
+    weight = 2
+
+[[menu.main]]
+    parent = "Categories"
     name = "Docker"
     url = "categories/docker"
-    weight = 2
+    weight = 3
 
 [[menu.main]]
     parent = "Categories"
     name = "Python"
     url = "categories/python"
-    weight = 3
+    weight = 4
     
 [[menu.main]]
     parent = "Categories"
     name = " 负载均衡"
     url = "categories/loadbalance"
-    weight = 4
+    weight = 5
 
 [[menu.main]]
     parent = "Categories"
     name = "科学上网"
     url = "categories/gfw"
-    weight = 5
+    weight = 6
 
 [[menu.main]]
     parent = "Categories"
     name = "数学"
     url = "categories/math"
-    weight = 6
+    weight = 7
 
 [[menu.main]]
     parent = "Categories"
     name = "Tags"
     url = "tags"
-    weight = 7
+    weight = 8
 
 [[menu.main]]
     identifier = "Books"

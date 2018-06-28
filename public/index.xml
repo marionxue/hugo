@@ -571,6 +571,577 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>在你的笔记本上运行 Envoy</title>
+      <link>https://www.yangcs.net/posts/run-envoy-on-your-laptop/</link>
+      <pubDate>Thu, 28 Jun 2018 08:54:18 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/run-envoy-on-your-laptop/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-1-前言-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 前言&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;过去一年中，Kubernetes 已经赢得了容器编排大战，如果说 2017 年是 Kubernetes 的元年，那么 2018 将会是 &lt;code&gt;Service Mesh&lt;/code&gt;（服务网格） 的元年，在未来两年中，Service Mesh 将迎来爆发式增长，成为下一代的微服务架构。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://istio.io/&#34; target=&#34;_blank&#34;&gt;Istio&lt;/a&gt; 作为 Service Mesh 新秀，初出茅庐便声势浩荡，前有 Google，IBM 和 Lyft 倾情奉献，后有业界大佬俯首膜拜。作为一名&lt;strong&gt;斜杠青年&lt;/strong&gt;，如果再不停下脚步认真审视一下这位后起之秀，未免显得太不符合潮流了。&lt;/p&gt;
+
+&lt;p&gt;Istio 这个大家庭的家庭成员很多，为了能够顺利打入 Istio 内部，我们先从它的核心家庭成员 &lt;code&gt;Envoy&lt;/code&gt; 入手。&lt;/p&gt;
+
+&lt;p&gt;从今天起，我将带领大家从零开始学习和使用 Envoy，着重于经验分享和总结，同时也会有相关的概念解析，希望能够帮助大家少走弯路，能不采坑尽量不采坑。&lt;/p&gt;
+
+&lt;p&gt;本篇是 Envoy 系列教程的第一篇，介绍如何在笔记本电脑上运行 Envoy、测试代理配置并观察结果，让我们开始吧！&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-2-前提-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 前提&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;你可以选择从源代码构建 Envoy，但最简单的办法是通过 &lt;code&gt;Docker&lt;/code&gt; 容器来运行。所以在开始之前，你需要安装并配置以下工具：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.docker.com/install/&#34; target=&#34;_blank&#34;&gt;Docker&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://docs.docker.com/compose/install/&#34; target=&#34;_blank&#34;&gt;Docker Compose&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://help.github.com/articles/set-up-git/&#34; target=&#34;_blank&#34;&gt;Git&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://curl.haxx.se/&#34; target=&#34;_blank&#34;&gt;curl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;我们使用 Docker 和 Docker Compose 来编排和运行 Envoy 的示例服务，使用 curl 来访问 Envoy 示例服务。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-3-部署-envoy-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 部署 Envoy&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/envoyproxy/envoy&#34; target=&#34;_blank&#34;&gt;Envoy 官方&lt;/a&gt;提供了一组 Envoy 的用例，我们将要使用的用例是前端代理，它会将流量发送到两个服务后端。首先克隆 Envoy 的代码仓库并转到 &lt;code&gt;examples/front-proxy&lt;/code&gt; 目录：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/envoyproxy/envoy
+$ cd envoy/examples/front-proxy
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;后端服务&lt;/span&gt; 是一个非常简单的 &lt;code&gt;Flask&lt;/code&gt; 应用程序，在 &lt;code&gt;service.py&lt;/code&gt; 中定义。其中 Envoy 作为一个边车（Sidecar）伴随每个服务一起运行在同一个容器中，所有的规则配置都通过 YAML 文件 &lt;code&gt;service-envoy.yaml&lt;/code&gt; 来完成。最后 &lt;code&gt;Dockerfile-service&lt;/code&gt; 创建一个在启动时同时运行服务和 Envoy 的容器。&lt;/p&gt;
+
+&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;前端代理&lt;/span&gt; 比后端服务更简单，它使用配置文件 &lt;code&gt;front-envoy.yaml&lt;/code&gt; 来运行 Envoy，使用 &lt;code&gt;Dockerfile-frontenvoy&lt;/code&gt; 来构建容器镜像。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;docker-compose.yaml&lt;/code&gt; 文件描述了如何构建、打包和运行前端代理与服务。&lt;/p&gt;
+
+&lt;p&gt;整体架构如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://jimmysong.io/kubernetes-handbook/images/envoyproxy-docker-compose.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用 docker-compose 启动容器：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker-compose up --build -d
+$ docker-compose ps
+
+          Name                        Command               State                      Ports
+----------------------------------------------------------------------------------------------------------------
+frontproxy_front-envoy_1   /bin/sh -c /usr/local/bin/ ...   Up      0.0.0.0:8000-&amp;gt;80/tcp, 0.0.0.0:8001-&amp;gt;8001/tcp
+frontproxy_service1_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
+frontproxy_service2_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;该命令将会启动一个前端代理和两个服务实例：service1 和 service2。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-3-配置-envoy-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 配置 Envoy&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;为了达到演示的目的，本文采用的是 Envoy 的静态配置。后续教程将会告诉你们如何使用动态配置来发挥 Envoy 的强大功能。&lt;/p&gt;
+
+&lt;p&gt;为了了解 Envoy 是如何配置的，先来看看 &lt;code&gt;docker-compose.yaml&lt;/code&gt; 文件的前端代理部分的配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  front-envoy:
+    build:
+      context: ../
+      dockerfile: front-proxy/Dockerfile-frontenvoy
+    volumes:
+      - ./front-envoy.yaml:/etc/front-envoy.yaml
+    networks:
+      - envoymesh
+    expose:
+      - &amp;quot;80&amp;quot;
+      - &amp;quot;8001&amp;quot;
+    ports:
+      - &amp;quot;8000:80&amp;quot;
+      - &amp;quot;8001:8001&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从上到下做了这么几件事：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;使用位于当前目录中的 &lt;code&gt;Dockerfile-frontenvoy&lt;/code&gt; 构建镜像。&lt;/li&gt;
+&lt;li&gt;将 &lt;code&gt;front-envoy.yaml&lt;/code&gt; 文件作为 &lt;code&gt;/etc/front-envoy.yaml&lt;/code&gt; 挂载到容器中的 &lt;code&gt;/etc&lt;/code&gt; 目录。&lt;/li&gt;
+&lt;li&gt;为这个容器创建并使用名为 &lt;code&gt;envoymesh&lt;/code&gt; 的 Docker 网络。&lt;/li&gt;
+&lt;li&gt;暴露 80 端口（用于一般通用流量）和 8001 端口（用于管理服务）。&lt;/li&gt;
+&lt;li&gt;将主机的 8000 端口和 8001 端口分别映射到容器的 80 端口和 8001 端口。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;前面已经了解到了前端代理使用 front-envoy.yaml 来配置 Envoy，下面来深入了解一下。该配置文件有两大配置项：&lt;code&gt;static_resources&lt;/code&gt; 和 &lt;code&gt;admin&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;static_resources:
+admin:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;admin 配置项的内容非常简单：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;admin:
+  access_log_path: &amp;quot;/dev/null&amp;quot;
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;access_log_path&lt;/code&gt; 字段的值设置为 &lt;code&gt;/dev/null&lt;/code&gt;，意味着 admin 服务的访问日志将会被丢弃，在测试或生产环境中，你最好将这个值修改为不同的目录。socket_address 字段告诉 Envoy 创建一个监听在 8001 端口的 admin 服务。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;static_resources&lt;/code&gt; 配置项定义了一组静态配置的集群（Cluster）和侦听器（Listener）。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;集群&lt;/strong&gt;是 Envoy 连接到的一组逻辑上相似的上游主机。Envoy 通过服务发现发现集群中的成员。Envoy 可以通过主动运行状况检查来确定集群成员的健康状况。Envoy 如何将请求路由到集群成员由负载均衡策略确定。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;侦听器&lt;/strong&gt;是服务(程序)监听者，就是真正干活的。 它是可以由下游客户端连接的命名网络位置（例如，端口、unix域套接字等）。&lt;/p&gt;
+
+&lt;h3 id=&#34;listener-配置&#34;&gt;Listener 配置&lt;/h3&gt;
+
+&lt;p&gt;该示例中的前端代理有一个监听在 80 端口的侦听器，并配置了一个&lt;strong&gt;监听器过滤器链&lt;/strong&gt;（filter_chains），用来管理 HTTP 流量：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 HTTP 连接管理过滤器中，每一个虚拟主机都有单独的配置，并且都配置为接收所有域的流量：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;            virtual_hosts:
+            - name: backend
+              domains:
+              - &amp;quot;*&amp;quot;
+              routes:
+              - match:
+                  prefix: &amp;quot;/service/1&amp;quot;
+                route:
+                  cluster: service1
+              - match:
+                  prefix: &amp;quot;/service/2&amp;quot; 
+                route:
+                  cluster: service2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;HTTP 路由规则将 &lt;code&gt;/service/1&lt;/code&gt; 和 &lt;code&gt;/service/1&lt;/code&gt; 的流量转发到各自的 Cluster。&lt;/p&gt;
+
+&lt;h3 id=&#34;cluster-配置&#34;&gt;Cluster 配置&lt;/h3&gt;
+
+&lt;p&gt;接下来看一下静态 Cluster 的定义：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  clusters:
+  - name: service1
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service1
+        port_value: 80
+  - name: service2
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service2
+        port_value: 80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;在 Cluster 的配置中，你可以自定义超时、断路器和服务发现等。Cluster 由 Endpoint（端点）组成，其中 Endpoint 是一组可以为 Cluster 的请求提供服务的网络位置。本例中的 Endpoint 是通过 DNS 域名的方式定义的，Envoy 可以从域名中读取 Endpoint。Endpoint 也可以直接定义为 socket 地址，或者通过 &lt;code&gt;EDS&lt;/code&gt;（Endpoint Discovery Service）动态读取。&lt;/p&gt;
+
+&lt;h3 id=&#34;修改配置&#34;&gt;修改配置&lt;/h3&gt;
+
+&lt;p&gt;你可以通过修改配置文件重新构建镜像来进行测试。&lt;code&gt;Listener filter&lt;/code&gt;（监听器过滤器）的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。例如，如果想要将访问日志添加到 HTTP 过滤器中，可以在 filter 的配置中添加 &lt;code&gt;access_log&lt;/code&gt; 配置项：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          access_log:
+            - name: envoy.file_access_log
+              config:
+                path: &amp;quot;/var/log/access.log&amp;quot;
+          route_config:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后停止服务，重新构建并运行容器：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker-compose down
+$ docker-compose up --build -d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过 &lt;code&gt;curl&lt;/code&gt; 访问服务，然后通过 &lt;code&gt;docker-compose exec front-envoy /bin/bash&lt;/code&gt; 命令进入容器的终端，你会看到 &lt;code&gt;/var/log/access.log&lt;/code&gt; 文件记录着你的请求结果。&lt;/p&gt;
+
+&lt;h3 id=&#34;admin-server&#34;&gt;Admin Server&lt;/h3&gt;
+
+&lt;p&gt;Envoy 的一大特色是内置的 Admin 服务，如果你在浏览器中访问 &lt;code&gt;http://localhost:8001&lt;/code&gt; ，可以看到 Envoy admin 提供以下管理 API 端点。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;命令&lt;/th&gt;
+&lt;th&gt;描述&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;/&lt;/td&gt;
+&lt;td&gt;Admin 主页&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/certs&lt;/td&gt;
+&lt;td&gt;打印机器上的 certs&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/clusters&lt;/td&gt;
+&lt;td&gt;upstream cluster 状态&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/config_dump&lt;/td&gt;
+&lt;td&gt;输出当前的 Envoy 配置&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/cpuprofiler&lt;/td&gt;
+&lt;td&gt;开启/关闭 CPU profiler&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/healthcheck/fail&lt;/td&gt;
+&lt;td&gt;导致服务失败健康检查&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/healthcheck/ok&lt;/td&gt;
+&lt;td&gt;导致服务通过健康检查&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/help&lt;/td&gt;
+&lt;td&gt;打印管理命令的帮助信息&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/hot_restart_version&lt;/td&gt;
+&lt;td&gt;打印热重启兼容版本&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/listeners&lt;/td&gt;
+&lt;td&gt;打印 listener 地址&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/logging&lt;/td&gt;
+&lt;td&gt;查询/更改日志级别&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/quitquitquit&lt;/td&gt;
+&lt;td&gt;退出服务&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/reset_counters&lt;/td&gt;
+&lt;td&gt;将计数器重置为 1&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/runtime&lt;/td&gt;
+&lt;td&gt;打印运行时值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/runtime_modify&lt;/td&gt;
+&lt;td&gt;修改运行时值&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/server_info&lt;/td&gt;
+&lt;td&gt;打印服务器版本/状态信息&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/stats&lt;/td&gt;
+&lt;td&gt;打印服务器状态统计信息&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;/stats/prometheus&lt;/td&gt;
+&lt;td&gt;打印 prometheus 格式的服务器状态统计信息&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;通过 API 管理端可以对 Envoy 进行动态配置，参考 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api&#34; target=&#34;_blank&#34;&gt;v2 API reference&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-4-进一步探索-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 进一步探索&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;如果你有兴趣探索 Envoy 的更多其他功能，&lt;a href=&#34;https://github.com/envoyproxy/envoy/tree/master/examples&#34; target=&#34;_blank&#34;&gt;Envoy 官方示例&lt;/a&gt;还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 &lt;a href=&#34;https://www.learnenvoy.io/articles/service-discovery.html&#34; target=&#34;_blank&#34;&gt;Integrating Service Discovery with Envoy&lt;/a&gt; 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 &lt;a href=&#34;https://www.learnenvoy.io/articles/getting-help.html&#34; target=&#34;_blank&#34;&gt;Getting Help&lt;/a&gt; 页面以获取更多的帮助信息。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/envoy-archiecture-and-terminology/&#34; target=&#34;_blank&#34;&gt;Envoy 的架构与基本术语&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/envoy-as-front-proxy/&#34; target=&#34;_blank&#34;&gt;使用 Envoy 作为前端代理&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>使用 envoy-docker-shim 替代 docker-proxy</title>
       <link>https://www.yangcs.net/posts/envoy-docker-shim/</link>
       <pubDate>Fri, 22 Jun 2018 08:22:07 +0000</pubDate>
@@ -6274,647 +6845,6 @@ border-top-color: #9954bb;
     border-radius:5px; 
     text-shadow: rgb(102, 102, 102) 1px 1px 1px; 
     box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>docker 在本地如何管理 image（镜像）?</title>
-      <link>https://www.yangcs.net/posts/how-manage-image/</link>
-      <pubDate>Mon, 02 Apr 2018 05:12:18 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/how-manage-image/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;docker 里面可以通过 &lt;code&gt;docker pull&lt;/code&gt;、&lt;code&gt;docker build&lt;/code&gt;、&lt;code&gt;docker commit&lt;/code&gt;、&lt;code&gt;docker load&lt;/code&gt;、&lt;code&gt;docker import&lt;/code&gt; 等方式得到一个 image，得到 image 之后 docker 在本地是怎么存储的呢？本篇将以 &lt;code&gt;docker pull&lt;/code&gt; 为例，简述 image 的获取和存储方式。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-镜像相关的配置-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 镜像相关的配置&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;docker 里面和 image 有关的目录为 &lt;code&gt;/var/lib/docker&lt;/code&gt;，里面存放着 image 的所有信息，可以通过下面这个 dockerd 的启动参数来修改这个目录的路径。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;--graph, -g /var/lib/docker Root of the Docker runtime
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-镜像的引用方式-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 镜像的引用方式&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;在需要引用 image 的时候，比如 docker pull 的时候，或者运行容器的时候，都需要指定一个image名称，引用一个镜像有多种方式，下面以 &lt;code&gt;alpine&lt;/code&gt; 为例进行说明.&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;由于 sha256 码太长，所以用 abcdef... 来表示完整的 sha256，节约空间&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&#34;docker-hub-上的官方镜像&#34;&gt;docker hub 上的官方镜像&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;alpine:&lt;/strong&gt; 官方提供的最新 alpine 镜像，对应的完整名称为 &lt;code&gt;docker.io/library/alpine:latest&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;alpine:3.7:&lt;/strong&gt; 官方提供的 alpine 3.7 镜像，对应的完整名称为 &lt;code&gt;docker.io/library/alpine:3.7&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;alpine:@sha256:abcdef&amp;hellip;:&lt;/strong&gt; 官方提供的 digest 码为 sha256:abcdef&amp;hellip; 的 alpine 镜像，对应的完整名称为 &lt;code&gt;docker.io/library/alpine@sha256:abcdef...&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;docker-hub-上的非官方-个人-镜像&#34;&gt;docker hub 上的非官方（个人）镜像&lt;/h3&gt;
-
-&lt;p&gt;引用方式和官方镜像一样，唯一不同的是需要在镜像名称前面带上用户前缀，如：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;user1/alpine:&lt;/strong&gt; 由 user1 提供的最新 alpine 镜像， 对应的完整名称为 &lt;code&gt;docker.io/user1/alpine:latest&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code&gt;user1/alpine:3.7&lt;/code&gt; 和 &lt;code&gt;user1/alpine:@sha256:abcdef...&lt;/code&gt; 这两种方式也是和上面一样，等同于 &lt;code&gt;docker.io/user1/alpine:3.7&lt;/code&gt; 和 &lt;code&gt;docker.io/user1/alpine:@sha256:abcdef...&lt;/code&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;自己搭建的-registry-里的镜像&#34;&gt;自己搭建的 registry 里的镜像&lt;/h3&gt;
-
-&lt;p&gt;引用方式和 &lt;code&gt;docker hub&lt;/code&gt; 一样，唯一不同的是需要在镜像名称最前面带上地址，如：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;localhost:5000/alpine:&lt;/strong&gt; 本地自己搭建的 registry（localhost:5000）里面的官方 alpine 的最新镜像，对应的完整名称为 &lt;code&gt;localhost:5000/library/alpine:latest&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;localhost:5000/user1/alpine@sha256:a123def&amp;hellip;:&lt;/strong&gt; 本地自己搭建的 registry（localhost:5000）里面由用户 user1 提供的 digest 为 sha256:a123def 的 alpine 镜像&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;其它的几种情况和上面的类似。&lt;/p&gt;
-
-&lt;h3 id=&#34;为什么需要镜像的-digest&#34;&gt;为什么需要镜像的 digest？&lt;/h3&gt;
-
-&lt;p&gt;对于某些 &lt;code&gt;image&lt;/code&gt; 来说，可能在发布之后还会做一些更新，比如安全方面的，这时虽然镜像的内容变了，但镜像的名称和 &lt;code&gt;tag&lt;/code&gt; 没有变，所以会造成前后两次通过同样的名称和 &lt;code&gt;tag&lt;/code&gt; 从服务器得到不同的两个镜像的问题，于是 docker 引入了镜像的 &lt;code&gt;digest&lt;/code&gt; 的概念，一个镜像的 &lt;code&gt;digest&lt;/code&gt; 就是镜像的 &lt;code&gt;manifes&lt;/code&gt; 文件的 &lt;code&gt;sha256&lt;/code&gt; 码，当镜像的内容发生变化的时候，即镜像的 &lt;code&gt;layer&lt;/code&gt; 发生变化，从而 &lt;code&gt;layer&lt;/code&gt; 的 &lt;code&gt;sha256&lt;/code&gt; 发生变化，而 &lt;code&gt;manifest&lt;/code&gt; 里面包含了每一个 &lt;code&gt;layer&lt;/code&gt; 的 &lt;code&gt;sha256&lt;/code&gt;，所以 &lt;code&gt;manifest&lt;/code&gt; 的 &lt;code&gt;sha256&lt;/code&gt; 也会发生变化，即镜像的 &lt;code&gt;digest&lt;/code&gt; 发生变化，这样就保证了 &lt;code&gt;digest&lt;/code&gt; 能唯一的对应一个镜像。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-docker-pull的大概过程-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. docker pull的大概过程&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果对 Image manifest，Image Config 和 Filesystem Layers 等概念不是很了解，请先参考 &lt;a href=&#34;https://segmentfault.com/a/1190000009309347&#34; target=&#34;_blank&#34;&gt;image(镜像)是什么&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;取 image 的大概过程如下：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;docker 发送 &lt;code&gt;image&lt;/code&gt; 的名称+tag（或者 digest）给 &lt;code&gt;registry&lt;/code&gt; 服务器，服务器根据收到的 image 的名称+tag（或者 digest），找到相应 image 的 &lt;code&gt;manifest&lt;/code&gt;，然后将 manifest 返回给 docker&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;docker 得到 &lt;code&gt;manifest&lt;/code&gt; 后，读取里面 image 配置文件的 &lt;code&gt;digest&lt;/code&gt;(sha256)，这个 sha256 码就是 image 的 &lt;code&gt;ID&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;根据 &lt;code&gt;ID&lt;/code&gt; 在本地找有没有存在同样 &lt;code&gt;ID&lt;/code&gt; 的 image，有的话就不用继续下载了&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;如果没有，那么会给 registry 服务器发请求（里面包含配置文件的 &lt;code&gt;sha256&lt;/code&gt; 和 &lt;code&gt;media type&lt;/code&gt;），拿到 image 的配置文件（&lt;code&gt;Image Config&lt;/code&gt;）&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;根据配置文件中的 &lt;code&gt;diff_ids&lt;/code&gt;（每个 diffid 对应一个 layer tar 包的 sha256，tar 包相当于 layer 的原始格式），在本地找对应的 layer 是否存在&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;如果 layer 不存在，则根据 &lt;code&gt;manifest&lt;/code&gt; 里面 layer 的 &lt;code&gt;sha256&lt;/code&gt; 和 &lt;code&gt;media type&lt;/code&gt; 去服务器拿相应的 layer（相当去拿压缩格式的包）。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;拿到后进行解压，并检查解压后 tar 包的 sha256 能否和配置文件（&lt;code&gt;Image Config&lt;/code&gt;）中的 &lt;code&gt;diff_id&lt;/code&gt; 对的上，对不上说明有问题，下载失败&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;根据 docker 所用的后台文件系统类型，解压 tar 包并放到指定的目录&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;等所有的 layer 都下载完成后，整个 image 下载完成，就可以使用了&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;对于 layer 来说，&lt;code&gt;config&lt;/code&gt; 文件中 diffid 是 layer 的 &lt;code&gt;tar&lt;/code&gt; 包的 sha256，而 &lt;code&gt;manifest&lt;/code&gt; 文件中的 digest 依赖于 media type，比如 media type 是 &lt;code&gt;tar+gzip&lt;/code&gt;，那 digest 就是 layer 的 tar 包经过 gzip 压缩后的内容的 sha256，如果 media type 就是 tar 的话，diffid 和 digest 就会一样。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;dockerd 和 registry 服务器之间的协议为 &lt;a href=&#34;https://docs.docker.com/registry/spec/api/&#34; target=&#34;_blank&#34;&gt;Registry HTTP API V2&lt;/a&gt;。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-image-本地存放位置-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. image 本地存放位置&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;这里以 &lt;code&gt;ubuntu&lt;/code&gt; 的 image 为例，展示 docker 的 image 存储方式。&lt;/p&gt;
-
-&lt;p&gt;先看看 ubuntu 的 &lt;code&gt;image id&lt;/code&gt; 和 &lt;code&gt;digest&lt;/code&gt;，然后再分析 image 数据都存在哪里。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker images --digests
-
-REPOSITORY                                           TAG                 DIGEST                                                                    IMAGE ID            CREATED             SIZE
-ubuntu                                               latest              sha256:e348fbbea0e0a0e73ab0370de151e7800684445c509d46195aef73e090a49bd6   f975c5035748        3 weeks ago         112MB
-......
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;对于本地生成的镜像来说，由于没有上传到 registry 上去，所以没有 digest，因为镜像的 manifest 由 registry 生成。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h3 id=&#34;repositories-json&#34;&gt;repositories.json&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;repositories.json&lt;/code&gt; 中记录了和本地 image 相关的 &lt;code&gt;repository&lt;/code&gt; 信息，主要是 &lt;code&gt;name&lt;/code&gt; 和 &lt;code&gt;image id&lt;/code&gt; 的对应关系，当 image 从 registry 上被 pull 下来后，就会更新该文件：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#这里目录中的 overlay2 为 docker 后台所采用的存储文件系统名称，
-#如果是其他的文件系统的话，名字会是其他的，比如btrfs、aufs、devicemapper等。
-$ cat /var/lib/docker/image/overlay2/repositories.json|jq .
-
-{
-    &amp;quot;Repositories&amp;quot;: {
-        &amp;quot;ubuntu&amp;quot;: {
-            &amp;quot;ubuntu:latest&amp;quot;: &amp;quot;sha256:f975c50357489439eb9145dbfa16bb7cd06c02c31aa4df45c77de4d2baa4e232&amp;quot;,
-            &amp;quot;ubuntu@sha256:e348fbbea0e0a0e73ab0370de151e7800684445c509d46195aef73e090a49bd6&amp;quot;: &amp;quot;sha256:f975c50357489439eb9145dbfa16bb7cd06c02c31aa4df45c77de4d2baa4e232&amp;quot;
-        }
-        ......
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;ubuntu:&lt;/strong&gt; &lt;code&gt;repository&lt;/code&gt; 的名称，前面没有服务器信息的表示这是官方 registry(docker hub) 里面的 repository，里面包含的都是 image 标识和 image ID 的对应关系&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;ubuntu:latest 和 ubuntu@sha256:e348fbb&amp;hellip;:&lt;/strong&gt; 他们都指向同一个image（&lt;code&gt;sha256:f975c5...&lt;/code&gt;）&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;配置文件-image-config&#34;&gt;配置文件（image config）&lt;/h3&gt;
-
-&lt;p&gt;docker 根据后台所采用的文件系统不同，在 &lt;code&gt;/var/lib/docker&lt;/code&gt; 目录下创建了不同的子目录，对于 &lt;code&gt;CentOS&lt;/code&gt; 来说，默认文件系统是 &lt;code&gt;overlay2&lt;/code&gt;。本文以 &lt;span id=&#34;inline-purple&#34;&gt;CentOS&lt;/span&gt; 为例。&lt;/p&gt;
-
-&lt;p&gt;docker 根据第一步得到的 manifest，从 registry 拿到 config 文件，然后保存在 &lt;code&gt;image/overlay2/imagedb/content/sha256/&lt;/code&gt; 目录下，文件名称就是文件内容的 &lt;code&gt;sha256&lt;/code&gt; 码，即 &lt;code&gt;image id&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ sha256sum /var/lib/docker/image/overlay2/imagedb/content/sha256/f975c50357489439eb9145dbfa16bb7cd06c02c31aa4df45c77de4d2baa4e232
-
-f975c50357489439eb9145dbfa16bb7cd06c02c31aa4df45c77de4d2baa4e232  /var/lib/docker/image/overlay2/imagedb/content/sha256/f975c50357489439eb9145dbfa16bb7cd06c02c31aa4df45c77de4d2baa4e232
-
-#这里我们只关注这个 image 的 rootfs，
-#从 diff_ids 里可以看出 ubuntu:latest 这个 image 包含了 5 个 layer，
-#从上到下依次是从底层到顶层，a94e0d...是最底层，db584c...是最顶层
-$ cat /var/lib/docker/image/overlay2/imagedb/content/sha256/f975c50357489439eb9145dbfa16bb7cd06c02c31aa4df45c77de4d2baa4e232|jq .
-
-......
-  &amp;quot;rootfs&amp;quot;: {
-    &amp;quot;type&amp;quot;: &amp;quot;layers&amp;quot;,
-    &amp;quot;diff_ids&amp;quot;: [
-      &amp;quot;sha256:a94e0d5a7c404d0e6fa15d8cd4010e69663bd8813b5117fbad71365a73656df9&amp;quot;,
-      &amp;quot;sha256:88888b9b1b5b7bce5db41267e669e6da63ee95736cb904485f96f29be648bfda&amp;quot;,
-      &amp;quot;sha256:52f389ea437ebf419d1c9754d0184b57edb45c951666ee86951d9f6afd26035e&amp;quot;,
-      &amp;quot;sha256:52a7ea2bb533dc2a91614795760a67fb807561e8a588204c4858a300074c082b&amp;quot;,
-      &amp;quot;sha256:db584c622b50c3b8f9b8b94c270cc5fe235e5f23ec4aacea8ce67a8c16e0fbad&amp;quot;
-    ]
-  }
-
-......
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;layer-的-diff-id-和-digest-的对应关系&#34;&gt;layer 的 diff_id 和 digest 的对应关系&lt;/h3&gt;
-
-&lt;p&gt;layer 的 &lt;code&gt;diff_id&lt;/code&gt; 存在 image 的配置文件中，而 layer 的 &lt;code&gt;digest&lt;/code&gt; 存在 image 的 manifest 中，他们的对应关系被存储在了 &lt;code&gt;image/overlay2/distribution&lt;/code&gt; 目录下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ tree -d /var/lib/docker/image/overlay2/distribution
-
-/var/lib/docker/image/overlay2/distribution
-├── diffid-by-digest
-│   └── sha256
-└── v2metadata-by-diffid
-    └── sha256
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;diffid-by-digest：&lt;/strong&gt; 存放 &lt;code&gt;digest&lt;/code&gt; 到 &lt;code&gt;diffid&lt;/code&gt; 的对应关系&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;v2metadata-by-diffid：&lt;/strong&gt; 存放 &lt;code&gt;diffid&lt;/code&gt; 到 &lt;code&gt;digest&lt;/code&gt; 的对应关系&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#这里以最底层 layer(a94e0d...) 为例，查看其 digest 信息
-$ cat /var/lib/docker/image/overlay2/distribution/v2metadata-by-diffid/sha256/db584c622b50c3b8f9b8b94c270cc5fe235e5f23ec4aacea8ce67a8c16e0fbad|jq .
-
-[
-  {
-    &amp;quot;Digest&amp;quot;: &amp;quot;sha256:b78396653dae2bc0d9c02c0178bd904bb12195b2b4e541a92cd8793ac7d7d689&amp;quot;,
-    &amp;quot;SourceRepository&amp;quot;: &amp;quot;docker.io/library/ubuntu&amp;quot;,
-    &amp;quot;HMAC&amp;quot;: &amp;quot;&amp;quot;
-  }
-]
-
-#根据 digest 得到 diffid
-$ cat /var/lib/docker/image/overlay2/distribution/diffid-by-digest/sha256/b78396653dae2bc0d9c02c0178bd904bb12195b2b4e541a92cd8793ac7d7d689
-
-sha256:db584c622b50c3b8f9b8b94c270cc5fe235e5f23ec4aacea8ce67a8c16e0fbad
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;layer-的元数据&#34;&gt;layer 的元数据&lt;/h3&gt;
-
-&lt;p&gt;layer 的属性信息都放在了 &lt;code&gt;image/overlay2/layerdb&lt;/code&gt; 目录下，目录名称是 layer 的 &lt;code&gt;chainid&lt;/code&gt;，由于最底层的 layer 的 chainid 和 diffid 相同，所以这里我们用第二层（fe9a3f&amp;hellip;）作为示例：&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;计算 chainid 时，用到了所有祖先 layer 的信息，从而能保证根据 chainid 得到的 rootfs 是唯一的。比如我在 debian 和 ubuntu 的 image 基础上都添加了一个同样的文件，那么 commit 之后新增加的这两个 layer 具有相同的内容，相同的 diffid，但由于他们的父 layer 不一样，所以他们的 chainid 会不一样，从而根据 chainid 能找到唯一的 rootfs。计算 chainid 的方法请参考 &lt;a href=&#34;https://github.com/opencontainers/image-spec/blob/master/config.md&#34; target=&#34;_blank&#34;&gt;image spec&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#计算 chainid
-#这里 88888b... 是第二层的 diffid，而 a94e0d... 是 88888b... 父层的 chainid，
-#由于a94e0d...是最底层，它没有父层，所以 a94e0d... 的 chainid 就是 a94e0d...
-$ echo -n &amp;quot;sha256:a94e0d5a7c404d0e6fa15d8cd4010e69663bd8813b5117fbad71365a73656df9 sha256:88888b9b1b5b7bce5db41267e669e6da63ee95736cb904485f96f29be648bfda&amp;quot;|sha256sum -
-
-14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20  -
-
-#根据 chainid 来看看相应目录的内容
-$ ll /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20
-
-total 20K
--rw-r--r-- 1 root root   64 Apr  1 22:16 cache-id
--rw-r--r-- 1 root root   71 Apr  1 22:16 diff
--rw-r--r-- 1 root root   71 Apr  1 22:16 parent
--rw-r--r-- 1 root root    3 Apr  1 22:16 size
--rw-r--r-- 1 root root 1.5K Apr  1 22:16 tar-split.json.gz
-
-#每个 layer 都有这样一个对应的文件夹
-#cache-id 是 docker 下载 layer 的时候在本地生成的一个随机 uuid，
-#指向真正存放 layer 文件的地方
-$ cat /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/cache-id
-
-658299560be0fd7eaf4a14b0927e134049d13eb31070a9902b0d275836a13cfb
-
-#diff 文件存放 layer 的 diffid
-$ cat /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/diff
-
-sha256:88888b9b1b5b7bce5db41267e669e6da63ee95736cb904485f96f29be648bfda
-
-#parent 文件存放当前 layer 的父 layer 的 diffid，
-#注意：对于最底层的 layer 来说，由于没有父 layer，所以没有这个文件
-$ cat /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/parent
-
-sha256:a94e0d5a7c404d0e6fa15d8cd4010e69663bd8813b5117fbad71365a73656df9
-
-#当前 layer 的大小，单位是字节
-$ cat /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/size
-
-745
-
-#tar-split.json.gz，layer 压缩包的 split 文件，通过这个文件可以还原 layer 的 tar 包，
-#在 docker save 导出 image 的时候会用到
-#详情可参考 https://github.com/vbatts/tar-split
-$ ll /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/tar-split.json.gz
-
--rw-r--r-- 1 root root 1.5K Apr  1 22:16 /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/tar-split.json.gz
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-5-layer数据-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. layer数据&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;以 &lt;code&gt;CentOS&lt;/code&gt; 为例，所有 layer 的文件都放在了 &lt;code&gt;/var/lib/docker/overlay2&lt;/code&gt; 目录下。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ tree -d -L 2 /var/lib/docker/overlay2
-
-├── 658299560be0fd7eaf4a14b0927e134049d13eb31070a9902b0d275836a13cfb
-│   ├── diff
-│   └── work
-├── 66ce99b5da081f65afea7ebaf612229179b620dc728b7407adcb44a51a27ae24
-│   ├── diff
-│   └── work
-...
-└── l
-    ├── DYWQJVCIPQ2P2VFWZ4KBCV2JFW -&amp;gt; ../658299560be0fd7eaf4a14b0927e134049d13eb31070a9902b0d275836a13cfb/diff
-    ├── 27O3MGWIL6SIN7K4GLVU4DLPSQ -&amp;gt; ../9028bae38f520a09220f67fbcf698aae2326c8318390a1d6005457d51ad97369/diff
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;”l“&lt;/code&gt; 目录包含一些符号链接作为缩短的层标识符. 这些缩短的标识符用来避免挂载时超出页面大小的限制。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ll /var/lib/docker/overlay2/l/
-
-total 0
-lrwxrwxrwx 1 root root 72 Mar 29 06:25 27O3MGWIL6SIN7K4GLVU4DLPSQ -&amp;gt; ../9028bae38f520a09220f67fbcf698aae2326c8318390a1d6005457d51ad97369/diff/
-lrwxrwxrwx 1 root root 72 Mar 21 00:55 2AYPFAXSXLNCCEA6WRFCAPFPX3 -&amp;gt; ../23eb8415aec245a0291cca62d2da322de241263b8cbdfc690c0a77b353530b10/diff/
-lrwxrwxrwx 1 root root 72 Mar 29 02:55 2H2XLZTCOYYSDT3XU2BDJRC2SB -&amp;gt; ../6b27128471bdfc742696ff9820bdfcdda73020753c26efeecea29b98096f0c5d/diff/
-lrwxrwxrwx 1 root root 77 Mar 29 05:44 2JQ3OQVJBRYD75J4WTG4CSWA4Z -&amp;gt; ../641300d147b30f162167fed340cebcaae25f46db608939f6af09dbdb7078dcd4-init/diff/
-lrwxrwxrwx 1 root root 72 Mar 21 00:55 2TCUOOM7Y7HMGIERRS4CX4YHVA -&amp;gt; ../cd3a3bd11269dc846ee9f79fca86c05336b8dd475d5ca8151991dc5d9fd7261f/diff/
-lrwxrwxrwx 1 root root 77 Mar 29 06:24 36WQQRTYLT4P3J7DYLQAUMUPJE -&amp;gt; ../7ee9cc176abeb603ab0461650edd87890d167c579011813d0e864b7524f9fe24-init/diff/
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;注意：由于 docker 所采用的文件系统不同，&lt;code&gt;/var/lib/docker/&lt;storage-driver&gt;&lt;/code&gt; 目录下的目录结构及组织方式也会不一样，要具体文件系统具体分析，本文只介绍 overlay2 这种情况。
-关于 aufs 和 btrfs 的相关特性可以参考 &lt;a href=&#34;https://segmentfault.com/a/1190000008489207&#34; target=&#34;_blank&#34;&gt;Linux 文件系统之 aufs&lt;/a&gt; 和 &lt;a href=&#34;https://segmentfault.com/a/1190000008605135&#34; target=&#34;_blank&#34;&gt;Btrfs 文件系统之 subvolume 与 snapshot&lt;/a&gt;&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;还是以刚才的第二层 layer（88888b&amp;hellip;）为例，看看实际的数据：&lt;/p&gt;
-
-&lt;p&gt;最底层包含 &lt;code&gt;link&lt;/code&gt; 文件(不包含 lower 文件，因为是最底层)，在上面的结果中 &lt;code&gt;a94e0d...&lt;/code&gt; 为最底层。 这个文件记录着作为标识符的更短的符号链接的名字、最底层还有一个 &lt;code&gt;diff&lt;/code&gt; 目录(包含实际内容)。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 查看底层 a94e0d... 的 layer 存放的地方
-$ cat /var/lib/docker/image/overlay2/layerdb/sha256/a94e0d5a7c404d0e6fa15d8cd4010e69663bd8813b5117fbad71365a73656df9/cache-id
-
-8feee71ff338d03a22ef090f8e5a49771ca8c1f418db345782ff0fb9b9fff3ce
-
-$ ll /var/lib/docker/overlay2/8feee71ff338d03a22ef090f8e5a49771ca8c1f418db345782ff0fb9b9fff3ce/
-
-total 4.0K
-drwxr-xr-x 21 root root 224 Apr  1 22:16 diff/
--rw-r--r--  1 root root  26 Apr  1 22:15 link
-
-$ cat  /var/lib/docker/overlay2/8feee71ff338d03a22ef090f8e5a49771ca8c1f418db345782ff0fb9b9fff3ce/link
-
-3GQZNQYZNRAXT6X453L5O73Y5U
-
-$ ll /var/lib/docker/overlay2/l/|grep 3GQZNQYZNRAXT6X453L5O73Y5U
-
-lrwxrwxrwx 1 root root 72 Apr  1 22:15 3GQZNQYZNRAXT6X453L5O73Y5U -&amp;gt; ../8feee71ff338d03a22ef090f8e5a49771ca8c1f418db345782ff0fb9b9fff3ce/diff/
-
-# diff 目录下面是层的内容
-$ ll /var/lib/docker/overlay2/8feee71ff338d03a22ef090f8e5a49771ca8c1f418db345782ff0fb9b9fff3ce/diff/
-
-total 16K
-drwxr-xr-x  2 root root 4.0K Feb 28 14:14 bin/
-drwxr-xr-x  2 root root    6 Apr 12  2016 boot/
-drwxr-xr-x  4 root root 4.0K Feb 28 14:14 dev/
-drwxr-xr-x 42 root root 4.0K Feb 28 14:14 etc/
-drwxr-xr-x  2 root root    6 Apr 12  2016 home/
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从第二层开始，每层镜像层包含 &lt;code&gt;lower&lt;/code&gt; 文件，该文件的内容表示父层镜像的符号链接，根据这个文件可以索引构建出整个镜像的层次结构。同时还包含 &lt;code&gt;merged&lt;/code&gt; 和 &lt;code&gt;work&lt;/code&gt; 目录。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;每当启动一个容器时，会将 &lt;code&gt;link&lt;/code&gt; 指向的镜像层目录以及 &lt;code&gt;lower&lt;/code&gt; 指向的镜像层目录联合挂载到 &lt;code&gt;merged&lt;/code&gt; 目录，因此，容器内的视角就是 &lt;code&gt;merged&lt;/code&gt; 目录下的内容。&lt;/li&gt;
-&lt;li&gt;而 work 目录则是用来完成如 &lt;code&gt;copy-on_write&lt;/code&gt; 的操作。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ tree -L 1 /var/lib/docker/overlay2/658299560be0fd7eaf4a14b0927e134049d13eb31070a9902b0d275836a13cfb
-
-/var/lib/docker/overlay2/658299560be0fd7eaf4a14b0927e134049d13eb31070a9902b0d275836a13cfb
-├── diff
-├── link
-├── lower
-└── work
-
-# 父层镜像的符号链接
-$ cat /var/lib/docker/overlay2/658299560be0fd7eaf4a14b0927e134049d13eb31070a9902b0d275836a13cfb/lower
-
-l/3GQZNQYZNRAXT6X453L5O73Y5U
-
-$ ll /var/lib/docker/overlay2/658299560be0fd7eaf4a14b0927e134049d13eb31070a9902b0d275836a13cfb/diff
-
-total 0
-drwxr-xr-x 4 root root 29 Mar  6 17:17 etc/
-drwxr-xr-x 2 root root 21 Mar  6 17:17 sbin/
-drwxr-xr-x 3 root root 18 Feb 28 14:13 usr/
-drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-6-manifest文件去哪了-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;6. manifest文件去哪了？&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;从前面介绍 docker pull 的过程中得知，docker 是先得到 &lt;code&gt;manifest&lt;/code&gt;，然后根据 manifest 得到 &lt;code&gt;config&lt;/code&gt; 文件和 &lt;code&gt;layer&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;前面已经介绍了 config 文件和 layer 的存储位置，但唯独不见 manifest，去哪了呢？&lt;/p&gt;
-
-&lt;p&gt;manifest 里面包含的内容就是对 config 和 layer 的 &lt;code&gt;sha256 + media type&lt;/code&gt; 描述，目的就是为了下载 config 和 layer，等 image 下载完成后，manifest 的使命就完成了，里面的信息对于 image 的本地管理来说没什么用，所以 docker 在本地没有单独的存储一份 manifest 文件与之对应。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-7-结束语-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;7. 结束语&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;本篇介绍了image在本地的存储方式，包括了 &lt;code&gt;/var/lib/docker/image&lt;/code&gt; 和 &lt;code&gt;/var/lib/docker/overlay2&lt;/code&gt; 这两个目录，但 /var/lib/docker/image 下面有两个目录没有涉及：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;/var/lib/docker/image/overlay2/imagedb/metadata&lt;/code&gt;：里面存放的是本地 image 的一些信息，从服务器上 pull 下来的 image 不会存数据到这个目录，下次有机会再补充这部分内容。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;/var/lib/docker/image/overlay2/layerdb/mounts&lt;/code&gt;: 创建 container 时，docker 会为每个 container 在 image 的基础上创建一层新的 layer，里面主要包含 /etc/hosts、/etc/hostname、/etc/resolv.conf 等文件，创建的这一层 layer 信息就放在这里，后续在介绍容器的时候，会专门介绍这个目录的内容。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-id-h2-8-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;8. 参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/moby/moby&#34; target=&#34;_blank&#34;&gt;docker源代码&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
 }
 #inline-yellow {
 display:inline;
