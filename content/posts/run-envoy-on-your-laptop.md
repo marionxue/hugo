@@ -107,7 +107,7 @@ frontproxy_service2_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
 4. 暴露 80 端口（用于一般通用流量）和 8001 端口（用于管理服务）。
 5. 将主机的 8000 端口和 8001 端口分别映射到容器的 80 端口和 8001 端口。
 
-前面已经了解到了前端代理使用 front-envoy.yaml 来配置 Envoy，下面来深入了解一下。该配置文件有两大配置项：`static_resources` 和 `admin`：
+前面已经了解到了前端代理使用 front-envoy.yaml 来配置 Envoy，下面来深入解析一下。该配置文件有两大配置项：`static_resources` 和 `admin`：
 
 ```yaml
 static_resources:
@@ -251,6 +251,92 @@ Envoy 的一大特色是内置的 Admin 服务，如果你在浏览器中访问 
 | /server_info         | 打印服务器版本/状态信息                  |
 | /stats               | 打印服务器状态统计信息                   |
 | /stats/prometheus    | 打印 prometheus 格式的服务器状态统计信息 |
+
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 7px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 7px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
+.tg .tg-l711{border-color:inherit}
+.tg .tg-us36{border-color:inherit;vertical-align:top}
+</style>
+<table class="tg">
+  <tr>
+    <th class="tg-l711">命令</th>
+    <th class="tg-l711">描述</th>
+  </tr>
+  <tr>
+    <td class="tg-l711">/</td>
+    <td class="tg-l711">Admin 主页</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/certs</td>
+    <td class="tg-us36">打印机器上的 certs</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/clusters</td>
+    <td class="tg-us36">upstream cluster 状态</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/config_dump</td>
+    <td class="tg-us36">输出当前的 Envoy 配置</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/cpuprofiler</td>
+    <td class="tg-us36">开启/关闭 CPU profiler</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/healthcheck/fail</td>
+    <td class="tg-us36">导致服务失败健康检查</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/healthcheck/ok</td>
+    <td class="tg-us36">导致服务通过健康检查</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/help</td>
+    <td class="tg-us36">打印管理命令的帮助信息</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/hot_restart_version</td>
+    <td class="tg-us36">打印热重启兼容版本</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/listeners</td>
+    <td class="tg-us36">打印 listener 地址</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/logging</td>
+    <td class="tg-us36">查询/更改日志级别</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/quitquitquit</td>
+    <td class="tg-us36">退出服务</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/reset_counters</td>
+    <td class="tg-us36">将计数器重置为 1</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/runtime</td>
+    <td class="tg-us36">打印运行时值</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/runtime_modify</td>
+    <td class="tg-us36">修改运行时值</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/server_info</td>
+    <td class="tg-us36">打印服务器版本/状态信息</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/stats</td>
+    <td class="tg-us36">打印服务器状态统计信息</td>
+  </tr>
+  <tr>
+    <td class="tg-us36">/stats/prometheus</td>
+    <td class="tg-us36">打印 prometheus 格式的服务器状态统计信息</td>
+  </tr>
+</table>
 
 通过 API 管理端可以对 Envoy 进行动态配置，参考 [v2 API reference](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api)。
 
