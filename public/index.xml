@@ -893,111 +893,24 @@ $ docker-compose up --build -d
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;style type=&#34;text/css&#34;&gt;
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 7px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 7px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
-.tg .tg-l711{border-color:inherit}
-.tg .tg-us36{border-color:inherit;vertical-align:top}
-&lt;/style&gt;
-&lt;table class=&#34;tg&#34;&gt;
-  &lt;tr&gt;
-    &lt;th class=&#34;tg-l711&#34;&gt;命令&lt;/th&gt;
-    &lt;th class=&#34;tg-l711&#34;&gt;描述&lt;/th&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-l711&#34;&gt;/&lt;/td&gt;
-    &lt;td class=&#34;tg-l711&#34;&gt;Admin 主页&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/certs&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印机器上的 certs&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/clusters&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;upstream cluster 状态&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/config_dump&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;输出当前的 Envoy 配置&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/cpuprofiler&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;开启/关闭 CPU profiler&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/healthcheck/fail&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;导致服务失败健康检查&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/healthcheck/ok&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;导致服务通过健康检查&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/help&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印管理命令的帮助信息&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/hot_restart_version&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印热重启兼容版本&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/listeners&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印 listener 地址&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/logging&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;查询/更改日志级别&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/quitquitquit&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;退出服务&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/reset_counters&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;将计数器重置为 1&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/runtime&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印运行时值&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/runtime_modify&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;修改运行时值&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/server_info&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印服务器版本/状态信息&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/stats&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印服务器状态统计信息&lt;/td&gt;
-  &lt;/tr&gt;
-  &lt;tr&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;/stats/prometheus&lt;/td&gt;
-    &lt;td class=&#34;tg-us36&#34;&gt;打印 prometheus 格式的服务器状态统计信息&lt;/td&gt;
-  &lt;/tr&gt;
-&lt;/table&gt;
+&lt;p&gt;通过 API 管理端可以对 Envoy 进行动态配置，参考 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api&#34; target=&#34;_blank&#34;&gt;v2 API reference&lt;/a&gt;。&lt;/p&gt;
 
-通过 API 管理端可以对 Envoy 进行动态配置，参考 [v2 API reference](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api)。
+&lt;h2 id=&#34;p-id-h2-4-进一步探索-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 进一步探索&lt;/p&gt;&lt;/h2&gt;
 
+&lt;hr /&gt;
 
-## &lt;p id=&#34;h2&#34;&gt;4. 进一步探索&lt;/p&gt;
+&lt;p&gt;如果你有兴趣探索 Envoy 的更多其他功能，&lt;a href=&#34;https://github.com/envoyproxy/envoy/tree/master/examples&#34; target=&#34;_blank&#34;&gt;Envoy 官方示例&lt;/a&gt;还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 &lt;a href=&#34;https://www.learnenvoy.io/articles/service-discovery.html&#34; target=&#34;_blank&#34;&gt;Integrating Service Discovery with Envoy&lt;/a&gt; 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 &lt;a href=&#34;https://www.learnenvoy.io/articles/getting-help.html&#34; target=&#34;_blank&#34;&gt;Getting Help&lt;/a&gt; 页面以获取更多的帮助信息。&lt;/p&gt;
 
-----
+&lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
 
-如果你有兴趣探索 Envoy 的更多其他功能，[Envoy 官方示例](https://github.com/envoyproxy/envoy/tree/master/examples)还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 [Integrating Service Discovery with Envoy](https://www.learnenvoy.io/articles/service-discovery.html) 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 [Getting Help](https://www.learnenvoy.io/articles/getting-help.html) 页面以获取更多的帮助信息。
+&lt;hr /&gt;
 
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/envoy-archiecture-and-terminology/&#34; target=&#34;_blank&#34;&gt;Envoy 的架构与基本术语&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/envoy-as-front-proxy/&#34; target=&#34;_blank&#34;&gt;使用 Envoy 作为前端代理&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
-## &lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;
-
-----
-
-+ [Envoy 的架构与基本术语](https://jimmysong.io/posts/envoy-archiecture-and-terminology/)
-+ [使用 Envoy 作为前端代理](https://jimmysong.io/posts/envoy-as-front-proxy/)
-
-&lt;br /&gt;
-
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{

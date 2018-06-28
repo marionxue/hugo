@@ -374,7 +374,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Thu Jun 28, 2018</h4>
     </section>
-    <h5 id="wc">3300 Words|Read in about 7 Min</h5>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
@@ -700,111 +700,24 @@ $ docker-compose up --build -d
 </tbody>
 </table>
 
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 7px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 7px;border-style:solid;border-width:0px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
-.tg .tg-l711{border-color:inherit}
-.tg .tg-us36{border-color:inherit;vertical-align:top}
-</style>
-<table class="tg">
-  <tr>
-    <th class="tg-l711">命令</th>
-    <th class="tg-l711">描述</th>
-  </tr>
-  <tr>
-    <td class="tg-l711">/</td>
-    <td class="tg-l711">Admin 主页</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/certs</td>
-    <td class="tg-us36">打印机器上的 certs</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/clusters</td>
-    <td class="tg-us36">upstream cluster 状态</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/config_dump</td>
-    <td class="tg-us36">输出当前的 Envoy 配置</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/cpuprofiler</td>
-    <td class="tg-us36">开启/关闭 CPU profiler</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/healthcheck/fail</td>
-    <td class="tg-us36">导致服务失败健康检查</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/healthcheck/ok</td>
-    <td class="tg-us36">导致服务通过健康检查</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/help</td>
-    <td class="tg-us36">打印管理命令的帮助信息</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/hot_restart_version</td>
-    <td class="tg-us36">打印热重启兼容版本</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/listeners</td>
-    <td class="tg-us36">打印 listener 地址</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/logging</td>
-    <td class="tg-us36">查询/更改日志级别</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/quitquitquit</td>
-    <td class="tg-us36">退出服务</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/reset_counters</td>
-    <td class="tg-us36">将计数器重置为 1</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/runtime</td>
-    <td class="tg-us36">打印运行时值</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/runtime_modify</td>
-    <td class="tg-us36">修改运行时值</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/server_info</td>
-    <td class="tg-us36">打印服务器版本/状态信息</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/stats</td>
-    <td class="tg-us36">打印服务器状态统计信息</td>
-  </tr>
-  <tr>
-    <td class="tg-us36">/stats/prometheus</td>
-    <td class="tg-us36">打印 prometheus 格式的服务器状态统计信息</td>
-  </tr>
-</table>
+<p>通过 API 管理端可以对 Envoy 进行动态配置，参考 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api" target="_blank">v2 API reference</a>。</p>
 
-通过 API 管理端可以对 Envoy 进行动态配置，参考 [v2 API reference](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api)。
+<h2 id="p-id-h2-4-进一步探索-p"><p id="h2">4. 进一步探索</p></h2>
 
+<hr />
 
-## <p id="h2">4. 进一步探索</p>
+<p>如果你有兴趣探索 Envoy 的更多其他功能，<a href="https://github.com/envoyproxy/envoy/tree/master/examples" target="_blank">Envoy 官方示例</a>还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 <a href="https://www.learnenvoy.io/articles/service-discovery.html" target="_blank">Integrating Service Discovery with Envoy</a> 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 <a href="https://www.learnenvoy.io/articles/getting-help.html" target="_blank">Getting Help</a> 页面以获取更多的帮助信息。</p>
 
-----
+<h2 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h2>
 
-如果你有兴趣探索 Envoy 的更多其他功能，[Envoy 官方示例](https://github.com/envoyproxy/envoy/tree/master/examples)还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 [Integrating Service Discovery with Envoy](https://www.learnenvoy.io/articles/service-discovery.html) 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 [Getting Help](https://www.learnenvoy.io/articles/getting-help.html) 页面以获取更多的帮助信息。
+<hr />
 
+<ul>
+<li><a href="https://jimmysong.io/posts/envoy-archiecture-and-terminology/" target="_blank">Envoy 的架构与基本术语</a></li>
+<li><a href="https://jimmysong.io/posts/envoy-as-front-proxy/" target="_blank">使用 Envoy 作为前端代理</a></li>
+</ul>
 
-## <p id="h2">5. 参考</p>
-
-----
-
-+ [Envoy 的架构与基本术语](https://jimmysong.io/posts/envoy-archiecture-and-terminology/)
-+ [使用 Envoy 作为前端代理](https://jimmysong.io/posts/envoy-as-front-proxy/)
-
-<br />
-
+<p><br /></p>
 
 <style>
 #h2{
@@ -1058,7 +971,7 @@ border-top-color: #9954bb;
     <section id="datecount">
         <h4 id="date"> Thu Jun 28, 2018</h4>
     </section>
-    <h5 id="wc">3300 Words|Read in about 7 Min</h5>
+    <h5 id="wc">2900 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
