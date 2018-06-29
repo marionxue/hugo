@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Ryan Yang - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> HTTP 路由解析 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Ryan Yang" />
-  <meta name="twitter:title" content="Ryan Yang" />
-  <meta name="description" content="Ryan Yang(杨传胜) 是一名在上海工作的 Cloud Native 工程师，目前就职于 DaoCloud，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美">
-  <meta property="og:description" content="Ryan Yang(杨传胜) 是一名在上海工作的 Cloud Native 工程师，目前就职于 DaoCloud，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美">
-  <meta name="twitter:description" content="Ryan Yang(杨传胜) 是一名在上海工作的 Cloud Native 工程师，目前就职于 DaoCloud，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美">
+  <meta property="og:title" content="HTTP 路由解析" />
+  <meta name="twitter:title" content="HTTP 路由解析" />
+  <meta name="description" content="通过 HTTP 路由规则来切换流量">
+  <meta property="og:description" content="通过 HTTP 路由规则来切换流量">
+  <meta name="twitter:description" content="通过 HTTP 路由规则来切换流量">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/routing-basics/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.37" />
-  <link rel="canonical" href="https://www.yangcs.net/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/routing-basics/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -293,13 +293,12 @@ autocomplete('#aa-search-input',
   
   
   
-  
 
 
 
 
   
-    <div id="header-big-imgs" data-num-img=3 data-img-src-1="https://res.cloudinary.com/jimmysong/image/upload/banners/cloud-computing.jpg" data-img-desc-1="Democratizing the Cloud Computing for every one"data-img-src-2="https://res.cloudinary.com/jimmysong/image/upload/banners/great-wall-01.jpg" data-img-desc-2="Insight throught the Great Wall to the world"data-img-src-3="https://res.cloudinary.com/jimmysong/image/upload/banners/big-data-1.jpg" data-img-desc-3="Using Big Data to make business decision"></div>
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
   
 
   <header class="header-section has-img">
@@ -311,16 +310,29 @@ autocomplete('#aa-search-input',
           <div class="row">
               <div class="col-lg-12 col-md-12 col-md-offset-0">
                 
-                <div class="page-heading">
+                <div class="post-heading">
                 
                   
-                     <h1 align="center">Hi,I&#39;m Ryan</h1>
+                     <h1>HTTP 路由解析</h1>
+                     
+                     
                   
                   
                   
-                    <hr class="small">
-                    <span class="page-subheading">我可以给你提供容器云方面的知识以及帮助你提高资源整合能力</span>
+                    
+                      <hr class="small">
+                      <span class="post-subheading">通过 HTTP 路由规则来切换流量</span>
+                    
                   
+                  
+                    <span class="post-meta">
+  
+  Posted on June 29, 2018
+  
+  
+</span>
+
+
                   
                 
               </div>
@@ -335,21 +347,13 @@ autocomplete('#aa-search-input',
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="page-heading">
-                <h1 align="center">Ryan Yang</h1>
+            <div class="posts-heading">
+                <h1 align="center">HTTP 路由解析</h1>
                 
                   
-                    <hr class="small">
-                    <span class="page-subheading">我可以给你提供容器云方面的知识以及帮助你提高资源整合能力</span>
+                    <h2 align="center" class="posts-subheading">通过 HTTP 路由规则来切换流量</h2>
                   
                 
-                
-                  <span class="post-meta">
-  
-  
-</span>
-
-
                 
             </div>
           </div>
@@ -360,456 +364,445 @@ autocomplete('#aa-search-input',
 
 
     
-  <div role="main" class="container">
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-          <div class="well">
-            <p><a href="https://www.yangcs.net/resume/" target="_blank">Ryan Yang(杨传胜)</a> 是一名在上海工作的 Cloud Native 工程师，目前就职于 <a href="http://www.daocloud.io/" target="_blank">DaoCloud</a>，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美好事物及感情的向往。大学机械工程专业，性格较叛逆，由于对大学教师上课不满以及对机械专业无感，因而自学计算机与数学。爱好广泛，如果你对影视作品有 <strong>高清强迫症</strong>，欢迎点击页面底部的圆形小视频菜单访问他分享的视频。你可以通过微信与他联系，他的微信号是 yangchuansheng572887， 最近也在探索人工智能领域，欢迎与他进行交流。</p>
-
-          </div>
-        
-
-        <div class="posts-list">
-          
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/linux-circumvent/">
-                <h2 class="post-title">Linux全局智能分流方案</h2>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on January 23, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/linux-circumvent/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/gfw/">gfw</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/routing-basics/">
-                <h2 class="post-title">HTTP 路由解析</h2>
-                
-                  <h3 class="post-subtitle">
-                  通过 HTTP 路由规则来切换流量
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 29, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/routing-basics/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/envoy/">envoy</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/">
-                <h2 class="post-title">在你的笔记本上运行 Envoy</h2>
-                
-                  <h3 class="post-subtitle">
-                  Envoy 入门
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 28, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/envoy/">envoy</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/envoy-docker-shim/">
-                <h2 class="post-title">使用 envoy-docker-shim 替代 docker-proxy</h2>
-                
-                  <h3 class="post-subtitle">
-                  Docker 端口映射的新姿势
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 22, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/envoy-docker-shim/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/docker/">docker</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/custom-metrics-hpa/">
-                <h2 class="post-title">使用自定义指标进行弹性伸缩</h2>
-                
-                  <h3 class="post-subtitle">
-                  通过 Prometheus adaptor 来自定义监控指标
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 19, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/custom-metrics-hpa/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/api-aggregation/">
-                <h2 class="post-title">Kubernetes API 扩展</h2>
-                
-                  <h3 class="post-subtitle">
-                  使用聚合层扩展 Kubernetes API
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 19, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/api-aggregation/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/">
-                <h2 class="post-title"> 修复 Service Endpoint 更新的延迟</h2>
-                
-                  <h3 class="post-subtitle">
-                  Kube-controller-manager 调优
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 15, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/kubernetes-fucking-trick/">
-                <h2 class="post-title">Kubernetes 的奇技淫巧</h2>
-                
-                  <h3 class="post-subtitle">
-                  打造高效的命令行终端
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 11, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/kubernetes-fucking-trick/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/what-happens-when-k8s/">
-                <h2 class="post-title">kubectl run 背后到底发生了什么？</h2>
-                
-                  <h3 class="post-subtitle">
-                  探寻 Kubectl 创建 Pod 背后的原理
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on June 1, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/what-happens-when-k8s/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/introduce-kubernetes-descheduler/">
-                <h2 class="post-title">走进 Descheduler</h2>
-                
-                  <h3 class="post-subtitle">
-                  通过 Descheduler 来实现更高级的调度策略
-                  </h3>
-                
-              </a>
-
-              <span class="post-meta">
-  
-  Posted on May 23, 2018
-  
-  
-</span>
-
-
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/introduce-kubernetes-descheduler/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/kubernetes/">kubernetes</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-        </div>
-
-        
-          <ul class="pager main-pager">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
             
-              <li class="next">
-                <a href="/page/2">Older Posts &rarr;</a>
-              </li>
             
-          </ul>
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Jun 29, 2018</h4>
+    </section>
+    <h5 id="wc">1500 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
         
-      </div>
-      <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
+        <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
+    </h5>
+</div>
 
-<ul class="pagination">
-    
-    <li>
-        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li
-    class="disabled">
-    <a href="" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    class="active"><a href="/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/page/3/">3</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/page/4/">4</a></li>
-    
-    
-    <li
-    >
-    <a href="/page/2/" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li>
-        <a href="/page/4/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<p>本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：<a href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" target="_blank">在你的笔记本上运行 Envoy</a>，现在就可以更深入地了解如何在静态文件中配置路由（Route）、集群（Cluster）和监听器（Listener）了。</p>
+
+<h2 id="p-id-h2-1-相关组件-p"><p id="h2">1. 相关组件</p></h2>
+
+<hr />
+
+<h3 id="路由">路由</h3>
+
+<p><span id="inline-blue">路由</span> 是一组将虚拟主机与集群相匹配的规则，通过路由你可以很轻松地创建流量切换规则。路由的定义方式有两种：通过静态配置文件定义或通过路由发现服务（<code>RDS</code>）进行配置。</p>
+
+<h3 id="集群">集群</h3>
+
+<p><span id="inline-blue">集群</span> 是一组逻辑上相似的上游主机，它接收来自 Envoy 的流量。集群可以通过负载均衡策略来提高基础架构的弹性。集群可以通过静态文件进行配置，也可以通过集群发现服务（<code>CDS</code>）API 动态获取。</p>
+
+<h3 id="监听器">监听器</h3>
+
+<p><span id="inline-blue">监听器</span> 是可以接受来自下游客户端的连接的命名网络位置（例如，端口，unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。同样，监听器可以通过静态定义，也可以通过监听器发现服务（LDS）动态获取。</p>
+
+<h2 id="p-id-h2-2-配置路由-p"><p id="h2">2. 配置路由</p></h2>
+
+<hr />
+
+<p>Envoy 的路由定义将 <code>域 + URL</code> 映射到集群。在上一篇文章中，我们定义了两个集群（service1 和 service2），每一个集群都匹配一个单独的 URL（<code>/service1</code> 和 <code>/service2</code>）。</p>
+
+<pre><code class="language-yaml">virtual_hosts:
+  - name: backend
+    domains:
+    - &quot;*&quot;
+    routes:
+    - match:
+        prefix: &quot;/service/1&quot;
+      route:
+        cluster: service1
+    - match:
+        prefix: &quot;/service/2&quot;
+      route:
+        cluster: service2
+</code></pre>
+
+<p>集群从 DNS 中获取集群成员数据，并对集群中的所有主机使用<strong>轮询</strong>的方式进行负载均衡。</p>
+
+<pre><code class="language-yaml">clusters:
+  - name: service1
+      connect_timeout: 0.25s
+      type: strict_dns
+      lb_policy: round_robin
+      http2_protocol_options: {}
+      hosts:
+      - socket_address:
+          address: service1
+          port_value: 80
+  - name: service2
+      connect_timeout: 0.25s
+      type: strict_dns
+      lb_policy: round_robin
+      http2_protocol_options: {}
+      hosts:
+      - socket_address:
+          address: service2
+          port_value: 80
+</code></pre>
+
+<p><br /></p>
+
+<h2 id="p-id-h2-3-配置监听器-p"><p id="h2">3. 配置监听器</p></h2>
+
+<hr />
+
+<p>路由的配置包含在监听器的配置中，现在我们再回过头来看一下监听器的配置。监听器通过<strong>监听器过滤器</strong>（Listener filter）来操作路由配置中定义的两个服务。监听器的 API 非常简单，它的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。</p>
+
+<pre><code class="language-yaml">listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: backend
+              domains:
+              - &quot;*&quot;
+              routes:
+              - match:
+                  prefix: &quot;/service/1&quot;
+                route:
+                  cluster: service1
+              - match:
+                  prefix: &quot;/service/2&quot;
+                route:
+                  cluster: service2
+          http_filters:
+          - name: envoy.router
+            config: {}
+</code></pre>
+
+<p><br /></p>
+
+<h2 id="p-id-h2-4-动态发现路由-集群和监听器-p"><p id="h2">4. 动态发现路由、集群和监听器</p></h2>
+
+<hr />
+
+<p>到目前为止我们都是通过静态配置文件来配置路由和集群，但你也可以通过 <code>RDS</code> 和 <code>CDS</code> 来动态更新路由和集群。特别是当你的基础架构规模非常大时，你可以通过配置动态服务发现的规则来简化你的重复配置成本，并且可以将同一套动态服务发现规则应用于多个 Envoy 集群。</p>
+
+<p>现在你已经了解了如何配置基本的路由、集群和监听器，下一节我们将学习如何在增量部署中设置更复杂的流量切换和过滤规则。</p>
+
+<h2 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h2>
+
+<hr />
+
+<ul>
+<li><a href="https://servicemesher.github.io/envoy/" target="_blank">Envoy 官方文档中文版</a></li>
 </ul>
 
+<p><br /></p>
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" data-toggle="tooltip" data-placement="top" title="在你的笔记本上运行 Envoy">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/run-envoy-on-your-laptop/">在你的笔记本上运行 Envoy</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Fri Jun 29, 2018</h4>
+    </section>
+    <h5 id="wc">1500 Words|Read in about 3 Min</h5>
+    <h5 id="tags">Tags: 
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </div>
+        <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
     </div>
-  </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
 
     <footer>
   <div class="container">
