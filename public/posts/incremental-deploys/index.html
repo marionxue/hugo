@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Ryan Yang - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> 通过 Envoy 实现增量部署 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Ryan Yang" />
-  <meta name="twitter:title" content="Ryan Yang" />
-  <meta name="description" content="Ryan Yang(杨传胜) 是一名在上海工作的 Cloud Native 工程师，目前就职于 DaoCloud，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美">
-  <meta property="og:description" content="Ryan Yang(杨传胜) 是一名在上海工作的 Cloud Native 工程师，目前就职于 DaoCloud，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美">
-  <meta name="twitter:description" content="Ryan Yang(杨传胜) 是一名在上海工作的 Cloud Native 工程师，目前就职于 DaoCloud，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美">
+  <meta property="og:title" content="通过 Envoy 实现增量部署" />
+  <meta name="twitter:title" content="通过 Envoy 实现增量部署" />
+  <meta name="description" content="基于请求头的路由和加权负载均衡">
+  <meta property="og:description" content="基于请求头的路由和加权负载均衡">
+  <meta name="twitter:description" content="基于请求头的路由和加权负载均衡">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/incremental-deploys/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.37" />
-  <link rel="canonical" href="https://www.yangcs.net/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/incremental-deploys/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -293,13 +293,12 @@ autocomplete('#aa-search-input',
   
   
   
-  
 
 
 
 
   
-    <div id="header-big-imgs" data-num-img=3 data-img-src-1="https://res.cloudinary.com/jimmysong/image/upload/banners/cloud-computing.jpg" data-img-desc-1="Democratizing the Cloud Computing for every one"data-img-src-2="https://res.cloudinary.com/jimmysong/image/upload/banners/great-wall-01.jpg" data-img-desc-2="Insight throught the Great Wall to the world"data-img-src-3="https://res.cloudinary.com/jimmysong/image/upload/banners/big-data-1.jpg" data-img-desc-3="Using Big Data to make business decision"></div>
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
   
 
   <header class="header-section has-img">
@@ -311,16 +310,29 @@ autocomplete('#aa-search-input',
           <div class="row">
               <div class="col-lg-12 col-md-12 col-md-offset-0">
                 
-                <div class="page-heading">
+                <div class="post-heading">
                 
                   
-                     <h1 align="center">Hi,I&#39;m Ryan</h1>
+                     <h1>通过 Envoy 实现增量部署</h1>
+                     
+                     
                   
                   
                   
-                    <hr class="small">
-                    <span class="page-subheading">我可以给你提供容器云方面的知识以及帮助你提高资源整合能力</span>
+                    
+                      <hr class="small">
+                      <span class="post-subheading">基于请求头的路由和加权负载均衡</span>
+                    
                   
+                  
+                    <span class="post-meta">
+  
+  Posted on July 2, 2018
+  
+  
+</span>
+
+
                   
                 
               </div>
@@ -335,21 +347,13 @@ autocomplete('#aa-search-input',
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="page-heading">
-                <h1 align="center">Ryan Yang</h1>
+            <div class="posts-heading">
+                <h1 align="center">通过 Envoy 实现增量部署</h1>
                 
                   
-                    <hr class="small">
-                    <span class="page-subheading">我可以给你提供容器云方面的知识以及帮助你提高资源整合能力</span>
+                    <h2 align="center" class="posts-subheading">基于请求头的路由和加权负载均衡</h2>
                   
                 
-                
-                  <span class="post-meta">
-  
-  
-</span>
-
-
                 
             </div>
           </div>
@@ -360,180 +364,442 @@ autocomplete('#aa-search-input',
 
 
     
-  <div role="main" class="container">
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jul 2, 2018</h4>
+    </section>
+    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
         
-          <div class="well">
-            <p><a href="https://www.yangcs.net/resume/" target="_blank">Ryan Yang(杨传胜)</a> 是一名在上海工作的 Cloud Native 工程师，目前就职于 <a href="http://www.daocloud.io/" target="_blank">DaoCloud</a>，对各种事物都有深刻探寻的好奇心和善于考据的思维方式，以及对于美好事物及感情的向往。大学机械工程专业，性格较叛逆，由于对大学教师上课不满以及对机械专业无感，因而自学计算机与数学。爱好广泛，如果你对影视作品有 <strong>高清强迫症</strong>，欢迎点击页面底部的圆形小视频菜单访问他分享的视频。你可以通过微信与他联系，他的微信号是 yangchuansheng572887， 最近也在探索人工智能领域，欢迎与他进行交流。</p>
+        <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
+    </h5>
+</div>
 
-          </div>
-        
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
 
-        <div class="posts-list">
-          
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/">
-                <h2 class="post-title">子空间投影</h2>
-                
-                  <h3 class="post-subtitle">
-                  通过投影矩阵探寻高维空间在低维空间的投影
-                  </h3>
-                
-              </a>
+<p>微服务最常见的工作流程之一就是版本更新。不同于基础架构更新，通过流量管理可以实现微服务的版本更新。当新发布的版本有缺陷时，这种方法就可以避免版本缺陷对用户造成的不良影响。</p>
 
-              <span class="post-meta">
-  
-  Posted on June 4, 2016
-  
-  
-</span>
+<p>本文将继续沿用前文使用的示例，在原有配置文件的基础上新增了个别服务的新版本来演示流量是如何切换的（包括基于头文件的路由和加权负载均衡）。</p>
 
+<h2 id="p-id-h2-1-基于头文件的路由-p"><p id="h2">1. 基于头文件的路由</p></h2>
 
-              <div class="post-entry">
-                
-                  
-                  <a href="https://www.yangcs.net/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/" class="post-read-more">[Read More]</a>
-                
-              </div>
+<hr />
 
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/math/">math</a>&nbsp;
-                
-                </span>
-              
+<p>为了说明基于头文件的路由对微服务产生的影响，首先创建一个新版本的 <code>service1</code> 。这里仍然使用 Envoy 仓库中的 <a href="https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy" target="_blank">front-proxy</a> 示例，修改 <a href="https://github.com/envoyproxy/envoy/blob/master/examples/front-proxy/docker-compose.yml" target="_blank">docker-compose.yml</a> 文件，添加一个名为 <code>service1a</code> 的新服务。</p>
+
+<pre><code class="language-yaml">  service1a:
+    build:
+      context: .
+      dockerfile: Dockerfile-service
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
+    networks:
+      envoymesh:
+        aliases:
+          - service1a
+    environment:
+      - SERVICE_NAME=1a
+    expose:
+      - &quot;80&quot;
+</code></pre>
+
+<p>为了确保 Envoy 可以发现该服务，需要将该服务添加到 <code>clusters</code> 配置项中。</p>
+
+<pre><code class="language-yaml">  - name: service1a
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service1a
+        port_value: 80
+</code></pre>
+
+<p>为了使新加的服务路由可达，需要在 <code>match</code> 配置项中添加一个带有 <code>headers</code> 字段的新路由。因为路由规则列表是按顺序匹配的，所以我们需要将该规则添加到路由规则列表的顶部，这样与新规则匹配的包含该头文件的请求就会被转发到新服务，而不包括该头文件的请求仍然被转发到 service1。</p>
+
+<pre><code class="language-yaml">routes:
+- match:
+    prefix: &quot;/service/1&quot;
+    headers:
+      - name: &quot;x-canary-version&quot;
+        value: &quot;service1a&quot;
+  route:
+    cluster: service1a
+- match:
+    prefix: &quot;/service/1&quot;
+  route:
+    cluster: service1
+- match:
+    prefix: &quot;/service/2&quot;
+  route:
+    cluster: service2
+</code></pre>
+
+<p>然后重启该示例服务：</p>
+
+<pre><code class="language-bash">$ docker-compose down --remove-orphans
+$ docker-compose up --build -d
+</code></pre>
+
+<p>如果客户端发出的请求没有携带请求头，就会收到来自 <code>service1</code> 的响应：</p>
+
+<pre><code class="language-bash">$ curl localhost:8000/service/1
+
+Hello from behind Envoy (service 1)! hostname: d0adee810fc4 resolvedhostname: 172.18.0.2
+</code></pre>
+
+<p>如果请求携带了请求头 <code>x-canary-version</code>，Envoy 就会将请求转发到 service 1a。</p>
+
+<pre><code class="language-bash">$ curl -H 'x-canary-version: service1a' localhost:8000/service/1
+
+Hello from behind Envoy (service 1a)! hostname: 569ee89eebc8 resolvedhostname: 172.18.0.6
+</code></pre>
+
+<p>Envoy 基于头文件的路由功能解锁了<a href="https://opensource.com/article/17/8/testing-production" target="_blank">在生产环境中测试开发代码</a>的能力。</p>
+
+<h2 id="p-id-h2-2-加权负载均衡-p"><p id="h2">2. 加权负载均衡</p></h2>
+
+<hr />
+
+<p>接下来进一步修改配置来实现对 service1 新版本的增量发布，使用 <code>clusters</code> 数组替代原来的 <code>cluster</code> 键值对，从而实现将 25% 的流量转发到该服务的新版本上。</p>
+
+<pre><code class="language-yaml">- match:
+    prefix: &quot;/service/1&quot;
+  route:
+    weighted_clusters:
+      clusters:
+      - name: service1a
+        weight: 25
+      - name: service1
+        weight: 75
+</code></pre>
+
+<p>然后重启该示例服务：</p>
+
+<pre><code class="language-bash">$ docker-compose down --remove-orphans
+$ docker-compose up --build -d
+</code></pre>
+
+<p>此时如果客户端发出的请求没有携带请求头，就会有 25% 的流量转发到 service 1a。</p>
+
+<p>增量部署是个非常强大的功能，它还可以和监控配合使用，以确保服务的版本差异（或者后端服务的架构差异）不会对该服务的版本更新产生不良影响。如果想模拟新版本的成功发布，可以将 service1a 的权重设置为 <code>100</code>，然后所有的流量都会被转发到 service 1a。同样，如果新发布的版本有缺陷，你可以通过将 service1a 的权重设置为 <code>0</code> 来回滚到之前的版本。</p>
+
+<h2 id="p-id-h2-3-最佳实践-p"><p id="h2">3. 最佳实践</p></h2>
+
+<hr />
+
+<p>学会了如何配置基于请求头的路由和加权负载均衡之后，就可以在生产或测试环境中进行实践了。首先需要将<strong>部署</strong>和<strong>发布</strong>这两个流程分离，部署了新版本之后，你就可以通过配置基于请求头的路由来让你的团队在内部进行测试，同时又不影响用户的使用。一旦测试通过，就可以通过滚动发布模式（逐步增加权重，如 1%，5%，10%，50% &hellip;）来优雅地发布新版本。</p>
+
+<p>通过将<strong>部署</strong>和<strong>发布</strong>这两个流程分离，使用基于请求头的路由在新版本发布之前进行测试，然后通过滚动部署模式来增量发布，你的团队将会从中受益匪浅。</p>
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
             </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/">
-                <h2 class="post-title">十分钟告诉你什么是最小二乘法</h2>
-                
-                  <h3 class="post-subtitle">
-                  理解最小二乘法
-                  </h3>
-                
-              </a>
 
-              <span class="post-meta">
-  
-  Posted on June 4, 2016
-  
-  
-</span>
-
-
-              <div class="post-entry">
+            <ul class="pager blog-pager">
                 
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/" class="post-read-more">[Read More]</a>
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/routing-basics/" data-toggle="tooltip" data-placement="top" title="HTTP 路由解析">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
                 
-              </div>
-
-              
-                <span class="post-meta">
-                
-                  #<a href="https://www.yangcs.nettags/math/">math</a>&nbsp;
-                
-                </span>
-              
-            </article>
-          
-        </div>
-
-        
-          <ul class="pager main-pager">
+            </ul>
             
-              <li class="previous">
-                <a href="/page/3">&larr; Newer Posts</a>
-              </li>
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/routing-basics/">HTTP 路由解析</a></li>
+                    
+                    <li><a href="/posts/run-envoy-on-your-laptop/">在你的笔记本上运行 Envoy</a></li>
+                    
+                </ul>
+                
+            </div>
             
             
-          </ul>
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Jul 2, 2018</h4>
+    </section>
+    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="tags">Tags: 
         
-      </div>
-      <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
+        <a href="https://www.yangcs.nettags/envoy/">envoy</a> &nbsp;
+    </h5>
+</div>
 
-<ul class="pagination">
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
     
-    <li>
-        <a href="/" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li
-    >
-    <a href="/page/3/" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    ><a href="/page/3/">3</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li
-    class="active"><a href="/page/4/">4</a></li>
-    
-    
-    <li
-    class="disabled">
-    <a href="" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li>
-        <a href="/page/4/" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
-</ul>
-
-        
-        
-        
-      </div>
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
     </div>
-  </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
 
     <footer>
   <div class="container">
