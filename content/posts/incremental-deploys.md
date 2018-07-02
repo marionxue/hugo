@@ -10,15 +10,15 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-微服务最常见的工作流程之一就是版本更新。不同于基础架构更新，通过流量管理可以实现微服务的版本更新。当新发布的版本有缺陷时，这种方法就可以避免版本缺陷对用户造成的不良影响。
+微服务最常见的工作流程之一就是版本更新。不同于基础架构更新，通过流量管理可以优雅地实现微服务的版本更新。当新发布的版本有缺陷时，这种方法就可以避免版本缺陷对用户造成的不良影响。
 
-本文将继续沿用前文使用的示例，在原有配置文件的基础上新增了个别服务的新版本来演示流量是如何切换的（包括基于头文件的路由和加权负载均衡）。
+本文将继续沿用前文使用的示例，在原有配置文件的基础上新增了个别服务的新版本来演示流量是如何切换的（包括基于请求头的路由和加权负载均衡）。
 
-## <p id="h2">1. 基于头文件的路由</p>
+## <p id="h2">1. 基于请求头的路由</p>
 
 ----
 
-为了说明基于头文件的路由对微服务产生的影响，首先创建一个新版本的 `service1` 。这里仍然使用 Envoy 仓库中的 [front-proxy](https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy) 示例，修改 [docker-compose.yml](https://github.com/envoyproxy/envoy/blob/master/examples/front-proxy/docker-compose.yml) 文件，添加一个名为 `service1a` 的新服务。
+为了说明基于请求头的路由对微服务产生的影响，首先创建一个新版本的 `service1` 。这里仍然使用 Envoy 仓库中的 [front-proxy](https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy) 示例，修改 [docker-compose.yml](https://github.com/envoyproxy/envoy/blob/master/examples/front-proxy/docker-compose.yml) 文件，添加一个名为 `service1a` 的新服务。
 
 ```yaml
   service1a:
@@ -51,7 +51,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
         port_value: 80
 ```
 
-为了使新加的服务路由可达，需要在 `match` 配置项中添加一个带有 `headers` 字段的新路由。因为路由规则列表是按顺序匹配的，所以我们需要将该规则添加到路由规则列表的顶部，这样与新规则匹配的包含该头文件的请求就会被转发到新服务，而不包括该头文件的请求仍然被转发到 service1。
+为了使新加的服务路由可达，需要在 `match` 配置项中添加一个带有 `headers` 字段的新路由。因为路由规则列表是按顺序匹配的，所以我们需要将该规则添加到路由规则列表的顶部，这样与新规则匹配的包含该头文件的请求就会被转发到新服务，而不包含该头文件的请求仍然被转发到 service1。
 
 ```yaml
 routes:
@@ -79,7 +79,7 @@ $ docker-compose down --remove-orphans
 $ docker-compose up --build -d
 ```
 
-如果客户端发出的请求没有携带请求头，就会收到来自 `service1` 的响应：
+如果客户端发出的请求没有携带头文件，就会收到来自 `service1` 的响应：
 
 ```bash
 $ curl localhost:8000/service/1
@@ -87,7 +87,7 @@ $ curl localhost:8000/service/1
 Hello from behind Envoy (service 1)! hostname: d0adee810fc4 resolvedhostname: 172.18.0.2
 ```
 
-如果请求携带了请求头 `x-canary-version`，Envoy 就会将请求转发到 service 1a。
+如果请求携带了头文件 `x-canary-version`，Envoy 就会将请求转发到 service 1a。
 
 ```bash
 $ curl -H 'x-canary-version: service1a' localhost:8000/service/1
@@ -122,7 +122,7 @@ $ docker-compose down --remove-orphans
 $ docker-compose up --build -d
 ```
 
-此时如果客户端发出的请求没有携带请求头，就会有 25% 的流量转发到 service 1a。
+此时如果客户端发出的请求没有携带头文件，就会有 25% 的流量转发到 service 1a。
 
 增量部署是个非常强大的功能，它还可以和监控配合使用，以确保服务的版本差异（或者后端服务的架构差异）不会对该服务的版本更新产生不良影响。如果想模拟新版本的成功发布，可以将 service1a 的权重设置为 `100`，然后所有的流量都会被转发到 service 1a。同样，如果新发布的版本有缺陷，你可以通过将 service1a 的权重设置为 `0` 来回滚到之前的版本。
 
