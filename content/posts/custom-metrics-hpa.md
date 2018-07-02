@@ -80,6 +80,8 @@ hpa 实现了一个控制环，可以周期性的从 Resource Metrics API 查询
 
 <center>![](https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa.png)</center>
 
+<center>![](http://o7z41ciog.bkt.clouddn.com/hpa.png)</center>
+
 ## <p id="h2">5. 实战</p>
 
 ---- 
