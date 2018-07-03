@@ -109,7 +109,7 @@ desc = "Using Big Data to make business decision"
 [[menu.main]]
     parent = "Categories"
     name = "Tags"
-    url = "tags"
+    url = "/tags"
     weight = 8
 
 [[menu.main]]
