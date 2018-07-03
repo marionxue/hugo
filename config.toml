@@ -73,7 +73,7 @@ desc = "Using Big Data to make business decision"
 [[menu.main]]
     parent = "Categories"
     name = "Service Mesh"
-    url = "categories/service\ mesh"
+    url = "categories/service-mesh"
     weight = 2
 
 [[menu.main]]
