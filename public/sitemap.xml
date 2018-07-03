@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</loc>
+    <lastmod>2018-07-03T06:43:33+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/incremental-deploys/</loc>
     <lastmod>2018-07-02T05:37:37+00:00</lastmod>
   </url>
@@ -178,26 +183,20 @@
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/categories/docker/</loc>
-    <lastmod>2018-06-22T08:22:07+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://www.yangcs.net/tags/docker/</loc>
     <lastmod>2018-06-22T08:22:07+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/tags/envoy/</loc>
-    <lastmod>2018-07-02T05:37:37+00:00</lastmod>
+    <loc>https://www.yangcs.net/categories/docker/</loc>
+    <lastmod>2018-06-22T08:22:07+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/categories/gfw/</loc>
-    <lastmod>2018-01-23T08:26:58+00:00</lastmod>
+    <loc>https://www.yangcs.net/tags/envoy/</loc>
+    <lastmod>2018-07-03T06:43:33+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -208,13 +207,19 @@
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/categories/kubernetes/</loc>
-    <lastmod>2018-06-19T09:02:52+00:00</lastmod>
+    <loc>https://www.yangcs.net/categories/gfw/</loc>
+    <lastmod>2018-01-23T08:26:58+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
+    <lastmod>2018-06-19T09:02:52+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/categories/kubernetes/</loc>
     <lastmod>2018-06-19T09:02:52+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -232,13 +237,13 @@
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/categories/math/</loc>
+    <loc>https://www.yangcs.net/tags/math/</loc>
     <lastmod>2016-12-03T23:59:48+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/tags/math/</loc>
+    <loc>https://www.yangcs.net/categories/math/</loc>
     <lastmod>2016-12-03T23:59:48+00:00</lastmod>
     <priority>0</priority>
   </url>
@@ -250,26 +255,26 @@
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/categories/python/</loc>
-    <lastmod>2017-07-27T18:38:59+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://www.yangcs.net/tags/python/</loc>
     <lastmod>2017-07-27T18:38:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/categories/service-mesh/</loc>
-    <lastmod>2018-07-02T05:37:37+00:00</lastmod>
+    <loc>https://www.yangcs.net/categories/python/</loc>
+    <lastmod>2017-07-27T18:38:59+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/tags/service-mesh/</loc>
-    <lastmod>2018-07-02T05:37:37+00:00</lastmod>
+    <lastmod>2018-07-03T06:43:33+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/categories/service-mesh/</loc>
+    <lastmod>2018-07-03T06:43:33+00:00</lastmod>
     <priority>0</priority>
   </url>
   

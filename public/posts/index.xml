@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>为 Envoy 启用证书验证</title>
+      <link>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</link>
+      <pubDate>Tue, 03 Jul 2018 06:43:33 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>通过 Envoy 实现增量部署</title>
       <link>https://www.yangcs.net/posts/incremental-deploys/</link>
       <pubDate>Mon, 02 Jul 2018 05:37:37 +0000</pubDate>

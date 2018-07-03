@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 通过 Envoy 实现增量部署 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> 为 Envoy 启用证书验证 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="通过 Envoy 实现增量部署" />
-  <meta name="twitter:title" content="通过 Envoy 实现增量部署" />
-  <meta name="description" content="基于请求头的路由和加权负载均衡">
-  <meta property="og:description" content="基于请求头的路由和加权负载均衡">
-  <meta name="twitter:description" content="基于请求头的路由和加权负载均衡">
+  <meta property="og:title" content="为 Envoy 启用证书验证" />
+  <meta name="twitter:title" content="为 Envoy 启用证书验证" />
+  <meta name="description" content="加密客户端和 Envoy 代理之间的所有流量">
+  <meta property="og:description" content="加密客户端和 Envoy 代理之间的所有流量">
+  <meta name="twitter:description" content="加密客户端和 Envoy 代理之间的所有流量">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/incremental-deploys/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.42.2" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/incremental-deploys/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -313,7 +313,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>通过 Envoy 实现增量部署</h1>
+                     <h1>为 Envoy 启用证书验证</h1>
                      
                      
                   
@@ -321,13 +321,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">基于请求头的路由和加权负载均衡</span>
+                      <span class="post-subheading">加密客户端和 Envoy 代理之间的所有流量</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on July 2, 2018
+  Posted on July 3, 2018
   
   
 </span>
@@ -348,10 +348,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">通过 Envoy 实现增量部署</h1>
+                <h1 align="center">为 Envoy 启用证书验证</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">基于请求头的路由和加权负载均衡</h2>
+                    <h2 align="center" class="posts-subheading">加密客户端和 Envoy 代理之间的所有流量</h2>
                   
                 
                 
@@ -372,9 +372,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Mon Jul 2, 2018</h4>
+        <h4 id="date"> Tue Jul 3, 2018</h4>
     </section>
-    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
@@ -387,121 +387,278 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>微服务最常见的工作流程之一就是版本更新。不同于基础架构更新，通过流量管理可以优雅地实现微服务的版本更新。当新发布的版本有缺陷时，这种方法就可以避免版本缺陷对用户造成的不良影响。</p>
+<p>如果你准备将服务暴露在互联网上，最好启用 <code>SSL/TLS</code> 加密协议。当使用 Envoy 作为前端代理或者服务网格代理时，可以通过 SSL/TLS 协议来加密客户端和代理之间的所有通信流量。</p>
 
-<p>本文将继续沿用前文使用的示例，在原有配置文件的基础上新增了个别服务的新版本来演示流量是如何切换的（包括基于请求头的路由和加权负载均衡）。</p>
+<p>Envoy 同时支持监听器中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v1/listeners/listeners.html#config-listener-ssl-context" target="_blank">TLS 终止</a> 和与上游集群建立连接时的 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v1/cluster_manager/cluster_ssl#config-cluster-manager-cluster-ssl" target="_blank">TLS 发起</a>。不管是为现代 web 服务提供标准的边缘代理功能，还是同具有高级 TLS 要求（TLS1.2, SNI, 等等）的外部服务建立连接，Envoy 都提供了充分的支持。</p>
 
-<h2 id="p-id-h2-1-基于请求头的路由-p"><p id="h2">1. 基于请求头的路由</p></h2>
+<p>本文将会演示如何在前端代理中设置 TLS 终止，同时指定访问域名。主要分三个步骤：</p>
+
+<ol>
+<li>创建 Envoy 需要使用的证书</li>
+<li>为 Envoy 启用证书验证</li>
+<li>配置 Envoy 将 80 端口重定向到 443 端口</li>
+</ol>
+
+<h2 id="p-id-h2-1-创建证书-p"><p id="h2">1. 创建证书</p></h2>
 
 <hr />
 
-<p>为了说明基于请求头的路由对微服务产生的影响，首先创建一个新版本的 <code>service1</code> 。这里仍然使用 Envoy 仓库中的 <a href="https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy" target="_blank">front-proxy</a> 示例，修改 <a href="https://github.com/envoyproxy/envoy/blob/master/examples/front-proxy/docker-compose.yml" target="_blank">docker-compose.yml</a> 文件，添加一个名为 <code>service1a</code> 的新服务。</p>
+<p>如果要启用 HTTPS，我们就需要从证书授权机构(以下简称 CA) 处获取一个证书。如果你还没有证书，你可以从 <a href="https://letsencrypt.org/" target="_blank">Let’s Encrypt</a> 获得网站域名的免费的证书，因为 Let’s Encrypt 就是一个 <code>CA</code>。本文为了测试使用 <code>OpenSSL</code> 生成私钥文件 <code>example-com.key</code> 和 自签名证书 <code>example-com.crt</code>。</p>
 
-<pre><code class="language-yaml">  service1a:
-    build:
-      context: .
-      dockerfile: Dockerfile-service
-    volumes:
-      - ./service-envoy.yaml:/etc/service-envoy.yaml
-    networks:
-      envoymesh:
-        aliases:
-          - service1a
-    environment:
-      - SERVICE_NAME=1a
-    expose:
-      - &quot;80&quot;
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>需要注意的是 <code>Common Name</code> 字段，本文测试使用的是 <code>example.com</code>。</p>
+</div>
+
+<pre><code class="language-bash"># 继续沿用前文使用的示例
+$ cd envoy/examples/front-proxy
+
+# 生成2048位的加密私钥
+$ openssl genrsa -out example-com.key 2048
+
+#生成证书签名请求(CSR)
+$ openssl req -new -key example-com.key -out example-com.csr
+
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) [XX]:CN
+State or Province Name (full name) []:CA
+Locality Name (eg, city) [Default City]:Shanghai
+Organization Name (eg, company) [Default Company Ltd]:Daocloud
+Organizational Unit Name (eg, section) []:Envoy Division
+Common Name (eg, your name or your server's hostname) []:example.com
+Email Address []:chuansheng.yang@daocloud.io
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+A challenge password []:
+An optional company name []:
+
+# 生成X509自签名证书
+$ openssl x509 -req -days 365 -in example-com.csr -signkey example-com.key -out example-com.crt
 </code></pre>
 
-<p>为了确保 Envoy 可以发现该服务，需要将该服务添加到 <code>clusters</code> 配置项中。</p>
+<p><br /></p>
 
-<pre><code class="language-yaml">  - name: service1a
+<h2 id="p-id-h2-2-为-envoy-启用证书验证-p"><p id="h2">2. 为 Envoy 启用证书验证</p></h2>
+
+<hr />
+
+<p>修改 <code>Dockerfile-frontenvoy</code> 文件：</p>
+
+<pre><code class="language-Dockerfile">ADD ./example-com.crt /etc/example-com.crt
+ADD ./example-com.key /etc/example-com.key
+</code></pre>
+
+<p>修改 <code>front-envoy.yaml</code> 配置文件，在 <code>filters</code> 列表后面添加 <code>tls_context</code> 配置项：</p>
+
+<pre><code class="language-yaml">tls_context:
+  common_tls_context:
+    tls_certificates:
+      - certificate_chain:
+          filename: &quot;/etc/example-com.crt&quot;
+        private_key:
+          filename: &quot;/etc/example-com.key&quot;
+</code></pre>
+
+<p>将监听器的监听端口改为标准的 TLS 端口：443。</p>
+
+<pre><code class="language-yaml">  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 443
+</code></pre>
+
+<p>还要指定访问的域名，不再使用之前的通配符匹配：</p>
+
+<pre><code class="language-yaml">domains:
+- &quot;example.com&quot;
+</code></pre>
+
+<p>Envoy 可以通过在同一个监听器中配置多个监听器过滤器链来支持多个域名的 <code>SNI</code>（如 example.com 和 www.example.com），你可以在 <a href="https://www.envoyproxy.io/docs/envoy/latest/faq/sni" target="_blank">Envoy 官方文档</a> 中看到一个示例。</p>
+
+<p>最后修改 <code>docker-compose.yaml</code> 文件，将 443 端口暴露出来，同时将 8080 端口替换为 80 端口。</p>
+
+<pre><code class="language-yaml">services:
+  front-envoy:
+  ...
+    expose:
+      - &quot;80&quot;
+      - &quot;443&quot;
+    ports:
+      - &quot;80:80&quot;
+      - &quot;443:443&quot;
+</code></pre>
+
+<p>重启该示例服务：</p>
+
+<pre><code class="language-bash">$ docker-compose down --remove-orphans
+$ docker-compose up --build -d
+</code></pre>
+
+<p>下面就可以使用 curl 来进行测试了。这里有两个需要注意的地方：</p>
+
+<ul>
+<li>为了确保 curl 能成功验证证书，必须通过 <code>--cacert</code> 参数将证书文件传递给 Envoy。</li>
+<li>由于 DNS 无法解析 example.com，所以需要通过参数 <code>--connect-to</code> 明确指定连接到 localhost，同时在请求的头文件中申明 localhost 的域名为 <code>example.com</code>。</li>
+</ul>
+
+<pre><code class="language-bash">$ curl --cacert example-com.crt --connect-to localhost -H 'Host: example.com' https://localhost/service/1
+
+Hello from behind Envoy (service 1)! hostname: 56e8a5bff6bd resolvedhostname: 172.18.0.2
+</code></pre>
+
+<p>如果你的 curl 版本不支持 <code>--connect-to</code> 参数，可以在 <code>/etc/hosts</code> 中添加一个条目：<code>127.0.0.1    example.com</code>，然后直接通过域名访问：</p>
+
+<pre><code class="language-bash">$ curl --cacert example-com.crt https://example.com/service/1
+</code></pre>
+
+<p><br /></p>
+
+<h2 id="p-id-h2-3-将-80-端口重定向到-443-端口-p"><p id="h2">3. 将 80 端口重定向到 443 端口</p></h2>
+
+<hr />
+
+<p>为了将所有 80 端口的流量重定向到 443 端口，可以将 443 端口的路由配置复制一份，然后稍作修改：</p>
+
+<pre><code class="language-yaml">  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            virtual_hosts:
+            - name: backend
+              domains:
+              - &quot;example.com&quot;
+              routes:
+              - match:
+                  prefix: &quot;/&quot;
+                redirect:
+                  path_redirect: &quot;/&quot;
+                  https_redirect: true
+          http_filters:
+          - name: envoy.router
+            config: {}
+</code></pre>
+
+<p>重启服务：</p>
+
+<pre><code class="language-bash">$ docker-compose down --remove-orphans
+$ docker-compose up --build -d
+</code></pre>
+
+<p>再次通过 <code>HTTP</code> 协议访问 service1，将会返回 <code>301</code> 状态码：</p>
+
+<pre><code class="language-bash">$ curl -I -H 'Host: example.com' http://localhost/service/1
+
+HTTP/1.1 301 Moved Permanently
+location: https://example.com/
+date: Tue, 03 Jul 2018 06:32:13 GMT
+server: envoy
+content-length: 0
+</code></pre>
+
+<p>OK，大功告成！完整的 front-proxy.yaml 配置文件内容如下：</p>
+
+<pre><code class="language-yaml">static_resources:
+  listeners:
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 80
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            virtual_hosts:
+            - name: backend
+              domains:
+              - &quot;example.com&quot;
+              routes:
+              - match:
+                  prefix: &quot;/&quot;
+                redirect:
+                  path_redirect: &quot;/&quot;
+                  https_redirect: true
+          http_filters:
+          - name: envoy.router
+            config: {}
+  - address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 443
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: backend
+              domains:
+              - &quot;example.com&quot;
+              routes:
+              - match:
+                  prefix: &quot;/service/1&quot;
+                route:
+                  cluster: service1
+              - match:
+                  prefix: &quot;/service/2&quot;
+                route:
+                  cluster: service2
+          http_filters:
+          - name: envoy.router
+            config: {}
+      tls_context:
+        common_tls_context:
+          tls_certificates:
+            - certificate_chain:
+                filename: &quot;/etc/example-com.crt&quot;
+              private_key:
+                filename: &quot;/etc/example-com.key&quot;
+  clusters:
+  - name: service1
     connect_timeout: 0.25s
     type: strict_dns
     lb_policy: round_robin
     http2_protocol_options: {}
     hosts:
     - socket_address:
-        address: service1a
+        address: service1
         port_value: 80
+  - name: service2
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: service2
+        port_value: 80
+admin:
+  access_log_path: &quot;/dev/null&quot;
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 8001
 </code></pre>
-
-<p>为了使新加的服务路由可达，需要在 <code>match</code> 配置项中添加一个带有 <code>headers</code> 字段的新路由。因为路由规则列表是按顺序匹配的，所以我们需要将该规则添加到路由规则列表的顶部，这样与新规则匹配的包含该头文件的请求就会被转发到新服务，而不包含该头文件的请求仍然被转发到 service1。</p>
-
-<pre><code class="language-yaml">routes:
-- match:
-    prefix: &quot;/service/1&quot;
-    headers:
-      - name: &quot;x-canary-version&quot;
-        value: &quot;service1a&quot;
-  route:
-    cluster: service1a
-- match:
-    prefix: &quot;/service/1&quot;
-  route:
-    cluster: service1
-- match:
-    prefix: &quot;/service/2&quot;
-  route:
-    cluster: service2
-</code></pre>
-
-<p>然后重启该示例服务：</p>
-
-<pre><code class="language-bash">$ docker-compose down --remove-orphans
-$ docker-compose up --build -d
-</code></pre>
-
-<p>如果客户端发出的请求没有携带头文件，就会收到来自 <code>service1</code> 的响应：</p>
-
-<pre><code class="language-bash">$ curl localhost:8000/service/1
-
-Hello from behind Envoy (service 1)! hostname: d0adee810fc4 resolvedhostname: 172.18.0.2
-</code></pre>
-
-<p>如果请求携带了头文件 <code>x-canary-version</code>，Envoy 就会将请求转发到 service 1a。</p>
-
-<pre><code class="language-bash">$ curl -H 'x-canary-version: service1a' localhost:8000/service/1
-
-Hello from behind Envoy (service 1a)! hostname: 569ee89eebc8 resolvedhostname: 172.18.0.6
-</code></pre>
-
-<p>Envoy 基于头文件的路由功能解锁了<a href="https://opensource.com/article/17/8/testing-production" target="_blank">在生产环境中测试开发代码</a>的能力。</p>
-
-<h2 id="p-id-h2-2-加权负载均衡-p"><p id="h2">2. 加权负载均衡</p></h2>
-
-<hr />
-
-<p>接下来进一步修改配置来实现对 service1 新版本的增量发布，使用 <code>clusters</code> 数组替代原来的 <code>cluster</code> 键值对，从而实现将 25% 的流量转发到该服务的新版本上。</p>
-
-<pre><code class="language-yaml">- match:
-    prefix: &quot;/service/1&quot;
-  route:
-    weighted_clusters:
-      clusters:
-      - name: service1a
-        weight: 25
-      - name: service1
-        weight: 75
-</code></pre>
-
-<p>然后重启该示例服务：</p>
-
-<pre><code class="language-bash">$ docker-compose down --remove-orphans
-$ docker-compose up --build -d
-</code></pre>
-
-<p>此时如果客户端发出的请求没有携带头文件，就会有 25% 的流量转发到 service 1a。</p>
-
-<p>增量部署是个非常强大的功能，它还可以和监控配合使用，以确保服务的版本差异（或者后端服务的架构差异）不会对该服务的版本更新产生不良影响。如果想模拟新版本的成功发布，可以将 service1a 的权重设置为 <code>100</code>，然后所有的流量都会被转发到 service 1a。同样，如果新发布的版本有缺陷，你可以通过将 service1a 的权重设置为 <code>0</code> 来回滚到之前的版本。</p>
-
-<h2 id="p-id-h2-3-最佳实践-p"><p id="h2">3. 最佳实践</p></h2>
-
-<hr />
-
-<p>学会了如何配置基于请求头的路由和加权负载均衡之后，就可以在生产或测试环境中进行实践了。首先需要将<strong>部署</strong>和<strong>发布</strong>这两个流程分离，部署了新版本之后，你就可以通过配置基于请求头的路由来让你的团队在内部进行测试，同时又不影响用户的使用。一旦测试通过，就可以通过滚动发布模式（逐步增加权重，如 1%，5%，10%，50% &hellip;）来优雅地发布新版本。</p>
-
-<p>通过将<strong>部署</strong>和<strong>发布</strong>这两个流程分离，使用基于请求头的路由在新版本发布之前进行测试，然后通过滚动部署模式来增量发布，你的团队将会从中受益匪浅。</p>
 
 <style>
 #h2{
@@ -735,11 +892,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/routing-basics/" data-toggle="tooltip" data-placement="top" title="HTTP 路由解析">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/incremental-deploys/" data-toggle="tooltip" data-placement="top" title="通过 Envoy 实现增量部署">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" data-toggle="tooltip" data-placement="top" title="为 Envoy 启用证书验证">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -748,6 +905,8 @@ border-top-color: #9954bb;
                  
                 <h2>See Also</h2>
                 <ul>
+                    
+                    <li><a href="/posts/incremental-deploys/">通过 Envoy 实现增量部署</a></li>
                     
                     <li><a href="/posts/routing-basics/">HTTP 路由解析</a></li>
                     
@@ -762,9 +921,9 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Mon Jul 2, 2018</h4>
+        <h4 id="date"> Tue Jul 3, 2018</h4>
     </section>
-    <h5 id="wc">1700 Words|Read in about 4 Min</h5>
+    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
