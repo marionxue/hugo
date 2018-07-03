@@ -204,7 +204,8 @@
         "draft": false,
         "categories": "service mesh",
         "tags": [
-            "envoy"
+            "envoy",
+            "service mesh"
         ],
         "bigimg": [
             {
