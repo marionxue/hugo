@@ -202,9 +202,10 @@
         "subtitle": "基于请求头的路由和加权负载均衡",
         "date": "2018-07-02T05:37:37.000Z",
         "draft": false,
-        "categories": "servicemesh",
+        "categories": "service mesh",
         "tags": [
-            "envoy"
+            "envoy",
+            "service mesh"
         ],
         "bigimg": [
             {

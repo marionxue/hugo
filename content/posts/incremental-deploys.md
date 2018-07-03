@@ -3,8 +3,8 @@ title: "通过 Envoy 实现增量部署"
 subtitle: "基于请求头的路由和加权负载均衡"
 date: 2018-07-02T05:37:37Z
 draft: false
-categories: "servicemesh"
-tags: ["envoy"]
+categories: "service mesh"
+tags: ["envoy", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 

@@ -262,8 +262,20 @@
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/categories/servicemesh/</loc>
+    <loc>https://www.yangcs.net/tags/service-mesh/</loc>
     <lastmod>2018-07-02T05:37:37+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/categories/service-mesh/</loc>
+    <lastmod>2018-07-02T05:37:37+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.yangcs.net/categories/servicemesh/</loc>
+    <lastmod>2018-06-29T09:57:33+00:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Service Mesh on Ryan Yang</title>
+    <link>https://www.yangcs.net/tags/service-mesh/</link>
+    <description>Recent content in Service Mesh on Ryan Yang</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Mon, 02 Jul 2018 05:37:37 +0000</lastBuildDate>
+    
+	<atom:link href="https://www.yangcs.net/tags/service-mesh/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>通过 Envoy 实现增量部署</title>
+      <link>https://www.yangcs.net/posts/incremental-deploys/</link>
+      <pubDate>Mon, 02 Jul 2018 05:37:37 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/incremental-deploys/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
