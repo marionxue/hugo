@@ -604,10 +604,10 @@ net.ipv4.tcp_synack_retries = 5
 &lt;/div&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 继续沿用前文使用的示例
-$ cd envoy/examples/front-proxy
+cd envoy/examples/front-proxy
 
 # 生成2048位的加密私钥
-$ openssl genrsa -out example-com.key 2048
+openssl genrsa -out example-com.key 2048
 
 #生成证书签名请求(CSR)
 $ openssl req -new -key example-com.key -out example-com.csr
