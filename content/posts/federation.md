@@ -9,6 +9,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
 <!--more-->
+
 在云计算环境中，服务的作用距离范围从近到远一般可以有：
 
 + 同主机（Host，Node）

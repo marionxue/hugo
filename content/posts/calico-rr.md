@@ -9,6 +9,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
 <!--more-->
+
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://o7z41ciog.bkt.clouddn.com/Two%20Steps%20From%20Hell%20-%20Star%20Sky.mp3"></iframe>
 
 ## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. 名词解释</p>
