@@ -572,6 +572,350 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>将服务发现与 Envoy 集成</title>
+      <link>https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/</link>
+      <pubDate>Wed, 04 Jul 2018 10:12:43 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;在微服务中使用 Envoy，需要明确两个核心概念：&lt;strong&gt;数据平面&lt;/strong&gt;和&lt;strong&gt;控制平面&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;数据平面&lt;/span&gt; 由一组 Envoy 实例组成，用来调解和控制微服务之间的所有网络通信。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;控制平面&lt;/span&gt; 从 Envoy 代理和其他服务收集和验证配置，并在运行时执行访问控制和使用策略。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;你可以使用静态类型的配置文件来实现控制平面，但为了能做出更加智能的负载均衡决策，最好的方法是通过 API 接口来实现。通过 API 接口来集中发现服务可以充分利用 Envoy 动态更新配置文件的能力。设置控制平面的第一步就是将 Envoy 连接到服务发现服务（SDS），通常分为三步：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;实现一个控制平面&lt;/li&gt;
+&lt;li&gt;将控制平面中定义的服务发布到 Envoy 的 &lt;code&gt;clusters&lt;/code&gt; 中&lt;/li&gt;
+&lt;li&gt;将 主机/容器/实例 发布到 Envoy 的 &lt;code&gt;endpoints&lt;/code&gt; 中&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;p-id-h2-1-实现一个控制平面-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 实现一个控制平面&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;控制平面必须要满足 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api&#34; target=&#34;_blank&#34;&gt;Envoy v2 xDS APIs&lt;/a&gt;，同时为了更好地使用服务发现能力，你的控制平面最好能够实现集群发现服务（CDS）和端点发现服务（EDS）。为了避免重复造轮子，你可以选择社区已经实现好的控制平面：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Rotor&lt;/span&gt; : &lt;a href=&#34;https://github.com/turbinelabs/rotor&#34; target=&#34;_blank&#34;&gt;Rotor&lt;/a&gt; 是一种快速、轻量级的 xDS 实现，它可以和 &lt;code&gt;Kubernetes&lt;/code&gt;、&lt;code&gt;Consul&lt;/code&gt; 和 &lt;code&gt;AWS&lt;/code&gt; 等服务集成，并且提供了一组默认的路由发现服务（RDS）和监听器发现服务（LDS）。它也是 Turbine Labs 的商业解决方案 &lt;a href=&#34;https://www.turbinelabs.io/&#34; target=&#34;_blank&#34;&gt;Houston&lt;/a&gt; 的组件之一，Houston 在 Rotor 的基础上增加了更多的路由、指标和弹性方面的配置。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;go-control-plane&lt;/span&gt; : Envoy 官方仓库提供了一个开源版本的控制平面：&lt;a href=&#34;https://github.com/envoyproxy/go-control-plane&#34; target=&#34;_blank&#34;&gt;go-control-plane&lt;/a&gt;。如果你想弄清楚如何从服务发现服务中获取所有内容，可以好好研究一下这个项目。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Pilot&lt;/span&gt; :  如果将 Envoy 和 Kubernetes 集成，&lt;a href=&#34;https://istio.io/&#34; target=&#34;_blank&#34;&gt;Istio&lt;/a&gt; 项目中的控制平面是由 &lt;a href=&#34;https://istio.io/docs/concepts/traffic-management/pilot.html&#34; target=&#34;_blank&#34;&gt;Pilot&lt;/a&gt; 组件来实现的，它会将 &lt;code&gt;YAMl&lt;/code&gt; 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 &lt;code&gt;Mixer&lt;/code&gt;）来单独和 Envoy 集成。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;p-id-h2-2-将服务发布到-cds-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 将服务发布到 CDS&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;集群是 Envoy 连接到的一组逻辑上相似的上游主机，通过它可以对流量进行负载均衡。你可以通过调用集群发现服务（CDS）的 API 来动态获取集群管理成员，Envoy 会定期轮询 &lt;code&gt;CDS&lt;/code&gt; 端点以进行集群配置，配置文件形式如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;version_info: &amp;quot;0&amp;quot;
+resources:
+- &amp;quot;@type&amp;quot;: type.googleapis.com/envoy.api.v2.Cluster
+  name: some_service
+  connect_timeout: 1.0s
+  lb_policy: ROUND_ROBIN
+  type: EDS
+  eds_cluster_config:
+    eds_config:
+      api_config_source:
+        api_type: GRPC
+        cluster_names: [xds_cluster]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;服务发现收集的每个服务都会映射到 &lt;code&gt;resources&lt;/code&gt; 下面的一个配置项，除此之外你还需要为负载均衡设置一些额外的配置参数：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;lb_policy&lt;/code&gt; : 集群的负载均衡类型，有以下几种方式：
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;round_robin&lt;/code&gt; : 轮询主机&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;weighted_least_request&lt;/code&gt; : 最近获得最少请求的主机&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;random&lt;/code&gt; : 随机&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;connect_timeout&lt;/code&gt; : 设置连接超时。越小越好，从 1 秒开始慢慢往上增加，直到网络没有明显的抖动为止。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;api_type&lt;/code&gt; : 设置服务的协议。Envoy 通过该协议和服务发现服务进行通信。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;通常情况下，你可以对端点（Endpoint）列表进行硬编码，但如果基础架构是动态的，则需要将 &lt;code&gt;type&lt;/code&gt; 设置为 &lt;code&gt;EDS&lt;/code&gt;，这将告诉 Envoy 轮询 &lt;code&gt;EDS API&lt;/code&gt; 以获取可用的 IP/Port 列表。完整示例可以参考 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v1/cluster_manager/cluster.html&#34; target=&#34;_blank&#34;&gt;Envoy 的官方文档&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;设置好 CDS 之后，就可以为此集群设置端点发现服务（EDS）了。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-3-将实例发布到-eds-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 将实例发布到 EDS&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Envoy 将端点（&lt;code&gt;Endpoint&lt;/code&gt;）定义为集群中可用的 IP 和端口。为了能够对服务之间的流量进行负载均衡，Envoy 希望 &lt;code&gt;EDS API&lt;/code&gt; 能够提供每个服务的端点列表。Envoy 会定期轮询 EDS 端点，然后生成响应：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;version_info: &amp;quot;0&amp;quot;
+resources:
+- &amp;quot;@type&amp;quot;: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+  cluster_name: some_service
+  endpoints:
+  - lb_endpoints:
+    - endpoint:
+       address:
+         socket_address:
+           address: 127.0.0.2
+           port_value: 1234
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过这种配置方式，Envoy 唯一需要知道的就是该端点属于哪个集群，这比直接定义集群更简单。&lt;/p&gt;
+
+&lt;p&gt;Envoy 将 CDS 和 EDS 视为一份份的报告并保持服务发现的最终一致性。如果到该端点的请求经常失败，就会从负载均衡中删除该端点，直到再次恢复正常访问。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-4-最佳实践-对配置进行分区-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 最佳实践：对配置进行分区&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;当集群中有很多服务时，Envoy 与 CDS 和 EDS 的交互量将会非常庞大，一旦出现问题，从几千个 API 响应中排错问题是很不现实的。标准的做法是以两种方式对配置进行分区：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;根据数据中心/区域划分&lt;/strong&gt; : 通常情况下，一个数据中心的服务不需要知道其他数据中心可用的服务端点。要想在不同区域之间建立通信，需要将远程数据中心的前端代理添加到本地的负载均衡器中。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;根据服务需求划分&lt;/strong&gt; : 通过为不同的服务配置 Envoy 边车代理（服务 envoy 与每个 serivce 实例一起运行），设置白名单来限制不同服务之间的相互通信，可以降低 1000 个级别的微服务之间相互通信的复杂度。同时边车（Sidecars）代理还可以通过阻止对服务的意外调用来加强安全保护。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;对配置进行分区可以降低对不同服务的运营和管理的难度，但它的代价是使控制平面变得更加复杂，但客户往往是不关心控制平面的，所以牺牲控制平面的复杂度还是很值得的。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-5-下一步-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 下一步&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;一旦控制平面发现了所有可用服务，就可以在这些服务上配置路由了。下一节将会介绍如何配置路由发现服务（RDS）。&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>为 Envoy 启用证书验证</title>
       <link>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</link>
       <pubDate>Tue, 03 Jul 2018 06:43:33 +0000</pubDate>
@@ -6260,756 +6604,6 @@ $ kubectl get pod termination-demo -o go-template=&#39;{{range .status.container
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>Kube-router 实战</title>
-      <link>https://www.yangcs.net/posts/kube-router/</link>
-      <pubDate>Fri, 20 Apr 2018 04:36:40 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/kube-router/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/cloudnativelabs/kube-router&#34; target=&#34;_blank&#34;&gt;Kube-router&lt;/a&gt; 是一个挺有想法的项目，兼备了 &lt;code&gt;calico&lt;/code&gt; 和 &lt;code&gt;kube-proxy&lt;/code&gt; 的功能，是基于 Kubernetes 网络设计的一个集负载均衡器、防火墙和容器网络的综合方案。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-体系架构-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 体系架构&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Kube-router 是围绕 &lt;span id=&#34;inline-blue&#34;&gt;观察者&lt;/span&gt; 和 &lt;span id=&#34;inline-blue&#34;&gt;控制器&lt;/span&gt; 的概念而建立的。&lt;/p&gt;
-
-&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;观察者&lt;/span&gt; 使用 &lt;code&gt;Kubernetes watch API&lt;/code&gt; 来获取与创建，更新和删除 Kubernetes 对象有关的事件的通知。 每个观察者获取与特定 API 对象相关的通知。 在从 API 服务器接收事件时，观察者广播事件。&lt;/p&gt;
-
-&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;控制器&lt;/span&gt; 注册以获取观察者的事件更新，并处理事件。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Kube-router&lt;/code&gt; 由3个核心控制器和多个观察者组成，如下图所示。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/kube-router-arch.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;流程分析&#34;&gt;流程分析&lt;/h3&gt;
-
-&lt;p&gt;Kube-router 启动之后，首先创建 &lt;code&gt;wathcer&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func (kr *KubeRouter) Run() error {
-	...
-	err = kr.startApiWatchers()
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 &lt;code&gt;startApiWatchers&lt;/code&gt; 中，会启动 endpoint、namespace、pod、node、networkpolicy、service 这六个 wather。&lt;/p&gt;
-
-&lt;p&gt;这六个 wathcer 将监听的变化发送到 &lt;code&gt;Broadcaster&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func NewBroadcaster() *Broadcaster {
-	return &amp;amp;Broadcaster{}
-}
-
-func (b *Broadcaster) Add(listener Listener) {
-	b.listenerLock.Lock()
-	defer b.listenerLock.Unlock()
-	b.listeners = append(b.listeners, listener)
-}
-
-func (b *Broadcaster) Notify(instance interface{}) {
-	b.listenerLock.RLock()
-	listeners := b.listeners
-	b.listenerLock.RUnlock()
-	for _, listener := range listeners {
-		go listener.OnUpdate(instance)
-	}
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;之后创建三个 controller：&lt;code&gt;NetworkPolicyController&lt;/code&gt;、&lt;code&gt;NetworkRoutingController&lt;/code&gt;、&lt;code&gt;NetworkServicesControllers&lt;/code&gt;。 每个 controller 会监听所关心的资源的变化。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func NewNetworkServicesController(clientset *kubernetes.Clientset,\
-	config *options.KubeRouterConfig) (*NetworkServicesController, error) {
-	...
-	nsc := NetworkServicesController{}
-	...
-	watchers.EndpointsWatcher.RegisterHandler(&amp;amp;nsc)
-	watchers.ServiceWatcher.RegisterHandler(&amp;amp;nsc)
-	...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;每个 &lt;a href=&#34;https://github.com/cloudnativelabs/kube-router/tree/master/pkg/controllers&#34; target=&#34;_blank&#34;&gt;controller&lt;/a&gt; 遵循以下结构。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func Run() {
-    for {
-        Sync() // control loop that runs for ever and perfom sync at periodic interval
-    }
-}
-
-func OnUpdate() {
-    Sync() // on receiving update of a watched API object (namespace, node, pod, network policy etc)
-}
-
-Sync() {
-    //re-concile any state changes
-}
-
-Cleanup() {
-    // cleanup any changes (to iptables, ipvs, network etc) done to the system
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-主要功能-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 主要功能&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;基于-ipvs-lvs-的负载均衡器-run-service-proxy&#34;&gt;基于 IPVS/LVS 的负载均衡器 | &lt;code&gt;--run-service-proxy&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;code&gt;Kube-router&lt;/code&gt; 采用 Linux 内核的 &lt;code&gt;IPVS&lt;/code&gt; 模块为 K8s 提供 &lt;code&gt;Service&lt;/code&gt; 的代理。&lt;/p&gt;
-
-&lt;p&gt;Kube-router 的负载均衡器功能，会在物理机上创建一个虚拟的 &lt;code&gt;kube-dummy-if&lt;/code&gt; 网卡，然后利用 k8s 的 watch APi 实时更新 &lt;code&gt;svc&lt;/code&gt; 和 &lt;code&gt;ep&lt;/code&gt; 的信息。svc 的 &lt;code&gt;cluster_ip&lt;/code&gt; 会绑定在 kube-dummy-if 网卡上，作为 lvs 的 &lt;code&gt;virtual server&lt;/code&gt; 的地址。&lt;code&gt;realserver&lt;/code&gt; 的 ip 则通过 ep 获取到容器的IP地址。&lt;/p&gt;
-
-&lt;p&gt;基于 Kubernetes 网络服务代理的 Kube-router IPVS 演示&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://asciinema.org/a/120312&#34; target=&#34;_blank&#34;&gt;&lt;img src=&#34;https://asciinema.org/a/120312.png&#34; alt=&#34;asciicast&#34; /&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;特征：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;轮询负载均衡&lt;/li&gt;
-&lt;li&gt;基于客户端IP的会话保持&lt;/li&gt;
-&lt;li&gt;如果服务控制器与网络路由控制器（带有 &lt;code&gt;–-run-router&lt;/code&gt; 标志的 kube-router）一起使用，源IP将被保留&lt;/li&gt;
-&lt;li&gt;用 &lt;code&gt;–-masquerade-all&lt;/code&gt; 参数明确标记伪装(SNAT)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;更多详情可以参考：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://link.jianshu.com/?t=https://cloudnativelabs.github.io/post/2017-05-10-kube-network-service-proxy/&#34; target=&#34;_blank&#34;&gt;Kubernetes network services prox with IPVS/LVS&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://link.jianshu.com/?t=https://blog.codeship.com/kernel-load-balancing-for-docker-containers-using-ipvs/&#34; target=&#34;_blank&#34;&gt;Kernel Load-Balancing for Docker Containers Using IPVS&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.yangcs.net/posts/lvs-persistent-connection/&#34; target=&#34;_blank&#34;&gt;LVS负载均衡之持久性连接介绍&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;容器网络-run-router&#34;&gt;容器网络 | &lt;code&gt;--run-router&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;Kube-router 利用 BGP 协议和 Go 的 &lt;code&gt;GoBGP&lt;/code&gt; 库和为容器网络提供直连的方案。因为用了原生的 Kubernetes API 去构建容器网络，意味着在使用 kube-router 时，不需要在你的集群里面引入其他依赖。&lt;/p&gt;
-
-&lt;p&gt;同样的，kube-router 在引入容器 CNI 时也没有其它的依赖，官方的 &lt;code&gt;bridge&lt;/code&gt; 插件就能满足 kube-rouetr 的需求。&lt;/p&gt;
-
-&lt;p&gt;更多关于 BGP 协议在 Kubernetes 中的使用可以参考：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://link.jianshu.com/?t=https://cloudnativelabs.github.io/post/2017-05-22-kube-pod-networking/&#34; target=&#34;_blank&#34;&gt;Kubernetes pod networking and beyond with BGP&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;网络策略管理-run-firewall&#34;&gt;网络策略管理 | &lt;code&gt;--run-firewall&lt;/code&gt;&lt;/h3&gt;
-
-&lt;p&gt;网络策略控制器负责从 Kubernetes API 服务器读取命名空间、网络策略和 pod 信息，并相应地使用 &lt;code&gt;ipset&lt;/code&gt; 配置 iptables 以向 pod 提供入口过滤，保证防火墙的规则对系统性能有较低的影响。&lt;/p&gt;
-
-&lt;p&gt;Kube-router 支持 &lt;code&gt;networking.k8s.io/NetworkPolicy&lt;/code&gt; 接口或网络策略 V1/GA &lt;a href=&#34;https://github.com/kubernetes/kubernetes/pull/39164#issue-197243974&#34; target=&#34;_blank&#34;&gt;semantics&lt;/a&gt; 以及网络策略的 beta 语义。&lt;/p&gt;
-
-&lt;p&gt;更多关于 kube-router 防火墙的功能可以参考：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://link.jianshu.com/?t=https://cloudnativelabs.github.io/post/2017-05-1-kube-network-policies/&#34; target=&#34;_blank&#34;&gt;Enforcing Kubernetes network policies with iptables&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-使用-kube-router-替代-kube-proxy-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 使用 kube-router 替代 kube-proxy&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;下面进入实战阶段，本方案只使用 kube-router 的 &lt;code&gt;service-proxy&lt;/code&gt; 功能，网络插件仍然使用 &lt;code&gt;calico&lt;/code&gt;（估计只有我能想到这么奇葩的组合了 ✌️）&lt;/p&gt;
-
-&lt;h3 id=&#34;前提&#34;&gt;前提&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;已有一个 k8s 集群&lt;/li&gt;
-&lt;li&gt;kube-router 能够连接 &lt;code&gt;apiserver&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;如果您选择以 &lt;code&gt;daemonset&lt;/code&gt; 运行 kube-router，那么 kube-apiserver 和 kubelet 必须以 &lt;code&gt;–allow-privileged=true&lt;/code&gt; 选项运行&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;集群环境&#34;&gt;集群环境&lt;/h3&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th align=&#34;left&#34;&gt;角色&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;IP 地址&lt;/th&gt;
-&lt;th align=&#34;left&#34;&gt;主机名&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;k8s master&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;192.168.123.250&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;node1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;k8s node&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;192.168.123.248&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;node2&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td align=&#34;left&#34;&gt;k8s node&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;192.168.123.249&lt;/td&gt;
-&lt;td align=&#34;left&#34;&gt;node3&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&#34;安装步骤&#34;&gt;安装步骤&lt;/h3&gt;
-
-&lt;p&gt;如果你正在使用 &lt;code&gt;kube-proxy&lt;/code&gt;，需要先停止 kube-proxy 服务，并且删除相关 iptables 规则。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl stop kube-proxy
-$ kube-proxy --cleanup-iptables
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;接下来以 &lt;code&gt;daemonset&lt;/code&gt; 运行 kube-router，这里我们使用 DR 模式。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl --namespace=kube-system create configmap kube-proxy  --from-file=kubeconfig.conf=/root/.kube/config
-$ wget https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter-all-features-dsr.yaml
-
-# 将 kubeadm-kuberouter-all-features-dsr.yaml 里的 --run-router 参数和 --run-firewall 参数的值改为 false
-$ kubectl create -f kubeadm-kuberouter-all-features-dsr.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在每台机器上查看 lvs 条目&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ipvsadm -Ln
-
-IP Virtual Server version 1.2.1 (size=4096)
-Prot LocalAddress:Port Scheduler Flags
-  -&amp;gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
-TCP  10.254.0.1:443 rr persistent 10800
-  -&amp;gt; 192.168.123.250:6443         Masq    1      0          0
-  
-$ ipvsadm -S -n
-
--A -t 10.254.0.1:443 -s rr -p 10800
--a -t 10.254.0.1:443 -r 192.168.123.250:6443 -m -w 1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看出，kube-router 使用的是 lvs 的 nat 模式。&lt;/p&gt;
-
-&lt;h3 id=&#34;创建一个应用测试-kube-router&#34;&gt;创建一个应用测试 kube-router&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl run whats-my-ip --image=cloudnativelabs/whats-my-ip --replicas=3
-
-# 暴露服务
-$ kubectl expose deploy whats-my-ip --target-port=8080 --port=8080
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看创建好的服务&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods -owide
-
-NAME                           READY     STATUS    RESTARTS   AGE       IP               NODE
-whats-my-ip-845d4ff4f6-d2ptz   1/1       Running   0          23h       172.20.135.8     192.168.123.249
-whats-my-ip-845d4ff4f6-jxzzn   1/1       Running   0          23h       172.20.166.130   192.168.123.250
-whats-my-ip-845d4ff4f6-szhhd   1/1       Running   0          34s       172.20.104.9     192.168.123.248
-
-$ kubectl get svc
-
-NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
-kubernetes    ClusterIP   10.254.0.1       &amp;lt;none&amp;gt;        443/TCP    45d
-whats-my-ip   ClusterIP   10.254.108.117   &amp;lt;none&amp;gt;        8080/TCP   16s
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看 lvs 规则条目&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ ipvsadm -Ln
-
-IP Virtual Server version 1.2.1 (size=4096)
-Prot LocalAddress:Port Scheduler Flags
-  -&amp;gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
-TCP  10.254.0.1:443 rr persistent 10800
-  -&amp;gt; 192.168.123.250:6443         Masq    1      0          0
-TCP  10.254.175.147:8080 rr
-  -&amp;gt; 172.20.104.9:8080            Masq    1      0          0
-  -&amp;gt; 172.20.135.8:8080            Masq    1      0          0
-  -&amp;gt; 172.20.166.130:8080          Masq    1      0          0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以发现本机的 &lt;code&gt;Cluster IP&lt;/code&gt; 代理后端真实 &lt;code&gt;Pod IP&lt;/code&gt;，使用 rr 算法。&lt;/p&gt;
-
-&lt;p&gt;通过 &lt;code&gt;ip a&lt;/code&gt; 可以看到，每添加一个服务，node 节点上面的 &lt;code&gt;kube-dummy-if&lt;/code&gt; 网卡就会增加一个虚IP。&lt;/p&gt;
-
-&lt;h3 id=&#34;session-affinity&#34;&gt;session affinity&lt;/h3&gt;
-
-&lt;p&gt;Service 默认的策略是，通过 round-robin 算法来选择 backend Pod。 要实现基于客户端 IP 的会话亲和性，可以通过设置 &lt;code&gt;service.spec.sessionAffinity&lt;/code&gt; 的值为 &lt;code&gt;ClientIP&lt;/code&gt; （默认值为 &amp;ldquo;None&amp;rdquo;）。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl delete svc whats-my-ip
-$ kubectl expose deploy whats-my-ip --target-port=8080 --port=8080 --session-affinity=ClientIP
-
-$ ipvsadm -Ln
-
-IP Virtual Server version 1.2.1 (size=4096)
-Prot LocalAddress:Port Scheduler Flags
-  -&amp;gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
-TCP  10.254.0.1:443 rr persistent 10800
-  -&amp;gt; 192.168.123.250:6443         Masq    1      0          0
-TCP  10.254.226.105:8080 rr persistent 10800
-  -&amp;gt; 172.20.135.8:8080            Masq    1      0          0
-  -&amp;gt; 172.20.166.130:8080          Masq    1      0          0
-  -&amp;gt; 172.20.104.9:8080            Masq    1      0          0
-  
-$ ipvsadm -S -n
-
--A -t 10.254.0.1:443 -s rr -p 10800
--a -t 10.254.0.1:443 -r 192.168.123.250:6443 -m -w 1
--A -t 10.254.226.105:8080 -s rr -p 10800
--a -t 10.254.226.105:8080 -r 172.20.135.8:8080 -m -w 1
--a -t 10.254.226.105:8080 -r 172.20.166.130:8080 -m -w 1
--a -t 10.254.226.105:8080 -r 172.20.104.9:8080 -m -w 1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看到 lvs 的规则条目里多了个 &lt;code&gt;persistent&lt;/code&gt;，即 lvs 的持久连接，关于 lvs 持久连接的具体内容可以参考我的另一篇博文 &lt;a href=&#34;https://www.yangcs.net/posts/lvs-persistent-connection/&#34; target=&#34;_blank&#34;&gt;LVS负载均衡之持久性连接介绍&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;可以通过设置 &lt;code&gt;service.spec.sessionAffinityConfig.clientIP.timeoutSeconds&lt;/code&gt; 的值来修改 lvs 的 &lt;code&gt;persistence_timeout&lt;/code&gt; 超时时间。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ kubectl get svc whats-my-ip -o yaml
-
-apiVersion: v1
-kind: Service
-metadata:
-  creationTimestamp: 2018-04-20T08:16:38Z
-  labels:
-    run: whats-my-ip
-  name: whats-my-ip
-  namespace: default
-  resourceVersion: &amp;quot;6323769&amp;quot;
-  selfLink: /api/v1/namespaces/default/services/whats-my-ip
-  uid: 26315fdf-4473-11e8-8388-005056a1bc83
-spec:
-  clusterIP: 10.254.226.105
-  ports:
-  - port: 8080
-    protocol: TCP
-    targetPort: 8080
-  selector:
-    run: whats-my-ip
-  sessionAffinity: ClientIP
-  sessionAffinityConfig:
-    clientIP:
-      timeoutSeconds: 10800
-  type: ClusterIP
-status:
-  loadBalancer: {}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;nodeport&#34;&gt;NodePort&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ kubectl delete svc whats-my-ip
-$ kubectl expose deploy whats-my-ip --target-port=8080 --port=8080 --type=NodePort
-
-$ ipvsadm -Ln
-
-IP Virtual Server version 1.2.1 (size=4096)
-Prot LocalAddress:Port Scheduler Flags
-  -&amp;gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
-TCP  192.168.123.249:34507 rr
-  -&amp;gt; 172.20.135.8:8080            Masq    1      0          0
-  -&amp;gt; 172.20.166.130:8080          Masq    1      0          0
-  -&amp;gt; 172.20.104.9:8080            Masq    1      0          0
-TCP  10.254.0.1:443 rr persistent 10800
-  -&amp;gt; 192.168.123.250:6443         Masq    1      0          0
-TCP  10.254.175.147:8080 rr
-  -&amp;gt; 172.20.135.8:8080            Masq    1      0          0
-  -&amp;gt; 172.20.166.130:8080          Masq    1      0          0
-  -&amp;gt; 172.20.104.9:8080            Masq    1      0          0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看到不仅有虚拟IP条目，还多了对应主机的 lvs 条目。&lt;/p&gt;
-
-&lt;h3 id=&#34;更改算法&#34;&gt;更改算法&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;最少连接数&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl annotate service my-service &amp;quot;kube-router.io/service.scheduler=lc&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;轮询&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl annotate service my-service &amp;quot;kube-router.io/service.scheduler=rr&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;源地址哈希&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl annotate service my-service &amp;quot;kube-router.io/service.scheduler=sh&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;目的地址哈希&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl annotate service my-service &amp;quot;kube-router.io/service.scheduler=dh&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-问题解决-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 问题解决&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;接下来需要面对一些非常棘手的问题，我尽可能将问题描述清楚。&lt;/p&gt;
-
-&lt;p id=&#34;div-border-top-red&#34;&gt;
-&lt;strong&gt;问题1：&lt;/strong&gt;在集群内某个节点主机上通过 &lt;code&gt;SVC IP+Port&lt;/code&gt; 访问某个应用时，如果 lvs 转到后端的 pod 在本主机上，那么可以访问，如果该 pod 不在本主机上，那么无法访问。
-&lt;/p&gt;
-
-&lt;p&gt;可以通过抓包来看一下，现在 &lt;code&gt;service whats-my-ip&lt;/code&gt; 后端有三个 pod，分别运行在 &lt;code&gt;node1&lt;/code&gt;、&lt;code&gt;node2&lt;/code&gt; 和 &lt;code&gt;node3&lt;/code&gt; 上。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ kubectl get pods -owide
-
-NAME                           READY     STATUS    RESTARTS   AGE       IP               NODE
-whats-my-ip-845d4ff4f6-d2ptz   1/1       Running   0          23h       172.20.135.8     192.168.123.249
-whats-my-ip-845d4ff4f6-jxzzn   1/1       Running   0          23h       172.20.166.130   192.168.123.250
-whats-my-ip-845d4ff4f6-szhhd   1/1       Running   0          34s       172.20.104.9     192.168.123.248
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 &lt;code&gt;node3&lt;/code&gt; 上访问 &lt;code&gt;whats-my-ip&lt;/code&gt; 服务：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ ip a show|grep 10.254.175.147
-
-    inet 10.254.175.147/32 brd 10.254.175.147 scope link kube-dummy-if
-
-$ ipvsadm -Ln -t 10.254.175.147:8080
-
-Prot LocalAddress:Port Scheduler Flags
-  -&amp;gt; RemoteAddress:Port           Forward Weight ActiveConn InActConn
-TCP  10.254.175.147:8080 rr
-  -&amp;gt; 172.20.104.9:8080            Masq    1      0          0
-  -&amp;gt; 172.20.135.8:8080            Masq    1      0          0
-  -&amp;gt; 172.20.166.130:8080          Masq    1      0          0
-
-# 第一次访问，不通
-$ curl 10.254.175.147:8080
-
-# 第二次访问
-$ curl 10.254.175.147:8080
-
-HOSTNAME:whats-my-ip-845d4ff4f6-d2ptz IP:172.20.135.8
-
-# 第三次访问，不通
-$ curl 10.254.175.147:8080
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;同时在 &lt;code&gt;node1&lt;/code&gt; 上抓包：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ tcpdump -i ens160 host 172.20.166.130 -nn
-
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens160, link-type EN10MB (Ethernet), capture size 262144 bytes
-03:27:26.337553 IP 10.254.175.147.42036 &amp;gt; 172.20.166.130.8080: Flags [S], seq 405854371, win 43690, options [mss 65495,sackOK,TS val 359417229 ecr 0,nop,wscale 7], length 0
-03:27:27.340131 IP 10.254.175.147.42036 &amp;gt; 172.20.166.130.8080: Flags [S], seq 405854371, win 43690, options [mss 65495,sackOK,TS val 359418232 ecr 0,nop,wscale 7], length 0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看到 &lt;code&gt;node1&lt;/code&gt; 将数据包丢弃了，因为源IP是 &lt;code&gt;10.254.175.147&lt;/code&gt;，系统认为这是 node1 自己本身。&lt;/p&gt;
-
-&lt;p&gt;根本原因可以查看 &lt;code&gt;node3&lt;/code&gt; 的路由表：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ ip route show table local|grep 10.254.175.147
-
-local 10.254.175.147 dev kube-dummy-if proto kernel scope host src 10.254.175.147
-broadcast 10.254.175.147 dev kube-dummy-if proto kernel scope link src 10.254.175.147
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;src&lt;/code&gt; 的值用来告诉该 host 使用 &lt;code&gt;10.254.175.147&lt;/code&gt; 作为 &lt;code&gt;source address&lt;/code&gt;，可以通过修改路由表来解决这个问题：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ ip route replace local 10.254.175.147 dev kube-dummy-if proto kernel scope host src 192.168.123.249 table local
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再次在 &lt;code&gt;node1&lt;/code&gt; 上抓包可以发现源IP已经变成了 &lt;code&gt;192.168.123.249&lt;/code&gt;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ tcpdump -i ens160 host 172.20.166.130 -nn
-
-tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
-listening on ens160, link-type EN10MB (Ethernet), capture size 262144 bytes
-03:39:42.824412 IP 192.168.123.249.52684 &amp;gt; 172.20.166.130.8080: Flags [S], seq 3520353543, win 43690, options [mss 65495,sackOK,TS val 360153716 ecr 0,nop,wscale 7], length 0
-03:39:42.824542 IP 172.20.166.130.8080 &amp;gt; 192.168.123.249.52684: Flags [S.], seq 4057001749, ack 3520353544, win 28960, options [mss 1460,sackOK,TS val 360143668 ecr 360153716,nop,wscale 7], length 0
-03:39:42.824706 IP 192.168.123.249.52684 &amp;gt; 172.20.166.130.8080: Flags [.], ack 1, win 342, options [nop,nop,TS val 360153716 ecr 360143668], length 0
-03:39:42.825066 IP 192.168.123.249.52684 &amp;gt; 172.20.166.130.8080: Flags [P.], seq 1:84, ack 1, win 342, options [nop,nop,TS val 360153716 ecr 360143668], length 83: HTTP: GET / HTTP/1.1
-03:39:42.825112 IP 172.20.166.130.8080 &amp;gt; 192.168.123.249.52684: Flags [.], ack 84, win 227, options [nop,nop,TS val 360143669 ecr 360153716], length 0
-03:39:42.825589 IP 172.20.166.130.8080 &amp;gt; 192.168.123.249.52684: Flags [P.], seq 1:174, ack 84, win 227, options [nop,nop,TS val 360143669 ecr 360153716], length 173: HTTP: HTTP/1.1 200 OK
-03:39:42.825735 IP 192.168.123.249.52684 &amp;gt; 172.20.166.130.8080: Flags [.], ack 174, win 350, options [nop,nop,TS val 360153717 ecr 360143669], length 0
-03:39:42.825787 IP 192.168.123.249.52684 &amp;gt; 172.20.166.130.8080: Flags [F.], seq 84, ack 174, win 350, options [nop,nop,TS val 360153717 ecr 360143669], length 0
-03:39:42.825882 IP 172.20.166.130.8080 &amp;gt; 192.168.123.249.52684: Flags [F.], seq 174, ack 85, win 227, options [nop,nop,TS val 360143669 ecr 360153717], length 0
-03:39:42.826002 IP 192.168.123.249.52684 &amp;gt; 172.20.166.130.8080: Flags [.], ack 175, win 350, options [nop,nop,TS val 360153718 ecr 360143669], length 0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;p id=&#34;div-border-top-red&#34;&gt;
-&lt;strong&gt;问题2：&lt;/strong&gt;在集群内某个节点主机上通过 &lt;code&gt;SVC IP+Port&lt;/code&gt; 访问 &lt;code&gt;service kubernetes&lt;/code&gt; 时，如果该节点是 master 节点（即 kube-apiserver 运行在该节点上），那么可以访问，如果该节点不是 master 节点，那么无法访问。
-&lt;/p&gt;&lt;/p&gt;
-
-&lt;p&gt;原因和问题1类似，可以通过修改路由表解决：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;# 例如在 node3 节点上
-$ ip route replace local 10.254.0.1 dev kube-dummy-if proto kernel scope host src 192.168.123.249 table local
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;
-&lt;p id=&#34;div-border-top-red&#34;&gt;
-&lt;strong&gt;问题3：&lt;/strong&gt;在某个 pod 内访问该 pod 本身的 &lt;code&gt;ClusterIP:Port&lt;/code&gt;，如果 lvs 转到后端的 IP 是该 pod 的 IP，那么无法访问，如果不是则可以访问。
-&lt;/p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;kube-proxy&lt;/code&gt; 的 iptables 模式也有同样的问题，这个问题可以忽略。&lt;/p&gt;
-
-&lt;h3 id=&#34;总结&#34;&gt;总结&lt;/h3&gt;
-
-&lt;p&gt;问题1和问题2修改路由表可以通过批量 shell 脚本来解决：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;#!/bin/sh
-
-default_if=$(ip route|grep default|awk &#39;{print $5}&#39;)
-localip=$(ip a show ${default_if}|egrep -v inet6|grep inet|awk &#39;{print $2}&#39;|awk -F&amp;quot;/&amp;quot; &#39;{print $1}&#39;)
-svc_ip=$(ip route show table local|egrep -v broadcast|grep kube-dummy-if|awk &#39;{print $2}&#39;)
-
-for ip in $svc_ip; do
-ip route replace local $ip dev kube-dummy-if proto kernel scope host src $localip table local;
-done
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果想要在创建 &lt;code&gt;service&lt;/code&gt; 时自动修改路由表，最好还是将该 fix 整合进 kube-router 的源码中。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/cloudnativelabs/kube-router/blob/master/docs/README.md&#34; target=&#34;_blank&#34;&gt;Kube-router Documentation&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.jianshu.com/p/d69b40580c87&#34; target=&#34;_blank&#34;&gt;kube-router之负载均衡器&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/cloudnativelabs/kube-router/issues/376&#34; target=&#34;_blank&#34;&gt;bad routing from host to service IP on same host&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;style&gt;
 #h2{

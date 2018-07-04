@@ -6,10 +6,19 @@
     <description>Recent content in Envoy on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 03 Jul 2018 06:43:33 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 04 Jul 2018 10:12:43 +0000</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/envoy/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>将服务发现与 Envoy 集成</title>
+      <link>https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/</link>
+      <pubDate>Wed, 04 Jul 2018 10:12:43 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>为 Envoy 启用证书验证</title>

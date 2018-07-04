@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 将服务发现与 Envoy 集成 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="将服务发现与 Envoy 集成" />
+  <meta name="twitter:title" content="将服务发现与 Envoy 集成" />
+  <meta name="description" content="为 Envoy 配置 CDS 和 EDS">
+  <meta property="og:description" content="为 Envoy 配置 CDS 和 EDS">
+  <meta name="twitter:description" content="为 Envoy 配置 CDS 和 EDS">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.42.2" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/service-mesh">Service Mesh</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/loadbalance"> 负载均衡</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go">Go 入门指南</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">葵花宝典</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/learn-english"> 英语学习终极秘诀</a>
+                
+                
+                  <a href="https://www.yangcs.net/a-day-in-the-life-of-jeff">A Day in the life of Jeff</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search www.yangcs.net</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("4BELQK2TOI", "bb53f9d51f88373ba37e56a4730aca4c");
+var index = client.initIndex('blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>将服务发现与 Envoy 集成</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">为 Envoy 配置 CDS 和 EDS</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on July 4, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">将服务发现与 Envoy 集成</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">为 Envoy 配置 CDS 和 EDS</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Wed Jul 4, 2018</h4>
+    </section>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<p>在微服务中使用 Envoy，需要明确两个核心概念：<strong>数据平面</strong>和<strong>控制平面</strong>。</p>
+
+<ul>
+<li><span id="inline-blue">数据平面</span> 由一组 Envoy 实例组成，用来调解和控制微服务之间的所有网络通信。</li>
+<li><span id="inline-blue">控制平面</span> 从 Envoy 代理和其他服务收集和验证配置，并在运行时执行访问控制和使用策略。</li>
+</ul>
+
+<p>你可以使用静态类型的配置文件来实现控制平面，但为了能做出更加智能的负载均衡决策，最好的方法是通过 API 接口来实现。通过 API 接口来集中发现服务可以充分利用 Envoy 动态更新配置文件的能力。设置控制平面的第一步就是将 Envoy 连接到服务发现服务（SDS），通常分为三步：</p>
+
+<ol>
+<li>实现一个控制平面</li>
+<li>将控制平面中定义的服务发布到 Envoy 的 <code>clusters</code> 中</li>
+<li>将 主机/容器/实例 发布到 Envoy 的 <code>endpoints</code> 中</li>
+</ol>
+
+<h2 id="p-id-h2-1-实现一个控制平面-p"><p id="h2">1. 实现一个控制平面</p></h2>
+
+<hr />
+
+<p>控制平面必须要满足 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api" target="_blank">Envoy v2 xDS APIs</a>，同时为了更好地使用服务发现能力，你的控制平面最好能够实现集群发现服务（CDS）和端点发现服务（EDS）。为了避免重复造轮子，你可以选择社区已经实现好的控制平面：</p>
+
+<ul>
+<li><span id="inline-blue">Rotor</span> : <a href="https://github.com/turbinelabs/rotor" target="_blank">Rotor</a> 是一种快速、轻量级的 xDS 实现，它可以和 <code>Kubernetes</code>、<code>Consul</code> 和 <code>AWS</code> 等服务集成，并且提供了一组默认的路由发现服务（RDS）和监听器发现服务（LDS）。它也是 Turbine Labs 的商业解决方案 <a href="https://www.turbinelabs.io/" target="_blank">Houston</a> 的组件之一，Houston 在 Rotor 的基础上增加了更多的路由、指标和弹性方面的配置。</li>
+<li><span id="inline-blue">go-control-plane</span> : Envoy 官方仓库提供了一个开源版本的控制平面：<a href="https://github.com/envoyproxy/go-control-plane" target="_blank">go-control-plane</a>。如果你想弄清楚如何从服务发现服务中获取所有内容，可以好好研究一下这个项目。</li>
+<li><span id="inline-blue">Pilot</span> :  如果将 Envoy 和 Kubernetes 集成，<a href="https://istio.io/" target="_blank">Istio</a> 项目中的控制平面是由 <a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Pilot</a> 组件来实现的，它会将 <code>YAMl</code> 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 <code>Mixer</code>）来单独和 Envoy 集成。</li>
+</ul>
+
+<h2 id="p-id-h2-2-将服务发布到-cds-p"><p id="h2">2. 将服务发布到 CDS</p></h2>
+
+<hr />
+
+<p>集群是 Envoy 连接到的一组逻辑上相似的上游主机，通过它可以对流量进行负载均衡。你可以通过调用集群发现服务（CDS）的 API 来动态获取集群管理成员，Envoy 会定期轮询 <code>CDS</code> 端点以进行集群配置，配置文件形式如下：</p>
+
+<pre><code class="language-yaml">version_info: &quot;0&quot;
+resources:
+- &quot;@type&quot;: type.googleapis.com/envoy.api.v2.Cluster
+  name: some_service
+  connect_timeout: 1.0s
+  lb_policy: ROUND_ROBIN
+  type: EDS
+  eds_cluster_config:
+    eds_config:
+      api_config_source:
+        api_type: GRPC
+        cluster_names: [xds_cluster]
+</code></pre>
+
+<p>服务发现收集的每个服务都会映射到 <code>resources</code> 下面的一个配置项，除此之外你还需要为负载均衡设置一些额外的配置参数：</p>
+
+<ul>
+<li><code>lb_policy</code> : 集群的负载均衡类型，有以下几种方式：
+
+<ul>
+<li><code>round_robin</code> : 轮询主机</li>
+<li><code>weighted_least_request</code> : 最近获得最少请求的主机</li>
+<li><code>random</code> : 随机</li>
+</ul></li>
+<li><code>connect_timeout</code> : 设置连接超时。越小越好，从 1 秒开始慢慢往上增加，直到网络没有明显的抖动为止。</li>
+<li><code>api_type</code> : 设置服务的协议。Envoy 通过该协议和服务发现服务进行通信。</li>
+</ul>
+
+<p>通常情况下，你可以对端点（Endpoint）列表进行硬编码，但如果基础架构是动态的，则需要将 <code>type</code> 设置为 <code>EDS</code>，这将告诉 Envoy 轮询 <code>EDS API</code> 以获取可用的 IP/Port 列表。完整示例可以参考 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v1/cluster_manager/cluster.html" target="_blank">Envoy 的官方文档</a>。</p>
+
+<p>设置好 CDS 之后，就可以为此集群设置端点发现服务（EDS）了。</p>
+
+<h2 id="p-id-h2-3-将实例发布到-eds-p"><p id="h2">3. 将实例发布到 EDS</p></h2>
+
+<hr />
+
+<p>Envoy 将端点（<code>Endpoint</code>）定义为集群中可用的 IP 和端口。为了能够对服务之间的流量进行负载均衡，Envoy 希望 <code>EDS API</code> 能够提供每个服务的端点列表。Envoy 会定期轮询 EDS 端点，然后生成响应：</p>
+
+<pre><code class="language-yaml">version_info: &quot;0&quot;
+resources:
+- &quot;@type&quot;: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+  cluster_name: some_service
+  endpoints:
+  - lb_endpoints:
+    - endpoint:
+       address:
+         socket_address:
+           address: 127.0.0.2
+           port_value: 1234
+</code></pre>
+
+<p>通过这种配置方式，Envoy 唯一需要知道的就是该端点属于哪个集群，这比直接定义集群更简单。</p>
+
+<p>Envoy 将 CDS 和 EDS 视为一份份的报告并保持服务发现的最终一致性。如果到该端点的请求经常失败，就会从负载均衡中删除该端点，直到再次恢复正常访问。</p>
+
+<h2 id="p-id-h2-4-最佳实践-对配置进行分区-p"><p id="h2">4. 最佳实践：对配置进行分区</p></h2>
+
+<hr />
+
+<p>当集群中有很多服务时，Envoy 与 CDS 和 EDS 的交互量将会非常庞大，一旦出现问题，从几千个 API 响应中排错问题是很不现实的。标准的做法是以两种方式对配置进行分区：</p>
+
+<ul>
+<li><strong>根据数据中心/区域划分</strong> : 通常情况下，一个数据中心的服务不需要知道其他数据中心可用的服务端点。要想在不同区域之间建立通信，需要将远程数据中心的前端代理添加到本地的负载均衡器中。</li>
+<li><strong>根据服务需求划分</strong> : 通过为不同的服务配置 Envoy 边车代理（服务 envoy 与每个 serivce 实例一起运行），设置白名单来限制不同服务之间的相互通信，可以降低 1000 个级别的微服务之间相互通信的复杂度。同时边车（Sidecars）代理还可以通过阻止对服务的意外调用来加强安全保护。</li>
+</ul>
+
+<p>对配置进行分区可以降低对不同服务的运营和管理的难度，但它的代价是使控制平面变得更加复杂，但客户往往是不关心控制平面的，所以牺牲控制平面的复杂度还是很值得的。</p>
+
+<h2 id="p-id-h2-5-下一步-p"><p id="h2">5. 下一步</p></h2>
+
+<hr />
+
+<p>一旦控制平面发现了所有可用服务，就可以在这些服务上配置路由了。下一节将会介绍如何配置路由发现服务（RDS）。</p>
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" data-toggle="tooltip" data-placement="top" title="为 Envoy 启用证书验证">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/setting-up-ssl-in-envoy/">为 Envoy 启用证书验证</a></li>
+                    
+                    <li><a href="/posts/incremental-deploys/">通过 Envoy 实现增量部署</a></li>
+                    
+                    <li><a href="/posts/routing-basics/">HTTP 路由解析</a></li>
+                    
+                    <li><a href="/posts/run-envoy-on-your-laptop/">在你的笔记本上运行 Envoy</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Wed Jul 4, 2018</h4>
+    </section>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.42.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+  </body>
+</html>
+
