@@ -31,7 +31,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 + <span id="inline-blue">go-control-plane</span> : Envoy 官方仓库提供了一个开源版本的控制平面：[go-control-plane](https://github.com/envoyproxy/go-control-plane)。如果你想弄清楚如何从服务发现服务中获取所有内容，可以好好研究一下这个项目。
 
-+ <span id="inline-blue">Pilot</span> :  如果将 Envoy 和 Kubernetes 集成，[Istio](https://istio.io/) 项目中的控制平面是由 [Pilot](https://istio.io/docs/concepts/traffic-management/pilot.html) 组件来实现的，它会将 `YAMl` 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 `Mixer`）来单独和 Envoy 集成。
++ <span id="inline-blue">Pilot</span> :  如果想将 Envoy 和 Kubernetes 集成，你可以选择 [Istio](https://istio.io/) 项目。Istio 中的控制平面是由 [Pilot](https://istio.io/docs/concepts/traffic-management/pilot.html) 组件来实现的，它会将 `YAMl` 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 `Mixer`）来单独和 Envoy 集成。
 
 ## <p id="h2">2. 将服务发布到 CDS</p>
 

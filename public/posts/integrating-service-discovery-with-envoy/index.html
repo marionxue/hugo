@@ -413,7 +413,7 @@ autocomplete('#aa-search-input',
 
 <li><p><span id="inline-blue">go-control-plane</span> : Envoy 官方仓库提供了一个开源版本的控制平面：<a href="https://github.com/envoyproxy/go-control-plane" target="_blank">go-control-plane</a>。如果你想弄清楚如何从服务发现服务中获取所有内容，可以好好研究一下这个项目。</p></li>
 
-<li><p><span id="inline-blue">Pilot</span> :  如果将 Envoy 和 Kubernetes 集成，<a href="https://istio.io/" target="_blank">Istio</a> 项目中的控制平面是由 <a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Pilot</a> 组件来实现的，它会将 <code>YAMl</code> 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 <code>Mixer</code>）来单独和 Envoy 集成。</p></li>
+<li><p><span id="inline-blue">Pilot</span> :  如果想将 Envoy 和 Kubernetes 集成，你可以选择 <a href="https://istio.io/" target="_blank">Istio</a> 项目。Istio 中的控制平面是由 <a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Pilot</a> 组件来实现的，它会将 <code>YAMl</code> 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 <code>Mixer</code>）来单独和 Envoy 集成。</p></li>
 </ul>
 
 <h2 id="p-id-h2-2-将服务发布到-cds-p"><p id="h2">2. 将服务发布到 CDS</p></h2>
