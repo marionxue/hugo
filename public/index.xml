@@ -572,6 +572,299 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>通过控制平面提供路由</title>
+      <link>https://www.yangcs.net/posts/routing-with-a-control-plane/</link>
+      <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/routing-with-a-control-plane/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;当微服务集群规模非常庞大时，控制平面包含了大量的 Envoy 配置项和基础设施状态，这时最好将数据平面与控制平面分离。控制平面最主要的功能包括自动重试和&lt;a href=&#34;https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/&#34; target=&#34;_blank&#34;&gt;集成服务发现&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;单独创建控制平面的最大优势之一是可以为路由配置提供统一的来源。传统架构的路由定义分散存储在 Web 服务器的配置文件、负载均衡器配置文件和特定应用程序的配置中（如 &lt;code&gt;routes.rb&lt;/code&gt;），使用单独的控制平面可以集中所有的路由配置，使它们更易于更改和管理，同时也为应用的迁移和发布提供了更高的灵活性。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-1-通过-rds-提供路由-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 通过 RDS 提供路由&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Envoy 的动态配置功能允许通过路由发现服务（RDS）的 &lt;code&gt;API&lt;/code&gt; 来动态获取路由配置。控制平面通过 RDS 提供路由配置，将 &lt;strong&gt;域名+路径&lt;/strong&gt; 映射到 Envoy 中的某个集群（cluster），而实际的流量控制由 Envoy 实例来完成。&lt;/p&gt;
+
+&lt;p&gt;这里是一个使用 RDS 来动态获取路由的示例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;version_info: &amp;quot;0&amp;quot;
+resources:
+- &amp;quot;@type&amp;quot;: type.googleapis.com/envoy.api.v2.RouteConfiguration
+  name: local_route
+  virtual_hosts:
+  - name: local_service
+    domains: [&amp;quot;*&amp;quot;]
+    routes:
+    - match: { prefix: &amp;quot;/&amp;quot; }
+      route: { cluster: some_service }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;开源项目 &lt;a href=&#34;https://github.com/envoyproxy/go-control-plane&#34; target=&#34;_blank&#34;&gt;go-control-plane&lt;/a&gt;，&lt;a href=&#34;https://istio.io/docs/concepts/traffic-management/pilot.html&#34; target=&#34;_blank&#34;&gt;Istio Pilot&lt;/a&gt; 和 商业项目 &lt;a href=&#34;http://turbinelabs.io/product&#34; target=&#34;_blank&#34;&gt;Houston&lt;/a&gt; 都提供了 RDS 的 API，Envoy 官方文档也定义了一个&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#v2-grpc-streaming-endpoints&#34; target=&#34;_blank&#34;&gt;完整的 RDS 规范&lt;/a&gt;。RDS 规范只是一种流量传输机制，如何对路由进行管理还是要取决于你。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-2-路由定义的最佳实践-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 路由定义的最佳实践&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;当你的系统中有数千个 Envoy 实例时，应该选择控制平面来作为所有路由的统一来源。客户端请求可以直接来自用户、内部服务或者来自不同的云区域，因此最好使用 Envoy 来处理这些不同的网络拓扑（例如，作为客户流量的前端代理以及内部流量的服务网格），虽然流量来自不同的方向，但它们的行为都是相似的。&lt;/p&gt;
+
+&lt;p&gt;为了扩展单个系统的路由定义，通常需要遵循以下三个关键原则：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将路由视为数据，而不是配置&lt;/li&gt;
+&lt;li&gt;将控制权分配给具有 &lt;code&gt;ACL&lt;/code&gt; 权限的团队&lt;/li&gt;
+&lt;li&gt;使用审计日志和回滚操作来管理路由的更改&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&#34;将路由视为数据&#34;&gt;将路由视为数据&lt;/h3&gt;
+
+&lt;p&gt;将路由视为一组相互关联的服务的数据可以防止发生冲突，同时确保了其语义的正确性。虽然像 &lt;code&gt;Istio&lt;/code&gt; 这样的工具可以很容易地编写基于 &lt;code&gt;YAML&lt;/code&gt; 配置文件的路由，但是在数千行 YAML 文件中管理数百条路由很难保证每个定义都是有效的路由。或许你也想过使用版本控制来管理这些配置文件，但如果合并分支时发生致命错误将会导致灾难性的后果（如路由丢失或通过 API 重写）。&lt;/p&gt;
+
+&lt;p&gt;实际上，从静态配置文件转移到动态配置文件是在大规模集群中使用 Envoy 的第一步。为了能够将 Envoy 投入生产，建议至少使用像 &lt;a href=&#34;https://github.com/envoyproxy/go-control-plane&#34; target=&#34;_blank&#34;&gt;go-control-plane&lt;/a&gt; 这样实现了 &lt;code&gt;xDS&lt;/code&gt; 的控制平面统一提供路由配置。通过将路由的来源转移到 &lt;code&gt;RDS API&lt;/code&gt; 背后，可以实现路由的并发更新，同时也可以防止对路由进行无意义的更新。&lt;/p&gt;
+
+&lt;h3 id=&#34;将控制权分配给具有-acl-权限的团队&#34;&gt;将控制权分配给具有 &lt;code&gt;ACL&lt;/code&gt; 权限的团队&lt;/h3&gt;
+
+&lt;p&gt;通过对流量进行管控可以解锁更强大的工作流程（如蓝绿发布和增量迁移），同时也能让服务团队确保各个服务之间的路由是安全可用的。你可以根据需要来隐藏管控区域之外的路由以防止误点击或者发生意外事故，你也可以完全禁止某些成员修改路由。&lt;/p&gt;
+
+&lt;h3 id=&#34;管理路由的更改&#34;&gt;管理路由的更改&lt;/h3&gt;
+
+&lt;p&gt;了解路由何时被更改以及被谁更改是及其重要的，许多团队会发现，在他们分配好了定义路由的任务之后，实际路由的数量将会超出他们的预期，因此为了保险起见，最好对路由的更改进行记录。例如，&lt;code&gt;master&lt;/code&gt; 分支中的自动蓝绿发布应该打上最后一个合并分支的人的标签。&lt;/p&gt;
+
+&lt;p&gt;为了更好地管理路由，团队内部必须要知道如何在两个时间点之间更改路由以及如何在必要时将其回滚，同时最好将这些操作收集到监控系统中。当你需要进一步优化时，这些操作记录是很有价值的（例如 git 历史记录在编写新代码时很有帮助）。&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>将服务发现与 Envoy 集成</title>
       <link>https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/</link>
       <pubDate>Wed, 04 Jul 2018 10:12:43 +0000</pubDate>
@@ -6183,426 +6476,6 @@ I0505 11:55:08.160964       1 node_affinity.go:72] Evicted 0 pods
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://akomljen.com/meet-a-kubernetes-descheduler/&#34; target=&#34;_blank&#34;&gt;Meet a Kubernetes Descheduler&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>Pod 的生命周期管理</title>
-      <link>https://www.yangcs.net/posts/pods-life/</link>
-      <pubDate>Thu, 03 May 2018 12:08:01 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/pods-life/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;本文我们将从实践者的角度仔细研究整个pod生命周期，包括如何影响启动和关闭行为，并通过实践来理解对应用程序健康状况的检查。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-pod-的生命周期-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Pod 的生命周期&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;pod-phase&#34;&gt;Pod phase&lt;/h3&gt;
-
-&lt;p&gt;Pod 的 status 在信息保存在 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/3ae0b84e0b114692dc666d9486fb032d8a33bb58/pkg/api/types.go#L2471&#34; target=&#34;_blank&#34;&gt;PodStatus&lt;/a&gt; 中定义，其中有一个 phase 字段。&lt;/p&gt;
-
-&lt;p&gt;Pod 的相位（phase）是 Pod 在其生命周期中的简单宏观概述。该阶段并不是对容器或 Pod 的综合汇总，也不是为了做为综合状态机。&lt;/p&gt;
-
-&lt;p&gt;Pod 相位的数量和含义是严格指定的。除了本文档中列举的状态外，不应该再假定 Pod 有其他的 phase 值。&lt;/p&gt;
-
-&lt;p&gt;无论你是手动创建 Pod，还是通过 &lt;code&gt;deployment&lt;/code&gt;、&lt;code&gt;daemonset&lt;/code&gt; 或 &lt;code&gt;statefulset&lt;/code&gt;来创建，Pod 的 phase 都有以下几个可能的值：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;挂起（Pending）&lt;/strong&gt;：Pod 已被 Kubernetes 系统接受，但有一个或者多个容器镜像尚未创建。等待时间包括调度 Pod 的时间和通过网络下载镜像的时间，这可能需要花点时间。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;运行中（Running）&lt;/strong&gt;：该 Pod 已经绑定到了一个节点上，Pod 中所有的容器都已被创建。至少有一个容器正在运行，或者正处于启动或重启状态。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;成功（Successed）&lt;/strong&gt;：Pod 中的所有容器都被成功终止，并且不会再重启。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;失败（Failed）&lt;/strong&gt;：Pod 中的所有容器都已终止了，并且至少有一个容器是因为失败终止。也就是说，容器以非0状态退出或者被系统终止。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;未知（Unkonwn）&lt;/strong&gt;：因为某些原因无法取得 Pod 的状态，通常是因为与 Pod 所在主机通信失败。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;下图是 Pod 的生命周期示意图，从图中可以看到 Pod 状态的变化。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://jimmysong.io/kubernetes-handbook/images/kubernetes-pod-life-cycle.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
-&lt;center&gt;图片 - Pod的生命周期示意图&lt;/center&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;pod-状态&#34;&gt;Pod 状态&lt;/h3&gt;
-
-&lt;p&gt;Pod 有一个 PodStatus 对象，其中包含一个 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/3ae0b84e0b114692dc666d9486fb032d8a33bb58/pkg/api/types.go#L1964&#34; target=&#34;_blank&#34;&gt;PodCondition&lt;/a&gt; 数组。 PodCondition 数组的每个元素都有一个 type 字段和一个 status 字段。type 字段是字符串，可能的值有 &lt;code&gt;PodScheduled&lt;/code&gt;、&lt;code&gt;Ready&lt;/code&gt;、&lt;code&gt;Initialized&lt;/code&gt; 和 &lt;code&gt;Unschedulable&lt;/code&gt;。status 字段是一个字符串，可能的值有 &lt;code&gt;True&lt;/code&gt;、&lt;code&gt;False&lt;/code&gt; 和 &lt;code&gt;Unknown&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;当你通过 &lt;code&gt;kubectl get pod&lt;/code&gt; 查看 Pod 时，&lt;code&gt;STATUS&lt;/code&gt; 这一列可能会显示与上述5个状态不同的值，例如 &lt;code&gt;Init:0/1&lt;/code&gt; 和 &lt;code&gt;CrashLoopBackOff&lt;/code&gt;。这是因为 Pod 状态的定义除了包含 phase 之外，还有 &lt;code&gt;InitContainerStatuses&lt;/code&gt; 和 &lt;code&gt;containerStatuses&lt;/code&gt; 等其他字段，具体代码参考 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/3ae0b84e0b114692dc666d9486fb032d8a33bb58/pkg/api/types.go#L2471&#34; target=&#34;_blank&#34;&gt;overall status of a pod&lt;/a&gt; .&lt;/p&gt;
-
-&lt;p&gt;如果想知道究竟发生了什么，可以通过命令 &lt;code&gt;kubectl describe pod/$PODNAME&lt;/code&gt; 查看输出信息的 &lt;code&gt;Events&lt;/code&gt; 条目。通过 Events 条目可以看到一些具体的信息，比如正在拉取容器镜像，Pod 已经被调度，或者某个 container 处于 unhealthy 状态。&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-pod-的启动关闭流程-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. Pod 的启动关闭流程&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;下面通过一个具体的示例来探究一下 Pod 的整个生命周期流程。为了确定事情发生的顺序，通过下面的 manifest 来部署一个 deployment。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;kind:                   Deployment
-apiVersion:             apps/v1beta1
-metadata:
-  name:                 loap
-spec:
-  replicas:             1
-  template:
-    metadata:
-      labels:
-        app:            loap
-    spec:
-      initContainers:
-      - name:           init
-        image:          busybox
-        command:       [&#39;sh&#39;, &#39;-c&#39;, &#39;echo $(date +%s): INIT &amp;gt;&amp;gt; /loap/timing&#39;]
-        volumeMounts:
-        - mountPath:    /loap
-          name:         timing
-      containers:
-      - name:           main
-        image:          busybox
-        command:       [&#39;sh&#39;, &#39;-c&#39;, &#39;echo $(date +%s): START &amp;gt;&amp;gt; /loap/timing;
-sleep 10; echo $(date +%s): END &amp;gt;&amp;gt; /loap/timing;&#39;]
-        volumeMounts:
-        - mountPath:    /loap
-          name:         timing
-        livenessProbe:
-          exec:
-            command:   [&#39;sh&#39;, &#39;-c&#39;, &#39;echo $(date +%s): LIVENESS &amp;gt;&amp;gt; /loap/timing&#39;]
-        readinessProbe:
-          exec:
-            command:   [&#39;sh&#39;, &#39;-c&#39;, &#39;echo $(date +%s): READINESS &amp;gt;&amp;gt; /loap/timing&#39;]
-        lifecycle:
-          postStart:
-            exec:
-              command:   [&#39;sh&#39;, &#39;-c&#39;, &#39;echo $(date +%s): POST-START &amp;gt;&amp;gt; /loap/timing&#39;]
-          preStop:
-            exec:
-              command:  [&#39;sh&#39;, &#39;-c&#39;, &#39;echo $(date +%s): PRE-HOOK &amp;gt;&amp;gt; /loap/timing&#39;]
-      volumes:
-      - name:           timing
-        hostPath:
-          path:         /tmp/loap
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;等待 Pod 状态变为 &lt;code&gt;Running&lt;/code&gt; 之后，通过以下命令来强制停止 Pod：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ kubectl scale deployment loap --replicas=0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看 &lt;code&gt;/tmp/loap/timing&lt;/code&gt; 文件的内容：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ cat /tmp/loap/timing
-
-1525334577: INIT
-1525334581: START
-1525334581: POST-START
-1525334584: READINESS
-1525334584: LIVENESS
-1525334588: PRE-HOOK
-1525334589: END
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;/tmp/loap/timing&lt;/code&gt; 文件的内容很好地体现了 Pod 的启动和关闭流程，具体过程如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/loap.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
-&lt;center&gt;图片 - Pod 的启动和关闭流程&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;首先启动一个 Infra 容器（又叫 Pause 容器），用来和 Pod 中的其他容器共享 linux 命名空间，并开启 init 进程。（上图中忽略了这一步）&lt;/li&gt;
-&lt;li&gt;然后启动 Init 容器，它是一种专用的容器，在应用程序容器启动之前运行，用来对 Pod 进行一些初始化操作，并包括一些应用镜像中不存在的实用工具和安装脚本。&lt;/li&gt;
-&lt;li&gt;4 秒之后，应用程序容器和 &lt;code&gt;post-start hook&lt;/code&gt; 同时启动。&lt;/li&gt;
-&lt;li&gt;7 秒之后开始启动 &lt;a href=&#34;https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/&#34; target=&#34;_blank&#34;&gt;liveness 和 readiness 探针&lt;/a&gt;。&lt;/li&gt;
-&lt;li&gt;11 秒之后，通过手动杀掉 Pod，&lt;code&gt;pre-stop hook&lt;/code&gt; 执行，优雅删除期限过期后（默认是 30 秒），应用程序容器停止。实际的 Pod 终止过程要更复杂，具体参考 &lt;a href=&#34;https://jimmysong.io/kubernetes-handbook/concepts/pod.html&#34; target=&#34;_blank&#34;&gt;Pod 的终止&lt;/a&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;必须主动杀掉 Pod 才会触发 &lt;code&gt;pre-stop hook&lt;/code&gt;，如果是 Pod 自己 Down 掉，则不会执行 &lt;code&gt;pre-stop hook&lt;/code&gt;。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-如何快速-debug-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 如何快速 DEBUG&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;当 Pod 出现致命的错误时，如果能够快速 DEBUG，将会帮助我们快速定位问题。为了实现这个目的，可以把把致命事件的信息通过 &lt;code&gt;.spec.terminationMessagePath&lt;/code&gt; 配置写入指定位置的文件，就像打印错误、异常和堆栈信息一样。该位置的内容可以很方便的通过 dashboards、监控软件等工具检索和展示，默认路径为 &lt;code&gt;/dev/termination-log&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;以下是一个小例子：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# termination-demo.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: termination-demo
-spec:
-  containers:
-  - name: termination-demo-container
-    image: alpine
-    command: [&amp;quot;/bin/sh&amp;quot;]
-    args: [&amp;quot;-c&amp;quot;, &amp;quot;sleep 10 &amp;amp;&amp;amp; echo Sleep expired &amp;gt; /dev/termination-log&amp;quot;]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这些消息的最后部分会使用其他的规定来单独存储：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ kubectl create -f termination-demo.yaml
-
-$ sleep 20
-
-$ kubectl get pod termination-demo -o go-template=&#39;{{range .status.containerStatuses}}{{.lastState.terminated.message}}{{end}}&#39;
-
-Sleep expired
-
-$ kubectl get pod termination-demo -o go-template=&#39;{{range .status.containerStatuses}}{{.lastState.terminated.exitCode}}{{end}}&#39;
-
-0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/kubernetes-handbook/concepts/pod-hook.html&#34; target=&#34;_blank&#34;&gt;Pod hook&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://blog.openshift.com/kubernetes-pods-life/&#34; target=&#34;_blank&#34;&gt;Kubernetes: A Pod’s Life&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/tasks/debug-application-cluster/determine-reason-pod-failure/&#34; target=&#34;_blank&#34;&gt;确定 Pod 失败的原因&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;

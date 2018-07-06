@@ -6,10 +6,19 @@
     <description>Recent content in Service Mesh on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 04 Jul 2018 10:12:43 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 06 Jul 2018 06:16:02 +0000</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/service-mesh/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>通过控制平面提供路由</title>
+      <link>https://www.yangcs.net/posts/routing-with-a-control-plane/</link>
+      <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/routing-with-a-control-plane/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>将服务发现与 Envoy 集成</title>
