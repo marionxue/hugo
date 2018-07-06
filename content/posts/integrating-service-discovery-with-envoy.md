@@ -108,7 +108,7 @@ Envoy 将 CDS 和 EDS 视为一份份的报告并保持服务发现的最终一�
 
 一旦控制平面发现了所有可用服务，就可以在这些服务上配置路由了。下一节将会介绍如何配置路由发现服务（RDS）。
 
-
+![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)
 
 <style>
 #h2{
