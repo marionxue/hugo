@@ -293,6 +293,8 @@ admin:
       port_value: 8001
 ```
 
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+
 
 <style>
 #h2{
