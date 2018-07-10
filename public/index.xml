@@ -625,7 +625,7 @@ $ kubectl create namespace istio-system
 $ kubectl create -f istio.yaml
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;这里说的是使用 &lt;code&gt;install/kubernetes/helm/istio&lt;/code&gt; 目录中的 Chart 进行渲染，生成的内容保存到 &lt;code&gt;./istio.yaml&lt;/code&gt; 文件之中。将 &lt;code&gt;sidecarInjectorWebhook.enabled&lt;/code&gt; 为 False，从而禁止自动注入属性生效。&lt;/p&gt;
+&lt;p&gt;这里说的是使用 &lt;code&gt;install/kubernetes/helm/istio&lt;/code&gt; 目录中的 Chart 进行渲染，生成的内容保存到 &lt;code&gt;./istio.yaml&lt;/code&gt; 文件之中。将 &lt;code&gt;sidecarInjectorWebhook.enabled&lt;/code&gt; 设置为 False，从而禁止自动注入属性生效。&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;开启自动 &lt;code&gt;sidecar&lt;/code&gt; 注入&lt;/li&gt;
