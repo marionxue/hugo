@@ -572,6 +572,473 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>Istio 0.8 部署</title>
+      <link>https://www.yangcs.net/posts/istio-0.8-deploy/</link>
+      <pubDate>Tue, 10 Jul 2018 07:01:29 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-0.8-deploy/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;北京时间 2018 年 6 月 1 日（儿童节）上午 9: 30 &lt;code&gt;Istio 0.8.0 LTS&lt;/code&gt;（长期支持版本）发布。这个项目的组件相对比较复杂，原有的一些选项是靠 ConfigMap 以及 istioctl 分别调整的，现在通过重新设计的 &lt;code&gt;Helm Chart&lt;/code&gt;，安装选项用 &lt;code&gt;values.yml&lt;/code&gt; 或者 helm 命令行的方式来进行集中管理了。&lt;/p&gt;
+
+&lt;p&gt;在安装 Istio 之前要确保 Kubernetes 集群（仅支持 &lt;code&gt;v1.7.3&lt;/code&gt; 及以后版本）已部署并配置好本地的 kubectl 客户端。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-1-下载-istio-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 下载 Istio&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ wget https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-linux.tar.gz
+$ tar zxf istio-0.8.0-linux.tar.gz
+$ cp istio-0.8.0/bin/istioctl /usr/local/bin/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-2-使用-helm-部署-istio-服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 使用 Helm 部署 Istio 服务&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;克隆 Istio 仓库：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/istio/istio.git -b release-0.8
+$ cd istio
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;安装包内的 Helm 目录中包含了 Istio 的 Chart，官方提供了两种方法：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;用 Helm 生成 &lt;code&gt;istio.yaml&lt;/code&gt;，然后自行安装。&lt;/li&gt;
+&lt;li&gt;用 &lt;code&gt;Tiller&lt;/code&gt; 直接安装。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;很明显，两种方法并没有什么本质区别，这里我们采用第一种方法来部署。&lt;/p&gt;
+
+&lt;p&gt;有两种方式（选择其一执行）：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;不开启自动 &lt;code&gt;sidecar&lt;/code&gt; 注入&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=false --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true &amp;gt; istio.yaml
+
+$ kubectl create namespace istio-system
+$ kubectl create -f istio.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里说的是使用 &lt;code&gt;install/kubernetes/helm/istio&lt;/code&gt; 目录中的 Chart 进行渲染，生成的内容保存到 &lt;code&gt;./istio.yaml&lt;/code&gt; 文件之中。将 &lt;code&gt;sidecarInjectorWebhook.enabled&lt;/code&gt; 为 False，从而禁止自动注入属性生效。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;开启自动 &lt;code&gt;sidecar&lt;/code&gt; 注入&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=true --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true &amp;gt; istio.yaml
+
+$ kubectl create namespace istio-system
+$ kubectl create -f istio.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;部署完成后，可以检查 &lt;code&gt;isotio-system&lt;/code&gt; namespace 中的服务是否正常运行：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n istio-system get pods -o go-template=&#39;{{range .items}}{{.metadata.name}}{{&amp;quot;\n&amp;quot;}}{{end}}&#39;
+
+istio-citadel-ff5696f6f-p6xz6
+istio-cleanup-old-ca-mtzqv
+istio-egressgateway-58d98d898c-9wmrb
+istio-ingress-6fb78f687f-78tt8
+istio-ingressgateway-6bc7c7c4bc-mgkvg
+istio-mixer-post-install-zqmtr
+istio-pilot-6c5c6b586c-7hk6r
+istio-policy-5c7fbb4b9f-4rspm
+istio-statsd-prom-bridge-6dbb7dcc7f-s9qvd
+istio-telemetry-54b5bf4847-s5mqr
+istio-tracing-67dbb5b89f-4ftd9
+prometheus-586d95b8d9-pdwkh
+servicegraph-6d86dfc6cb-xbpjx
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;过去的 istio-ca 现已更名 &lt;code&gt;istio-citadel&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;istio-cleanup-old-ca&lt;/code&gt; 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;istio-mixer-post-install&lt;/code&gt; 同样也是一个 job，和上面的 Job 一样，简单的调用 kubectl 创建第三方资源，从而避免了之前的 CDR 需要重复创建的尴尬状况。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;egressgateway&lt;/code&gt;、&lt;code&gt;ingress&lt;/code&gt; 以及 &lt;code&gt;ingressgateway&lt;/code&gt;，可以看出边缘部分的变动很大，以后会另行发文。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&#34;p-id-h2-3-prometheus-grafana-servicegraph-和-jaeger-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. Prometheus、Grafana、Servicegraph 和 Jaeger&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;等所有 Pod 启动后，可以通过 NodePort、Ingress 或者 kubectl proxy 来访问这些服务。比如可以通过 &lt;code&gt;Ingress&lt;/code&gt; 来访问服务。&lt;/p&gt;
+
+&lt;p&gt;首先为 Prometheus、Grafana、Servicegraph 和 Jaeger 服务创建 Ingress：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat ingress.yaml
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: istio-system
+spec:
+  rules:
+  - host: prometheus.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prometheus
+          servicePort: 9090
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: istio-system
+spec:
+  rules:
+  - host: grafana.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: grafana
+          servicePort: 3000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: servicegraph
+  namespace: istio-system
+spec:
+  rules:
+  - host: servicegraph.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: servicegraph
+          servicePort: 8088
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tracing
+  namespace: istio-system
+spec:
+  rules:
+  - host: tracing.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tracing
+          servicePort: 80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ingress.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后在你的本地电脑上添加四条 &lt;code&gt;hosts&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$Ingree_host prometheus.istio.io
+$Ingree_host grafana.istio.io
+$Ingree_host servicegraph.istio.io
+$Ingree_host tracing.istio.io
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将 &lt;code&gt;$Ingree_host&lt;/code&gt; 替换为 Ingress Controller 运行节点的 IP。&lt;/p&gt;
+
+&lt;p&gt;通过 &lt;code&gt;http://grafana.istio.io&lt;/code&gt; 访问 Grafana 服务：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/grafana-istio.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过 &lt;code&gt;http://servicegraph.istio.io&lt;/code&gt; 访问 ServiceGraph 服务，展示服务之间调用关系图。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/force/forcegraph.html&lt;/code&gt; : As explored above, this is an interactive &lt;a href=&#34;https://d3js.org/&#34; target=&#34;_blank&#34;&gt;D3.js&lt;/a&gt; visualization.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/servicegraph-forcegraph1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/dotviz&lt;/code&gt; : is a static &lt;a href=&#34;https://www.graphviz.org/&#34; target=&#34;_blank&#34;&gt;Graphviz&lt;/a&gt; visualization.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/servicegraph-dotviz.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/dotgraph&lt;/code&gt; : provides a [DOT](&lt;a href=&#34;https://www.wikiwand.com/en/DOT_(graph_description_language&#34; target=&#34;_blank&#34;&gt;https://www.wikiwand.com/en/DOT_(graph_description_language&lt;/a&gt;) serialization.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/d3graph&lt;/code&gt; : provides a JSON serialization for D3 visualization.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/graph&lt;/code&gt; : provides a generic JSON serialization.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;通过 &lt;code&gt;http://tracing.istio.io/&lt;/code&gt; 访问 Jaeger 跟踪页面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/zipkin-jaeger.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;通过 &lt;code&gt;http://prometheus.istio.io/&lt;/code&gt; 访问 Prometheus 页面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/istio-prometheus.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;如果你已经部署了 &lt;code&gt;Prometheus-operator&lt;/code&gt;，可以不必部署 Grafana，直接将 &lt;code&gt;addons/grafana/dashboards&lt;/code&gt; 目录下的 Dashboard 模板复制出来放到 Prometheus-operator 的 Grafana 上，然后添加 istio-system 命名空间中的 Prometheus 数据源就可以监控 Istio 了。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-4-mesh-expansion-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. Mesh Expansion&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Istio 还支持管理非 Kubernetes 管理的应用。此时，需要在应用所在的 VM 或者物理中部署 Istio，具体步骤请参考 &lt;a href=&#34;https://istio.io/docs/setup/kubernetes/mesh-expansion/&#34; target=&#34;_blank&#34;&gt;Mesh Expansion&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;部署好后，就可以向 Istio 注册应用，如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# istioctl register servicename machine-ip portname:port
+$ istioctl -n onprem register mysql 1.2.3.4 3306
+$ istioctl -n onprem register svc1 1.2.3.4 http:7000
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.fleeto.us/post/istio-0.8.0-helm/&#34; target=&#34;_blank&#34;&gt;Istio 0.8 的 Helm Chart 解析&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>通过控制平面提供路由</title>
       <link>https://www.yangcs.net/posts/routing-with-a-control-plane/</link>
       <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
@@ -6267,452 +6734,6 @@ border-top-color: #9954bb;
 }
 &lt;/style&gt;
 </description>
-    </item>
-    
-    <item>
-      <title>走进 Descheduler</title>
-      <link>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</link>
-      <pubDate>Wed, 23 May 2018 10:23:29 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;kube-scheduler&lt;/code&gt; 是 Kubernetes 中负责调度的组件，它本身的调度功能已经很强大了。但由于 Kubernetes 集群非常活跃，它的状态会随时间而改变，由于各种原因，你可能需要将已经运行的 Pod 移动到其他节点：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;某些节点负载过高&lt;/li&gt;
-&lt;li&gt;某些资源对象被添加了 &lt;a href=&#34;https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#node-affinity-beta-feature&#34; target=&#34;_blank&#34;&gt;node 亲和性&lt;/a&gt; 或 &lt;a href=&#34;https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#inter-pod-affinity-and-anti-affinity-beta-feature&#34; target=&#34;_blank&#34;&gt;pod （反）亲和性&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;集群中加入了新节点&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;一旦 Pod 启动之后 &lt;code&gt;kube-scheduler&lt;/code&gt; 便不会再尝试重新调度它。根据环境的不同，你可能会有很多需要手动调整 Pod 的分布，例如：如果集群中新加入了一个节点，那么已经运行的 Pod 并不会被分摊到这台节点上，这台节点可能只运行了少量的几个 Pod，这并不理想，对吧？&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-descheduler-如何工作-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Descheduler 如何工作？&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes-incubator/descheduler&#34; target=&#34;_blank&#34;&gt;Descheduler&lt;/a&gt; 会检查 Pod 的状态，并根据自定义的策略将不满足要求的 Pod 从该节点上驱逐出去。Descheduler 并不是 &lt;code&gt;kube-scheduler&lt;/code&gt; 的替代品，而是要依赖于它。该项目目前放在 Kubernetes 的孵化项目中，还没准备投入生产，但经过我实验发现它的运行效果很好，而且非常稳定。那么该如何安装呢？&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-部署方法-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 部署方法&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;你可以通过 &lt;code&gt;Job&lt;/code&gt; 或 &lt;code&gt;CronJob&lt;/code&gt; 来运行 descheduler。我已经创建了一个镜像 &lt;code&gt;komljen/descheduler:v0.5.0-4-ga7ceb671&lt;/code&gt;（包含在下面的 yaml 文件中），但由于这个项目的更新速度很快，你可以通过以下的命令创建你自己的镜像：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/kubernetes-incubator/descheduler
-$ cd descheduler &amp;amp;&amp;amp; make image
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后打好标签 push 到自己的镜像仓库中。&lt;/p&gt;
-
-&lt;p&gt;通过我创建的 chart 模板，你可以用 &lt;code&gt;Helm&lt;/code&gt; 来部署 descheduler，该模板支持 RBAC 并且已经在 Kubernetes v1.9 上测试通过。&lt;/p&gt;
-
-&lt;p&gt;添加我的 helm 私有仓库，然后部署 descheduler：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm repo add akomljen-charts \
-  https://raw.githubusercontent.com/komljen/helm-charts/master/charts/
-  
-$ helm install --name ds \
-  --namespace kube-system \
-  akomljen-charts/descheduler
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;你也可以不使用 helm，通过手动部署。首先创建 serviceaccount 和 clusterrolebinding：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# Create a cluster role
-$ cat &amp;lt;&amp;lt; EOF| kubectl create -n kube-system -f -
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: ClusterRole
-metadata:
-  name: descheduler
-rules:
-- apiGroups: [&amp;quot;&amp;quot;]
-  resources: [&amp;quot;nodes&amp;quot;]
-  verbs: [&amp;quot;get&amp;quot;, &amp;quot;watch&amp;quot;, &amp;quot;list&amp;quot;]
-- apiGroups: [&amp;quot;&amp;quot;]
-  resources: [&amp;quot;pods&amp;quot;]
-  verbs: [&amp;quot;get&amp;quot;, &amp;quot;watch&amp;quot;, &amp;quot;list&amp;quot;, &amp;quot;delete&amp;quot;]
-- apiGroups: [&amp;quot;&amp;quot;]
-  resources: [&amp;quot;pods/eviction&amp;quot;]
-  verbs: [&amp;quot;create&amp;quot;]
-EOF
-
-# Create a service account
-$ kubectl create sa descheduler -n kube-system
-
-# Bind the cluster role to the service account
-$ kubectl create clusterrolebinding descheduler \
-    -n kube-system \
-    --clusterrole=descheduler \
-    --serviceaccount=kube-system:descheduler
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后通过 &lt;code&gt;configmap&lt;/code&gt; 创建 descheduler 策略。目前只支持四种策略：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-incubator/descheduler#removeduplicates&#34; target=&#34;_blank&#34;&gt;RemoveDuplicates&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-incubator/descheduler#lownodeutilization&#34; target=&#34;_blank&#34;&gt;LowNodeUtilization&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-incubator/descheduler#removepodsviolatinginterpodantiaffinity&#34; target=&#34;_blank&#34;&gt;RemovePodsViolatingInterPodAntiAffinity&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes-incubator/descheduler#removepodsviolatingnodeaffinity&#34; target=&#34;_blank&#34;&gt;RemovePodsViolatingNodeAffinity&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;默认这四种策略全部开启，你可以根据需要关闭它们。下面在 &lt;code&gt;kube-suystem&lt;/code&gt; 命名空间中创建一个 configmap：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt; EOF| kubectl create -n kube-system -f -
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: descheduler
-data:
-  policy.yaml: |-  
-    apiVersion: descheduler/v1alpha1
-    kind: DeschedulerPolicy
-    strategies:
-      RemoveDuplicates:
-         enabled: false
-      LowNodeUtilization:
-         enabled: true
-         params:
-           nodeResourceUtilizationThresholds:
-             thresholds:
-               cpu: 20
-               memory: 20
-               pods: 20
-             targetThresholds:
-               cpu: 50
-               memory: 50
-               pods: 50
-      RemovePodsViolatingInterPodAntiAffinity:
-        enabled: true
-      RemovePodsViolatingNodeAffinity:
-        enabled: true
-        params:
-          nodeAffinityType:
-          - requiredDuringSchedulingIgnoredDuringExecution
-EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 &lt;code&gt;kube-system&lt;/code&gt; 命名空间中创建一个 CronJob：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt; EOF| kubectl create -n kube-system -f -
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  name: descheduler
-spec:
-  schedule: &amp;quot;*/30 * * * *&amp;quot;
-  jobTemplate:
-    metadata:
-      name: descheduler
-      annotations:
-        scheduler.alpha.kubernetes.io/critical-pod: &amp;quot;true&amp;quot;
-    spec:
-      template:
-        spec:
-          serviceAccountName: descheduler
-          containers:
-          - name: descheduler
-            image: komljen/descheduler:v0.5.0-4-ga7ceb671
-            volumeMounts:
-            - mountPath: /policy-dir
-              name: policy-volume
-            command:
-            - /bin/descheduler
-            - --v=4
-            - --max-pods-to-evict-per-node=10
-            - --policy-config-file=/policy-dir/policy.yaml
-          restartPolicy: &amp;quot;OnFailure&amp;quot;
-          volumes:
-          - name: policy-volume
-            configMap:
-              name: descheduler
-EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get cronjobs -n kube-system
-
-NAME             SCHEDULE       SUSPEND   ACTIVE    LAST SCHEDULE   AGE
-descheduler      */30 * * * *   False     0         2m              32m
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;该 CroJob 每 30 分钟运行一次，当 CronJob 开始工作后，可以通过以下命令查看已经成功结束的 Pod：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods -n kube-system -a | grep Completed
-
-descheduler-1525520700-297pq          0/1       Completed   0          1h
-descheduler-1525521000-tz2ch          0/1       Completed   0          32m
-descheduler-1525521300-mrw4t          0/1       Completed   0          2m
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;也可以查看这些 Pod 的日志，然后根据需要调整 descheduler 策略：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl logs descheduler-1525521300-mrw4t -n kube-system
-
-I0505 11:55:07.554195       1 reflector.go:202] Starting reflector *v1.Node (1h0m0s) from github.com/kubernetes-incubator/descheduler/pkg/descheduler/node/node.go:84
-I0505 11:55:07.554255       1 reflector.go:240] Listing and watching *v1.Node from github.com/kubernetes-incubator/descheduler/pkg/descheduler/node/node.go:84
-I0505 11:55:07.767903       1 lownodeutilization.go:147] Node &amp;quot;ip-10-4-63-172.eu-west-1.compute.internal&amp;quot; is appropriately utilized with usage: api.ResourceThresholds{&amp;quot;cpu&amp;quot;:41.5, &amp;quot;memory&amp;quot;:1.3635487207675927, &amp;quot;pods&amp;quot;:8.181818181818182}
-I0505 11:55:07.767942       1 lownodeutilization.go:149] allPods:9, nonRemovablePods:9, bePods:0, bPods:0, gPods:0
-I0505 11:55:07.768141       1 lownodeutilization.go:144] Node &amp;quot;ip-10-4-36-223.eu-west-1.compute.internal&amp;quot; is over utilized with usage: api.ResourceThresholds{&amp;quot;cpu&amp;quot;:48.75, &amp;quot;memory&amp;quot;:61.05259502942694, &amp;quot;pods&amp;quot;:30}
-I0505 11:55:07.768156       1 lownodeutilization.go:149] allPods:33, nonRemovablePods:12, bePods:1, bPods:19, gPods:1
-I0505 11:55:07.768376       1 lownodeutilization.go:144] Node &amp;quot;ip-10-4-41-14.eu-west-1.compute.internal&amp;quot; is over utilized with usage: api.ResourceThresholds{&amp;quot;cpu&amp;quot;:39.125, &amp;quot;memory&amp;quot;:98.19259268881142, &amp;quot;pods&amp;quot;:33.63636363636363}
-I0505 11:55:07.768390       1 lownodeutilization.go:149] allPods:37, nonRemovablePods:8, bePods:0, bPods:29, gPods:0
-I0505 11:55:07.768538       1 lownodeutilization.go:147] Node &amp;quot;ip-10-4-34-29.eu-west-1.compute.internal&amp;quot; is appropriately utilized with usage: api.ResourceThresholds{&amp;quot;memory&amp;quot;:43.19826999287199, &amp;quot;pods&amp;quot;:30.90909090909091, &amp;quot;cpu&amp;quot;:35.25}
-I0505 11:55:07.768552       1 lownodeutilization.go:149] allPods:34, nonRemovablePods:11, bePods:8, bPods:15, gPods:0
-I0505 11:55:07.768556       1 lownodeutilization.go:65] Criteria for a node under utilization: CPU: 20, Mem: 20, Pods: 20
-I0505 11:55:07.768571       1 lownodeutilization.go:69] No node is underutilized, nothing to do here, you might tune your thersholds further
-I0505 11:55:07.768576       1 pod_antiaffinity.go:45] Processing node: &amp;quot;ip-10-4-63-172.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:07.779313       1 pod_antiaffinity.go:45] Processing node: &amp;quot;ip-10-4-36-223.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:07.796766       1 pod_antiaffinity.go:45] Processing node: &amp;quot;ip-10-4-41-14.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:07.813303       1 pod_antiaffinity.go:45] Processing node: &amp;quot;ip-10-4-34-29.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:07.829109       1 node_affinity.go:40] Executing for nodeAffinityType: requiredDuringSchedulingIgnoredDuringExecution
-I0505 11:55:07.829133       1 node_affinity.go:45] Processing node: &amp;quot;ip-10-4-63-172.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:07.840416       1 node_affinity.go:45] Processing node: &amp;quot;ip-10-4-36-223.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:07.856735       1 node_affinity.go:45] Processing node: &amp;quot;ip-10-4-41-14.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:07.945566       1 request.go:480] Throttling request took 88.738917ms, request: GET:https://100.64.0.1:443/api/v1/pods?fieldSelector=spec.nodeName%3Dip-10-4-41-14.eu-west-1.compute.internal%2Cstatus.phase%21%3DFailed%2Cstatus.phase%21%3DSucceeded
-I0505 11:55:07.972702       1 node_affinity.go:45] Processing node: &amp;quot;ip-10-4-34-29.eu-west-1.compute.internal&amp;quot;
-I0505 11:55:08.145559       1 request.go:480] Throttling request took 172.751657ms, request: GET:https://100.64.0.1:443/api/v1/pods?fieldSelector=spec.nodeName%3Dip-10-4-34-29.eu-west-1.compute.internal%2Cstatus.phase%21%3DFailed%2Cstatus.phase%21%3DSucceeded
-I0505 11:55:08.160964       1 node_affinity.go:72] Evicted 0 pods
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;哇哦，现在你的集群中已经运行了一个 descheduler！&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-总结-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 总结&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;Kubernetes 的默认调度器已经做的很好，但由于集群处于不断变化的状态中，某些 Pod 可能运行在错误的节点上，或者你想要均衡集群资源的分配，这时候就需要 descheduler 来帮助你将某些节点上的 Pod 驱逐到正确的节点上去。我很期待正式版的发布！&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-原文链接-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 原文链接&lt;/p&gt;&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://akomljen.com/meet-a-kubernetes-descheduler/&#34; target=&#34;_blank&#34;&gt;Meet a Kubernetes Descheduler&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
     </item>
     
   </channel>

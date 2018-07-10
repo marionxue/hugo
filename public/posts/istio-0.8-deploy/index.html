@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 通过控制平面提供路由 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> Istio 0.8 部署 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="通过控制平面提供路由" />
-  <meta name="twitter:title" content="通过控制平面提供路由" />
-  <meta name="description" content="路由定义的最佳实践">
-  <meta property="og:description" content="路由定义的最佳实践">
-  <meta name="twitter:description" content="路由定义的最佳实践">
+  <meta property="og:title" content="Istio 0.8 部署" />
+  <meta name="twitter:title" content="Istio 0.8 部署" />
+  <meta name="description" content="">
+  <meta property="og:description" content="">
+  <meta name="twitter:description" content="">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/routing-with-a-control-plane/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/istio-0.8-deploy/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.42.2" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/routing-with-a-control-plane/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/istio-0.8-deploy/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -313,28 +313,19 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>通过控制平面提供路由</h1>
+                     <h1>Istio 0.8 部署</h1>
                      
-                     
-                  
-                  
-                  
-                    
-                      <hr class="small">
-                      <span class="post-subheading">路由定义的最佳实践</span>
-                    
-                  
-                  
                     <span class="post-meta">
   
-  Posted on July 6, 2018
+  Posted on July 10, 2018
   
   
 </span>
 
 
+                    
                   
-                
+                  
               </div>
             </div>
           </div>
@@ -348,11 +339,7 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">通过控制平面提供路由</h1>
-                
-                  
-                    <h2 align="center" class="posts-subheading">路由定义的最佳实践</h2>
-                  
+                <h1 align="center">Istio 0.8 部署</h1>
                 
                 
             </div>
@@ -372,12 +359,12 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Fri Jul 6, 2018</h4>
+        <h4 id="date"> Tue Jul 10, 2018</h4>
     </section>
-    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
+    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
         
         <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
     </h5>
@@ -387,63 +374,235 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>当微服务集群规模非常庞大时，控制平面包含了大量的 Envoy 配置项和基础设施状态，这时最好将数据平面与控制平面分离。控制平面最主要的功能包括自动重试和<a href="https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/" target="_blank">集成服务发现</a>。</p>
+<p>北京时间 2018 年 6 月 1 日（儿童节）上午 9: 30 <code>Istio 0.8.0 LTS</code>（长期支持版本）发布。这个项目的组件相对比较复杂，原有的一些选项是靠 ConfigMap 以及 istioctl 分别调整的，现在通过重新设计的 <code>Helm Chart</code>，安装选项用 <code>values.yml</code> 或者 helm 命令行的方式来进行集中管理了。</p>
 
-<p>单独创建控制平面的最大优势之一是可以为路由配置提供统一的来源。传统架构的路由定义分散存储在 Web 服务器的配置文件、负载均衡器配置文件和特定应用程序的配置中（如 <code>routes.rb</code>），使用单独的控制平面可以集中所有的路由配置，使它们更易于更改和管理，同时也为应用的迁移和发布提供了更高的灵活性。</p>
+<p>在安装 Istio 之前要确保 Kubernetes 集群（仅支持 <code>v1.7.3</code> 及以后版本）已部署并配置好本地的 kubectl 客户端。</p>
 
-<h2 id="p-id-h2-1-通过-rds-提供路由-p"><p id="h2">1. 通过 RDS 提供路由</p></h2>
+<h2 id="p-id-h2-1-下载-istio-p"><p id="h2">1. 下载 Istio</p></h2>
 
 <hr />
 
-<p>Envoy 的动态配置功能允许通过路由发现服务（RDS）的 <code>API</code> 来动态获取路由配置。控制平面通过 RDS 提供路由配置，将 <strong>域名+路径</strong> 映射到 Envoy 中的某个集群（cluster），而实际的流量控制由 Envoy 实例来完成。</p>
-
-<p>这里是一个使用 RDS 来动态获取路由的示例：</p>
-
-<pre><code class="language-yaml">version_info: &quot;0&quot;
-resources:
-- &quot;@type&quot;: type.googleapis.com/envoy.api.v2.RouteConfiguration
-  name: local_route
-  virtual_hosts:
-  - name: local_service
-    domains: [&quot;*&quot;]
-    routes:
-    - match: { prefix: &quot;/&quot; }
-      route: { cluster: some_service }
+<pre><code class="language-bash">$ wget https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-linux.tar.gz
+$ tar zxf istio-0.8.0-linux.tar.gz
+$ cp istio-0.8.0/bin/istioctl /usr/local/bin/
 </code></pre>
 
-<p>开源项目 <a href="https://github.com/envoyproxy/go-control-plane" target="_blank">go-control-plane</a>，<a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Istio Pilot</a> 和 商业项目 <a href="http://turbinelabs.io/product" target="_blank">Houston</a> 都提供了 RDS 的 API，Envoy 官方文档也定义了一个<a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#v2-grpc-streaming-endpoints" target="_blank">完整的 RDS 规范</a>。RDS 规范只是一种流量传输机制，如何对路由进行管理还是要取决于你。</p>
+<p><br /></p>
 
-<h2 id="p-id-h2-2-路由定义的最佳实践-p"><p id="h2">2. 路由定义的最佳实践</p></h2>
+<h2 id="p-id-h2-2-使用-helm-部署-istio-服务-p"><p id="h2">2. 使用 Helm 部署 Istio 服务</p></h2>
 
 <hr />
 
-<p>当你的系统中有数千个 Envoy 实例时，应该选择控制平面来作为所有路由的统一来源。客户端请求可以直接来自用户、内部服务或者来自不同的云区域，因此最好使用 Envoy 来处理这些不同的网络拓扑（例如，作为客户流量的前端代理以及内部流量的服务网格），虽然流量来自不同的方向，但它们的行为都是相似的。</p>
+<p>克隆 Istio 仓库：</p>
 
-<p>为了扩展单个系统的路由定义，通常需要遵循以下三个关键原则：</p>
+<pre><code class="language-bash">$ git clone https://github.com/istio/istio.git -b release-0.8
+$ cd istio
+</code></pre>
+
+<p>安装包内的 Helm 目录中包含了 Istio 的 Chart，官方提供了两种方法：</p>
+
+<ul>
+<li>用 Helm 生成 <code>istio.yaml</code>，然后自行安装。</li>
+<li>用 <code>Tiller</code> 直接安装。</li>
+</ul>
+
+<p>很明显，两种方法并没有什么本质区别，这里我们采用第一种方法来部署。</p>
+
+<p>有两种方式（选择其一执行）：</p>
+
+<ul>
+<li>不开启自动 <code>sidecar</code> 注入</li>
+</ul>
+
+<pre><code class="language-bash">$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=false --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true &gt; istio.yaml
+
+$ kubectl create namespace istio-system
+$ kubectl create -f istio.yaml
+</code></pre>
+
+<p>这里说的是使用 <code>install/kubernetes/helm/istio</code> 目录中的 Chart 进行渲染，生成的内容保存到 <code>./istio.yaml</code> 文件之中。将 <code>sidecarInjectorWebhook.enabled</code> 为 False，从而禁止自动注入属性生效。</p>
+
+<ul>
+<li>开启自动 <code>sidecar</code> 注入</li>
+</ul>
+
+<pre><code class="language-bash">$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=true --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true &gt; istio.yaml
+
+$ kubectl create namespace istio-system
+$ kubectl create -f istio.yaml
+</code></pre>
+
+<p>部署完成后，可以检查 <code>isotio-system</code> namespace 中的服务是否正常运行：</p>
+
+<pre><code class="language-bash">$ kubectl -n istio-system get pods -o go-template='{{range .items}}{{.metadata.name}}{{&quot;\n&quot;}}{{end}}'
+
+istio-citadel-ff5696f6f-p6xz6
+istio-cleanup-old-ca-mtzqv
+istio-egressgateway-58d98d898c-9wmrb
+istio-ingress-6fb78f687f-78tt8
+istio-ingressgateway-6bc7c7c4bc-mgkvg
+istio-mixer-post-install-zqmtr
+istio-pilot-6c5c6b586c-7hk6r
+istio-policy-5c7fbb4b9f-4rspm
+istio-statsd-prom-bridge-6dbb7dcc7f-s9qvd
+istio-telemetry-54b5bf4847-s5mqr
+istio-tracing-67dbb5b89f-4ftd9
+prometheus-586d95b8d9-pdwkh
+servicegraph-6d86dfc6cb-xbpjx
+</code></pre>
 
 <ol>
-<li>将路由视为数据，而不是配置</li>
-<li>将控制权分配给具有 <code>ACL</code> 权限的团队</li>
-<li>使用审计日志和回滚操作来管理路由的更改</li>
+<li>过去的 istio-ca 现已更名 <code>istio-citadel</code>。</li>
+<li><code>istio-cleanup-old-ca</code> 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。</li>
+<li><code>istio-mixer-post-install</code> 同样也是一个 job，和上面的 Job 一样，简单的调用 kubectl 创建第三方资源，从而避免了之前的 CDR 需要重复创建的尴尬状况。</li>
+<li><code>egressgateway</code>、<code>ingress</code> 以及 <code>ingressgateway</code>，可以看出边缘部分的变动很大，以后会另行发文。</li>
 </ol>
 
-<h3 id="将路由视为数据">将路由视为数据</h3>
+<h2 id="p-id-h2-3-prometheus-grafana-servicegraph-和-jaeger-p"><p id="h2">3. Prometheus、Grafana、Servicegraph 和 Jaeger</p></h2>
 
-<p>将路由视为一组相互关联的服务的数据可以防止发生冲突，同时确保了其语义的正确性。虽然像 <code>Istio</code> 这样的工具可以很容易地编写基于 <code>YAML</code> 配置文件的路由，但是在数千行 YAML 文件中管理数百条路由很难保证每个定义都是有效的路由。或许你也想过使用版本控制来管理这些配置文件，但如果合并分支时发生致命错误将会导致灾难性的后果（如路由丢失或通过 API 重写）。</p>
+<hr />
 
-<p>实际上，从静态配置文件转移到动态配置文件是在大规模集群中使用 Envoy 的第一步。为了能够将 Envoy 投入生产，建议至少使用像 <a href="https://github.com/envoyproxy/go-control-plane" target="_blank">go-control-plane</a> 这样实现了 <code>xDS</code> 的控制平面统一提供路由配置。通过将路由的来源转移到 <code>RDS API</code> 背后，可以实现路由的并发更新，同时也可以防止对路由进行无意义的更新。</p>
+<p>等所有 Pod 启动后，可以通过 NodePort、Ingress 或者 kubectl proxy 来访问这些服务。比如可以通过 <code>Ingress</code> 来访问服务。</p>
 
-<h3 id="将控制权分配给具有-acl-权限的团队">将控制权分配给具有 <code>ACL</code> 权限的团队</h3>
+<p>首先为 Prometheus、Grafana、Servicegraph 和 Jaeger 服务创建 Ingress：</p>
 
-<p>通过对流量进行管控可以解锁更强大的工作流程（如蓝绿发布和增量迁移），同时也能让服务团队确保各个服务之间的路由是安全可用的。你可以根据需要来隐藏管控区域之外的路由以防止误点击或者发生意外事故，你也可以完全禁止某些成员修改路由。</p>
+<pre><code class="language-yaml">$ cat ingress.yaml
 
-<h3 id="管理路由的更改">管理路由的更改</h3>
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: istio-system
+spec:
+  rules:
+  - host: prometheus.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prometheus
+          servicePort: 9090
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: istio-system
+spec:
+  rules:
+  - host: grafana.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: grafana
+          servicePort: 3000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: servicegraph
+  namespace: istio-system
+spec:
+  rules:
+  - host: servicegraph.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: servicegraph
+          servicePort: 8088
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tracing
+  namespace: istio-system
+spec:
+  rules:
+  - host: tracing.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tracing
+          servicePort: 80
+</code></pre>
 
-<p>了解路由何时被更改以及被谁更改是极其重要的，许多团队会发现，在他们分配好了定义路由的任务之后，实际路由的数量将会超出他们的预期，因此为了保险起见，最好对路由的更改进行记录。例如，<code>master</code> 分支中的自动蓝绿发布应该打上最后一个合并分支的人的标签。</p>
+<pre><code class="language-bash">$ kubectl create -f ingress.yaml
+</code></pre>
 
-<p>为了更好地管理路由，团队内部必须要知道如何在两个时间点之间更改路由以及如何在必要时将其回滚，同时最好将这些操作收集到监控系统中。当你需要进一步优化时，这些操作记录是很有价值的（例如 git 历史记录在编写新代码时很有帮助）。</p>
+<p>然后在你的本地电脑上添加四条 <code>hosts</code>：</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center></p>
+<pre><code class="language-bash">$Ingree_host prometheus.istio.io
+$Ingree_host grafana.istio.io
+$Ingree_host servicegraph.istio.io
+$Ingree_host tracing.istio.io
+</code></pre>
+
+<p>将 <code>$Ingree_host</code> 替换为 Ingress Controller 运行节点的 IP。</p>
+
+<p>通过 <code>http://grafana.istio.io</code> 访问 Grafana 服务：</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/grafana-istio.jpg" alt="" /></p>
+
+<p>通过 <code>http://servicegraph.istio.io</code> 访问 ServiceGraph 服务，展示服务之间调用关系图。</p>
+
+<ul>
+<li><code>http://servicegraph.istio.io/force/forcegraph.html</code> : As explored above, this is an interactive <a href="https://d3js.org/" target="_blank">D3.js</a> visualization.</li>
+</ul>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/servicegraph-forcegraph1.jpg" alt="" /></p>
+
+<ul>
+<li><code>http://servicegraph.istio.io/dotviz</code> : is a static <a href="https://www.graphviz.org/" target="_blank">Graphviz</a> visualization.</li>
+</ul>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/servicegraph-dotviz.jpg" alt="" /></p>
+
+<ul>
+<li><code>http://servicegraph.istio.io/dotgraph</code> : provides a [DOT](<a href="https://www.wikiwand.com/en/DOT_(graph_description_language" target="_blank">https://www.wikiwand.com/en/DOT_(graph_description_language</a>) serialization.</li>
+<li><code>http://servicegraph.istio.io/d3graph</code> : provides a JSON serialization for D3 visualization.</li>
+<li><code>http://servicegraph.istio.io/graph</code> : provides a generic JSON serialization.</li>
+</ul>
+
+<p>通过 <code>http://tracing.istio.io/</code> 访问 Jaeger 跟踪页面：</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/zipkin-jaeger.jpg" alt="" /></p>
+
+<p>通过 <code>http://prometheus.istio.io/</code> 访问 Prometheus 页面：</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/istio-prometheus.jpg" alt="" /></p>
+
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>如果你已经部署了 <code>Prometheus-operator</code>，可以不必部署 Grafana，直接将 <code>addons/grafana/dashboards</code> 目录下的 Dashboard 模板复制出来放到 Prometheus-operator 的 Grafana 上，然后添加 istio-system 命名空间中的 Prometheus 数据源就可以监控 Istio 了。</p>
+</div>
+
+<p><br /></p>
+
+<h2 id="p-id-h2-4-mesh-expansion-p"><p id="h2">4. Mesh Expansion</p></h2>
+
+<hr />
+
+<p>Istio 还支持管理非 Kubernetes 管理的应用。此时，需要在应用所在的 VM 或者物理中部署 Istio，具体步骤请参考 <a href="https://istio.io/docs/setup/kubernetes/mesh-expansion/" target="_blank">Mesh Expansion</a></p>
+
+<p>部署好后，就可以向 Istio 注册应用，如：</p>
+
+<pre><code class="language-bash"># istioctl register servicename machine-ip portname:port
+$ istioctl -n onprem register mysql 1.2.3.4 3306
+$ istioctl -n onprem register svc1 1.2.3.4 http:7000
+</code></pre>
+
+<h2 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h2>
+
+<hr />
+
+<ul>
+<li><a href="https://blog.fleeto.us/post/istio-0.8.0-helm/" target="_blank">Istio 0.8 的 Helm Chart 解析</a></li>
+</ul>
 
 <style>
 #h2{
@@ -677,11 +836,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/" data-toggle="tooltip" data-placement="top" title="将服务发现与 Envoy 集成">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/routing-with-a-control-plane/" data-toggle="tooltip" data-placement="top" title="通过控制平面提供路由">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/istio-0.8-deploy/" data-toggle="tooltip" data-placement="top" title="Istio 0.8 部署">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -691,15 +850,13 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
+                    <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
+                    
                     <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
                     
                     <li><a href="/posts/setting-up-ssl-in-envoy/">为 Envoy 启用证书验证</a></li>
                     
                     <li><a href="/posts/incremental-deploys/">通过 Envoy 实现增量部署</a></li>
-                    
-                    <li><a href="/posts/routing-basics/">HTTP 路由解析</a></li>
-                    
-                    <li><a href="/posts/run-envoy-on-your-laptop/">在你的笔记本上运行 Envoy</a></li>
                     
                 </ul>
                 
@@ -710,12 +867,12 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Fri Jul 6, 2018</h4>
+        <h4 id="date"> Tue Jul 10, 2018</h4>
     </section>
-    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
+    <h5 id="wc">1800 Words|Read in about 4 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
         
         <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
     </h5>

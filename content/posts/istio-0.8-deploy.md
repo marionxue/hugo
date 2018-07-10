@@ -1,0 +1,462 @@
+---
+title: "Istio 0.8 部署"
+date: 2018-07-10T07:01:29Z
+draft: false
+categories: "service mesh"
+tags: ["istio", "service mesh"]
+bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
+---
+
+<!--more-->
+
+北京时间 2018 年 6 月 1 日（儿童节）上午 9: 30 `Istio 0.8.0 LTS`（长期支持版本）发布。这个项目的组件相对比较复杂，原有的一些选项是靠 ConfigMap 以及 istioctl 分别调整的，现在通过重新设计的 `Helm Chart`，安装选项用 `values.yml` 或者 helm 命令行的方式来进行集中管理了。
+
+在安装 Istio 之前要确保 Kubernetes 集群（仅支持 `v1.7.3` 及以后版本）已部署并配置好本地的 kubectl 客户端。
+
+## <p id="h2">1. 下载 Istio</p>
+
+----
+
+```bash
+$ wget https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-linux.tar.gz
+$ tar zxf istio-0.8.0-linux.tar.gz
+$ cp istio-0.8.0/bin/istioctl /usr/local/bin/
+```
+
+<br />
+
+## <p id="h2">2. 使用 Helm 部署 Istio 服务</p>
+
+----
+
+克隆 Istio 仓库：
+
+```bash
+$ git clone https://github.com/istio/istio.git -b release-0.8
+$ cd istio
+```
+
+安装包内的 Helm 目录中包含了 Istio 的 Chart，官方提供了两种方法：
+
++ 用 Helm 生成 `istio.yaml`，然后自行安装。
++ 用 `Tiller` 直接安装。
+
+很明显，两种方法并没有什么本质区别，这里我们采用第一种方法来部署。
+
+有两种方式（选择其一执行）：
+
++ 不开启自动 `sidecar` 注入
+
+```bash
+$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=false --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true > istio.yaml
+
+$ kubectl create namespace istio-system
+$ kubectl create -f istio.yaml
+```
+
+这里说的是使用 `install/kubernetes/helm/istio` 目录中的 Chart 进行渲染，生成的内容保存到 `./istio.yaml` 文件之中。将 `sidecarInjectorWebhook.enabled` 为 False，从而禁止自动注入属性生效。
+
++ 开启自动 `sidecar` 注入
+
+```bash
+$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=true --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true > istio.yaml
+
+$ kubectl create namespace istio-system
+$ kubectl create -f istio.yaml
+```
+
+部署完成后，可以检查 `isotio-system` namespace 中的服务是否正常运行：
+
+```bash
+$ kubectl -n istio-system get pods -o go-template='{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
+
+istio-citadel-ff5696f6f-p6xz6
+istio-cleanup-old-ca-mtzqv
+istio-egressgateway-58d98d898c-9wmrb
+istio-ingress-6fb78f687f-78tt8
+istio-ingressgateway-6bc7c7c4bc-mgkvg
+istio-mixer-post-install-zqmtr
+istio-pilot-6c5c6b586c-7hk6r
+istio-policy-5c7fbb4b9f-4rspm
+istio-statsd-prom-bridge-6dbb7dcc7f-s9qvd
+istio-telemetry-54b5bf4847-s5mqr
+istio-tracing-67dbb5b89f-4ftd9
+prometheus-586d95b8d9-pdwkh
+servicegraph-6d86dfc6cb-xbpjx
+```
+
+1. 过去的 istio-ca 现已更名 `istio-citadel`。
+2. `istio-cleanup-old-ca` 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。
+3. `istio-mixer-post-install` 同样也是一个 job，和上面的 Job 一样，简单的调用 kubectl 创建第三方资源，从而避免了之前的 CDR 需要重复创建的尴尬状况。
+4. `egressgateway`、`ingress` 以及 `ingressgateway`，可以看出边缘部分的变动很大，以后会另行发文。
+
+## <p id="h2">3. Prometheus、Grafana、Servicegraph 和 Jaeger</p>
+
+----
+
+等所有 Pod 启动后，可以通过 NodePort、Ingress 或者 kubectl proxy 来访问这些服务。比如可以通过 `Ingress` 来访问服务。
+
+首先为 Prometheus、Grafana、Servicegraph 和 Jaeger 服务创建 Ingress：
+
+```yaml
+$ cat ingress.yaml
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus
+  namespace: istio-system
+spec:
+  rules:
+  - host: prometheus.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: prometheus
+          servicePort: 9090
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: grafana
+  namespace: istio-system
+spec:
+  rules:
+  - host: grafana.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: grafana
+          servicePort: 3000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: servicegraph
+  namespace: istio-system
+spec:
+  rules:
+  - host: servicegraph.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: servicegraph
+          servicePort: 8088
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: tracing
+  namespace: istio-system
+spec:
+  rules:
+  - host: tracing.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: tracing
+          servicePort: 80
+```
+
+```bash
+$ kubectl create -f ingress.yaml
+```
+
+然后在你的本地电脑上添加四条 `hosts`：
+
+```bash
+$Ingree_host prometheus.istio.io
+$Ingree_host grafana.istio.io
+$Ingree_host servicegraph.istio.io
+$Ingree_host tracing.istio.io
+```
+
+将 `$Ingree_host` 替换为 Ingress Controller 运行节点的 IP。
+
+通过 `http://grafana.istio.io` 访问 Grafana 服务：
+
+![](http://o7z41ciog.bkt.clouddn.com/grafana-istio.jpg)
+
+通过 `http://servicegraph.istio.io` 访问 ServiceGraph 服务，展示服务之间调用关系图。
+
++ `http://servicegraph.istio.io/force/forcegraph.html` : As explored above, this is an interactive [D3.js](https://d3js.org/) visualization.
+
+![](http://o7z41ciog.bkt.clouddn.com/servicegraph-forcegraph1.jpg)
+
++ `http://servicegraph.istio.io/dotviz` : is a static [Graphviz](https://www.graphviz.org/) visualization.
+
+![](http://o7z41ciog.bkt.clouddn.com/servicegraph-dotviz.jpg)
+
++ `http://servicegraph.istio.io/dotgraph` : provides a [DOT](https://www.wikiwand.com/en/DOT_(graph_description_language) serialization.
++ `http://servicegraph.istio.io/d3graph` : provides a JSON serialization for D3 visualization.
++ `http://servicegraph.istio.io/graph` : provides a generic JSON serialization.
+
+通过 `http://tracing.istio.io/` 访问 Jaeger 跟踪页面：
+
+![](http://o7z41ciog.bkt.clouddn.com/zipkin-jaeger.jpg)
+
+通过 `http://prometheus.istio.io/` 访问 Prometheus 页面：
+
+![](http://o7z41ciog.bkt.clouddn.com/istio-prometheus.jpg)
+
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>如果你已经部署了 <code>Prometheus-operator</code>，可以不必部署 Grafana，直接将 <code>addons/grafana/dashboards</code> 目录下的 Dashboard 模板复制出来放到 Prometheus-operator 的 Grafana 上，然后添加 istio-system 命名空间中的 Prometheus 数据源就可以监控 Istio 了。</p>
+</div>
+
+<br />
+
+## <p id="h2">4. Mesh Expansion</p>
+
+----
+
+Istio 还支持管理非 Kubernetes 管理的应用。此时，需要在应用所在的 VM 或者物理中部署 Istio，具体步骤请参考 [Mesh Expansion](https://istio.io/docs/setup/kubernetes/mesh-expansion/)
+
+部署好后，就可以向 Istio 注册应用，如：
+
+```bash
+# istioctl register servicename machine-ip portname:port
+$ istioctl -n onprem register mysql 1.2.3.4 3306
+$ istioctl -n onprem register svc1 1.2.3.4 http:7000
+```
+
+## <p id="h2">5. 参考</p>
+
+----
+
++ [Istio 0.8 的 Helm Chart 解析](https://blog.fleeto.us/post/istio-0.8.0-helm/)
+
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
