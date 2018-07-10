@@ -801,6 +801,8 @@ $ istioctl -n onprem register mysql 1.2.3.4 3306
 $ istioctl -n onprem register svc1 1.2.3.4 http:7000
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
 
 &lt;hr /&gt;
@@ -808,6 +810,8 @@ $ istioctl -n onprem register svc1 1.2.3.4 http:7000
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://blog.fleeto.us/post/istio-0.8.0-helm/&#34; target=&#34;_blank&#34;&gt;Istio 0.8 的 Helm Chart 解析&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{

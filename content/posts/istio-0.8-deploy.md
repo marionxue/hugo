@@ -1,5 +1,6 @@
 ---
 title: "Istio 0.8 部署"
+subtitle: "使用 Helm 部署 Istio 服务"
 date: 2018-07-10T07:01:29Z
 draft: false
 categories: "service mesh"
@@ -226,11 +227,15 @@ $ istioctl -n onprem register mysql 1.2.3.4 3306
 $ istioctl -n onprem register svc1 1.2.3.4 http:7000
 ```
 
+<br />
+
 ## <p id="h2">5. 参考</p>
 
 ----
 
 + [Istio 0.8 的 Helm Chart 解析](https://blog.fleeto.us/post/istio-0.8.0-helm/)
+
+<br />
 
 
 <style>
