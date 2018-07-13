@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Envoy 熔断器的原理和使用</title>
+      <link>https://www.yangcs.net/posts/circuit-breaking/</link>
+      <pubDate>Fri, 13 Jul 2018 09:22:49 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/circuit-breaking/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Istio 0.8 部署</title>
       <link>https://www.yangcs.net/posts/istio-0.8-deploy/</link>
       <pubDate>Tue, 10 Jul 2018 07:01:29 +0000</pubDate>
