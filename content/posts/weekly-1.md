@@ -67,7 +67,7 @@ PayPal 最近遭遇了一起让无数网友感到愤怒的公关危机，事件�
 
 比如，接头吃煎饼果子：
 
-<center>![](https://img1.mydrivers.com/img/20180713/s_c98cb49fa3c7472ca75a3b7b8c2cc75f.jpg)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/s_c98cb49fa3c7472ca75a3b7b8c2cc75f.jpg)</center>
 
 ## <p id="h2">工具</p>
 
