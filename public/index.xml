@@ -572,6 +572,409 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title> 干货分享第1期</title>
+      <link>https://www.yangcs.net/posts/weekly-1/</link>
+      <pubDate>Sat, 14 Jul 2018 05:31:48 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/weekly-1/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;人类社会未来几十年肯定会发生天翻地覆的变化，自从我坚信这一点之后，我就把所有的精力都投在了技术领域。所有的变化从根本上来说都是技术的变革引起的，只有掌握了技术，才有可能应对这些变化。&lt;/p&gt;
+
+&lt;p&gt;我相信未来绝大多数的机会都是技术带来的，虽然其他行业依然可以赚钱，但我仍然觉得最有前景的是技术人员，因为当人工智能爆发以后，必将引发第四次工业革命，未来一定是人工智能在帮你看病和打官司。&lt;/p&gt;
+
+&lt;p&gt;由于技术变化日新月异，新观点新工具层出不穷，让人有点目不暇接。我的私人收藏夹里已经屯了好几吨的货，这个时候我想知识如果不分享，就会变得没有意义。所以决定写成文章分享出来，也许会收获一些志同道合的朋友，将来可以一起做一些有用的事情。&lt;/p&gt;
+
+&lt;p&gt;这是《干货分享》系列的第一期，主要记录过去一周我所见到的听到的值得分享的东西，这里只涉及技术，不涉及其他领域。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-新闻-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;新闻&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;1-paypal-向已故女子发账号违规通知-http-jandan-net-2018-07-14-paypal-terms-html&#34;&gt;1. &lt;a href=&#34;http://jandan.net/2018/07/14/paypal-terms.html&#34; target=&#34;_blank&#34;&gt;PayPal 向已故女子发账号违规通知&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://img.jandan.net/news/2018/07/dbf68dc1b4f586fa112e7d130d790eb8.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;PayPal 最近遭遇了一起让无数网友感到愤怒的公关危机，事件起因是该公司竟然向一位已故女士发去了一封信件，解释她的死亡违反了帐户持有人相关的政策。她的丈夫还没从失去爱妻的悲痛中缓过来，又遇到了这么一件丧心病狂的事情。周二的时候，Howard Durdle 怒而将该文件发到 Twitter 和 Facebook 等社群上。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-google-chrome-浏览器将带来新面孔-https-imcn-me-html-y2018-33653-html&#34;&gt;2. &lt;a href=&#34;https://imcn.me/html/y2018/33653.html&#34; target=&#34;_blank&#34;&gt;Google Chrome 浏览器将带来新面孔&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://imcn.me/wp-content/uploads/2018/07/chrome-new-look-macos.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;无论是经历了技术更迭还是审美升级，谷歌 Chrome 浏览器的用户界面依然巍然不动，多年来都保存同一个样式。但是改变很快就会来了，这两日谷歌透露，预计将于 9 月 2 号（Chrome 的生日）将 Material Design 作为正式版 Chrome 的默认用户界面，视觉重新设计基于更圆、更柔和，更具触感的 Material Design 2（在Android P 中完全展示并且与 Chrome OS 桌面零散地结合）。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-htc-首款区块链手机-exodus-正式开放登记-https-cn-engadget-com-2018-07-10-htc-exodus-registration&#34;&gt;3. &lt;a href=&#34;https://cn.engadget.com/2018/07/10/htc-exodus-registration/&#34; target=&#34;_blank&#34;&gt;HTC 首款区块链手机 Exodus 正式开放登记&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://o.aolcdn.com/images/dims?thumbnail=600%2C400&amp;amp;quality=80&amp;amp;image_uri=https%3A%2F%2Fs.aolcdn.com%2Fhss%2Fstorage%2Fmidas%2Fc00a959b6f5784ba6ef5451cf350cc93%2F206517826%2Fdims.jpg&amp;amp;client=cbc79c14efcebee57402&amp;amp;signature=dd0892fd01c1d886694e61e2704ce82836f94b24&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;阵子在 U12+ 的发布会之前，HTC 突然再透露了他们正准备另一台全新的手机产品 Exodus，这是一台趁着近年科技界对区块链技术的追求而生的区块链手机。今天 HTC 再释出更多有关这台 Exodus 的信息，而且也在今天正式开放登记计划，让有兴趣的朋友预约登记，抢先在今年的第三季体验这台 Exodus 手机。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-日本第二次私人火箭发射失败-https-cn-engadget-com-2018-07-01-japan-interstellar-private-rocket-crash&#34;&gt;4. &lt;a href=&#34;https://cn.engadget.com/2018/07/01/japan-interstellar-private-rocket-crash/&#34; target=&#34;_blank&#34;&gt;日本第二次私人火箭发射失败&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://s.aolcdn.com/hss/storage/midas/ca779bdc8b01018cd047f96dc1e46bf1/206496734/this-combo-of-video-grabs-provided-by-interstellars-technologies-the-picture-id987515668.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;由颇具争议的企业家堀江贵文于 2005 年创立的 Interstellar Technologies 公司，和 SpaceX、Blue Origins、Rocket Labs 等有不少相似之处，都希望在新一代的私人太空领域中占据立足之地。然而和这三者不同的是，虽然 Interstellar Technologies 发射的是一枚相对简单得多的火箭（仅长 10m、直径 50cm），发射高度也只是勉强构到 100km 线，并不能进入轨道，但到目前为止还没有成功的记录。&lt;/p&gt;
+
+&lt;p&gt;第一次试射发生在 2017 年，当时的 Momo 火箭在发射 66 秒后因为失去与地面的联系而自毁，只达到了 20km 的高度，而这次更是在发射后没几秒便又垂直落下，以一团火球告终。除了从视频中可以很明显看出发射后没三秒引擎就突然「没力」之外，Interstellar Technologies 没有给更进一步的原因或说明。&lt;/p&gt;
+
+&lt;h3 id=&#34;5-苹果前华人工程师窃密被捕-http-www-sohu-com-a-240500768-610300&#34;&gt;5. &lt;a href=&#34;http://www.sohu.com/a/240500768_610300&#34; target=&#34;_blank&#34;&gt;苹果前华人工程师窃密被捕&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://cdn-fs.d1ev.com/d/file/custom/30018/file/201807/1531280057974180.jpg!w720&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;7月7日，一名曾在苹果自动驾驶汽车项目工作的工程师在加州圣何塞机场准备登机飞往中国时，被美国联邦调查局（FBI）的执法人员逮捕。据知情人士称，这位名为 Xiaolang Zhang（张晓浪）的工程师跳槽入职国内创业公司小鹏汽车。&lt;/p&gt;
+
+&lt;p&gt;根据提交给加州北区法院的文件，美国联邦调查局于本周指控苹果前员工 Xiaolang Zhang 窃取商业机密。而法院文件显示，目前共有5000名员工在为苹果的自动驾驶汽车项目工作。&lt;/p&gt;
+
+&lt;h3 id=&#34;6-特斯拉计划在上海建全资工厂-https-www-ifanr-com-1063536&#34;&gt;6. &lt;a href=&#34;https://www.ifanr.com/1063536&#34; target=&#34;_blank&#34;&gt;特斯拉计划在上海建全资工厂&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://images.ifanr.cn/wp-content/uploads/2018/07/WechatIMG4071531228156_.pic_hd.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;在特斯拉宣布将在上海临港地区独资建厂的两天后，CEO 埃隆·马斯克低调访华。此行分别敲定了上海建厂和北京建立科技创新中心事宜，随后他就匆匆离开。&lt;/p&gt;
+
+&lt;p&gt;本项目直接涵盖了电动车最重要的研发、制造、销售三大环节，计划兴建的有特斯拉（上海）有限公司和特斯拉（上海）电动汽车研发创新中心以及代号 Gigafactory 3 的特斯拉超级工厂。&lt;/p&gt;
+
+&lt;p&gt;虽然马老板行踪保密至极，没透露一丝风声，不过，还是有人记录下了马老板在华的奇妙经历。&lt;/p&gt;
+
+&lt;p&gt;比如，接头吃煎饼果子：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://img1.mydrivers.com/img/20180713/s_c98cb49fa3c7472ca75a3b7b8c2cc75f.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-工具-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;工具&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;1-baidupcs-go-https-github-com-iikira-baidupcs-go&#34;&gt;1. &lt;a href=&#34;https://github.com/iikira/BaiduPCS-Go&#34; target=&#34;_blank&#34;&gt;BaiduPCS-Go&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;关于百度网盘大家都是又爱又恨吧，毕竟要拿来存东西，分享什么的，但是这个下载 限速实在是难以忍受呀。这里给大家介绍一款全平台通用的下载神器：&lt;code&gt;BaiduPCS--go&lt;/code&gt;。使用 Go 语言编写，支持网盘内目录 (文件夹) 下载, 支持多个文件或目录下载, 支持断点续传和高并发高速下载。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-ivideo-https-github-com-phobal-ivideo&#34;&gt;2. &lt;a href=&#34;https://github.com/phobal/ivideo&#34; target=&#34;_blank&#34;&gt;ivideo&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;一个可以观看国内主流视频平台所有视频的客户端（Mac、Windows、Linux），包括 VIP 资源。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-dochub-https-github-com-truthhun-dochub&#34;&gt;3. &lt;a href=&#34;https://github.com/TruthHun/DocHub&#34; target=&#34;_blank&#34;&gt;DocHub&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;参考百度文库，使用Beego（Golang）开发的开源文库系统。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-annie-https-github-com-iawia002-annie&#34;&gt;4. &lt;a href=&#34;https://github.com/iawia002/annie&#34; target=&#34;_blank&#34;&gt;annie&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;一个可以下载 YouTube 视频的命令行工具，与 &lt;a href=&#34;https://github.com/soimort/you-get&#34; target=&#34;_blank&#34;&gt;youget&lt;/a&gt; 类似，但使用 Go 语言编写，除了支持 YouTube 之外，还可以下载国内各大视频网站的视频&lt;/p&gt;
+
+&lt;h3 id=&#34;5-painter-https-github-com-kujiale-mobile-painter&#34;&gt;5. &lt;a href=&#34;https://github.com/Kujiale-Mobile/Painter&#34; target=&#34;_blank&#34;&gt;Painter&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;小程序生成图片库，轻松通过 json 方式绘制一张可以发到朋友圈的图片&lt;/p&gt;
+
+&lt;h3 id=&#34;6-taro-https-github-com-nervjs-taro&#34;&gt;6. &lt;a href=&#34;https://github.com/NervJS/taro&#34; target=&#34;_blank&#34;&gt;taro&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;多端统一开发框架，支持用 React 的开发方式编写一次代码，生成能运行在微信小程序、H5、React Native 等的应用。&lt;/p&gt;
+
+&lt;h3 id=&#34;7-termtosvg-https-github-com-nbedos-termtosvg&#34;&gt;7. &lt;a href=&#34;https://github.com/nbedos/termtosvg&#34; target=&#34;_blank&#34;&gt;termtosvg&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;将终端会话记录为 SVG 动画&lt;/p&gt;
+
+&lt;h3 id=&#34;8-jib-http-github-com-googlecontainertools-jib&#34;&gt;8. &lt;a href=&#34;http://github.com/GoogleContainerTools/jib&#34; target=&#34;_blank&#34;&gt;Jib&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;谷歌开源的 Java 应用容器生成工具，不用写 Dockerfile，构造过程中自动生成一个 Docker 容器。&lt;/p&gt;
+
+&lt;h3 id=&#34;9-简悦-simpread-https-github-com-kenshin-simpread&#34;&gt;9. &lt;a href=&#34;https://github.com/Kenshin/simpread&#34; target=&#34;_blank&#34;&gt;简悦 ( SimpRead ) &lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://raw.githubusercontent.com/521xueweihan/HelloGitHub/master/content/27/img/simpread-min.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;让你瞬间进入沉浸式阅读的扩展，还原阅读的本质，提升你的阅读体验。使用它可以为你剔除页面上无关的干扰信息，让用户专注于阅读主要的内容。通过这个项目，还可以学习如何开发 Chrome 扩展。&lt;/p&gt;
+
+&lt;h3 id=&#34;10-aesma-http-www-aesma-cn&#34;&gt;10. &lt;a href=&#34;http://www.aesma.cn/&#34; target=&#34;_blank&#34;&gt;Aesma&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;说到网盘离线下载，115网盘和百度网盘肯定是第一时间进入你脑海里的网盘，毕竟是大公司，功能还是非常不错的，离线下载速度杠杠的，基本秒下载，然后可以直接在线观看。但唯一的遗憾就是。。。太。。。贵。。。年费会员接近300元的价格，还是让不少喜欢看片的伙伴们在充值和不充值之间犹豫徘徊。&lt;/p&gt;
+
+&lt;p&gt;百度网盘提供免费BT离线下载功能，但在线观看速度会有一定的限制，且很多资源无法离线，版权或其他原因。&lt;/p&gt;
+
+&lt;p&gt;最近出了一个 Aesma 阿斯离线云网盘，官网自称可能是目前最好用的离线下载工具，看来还是有几把刷子。据悉，Aesma 是破解的的 115 的数据流，所以离线下载和在线播放性能还是毋庸置疑的。&lt;/p&gt;
+
+&lt;p&gt;网盘之前可以免费试用，不过现在推广期已过，开始收费了，但费用并不高，经济会员仅仅6元每月，普通会员10元每月，最贵的高级会员也就16元每月，还是比115或者百度网盘便宜了不少。更多详情大家可以自行探索。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-教程-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;教程&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;1-deeplearningbook读书笔记-https-github-com-exacity-simplified-deeplearning&#34;&gt;1. &lt;a href=&#34;https://github.com/exacity/simplified-deeplearning&#34; target=&#34;_blank&#34;&gt;DeepLearningBook读书笔记&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;DeepLearningBook是目前第一本系统和完整的介绍深度学习的书籍，其作者包括深度学习领域的奠基人、处于研究生涯中期的领域中坚、更有近年来涌现的新星，非常适合搭建理论基础。但是直至去年，本书只有英文原版，对于大多数开发者来说，啃一本800页7*9英寸的书籍，难度可想而知。 好消息是，在翻译人员的不懈努力下，DeepLearningBook中文版也已在GitHub上公开，中文翻译版已经由人民邮电出版社出版。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-go语言高级编程-https-github-com-chai2010-advanced-go-programming-book&#34;&gt;2. &lt;a href=&#34;https://github.com/chai2010/advanced-go-programming-book&#34; target=&#34;_blank&#34;&gt;Go语言高级编程&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;《Go语言高级编程》该书针对 Go 语言有一定经验，想更加深入了解 Go 语言各种高级用法的开发人员。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-后端架构师技术图谱-https-github-com-xingshaocheng-architect-awesome&#34;&gt;3. &lt;a href=&#34;https://github.com/xingshaocheng/architect-awesome&#34; target=&#34;_blank&#34;&gt;后端架构师技术图谱&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;后端架构师的技术图谱，非常全面，从数据结构、常用算法到分布式系统设计模式应有尽有。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-深度学习框架-pytorch-入门与实践-https-github-com-chenyuntc-pytorch-book&#34;&gt;4. &lt;a href=&#34;https://github.com/chenyuntc/pytorch-book&#34; target=&#34;_blank&#34;&gt;深度学习框架 PyTorch：入门与实践&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;书籍《深度学习框架 PyTorch：入门与实践》的示例代码，可以作为一个独立的 PyTorch 入门指南和教程。内容结构如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://raw.githubusercontent.com/521xueweihan/HelloGitHub/master/content/25/img/pytorch-book-show-min.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;5-自己动手做聊天机器人-https-github-com-warmheartli-chatbotcourse&#34;&gt;5. &lt;a href=&#34;https://github.com/warmheartli/ChatBotCourse&#34; target=&#34;_blank&#34;&gt;自己动手做聊天机器人&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;该项目介绍了如何自己动手做聊天机器人。全面地介绍了所需要的技术：自然语言识别、分词、语料库、机器学习等，包含所需的 Java 和 Python 代码。&lt;/p&gt;
+
+&lt;h3 id=&#34;6-free-programming-books-zh-cn-https-github-com-justjavac-free-programming-books-zh-cn&#34;&gt;6. &lt;a href=&#34;https://github.com/justjavac/free-programming-books-zh_CN&#34; target=&#34;_blank&#34;&gt;free-programming-books-zh_CN&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;免费的计算机编程类中文书籍。&lt;/p&gt;
+
+&lt;h3 id=&#34;7-golang-区块链教程-https-github-com-liuchengxu-blockchain-tutorial&#34;&gt;7. &lt;a href=&#34;https://github.com/liuchengxu/blockchain-tutorial&#34; target=&#34;_blank&#34;&gt;Golang 区块链教程&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;区块链不仅仅是计算机科学，还涉及了政治经济制度，社会分工协作等等很多方面，本教程的关注点不仅在于深度，更在于其广度，更多是站在研究的角度，而非仅仅是一个程序员的视角。&lt;/p&gt;
+
+&lt;h3 id=&#34;8-prometheus-操作指南-云原生监控之道-https-github-com-yunlzheng-prometheus-book&#34;&gt;8. &lt;a href=&#34;https://github.com/yunlzheng/prometheus-book&#34; target=&#34;_blank&#34;&gt;Prometheus 操作指南：云原生监控之道&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Prometheus是一个开源的完整监控解决方案，其对传统监控系统的测试和告警模型进行了彻底的颠覆，形成了基于中央化的规则计算、统一分析和告警的新模型。本教程应该是国内第一个全面剖析 Prometheus 的教程，从原理到实战。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-资源-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;资源&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;1-telegramgroup-https-github-com-itgoyo-telegramgroup&#34;&gt;1. &lt;a href=&#34;https://github.com/itgoyo/TelegramGroup&#34; target=&#34;_blank&#34;&gt;TelegramGroup&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Telegram 群合集，收集了非常全面好玩的 telegram 群。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-飞流直播-http-chaochaolive-icntv-xyz-channel-movie&#34;&gt;2. &lt;a href=&#34;http://chaochaolive.icntv.xyz/channel/movie&#34; target=&#34;_blank&#34;&gt;飞流直播&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;海外中文网络电视直播，直接通过浏览器播放。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-factory-images-for-nexus-and-pixel-devices-https-developers-google-com-android-images&#34;&gt;3. &lt;a href=&#34;https://developers.google.com/android/images&#34; target=&#34;_blank&#34;&gt;Factory Images for Nexus and Pixel Devices&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;安卓原生镜像下载地址，包括 Nexus 和 Pixel 系列。&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Envoy 熔断器的原理和使用</title>
       <link>https://www.yangcs.net/posts/circuit-breaking/</link>
       <pubDate>Fri, 13 Jul 2018 09:22:49 +0000</pubDate>
@@ -5792,679 +6195,6 @@ status: {}
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://segmentfault.com/a/1190000014526263?utm_source=tag-newest&#34; target=&#34;_blank&#34;&gt;为高效 Ops 和 SRE 团队准备的 10 个开源 k8s 工具&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/configuring-efficient-kubernetes-cli-terminal/&#34; target=&#34;_blank&#34;&gt;打造高效的Kubernetes命令行终端&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>kubectl run 背后到底发生了什么？</title>
-      <link>https://www.yangcs.net/posts/what-happens-when-k8s/</link>
-      <pubDate>Fri, 01 Jun 2018 11:36:45 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/what-happens-when-k8s/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;想象一下，如果我想将 nginx 部署到 Kubernetes 集群，我可能会在终端中输入类似这样的命令：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ kubectl run --image=nginx --replicas=3
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后回车。几秒钟后，你就会看到三个 nginx pod 分布在所有的工作节点上。这一切就像变魔术一样，但你并不知道这一切的背后究竟发生了什么事情。&lt;/p&gt;
-
-&lt;p&gt;Kubernetes 的神奇之处在于：它可以通过用户友好的 API 来处理跨基础架构的 &lt;code&gt;deployments&lt;/code&gt;，而背后的复杂性被隐藏在简单的抽象中。但为了充分理解它为我们提供的价值，我们需要理解它的内部原理。&lt;/p&gt;
-
-&lt;p&gt;本指南将引导您理解从 client 到 &lt;code&gt;Kubelet&lt;/code&gt; 的请求的完整生命周期，必要时会通过源代码来说明背后发生了什么。&lt;/p&gt;
-
-&lt;p&gt;这是一份可以在线修改的文档，如果你发现有什么可以改进或重写的，欢迎提供帮助！&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-kubectl-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. kubectl&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;验证和生成器&#34;&gt;验证和生成器&lt;/h3&gt;
-
-&lt;p&gt;当敲下回车键以后，&lt;code&gt;kubectl&lt;/code&gt; 首先会执行一些客户端验证操作，以确保不合法的请求（例如，创建不支持的资源或使用格式错误的镜像名称）将会快速失败，也不会发送给 &lt;code&gt;kube-apiserver&lt;/code&gt;。通过减少不必要的负载来提高系统性能。&lt;/p&gt;
-
-&lt;p&gt;验证通过之后， kubectl 开始将发送给 kube-apiserver 的 HTTP 请求进行封装。&lt;code&gt;kube-apiserver&lt;/code&gt; 与 etcd 进行通信，所有尝试访问或更改 Kubernetes 系统状态的请求都会通过 kube-apiserver 进行，kubectl 也不例外。kubectl 使用生成器（&lt;a href=&#34;https://kubernetes.io/docs/user-guide/kubectl-conventions/#generators&#34; target=&#34;_blank&#34;&gt;generators&lt;/a&gt;）来构造 HTTP 请求。生成器是一个用来处理序列化的抽象概念。&lt;/p&gt;
-
-&lt;p&gt;通过 &lt;code&gt;kubectl run&lt;/code&gt; 不仅可以运行 &lt;code&gt;deployment&lt;/code&gt;，还可以通过指定参数 &lt;code&gt;--generator&lt;/code&gt; 来部署其他多种资源类型。如果没有指定 &lt;code&gt;--generator&lt;/code&gt; 参数的值，kubectl 将会自动判断资源的类型。&lt;/p&gt;
-
-&lt;p&gt;例如，带有参数 &lt;code&gt;--restart-policy=Always&lt;/code&gt; 的资源将被部署为 Deployment，而带有参数 &lt;code&gt;--restart-policy=Never&lt;/code&gt; 的资源将被部署为 Pod。同时 kubectl 也会检查是否需要触发其他操作，例如记录命令（用来进行回滚或审计）。&lt;/p&gt;
-
-&lt;p&gt;在 kubectl 判断出要创建一个 Deployment 后，它将使用 &lt;code&gt;DeploymentV1Beta1&lt;/code&gt; 生成器从我们提供的参数中生成一个&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/7650665059e65b4b22375d1e28da5306536a12fb/pkg/kubectl/run.go#L59&#34; target=&#34;_blank&#34;&gt;运行时对象&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h3 id=&#34;api-版本协商与-api-组&#34;&gt;API 版本协商与 API 组&lt;/h3&gt;
-
-&lt;p&gt;为了更容易地消除字段或者重新组织资源结构，Kubernetes 支持多个 API 版本，每个版本都在不同的 API 路径下，例如 &lt;code&gt;/api/v1&lt;/code&gt; 或者 &lt;code&gt;/apis/extensions/v1beta1&lt;/code&gt;。不同的 API 版本表明不同的稳定性和支持级别，更详细的描述可以参考 &lt;a href=&#34;https://k8smeetup.github.io/docs/reference/api-overview/&#34; target=&#34;_blank&#34;&gt;Kubernetes API 概述&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;API 组旨在对类似资源进行分类，以便使得 Kubernetes API 更容易扩展。API 的组别在 REST 路径或者序列化对象的 &lt;code&gt;apiVersion&lt;/code&gt; 字段中指定。例如，Deployment 的 API 组名是 &lt;code&gt;apps&lt;/code&gt;，最新的 API 版本是 &lt;code&gt;v1beta2&lt;/code&gt;，这就是为什么你要在 Deployment manifests 顶部输入 &lt;code&gt;apiVersion: apps/v1beta2&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;kubectl 在生成运行时对象后，开始为它&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/kubectl/cmd/run.go#L580-L597&#34; target=&#34;_blank&#34;&gt;找到适当的 API 组和 API 版本&lt;/a&gt;，然后&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/kubectl/cmd/run.go#L598&#34; target=&#34;_blank&#34;&gt;组装成一个版本化客户端&lt;/a&gt;，该客户端知道资源的各种 REST 语义。该阶段被称为版本协商，kubectl 会扫描 &lt;code&gt;remote API&lt;/code&gt; 上的 &lt;code&gt;/apis&lt;/code&gt; 路径来检索所有可能的 API 组。由于 kube-apiserver 在 &lt;code&gt;/apis&lt;/code&gt; 路径上公开了 OpenAPI 格式的模式文档， 因此客户端很容易找到合适的 API。&lt;/p&gt;
-
-&lt;p&gt;为了提高性能，kubectl &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/7650665059e65b4b22375d1e28da5306536a12fb/pkg/kubectl/cmd/util/factory_client_access.go#L117&#34; target=&#34;_blank&#34;&gt;将 OpenAPI 模式缓存&lt;/a&gt;到了 &lt;code&gt;~/.kube/cache&lt;/code&gt; 目录。如果你想了解 API 发现的过程，请尝试删除该目录并在运行 kubectl 命令时将 &lt;code&gt;-v&lt;/code&gt; 参数的值设为最大值，然后你将会看到所有试图找到这些 API 版本的HTTP 请求。参考 &lt;a href=&#34;https://k8smeetup.github.io/docs/reference/kubectl/cheatsheet/&#34; target=&#34;_blank&#34;&gt;kubectl 备忘单&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;最后一步才是真正地发送 HTTP 请求。一旦请求发送之后获得成功的响应，kubectl 将会根据所需的输出格式打印 success message。&lt;/p&gt;
-
-&lt;h3 id=&#34;客户端身份认证&#34;&gt;客户端身份认证&lt;/h3&gt;
-
-&lt;p&gt;在发送 HTTP 请求之前还要进行客户端认证，这是之前没有提到的，现在可以来看一下。&lt;/p&gt;
-
-&lt;p&gt;为了能够成功发送请求，kubectl 需要先进行身份认证。用户凭证保存在 &lt;code&gt;kubeconfig&lt;/code&gt; 文件中，kubectl 通过以下顺序来找到 kubeconfig 文件：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;如果提供了 &lt;code&gt;--kubeconfig&lt;/code&gt; 参数， kubectl 就使用 &amp;ndash;kubeconfig 参数提供的 kubeconfig 文件。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;如果没有提供 &amp;ndash;kubeconfig 参数，但设置了环境变量 &lt;code&gt;$KUBECONFIG&lt;/code&gt;，则使用该环境变量提供的 kubeconfig 文件。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;如果 &amp;ndash;kubeconfig 参数和环境变量 &lt;code&gt;$KUBECONFIG&lt;/code&gt; 都没有提供，kubectl 就使用默认的 kubeconfig 文件 &lt;code&gt;$HOME/.kube/config&lt;/code&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;解析完 kubeconfig 文件后，kubectl 会确定当前要使用的上下文、当前指向的群集以及与当前用户关联的任何认证信息。如果用户提供了额外的参数（例如 &amp;ndash;username），则优先使用这些参数覆盖 kubeconfig 中指定的值。一旦拿到这些信息之后， kubectl 就会把这些信息填充到将要发送的 HTTP 请求头中：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;x509 证书使用 &lt;a href=&#34;https://github.com/kubernetes/client-go/blob/82aa063804cf055e16e8911250f888bc216e8b61/rest/transport.go#L80-L89&#34; target=&#34;_blank&#34;&gt;tls.TLSConfig&lt;/a&gt; 发送（包括 CA 证书）。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;bearer tokens&lt;/code&gt; 在 HTTP 请求头 &lt;code&gt;Authorization&lt;/code&gt; 中&lt;a href=&#34;https://github.com/kubernetes/client-go/blob/c6f8cf2c47d21d55fa0df928291b2580544886c8/transport/round_trippers.go#L314&#34; target=&#34;_blank&#34;&gt;发送&lt;/a&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;用户名和密码通过 HTTP 基本认证&lt;a href=&#34;https://github.com/kubernetes/client-go/blob/c6f8cf2c47d21d55fa0df928291b2580544886c8/transport/round_trippers.go#L223&#34; target=&#34;_blank&#34;&gt;发送&lt;/a&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;OpenID&lt;/code&gt; 认证过程是由用户事先手动处理的，产生一个像 bearer token 一样被发送的 token。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-kube-apiserver-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. kube-apiserver&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;认证-https-k8smeetup-github-io-docs-admin-authentication&#34;&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/admin/authentication/&#34; target=&#34;_blank&#34;&gt;认证&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;现在我们的请求已经成功发送了，接下来将会发生什么？这时候就该 &lt;code&gt;kube-apiserver&lt;/code&gt; 闪亮登场了！kube-apiserver 是客户端和系统组件用来保存和检索集群状态的主要接口。为了执行相应的功能，kube-apiserver 需要能够验证请求者是合法的，这个过程被称为认证。&lt;/p&gt;
-
-&lt;p&gt;那么 apiserver 如何对请求进行认证呢？当 kube-apiserver 第一次启动时，它会查看用户提供的所有 &lt;a href=&#34;https://kubernetes.io/docs/reference/command-line-tools-reference/kube-apiserver/&#34; target=&#34;_blank&#34;&gt;CLI 参数&lt;/a&gt;，并组合成一个合适的令牌列表。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;举个例子：&lt;/strong&gt;如果提供了 &lt;code&gt;--client-ca-file&lt;/code&gt; 参数，则会将 x509 客户端证书认证添加到令牌列表中；如果提供了 &lt;code&gt;--token-auth-file&lt;/code&gt; 参数，则会将 breaer token 添加到令牌列表中。&lt;/p&gt;
-
-&lt;p&gt;每次收到请求时，apiserver 都会&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/51bebaffa01be9dc28195140da276c2f39a10cd4/pkg/authentication/request/union/union.go#L54&#34; target=&#34;_blank&#34;&gt;通过令牌链进行认证，直到某一个认证成功为止&lt;/a&gt;：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/51bebaffa01be9dc28195140da276c2f39a10cd4/pkg/authentication/request/x509/x509.go#L60&#34; target=&#34;_blank&#34;&gt;x509 处理程序&lt;/a&gt;将验证 HTTP 请求是否是由 CA 根证书签名的 TLS 密钥进行编码的。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/51bebaffa01be9dc28195140da276c2f39a10cd4/pkg/authentication/request/bearertoken/bearertoken.go#L38&#34; target=&#34;_blank&#34;&gt;bearer token 处理程序&lt;/a&gt;将验证 &lt;code&gt;--token-auth-file&lt;/code&gt; 参数提供的 token 文件是否存在。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/51bebaffa01be9dc28195140da276c2f39a10cd4/plugin/pkg/authenticator/request/basicauth/basicauth.go#L37&#34; target=&#34;_blank&#34;&gt;基本认证处理程序&lt;/a&gt;确保 HTTP 请求的基本认证凭证与本地的状态匹配。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如果&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/20bfbdf738a0643fe77ffd527b88034dcde1b8e3/pkg/authentication/request/union/union.go#L71&#34; target=&#34;_blank&#34;&gt;认证失败&lt;/a&gt;，则请求失败并返回相应的错误信息；如果验证成功，则将请求中的 &lt;code&gt;Authorization&lt;/code&gt; 请求头删除，并&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/e30df5e70ef9127ea69d607207c894251025e55b/pkg/endpoints/filters/authentication.go#L71-L75&#34; target=&#34;_blank&#34;&gt;将用户信息添加到&lt;/a&gt;其上下文中。这给后续的授权和准入控制器提供了访问之前建立的用户身份的能力。&lt;/p&gt;
-
-&lt;h3 id=&#34;授权-https-k8smeetup-github-io-docs-admin-authorization&#34;&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/admin/authorization/&#34; target=&#34;_blank&#34;&gt;授权&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;OK，现在请求已经发送，并且 kube-apiserver 已经成功验证我们是谁，终于解脱了！&lt;/p&gt;
-
-&lt;p&gt;然而事情并没有结束，虽然我们已经证明了&lt;strong&gt;我们是合法的&lt;/strong&gt;，但我们有权执行此操作吗？毕竟身份和权限不是一回事。为了进行后续的操作，kube-apiserver 还要对用户进行授权。&lt;/p&gt;
-
-&lt;p&gt;kube-apiserver 处理授权的方式与处理身份验证的方式相似：通过 kube-apiserver 的启动参数 &lt;code&gt;--authorization_mode&lt;/code&gt; 参数设置。它将组合一系列授权者，这些授权者将针对每个传入的请求进行授权。如果所有授权者都拒绝该请求，则该请求会被禁止响应并且&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/e30df5e70ef9127ea69d607207c894251025e55b/pkg/endpoints/filters/authorization.go#L60&#34; target=&#34;_blank&#34;&gt;不会再继续响应&lt;/a&gt;。如果某个授权者批准了该请求，则请求继续。&lt;/p&gt;
-
-&lt;p&gt;kube-apiserver 目前支持以下几种授权方法：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/admin/authorization/webhook/&#34; target=&#34;_blank&#34;&gt;webhook&lt;/a&gt;: 它与集群外的 HTTP(S) 服务交互。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/admin/authorization/abac/&#34; target=&#34;_blank&#34;&gt;ABAC&lt;/a&gt;: 它执行静态文件中定义的策略。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/admin/authorization/rbac/&#34; target=&#34;_blank&#34;&gt;RBAC&lt;/a&gt;: 它使用 &lt;code&gt;rbac.authorization.k8s.io&lt;/code&gt;  API Group实现授权决策，允许管理员通过 Kubernetes API 动态配置策略。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/admin/authorization/node/&#34; target=&#34;_blank&#34;&gt;Node&lt;/a&gt;: 它确保 kubelet 只能访问自己节点上的资源。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;准入控制-https-k8smeetup-github-io-docs-admin-admission-controllers&#34;&gt;&lt;a href=&#34;https://k8smeetup.github.io/docs/admin/admission-controllers/&#34; target=&#34;_blank&#34;&gt;准入控制&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;突破了之前所说的认证和授权两道关口之后，客户端的调用请求就能够得到 API Server 的真正响应了吗？答案是：不能！&lt;/p&gt;
-
-&lt;p&gt;从 kube-apiserver 的角度来看，它已经验证了我们的身份并且赋予了相应的权限允许我们继续，但对于 Kubernetes 而言，其他组件对于应不应该允许发生的事情还是很有意见的。所以这个请求还需要通过 &lt;code&gt;Admission Controller&lt;/code&gt; 所控制的一个 &lt;code&gt;准入控制链&lt;/code&gt; 的层层考验，官方标准的 “关卡” 有近十个之多，而且还能自定义扩展！&lt;/p&gt;
-
-&lt;p&gt;虽然授权的重点是回答用户是否有权限，但准入控制器会拦截请求以确保它符合集群的更广泛的期望和规则。它们是资源对象保存到 &lt;code&gt;etcd&lt;/code&gt; 之前的最后一个堡垒，封装了一系列额外的检查以确保操作不会产生意外或负面结果。不同于授权和认证只关心请求的用户和操作，准入控制还处理请求的内容，并且仅对创建、更新、删除或连接（如代理）等有效，而对读操作无效。&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;准入控制器的工作方式与授权者和验证者的工作方式类似，但有一点区别：与验证链和授权链不同，如果某个准入控制器检查不通过，则整个链会中断，整个请求将立即被拒绝并且返回一个错误给终端用户。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;准入控制器设计的重点在于提高可扩展性，某个控制器都作为一个插件存储在 &lt;code&gt;plugin/pkg/admission&lt;/code&gt; 目录中，并且与某一个接口相匹配，最后被编译到 kube-apiserver 二进制文件中。&lt;/p&gt;
-
-&lt;p&gt;大部分准入控制器都比较容易理解，接下来着重介绍 &lt;code&gt;SecurityContextDeny&lt;/code&gt;、&lt;code&gt;ResourceQuota&lt;/code&gt; 及 &lt;code&gt;LimitRanger&lt;/code&gt; 这三个准入控制器。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;SecurityContextDeny&lt;/span&gt; 该插件将禁止创建设置了 Security Context 的 Pod。&lt;br /&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;ResourceQuota&lt;/span&gt; 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 &lt;code&gt;ResourceQuota&lt;/code&gt; 一起实现了资源配额管理。&lt;br /&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;LimitRanger&lt;/span&gt; 作用类似于上面的 ResourceQuota 控制器，针对 Namespace 资源的每个个体（Pod 与 Container 等）的资源配额。该插件和资源对象 &lt;code&gt;LimitRange&lt;/code&gt; 一起实现资源配额管理。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-etcd-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. etcd&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;到现在为止，Kubernetes 已经对该客户端的调用请求进行了全面彻底地审查，并且已经验证通过，运行它进入下一个环节。下一步 kube-apiserver 将对 HTTP 请求进行反序列化，然后利用得到的结果构建运行时对象（有点像 kubectl 生成器的逆过程），并保存到 &lt;code&gt;etcd&lt;/code&gt; 中。下面我们将这个过程分解一下。&lt;/p&gt;
-
-&lt;p&gt;当收到请求时，kube-apiserver 是如何知道它该怎么做的呢？事实上，在客户端发送调用请求之前就已经产生了一系列非常复杂的流程。我们就从 kube-apiserver 二进制文件首次运行开始分析吧：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;当运行 kube-apiserver 二进制文件时，它会&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/cmd/kube-apiserver/app/server.go#L119&#34; target=&#34;_blank&#34;&gt;创建一个允许 apiserver 聚合的服务链&lt;/a&gt;。这是一种对 &lt;code&gt;Kubernetes API&lt;/code&gt; 进行扩展的方式。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;同时会创建一个 &lt;code&gt;generic apiserver&lt;/code&gt; 作为默认的 apiserver。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;然后&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/server/config.go#L149&#34; target=&#34;_blank&#34;&gt;生成 OpenAPI 规范的配置&lt;/a&gt;&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;然后 kube-apiserver 遍历数据结构中指定的所有 API 组，并将每一个 API 组作为通用的存储抽象保存到 etcd 中。当你访问或变更资源状态时，kube-apiserver 就会调用这些 API 组。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;每个 API 组都会遍历它的所有组版本，并且将每个 HTTP 路由&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/endpoints/groupversion.go#L92&#34; target=&#34;_blank&#34;&gt;映射到 REST 路径中&lt;/a&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;当请求的 METHOD 是 &lt;code&gt;POST&lt;/code&gt; 时，kube-apiserver 就会将请求转交给 &lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/endpoints/handlers/create.go#L37&#34; target=&#34;_blank&#34;&gt;资源创建处理器&lt;/a&gt;。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;现在 kube-apiserver 已经知道了所有的路由及其对应的 REST 路径，以便在请求匹配时知道调用哪些处理器和键值存储。多么机智的设计！现在假设客户端的 HTTP 请求已经被 kube-apiserver 收到了：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;如果处理链可以将请求与已经注册的路由进行匹配，就会将该请求交给注册到该路由的&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/server/handler.go#L143&#34; target=&#34;_blank&#34;&gt;专用处理器&lt;/a&gt;来处理；如果没有任何一个路由可以匹配该请求，就会将请求转交给&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/server/mux/pathrecorder.go#L248&#34; target=&#34;_blank&#34;&gt;基于路径的处理器&lt;/a&gt;（比如当调用 &lt;code&gt;/apis&lt;/code&gt; 时）；如果没有任何一个基于路径的处理器注册到该路径，请求就会被转交给 &lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/server/mux/pathrecorder.go#L254&#34; target=&#34;_blank&#34;&gt;not found 处理器&lt;/a&gt;，最后返回 &lt;code&gt;404&lt;/code&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;幸运的是，我们有一个名为 &lt;code&gt;createHandler&lt;/code&gt; 的注册路由！它有什么作用呢？首先它会解码 HTTP 请求并进行基本的验证，例如确保请求提供的 json 与 API 资源的版本相匹配。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;接下来进入&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/endpoints/handlers/create.go#L93-L104&#34; target=&#34;_blank&#34;&gt;审计和准入控制&lt;/a&gt;阶段。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;然后资源将会通过 &lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/19667a1afc13cc13930c40a20f2c12bbdcaaa246/pkg/registry/generic/registry/store.go#L327&#34; target=&#34;_blank&#34;&gt;storage provider&lt;/a&gt; 保存&lt;a href=&#34;https://github.com/kubernetes/apiserver/blob/7001bc4df8883d4a0ec84cd4b2117655a0009b6c/pkg/endpoints/handlers/create.go#L111&#34; target=&#34;_blank&#34;&gt;到 etcd&lt;/a&gt; 中。默认情况下保存到 etcd 中的键的格式为 &lt;code&gt;&amp;lt;namespace&amp;gt;/&amp;lt;name&amp;gt;&lt;/code&gt;，你也可以自定义。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;资源创建过程中出现的任何错误都会被捕获，最后 &lt;code&gt;storage provider&lt;/code&gt; 会执行 &lt;code&gt;get&lt;/code&gt; 调用来确认该资源是否被成功创建。如果需要额外的清理工作，就会调用后期创建的处理器和装饰器。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;最后构造 HTTP 响应并返回给客户端。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;原来 apiserver 做了这么多的工作，以前竟然没有发现呢！到目前为止，我们创建的 &lt;code&gt;Deployment&lt;/code&gt; 资源已经保存到了 etcd 中，但 apiserver 仍然看不到它。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-初始化-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 初始化&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;在一个资源对象被持久化到数据存储之后，apiserver 还无法完全看到或调度它，在此之前还要执行一系列&lt;a href=&#34;https://kubernetes.io/docs/admin/extensible-admission-controllers/#initializers&#34; target=&#34;_blank&#34;&gt;初始化器&lt;/a&gt;。初始化器是一种与资源类型相关联的控制器，它会在资源对外可用之前执行某些逻辑。如果某个资源类型没有初始化器，就会跳过此初始化步骤立即使资源对外可见。&lt;/p&gt;
-
-&lt;p&gt;正如&lt;a href=&#34;https://ahmet.im/blog/initializers/&#34; target=&#34;_blank&#34;&gt;大佬的博客&lt;/a&gt;指出的那样，初始化器是一个强大的功能，因为它允许我们执行通用引导操作。例如：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;将代理边车容器注入到暴露 80 端口的 Pod 中，或者加上特定的 &lt;code&gt;annotation&lt;/code&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;将保存着测试证书的 &lt;code&gt;volume&lt;/code&gt; 注入到特定命名空间的所有 Pod 中。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;如果 &lt;code&gt;Secret&lt;/code&gt; 中的密码小于 20 个字符，就组织其创建。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;code&gt;initializerConfiguration&lt;/code&gt; 资源对象允许你声明某些资源类型应该运行哪些初始化器。如果你想每创建一个 Pod 时就运行一个自定义初始化器，你可以这样做：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: admissionregistration.k8s.io/v1alpha1
-kind: InitializerConfiguration
-metadata:
-  name: custom-pod-initializer
-initializers:
-  - name: podimage.example.com
-    rules:
-      - apiGroups:
-          - &amp;quot;&amp;quot;
-        apiVersions:
-          - v1
-        resources:
-          - pods
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过该配置创建资源对象 &lt;code&gt;InitializerConfiguration&lt;/code&gt; 之后，就会在每个 Pod 的 &lt;code&gt;metadata.initializers.pending&lt;/code&gt; 字段中添加 &lt;code&gt;custom-pod-initializer&lt;/code&gt; 字段。该初始化控制器会定期扫描新的 Pod，一旦在 Pod 的 &lt;code&gt;pending&lt;/code&gt; 字段中检测到自己的名称，就会执行其逻辑，执行完逻辑之后就会将 &lt;code&gt;pending&lt;/code&gt; 字段下的自己的名称删除。&lt;/p&gt;
-
-&lt;p&gt;只有在 &lt;code&gt;pending&lt;/code&gt; 字段下的列表中的第一个初始化器可以对资源进行操作，当所有的初始化器执行完成，并且 &lt;code&gt;pending&lt;/code&gt; 字段为空时，该对象就会被认为初始化成功。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;你可能会注意到一个问题：如果 kube-apiserver 不能显示这些资源，那么用户级控制器是如何处理资源的呢？&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;为了解决这个问题，kube-apiserver 暴露了一个 &lt;code&gt;?includeUninitialized&lt;/code&gt; 查询参数，它会返回所有的资源对象（包括未初始化的）。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-5-控制循环-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 控制循环&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;deployments-controller&#34;&gt;Deployments controller&lt;/h3&gt;
-
-&lt;p&gt;到了这个阶段，我们的 Deployment 记录已经保存在 etcd 中，并且所有的初始化逻辑都执行完成，接下来的阶段将会涉及到该资源所依赖的拓扑结构。在 Kubernetes 中，Deployment 实际上只是一系列 &lt;code&gt;Replicaset&lt;/code&gt; 的集合，而 Replicaset 是一系列 &lt;code&gt;Pod&lt;/code&gt; 的集合。那么 Kubernetes 是如何从一个 HTTP 请求按照层级结构依次创建这些资源的呢？其实这些工作都是由 Kubernetes 内置的 &lt;code&gt;Controller&lt;/code&gt;(控制器) 来完成的。&lt;/p&gt;
-
-&lt;p&gt;Kubernetes 在整个系统中使用了大量的 Controller，Controller 是一个用于将系统状态从“当前状态”修正到“期望状态”的异步脚本。所有 Controller 都通过 &lt;code&gt;kube-controller-manager&lt;/code&gt; 组件并行运行，每种 Controller 都负责一种具体的控制流程。首先介绍一下 &lt;code&gt;Deployment Controller&lt;/code&gt;：&lt;/p&gt;
-
-&lt;p&gt;将 Deployment 记录存储到 etcd 并初始化后，就可以通过 kube-apiserver 使其可见，然后 &lt;code&gt;Deployment Controller&lt;/code&gt; 就会检测到它（它的工作就是负责监听 Deployment 记录的更改）。在我们的例子中，控制器通过一个 &lt;code&gt;Informer&lt;/code&gt; &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/deployment/deployment_controller.go#L122&#34; target=&#34;_blank&#34;&gt;注册一个创建事件的特定回调函数&lt;/a&gt;（更多信息参加下文）。&lt;/p&gt;
-
-&lt;p&gt;当 Deployment 第一次对外可见时，该 Controller 就会&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/deployment/deployment_controller.go#L170&#34; target=&#34;_blank&#34;&gt;将该资源对象添加到内部工作队列&lt;/a&gt;，然后开始处理这个资源对象：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;通过使用标签选择器查询 kube-apiserver 来&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/deployment/deployment_controller.go#L633&#34; target=&#34;_blank&#34;&gt;检查&lt;/a&gt;该 Deployment 是否有与其关联的 &lt;code&gt;ReplicaSet&lt;/code&gt; 或 &lt;code&gt;Pod&lt;/code&gt; 记录。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;有趣的是，这个同步过程是状态不可知的，它核对新记录与核对已经存在的记录采用的是相同的方式。&lt;/p&gt;
-
-&lt;p&gt;在意识到没有与其关联的 &lt;code&gt;ReplicaSet&lt;/code&gt; 或 &lt;code&gt;Pod&lt;/code&gt; 记录后，Deployment Controller 就会开始执行&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/deployment/sync.go#L385&#34; target=&#34;_blank&#34;&gt;弹性伸缩流程&lt;/a&gt;：&lt;/p&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;创建 ReplicaSet 资源，为其分配一个标签选择器并将其版本号设置为 1。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;ReplicaSet 的 &lt;code&gt;PodSpec&lt;/code&gt; 字段从 Deployment 的 manifest 以及其他相关元数据中复制而来。有时 Deployment 记录在此之后也需要更新（例如，如果设置了 &lt;code&gt;process deadline&lt;/code&gt;）。&lt;/p&gt;
-
-&lt;p&gt;当完成以上步骤之后，该 Deployment 的 &lt;code&gt;status&lt;/code&gt; 就会被更新，然后重新进入与之前相同的循环，等待 Deployment 与期望的状态相匹配。由于 Deployment Controller 只关心 ReplicaSet，因此需要通过 &lt;code&gt;ReplicaSet Controller&lt;/code&gt; 来继续协调。&lt;/p&gt;
-
-&lt;h3 id=&#34;replicasets-controller&#34;&gt;ReplicaSets controller&lt;/h3&gt;
-
-&lt;p&gt;在前面的步骤中，Deployment Controller 创建了第一个 ReplicaSet，但仍然还是没有 Pod，这时候就该 &lt;code&gt;ReplicaSet Controller&lt;/code&gt; 登场了！ReplicaSet Controller 的工作是监视 ReplicaSets 及其相关资源（Pod）的生命周期。和大多数其他 Controller 一样，它通过触发某些事件的处理器来实现此目的。&lt;/p&gt;
-
-&lt;p&gt;当创建 ReplicaSet 时（由 Deployment Controller 创建），RS Controller &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/replicaset/replica_set.go#L583&#34; target=&#34;_blank&#34;&gt;检查新 ReplicaSet 的状态&lt;/a&gt;，并检查当前状态与期望状态之间存在的偏差，然后通过&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/pkg/controller/replicaset/replica_set.go#L460&#34; target=&#34;_blank&#34;&gt;调整 Pod 的副本数&lt;/a&gt;来达到期望的状态。&lt;/p&gt;
-
-&lt;p&gt;Pod 的创建也是批量进行的，从 &lt;code&gt;SlowStartInitialBatchSize&lt;/code&gt; 开始，然后在每次成功的迭代中以一种 &lt;code&gt;slow start&lt;/code&gt; 操作加倍。这样做的目的是在大量 Pod 启动失败时（例如，由于资源配额），可以减轻 kube-apiserver 被大量不必要的 HTTP 请求吞没的风险。如果创建失败，最好能够优雅地失败，并且对其他的系统组件造成的影响最小！&lt;/p&gt;
-
-&lt;p&gt;Kubernetes 通过 &lt;code&gt;Owner References&lt;/code&gt;（在子级资源的某个字段中引用其父级资源的 ID） 来构造严格的资源对象层级结构。这确保了一旦 Controller 管理的资源被删除（级联删除），子资源就会被垃圾收集器删除，同时还为父级资源提供了一种有效的方式来避免他们竞争同一个子级资源（想象两对父母都认为他们拥有同一个孩子的场景）。&lt;/p&gt;
-
-&lt;p&gt;Owner References 的另一个好处是：它是有状态的。如果有任何 Controller 重启了，那么由于资源对象的拓扑关系与 Controller 无关，该操作不会影响到系统的稳定运行。这种对资源隔离的重视也体现在 Controller 本身的设计中：Controller 不能对自己没有明确拥有的资源进行操作，它们应该选择对资源的所有权，互不干涉，互不共享。&lt;/p&gt;
-
-&lt;p&gt;有时系统中也会出现孤儿（orphaned）资源，通常由以下两种途径产生：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;父级资源被删除，但子级资源没有被删除&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;垃圾收集策略禁止删除子级资源&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;当发生这种情况时，Controller 将会确保孤儿资源拥有新的 &lt;code&gt;Owner&lt;/code&gt;。多个父级资源可以相互竞争同一个孤儿资源，但只有一个会成功（其他父级资源会收到验证错误）。&lt;/p&gt;
-
-&lt;h3 id=&#34;informers&#34;&gt;Informers&lt;/h3&gt;
-
-&lt;p&gt;你可能已经注意到，某些 Controller（例如 RBAC 授权器或 Deployment Controller）需要先检索集群状态然后才能正常运行。拿 RBAC 授权器举例，当请求进入时，授权器会将用户的初始状态缓存下来，然后用它来检索与 etcd 中的用户关联的所有  角色（&lt;code&gt;Role&lt;/code&gt;）和 角色绑定（&lt;code&gt;RoleBinding&lt;/code&gt;）。那么问题来了，Controller 是如何访问和修改这些资源对象的呢？事实上 Kubernetes 是通过 &lt;code&gt;Informer&lt;/code&gt; 机制来解决这个问题的。&lt;/p&gt;
-
-&lt;p&gt;Infomer 是一种模式，它允许 Controller 查找缓存在本地内存中的数据(这份数据由 Informer 自己维护)并列出它们感兴趣的资源。&lt;/p&gt;
-
-&lt;p&gt;虽然 Informer 的设计很抽象，但它在内部实现了大量的对细节的处理逻辑（例如缓存），缓存很重要，因为它不但可以减少对 Kubenetes API 的直接调用，同时也能减少 Server 和 Controller 的大量重复性工作。通过使用 Informer，不同的 Controller 之间以线程安全（Thread safety）的方式进行交互，而不必担心多个线程访问相同的资源时会产生冲突。&lt;/p&gt;
-
-&lt;p&gt;有关 Informer 的更多详细解析，请参考这篇文章：&lt;a href=&#34;https://borismattijssen.github.io/articles/kubernetes-informers-controllers-reflectors-stores&#34; target=&#34;_blank&#34;&gt;Kubernetes: Controllers, Informers, Reflectors and Stores&lt;/a&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;scheduler&#34;&gt;Scheduler&lt;/h3&gt;
-
-&lt;p&gt;当所有的 Controller 正常运行后，etcd 中就会保存一个 Deployment、一个 ReplicaSet 和 三个 Pod 资源记录，并且可以通过 kube-apiserver 查看。然而，这些 Pod 资源现在还处于 &lt;code&gt;Pending&lt;/code&gt; 状态，因为它们还没有被调度到集群中合适的 Node 上运行。这个问题最终要靠调度器（Scheduler）来解决。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Scheduler&lt;/code&gt; 作为一个独立的组件运行在集群控制平面上，工作方式与其他 Controller 相同：监听实际并将系统状态调整到期望的状态。具体来说，Scheduler 的作用是将待调度的 Pod 按照特定的算法和调度策略绑定（Binding）到集群中某个合适的 Node 上，并将绑定信息写入 etcd 中（它会过滤其 PodSpec 中 &lt;code&gt;NodeName&lt;/code&gt; 字段为空的 Pod），默认的调度算法的工作方式如下：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;当 Scheduler 启动时，会&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/2d64ce5e8e45e26b02492d2b6c85e5ebfb1e4761/plugin/pkg/scheduler/algorithmprovider/defaults/defaults.go#L65-L81&#34; target=&#34;_blank&#34;&gt;注册一个默认的预选策略链&lt;/a&gt;，这些&lt;code&gt;预选策略&lt;/code&gt;会对备选节点进行评估，判断备选节点是否&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/2d64ce5e8e45e26b02492d2b6c85e5ebfb1e4761/plugin/pkg/scheduler/core/generic_scheduler.go#L117&#34; target=&#34;_blank&#34;&gt;满足备选 Pod 的需求&lt;/a&gt;。例如，如果 PodSpec 字段限制了 CPU 和内存资源，那么当备选节点的资源容量不满足备选 Pod 的需求时，备选 Pod 就不会被调度到该节点上（&lt;strong&gt;资源容量=备选节点资源总量-节点中已存在 Pod 的所有容器的需求资源（CPU 和内存）的总和&lt;/strong&gt;）&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;一旦筛选出符合要求的候选节点，就会采用&lt;code&gt;优选策略&lt;/code&gt;计算出每个候选节点的积分，然后对这些候选节点进行排序，积分最高者胜出。例如，为了在整个系统中分摊工作负载，这些优选策略会从备选节点列表中选出资源消耗最小的节点。每个节点通过优选策略时都会算出一个得分，计算各项得分，最终选出分值大的节点作为优选的结果。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;一旦找到了合适的节点，Scheduler 就会创建一个 &lt;code&gt;Binding&lt;/code&gt; 对象，该对象的 &lt;code&gt;Name&lt;/code&gt; 和 &lt;code&gt;Uid&lt;/code&gt; 与 Pod 相匹配，并且其 &lt;code&gt;ObjectReference&lt;/code&gt; 字段包含所选节点的名称，然后通过 &lt;code&gt;POST&lt;/code&gt; 请求&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/2d64ce5e8e45e26b02492d2b6c85e5ebfb1e4761/plugin/pkg/scheduler/factory/factory.go#L1095&#34; target=&#34;_blank&#34;&gt;发送给 apiserver&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;当 kube-apiserver 接收到此 Binding 对象时，注册吧会将该对象&lt;strong&gt;反序列化&lt;/strong&gt;并更新 Pod 资源中的以下字段：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;将 &lt;code&gt;NodeName&lt;/code&gt; 的值设置为 ObjectReference 中的 NodeName。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;添加相关的注释。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;将 &lt;code&gt;PodScheduled&lt;/code&gt; 的 &lt;code&gt;status&lt;/code&gt; 值设置为 True。可以通过 kubectl 来查看：&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get &amp;lt;PODNAME&amp;gt; -o go-template=&#39;{{range .status.conditions}}{{if eq .type &amp;quot;PodScheduled&amp;quot;}}{{.status}}{{end}}{{end}}&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;一旦 Scheduler 将 Pod 调度到某个节点上，该节点的 &lt;code&gt;Kubelet&lt;/code&gt; 就会接管该 Pod 并开始部署。&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;预选策略和优选策略都可以通过 &lt;code&gt;--policy-config-file&lt;/code&gt; 参数来扩展，如果默认的调度器不满足要求，还可以部署自定义的调度器。如果  &lt;code&gt;podSpec.schedulerName&lt;/code&gt; 的值设置为其他的调度器，则 Kubernetes 会将该 Pod 的调度转交给那个调度器。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;h2 id=&#34;p-id-h2-6-kubelet-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;6. Kubelet&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;pod-同步&#34;&gt;Pod 同步&lt;/h3&gt;
-
-&lt;p&gt;现在，所有的 Controller 都完成了工作，我们来总结一下：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;HTTP 请求通过了认证、授权和准入控制阶段。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;一个 Deployment、ReplicaSet 和三个 Pod 资源被持久化到 etcd 存储中。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;然后运行了一系列初始化器。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;最后每个 Pod 都被调度到合适的节点。&lt;br /&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;然而到目前为止，所有的状态变化仅仅只是针对保存在 etcd 中的资源记录，接下来的步骤涉及到运行在工作节点之间的 Pod 的分布状况，这是分布式系统（比如 Kubernetes）的关键因素。这些任务都是由 &lt;code&gt;Kubelet&lt;/code&gt; 组件完成的，让我们开始吧！&lt;/p&gt;
-
-&lt;p&gt;在 Kubernetes 集群中，每个 Node 节点上都会启动一个 Kubelet 服务进程，该进程用于处理 Scheduler 下发到本节点的任务，管理 Pod 的生命周期，包括挂载卷、容器日志记录、垃圾回收以及其他与 Pod 相关的事件。&lt;/p&gt;
-
-&lt;p&gt;如果换一种思维模式，你可以把 Kubelet 当成一种特殊的 Controller，它每隔 20 秒（可以自定义）向 kube-apiserver 通过 &lt;code&gt;NodeName&lt;/code&gt; 获取自身 Node 上所要运行的 Pod 清单。一旦获取到了这个清单，它就会通过与自己的内部缓存进行比较来检测新增加的 Pod，如果有差异，就开始同步 Pod 列表。我们来详细分析一下同步过程：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;如果 Pod 正在创建， Kubelet 就会&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/fc8bfe2d8929e11a898c4557f9323c482b5e8842/pkg/kubelet/kubelet.go#L1519&#34; target=&#34;_blank&#34;&gt;记录一些在 &lt;code&gt;Prometheus&lt;/code&gt; 中用于追踪 Pod 启动延时的指标&lt;/a&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;然后生成一个 &lt;code&gt;PodStatus&lt;/code&gt; 对象，它表示 Pod 当前阶段的状态。Pod 的状态(&lt;code&gt;Phase&lt;/code&gt;) 是 Pod 在其生命周期中的最精简的概要，包括 &lt;code&gt;Pending&lt;/code&gt;，&lt;code&gt;Running&lt;/code&gt;，&lt;code&gt;Succeeded&lt;/code&gt;，&lt;code&gt;Failed&lt;/code&gt; 和 &lt;code&gt;Unkown&lt;/code&gt; 这几个值。状态的产生过程非常过程，所以很有必要深入了解一下背后的原理：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;首先串行执行一系列 Pod 同步处理器（&lt;code&gt;PodSyncHandlers&lt;/code&gt;），每个处理器检查检查 Pod 是否应该运行在该节点上。当所有的处理器都认为该 Pod 不应该运行在该节点上，则 Pod 的 &lt;code&gt;Phase&lt;/code&gt; 值就会变成 &lt;code&gt;PodFailed&lt;/code&gt;，并且将该 Pod 从该节点上驱逐出去。例如当你创建一个 &lt;code&gt;Job&lt;/code&gt; 时，如果 Pod 失败重试的时间超过了 &lt;code&gt;spec.activeDeadlineSeconds&lt;/code&gt; 设置的值，就会将 Pod 从该节点驱逐出去。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;接下来，Pod 的 Phase 值由 &lt;code&gt;init 容器&lt;/code&gt; 和应用容器的状态共同来决定。因为目前容器还没有启动，容器被视为&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/fc8bfe2d8929e11a898c4557f9323c482b5e8842/pkg/kubelet/kubelet_pods.go#L1244&#34; target=&#34;_blank&#34;&gt;处于等待阶段&lt;/a&gt;，如果 Pod 中至少有一个容器处于等待阶段，则其 &lt;code&gt;Phase&lt;/code&gt; 值为 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/fc8bfe2d8929e11a898c4557f9323c482b5e8842/pkg/kubelet/kubelet_pods.go#L1258-L1261&#34; target=&#34;_blank&#34;&gt;Pending&lt;/a&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;最后，Pod 的 &lt;code&gt;Condition&lt;/code&gt; 字段由 Pod 内所有容器的状态决定。现在我们的容器还没有被容器运行时创建，所以 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/fc8bfe2d8929e11a898c4557f9323c482b5e8842/pkg/kubelet/status/generate.go#L70-L81&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;PodReady&lt;/code&gt; 的状态被设置为 &lt;code&gt;False&lt;/code&gt;&lt;/a&gt;。可以通过 kubectl 查看：&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get &amp;lt;PODNAME&amp;gt; -o go-template=&#39;{{range .status.conditions}}{{if eq .type &amp;quot;Ready&amp;quot;}}{{.status}}{{end}}{{end}}&#39;
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;生成 PodStatus 之后（Pod 中的 &lt;code&gt;status&lt;/code&gt; 字段），Kubelet 就会将它发送到 Pod 的状态管理器，该管理器的任务是通过 apiserver 异步更新 etcd 中的记录。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;接下来运行一系列&lt;strong&gt;准入处理器&lt;/strong&gt;来确保该 Pod 是否具有相应的权限（包括强制执行 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/fc8bfe2d8929e11a898c4557f9323c482b5e8842/pkg/kubelet/kubelet.go#L883-L884&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;AppArmor&lt;/code&gt; 配置文件和 &lt;code&gt;NO_NEW_PRIVS&lt;/code&gt;&lt;/a&gt;），被准入控制器拒绝的 Pod 将一直保持 &lt;code&gt;Pending&lt;/code&gt; 状态。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;如果 Kubelet 启动时指定了 &lt;code&gt;cgroups-per-qos&lt;/code&gt; 参数，Kubelet 就会为该 Pod 创建 &lt;code&gt;cgroup&lt;/code&gt; 并进行相应的资源限制。这是为了更方便地对 Pod 进行服务质量（QoS）管理。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;然后为 Pod 创建相应的目录，包括 Pod 的目录（&lt;code&gt;/var/run/kubelet/pods/&amp;lt;podID&amp;gt;&lt;/code&gt;），该 Pod 的卷目录（&lt;code&gt;&amp;lt;podDir&amp;gt;/volumes&lt;/code&gt;）和该 Pod 的插件目录（&lt;code&gt;&amp;lt;podDir&amp;gt;/plugins&lt;/code&gt;）。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;卷管理器&lt;/strong&gt;会&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/2723e06a251a4ec3ef241397217e73fa782b0b98/pkg/kubelet/volumemanager/volume_manager.go#L330&#34; target=&#34;_blank&#34;&gt;挂载 &lt;code&gt;Spec.Volumes&lt;/code&gt; 中定义的相关数据卷，然后等待是否挂载成功&lt;/a&gt;。根据挂载卷类型的不同，某些 Pod 可能需要等待更长的时间（比如 NFS 卷）。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/dd9981d038012c120525c9e6df98b3beb3ef19e1/pkg/kubelet/kubelet_pods.go#L788&#34; target=&#34;_blank&#34;&gt;从 apiserver 中检索&lt;/a&gt; &lt;code&gt;Spec.ImagePullSecrets&lt;/code&gt; 中定义的所有 &lt;code&gt;Secret&lt;/code&gt;，然后将其注入到容器中。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;最后通过容器运行时接口（&lt;code&gt;Container Runtime Interface（CRI）&lt;/code&gt;）开始启动容器（下面会详细描述）。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;cri-与-pause-容器&#34;&gt;CRI 与 pause 容器&lt;/h3&gt;
-
-&lt;p&gt;到了这个阶段，大量的初始化工作都已经完成，容器已经准备好开始启动了，而容器是由&lt;strong&gt;容器运行时&lt;/strong&gt;（例如 &lt;code&gt;Docker&lt;/code&gt; 和 &lt;code&gt;Rkt&lt;/code&gt;）启动的。&lt;/p&gt;
-
-&lt;p&gt;为了更容易扩展，Kubelet 从 1.5.0 开始通过&lt;strong&gt;容器运行时接口&lt;/strong&gt;与容器运行时（Container Runtime）交互。简而言之，CRI 提供了 Kubelet 和特定的运行时之间的抽象接口，它们之间通过&lt;a href=&#34;https://github.com/google/protobuf&#34; target=&#34;_blank&#34;&gt;协议缓冲区&lt;/a&gt;（它像一个更快的 JSON）和 &lt;a href=&#34;https://grpc.io/&#34; target=&#34;_blank&#34;&gt;gRPC API&lt;/a&gt;（一种非常适合执行 Kubernetes 操作的 API）。这是一个非常酷的想法，通过使用 Kubelet 和运行时之间定义的契约关系，容器如何编排的具体实现细节已经变得无关紧要。由于不需要修改 Kubernetes 的核心代码，开发者可以以最小的开销添加新的运行时。&lt;/p&gt;
-
-&lt;p&gt;不好意思有点跑题了，让我们继续回到容器启动的阶段。第一次启动 Pod 时，Kubelet 会通过 &lt;code&gt;Remote Procedure Command&lt;/code&gt;(RPC) 协议调用 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/2d64ce5e8e45e26b02492d2b6c85e5ebfb1e4761/pkg/kubelet/kuberuntime/kuberuntime_sandbox.go#L51&#34; target=&#34;_blank&#34;&gt;RunPodSandbox&lt;/a&gt;。&lt;code&gt;sandbox&lt;/code&gt; 用于描述一组容器，例如在 Kubernetes 中它表示的是 Pod。&lt;code&gt;sandbox&lt;/code&gt; 是一个很宽泛的概念，所以对于其他没有使用容器的运行时仍然是有意义的（比如在一个基于 &lt;code&gt;hypervisor&lt;/code&gt; 的运行时中，sandbox 可能指的就是虚拟机）。&lt;/p&gt;
-
-&lt;p&gt;我们的例子中使用的容器运行时是 Docker，创建 sandbox 时首先创建的是 &lt;code&gt;pause&lt;/code&gt; 容器。pause 容器作为同一个 Pod 中所有其他容器的基础容器，它为 Pod 中的每个业务容器提供了大量的 Pod 级别资源，这些资源都是 Linux 命名空间（包括网络命名空间，IPC 命名空间和 PID 命名空间）。&lt;/p&gt;
-
-&lt;p&gt;pause 容器提供了一种方法来管理所有这些命名空间并允许业务容器共享它们，在同一个网络命名空间中的好处是：同一个 Pod 中的容器可以使用 &lt;code&gt;localhost&lt;/code&gt; 来相互通信。pause 容器的第二个功能与 PID 命名空间的工作方式相关，在 PID 命名空间中，进程之间形成一个树状结构，一旦某个子进程由于父进程的错误而变成了“孤儿进程”，其便会被 &lt;code&gt;init&lt;/code&gt; 进程进行收养并最终回收资源。关于 pause 工作方式的详细信息可以参考：&lt;a href=&#34;https://www.ianlewis.org/en/almighty-pause-container&#34; target=&#34;_blank&#34;&gt;The Almighty Pause Container&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;一旦创建好了 pause 容器，下面就会开始检查磁盘状态然后开始启动业务容器。&lt;/p&gt;
-
-&lt;h3 id=&#34;cni-和-pod-网络&#34;&gt;CNI 和 Pod 网络&lt;/h3&gt;
-
-&lt;p&gt;现在我们的 Pod 已经有了基本的骨架：一个共享所有命名空间以允许业务容器在同一个 Pod 里进行通信的 pause 容器。但现在还有一个问题，那就是容器的网络是如何建立的？&lt;/p&gt;
-
-&lt;p&gt;当 Kubelet 为 Pod 创建网络时，它会将创建网络的任务交给 &lt;code&gt;CNI&lt;/code&gt; 插件。CNI 表示容器网络接口（Container Network Interface），和容器运行时的运行方式类似，它也是一种抽象，允许不同的网络提供商为容器提供不同的网络实现。通过将 json 配置文件（默认在 &lt;code&gt;/etc/cni/net.d&lt;/code&gt; 路径下）中的数据传送到相关的 CNI 二进制文件（默认在 &lt;code&gt;/opt/cni/bin&lt;/code&gt; 路径下）中，cni 插件可以给 pause 容器配置相关的网络，然后 Pod 中其他的容器都使用 pause 容器的网络。下面是一个简单的示例配置文件：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
-    &amp;quot;cniVersion&amp;quot;: &amp;quot;0.3.1&amp;quot;,
-    &amp;quot;name&amp;quot;: &amp;quot;bridge&amp;quot;,
-    &amp;quot;type&amp;quot;: &amp;quot;bridge&amp;quot;,
-    &amp;quot;bridge&amp;quot;: &amp;quot;cnio0&amp;quot;,
-    &amp;quot;isGateway&amp;quot;: true,
-    &amp;quot;ipMasq&amp;quot;: true,
-    &amp;quot;ipam&amp;quot;: {
-        &amp;quot;type&amp;quot;: &amp;quot;host-local&amp;quot;,
-        &amp;quot;ranges&amp;quot;: [
-          [{&amp;quot;subnet&amp;quot;: &amp;quot;${POD_CIDR}&amp;quot;}]
-        ],
-        &amp;quot;routes&amp;quot;: [{&amp;quot;dst&amp;quot;: &amp;quot;0.0.0.0/0&amp;quot;}]
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;CNI 插件还会通过 &lt;code&gt;CNI_ARGS&lt;/code&gt; 环境变量为 Pod 指定其他的元数据，包括 Pod 名称和命名空间。&lt;/p&gt;
-
-&lt;p&gt;下面的步骤因 CNI 插件而异，我们以 &lt;code&gt;bridge&lt;/code&gt; 插件举例：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;该插件首先会在根网络命名空间（也就是宿主机的网络命名空间）中设置本地 Linux 网桥，以便为该主机上的所有容器提供网络服务。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;然后它会将一个网络接口（&lt;code&gt;veth&lt;/code&gt; 设备对的一端）插入到 pause 容器的网络命名空间中，并将另一端连接到网桥上。你可以这样来理解 veth 设备对：它就像一根很长的管道，一端连接到容器，一端连接到根网络命名空间中，数据包就在管道中进行传播。&lt;br /&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;接下来 json 文件中指定的 &lt;code&gt;IPAM&lt;/code&gt; Plugin 会为 pause 容器的网络接口分配一个 IP 并设置相应的路由，现在 Pod 就有了自己的 IP。&lt;br /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;IPAM Plugin 的工作方式和 CNI Plugin 类似：通过二进制文件调用并具有标准化的接口，每一个 IPAM Plugin 都必须要确定容器网络接口的 IP、子网以及网关和路由，并将信息返回给 CNI 插件。最常见的 IPAM Plugin 是 &lt;code&gt;host-local&lt;/code&gt;，它从预定义的一组地址池中为容器分配 IP 地址。它将地址池的信息以及分配信息保存在主机的文件系统中，从而确保了同一主机上每个容器的 IP 地址的唯一性。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;最后 Kubelet 会将集群内部的 &lt;code&gt;DNS&lt;/code&gt; 服务器的 &lt;code&gt;Cluster IP&lt;/code&gt; 地址传给 CNI 插件，然后 CNI 插件将它们写到容器的 &lt;code&gt;/etc/resolv.conf&lt;/code&gt; 文件中。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;一旦完成了上面的步骤，CNI 插件就会将操作的结果以 json 的格式返回给 Kubelet。&lt;/p&gt;
-
-&lt;h3 id=&#34;跨主机容器网络&#34;&gt;跨主机容器网络&lt;/h3&gt;
-
-&lt;p&gt;到目前为止，我们已经描述了容器如何与宿主机进行通信，但跨主机之间的容器如何通信呢？&lt;/p&gt;
-
-&lt;p&gt;通常情况下使用 &lt;code&gt;overlay&lt;/code&gt; 网络来进行跨主机容器通信，这是一种动态同步多个主机间路由的方法。 其中最常用的 overlay 网络插件是 &lt;code&gt;flannel&lt;/code&gt;，flannel 具体的工作方式可以参考 &lt;a href=&#34;https://github.com/coreos/flannel&#34; target=&#34;_blank&#34;&gt;CoreOS 的文档&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h3 id=&#34;容器启动&#34;&gt;容器启动&lt;/h3&gt;
-
-&lt;p&gt;所有网络都配置完成后，接下来就开始真正启动业务容器了！&lt;/p&gt;
-
-&lt;p&gt;一旦 sanbox 完成初始化并处于 &lt;code&gt;active&lt;/code&gt; 状态，Kubelet 就可以开始为其创建容器了。首先&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/5adfb24f8f25a0d57eb9a7b158db46f9f46f0d80/pkg/kubelet/kuberuntime/kuberuntime_manager.go#L690&#34; target=&#34;_blank&#34;&gt;启动 PodSpec 中定义的 init 容器&lt;/a&gt;，然后再启动业务容器。具体过程如下：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;首先拉取容器的镜像。如果是私有仓库的镜像，就会利用 PodSpec 中指定的 Secret 来拉取该镜像。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;然后通过 CRI 接口创建容器。Kubelet 向 PodSpec 中填充了一个 &lt;code&gt;ContainerConfig&lt;/code&gt; 数据结构（在其中定义了命令，镜像，标签，挂载卷，设备，环境变量等待），然后通过 &lt;code&gt;protobufs&lt;/code&gt; 发送给 CRI 接口。对于 Docker 来说，它会将这些信息反序列化并填充到自己的配置信息中，然后再发送给 &lt;code&gt;Dockerd&lt;/code&gt; 守护进程。在这个过程中，它会将一些元数据标签（例如容器类型，日志路径，dandbox ID 等待）添加到容器中。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;接下来会使用 CPU 管理器来约束容器，这是 Kubelet 1.8 中新添加的 alpha 特性，它使用 &lt;code&gt;UpdateContainerResources&lt;/code&gt; CRI 方法将容器分配给本节点上的 CPU 资源池。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;最后容器开始真正&lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/5f9f4a1c5939436fa320e9bc5973a55d6446e59f/pkg/kubelet/kuberuntime/kuberuntime_container.go#L135&#34; target=&#34;_blank&#34;&gt;启动&lt;/a&gt;。&lt;br /&gt;&lt;/li&gt;
-&lt;li&gt;如果 Pod 中配置了容器生命周期钩子（Hook），容器启动之后就会运行这些 &lt;code&gt;Hook&lt;/code&gt;。Hook 的类型包括两种：&lt;code&gt;Exec&lt;/code&gt;（执行一段命令） 和 &lt;code&gt;HTTP&lt;/code&gt;（发送HTTP请求）。如果 PostStart Hook 启动的时间过长、挂起或者失败，容器将永远不会变成 &lt;code&gt;running&lt;/code&gt; 状态。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;p-id-h2-7-总结-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;7. 总结&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果上面一切顺利，现在你的集群上应该会运行三个容器，所有的网络，数据卷和秘钥都被通过 CRI 接口添加到容器中并配置成功。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-8-原文链接-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;8. 原文链接&lt;/p&gt;&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/jamiehannaford/what-happens-when-k8s&#34; target=&#34;_blank&#34;&gt;What happens when &amp;hellip; Kubernetes edition!&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;

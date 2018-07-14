@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>  干货分享第1期 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content=" 干货分享第1期" />
+  <meta name="twitter:title" content=" 干货分享第1期" />
+  <meta name="description" content="">
+  <meta property="og:description" content="">
+  <meta name="twitter:description" content="">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/weekly-1/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.42.2" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/weekly-1/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/service-mesh">Service Mesh</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/loadbalance"> 负载均衡</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/share">分享</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go">Go 入门指南</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">葵花宝典</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/learn-english"> 英语学习终极秘诀</a>
+                
+                
+                  <a href="https://www.yangcs.net/a-day-in-the-life-of-jeff">A Day in the life of Jeff</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search www.yangcs.net</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("4BELQK2TOI", "bb53f9d51f88373ba37e56a4730aca4c");
+var index = client.initIndex('blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1> 干货分享第1期</h1>
+                     
+                    <span class="post-meta">
+  
+  Posted on July 14, 2018
+  
+  
+</span>
+
+
+                    
+                  
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center"> 干货分享第1期</h1>
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Jul 14, 2018</h4>
+    </section>
+    <h5 id="wc">3700 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/share/">share</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<p>人类社会未来几十年肯定会发生天翻地覆的变化，自从我坚信这一点之后，我就把所有的精力都投在了技术领域。所有的变化从根本上来说都是技术的变革引起的，只有掌握了技术，才有可能应对这些变化。</p>
+
+<p>我相信未来绝大多数的机会都是技术带来的，虽然其他行业依然可以赚钱，但我仍然觉得最有前景的是技术人员，因为当人工智能爆发以后，必将引发第四次工业革命，未来一定是人工智能在帮你看病和打官司。</p>
+
+<p>由于技术变化日新月异，新观点新工具层出不穷，让人有点目不暇接。我的私人收藏夹里已经屯了好几吨的货，这个时候我想知识如果不分享，就会变得没有意义。所以决定写成文章分享出来，也许会收获一些志同道合的朋友，将来可以一起做一些有用的事情。</p>
+
+<p>这是《干货分享》系列的第一期，主要记录过去一周我所见到的听到的值得分享的东西，这里只涉及技术，不涉及其他领域。</p>
+
+<h2 id="p-id-h2-新闻-p"><p id="h2">新闻</p></h2>
+
+<hr />
+
+<h3 id="1-paypal-向已故女子发账号违规通知-http-jandan-net-2018-07-14-paypal-terms-html">1. <a href="http://jandan.net/2018/07/14/paypal-terms.html" target="_blank">PayPal 向已故女子发账号违规通知</a></h3>
+
+<p><center><img src="http://img.jandan.net/news/2018/07/dbf68dc1b4f586fa112e7d130d790eb8.jpg" alt="" /></center></p>
+
+<p>PayPal 最近遭遇了一起让无数网友感到愤怒的公关危机，事件起因是该公司竟然向一位已故女士发去了一封信件，解释她的死亡违反了帐户持有人相关的政策。她的丈夫还没从失去爱妻的悲痛中缓过来，又遇到了这么一件丧心病狂的事情。周二的时候，Howard Durdle 怒而将该文件发到 Twitter 和 Facebook 等社群上。</p>
+
+<h3 id="2-google-chrome-浏览器将带来新面孔-https-imcn-me-html-y2018-33653-html">2. <a href="https://imcn.me/html/y2018/33653.html" target="_blank">Google Chrome 浏览器将带来新面孔</a></h3>
+
+<p><center><img src="https://imcn.me/wp-content/uploads/2018/07/chrome-new-look-macos.png" alt="" /></center></p>
+
+<p>无论是经历了技术更迭还是审美升级，谷歌 Chrome 浏览器的用户界面依然巍然不动，多年来都保存同一个样式。但是改变很快就会来了，这两日谷歌透露，预计将于 9 月 2 号（Chrome 的生日）将 Material Design 作为正式版 Chrome 的默认用户界面，视觉重新设计基于更圆、更柔和，更具触感的 Material Design 2（在Android P 中完全展示并且与 Chrome OS 桌面零散地结合）。</p>
+
+<h3 id="3-htc-首款区块链手机-exodus-正式开放登记-https-cn-engadget-com-2018-07-10-htc-exodus-registration">3. <a href="https://cn.engadget.com/2018/07/10/htc-exodus-registration/" target="_blank">HTC 首款区块链手机 Exodus 正式开放登记</a></h3>
+
+<p><center><img src="https://o.aolcdn.com/images/dims?thumbnail=600%2C400&amp;quality=80&amp;image_uri=https%3A%2F%2Fs.aolcdn.com%2Fhss%2Fstorage%2Fmidas%2Fc00a959b6f5784ba6ef5451cf350cc93%2F206517826%2Fdims.jpg&amp;client=cbc79c14efcebee57402&amp;signature=dd0892fd01c1d886694e61e2704ce82836f94b24" alt="" /></center></p>
+
+<p>阵子在 U12+ 的发布会之前，HTC 突然再透露了他们正准备另一台全新的手机产品 Exodus，这是一台趁着近年科技界对区块链技术的追求而生的区块链手机。今天 HTC 再释出更多有关这台 Exodus 的信息，而且也在今天正式开放登记计划，让有兴趣的朋友预约登记，抢先在今年的第三季体验这台 Exodus 手机。</p>
+
+<h3 id="4-日本第二次私人火箭发射失败-https-cn-engadget-com-2018-07-01-japan-interstellar-private-rocket-crash">4. <a href="https://cn.engadget.com/2018/07/01/japan-interstellar-private-rocket-crash/" target="_blank">日本第二次私人火箭发射失败</a></h3>
+
+<p><center><img src="https://s.aolcdn.com/hss/storage/midas/ca779bdc8b01018cd047f96dc1e46bf1/206496734/this-combo-of-video-grabs-provided-by-interstellars-technologies-the-picture-id987515668.jpg" alt="" /></center></p>
+
+<p>由颇具争议的企业家堀江贵文于 2005 年创立的 Interstellar Technologies 公司，和 SpaceX、Blue Origins、Rocket Labs 等有不少相似之处，都希望在新一代的私人太空领域中占据立足之地。然而和这三者不同的是，虽然 Interstellar Technologies 发射的是一枚相对简单得多的火箭（仅长 10m、直径 50cm），发射高度也只是勉强构到 100km 线，并不能进入轨道，但到目前为止还没有成功的记录。</p>
+
+<p>第一次试射发生在 2017 年，当时的 Momo 火箭在发射 66 秒后因为失去与地面的联系而自毁，只达到了 20km 的高度，而这次更是在发射后没几秒便又垂直落下，以一团火球告终。除了从视频中可以很明显看出发射后没三秒引擎就突然「没力」之外，Interstellar Technologies 没有给更进一步的原因或说明。</p>
+
+<h3 id="5-苹果前华人工程师窃密被捕-http-www-sohu-com-a-240500768-610300">5. <a href="http://www.sohu.com/a/240500768_610300" target="_blank">苹果前华人工程师窃密被捕</a></h3>
+
+<p><center><img src="https://cdn-fs.d1ev.com/d/file/custom/30018/file/201807/1531280057974180.jpg!w720" alt="" /></center></p>
+
+<p>7月7日，一名曾在苹果自动驾驶汽车项目工作的工程师在加州圣何塞机场准备登机飞往中国时，被美国联邦调查局（FBI）的执法人员逮捕。据知情人士称，这位名为 Xiaolang Zhang（张晓浪）的工程师跳槽入职国内创业公司小鹏汽车。</p>
+
+<p>根据提交给加州北区法院的文件，美国联邦调查局于本周指控苹果前员工 Xiaolang Zhang 窃取商业机密。而法院文件显示，目前共有5000名员工在为苹果的自动驾驶汽车项目工作。</p>
+
+<h3 id="6-特斯拉计划在上海建全资工厂-https-www-ifanr-com-1063536">6. <a href="https://www.ifanr.com/1063536" target="_blank">特斯拉计划在上海建全资工厂</a></h3>
+
+<p><center><img src="https://images.ifanr.cn/wp-content/uploads/2018/07/WechatIMG4071531228156_.pic_hd.jpg" alt="" /></center></p>
+
+<p>在特斯拉宣布将在上海临港地区独资建厂的两天后，CEO 埃隆·马斯克低调访华。此行分别敲定了上海建厂和北京建立科技创新中心事宜，随后他就匆匆离开。</p>
+
+<p>本项目直接涵盖了电动车最重要的研发、制造、销售三大环节，计划兴建的有特斯拉（上海）有限公司和特斯拉（上海）电动汽车研发创新中心以及代号 Gigafactory 3 的特斯拉超级工厂。</p>
+
+<p>虽然马老板行踪保密至极，没透露一丝风声，不过，还是有人记录下了马老板在华的奇妙经历。</p>
+
+<p>比如，接头吃煎饼果子：</p>
+
+<p><center><img src="https://img1.mydrivers.com/img/20180713/s_c98cb49fa3c7472ca75a3b7b8c2cc75f.jpg" alt="" /></center></p>
+
+<h2 id="p-id-h2-工具-p"><p id="h2">工具</p></h2>
+
+<hr />
+
+<h3 id="1-baidupcs-go-https-github-com-iikira-baidupcs-go">1. <a href="https://github.com/iikira/BaiduPCS-Go" target="_blank">BaiduPCS-Go</a></h3>
+
+<p>关于百度网盘大家都是又爱又恨吧，毕竟要拿来存东西，分享什么的，但是这个下载 限速实在是难以忍受呀。这里给大家介绍一款全平台通用的下载神器：<code>BaiduPCS--go</code>。使用 Go 语言编写，支持网盘内目录 (文件夹) 下载, 支持多个文件或目录下载, 支持断点续传和高并发高速下载。</p>
+
+<h3 id="2-ivideo-https-github-com-phobal-ivideo">2. <a href="https://github.com/phobal/ivideo" target="_blank">ivideo</a></h3>
+
+<p>一个可以观看国内主流视频平台所有视频的客户端（Mac、Windows、Linux），包括 VIP 资源。</p>
+
+<h3 id="3-dochub-https-github-com-truthhun-dochub">3. <a href="https://github.com/TruthHun/DocHub" target="_blank">DocHub</a></h3>
+
+<p>参考百度文库，使用Beego（Golang）开发的开源文库系统。</p>
+
+<h3 id="4-annie-https-github-com-iawia002-annie">4. <a href="https://github.com/iawia002/annie" target="_blank">annie</a></h3>
+
+<p>一个可以下载 YouTube 视频的命令行工具，与 <a href="https://github.com/soimort/you-get" target="_blank">youget</a> 类似，但使用 Go 语言编写，除了支持 YouTube 之外，还可以下载国内各大视频网站的视频</p>
+
+<h3 id="5-painter-https-github-com-kujiale-mobile-painter">5. <a href="https://github.com/Kujiale-Mobile/Painter" target="_blank">Painter</a></h3>
+
+<p>小程序生成图片库，轻松通过 json 方式绘制一张可以发到朋友圈的图片</p>
+
+<h3 id="6-taro-https-github-com-nervjs-taro">6. <a href="https://github.com/NervJS/taro" target="_blank">taro</a></h3>
+
+<p>多端统一开发框架，支持用 React 的开发方式编写一次代码，生成能运行在微信小程序、H5、React Native 等的应用。</p>
+
+<h3 id="7-termtosvg-https-github-com-nbedos-termtosvg">7. <a href="https://github.com/nbedos/termtosvg" target="_blank">termtosvg</a></h3>
+
+<p>将终端会话记录为 SVG 动画</p>
+
+<h3 id="8-jib-http-github-com-googlecontainertools-jib">8. <a href="http://github.com/GoogleContainerTools/jib" target="_blank">Jib</a></h3>
+
+<p>谷歌开源的 Java 应用容器生成工具，不用写 Dockerfile，构造过程中自动生成一个 Docker 容器。</p>
+
+<h3 id="9-简悦-simpread-https-github-com-kenshin-simpread">9. <a href="https://github.com/Kenshin/simpread" target="_blank">简悦 ( SimpRead ) </a></h3>
+
+<p><center><img src="https://raw.githubusercontent.com/521xueweihan/HelloGitHub/master/content/27/img/simpread-min.png" alt="" /></center></p>
+
+<p>让你瞬间进入沉浸式阅读的扩展，还原阅读的本质，提升你的阅读体验。使用它可以为你剔除页面上无关的干扰信息，让用户专注于阅读主要的内容。通过这个项目，还可以学习如何开发 Chrome 扩展。</p>
+
+<h3 id="10-aesma-http-www-aesma-cn">10. <a href="http://www.aesma.cn/" target="_blank">Aesma</a></h3>
+
+<p>说到网盘离线下载，115网盘和百度网盘肯定是第一时间进入你脑海里的网盘，毕竟是大公司，功能还是非常不错的，离线下载速度杠杠的，基本秒下载，然后可以直接在线观看。但唯一的遗憾就是。。。太。。。贵。。。年费会员接近300元的价格，还是让不少喜欢看片的伙伴们在充值和不充值之间犹豫徘徊。</p>
+
+<p>百度网盘提供免费BT离线下载功能，但在线观看速度会有一定的限制，且很多资源无法离线，版权或其他原因。</p>
+
+<p>最近出了一个 Aesma 阿斯离线云网盘，官网自称可能是目前最好用的离线下载工具，看来还是有几把刷子。据悉，Aesma 是破解的的 115 的数据流，所以离线下载和在线播放性能还是毋庸置疑的。</p>
+
+<p>网盘之前可以免费试用，不过现在推广期已过，开始收费了，但费用并不高，经济会员仅仅6元每月，普通会员10元每月，最贵的高级会员也就16元每月，还是比115或者百度网盘便宜了不少。更多详情大家可以自行探索。</p>
+
+<h2 id="p-id-h2-教程-p"><p id="h2">教程</p></h2>
+
+<hr />
+
+<h3 id="1-deeplearningbook读书笔记-https-github-com-exacity-simplified-deeplearning">1. <a href="https://github.com/exacity/simplified-deeplearning" target="_blank">DeepLearningBook读书笔记</a></h3>
+
+<p>DeepLearningBook是目前第一本系统和完整的介绍深度学习的书籍，其作者包括深度学习领域的奠基人、处于研究生涯中期的领域中坚、更有近年来涌现的新星，非常适合搭建理论基础。但是直至去年，本书只有英文原版，对于大多数开发者来说，啃一本800页7*9英寸的书籍，难度可想而知。 好消息是，在翻译人员的不懈努力下，DeepLearningBook中文版也已在GitHub上公开，中文翻译版已经由人民邮电出版社出版。</p>
+
+<h3 id="2-go语言高级编程-https-github-com-chai2010-advanced-go-programming-book">2. <a href="https://github.com/chai2010/advanced-go-programming-book" target="_blank">Go语言高级编程</a></h3>
+
+<p>《Go语言高级编程》该书针对 Go 语言有一定经验，想更加深入了解 Go 语言各种高级用法的开发人员。</p>
+
+<h3 id="3-后端架构师技术图谱-https-github-com-xingshaocheng-architect-awesome">3. <a href="https://github.com/xingshaocheng/architect-awesome" target="_blank">后端架构师技术图谱</a></h3>
+
+<p>后端架构师的技术图谱，非常全面，从数据结构、常用算法到分布式系统设计模式应有尽有。</p>
+
+<h3 id="4-深度学习框架-pytorch-入门与实践-https-github-com-chenyuntc-pytorch-book">4. <a href="https://github.com/chenyuntc/pytorch-book" target="_blank">深度学习框架 PyTorch：入门与实践</a></h3>
+
+<p>书籍《深度学习框架 PyTorch：入门与实践》的示例代码，可以作为一个独立的 PyTorch 入门指南和教程。内容结构如下图所示：</p>
+
+<p><center><img src="https://raw.githubusercontent.com/521xueweihan/HelloGitHub/master/content/25/img/pytorch-book-show-min.png" alt="" /></center></p>
+
+<h3 id="5-自己动手做聊天机器人-https-github-com-warmheartli-chatbotcourse">5. <a href="https://github.com/warmheartli/ChatBotCourse" target="_blank">自己动手做聊天机器人</a></h3>
+
+<p>该项目介绍了如何自己动手做聊天机器人。全面地介绍了所需要的技术：自然语言识别、分词、语料库、机器学习等，包含所需的 Java 和 Python 代码。</p>
+
+<h3 id="6-free-programming-books-zh-cn-https-github-com-justjavac-free-programming-books-zh-cn">6. <a href="https://github.com/justjavac/free-programming-books-zh_CN" target="_blank">free-programming-books-zh_CN</a></h3>
+
+<p>免费的计算机编程类中文书籍。</p>
+
+<h3 id="7-golang-区块链教程-https-github-com-liuchengxu-blockchain-tutorial">7. <a href="https://github.com/liuchengxu/blockchain-tutorial" target="_blank">Golang 区块链教程</a></h3>
+
+<p>区块链不仅仅是计算机科学，还涉及了政治经济制度，社会分工协作等等很多方面，本教程的关注点不仅在于深度，更在于其广度，更多是站在研究的角度，而非仅仅是一个程序员的视角。</p>
+
+<h3 id="8-prometheus-操作指南-云原生监控之道-https-github-com-yunlzheng-prometheus-book">8. <a href="https://github.com/yunlzheng/prometheus-book" target="_blank">Prometheus 操作指南：云原生监控之道</a></h3>
+
+<p>Prometheus是一个开源的完整监控解决方案，其对传统监控系统的测试和告警模型进行了彻底的颠覆，形成了基于中央化的规则计算、统一分析和告警的新模型。本教程应该是国内第一个全面剖析 Prometheus 的教程，从原理到实战。</p>
+
+<h2 id="p-id-h2-资源-p"><p id="h2">资源</p></h2>
+
+<hr />
+
+<h3 id="1-telegramgroup-https-github-com-itgoyo-telegramgroup">1. <a href="https://github.com/itgoyo/TelegramGroup" target="_blank">TelegramGroup</a></h3>
+
+<p>Telegram 群合集，收集了非常全面好玩的 telegram 群。</p>
+
+<h3 id="2-飞流直播-http-chaochaolive-icntv-xyz-channel-movie">2. <a href="http://chaochaolive.icntv.xyz/channel/movie" target="_blank">飞流直播</a></h3>
+
+<p>海外中文网络电视直播，直接通过浏览器播放。</p>
+
+<h3 id="3-factory-images-for-nexus-and-pixel-devices-https-developers-google-com-android-images">3. <a href="https://developers.google.com/android/images" target="_blank">Factory Images for Nexus and Pixel Devices</a></h3>
+
+<p>安卓原生镜像下载地址，包括 Nexus 和 Pixel 系列。</p>
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/circuit-breaking/" data-toggle="tooltip" data-placement="top" title="Envoy 熔断器的原理和使用">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Jul 14, 2018</h4>
+    </section>
+    <h5 id="wc">3700 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/share/">share</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.42.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  </body>
+</html>
+

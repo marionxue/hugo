@@ -108,9 +108,15 @@ desc = "Using Big Data to make business decision"
 
 [[menu.main]]
     parent = "Categories"
+    name = "分享"
+    url = "categories/share"
+    weight = 8
+
+[[menu.main]]
+    parent = "Categories"
     name = "Tags"
     url = "tags"
-    weight = 8
+    weight = 9
 
 [[menu.main]]
     identifier = "Books"
