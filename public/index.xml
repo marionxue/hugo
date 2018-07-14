@@ -745,6 +745,16 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;p&gt;安卓原生镜像下载地址，包括 Nexus 和 Pixel 系列。&lt;/p&gt;
 
+&lt;h2 id=&#34;p-id-h2-欢迎关注-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;欢迎关注&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;该系列每周六发布，同步更新在我的&lt;a href=&#34;https://www.yangcs.net/&#34; target=&#34;_blank&#34;&gt;个人博客&lt;/a&gt;和微信公众号上。&lt;/p&gt;
+
+&lt;p&gt;微信搜索 &lt;strong&gt;“云原生实验室”&lt;/strong&gt; 或者扫描二维码即可关注。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
 &lt;style&gt;
 #h2{
     margin-bottom:2em;

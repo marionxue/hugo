@@ -175,6 +175,16 @@ Telegram 群合集，收集了非常全面好玩的 telegram 群。
 
 安卓原生镜像下载地址，包括 Nexus 和 Pixel 系列。
 
+## <p id="h2">欢迎关注</p>
+
+----
+
+该系列每周六发布，同步更新在我的[个人博客](https://www.yangcs.net/)和微信公众号上。
+
+微信搜索 **“云原生实验室”** 或者扫描二维码即可关注。
+
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+
 
 <style>
 #h2{
