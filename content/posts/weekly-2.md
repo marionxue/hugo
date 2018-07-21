@@ -15,13 +15,13 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 ### 1. [谷歌推出首款微信小程序“猜画小歌”](https://techcrunch.cn/2018/07/18/google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue/)
 
-![](https://mmbiz.qpic.cn/mmbiz_jpg/159icnNTXChOvdZ7PUibf2gKnvNibRqpRAfjy6XoJkrKGL4ZokAzUQ0K6UamR1Qicy7lRUjibwNEzh2OVzrJib3mPVYg/640?tp=webp&wxfrom=5&wx_lazy=1)
+![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1130.jpeg)
 
 为了让每个人都有机会体验人工智能技术驱动下的人机交互，近日，谷歌推出了旗下首款微信小程序“猜画小歌”，也是一款有趣的社交微信小程序。官方表示，猜画小歌由来自 Google AI 的神经网络驱动，该网络源自全世界最大的、囊括超过 5000 万个手绘素描的数据群。
 
 当天中午体验了下，简直停不下来，立马发了朋友圈告知好友，然后就看到朋友圈内诞生了各种灵魂画作，选一个比较有代表性的给你们感受下：
 
-![](https://mmbiz.qpic.cn/mmbiz_jpg/159icnNTXChOvdZ7PUibf2gKnvNibRqpRAfLBrNB9V7Heqia3LgfrF4xDd5BeEq4TLkvNszV3j8cPCwXuibY9MNYgZQ/640?tp=webp&wxfrom=5&wx_lazy=1)
+<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1129.jpeg)</center>
 
 建议大家第一时间体验，感觉 Google 这个小程序要孕育出一大堆灵魂画手，秀出自己的灵魂画作吧！
 
@@ -81,7 +81,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 ### 6. [马化腾朋友圈辟谣](https://getpocket.com/redirect?url=https%3A%2F%2Fm.mydrivers.com%2Fnewsview%2F585157.html%3Fref%3Dandroid-app%253A%2F%2Fcom.google.android.googlequicksearchbox%2Fhttps%2Fwww.google.com&formCheck=e3cf5ad1969099a5c614a0e851dfa82b)
 
-<center>![](https://img1.mydrivers.com/img/20180719/s_6c2967f90a6c4e26a6ddf726c1d06f96.jpg)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/726c1d06f96.jpg)</center>
 
 近日，一则“王思聪表白马化腾女儿”的传闻在网上传播，**对此马化腾本人在朋友圈辟谣回应，称“这两天集中爆发的针对我家人的谣言越来越卑劣”，表示“一定会追查到底”。**
 
@@ -89,7 +89,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 不过也许是考虑到抑制谣言传播，目前张军已经删除了自己的辟谣微博，代之转发了一条新浪科技的辟谣报道。
 
-<center>![](https://img1.mydrivers.com/img/20180719/s_388e877833274c0ca7566fd20b8f8b16.jpg)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/d20b8f8b16.jpg)</center>
 
 ## <p id="h2">工具</p>
 
