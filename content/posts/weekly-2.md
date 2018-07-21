@@ -55,7 +55,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 ### 4. [Google印度工程师被活活打死](https://www.cnbeta.com/articles/tech/748631.htm)
 
-<center>![](https://static.cnbetacdn.com/article/2018/0719/efa942f659a7e12.jpeg)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/efa942f659a7e12.jpeg)</center>
 
 据外媒报道，近日，印度一位32岁的 Google 软件工程师 Mohammad Azam 遭遇不幸，被人活活打死，而原因竟然是村民听信谣言，以为这位工程师是个人贩子。报道称，Azam 和他们的两位友人去外地见另外一位朋友，回程途中休息的时候碰到一群小学生经过，出于好心拿出巧克力分给孩子们。
 
@@ -67,7 +67,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 最后，车子被砸得稀烂，Azam 被打死，另外两人也受了重伤。
 
-<center>![](https://static.cnbetacdn.com/article/2018/0719/6e5e9c0eea7bc5c.jpeg)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/6e5e9c0eea7bc5c.jpeg)</center>
 
 ### 5. [整个社区联合起来强奸一个孩子](https://cn.nytimes.com/world/20180719/rape-chennai-india/?utm_source=tw-nytimeschinese&utm_medium=social&utm_campaign=cur)
 
@@ -111,13 +111,13 @@ Infinity，基于过去对新标签页的认识，重新定义了新标签页，
 
 ### 4. [Camtd - Chrome 多线程下载管理器插件](https://github.com/jae-jae/Camtd)
 
-<center>![](https://camo.githubusercontent.com/d383cd36d1eb0d869ef076c3090f45d9333d8ef4/68747470733a2f2f63646e2e7261776769742e636f6d2f6a61652d6a61652f5f7265736f75726365732f6d61737465722f586e6970323031382d30352d30355f31322d34302d31332e6a7067)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/6874.jpeg)</center>
 
 如果你跟我一样不满 Chrome 默认的下载管理器，或许 Camtd 这款多线程下载管理器插件正适合你，它基于 Aria2 和 AriaNg，可满速下载百度网盘文件。
 
 **演示：满速下载百度网盘**
 
-<center>![](https://camo.githubusercontent.com/1bcf69d6d1cd6c84e25162b1b9850a350a6d2344/68747470733a2f2f63646e2e7261776769742e636f6d2f6a61652d6a61652f5f7265736f75726365732f6d61737465722f70616e2e676966)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/1bcf69d6.gif)</center>
 
 ### 5. [Yomail](http://www.nextechat.com/)
 
@@ -215,7 +215,7 @@ SOFAMesh 是基于 Istio 改进和扩展而来的 Service Mesh 大规模落地�
 
 ### 6. [golb](https://github.com/onestraw/golb)
 
-<center>![](https://github.com/onestraw/golb/raw/master/golb.png)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/golb.png)</center>
 
 Go 语言编写的新型负载均衡器。
 
