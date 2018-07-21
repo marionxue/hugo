@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Envoy 熔断器的原理和使用 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> 干货与湿货分享第2期 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Envoy 熔断器的原理和使用" />
-  <meta name="twitter:title" content="Envoy 熔断器的原理和使用" />
-  <meta name="description" content="使用熔断器来预防服务出现雪崩效应">
-  <meta property="og:description" content="使用熔断器来预防服务出现雪崩效应">
-  <meta name="twitter:description" content="使用熔断器来预防服务出现雪崩效应">
+  <meta property="og:title" content="干货与湿货分享第2期" />
+  <meta name="twitter:title" content="干货与湿货分享第2期" />
+  <meta name="description" content="">
+  <meta property="og:description" content="">
+  <meta name="twitter:description" content="">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/circuit-breaking/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/weekly-2/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.42.2" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/circuit-breaking/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/weekly-2/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -316,28 +316,19 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>Envoy 熔断器的原理和使用</h1>
+                     <h1>干货与湿货分享第2期</h1>
                      
-                     
-                  
-                  
-                  
-                    
-                      <hr class="small">
-                      <span class="post-subheading">使用熔断器来预防服务出现雪崩效应</span>
-                    
-                  
-                  
                     <span class="post-meta">
   
-  Posted on July 13, 2018
+  Posted on July 21, 2018
   
   
 </span>
 
 
+                    
                   
-                
+                  
               </div>
             </div>
           </div>
@@ -351,11 +342,7 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">Envoy 熔断器的原理和使用</h1>
-                
-                  
-                    <h2 align="center" class="posts-subheading">使用熔断器来预防服务出现雪崩效应</h2>
-                  
+                <h1 align="center">干货与湿货分享第2期</h1>
                 
                 
             </div>
@@ -375,14 +362,12 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Fri Jul 13, 2018</h4>
+        <h4 id="date"> Sat Jul 21, 2018</h4>
     </section>
-    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
+    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
-        
-        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/share/">share</a> &nbsp;
     </h5>
 </div>
 
@@ -390,62 +375,227 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>在微服务领域，各个服务之间经常会相互调用。如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而造成整个系统不可用，通常把这种现象称为 <span id="inline-purple">服务雪崩效应</span>。为了应对这种情况，可以使用熔断器（circuit breaking）。</p>
+<p>这是《干货与湿货分享》系列的第二期，主要记录过去一周我所见到的听到的值得分享的东西。</p>
 
-<p><span id="inline-purple">熔断器</span> 是分布式系统的关键组件，默认情况下处于关闭状态，这时请求被允许通过熔断器。它调用失败次数积累，如果当前健康状况低于设定阈值则启动熔断机制，这时请求被禁止通过。这样做可以实现更优雅的故障处理，并在问题被放大之前做出及时的响应。你可以选择在基础架构层面实现熔断机制，但熔断器本身会很容易受到故障的影响。为了更好地实现熔断机制，可以在 Envoy 的网络层面配置熔断器，这样做的好处是 <code>Envoy</code> 在网络级别强制实现断路，而不必为每个应用程序单独配置或编程。</p>
+<h2 id="p-id-h2-新闻-p"><p id="h2">新闻</p></h2>
 
-<h2 id="p-id-h2-1-熔断器配置-p"><p id="h2">1. 熔断器配置</p></h2>
+<h3 id="1-谷歌推出首款微信小程序-猜画小歌-https-techcrunch-cn-2018-07-18-google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue">1. <a href="https://techcrunch.cn/2018/07/18/google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue/" target="_blank">谷歌推出首款微信小程序“猜画小歌”</a></h3>
 
-<hr />
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/159icnNTXChOvdZ7PUibf2gKnvNibRqpRAfjy6XoJkrKGL4ZokAzUQ0K6UamR1Qicy7lRUjibwNEzh2OVzrJib3mPVYg/640?tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="" /></p>
 
-<p>Envoy 支持各种类型的完全分布式（非协调的）熔断，设置熔断时，需要考虑系统的具体情况，可以通过向 Envoy 的 <code>clusters</code> 配置项中添加 <code>circuit_breakers</code> 来为 Envoy 配置熔断器。下面是一个简单的示例：</p>
+<p>为了让每个人都有机会体验人工智能技术驱动下的人机交互，近日，谷歌推出了旗下首款微信小程序“猜画小歌”，也是一款有趣的社交微信小程序。官方表示，猜画小歌由来自 Google AI 的神经网络驱动，该网络源自全世界最大的、囊括超过 5000 万个手绘素描的数据群。</p>
 
-<pre><code class="language-yaml">circuit_breakers:
-  thresholds:
-    - priority: DEFAULT
-      max_connections: 1000
-      max_requests: 1000
-    - priority: HIGH
-      max_connections: 2000
-      max_requests: 2000
-</code></pre>
+<p>当天中午体验了下，简直停不下来，立马发了朋友圈告知好友，然后就看到朋友圈内诞生了各种灵魂画作，选一个比较有代表性的给你们感受下：</p>
+
+<p><img src="https://mmbiz.qpic.cn/mmbiz_jpg/159icnNTXChOvdZ7PUibf2gKnvNibRqpRAfLBrNB9V7Heqia3LgfrF4xDd5BeEq4TLkvNszV3j8cPCwXuibY9MNYgZQ/640?tp=webp&amp;wxfrom=5&amp;wx_lazy=1" alt="" /></p>
+
+<p>建议大家第一时间体验，感觉 Google 这个小程序要孕育出一大堆灵魂画手，秀出自己的灵魂画作吧！</p>
+
+<h3 id="2-微信批量封号-https-chinadigitaltimes-net-chinese-2018-07-e3-80-90-e7-ab-8b-e6-ad-a4-e5-ad-98-e7-85-a7-e3-80-91-e6-89-b9-e9-87-8f-e5-b0-81-e5-8f-b7-e5-be-ae-e4-bf-a1-e5-b0-81-e5-bb-ba-e6-97-b6-e4-bb-a3-e5-88-b0-e6-9d-a5">2. <a href="https://chinadigitaltimes.net/chinese/2018/07/%E3%80%90%E7%AB%8B%E6%AD%A4%E5%AD%98%E7%85%A7%E3%80%91%E6%89%B9%E9%87%8F%E5%B0%81%E5%8F%B7-%E5%BE%AE%E4%BF%A1%E5%B0%81%E5%BB%BA%E6%97%B6%E4%BB%A3%E5%88%B0%E6%9D%A5/" target="_blank">微信批量封号</a></h3>
+
+<p>近日，中国数字时代发现，微博、推特、豆瓣等平台，集中出现一些声称遭遇微信封号的网友，数量较多，其中多数网友被封号原因推测都与“传播谣言”、“散布有害言论”、“妄议时政”等相关，也有一些网友对于被封号原因表示不解。</p>
+
+<p>从网友反馈看，微信近期较有可能是重点对微信群内的“有害信息”进行监控，而后对个别账号进行定点清除，甚至对整群进行封禁。</p>
+
+<p>从内容尺度上看，微信显然在近期大大收紧了管理尺度，这对一些网友来说有些始料未及。例如，有网友称自己发表了对“泼墨门事件”的评论而遭封号；有网友称自己在朋友圈转发了“**门下大雨”导致封号…..</p>
+
+<p>但在中国，由于微信经常与个人社交相关联，许多人被封号封群后又不得不重新创建，于是有网友调侃“我们进入了一个封建时期”。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/wechat1.jpg" alt="" /></center></p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/wechat2.jpg" alt="" /></center></p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/wechat3.jpg" alt="" /></center></p>
+
+<h3 id="3-android-免费模式或将终结-https-36kr-com-p-5143943-html">3. <a href="https://36kr.com/p/5143943.html" target="_blank">Android 免费模式或将终结</a></h3>
+
+<p><center><img src="https://pic.36krcnd.com/201807/18232502/o6d9dnyk6lsmtvyu.jpg" alt="" /></center></p>
+
+<p>7月18日晚间消息，因谷歌 Android 垄断一案，欧盟委员会今日正式宣布，对谷歌处以 43.4 亿欧元(约合 50.4 亿美元)的罚款。</p>
+
+<p>对此，谷歌 CEO 桑达尔·皮查伊（Sundar Pichai）发表文章，警告称由于欧盟的决定，Android 可能无法保持免费。</p>
+
+<p>欧盟对谷歌发出 50 亿美元的罚单后，谷歌 CEO 桑德·皮查在谷歌官网发文抗议。</p>
+
+<p>他认为，欧盟委员会针对 Android 及其商业模式的罚单定忽略了 Android 手机与 iOS 手机竞争的事实。也忽略了 Android 为成千上万的手机制造商和移动网络运营商提供了多少选择，正是这些手机制造商和移动运营商在生产并销售 Android 设备。此外，世界各地有数百万的企业依靠开发 Android 应用为生；数十亿的消费者使用着廉价的安卓手机。</p>
+
+<h3 id="4-google印度工程师被活活打死-https-www-cnbeta-com-articles-tech-748631-htm">4. <a href="https://www.cnbeta.com/articles/tech/748631.htm" target="_blank">Google印度工程师被活活打死</a></h3>
+
+<p><center><img src="https://static.cnbetacdn.com/article/2018/0719/efa942f659a7e12.jpeg" alt="" /></center></p>
+
+<p>据外媒报道，近日，印度一位32岁的 Google 软件工程师 Mohammad Azam 遭遇不幸，被人活活打死，而原因竟然是村民听信谣言，以为这位工程师是个人贩子。报道称，Azam 和他们的两位友人去外地见另外一位朋友，回程途中休息的时候碰到一群小学生经过，出于好心拿出巧克力分给孩子们。</p>
+
+<p>这本来是一个友善的举动，却引起了周围村民的误会，因为社交媒体上在热传有儿童绑架犯逃窜的消息。</p>
+
+<p>村民们觉得 Azam 一行人很可疑，但没有去查证就认定他们是绑架犯，还在 WhatsApp 等社交渠道上发出了他们的照片，并声称他们就是绑架犯，别让他们跑了。</p>
+
+<p>很快，越来越多的村民闻讯赶来，拦住了 Azam 一行人的汽车，用棍棒、石头发起攻击。Azam怎么解释都没人听，就连警察赶来也无济于事。</p>
+
+<p>最后，车子被砸得稀烂，Azam 被打死，另外两人也受了重伤。</p>
+
+<p><center><img src="https://static.cnbetacdn.com/article/2018/0719/6e5e9c0eea7bc5c.jpeg" alt="" /></center></p>
+
+<h3 id="5-整个社区联合起来强奸一个孩子-https-cn-nytimes-com-world-20180719-rape-chennai-india-utm-source-tw-nytimeschinese-utm-medium-social-utm-campaign-cur">5. <a href="https://cn.nytimes.com/world/20180719/rape-chennai-india/?utm_source=tw-nytimeschinese&amp;utm_medium=social&amp;utm_campaign=cur" target="_blank">整个社区联合起来强奸一个孩子</a></h3>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/merlin.jpg" alt="" /></center></p>
+
+<p>新德里——警方表示，数月来，一群男子一直在轮奸一名11岁的女孩。</p>
+
+<p>警方表示，这名女孩与父母住在金奈一个封闭式社区，这些男子给她喝下掺有药物的软饮。警方还说，他们拍下了强奸这名女孩的场面，挥舞着刀子威胁她，如果告诉家人的话就公开这些视频。</p>
+
+<p>这些男子并非这个封闭式社区的闯入者，而是向居民打招呼、操作电梯、为公寓送饮水机的社区雇员。</p>
+
+<h3 id="6-马化腾朋友圈辟谣-https-getpocket-com-redirect-url-https-3a-2f-2fm-mydrivers-com-2fnewsview-2f585157-html-3fref-3dandroid-app-253a-2f-2fcom-google-android-googlequicksearchbox-2fhttps-2fwww-google-com-formcheck-e3cf5ad1969099a5c614a0e851dfa82b">6. <a href="https://getpocket.com/redirect?url=https%3A%2F%2Fm.mydrivers.com%2Fnewsview%2F585157.html%3Fref%3Dandroid-app%253A%2F%2Fcom.google.android.googlequicksearchbox%2Fhttps%2Fwww.google.com&amp;formCheck=e3cf5ad1969099a5c614a0e851dfa82b" target="_blank">马化腾朋友圈辟谣</a></h3>
+
+<p><center><img src="https://img1.mydrivers.com/img/20180719/s_6c2967f90a6c4e26a6ddf726c1d06f96.jpg" alt="" /></center></p>
+
+<p>近日，一则“王思聪表白马化腾女儿”的传闻在网上传播，<strong>对此马化腾本人在朋友圈辟谣回应，称“这两天集中爆发的针对我家人的谣言越来越卑劣”，表示“一定会追查到底”。</strong></p>
+
+<p>另外认证为腾讯公关总监的腾讯张军微博也发布了该朋友圈截图，表示该朋友圈为“Pony的辟谣”，侧面证实了马化腾本人回应的真实性。</p>
+
+<p>不过也许是考虑到抑制谣言传播，目前张军已经删除了自己的辟谣微博，代之转发了一条新浪科技的辟谣报道。</p>
+
+<p><center><img src="https://img1.mydrivers.com/img/20180719/s_388e877833274c0ca7566fd20b8f8b16.jpg" alt="" /></center></p>
+
+<h2 id="p-id-h2-工具-p"><p id="h2">工具</p></h2>
+
+<h3 id="1-hexoeditor-https-github-com-zhuzhuyule-hexoeditor">1. <a href="https://github.com/zhuzhuyule/HexoEditor" target="_blank">HexoEditor</a></h3>
+
+<p>这是一款为 Hexo 做了优化的非常清新的 Markdown 编辑器，使用 Electron 做框架，修改自 <a href="https://github.com/Moeditor/Moeditor" target="_blank">Moeditor</a>。</p>
+
+<p><center><img src="https://raw.githubusercontent.com/zhuzhuyule/HexoEditor/master/screenshots/gif-tag.gif" alt="" /></center></p>
+
+<h3 id="2-router7-https-github-com-rtr7-router7">2. <a href="https://github.com/rtr7/router7" target="_blank">router7</a></h3>
+
+<p>一款用 Go 语言编写的软路由操作系统。该项目目前还只是个 demo，更多功能请继续关注。</p>
+
+<h3 id="3-infinity-新标签页-https-cn-infinitynewtab-com">3. <a href="https://cn.infinitynewtab.com/" target="_blank">Infinity 新标签页</a></h3>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/infinity.jpg" alt="" /></center></p>
+
+<p>Infinity，基于过去对新标签页的认识，重新定义了新标签页，一个追求极简美学和一站式服务体验。新一代的标签页，一个更好用，更强大的新标签页。</p>
+
+<h3 id="4-camtd-chrome-多线程下载管理器插件-https-github-com-jae-jae-camtd">4. <a href="https://github.com/jae-jae/Camtd" target="_blank">Camtd - Chrome 多线程下载管理器插件</a></h3>
+
+<p><center><img src="https://camo.githubusercontent.com/d383cd36d1eb0d869ef076c3090f45d9333d8ef4/68747470733a2f2f63646e2e7261776769742e636f6d2f6a61652d6a61652f5f7265736f75726365732f6d61737465722f586e6970323031382d30352d30355f31322d34302d31332e6a7067" alt="" /></center></p>
+
+<p>如果你跟我一样不满 Chrome 默认的下载管理器，或许 Camtd 这款多线程下载管理器插件正适合你，它基于 Aria2 和 AriaNg，可满速下载百度网盘文件。</p>
+
+<p><strong>演示：满速下载百度网盘</strong></p>
+
+<p><center><img src="https://camo.githubusercontent.com/1bcf69d6d1cd6c84e25162b1b9850a350a6d2344/68747470733a2f2f63646e2e7261776769742e636f6d2f6a61652d6a61652f5f7265736f75726365732f6d61737465722f70616e2e676966" alt="" /></center></p>
+
+<h3 id="5-yomail-http-www-nextechat-com">5. <a href="http://www.nextechat.com/" target="_blank">Yomail</a></h3>
+
+<p><center><img src="https://img3.appinn.com/images/201611/yomail_app12x.jpg" alt="" /></center></p>
+
+<p>邮件作为一项古老的计算机技术，相应的邮件客户端也是层出不穷。有 Mailbox 这类带有创新的交互方式的，也有 Inbox、Spark 这类智能整理收件箱的，Airmail 这类把邮件和其他软件串联的设计更是让你重新审视邮件的意义。</p>
+
+<p>不过这些试图「重新发明邮件」的客户端，并没有特别针对国内环境做设计。如果你不太热衷于尝试这些国外的邮件客户端，又不满足于国内邮件服务商的官方网页或客户端，想在工作中更好处理邮件，可以试试 YoMail。</p>
+
+<h3 id="6-irreader-一个-rss-阅读器-http-irreader-netqon-com">6. <a href="http://irreader.netqon.com/" target="_blank">Irreader 一个 RSS 阅读器</a></h3>
+
+<p><center><img src="http://irreader.netqon.com/libs/c/1.png" alt="" /></center></p>
+
+<p>irreader 是一个 RSS 阅读器，除了 RSS 之外，也可以订阅网页和 podcast，有一个内置的源市场，内建 Podcast 播放。</p>
+
+<p>最后再来一张 marketing 长图：</p>
+
+<p><center><img src="http://irreader.netqon.com/libs/mkt_0.png" alt="" /></center></p>
+
+<h3 id="7-人人影视-tv-版-http-app-yyets-com">7. <a href="http://app.yyets.com/" target="_blank">人人影视 TV 版</a></h3>
+
+<p><center><img src="https://img3.appinn.com/images/201807/banner01.jpg!o" alt="" /></center></p>
+
+<p>据小道消息，人人影视 TV 版的测试版已经可以安装使用，支持边下边播，以及下载到本地。</p>
+
+<p>目前的人人影视已经拥有各大平台客户端：</p>
 
 <ul>
-<li><p><span id="inline-blue">thresholds</span> : 阈值允许我们定义服务响应的流量类型的优先级和限制。</p></li>
-
-<li><p><span id="inline-blue">priority</span> : 优先级是指熔断器如何处理定义为 <code>DEFAULT</code> 或 <code>HIGH</code> 的路由。示例中的设置表示将任何不应该在长连接队列中等待的请求设置为 HIGH（例如，用户在购物网站上提交购买请求或保存当前状态的 POST 请求）。</p></li>
-
-<li><p><span id="inline-blue">max_connections</span> : Envoy 将为上游集群中的所有主机建立的最大连接数，默认值是 <code>1024</code>。实际上，这仅适用于 HTTP/1.1集群，因为 HTTP/2 使用到每个主机的单个连接。</p></li>
-
-<li><p><span id="inline-blue">max_requests</span> : 在任何给定时间内，集群中所有主机可以处理的最大请求数，默认值也是 1024。实际上，这适用于仅 HTTP/2 集群，因为 HTTP/1.1 集群由最大连接断路器控制。</p></li>
+<li>网页版</li>
+<li>iPhone、iPad</li>
+<li>Android</li>
+<li>Android TV</li>
+<li>Windows</li>
+<li>macOS</li>
 </ul>
 
-<h2 id="p-id-h2-2-基本的熔断策略-p"><p id="h2">2. 基本的熔断策略</p></h2>
+<h2 id="p-id-h2-教程-p"><p id="h2">教程</p></h2>
 
-<hr />
+<h3 id="1-linux-内存管理-https-segmentfault-com-a-1190000008125006">1. <a href="https://segmentfault.com/a/1190000008125006" target="_blank">Linux 内存管理</a></h3>
 
-<p>由于 <code>HTTP/1.1</code> 协议和 <code>HTTP/2</code> 协议具有不同的连接行为（HTTP/1.1 : 同一个连接只能处理一个请求；HTTP/2 : 同一个连接能并发处理多个请求，而且并发请求的数量比HTTP1.1大了好几个数量级），使用不同协议的集群将各自使用不同的配置项：</p>
+<p>在linux下，使用 top，vmstat,free 等命令查看系统或者进程的内存使用情况时，经常看到 buff/cache memeory，swap，avail Mem 等，他们都代表什么意思呢？这篇文章将来聊一聊 Linux 下的内存管理并解答这个问题。</p>
+
+<h3 id="2-etcd-架构与实现解析-http-jolestar-com-etcd-architecture">2. <a href="http://jolestar.com/etcd-architecture/" target="_blank">Etcd 架构与实现解析</a></h3>
+
+<p>Etcd 是 CoreOS 基于 Raft 开发的分布式 key-value 存储，可用于服务发现、共享配置以及一致性保障（如数据库选主、分布式锁等）。网上关于 Etcd 的使用介绍的文章不少，但分析具体架构实现的文章不多，同时 Etcd v3的文档也非常稀缺。本文通过分析 Etcd 的架构与实现，了解其优缺点以及瓶颈点，一方面可以学习分布式系统的架构，另外一方面也可以保证在业务中正确使用 Etcd，知其然同时知其所以然，避免误用。</p>
+
+<h3 id="3-learning-sicp-https-github-com-deathking-learning-sicp">3. <a href="https://github.com/DeathKing/Learning-SICP" target="_blank">Learning-SICP</a></h3>
+
+<p><center><img src="https://camo.githubusercontent.com/0328cc5987e0ade0ba05d452171c90cbe4f61c43/687474703a2f2f67726f7570732e637361696c2e6d69742e6564752f6d61632f636c61737365732f362e3030312f6162656c736f6e2d737573736d616e2d6c656374757265732f77697a6172642e6a7067" alt="" /></center></p>
+
+<p>《计算机程序的构造和解释》系列公开课，视频是两位作者（Harold Abelson、Gerald Jay Sussman）在1986年7月给 Hewlett-Packard 公司员工培训时的录像。这门课程只提供了英文字幕，本项目旨在将这些英文字幕翻译为中文，方便广大的 <code>Scheme/Lisp</code> 学习者。</p>
+
+<h3 id="4-tcpdump-示例教程-https-hackertarget-com-tcpdump-examples">4. <a href="https://hackertarget.com/tcpdump-examples/" target="_blank">Tcpdump 示例教程</a></h3>
+
+<p>tcpdump 是一个运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的 TCP/IP 和其他数据包。一般情况下，非 HTTP 协议的网络分析，在服务器端用 tcpdump 比较多，在客户端用 wireshark 比较多，两个抓包软件的语法是一样的。</p>
+
+<h3 id="5-envoy-官方文档中文版-http-www-servicemesher-com-envoy">5. <a href="http://www.servicemesher.com/envoy/" target="_blank">Envoy 官方文档中文版</a></h3>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/envoyproxy11.jpg" alt="" /></p>
+
+<p>Envoy ——为云原生应用而设计、开源的边缘和服务代理、Istio Service Mesh 默认的数据平面，最新官方文档中文版，由 ServiceMesher社区倾情奉献。</p>
+
+<h3 id="6-编写和优化go代码-https-github-com-dgryski-go-perfbook-blob-master-performance-zh-md">6. <a href="https://github.com/dgryski/go-perfbook/blob/master/performance-zh.md" target="_blank">编写和优化Go代码</a></h3>
+
+<p>本文档概述了编写高性能Go代码的最佳实践。</p>
+
+<h2 id="p-id-h2-资源-p"><p id="h2">资源</p></h2>
+
+<h3 id="1-vistio-https-github-com-nmnellis-vistio">1. <a href="https://github.com/nmnellis/vistio" target="_blank">Vistio</a></h3>
+
+<p><center><img src="https://github.com/nmnellis/vistio/raw/master/documentation/sample.png" alt="" /></center></p>
+
+<p><a href="https://github.com/Netflix/vizceral" target="_blank">Vizceral</a> 是 Netflix 发布的一个开源项目，用于近乎实时地监控应用程序和集群之间的网络流量。Vistio 是使用 Vizceral 对 Istio 和网格监控的改进。它利用 Istio Mixer 生成的指标，然后将其输入 Prometheus。Vistio 查询 Prometheus 并将数据存储在本地以允许重播流量。</p>
+
+<h3 id="2-一个在线运行代码的网站-https-yxi-io">2. <a href="https://yxi.io/" target="_blank">一个在线运行代码的网站</a></h3>
+
+<p>这是一个可以在线运行短代码的网站，前端用 Vuejs 做的，后端用 Docker 提供不同语言的运行环境。目前支持的语言 Bash, C, C++, Go, Haskell, Java, Perl, PHP, Python, Ruby, Rust.</p>
+
+<h3 id="3-sofamesh-https-zhuanlan-zhihu-com-p-39931845">3. <a href="https://zhuanlan.zhihu.com/p/39931845" target="_blank">SOFAMesh</a></h3>
+
+<p>蚂蚁金服自主研发的分布式中间件（Scalable Open Financial Architecture，简称 SOFA ）推出的第三轮的开源产品：<code>SOFAMesh</code>。</p>
+
+<p>SOFAMesh 是基于 Istio 改进和扩展而来的 Service Mesh 大规模落地实践方案。在继承 Istio 强大功能和丰富特性的基础上，为满足大规模部署下的性能要求以及应对落地实践中的实际情况，有如下改进：</p>
 
 <ul>
-<li><strong>HTTP/1.1 协议</strong> : 使用 max_connections。</li>
-<li><strong>HTTP/2 协议</strong> ： 使用 max_requests。</li>
+<li>采用 Golang 编写的 MOSN 取代 Envoy</li>
+<li>合并Mixer到数据平面以解决性能瓶颈</li>
+<li>增强 Pilot 以实现更灵活的服务发现机制</li>
+<li>增加对 SOFA RPC、Dubbo 的支持</li>
 </ul>
 
-<p>这两个配置项都可以很好地实现熔断机制，主要取决于两个指标：服务的请求/连接数量和请求延时。例如，具有 1000个请求/second 和平均延迟 2 秒的 HTTP/1 服务通常会在任何给定时间内打开 <code>2000</code> 个连接。由于当存在大量非正常连接时熔断器会启动熔断机制，因此建议将参数 max_connections 的值最少设置为 <code>10 x 2000</code>，这样当最后 10 秒内的大多数请求未能返回正确的响应时就会打开熔断器。当然，具体的熔断器配置还得取决于系统的负载以及相关服务的具体配置。</p>
+<h3 id="4-rio-https-github-com-ibuildthecloud-rio">4. <a href="https://github.com/ibuildthecloud/rio" target="_blank">rio</a></h3>
 
-<h2 id="p-id-h2-3-高级熔断策略-p"><p id="h2">3. 高级熔断策略</p></h2>
+<p>我也不知道这玩意儿到底是个什么东西，据项目 README 介绍，这是个和 Docker 一样有趣的东西，而且是一种新奇的技术，像 service mesh 一样。</p>
 
-<hr />
+<h3 id="5-nabla-containers-https-nabla-containers-github-io">5. <a href="https://nabla-containers.github.io/" target="_blank">Nabla containers</a></h3>
 
-<p>上面讨论了一些基本的熔断策略，下面将介绍更高级的熔断策略，这些高级熔断策略可以为你的网络基础架构增加更多的弹性。</p>
+<p>一种新型容器，专门为主机上的强隔离而设计。</p>
 
-<h3 id="基于延迟设置熔断">基于延迟设置熔断</h3>
+<h3 id="6-golb-https-github-com-onestraw-golb">6. <a href="https://github.com/onestraw/golb" target="_blank">golb</a></h3>
 
-<p>如上所述，熔断器最常见的用例之一就是预防服务响应过慢但未完全瘫痪时引发的故障。虽然 Envoy 没有直接提供熔断器的延迟配置项，但可以通过自动重试配置项来模拟延迟。自动重试配置项通过 <code>max_retries</code> 字段定义，表示在任何给定时间内，集群中所有主机可以执行的最大重试次数。</p>
+<p><center><img src="https://github.com/onestraw/golb/raw/master/golb.png" alt="" /></center></p>
 
-<h3 id="基于长连接重试队列设置熔断">基于长连接重试队列设置熔断</h3>
+<p>Go 语言编写的新型负载均衡器。</p>
 
-<p>由于重试有可能将请求流量增加到两倍以上甚至更多，因此通过 <code>max_retries</code> 参数可以防止服务因为过多的重试而过载。建议将此参数的值设置为服务通常在 10 秒窗口中处理的请求总数的一小部分，最好不要将重试次数设置为与服务在 10 秒窗口中处理的请求总数差不多。</p>
+<h2 id="p-id-h2-欢迎关注-p"><p id="h2">欢迎关注</p></h2>
+
+<p>该系列每周六发布，同步更新在我的<a href="https://www.yangcs.net/" target="_blank">个人博客</a>和微信公众号上。</p>
+
+<p>微信搜索 “云原生实验室” 或者扫描二维码即可关注。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg" alt="" /></center></p>
 
 <style>
 #h2{
@@ -679,11 +829,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/istio-0.8-deploy/" data-toggle="tooltip" data-placement="top" title="Istio 0.8 部署">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/weekly-1/" data-toggle="tooltip" data-placement="top" title="干货与湿货分享第1期">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/weekly-1/" data-toggle="tooltip" data-placement="top" title="干货与湿货分享第1期">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -693,15 +843,7 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
-                    
-                    <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
-                    
-                    <li><a href="/posts/setting-up-ssl-in-envoy/">为 Envoy 启用证书验证</a></li>
-                    
-                    <li><a href="/posts/incremental-deploys/">通过 Envoy 实现增量部署</a></li>
-                    
-                    <li><a href="/posts/istio-0.8-deploy/">Istio 0.8 部署</a></li>
+                    <li><a href="/posts/weekly-1/">干货与湿货分享第1期</a></li>
                     
                 </ul>
                 
@@ -712,14 +854,12 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Fri Jul 13, 2018</h4>
+        <h4 id="date"> Sat Jul 21, 2018</h4>
     </section>
-    <h5 id="wc">1900 Words|Read in about 4 Min</h5>
+    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
-        
-        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/share/">share</a> &nbsp;
     </h5>
 </div>
 

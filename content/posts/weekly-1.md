@@ -1,5 +1,5 @@
 ---
-title: " 干货与湿货分享第1期"
+title: "干货与湿货分享第1期"
 date: 2018-07-14T05:31:48Z
 draft: false
 categories: "分享"

@@ -572,7 +572,466 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
-      <title> 干货与湿货分享第1期</title>
+      <title>干货与湿货分享第2期</title>
+      <link>https://www.yangcs.net/posts/weekly-2/</link>
+      <pubDate>Sat, 21 Jul 2018 11:01:26 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/weekly-2/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;这是《干货与湿货分享》系列的第二期，主要记录过去一周我所见到的听到的值得分享的东西。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-新闻-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;新闻&lt;/p&gt;&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-谷歌推出首款微信小程序-猜画小歌-https-techcrunch-cn-2018-07-18-google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue&#34;&gt;1. &lt;a href=&#34;https://techcrunch.cn/2018/07/18/google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue/&#34; target=&#34;_blank&#34;&gt;谷歌推出首款微信小程序“猜画小歌”&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://mmbiz.qpic.cn/mmbiz_jpg/159icnNTXChOvdZ7PUibf2gKnvNibRqpRAfjy6XoJkrKGL4ZokAzUQ0K6UamR1Qicy7lRUjibwNEzh2OVzrJib3mPVYg/640?tp=webp&amp;amp;wxfrom=5&amp;amp;wx_lazy=1&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;为了让每个人都有机会体验人工智能技术驱动下的人机交互，近日，谷歌推出了旗下首款微信小程序“猜画小歌”，也是一款有趣的社交微信小程序。官方表示，猜画小歌由来自 Google AI 的神经网络驱动，该网络源自全世界最大的、囊括超过 5000 万个手绘素描的数据群。&lt;/p&gt;
+
+&lt;p&gt;当天中午体验了下，简直停不下来，立马发了朋友圈告知好友，然后就看到朋友圈内诞生了各种灵魂画作，选一个比较有代表性的给你们感受下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://mmbiz.qpic.cn/mmbiz_jpg/159icnNTXChOvdZ7PUibf2gKnvNibRqpRAfLBrNB9V7Heqia3LgfrF4xDd5BeEq4TLkvNszV3j8cPCwXuibY9MNYgZQ/640?tp=webp&amp;amp;wxfrom=5&amp;amp;wx_lazy=1&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;建议大家第一时间体验，感觉 Google 这个小程序要孕育出一大堆灵魂画手，秀出自己的灵魂画作吧！&lt;/p&gt;
+
+&lt;h3 id=&#34;2-微信批量封号-https-chinadigitaltimes-net-chinese-2018-07-e3-80-90-e7-ab-8b-e6-ad-a4-e5-ad-98-e7-85-a7-e3-80-91-e6-89-b9-e9-87-8f-e5-b0-81-e5-8f-b7-e5-be-ae-e4-bf-a1-e5-b0-81-e5-bb-ba-e6-97-b6-e4-bb-a3-e5-88-b0-e6-9d-a5&#34;&gt;2. &lt;a href=&#34;https://chinadigitaltimes.net/chinese/2018/07/%E3%80%90%E7%AB%8B%E6%AD%A4%E5%AD%98%E7%85%A7%E3%80%91%E6%89%B9%E9%87%8F%E5%B0%81%E5%8F%B7-%E5%BE%AE%E4%BF%A1%E5%B0%81%E5%BB%BA%E6%97%B6%E4%BB%A3%E5%88%B0%E6%9D%A5/&#34; target=&#34;_blank&#34;&gt;微信批量封号&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;近日，中国数字时代发现，微博、推特、豆瓣等平台，集中出现一些声称遭遇微信封号的网友，数量较多，其中多数网友被封号原因推测都与“传播谣言”、“散布有害言论”、“妄议时政”等相关，也有一些网友对于被封号原因表示不解。&lt;/p&gt;
+
+&lt;p&gt;从网友反馈看，微信近期较有可能是重点对微信群内的“有害信息”进行监控，而后对个别账号进行定点清除，甚至对整群进行封禁。&lt;/p&gt;
+
+&lt;p&gt;从内容尺度上看，微信显然在近期大大收紧了管理尺度，这对一些网友来说有些始料未及。例如，有网友称自己发表了对“泼墨门事件”的评论而遭封号；有网友称自己在朋友圈转发了“**门下大雨”导致封号…..&lt;/p&gt;
+
+&lt;p&gt;但在中国，由于微信经常与个人社交相关联，许多人被封号封群后又不得不重新创建，于是有网友调侃“我们进入了一个封建时期”。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/wechat1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/wechat2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/wechat3.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;3-android-免费模式或将终结-https-36kr-com-p-5143943-html&#34;&gt;3. &lt;a href=&#34;https://36kr.com/p/5143943.html&#34; target=&#34;_blank&#34;&gt;Android 免费模式或将终结&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://pic.36krcnd.com/201807/18232502/o6d9dnyk6lsmtvyu.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;7月18日晚间消息，因谷歌 Android 垄断一案，欧盟委员会今日正式宣布，对谷歌处以 43.4 亿欧元(约合 50.4 亿美元)的罚款。&lt;/p&gt;
+
+&lt;p&gt;对此，谷歌 CEO 桑达尔·皮查伊（Sundar Pichai）发表文章，警告称由于欧盟的决定，Android 可能无法保持免费。&lt;/p&gt;
+
+&lt;p&gt;欧盟对谷歌发出 50 亿美元的罚单后，谷歌 CEO 桑德·皮查在谷歌官网发文抗议。&lt;/p&gt;
+
+&lt;p&gt;他认为，欧盟委员会针对 Android 及其商业模式的罚单定忽略了 Android 手机与 iOS 手机竞争的事实。也忽略了 Android 为成千上万的手机制造商和移动网络运营商提供了多少选择，正是这些手机制造商和移动运营商在生产并销售 Android 设备。此外，世界各地有数百万的企业依靠开发 Android 应用为生；数十亿的消费者使用着廉价的安卓手机。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-google印度工程师被活活打死-https-www-cnbeta-com-articles-tech-748631-htm&#34;&gt;4. &lt;a href=&#34;https://www.cnbeta.com/articles/tech/748631.htm&#34; target=&#34;_blank&#34;&gt;Google印度工程师被活活打死&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://static.cnbetacdn.com/article/2018/0719/efa942f659a7e12.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;据外媒报道，近日，印度一位32岁的 Google 软件工程师 Mohammad Azam 遭遇不幸，被人活活打死，而原因竟然是村民听信谣言，以为这位工程师是个人贩子。报道称，Azam 和他们的两位友人去外地见另外一位朋友，回程途中休息的时候碰到一群小学生经过，出于好心拿出巧克力分给孩子们。&lt;/p&gt;
+
+&lt;p&gt;这本来是一个友善的举动，却引起了周围村民的误会，因为社交媒体上在热传有儿童绑架犯逃窜的消息。&lt;/p&gt;
+
+&lt;p&gt;村民们觉得 Azam 一行人很可疑，但没有去查证就认定他们是绑架犯，还在 WhatsApp 等社交渠道上发出了他们的照片，并声称他们就是绑架犯，别让他们跑了。&lt;/p&gt;
+
+&lt;p&gt;很快，越来越多的村民闻讯赶来，拦住了 Azam 一行人的汽车，用棍棒、石头发起攻击。Azam怎么解释都没人听，就连警察赶来也无济于事。&lt;/p&gt;
+
+&lt;p&gt;最后，车子被砸得稀烂，Azam 被打死，另外两人也受了重伤。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://static.cnbetacdn.com/article/2018/0719/6e5e9c0eea7bc5c.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;5-整个社区联合起来强奸一个孩子-https-cn-nytimes-com-world-20180719-rape-chennai-india-utm-source-tw-nytimeschinese-utm-medium-social-utm-campaign-cur&#34;&gt;5. &lt;a href=&#34;https://cn.nytimes.com/world/20180719/rape-chennai-india/?utm_source=tw-nytimeschinese&amp;amp;utm_medium=social&amp;amp;utm_campaign=cur&#34; target=&#34;_blank&#34;&gt;整个社区联合起来强奸一个孩子&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/merlin.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;新德里——警方表示，数月来，一群男子一直在轮奸一名11岁的女孩。&lt;/p&gt;
+
+&lt;p&gt;警方表示，这名女孩与父母住在金奈一个封闭式社区，这些男子给她喝下掺有药物的软饮。警方还说，他们拍下了强奸这名女孩的场面，挥舞着刀子威胁她，如果告诉家人的话就公开这些视频。&lt;/p&gt;
+
+&lt;p&gt;这些男子并非这个封闭式社区的闯入者，而是向居民打招呼、操作电梯、为公寓送饮水机的社区雇员。&lt;/p&gt;
+
+&lt;h3 id=&#34;6-马化腾朋友圈辟谣-https-getpocket-com-redirect-url-https-3a-2f-2fm-mydrivers-com-2fnewsview-2f585157-html-3fref-3dandroid-app-253a-2f-2fcom-google-android-googlequicksearchbox-2fhttps-2fwww-google-com-formcheck-e3cf5ad1969099a5c614a0e851dfa82b&#34;&gt;6. &lt;a href=&#34;https://getpocket.com/redirect?url=https%3A%2F%2Fm.mydrivers.com%2Fnewsview%2F585157.html%3Fref%3Dandroid-app%253A%2F%2Fcom.google.android.googlequicksearchbox%2Fhttps%2Fwww.google.com&amp;amp;formCheck=e3cf5ad1969099a5c614a0e851dfa82b&#34; target=&#34;_blank&#34;&gt;马化腾朋友圈辟谣&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://img1.mydrivers.com/img/20180719/s_6c2967f90a6c4e26a6ddf726c1d06f96.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;近日，一则“王思聪表白马化腾女儿”的传闻在网上传播，&lt;strong&gt;对此马化腾本人在朋友圈辟谣回应，称“这两天集中爆发的针对我家人的谣言越来越卑劣”，表示“一定会追查到底”。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;另外认证为腾讯公关总监的腾讯张军微博也发布了该朋友圈截图，表示该朋友圈为“Pony的辟谣”，侧面证实了马化腾本人回应的真实性。&lt;/p&gt;
+
+&lt;p&gt;不过也许是考虑到抑制谣言传播，目前张军已经删除了自己的辟谣微博，代之转发了一条新浪科技的辟谣报道。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://img1.mydrivers.com/img/20180719/s_388e877833274c0ca7566fd20b8f8b16.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-工具-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;工具&lt;/p&gt;&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-hexoeditor-https-github-com-zhuzhuyule-hexoeditor&#34;&gt;1. &lt;a href=&#34;https://github.com/zhuzhuyule/HexoEditor&#34; target=&#34;_blank&#34;&gt;HexoEditor&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;这是一款为 Hexo 做了优化的非常清新的 Markdown 编辑器，使用 Electron 做框架，修改自 &lt;a href=&#34;https://github.com/Moeditor/Moeditor&#34; target=&#34;_blank&#34;&gt;Moeditor&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://raw.githubusercontent.com/zhuzhuyule/HexoEditor/master/screenshots/gif-tag.gif&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;2-router7-https-github-com-rtr7-router7&#34;&gt;2. &lt;a href=&#34;https://github.com/rtr7/router7&#34; target=&#34;_blank&#34;&gt;router7&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;一款用 Go 语言编写的软路由操作系统。该项目目前还只是个 demo，更多功能请继续关注。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-infinity-新标签页-https-cn-infinitynewtab-com&#34;&gt;3. &lt;a href=&#34;https://cn.infinitynewtab.com/&#34; target=&#34;_blank&#34;&gt;Infinity 新标签页&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/infinity.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;Infinity，基于过去对新标签页的认识，重新定义了新标签页，一个追求极简美学和一站式服务体验。新一代的标签页，一个更好用，更强大的新标签页。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-camtd-chrome-多线程下载管理器插件-https-github-com-jae-jae-camtd&#34;&gt;4. &lt;a href=&#34;https://github.com/jae-jae/Camtd&#34; target=&#34;_blank&#34;&gt;Camtd - Chrome 多线程下载管理器插件&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://camo.githubusercontent.com/d383cd36d1eb0d869ef076c3090f45d9333d8ef4/68747470733a2f2f63646e2e7261776769742e636f6d2f6a61652d6a61652f5f7265736f75726365732f6d61737465722f586e6970323031382d30352d30355f31322d34302d31332e6a7067&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;如果你跟我一样不满 Chrome 默认的下载管理器，或许 Camtd 这款多线程下载管理器插件正适合你，它基于 Aria2 和 AriaNg，可满速下载百度网盘文件。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;演示：满速下载百度网盘&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://camo.githubusercontent.com/1bcf69d6d1cd6c84e25162b1b9850a350a6d2344/68747470733a2f2f63646e2e7261776769742e636f6d2f6a61652d6a61652f5f7265736f75726365732f6d61737465722f70616e2e676966&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;5-yomail-http-www-nextechat-com&#34;&gt;5. &lt;a href=&#34;http://www.nextechat.com/&#34; target=&#34;_blank&#34;&gt;Yomail&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://img3.appinn.com/images/201611/yomail_app12x.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;邮件作为一项古老的计算机技术，相应的邮件客户端也是层出不穷。有 Mailbox 这类带有创新的交互方式的，也有 Inbox、Spark 这类智能整理收件箱的，Airmail 这类把邮件和其他软件串联的设计更是让你重新审视邮件的意义。&lt;/p&gt;
+
+&lt;p&gt;不过这些试图「重新发明邮件」的客户端，并没有特别针对国内环境做设计。如果你不太热衷于尝试这些国外的邮件客户端，又不满足于国内邮件服务商的官方网页或客户端，想在工作中更好处理邮件，可以试试 YoMail。&lt;/p&gt;
+
+&lt;h3 id=&#34;6-irreader-一个-rss-阅读器-http-irreader-netqon-com&#34;&gt;6. &lt;a href=&#34;http://irreader.netqon.com/&#34; target=&#34;_blank&#34;&gt;Irreader 一个 RSS 阅读器&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://irreader.netqon.com/libs/c/1.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;irreader 是一个 RSS 阅读器，除了 RSS 之外，也可以订阅网页和 podcast，有一个内置的源市场，内建 Podcast 播放。&lt;/p&gt;
+
+&lt;p&gt;最后再来一张 marketing 长图：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://irreader.netqon.com/libs/mkt_0.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;7-人人影视-tv-版-http-app-yyets-com&#34;&gt;7. &lt;a href=&#34;http://app.yyets.com/&#34; target=&#34;_blank&#34;&gt;人人影视 TV 版&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://img3.appinn.com/images/201807/banner01.jpg!o&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;据小道消息，人人影视 TV 版的测试版已经可以安装使用，支持边下边播，以及下载到本地。&lt;/p&gt;
+
+&lt;p&gt;目前的人人影视已经拥有各大平台客户端：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;网页版&lt;/li&gt;
+&lt;li&gt;iPhone、iPad&lt;/li&gt;
+&lt;li&gt;Android&lt;/li&gt;
+&lt;li&gt;Android TV&lt;/li&gt;
+&lt;li&gt;Windows&lt;/li&gt;
+&lt;li&gt;macOS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;p-id-h2-教程-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;教程&lt;/p&gt;&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-linux-内存管理-https-segmentfault-com-a-1190000008125006&#34;&gt;1. &lt;a href=&#34;https://segmentfault.com/a/1190000008125006&#34; target=&#34;_blank&#34;&gt;Linux 内存管理&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;在linux下，使用 top，vmstat,free 等命令查看系统或者进程的内存使用情况时，经常看到 buff/cache memeory，swap，avail Mem 等，他们都代表什么意思呢？这篇文章将来聊一聊 Linux 下的内存管理并解答这个问题。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-etcd-架构与实现解析-http-jolestar-com-etcd-architecture&#34;&gt;2. &lt;a href=&#34;http://jolestar.com/etcd-architecture/&#34; target=&#34;_blank&#34;&gt;Etcd 架构与实现解析&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Etcd 是 CoreOS 基于 Raft 开发的分布式 key-value 存储，可用于服务发现、共享配置以及一致性保障（如数据库选主、分布式锁等）。网上关于 Etcd 的使用介绍的文章不少，但分析具体架构实现的文章不多，同时 Etcd v3的文档也非常稀缺。本文通过分析 Etcd 的架构与实现，了解其优缺点以及瓶颈点，一方面可以学习分布式系统的架构，另外一方面也可以保证在业务中正确使用 Etcd，知其然同时知其所以然，避免误用。&lt;/p&gt;
+
+&lt;h3 id=&#34;3-learning-sicp-https-github-com-deathking-learning-sicp&#34;&gt;3. &lt;a href=&#34;https://github.com/DeathKing/Learning-SICP&#34; target=&#34;_blank&#34;&gt;Learning-SICP&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://camo.githubusercontent.com/0328cc5987e0ade0ba05d452171c90cbe4f61c43/687474703a2f2f67726f7570732e637361696c2e6d69742e6564752f6d61632f636c61737365732f362e3030312f6162656c736f6e2d737573736d616e2d6c656374757265732f77697a6172642e6a7067&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;《计算机程序的构造和解释》系列公开课，视频是两位作者（Harold Abelson、Gerald Jay Sussman）在1986年7月给 Hewlett-Packard 公司员工培训时的录像。这门课程只提供了英文字幕，本项目旨在将这些英文字幕翻译为中文，方便广大的 &lt;code&gt;Scheme/Lisp&lt;/code&gt; 学习者。&lt;/p&gt;
+
+&lt;h3 id=&#34;4-tcpdump-示例教程-https-hackertarget-com-tcpdump-examples&#34;&gt;4. &lt;a href=&#34;https://hackertarget.com/tcpdump-examples/&#34; target=&#34;_blank&#34;&gt;Tcpdump 示例教程&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;tcpdump 是一个运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的 TCP/IP 和其他数据包。一般情况下，非 HTTP 协议的网络分析，在服务器端用 tcpdump 比较多，在客户端用 wireshark 比较多，两个抓包软件的语法是一样的。&lt;/p&gt;
+
+&lt;h3 id=&#34;5-envoy-官方文档中文版-http-www-servicemesher-com-envoy&#34;&gt;5. &lt;a href=&#34;http://www.servicemesher.com/envoy/&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档中文版&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/envoyproxy11.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Envoy ——为云原生应用而设计、开源的边缘和服务代理、Istio Service Mesh 默认的数据平面，最新官方文档中文版，由 ServiceMesher社区倾情奉献。&lt;/p&gt;
+
+&lt;h3 id=&#34;6-编写和优化go代码-https-github-com-dgryski-go-perfbook-blob-master-performance-zh-md&#34;&gt;6. &lt;a href=&#34;https://github.com/dgryski/go-perfbook/blob/master/performance-zh.md&#34; target=&#34;_blank&#34;&gt;编写和优化Go代码&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;本文档概述了编写高性能Go代码的最佳实践。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-资源-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;资源&lt;/p&gt;&lt;/h2&gt;
+
+&lt;h3 id=&#34;1-vistio-https-github-com-nmnellis-vistio&#34;&gt;1. &lt;a href=&#34;https://github.com/nmnellis/vistio&#34; target=&#34;_blank&#34;&gt;Vistio&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://github.com/nmnellis/vistio/raw/master/documentation/sample.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/Netflix/vizceral&#34; target=&#34;_blank&#34;&gt;Vizceral&lt;/a&gt; 是 Netflix 发布的一个开源项目，用于近乎实时地监控应用程序和集群之间的网络流量。Vistio 是使用 Vizceral 对 Istio 和网格监控的改进。它利用 Istio Mixer 生成的指标，然后将其输入 Prometheus。Vistio 查询 Prometheus 并将数据存储在本地以允许重播流量。&lt;/p&gt;
+
+&lt;h3 id=&#34;2-一个在线运行代码的网站-https-yxi-io&#34;&gt;2. &lt;a href=&#34;https://yxi.io/&#34; target=&#34;_blank&#34;&gt;一个在线运行代码的网站&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;这是一个可以在线运行短代码的网站，前端用 Vuejs 做的，后端用 Docker 提供不同语言的运行环境。目前支持的语言 Bash, C, C++, Go, Haskell, Java, Perl, PHP, Python, Ruby, Rust.&lt;/p&gt;
+
+&lt;h3 id=&#34;3-sofamesh-https-zhuanlan-zhihu-com-p-39931845&#34;&gt;3. &lt;a href=&#34;https://zhuanlan.zhihu.com/p/39931845&#34; target=&#34;_blank&#34;&gt;SOFAMesh&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;蚂蚁金服自主研发的分布式中间件（Scalable Open Financial Architecture，简称 SOFA ）推出的第三轮的开源产品：&lt;code&gt;SOFAMesh&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;SOFAMesh 是基于 Istio 改进和扩展而来的 Service Mesh 大规模落地实践方案。在继承 Istio 强大功能和丰富特性的基础上，为满足大规模部署下的性能要求以及应对落地实践中的实际情况，有如下改进：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;采用 Golang 编写的 MOSN 取代 Envoy&lt;/li&gt;
+&lt;li&gt;合并Mixer到数据平面以解决性能瓶颈&lt;/li&gt;
+&lt;li&gt;增强 Pilot 以实现更灵活的服务发现机制&lt;/li&gt;
+&lt;li&gt;增加对 SOFA RPC、Dubbo 的支持&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;4-rio-https-github-com-ibuildthecloud-rio&#34;&gt;4. &lt;a href=&#34;https://github.com/ibuildthecloud/rio&#34; target=&#34;_blank&#34;&gt;rio&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;我也不知道这玩意儿到底是个什么东西，据项目 README 介绍，这是个和 Docker 一样有趣的东西，而且是一种新奇的技术，像 service mesh 一样。&lt;/p&gt;
+
+&lt;h3 id=&#34;5-nabla-containers-https-nabla-containers-github-io&#34;&gt;5. &lt;a href=&#34;https://nabla-containers.github.io/&#34; target=&#34;_blank&#34;&gt;Nabla containers&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;一种新型容器，专门为主机上的强隔离而设计。&lt;/p&gt;
+
+&lt;h3 id=&#34;6-golb-https-github-com-onestraw-golb&#34;&gt;6. &lt;a href=&#34;https://github.com/onestraw/golb&#34; target=&#34;_blank&#34;&gt;golb&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://github.com/onestraw/golb/raw/master/golb.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;Go 语言编写的新型负载均衡器。&lt;/p&gt;
+
+&lt;h2 id=&#34;p-id-h2-欢迎关注-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;欢迎关注&lt;/p&gt;&lt;/h2&gt;
+
+&lt;p&gt;该系列每周六发布，同步更新在我的&lt;a href=&#34;https://www.yangcs.net/&#34; target=&#34;_blank&#34;&gt;个人博客&lt;/a&gt;和微信公众号上。&lt;/p&gt;
+
+&lt;p&gt;微信搜索 “云原生实验室” 或者扫描二维码即可关注。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
+      <title>干货与湿货分享第1期</title>
       <link>https://www.yangcs.net/posts/weekly-1/</link>
       <pubDate>Sat, 14 Jul 2018 05:31:48 +0000</pubDate>
       
@@ -5692,519 +6151,6 @@ border-top-color: #9954bb;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://engineering.dollarshaveclub.com/kubernetes-fixing-delayed-service-endpoint-updates-fd4d0a31852c&#34; target=&#34;_blank&#34;&gt;Kubernetes: Fixing Delayed Service Endpoint Updates&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes 的奇技淫巧</title>
-      <link>https://www.yangcs.net/posts/kubernetes-fucking-trick/</link>
-      <pubDate>Mon, 11 Jun 2018 04:35:48 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/kubernetes-fucking-trick/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;Kubernetes 作为云原生时代的“操作系统”，熟悉和使用它是每名用户（User）的必备技能。如果你正在 Kubernetes 上工作，你需要正确的工具和技巧来确保 Kubernetes 集群的高可用以及工作负载的稳定运行。&lt;/p&gt;
-
-&lt;p&gt;随着 Kubernetes 的发展和演变，人们可以从内部来驯服它的无节制行为。但有些人并不情愿干等 Kubernetes 变得易于使用，并且为已投入生产的 Kubernetes 中遇到的很多常见问题制定了自己的解决方案。&lt;/p&gt;
-
-&lt;p&gt;这里我们将介绍一些提高操作效率的技巧，同时列举几个比较有用的开源 Kubernetes 工具，这些工具以各种方式简化 Kubernetes，包括简化命令行交互，简化应用程序部署语法等。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-kubectl-自动补全-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;kubectl 自动补全&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;kubectl&lt;/code&gt; 这个命令行工具非常重要，与之相关的命令也很多，我们也记不住那么多的命令，而且也会经常写错，所以命令自动补全是很有必要的，kubectl 工具本身就支持自动补全，只需简单设置一下即可。&lt;/p&gt;
-
-&lt;h3 id=&#34;bash-用户&#34;&gt;bash 用户&lt;/h3&gt;
-
-&lt;p&gt;大多数用户的 shell 使用的是 &lt;code&gt;bash&lt;/code&gt;，Linux 系统可以通过下面的命令来设置：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;$ echo &amp;quot;source &amp;lt;(kubectl completion bash)&amp;quot; &amp;gt;&amp;gt; ~/.bashrc
-$ source ~/.bashrc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果发现不能自动补全，可以尝试安装 &lt;code&gt;bash-completion&lt;/code&gt; 然后刷新即可！&lt;/p&gt;
-
-&lt;h3 id=&#34;zsh-用户&#34;&gt;zsh 用户&lt;/h3&gt;
-
-&lt;p&gt;如果你使用的 shell 是 &lt;code&gt;zsh&lt;/code&gt;，可以通过下面的命令来设置：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ echo &amp;quot;source &amp;lt;(kubectl completion zsh)&amp;quot; &amp;gt;&amp;gt; ~/.zshrc
-$ source ~/.zshrc
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-自定义-kubectl-get-输出-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;自定义 kubectl get 输出&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;kubectl get&lt;/code&gt; 相关资源，默认输出为 kubectl 内置，一般我们也可以使用 &lt;code&gt;-o json&lt;/code&gt; 或者 &lt;code&gt;-o yaml&lt;/code&gt; 查看其完整的资源信息。但是很多时候，我们需要关心的信息并不全面，因此我们需要自定义输出的列，那么可以使用 &lt;code&gt;go-template&lt;/code&gt; 来进行实现。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;go-template&lt;/code&gt; 是 golang 的一种模板，可以参考 &lt;a href=&#34;https://golang.org/pkg/text/template/&#34; target=&#34;_blank&#34;&gt;template的相关说明&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;比如仅仅想要查看获取的 pods 中的各个 pod 的 &lt;code&gt;uid&lt;/code&gt;，则可以使用以下命令：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;$ kubectl get pods --all-namespaces -o go-template=&#39;{{range .items}}{{.metadata.uid}}
-{{end}}&#39;
-
-2ea418d4-533e-11e8-b722-005056a1bc83
-7178b8bf-4e93-11e8-8175-005056a1bc83
-a0341475-5338-11e8-b722-005056a1bc83
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ kubectl get pods -o yaml
-
-apiVersion: v1
-items:
-- apiVersion: v1
-  kind: Pod
-  metadata:
-    name: nginx-deployment-1751389443-26gbm
-    namespace: default
-    uid: a911e34b-f445-11e7-9cda-40f2e9b98448
-  ...
-- apiVersion: v1
-  kind: Pod
-  metadata:
-    name: nginx-deployment-1751389443-rsbkc
-    namespace: default
-    uid: a911d2d2-f445-11e7-9cda-40f2e9b98448
-  ...
-- apiVersion: v1
-  kind: Pod
-  metadata:
-    name: nginx-deployment-1751389443-sdbkx
-    namespace: default
-    uid: a911da1a-f445-11e7-9cda-40f2e9b98448
-    ...
-kind: List
-metadata: {}
-resourceVersion: &amp;quot;&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;因为 get pods 的返回结果是 &lt;code&gt;List&lt;/code&gt; 类型，获取的 pods 都在 &lt;code&gt;items&lt;/code&gt; 这个的 value 中，因此需要遍历 items，也就有了 &lt;code&gt;{{range .items}}&lt;/code&gt;。而后通过模板选定需要展示的内容，就是 items 中的每个 &lt;code&gt;{{.metadata.uid}}&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;这里特别注意，要做一个特别的处理，就是要把 &lt;code&gt;{{end}}&lt;/code&gt; 前进行换行，以便在模板中插入换行符。&lt;/p&gt;
-
-&lt;p&gt;当然，如果觉得这样处理不优雅的话，也可以使用 &lt;code&gt;printf&lt;/code&gt; 函数，在其中使用 &lt;code&gt;\n&lt;/code&gt; 即可实现换行符的插入。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods --all-namespaces -o go-template --template=&#39;{{range .items}}{{printf &amp;quot;%s\n&amp;quot; .metadata.uid}}{{end}}&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;或者可以这样：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods --all-namespaces -o go-template --template=&#39;{{range .items}}{{.metadata.uid}}{{&amp;quot;\n&amp;quot;}}{{end}}&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;其实有了 &lt;code&gt;printf&lt;/code&gt;，就可以很容易的实现对应字段的输出，且样式可以进行自己控制。比如可以这样&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pods --all-namespaces -o go-template --template=&#39;{{range .items}}{{printf &amp;quot;|%-20s|%-50s|%-30s|\n&amp;quot; .metadata.namespace .metadata.name .metadata.uid}}{{end}}&#39;
-
-|default             |details-v1-64b86cd49-85vks                        |2e7a2a66-533e-11e8-b722-005056a1bc83|
-|default             |productpage-v1-84f77f8747-7tkwb                   |2eb4e840-533e-11e8-b722-005056a1bc83|
-|default             |ratings-v1-5f46655b57-qlrxp                       |2e89f981-533e-11e8-b722-005056a1bc83|
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;下面举两个 go-template 高级用法的例子：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;range 嵌套&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 列出所有容器使用的镜像名
-$ kubectl get pods --all-namespaces -o go-template --template=&#39;{{range .items}}{{range .spec.containers}}{{printf &amp;quot;%s\n&amp;quot; .image}}{{end}}{{end}}&#39;
-
-istio/examples-bookinfo-details-v1:1.5.0
-istio/examples-bookinfo-productpage-v1:1.5.0
-istio/examples-bookinfo-ratings-v1:1.5.0
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;条件判断&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 列出所有不可调度节点的节点名与 IP
-$ kubectl get no -o go-template=&#39;{{range .items}}{{if .spec.unschedulable}}{{.metadata.name}} {{.spec.externalID}}{{&amp;quot;\n&amp;quot;}}{{end}}{{end}}&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;除了使用 &lt;code&gt;go-template&lt;/code&gt; 之外，还可以使用逗号分隔的自定义列列表打印表格：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n kube-system get pods coredns-64b597b598-7547d -o custom-columns=NAME:.metadata.name,hostip:.status.hostIP
-
-NAME                       hostip
-coredns-64b597b598-7547d   192.168.123.250
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;也可以使用 &lt;code&gt;go-template-file&lt;/code&gt; 自定义模板列表，模板不用通过参数传进去，而是写成一个文件，然后需要指定 &lt;code&gt;template&lt;/code&gt; 指向该文件即可。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat &amp;gt; test.tmpl &amp;lt;&amp;lt; EOF 
-NAME                      HOSTIP
-metadata.name       status.hostIP
-EOF
-
-$ kubectl -n kube-system get pods coredns-64b597b598-7547d -o custom-columns-file=test.tmpl
-
-NAME                       HOSTIP
-coredns-64b597b598-7547d   192.168.123.250
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-kube-prompt-https-github-com-c-bata-kube-prompt-交互式-kubernetes-客户端-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;https://github.com/c-bata/kube-prompt&#34; target=&#34;_blank&#34;&gt;Kube-prompt&lt;/a&gt;：交互式 Kubernetes 客户端&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;&lt;code&gt;Kube-prompt&lt;/code&gt; 可以让你在 Kubernetes 客户端输入相当于交互式命令会话的东西，并为每个命令提供自动填充的背景信息，你不必键入 kubectl 来为每个命令添加前缀。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/kube-prompt.gif&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-kubectl-aliases-https-github-com-ahmetb-kubectl-aliases-生成-kubectl-别名-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;https://github.com/ahmetb/kubectl-aliases&#34; target=&#34;_blank&#34;&gt;Kubectl Aliases&lt;/a&gt;：生成 kubectl 别名&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;如果你需要频繁地使用 kubectl 和 kubernetes api 进行交互，使用别名将会为你节省大量的时间，开源项目 &lt;a href=&#34;https://github.com/ahmetb/kubectl-aliases&#34; target=&#34;_blank&#34;&gt;kubectl-aliases&lt;/a&gt; 可以通过编程的方式生成 kubectl 别名，别名生成规则如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/kubectl-alias.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;简单别名示例&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;font color=red&gt;kd&lt;/font&gt; → &lt;font color=red&gt;k&lt;/font&gt;ubectl &lt;font color=red&gt;d&lt;/font&gt;escribe&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-&lt;li&gt;高级别名示例&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;&lt;font color=red&gt;kgdepallw&lt;/font&gt; → &lt;font color=red&gt;k&lt;/font&gt;ubectl &lt;font color=red&gt;g&lt;/font&gt;et &lt;font color=red&gt;dep&lt;/font&gt;loyment &amp;ndash;&lt;font color=red&gt;all&lt;/font&gt;-namespaces &amp;ndash;&lt;font color=red&gt;w&lt;/font&gt;atch&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-kubeval-https-github-com-garethr-kubeval-校验配置文件-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;https://github.com/garethr/kubeval&#34; target=&#34;_blank&#34;&gt;Kubeval&lt;/a&gt;：校验配置文件&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;如果你手动写 Kubernetes manifest 文件，检查 manifest 文件的语法是很困难的，特别是当你有多个不同版本的 Kubernetes 集群时，确认配置文件语法是否正确更是难上加难。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/garethr/kubeval&#34; target=&#34;_blank&#34;&gt;Kubeval&lt;/a&gt; 是一个用于校验Kubernetes YAML或JSON配置文件的工具，支持多个Kubernetes版本，可以帮助我们解决不少的麻烦。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;使用示例&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubeval nginx.yaml
-
-The document nginx.yaml contains an invalid Deployment
----&amp;gt; spec.replicas: Invalid type. Expected: integer, given: string
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-kedge-http-kedgeproject-org-简化-kubernetes-部署定义-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;&lt;a href=&#34;http://kedgeproject.org/&#34; target=&#34;_blank&#34;&gt;Kedge&lt;/a&gt;：简化 Kubernetes 部署定义&lt;/p&gt;&lt;/h2&gt;
-
-&lt;p&gt;很多人都抱怨 Kubernetes manifest 文件的定义太复杂和冗长。它们很难写，而且很难维护，如果能够简化部署定义就会极大地降低维护难度。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;http://kedgeproject.org/&#34; target=&#34;_blank&#34;&gt;Kedge&lt;/a&gt; 提供更简单、更简洁的语法，然后 kedge 将其转换为 Kubernetes manifest 文件。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;使用示例&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# Web server Kedge example
-name: httpd
-deployments:
-- containers:
-  - image: centos/httpd
-services:
-- name: httpd
-  type: LoadBalancer
-  portMappings: 
-    - 8080:80
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# Converted Kubernetes artifact file(s)
----
-apiVersion: v1
-kind: Service
-metadata:
-  creationTimestamp: null
-  labels:
-    app: httpd
-  name: httpd
-spec:
-  ports:
-  - name: httpd-8080
-    port: 8080
-    protocol: TCP
-    targetPort: 80
-  selector:
-    app: httpd
-  type: LoadBalancer
-status:
-  loadBalancer: {}
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  creationTimestamp: null
-  labels:
-    app: httpd
-  name: httpd
-spec:
-  strategy: {}
-  template:
-    metadata:
-      creationTimestamp: null
-      labels:
-        app: httpd
-      name: httpd
-    spec:
-      containers:
-      - image: centos/httpd
-        name: httpd
-        resources: {}
-status: {}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://segmentfault.com/a/1190000014526263?utm_source=tag-newest&#34; target=&#34;_blank&#34;&gt;为高效 Ops 和 SRE 团队准备的 10 个开源 k8s 工具&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/configuring-efficient-kubernetes-cli-terminal/&#34; target=&#34;_blank&#34;&gt;打造高效的Kubernetes命令行终端&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
