@@ -108,7 +108,7 @@ WeRss 是一个新的选择。有个注意事项是每个人都必须使用自�
 
 ----
 
-#### 1. [follow-me-install-kubernetes-cluster](https://github.com/opsnull/follow-me-install-kubernetes-cluster)
+### 1. [follow-me-install-kubernetes-cluster](https://github.com/opsnull/follow-me-install-kubernetes-cluster)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/follow-me-install-kubernetes-cluster-min.png)</center>
 
