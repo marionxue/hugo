@@ -85,9 +85,9 @@ Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的�
   
 3. 给应用定义 Ingress gateway：
 
-   ```bash
-   $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
-   ```
+    ```bash
+    $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+    ```
   
 4. 确认所有的服务和 Pod 都已经正确的定义和启动：
 

@@ -662,14 +662,12 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;p&gt;上面的命令会启动全部的四个服务，其中也包括了 &lt;code&gt;reviews&lt;/code&gt; 服务的三个版本（&lt;code&gt;v1&lt;/code&gt;、&lt;code&gt;v2&lt;/code&gt; 以及 &lt;code&gt;v3&lt;/code&gt;）&lt;/p&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;给应用定义 Ingress gateway：&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;li&gt;&lt;p&gt;给应用定义 Ingress gateway：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
-&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 
-&lt;ol&gt;
-&lt;li&gt;确认所有的服务和 Pod 都已经正确的定义和启动：&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;确认所有的服务和 Pod 都已经正确的定义和启动：&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ kubectl get services
