@@ -572,6 +572,720 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>Istio 流量管理</title>
+      <link>https://www.yangcs.net/posts/istio-traffic-management/</link>
+      <pubDate>Wed, 01 Aug 2018 20:59:11 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-traffic-management/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;Istio 从 0.8 版本开始出现了一个新的 API 组：&lt;a href=&#34;http://networking.istio.io/v1alpha3&#34; target=&#34;_blank&#34;&gt;networking.istio.io/v1alpha3&lt;/a&gt;，应该会替代现有的 &lt;a href=&#34;http://config.istio.io/v1alpha2&#34; target=&#34;_blank&#34;&gt;config.istio.io/v1alpha2&lt;/a&gt; API。新的 API 不管是结构上还是功能上、以及命名上，都有很大差异。如果不作特殊说明，本文所有的示例将采用新版 API。&lt;/p&gt;
+
+&lt;p&gt;本文将通过简单的示例来演示通过 Istio 实现应用的金丝雀部署。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;正常情况下 istioctl 和 kubectl 都可以用来操作这些对象，但是 kubectl 缺乏验证功能，因此调试阶段使用 &lt;code&gt;istioctl&lt;/code&gt; 会更方便一些。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&#34;p-id-h2-1-bookinfo-应用介绍-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Bookinfo 应用介绍&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;以 Bookinfo 应用为示例，它由四个单独的微服务构成，用来演示多种 Istio 特性。这个应用模仿在线书店的一个分类，显示一本书的信息。页面上会显示一本书的描述，书籍的细节（ISBN、页数等），以及关于这本书的一些评论。&lt;/p&gt;
+
+&lt;p&gt;Bookinfo 应用分为四个单独的微服务：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;productpage&lt;/code&gt; ：&lt;code&gt;productpage&lt;/code&gt; 微服务会调用 &lt;code&gt;details&lt;/code&gt; 和 &lt;code&gt;reviews&lt;/code&gt; 两个微服务，用来生成页面。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;details&lt;/code&gt; ：这个微服务包含了书籍的信息。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;reviews&lt;/code&gt; ：这个微服务包含了书籍相关的评论。它还会调用 ratings 微服务。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ratings&lt;/code&gt; ：&lt;code&gt;ratings&lt;/code&gt; 微服务中包含了由书籍评价组成的评级信息。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code&gt;reviews&lt;/code&gt; 微服务有 3 个版本：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;v1 版本不会调用 &lt;code&gt;ratings&lt;/code&gt; 服务。&lt;/li&gt;
+&lt;li&gt;v2 版本会调用 &lt;code&gt;ratings&lt;/code&gt; 服务，并使用 1 到 5 个黑色星形图标来显示评分信息。&lt;/li&gt;
+&lt;li&gt;v3 版本会调用 &lt;code&gt;ratings&lt;/code&gt; 服务，并使用 1 到 5 个红色星形图标来显示评分信息。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;下图展示了这个应用的端到端架构。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://istio.io/docs/examples/bookinfo/noistio.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;em&gt;Istio 注入之前的 Bookinfo 应用&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的。这些服务对 Istio 并无依赖，但是构成了一个有代表性的服务网格的例子：它由多个服务、多个语言构成，并且 &lt;code&gt;reviews&lt;/code&gt; 服务具有多个版本。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-2-部署-bookinfo-应用-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 部署 Bookinfo 应用&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;要在 Istio 中运行这一应用，无需对应用自身做出任何改变。我们只要简单的在 Istio 环境中对服务进行配置和运行，具体一点说就是把 Envoy sidecar 注入到每个服务之中。这个过程所需的具体命令和配置方法由运行时环境决定，而部署结果较为一致，如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://istio.io/docs/examples/bookinfo/withistio.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;em&gt;Bookinfo 应用&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;所有的微服务都和 Envoy sidecar 集成在一起，被集成服务所有的出入流量都被 sidecar 所劫持，这样就为外部控制准备了所需的 Hook，然后就可以利用 Istio 控制平面为应用提供服务路由、遥测数据收集以及策略实施等功能。&lt;/p&gt;
+
+&lt;p&gt;接下来可以根据 Istio 的运行环境，按照下面的讲解完成应用的部署。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;进入 Istio 安装目录。&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;启动应用容器：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;如果集群用的是&lt;a href=&#34;https://istio.io/docs/setup/kubernetes/sidecar-injection/#manual-sidecar-injection&#34; target=&#34;_blank&#34;&gt;手工 Sidecar 注入&lt;/a&gt;，使用如下命令：
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f &amp;lt;(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://istio.io/docs/reference/commands/istioctl/#istioctl-kube-inject&#34; target=&#34;_blank&#34;&gt;istioctl kube-inject&lt;/a&gt; 命令用于在在部署应用之前修改 &lt;code&gt;bookinfo.yaml&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;如果集群使用的是&lt;a href=&#34;https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection&#34; target=&#34;_blank&#34;&gt;自动 Sidecar 注入&lt;/a&gt;，只需简单的 &lt;code&gt;kubectl&lt;/code&gt; 就能完成服务的部署。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;上面的命令会启动全部的四个服务，其中也包括了 &lt;code&gt;reviews&lt;/code&gt; 服务的三个版本（&lt;code&gt;v1&lt;/code&gt;、&lt;code&gt;v2&lt;/code&gt; 以及 &lt;code&gt;v3&lt;/code&gt;）&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;给应用定义 Ingress gateway：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;确认所有的服务和 Pod 都已经正确的定义和启动：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl get services
+  
+  NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+  details       ClusterIP   10.254.86.98     &amp;lt;none&amp;gt;        9080/TCP                        3h
+  kubernetes    ClusterIP   10.254.0.1       &amp;lt;none&amp;gt;        443/TCP                         149d
+  productpage   ClusterIP   10.254.199.214   &amp;lt;none&amp;gt;        9080/TCP                        3h
+  ratings       ClusterIP   10.254.102.147   &amp;lt;none&amp;gt;        9080/TCP                        3h
+  reviews       ClusterIP   10.254.249.86    &amp;lt;none&amp;gt;        9080/TCP                        3h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl get pods
+  
+  NAME                              READY     STATUS    RESTARTS   AGE
+  details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
+  productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
+  ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
+  reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
+  reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
+  reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;确定 Ingress 的 IP 和端口&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;执行以下命令以确定 &lt;code&gt;ingressgateway&lt;/code&gt; 是否启用了 NodePort 模式。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl -n istio-system get svc istio-ingressgateway
+  
+  NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
+  istio-ingressgateway   NodePort   10.254.160.93   &amp;lt;none&amp;gt;        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;确定 ingress IP：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template=&#39;{{range .items}}{{.status.hostIP}}{{end}}&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;确定端口：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template=&#39;{{range .spec.ports}}{{if eq .name &amp;quot;http&amp;quot;}}{{.nodePort}}{{end}}{{end}}&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;设置 &lt;code&gt;GATEWAY_URL&lt;/code&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下面可以用 &lt;code&gt;curl&lt;/code&gt; 命令来确认 Bookinfo 应用的运行情况：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl -o /dev/null -s -w &amp;quot;%{http_code}\n&amp;quot; http://${GATEWAY_URL}/productpage
+
+200
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;还可以用浏览器打开网址 &lt;code&gt;http://$GATEWAY_URL/productpage&lt;/code&gt;，来浏览应用的 Web 页面。如果刷新几次应用的页面，就会看到页面中会随机展示 &lt;code&gt;reviews&lt;/code&gt; 服务的不同版本的效果（红色、黑色的星形或者没有显示）。&lt;code&gt;reviews&lt;/code&gt; 服务出现这种情况是因为我们还没有使用 Istio 来控制版本的路由。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-3-金丝雀部署-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 金丝雀部署&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;由于 Bookinfo 示例部署了三个版本的 reviews 微服务，因此我们需要设置默认路由。 否则，如果您当多次访问应用程序，您会注意到有时输出包含星级评分，有时又没有。 这是因为没有为应用明确指定缺省路由时，Istio 会将请求随机路由到该服务的所有可用版本上。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://istio.io/docs/concepts/traffic-management/ServiceModel_Versions.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;此任务假定您尚未设置任何路由。 如果您已经为示例应用程序创建了存在冲突的路由规则，则需要在下面的命令中使用 &lt;code&gt;replace&lt;/code&gt; 代替 &lt;code&gt;create&lt;/code&gt;。 请注意：本文档假设还没有设置任何路由规则。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;首先将所有微服务的默认路由设置为 v1。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl create -f samples/bookinfo/networking/virtual-service-all-v1.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl create -f samples/bookinfo/networking/destination-rule-all.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以通过下面的命令来显示已创建的路由规则：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl get virtualservices -o yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: details
+  ...
+spec:
+  hosts:
+  - details
+  http:
+  - route:
+    - destination:
+        host: details
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: productpage
+  ...
+spec:
+  gateways:
+  - bookinfo-gateway
+  - mesh
+  hosts:
+  - productpage
+  http:
+  - route:
+    - destination:
+        host: productpage
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ratings
+  ...
+spec:
+  hosts:
+  - ratings
+  http:
+  - route:
+    - destination:
+        host: ratings
+        subset: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+  ...
+spec:
+  hosts:
+  - reviews
+  http:
+  - route:
+    - destination:
+        host: reviews
+        subset: v1
+---
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;由于路由规则是通过异步方式分发到代理的，因此在尝试访问应用程序之前，您应该等待几秒钟，以便规则传播到所有 pod 上。&lt;/p&gt;
+
+&lt;p&gt;现在在浏览器中打开 Bookinfo 应用程序的 URL (&lt;code&gt;http://$GATEWAY_URL/productpage&lt;/code&gt;)，你应该可以看到 Bookinfo 应用程序的 &lt;code&gt;productpage&lt;/code&gt; 页面。 请注意， &lt;code&gt;productpage&lt;/code&gt; 页面显示的内容中没有评分星级，这是因为 &lt;code&gt;reviews:v1&lt;/code&gt; 服务不会访问 ratings 服务。&lt;/p&gt;
+
+&lt;p&gt;由于新的 API 引入了一些新的配置资源，而且不向后兼容，所以很有必要来解释一下上面两个 yaml 文件提到的两个新概念：&lt;code&gt;VirtualService&lt;/code&gt; 和 &lt;code&gt;DestinationRule&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;virtualservice&#34;&gt;VirtualService&lt;/h4&gt;
+
+&lt;p&gt;过去的路由分配比较简单，使用标签即可。新的版本中，提出了 VirtualService 的概念。&lt;span id=&#34;inline-blue&#34;&gt;VirtualService&lt;/span&gt; 由一组路由规则构成，用于对服务实体（在 K8S 中对应为 Pod）进行寻址。一旦有流量符合其中规则的选择条件，就会发送流量给对应的服务（或者服务的一个版本/子集）。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;VirtualService&lt;/code&gt; 描述了一个或多个用户可寻址目标到网格内实际工作负载之间的映射。其中可寻址的目标服务使用 &lt;code&gt;hosts&lt;/code&gt; 字段来指定，而网格内的实际工作负载由每个 &lt;code&gt;route&lt;/code&gt; 配置项中的 &lt;code&gt;destination&lt;/code&gt; 字段指定。在上面的示例中，这两个地址是相同的，但实际上用户可寻址目标可以是任何用于定位服务的、具有可选通配符前缀或 CIDR 前缀的 DNS 名称。&lt;/p&gt;
+
+&lt;p&gt;流量的特征除了请求数据之外，还包括流量的来源，这样就能根据一些上下文来进行灵活的定义了。&lt;/p&gt;
+
+&lt;p&gt;例如，以下规则定义来自打了标签 &lt;code&gt;app=sleep&lt;/code&gt; 的 Pod 对 php-server 的请求，都转向 v1：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: networking.istio.io/v1alpha3
+
+kind: VirtualService
+
+metadata:
+
+  name: sleep-server-route
+
+spec:
+
+  hosts:
+
+  - &amp;quot;php-server&amp;quot;
+
+  http:
+
+  - match:
+
+    - sourceLabels:
+
+        app: sleep
+
+    route:
+
+    - destination:
+
+        name: php-server
+
+        subset: v1
+
+  - route:
+
+    - destination:
+
+        name: php-server
+
+        subset: v2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;这里的匹配策略是具有从上到下的优先级的，也就是说，最下一条就是缺省路由。所以没有打标签 app=sleep 的 Pod 对 php-server 的请求，都转向 v2。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;而本文的 Bookinfo 示例中创建的路由规则表示：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;所有对 details 的请求，都转向 details 的 v1 版本。&lt;/li&gt;
+&lt;li&gt;所有对 productpage 的请求，都转向 productpage 的 v1 版本。&lt;/li&gt;
+&lt;li&gt;所有对 ratings 的请求，都转向 ratings 的 v1 版本。&lt;/li&gt;
+&lt;li&gt;所有对 reviews 的请求，都转向 reviews 的 v1 版本。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以看到，&lt;code&gt;match&lt;/code&gt; 中不再包含 &lt;code&gt;source&lt;/code&gt;，这里使用标签来过滤。写完应用之后，我们再次访问 Bookinfo 应用程序的 URL (&lt;code&gt;http://$GATEWAY_URL/productpage&lt;/code&gt;)，会发现并没有生效。这是因为，&lt;strong&gt;在 v3 版本的 API 中，目标规则不再是透明了&lt;/strong&gt;，路由定义必须以目标策略为基础。&lt;/p&gt;
+
+&lt;h4 id=&#34;destinationrule&#34;&gt;DestinationRule&lt;/h4&gt;
+
+&lt;p&gt;因此这里需要定义一个 &lt;span id=&#34;inline-blue&#34;&gt;DestinationRule&lt;/span&gt; 对象，来满足上面的目标需求：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: productpage
+spec:
+  host: productpage
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: reviews
+spec:
+  host: reviews
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+  - name: v3
+    labels:
+      version: v3
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: ratings
+spec:
+  host: ratings
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+  - name: v2-mysql
+    labels:
+      version: v2-mysql
+  - name: v2-mysql-vm
+    labels:
+      version: v2-mysql-vm
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: details
+spec:
+  host: details
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+  - name: v2
+    labels:
+      version: v2
+---
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;DestinationRule 用于配置在将流量转发到服务时应用的策略集。这些策略应由服务提供者撰写，用于描述断路器、负载均衡、TLS 设置等。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;DestinationRule 的 &lt;code&gt;host&lt;/code&gt; 可以包含通配符前缀，以允许单个规则应用于多个服务。&lt;/li&gt;
+&lt;li&gt;DestinationRule 定义了目的 host 的子集 &lt;code&gt;subsets&lt;/code&gt; （例如：命名版本）。 这些 subset 用于 &lt;code&gt;VirtualService&lt;/code&gt; 的路由规则设置中，可以将流量导向服务的某些特定版本。通过这种方式为版本命名后，可以在不同的虚拟服务中明确地引用这些命名版本的 subset，简化 Istio 代理发出的统计数据，并可以将 subsets 编码到 SNI 头中。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;现在再次访问 Bookinfo 应用程序的 URL (&lt;code&gt;http://$GATEWAY_URL/productpage&lt;/code&gt;)，会发现规则已经生效了。&lt;/p&gt;
+
+&lt;h4 id=&#34;示例一-将-10-请求发送到-v2-版本而其余-90-发送到-v1-版本&#34;&gt;示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl replace -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+    - reviews
+  http:
+  - route:
+    - destination:
+        host: reviews
+        subset: v1
+      weight: 90
+    - destination:
+        host: reviews
+        subset: v2
+      weight: 10
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在的规则就是刷新 productpage 页面，90% 的概率看到黑色星标的评论，10%的概率看不到星标。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;注意：&lt;/strong&gt;因为使用Envoy sidecar的实现，你需要刷新页面很多次才能看到接近规则配置的概率分布。&lt;/p&gt;
+
+&lt;h4 id=&#34;示例二-将-jason-用户的请求全部发到-v2-版本&#34;&gt;示例二：将 jason 用户的请求全部发到 v2 版本&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;cat &amp;lt;&amp;lt;EOF | istioctl replace -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+    - reviews
+  http:
+  - match:
+    - headers:
+        end-user:
+          exact: jason
+    route:
+    - destination:
+        host: reviews
+        subset: v2
+  - route:
+    - destination:
+        host: reviews
+        subset: v1
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用 &lt;code&gt;jason&lt;/code&gt; 用户登陆 productpage 页面，你可以看到每个刷新页面时，页面上都有一个1到5颗星的评级。如果你使用其他用户登陆的话，将因继续使用 &lt;code&gt;reviews:v1&lt;/code&gt; 而看不到星标评分。&lt;/p&gt;
+
+&lt;h4 id=&#34;示例三-全部切换到-v3-版本&#34;&gt;示例三：全部切换到 v3 版本&lt;/h4&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;cat &amp;lt;&amp;lt;EOF | istioctl replace -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+  - reviews
+  http:
+  - route:
+    - destination:
+        host: reviews
+        subset: v3
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在不论你使用什么用户登陆 productpage 页面，你都可以看到带红色星标评分的评论了。&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-4-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 参考&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.fleeto.us/post/istio-route-alpha1v3/&#34; target=&#34;_blank&#34;&gt;摸索：Istio 路由规则 Alpha v3&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://istio.io/zh/docs/tasks/traffic-management/request-routing/&#34; target=&#34;_blank&#34;&gt;配置请求路由&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Istio 1.0 部署</title>
       <link>https://www.yangcs.net/posts/istio-1.0-deploy/</link>
       <pubDate>Wed, 01 Aug 2018 15:33:46 +0800</pubDate>
@@ -5827,470 +6541,6 @@ Events:
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/stefanprodan/k8s-prom-hpa&#34; target=&#34;_blank&#34;&gt;Kubernetes Horizontal Pod Autoscaler with Prometheus custom metrics&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://github.com/DirectXMan12/k8s-prometheus-adapter&#34; target=&#34;_blank&#34;&gt;k8s-prometheus-adapter&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>Kubernetes API 扩展</title>
-      <link>https://www.yangcs.net/posts/api-aggregation/</link>
-      <pubDate>Tue, 19 Jun 2018 06:15:06 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/api-aggregation/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;Aggregated（聚合的）API server&lt;/code&gt; 是为了将原来的 API server 这个巨石（monolithic）应用给拆分开，为了方便用户开发自己的 API server 集成进来，而不用直接修改 Kubernetes 官方仓库的代码，这样一来也能将 API server 解耦，方便用户使用实验特性。这些 API server 可以跟 &lt;code&gt;core API server&lt;/code&gt; 无缝衔接，使用 kubectl 也可以管理它们。&lt;/p&gt;
-
-&lt;p&gt;在 &lt;code&gt;1.7+&lt;/code&gt; 版本中，聚合层和 kube-apiserver 一起运行。在扩展资源被注册前，聚合层不执行任何操，要注册其 API,用户必需添加一个 &lt;code&gt;APIService&lt;/code&gt; 对象，该对象需在 Kubernetes API 中声明 URL 路径，聚合层将发送到该 API 路径(e.g. /apis/myextension.mycompany.io/v1/…)的所有对象代理到注册的 APIService。&lt;/p&gt;
-
-&lt;p&gt;通常，通过在集群中的一个 Pod 中运行一个 &lt;code&gt;extension-apiserver&lt;/code&gt; 来实现 APIService。如果已添加的资源需要主动管理，这个 extension-apiserver 通常需要和一个或多个控制器配对。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-创建聚合层-api-证书-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 创建聚合层 API 证书&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果想开启聚合层 API，需要创建几个与聚合层 API 相关的证书。&lt;/p&gt;
-
-&lt;h3 id=&#34;安装-cfssl&#34;&gt;安装 cfssl&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;方式一：直接使用二进制源码包安装&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ wget https://pkg.cfssl.org/R1.2/cfssl_linux-amd64
-$ chmod +x cfssl_linux-amd64
-$ mv cfssl_linux-amd64 /usr/local/bin/cfssl
-
-$ wget https://pkg.cfssl.org/R1.2/cfssljson_linux-amd64
-$ chmod +x cfssljson_linux-amd64
-$ mv cfssljson_linux-amd64 /usr/local/bin/cfssljson
-
-$ wget https://pkg.cfssl.org/R1.2/cfssl-certinfo_linux-amd64
-$ chmod +x cfssl-certinfo_linux-amd64
-$ mv cfssl-certinfo_linux-amd64 /usr/local/bin/cfssl-certinfo
-
-$ export PATH=/usr/local/bin:$PATH
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;方式二：使用go命令安装&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ go get -u github.com/cloudflare/cfssl/cmd/...
-$ls $GOPATH/bin/cfssl*
-cfssl cfssl-bundle cfssl-certinfo cfssljson cfssl-newkey cfssl-scan
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 &lt;code&gt;$GOPATH/bin&lt;/code&gt; 目录下得到以 cfssl 开头的几个命令。&lt;/p&gt;
-
-&lt;p&gt;注意：以下文章中出现的 cat 的文件名如果不存在需要手工创建。&lt;/p&gt;
-
-&lt;h3 id=&#34;创建-ca-certificate-authority&#34;&gt;创建 CA (Certificate Authority)&lt;/h3&gt;
-
-&lt;p&gt;&lt;strong&gt;创建 CA 配置文件&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ mkdir /root/ssl
-$ cd /root/ssl
-$ cfssl print-defaults config &amp;gt; config.json
-$ cfssl print-defaults csr &amp;gt; csr.json
-# 根据config.json文件的格式创建如下的ca-config.json文件
-# 过期时间设置成了 87600h
-$ cat &amp;gt; aggregator-ca-config.json &amp;lt;&amp;lt;EOF
-{
-  &amp;quot;signing&amp;quot;: {
-    &amp;quot;default&amp;quot;: {
-      &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
-    },
-    &amp;quot;profiles&amp;quot;: {
-      &amp;quot;aggregator&amp;quot;: {
-        &amp;quot;usages&amp;quot;: [
-            &amp;quot;signing&amp;quot;,
-            &amp;quot;key encipherment&amp;quot;,
-            &amp;quot;server auth&amp;quot;,
-            &amp;quot;client auth&amp;quot;
-        ],
-        &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
-      }
-    }
-  }
-}
-EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;字段说明：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;profiles&lt;/code&gt; : 可以定义多个 profiles，分别指定不同的过期时间、使用场景等参数；后续在签名证书时使用某个 profile。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;signing&lt;/code&gt; ：表示该证书可用于签名其它证书；生成的 aggregator-ca.pem 证书中 &lt;code&gt;CA=TRUE&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;server auth&lt;/code&gt; ：表示 Client 可以用该 CA 对 Server 提供的证书进行验证。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;client auth&lt;/code&gt; ：表示 Server 可以用该 CA 对 Client 提供的证书进行验证。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;创建 CA 证书签名请求&lt;/strong&gt;&lt;/p&gt;
-
-&lt;p&gt;创建 &lt;code&gt;aggregator-ca-csr.json&lt;/code&gt; 文件，内容如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
-  &amp;quot;CN&amp;quot;: &amp;quot;aggregator&amp;quot;,
-  &amp;quot;key&amp;quot;: {
-    &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
-    &amp;quot;size&amp;quot;: 2048
-  },
-  &amp;quot;names&amp;quot;: [
-    {
-      &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
-      &amp;quot;ST&amp;quot;: &amp;quot;Shanghai&amp;quot;,
-      &amp;quot;L&amp;quot;: &amp;quot;Shanghai&amp;quot;,
-      &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
-      &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
-    }
-  ],
-    &amp;quot;ca&amp;quot;: {
-       &amp;quot;expiry&amp;quot;: &amp;quot;87600h&amp;quot;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;字段说明：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;&amp;ldquo;CN&amp;rdquo;&lt;/span&gt; ：&lt;code&gt;Common Name&lt;/code&gt;，kube-apiserver 从证书中提取该字段作为请求的用户名 (User Name)；浏览器使用该字段验证网站是否合法。&lt;/li&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;&amp;ldquo;O&amp;rdquo;&lt;/span&gt; ：&lt;code&gt;Organization&lt;/code&gt;，kube-apiserver 从证书中提取该字段作为请求用户所属的组 (Group)；&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;生成 CA 证书和私钥&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cfssl gencert -initca aggregator-ca-csr.json | cfssljson -bare aggregator-ca
-$ ls aggregator-ca*
-aggregator-ca-config.json  aggregator-ca.csr  aggregator-ca-csr.json  aggregator-ca-key.pem  aggregator-ca.pem
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;创建-kubernetes-证书&#34;&gt;创建 kubernetes 证书&lt;/h3&gt;
-
-&lt;p&gt;创建 aggregator 证书签名请求文件 &lt;code&gt;aggregator-csr.json&lt;/code&gt; ：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
-    &amp;quot;CN&amp;quot;: &amp;quot;aggregator&amp;quot;,
-    &amp;quot;hosts&amp;quot;: [
-      &amp;quot;127.0.0.1&amp;quot;,
-      &amp;quot;192.168.123.250&amp;quot;,
-      &amp;quot;192.168.123.248&amp;quot;,
-      &amp;quot;192.168.123.249&amp;quot;,
-      &amp;quot;10.254.0.1&amp;quot;,
-      &amp;quot;kubernetes&amp;quot;,
-      &amp;quot;kubernetes.default&amp;quot;,
-      &amp;quot;kubernetes.default.svc&amp;quot;,
-      &amp;quot;kubernetes.default.svc.cluster&amp;quot;,
-      &amp;quot;kubernetes.default.svc.cluster.local&amp;quot;
-    ],
-    &amp;quot;key&amp;quot;: {
-        &amp;quot;algo&amp;quot;: &amp;quot;rsa&amp;quot;,
-        &amp;quot;size&amp;quot;: 2048
-    },
-    &amp;quot;names&amp;quot;: [
-        {
-            &amp;quot;C&amp;quot;: &amp;quot;CN&amp;quot;,
-            &amp;quot;ST&amp;quot;: &amp;quot;Shanghai&amp;quot;,
-            &amp;quot;L&amp;quot;: &amp;quot;Shanghai&amp;quot;,
-            &amp;quot;O&amp;quot;: &amp;quot;k8s&amp;quot;,
-            &amp;quot;OU&amp;quot;: &amp;quot;System&amp;quot;
-        }
-    ]
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;如果 hosts 字段不为空则需要指定授权使用该证书的 IP 或域名列表，由于该证书后续被 etcd 集群和 kubernetes master 集群使用，所以上面分别指定了 &lt;code&gt;etcd&lt;/code&gt; 集群、&lt;code&gt;kubernetes master&lt;/code&gt; 集群的主机 IP 和 kubernetes 服务的服务 IP（一般是 kube-apiserver 指定的 &lt;code&gt;service-cluster-ip-range&lt;/code&gt; 网段的第一个 IP，如 10.254.0.1）。&lt;/li&gt;
-&lt;li&gt;以上物理节点的 IP 也可以更换为主机名。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;strong&gt;生成 aggregator 证书和私钥&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=aggregator aggregator-csr.json | cfssljson -bare aggregator
-$ ls aggregator*
-aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;分发证书&#34;&gt;分发证书&lt;/h3&gt;
-
-&lt;p&gt;将生成的证书和秘钥文件（后缀名为.pem）拷贝到 Master 节点的 &lt;code&gt;/etc/kubernetes/ssl&lt;/code&gt; 目录下备用。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cp *.pem /etc/kubernetes/ssl
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-开启聚合层-api-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 开启聚合层 API&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;code&gt;kube-apiserver&lt;/code&gt; 增加以下配置：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;--requestheader-client-ca-file=/etc/kubernetes/ssl/aggregator-ca.pem
---requestheader-allowed-names=aggregator
---requestheader-extra-headers-prefix=X-Remote-Extra-
---requestheader-group-headers=X-Remote-Group
---requestheader-username-headers=X-Remote-User
---proxy-client-cert-file=/etc/kubernetes/ssl/aggregator.pem
---proxy-client-key-file=/etc/kubernetes/ssl/aggregator-key.pem
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;前面创建的证书的 &lt;code&gt;CN&lt;/code&gt; 字段的值必须和参数 &lt;code&gt;--requestheader-allowed-names&lt;/code&gt; 指定的值 &lt;code&gt;aggregator&lt;/code&gt; 相同。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;重启 kube-apiserver：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl daemon-reload
-$ systemctl restart kube-apiserver
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果 &lt;code&gt;kube-proxy&lt;/code&gt; 没有在 Master 上面运行，&lt;code&gt;kube-proxy&lt;/code&gt; 还需要添加配置：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;--enable-aggregator-routing=true
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/&#34; target=&#34;_blank&#34;&gt;Extending the Kubernetes API with the aggregation layer&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/&#34; target=&#34;_blank&#34;&gt;Configure the aggregation layer&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/kubernetes-handbook/practice/create-tls-and-secret-key.html&#34; target=&#34;_blank&#34;&gt;创建TLS证书和秘钥&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;

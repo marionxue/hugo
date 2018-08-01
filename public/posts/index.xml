@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Istio 流量管理</title>
+      <link>https://www.yangcs.net/posts/istio-traffic-management/</link>
+      <pubDate>Wed, 01 Aug 2018 20:59:11 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-traffic-management/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Istio 1.0 部署</title>
       <link>https://www.yangcs.net/posts/istio-1.0-deploy/</link>
       <pubDate>Wed, 01 Aug 2018 15:33:46 +0800</pubDate>

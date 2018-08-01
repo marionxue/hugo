@@ -1,8 +1,8 @@
 ---
 title: "Istio 流量管理"
-subtitle "使用 Istio 实现应用的金丝雀部署"
+subtitle: "使用 Istio 实现应用的金丝雀部署"
 date: 2018-08-01T20:59:11+08:00
-draft: false
+draft: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -181,7 +181,7 @@ $ istioctl create -f samples/bookinfo/networking/destination-rule-all.yaml
 ```bash
 $ istioctl get virtualservices -o yaml
 ```
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
@@ -259,7 +259,7 @@ spec:
 
 例如，以下规则定义来自打了标签 `app=sleep` 的 Pod 对 php-server 的请求，都转向 v1：
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 
 kind: VirtualService
@@ -316,7 +316,7 @@ spec:
 
 因此这里需要定义一个 <span id="inline-blue">DestinationRule</span> 对象，来满足上面的目标需求：
 
-```
+```yaml
 apiVersion: networking.istio.io/v1alpha3
 kind: DestinationRule
 metadata:
@@ -390,7 +390,7 @@ DestinationRule 用于配置在将流量转发到服务时应用的策略集。�
 
 #### 示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本
 
-```
+```yaml
 $ cat <<EOF | istioctl replace -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -418,7 +418,7 @@ EOF
 
 #### 示例二：将 jason 用户的请求全部发到 v2 版本
 
-```
+```yaml
 cat <<EOF | istioctl replace -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -447,7 +447,7 @@ EOF
 
 #### 示例三：全部切换到 v3 版本
 
-```
+```yaml
 cat <<EOF | istioctl replace -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
