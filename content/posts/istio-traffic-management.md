@@ -91,57 +91,57 @@ Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的�
   
 4. 确认所有的服务和 Pod 都已经正确的定义和启动：
 
-   ```bash
-   $ kubectl get services
+    ```bash
+    $ kubectl get services
   
-   NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
-   details       ClusterIP   10.254.86.98     <none>        9080/TCP                        3h
-   kubernetes    ClusterIP   10.254.0.1       <none>        443/TCP                         149d
-   productpage   ClusterIP   10.254.199.214   <none>        9080/TCP                        3h
-   ratings       ClusterIP   10.254.102.147   <none>        9080/TCP                        3h
-   reviews       ClusterIP   10.254.249.86    <none>        9080/TCP                        3h
-   ```
+    NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+    details       ClusterIP   10.254.86.98     <none>        9080/TCP                        3h
+    kubernetes    ClusterIP   10.254.0.1       <none>        443/TCP                         149d
+    productpage   ClusterIP   10.254.199.214   <none>        9080/TCP                        3h
+    ratings       ClusterIP   10.254.102.147   <none>        9080/TCP                        3h
+    reviews       ClusterIP   10.254.249.86    <none>        9080/TCP                        3h
+    ```
   
-   ```bash
-   $ kubectl get pods
+    ```bash
+    $ kubectl get pods
   
-   NAME                              READY     STATUS    RESTARTS   AGE
-   details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
-   productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
-   ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
-   reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
-   reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
-   reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
-   ```
+    NAME                              READY     STATUS    RESTARTS   AGE
+    details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
+    productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
+    ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
+    reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
+    reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
+    reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
+    ```
   
 5. 确定 Ingress 的 IP 和端口
 
-   执行以下命令以确定 `ingressgateway` 是否启用了 NodePort 模式。
+    执行以下命令以确定 `ingressgateway` 是否启用了 NodePort 模式。
 
-   ```bash
-   $ kubectl -n istio-system get svc istio-ingressgateway
+    ```bash
+    $ kubectl -n istio-system get svc istio-ingressgateway
 
-   NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
-   istio-ingressgateway   NodePort   10.254.160.93   <none>        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
-   ```
+    NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
+    istio-ingressgateway   NodePort   10.254.160.93   <none>        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
+    ```
   
-   确定 ingress IP：
+    确定 ingress IP：
   
-   ```bash
-   $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template='{{range .items}}{{.status.hostIP}}{{end}}')
-   ```
+    ```bash
+    $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template='{{range .items}}{{.status.hostIP}}{{end}}')
+    ```
   
-   确定端口：
+    确定端口：
   
-   ```bash
-   $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name "http"}}{{.nodePort}}{{end}}{{end}}')
-   ```
+    ```bash
+    $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name "http"}}{{.nodePort}}{{end}}{{end}}')
+    ```
   
 6. 设置 `GATEWAY_URL`：
 
-  ```bash
-  $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
-  ```
+   ```bash
+   $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+   ```
   
 下面可以用 `curl` 命令来确认 Bookinfo 应用的运行情况：
 
