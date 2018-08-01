@@ -1,7 +1,7 @@
 ---
 title: "Istio 0.8 部署"
 subtitle: "使用 Helm 部署 Istio 服务"
-date: 2018-07-10T07:01:29Z
+date: 2018-08-01T015:15:29Z
 draft: false
 categories: "service mesh"
 tags: ["istio", "service mesh"]
@@ -10,18 +10,18 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-北京时间 2018 年 6 月 1 日（儿童节）上午 9: 30 `Istio 0.8.0 LTS`（长期支持版本）发布。这个项目的组件相对比较复杂，原有的一些选项是靠 ConfigMap 以及 istioctl 分别调整的，现在通过重新设计的 `Helm Chart`，安装选项用 `values.yml` 或者 helm 命令行的方式来进行集中管理了。
+北京时间 2018 年 8 月 1 日（建军节）凌晨 0 点，Istio 宣布推出 1.0 正式版本，并表示已可用于生产环境。这距离最初的 0.1 版本发布已过去一年多的时间。这个项目的组件相对比较复杂，原有的一些选项是靠 ConfigMap 以及 istioctl 分别调整的，现在通过重新设计的 `Helm Chart`，安装选项用 `values.yml` 或者 helm 命令行的方式来进行集中管理了。
 
-在安装 Istio 之前要确保 Kubernetes 集群（仅支持 `v1.7.3` 及以后版本）已部署并配置好本地的 kubectl 客户端。
+在安装 Istio 之前要确保 Kubernetes 集群（仅支持 `v1.9` 及以后版本）已部署并配置好本地的 kubectl 客户端。
 
 ## <p id="h2">1. 下载 Istio</p>
 
 ----
 
 ```bash
-$ wget https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-linux.tar.gz
-$ tar zxf istio-0.8.0-linux.tar.gz
-$ cp istio-0.8.0/bin/istioctl /usr/local/bin/
+$ wget https://github.com/istio/istio/releases/download/1.0.0/istio-1.0.0-linux.tar.gz
+$ tar zxf istio-1.0.0-linux.tar.gz
+$ cp istio-1.0.0/bin/istioctl /usr/local/bin/
 ```
 
 <br />
@@ -33,7 +33,7 @@ $ cp istio-0.8.0/bin/istioctl /usr/local/bin/
 克隆 Istio 仓库：
 
 ```bash
-$ git clone https://github.com/istio/istio.git -b release-0.8
+$ git clone https://github.com/istio/istio.git
 $ cd istio
 ```
 
@@ -46,19 +46,6 @@ $ cd istio
 
 有两种方式（选择其一执行）：
 
-+ 不开启自动 `sidecar` 注入
-
-```bash
-$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=false --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true > istio.yaml
-
-$ kubectl create namespace istio-system
-$ kubectl create -f istio.yaml
-```
-
-这里说的是使用 `install/kubernetes/helm/istio` 目录中的 Chart 进行渲染，生成的内容保存到 `./istio.yaml` 文件之中。将 `sidecarInjectorWebhook.enabled` 设置为 False，从而禁止自动注入属性生效。
-
-+ 开启自动 `sidecar` 注入
-
 ```bash
 $ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=true --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true > istio.yaml
 
@@ -66,30 +53,31 @@ $ kubectl create namespace istio-system
 $ kubectl create -f istio.yaml
 ```
 
+这里说的是使用 `install/kubernetes/helm/istio` 目录中的 Chart 进行渲染，生成的内容保存到 `./istio.yaml` 文件之中。将 `sidecarInjectorWebhook.enabled` 设置为 False，从而使自动注入属性生效。
+
 部署完成后，可以检查 `isotio-system` namespace 中的服务是否正常运行：
 
 ```bash
 $ kubectl -n istio-system get pods -o go-template='{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}'
 
-istio-citadel-ff5696f6f-p6xz6
-istio-cleanup-old-ca-mtzqv
-istio-egressgateway-58d98d898c-9wmrb
-istio-ingress-6fb78f687f-78tt8
-istio-ingressgateway-6bc7c7c4bc-mgkvg
-istio-mixer-post-install-zqmtr
-istio-pilot-6c5c6b586c-7hk6r
-istio-policy-5c7fbb4b9f-4rspm
-istio-statsd-prom-bridge-6dbb7dcc7f-s9qvd
-istio-telemetry-54b5bf4847-s5mqr
-istio-tracing-67dbb5b89f-4ftd9
-prometheus-586d95b8d9-pdwkh
-servicegraph-6d86dfc6cb-xbpjx
+istio-citadel-f5779fbbb-brbxd
+istio-cleanup-secrets-jjqg5
+istio-egressgateway-6c5cc7dd86-l2c82
+istio-galley-6bf8f6f4b7-twvzl
+istio-ingressgateway-fbfdfc5c7-fg9xh
+istio-pilot-85df58955d-g5bfh
+istio-policy-74c48c8ccb-wd6h6
+istio-sidecar-injector-cf5999cf8-h9smx
+istio-statsd-prom-bridge-55965ff9c8-2hmzf
+istio-telemetry-cb49594cc-gfd84
+istio-tracing-77f9f94b98-9xvzs
+prometheus-7456f56c96-xcdh4
+servicegraph-5b8d7b4d5-lzhth
 ```
 
 1. 过去的 istio-ca 现已更名 `istio-citadel`。
-2. `istio-cleanup-old-ca` 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。
-3. `istio-mixer-post-install` 同样也是一个 job，和上面的 Job 一样，简单的调用 kubectl 创建第三方资源，从而避免了之前的 CDR 需要重复创建的尴尬状况。
-4. `egressgateway`、`ingress` 以及 `ingressgateway`，可以看出边缘部分的变动很大，以后会另行发文。
+2. `istio-cleanup-secrets` 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。
+3. `egressgateway`、`ingress` 以及 `ingressgateway`，可以看出边缘部分的变动很大，以后会另行发文。
 
 ## <p id="h2">3. Prometheus、Grafana、Servicegraph 和 Jaeger</p>
 
@@ -181,17 +169,19 @@ $Ingree_host tracing.istio.io
 
 通过 `http://grafana.istio.io` 访问 Grafana 服务：
 
-![](http://o7z41ciog.bkt.clouddn.com/grafana-istio.jpg)
+![](http://o7z41ciog.bkt.clouddn.com/istio-mesh.jpeg)
+
+![](http://o7z41ciog.bkt.clouddn.com/istio-service.jpeg)
 
 通过 `http://servicegraph.istio.io` 访问 ServiceGraph 服务，展示服务之间调用关系图。
 
 + `http://servicegraph.istio.io/force/forcegraph.html` : As explored above, this is an interactive [D3.js](https://d3js.org/) visualization.
 
-![](http://o7z41ciog.bkt.clouddn.com/servicegraph-forcegraph1.jpg)
+![](http://o7z41ciog.bkt.clouddn.com/istio-servicegraph.jpeg)
 
 + `http://servicegraph.istio.io/dotviz` : is a static [Graphviz](https://www.graphviz.org/) visualization.
 
-![](http://o7z41ciog.bkt.clouddn.com/servicegraph-dotviz.jpg)
+![](http://o7z41ciog.bkt.clouddn.com/servicegraph-dotviz1.jpg)
 
 + `http://servicegraph.istio.io/dotgraph` : provides a [DOT](https://www.wikiwand.com/en/DOT_(graph_description_language) serialization.
 + `http://servicegraph.istio.io/d3graph` : provides a JSON serialization for D3 visualization.

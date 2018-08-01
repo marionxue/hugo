@@ -57,15 +57,6 @@
     </item>
     
     <item>
-      <title>Istio 0.8 部署</title>
-      <link>https://www.yangcs.net/posts/istio-0.8-deploy/</link>
-      <pubDate>Tue, 10 Jul 2018 07:01:29 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/istio-0.8-deploy/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
-    </item>
-    
-    <item>
       <title>通过控制平面提供路由</title>
       <link>https://www.yangcs.net/posts/routing-with-a-control-plane/</link>
       <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
@@ -368,6 +359,15 @@
       <pubDate>Sat, 04 Jun 2016 13:28:25 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Istio 0.8 部署</title>
+      <link>https://www.yangcs.net/posts/istio-0.8-deploy/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-0.8-deploy/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     

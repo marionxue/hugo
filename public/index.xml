@@ -2176,477 +2176,6 @@ border-top-color: #9954bb;
     </item>
     
     <item>
-      <title>Istio 0.8 部署</title>
-      <link>https://www.yangcs.net/posts/istio-0.8-deploy/</link>
-      <pubDate>Tue, 10 Jul 2018 07:01:29 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/istio-0.8-deploy/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;北京时间 2018 年 6 月 1 日（儿童节）上午 9: 30 &lt;code&gt;Istio 0.8.0 LTS&lt;/code&gt;（长期支持版本）发布。这个项目的组件相对比较复杂，原有的一些选项是靠 ConfigMap 以及 istioctl 分别调整的，现在通过重新设计的 &lt;code&gt;Helm Chart&lt;/code&gt;，安装选项用 &lt;code&gt;values.yml&lt;/code&gt; 或者 helm 命令行的方式来进行集中管理了。&lt;/p&gt;
-
-&lt;p&gt;在安装 Istio 之前要确保 Kubernetes 集群（仅支持 &lt;code&gt;v1.7.3&lt;/code&gt; 及以后版本）已部署并配置好本地的 kubectl 客户端。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-下载-istio-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 下载 Istio&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ wget https://github.com/istio/istio/releases/download/0.8.0/istio-0.8.0-linux.tar.gz
-$ tar zxf istio-0.8.0-linux.tar.gz
-$ cp istio-0.8.0/bin/istioctl /usr/local/bin/
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-使用-helm-部署-istio-服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 使用 Helm 部署 Istio 服务&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;克隆 Istio 仓库：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/istio/istio.git -b release-0.8
-$ cd istio
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装包内的 Helm 目录中包含了 Istio 的 Chart，官方提供了两种方法：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;用 Helm 生成 &lt;code&gt;istio.yaml&lt;/code&gt;，然后自行安装。&lt;/li&gt;
-&lt;li&gt;用 &lt;code&gt;Tiller&lt;/code&gt; 直接安装。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;很明显，两种方法并没有什么本质区别，这里我们采用第一种方法来部署。&lt;/p&gt;
-
-&lt;p&gt;有两种方式（选择其一执行）：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;不开启自动 &lt;code&gt;sidecar&lt;/code&gt; 注入&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=false --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true &amp;gt; istio.yaml
-
-$ kubectl create namespace istio-system
-$ kubectl create -f istio.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这里说的是使用 &lt;code&gt;install/kubernetes/helm/istio&lt;/code&gt; 目录中的 Chart 进行渲染，生成的内容保存到 &lt;code&gt;./istio.yaml&lt;/code&gt; 文件之中。将 &lt;code&gt;sidecarInjectorWebhook.enabled&lt;/code&gt; 设置为 False，从而禁止自动注入属性生效。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;开启自动 &lt;code&gt;sidecar&lt;/code&gt; 注入&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm template install/kubernetes/helm/istio --name istio --namespace istio-system --set sidecarInjectorWebhook.enabled=true --set ingress.service.type=NodePort --set ingressgateway.service.type=NodePort --set egressgateway.service.type=NodePort --set global.tag=0.8.0 --set tracing.enabled=true --set servicegraph.enabled=true --set prometheus.enabled=true --set tracing.jaeger.enabled=true --set grafana.enabled=true &amp;gt; istio.yaml
-
-$ kubectl create namespace istio-system
-$ kubectl create -f istio.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;部署完成后，可以检查 &lt;code&gt;isotio-system&lt;/code&gt; namespace 中的服务是否正常运行：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n istio-system get pods -o go-template=&#39;{{range .items}}{{.metadata.name}}{{&amp;quot;\n&amp;quot;}}{{end}}&#39;
-
-istio-citadel-ff5696f6f-p6xz6
-istio-cleanup-old-ca-mtzqv
-istio-egressgateway-58d98d898c-9wmrb
-istio-ingress-6fb78f687f-78tt8
-istio-ingressgateway-6bc7c7c4bc-mgkvg
-istio-mixer-post-install-zqmtr
-istio-pilot-6c5c6b586c-7hk6r
-istio-policy-5c7fbb4b9f-4rspm
-istio-statsd-prom-bridge-6dbb7dcc7f-s9qvd
-istio-telemetry-54b5bf4847-s5mqr
-istio-tracing-67dbb5b89f-4ftd9
-prometheus-586d95b8d9-pdwkh
-servicegraph-6d86dfc6cb-xbpjx
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;过去的 istio-ca 现已更名 &lt;code&gt;istio-citadel&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;istio-cleanup-old-ca&lt;/code&gt; 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;istio-mixer-post-install&lt;/code&gt; 同样也是一个 job，和上面的 Job 一样，简单的调用 kubectl 创建第三方资源，从而避免了之前的 CDR 需要重复创建的尴尬状况。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;egressgateway&lt;/code&gt;、&lt;code&gt;ingress&lt;/code&gt; 以及 &lt;code&gt;ingressgateway&lt;/code&gt;，可以看出边缘部分的变动很大，以后会另行发文。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-prometheus-grafana-servicegraph-和-jaeger-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. Prometheus、Grafana、Servicegraph 和 Jaeger&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;等所有 Pod 启动后，可以通过 NodePort、Ingress 或者 kubectl proxy 来访问这些服务。比如可以通过 &lt;code&gt;Ingress&lt;/code&gt; 来访问服务。&lt;/p&gt;
-
-&lt;p&gt;首先为 Prometheus、Grafana、Servicegraph 和 Jaeger 服务创建 Ingress：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat ingress.yaml
-
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: prometheus
-  namespace: istio-system
-spec:
-  rules:
-  - host: prometheus.istio.io
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: prometheus
-          servicePort: 9090
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: grafana
-  namespace: istio-system
-spec:
-  rules:
-  - host: grafana.istio.io
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: grafana
-          servicePort: 3000
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: servicegraph
-  namespace: istio-system
-spec:
-  rules:
-  - host: servicegraph.istio.io
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: servicegraph
-          servicePort: 8088
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: tracing
-  namespace: istio-system
-spec:
-  rules:
-  - host: tracing.istio.io
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: tracing
-          servicePort: 80
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ingress.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后在你的本地电脑上添加四条 &lt;code&gt;hosts&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$Ingree_host prometheus.istio.io
-$Ingree_host grafana.istio.io
-$Ingree_host servicegraph.istio.io
-$Ingree_host tracing.istio.io
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;将 &lt;code&gt;$Ingree_host&lt;/code&gt; 替换为 Ingress Controller 运行节点的 IP。&lt;/p&gt;
-
-&lt;p&gt;通过 &lt;code&gt;http://grafana.istio.io&lt;/code&gt; 访问 Grafana 服务：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/grafana-istio.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;通过 &lt;code&gt;http://servicegraph.istio.io&lt;/code&gt; 访问 ServiceGraph 服务，展示服务之间调用关系图。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/force/forcegraph.html&lt;/code&gt; : As explored above, this is an interactive &lt;a href=&#34;https://d3js.org/&#34; target=&#34;_blank&#34;&gt;D3.js&lt;/a&gt; visualization.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/servicegraph-forcegraph1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/dotviz&lt;/code&gt; : is a static &lt;a href=&#34;https://www.graphviz.org/&#34; target=&#34;_blank&#34;&gt;Graphviz&lt;/a&gt; visualization.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/servicegraph-dotviz.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/dotgraph&lt;/code&gt; : provides a [DOT](&lt;a href=&#34;https://www.wikiwand.com/en/DOT_(graph_description_language&#34; target=&#34;_blank&#34;&gt;https://www.wikiwand.com/en/DOT_(graph_description_language&lt;/a&gt;) serialization.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/d3graph&lt;/code&gt; : provides a JSON serialization for D3 visualization.&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;http://servicegraph.istio.io/graph&lt;/code&gt; : provides a generic JSON serialization.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;通过 &lt;code&gt;http://tracing.istio.io/&lt;/code&gt; 访问 Jaeger 跟踪页面：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/zipkin-jaeger.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;通过 &lt;code&gt;http://prometheus.istio.io/&lt;/code&gt; 访问 Prometheus 页面：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/istio-prometheus.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;如果你已经部署了 &lt;code&gt;Prometheus-operator&lt;/code&gt;，可以不必部署 Grafana，直接将 &lt;code&gt;addons/grafana/dashboards&lt;/code&gt; 目录下的 Dashboard 模板复制出来放到 Prometheus-operator 的 Grafana 上，然后添加 istio-system 命名空间中的 Prometheus 数据源就可以监控 Istio 了。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-mesh-expansion-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. Mesh Expansion&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Istio 还支持管理非 Kubernetes 管理的应用。此时，需要在应用所在的 VM 或者物理中部署 Istio，具体步骤请参考 &lt;a href=&#34;https://istio.io/docs/setup/kubernetes/mesh-expansion/&#34; target=&#34;_blank&#34;&gt;Mesh Expansion&lt;/a&gt;&lt;/p&gt;
-
-&lt;p&gt;部署好后，就可以向 Istio 注册应用，如：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# istioctl register servicename machine-ip portname:port
-$ istioctl -n onprem register mysql 1.2.3.4 3306
-$ istioctl -n onprem register svc1 1.2.3.4 http:7000
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://blog.fleeto.us/post/istio-0.8.0-helm/&#34; target=&#34;_blank&#34;&gt;Istio 0.8 的 Helm Chart 解析&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
       <title>通过控制平面提供路由</title>
       <link>https://www.yangcs.net/posts/routing-with-a-control-plane/</link>
       <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
@@ -6306,6 +5835,289 @@ $ systemctl restart kube-apiserver
 &lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/apiserver-aggregation/&#34; target=&#34;_blank&#34;&gt;Extending the Kubernetes API with the aggregation layer&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/&#34; target=&#34;_blank&#34;&gt;Configure the aggregation layer&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;https://jimmysong.io/kubernetes-handbook/practice/create-tls-and-secret-key.html&#34; target=&#34;_blank&#34;&gt;创建TLS证书和秘钥&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
+      <title> 修复 Service Endpoint 更新的延迟</title>
+      <link>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</link>
+      <pubDate>Fri, 15 Jun 2018 14:02:11 +0000</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;几个月前，我在更新 Kubernetes 集群中的 &lt;code&gt;Deployment&lt;/code&gt; 时发现了一个很奇怪的连接超时现象，在更新 Deployment 之后的 30 秒到两分钟左右，所有与以该 Deployment 作为服务后端的 &lt;code&gt;Service&lt;/code&gt; 的连接都会超时或失败。同时我还注意到其他应用在这段时间内也会出现莫名其妙的延迟现象。&lt;/p&gt;
+
+&lt;p&gt;一开始我怀疑是&lt;a href=&#34;https://hackernoon.com/graceful-shutdown-in-kubernetes-435b98794461&#34; target=&#34;_blank&#34;&gt;应用没有优雅删除&lt;/a&gt;导致的，但当我在更新 Deployment 的过程中（删除旧的 Pod，启动新的 Pod）通过 &lt;code&gt;curl&lt;/code&gt; 来测试该应用的健康检查（liveness）和就绪检查（readiness）&lt;code&gt;Endpoints&lt;/code&gt; 时，很快就排除了这个可能性。&lt;/p&gt;
+
+&lt;p&gt;我开始怀疑人生，开始怀疑我的职业选择，几个小时之后我忽然想起来 &lt;code&gt;Service&lt;/code&gt; 并不是直接与 Deployment 关联的，而是按照标签对一组提供相同功能的 Pods 的抽象，并为它们提供一个统一的入口。更重要的是，Service 是由一组 &lt;code&gt;Endpoint&lt;/code&gt; 组成的，只要 Service 中的一组 Pod 发生变更，Endpoint 就会被更新。&lt;/p&gt;
+
+&lt;p&gt;想到这里，就可以继续排查问题了。下面在更新 Deployment 的过程中通过 &lt;code&gt;watch&lt;/code&gt; 命令来观察有问题的 Service 的 Endpoint。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ watch kubectl describe endpoints [endpoint name]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后我就发现了罪魁祸首，在旧 Pod 被移除的 30 秒到几分钟左右的时间段内，这些被删除的 Pod 的 &lt;code&gt;IP:Port&lt;/code&gt; 仍然出现在 Endpoint 的就绪列表中，同时新启动的 Pod 的 &lt;code&gt;IP:Port&lt;/code&gt; 也没有被添加到 Endpoint 中。终于发现了连接失败的根源，但是为什么会出现这种状况呢？仍然无解。&lt;/p&gt;
+
+&lt;p&gt;又经历了几天折腾之后，我又有了新点子，那就是调试负责更新 Endpoint 的组件：&lt;code&gt;kube-controller-manager&lt;/code&gt;，最后终于在 kube-controller-manager 的日志输出中发现了如下可疑的信息：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;I0412 22:59:59.914517       1 request.go:638] Throttling request took 2.489742918s, request: GET:https://10.3.0.1:443/api/v1/namespaces/[some namespace]/endpoints/[some endpoints]&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;但还是感觉哪里不对劲，明明延迟了几分钟，为什么这里显示的只有两秒？&lt;/p&gt;
+
+&lt;p&gt;在阅读了 kube-controller-manager 的源码后，我发现了问题所在。Kube-controller-manager 的主要职责是通过内部的众多 &lt;code&gt;Controller&lt;/code&gt; 将集群的当前状态调整到期望状态，其中 &lt;code&gt;Endpoint Controller&lt;/code&gt; 用于监控 Pod 的生命周期事件并根据这些事件更新 Endpoint。&lt;/p&gt;
+
+&lt;p&gt;Endpoint Controller 内部运行了一组 &lt;code&gt;workers&lt;/code&gt; 来处理这些事件并更新 Endpoint，如果有足够多的对 Endpoint 发起的请求被阻塞，那么所有的 workers 都会忙于等待被阻塞的请求，这时候新事件只能被添加到队列中排队等待，如果该队列很长，就会花很长时间来更新 Endpoint。&lt;/p&gt;
+
+&lt;p&gt;为了解决这个问题，首先我通过调整 kube-controller-manager 的 参数 &lt;code&gt;--concurrent-endpoints-syncs&lt;/code&gt; 来增加 Endpoint Controller 的 workers，但收效甚微。&lt;/p&gt;
+
+&lt;p&gt;再次仔细阅读源码后，我找到了两个可以可以扭转战局的参数：&lt;code&gt;--kube-api-qps&lt;/code&gt; 和 &lt;code&gt;--kube-api-burst&lt;/code&gt;。kube-controller-manager 可以通过这两个参数来限制任何 Controller（包括 Endpoint Controller）对 kube-apiserver 发起的请求的速率。&lt;/p&gt;
+
+&lt;p&gt;这两个参数的默认值是 20，但当集群中的主机数量非常多时，默认值显然不满足集群运行的工作负载。经过不断调试之后，我将参数 &lt;code&gt;--kube-api-qps&lt;/code&gt; 的值设置为 300，将 &lt;code&gt;--kube-api-burst&lt;/code&gt; 的值设置为 325，上面的日志信息便消失了，同时添加或移除 Pod 时 Endpoint 也能够立即更新。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;&lt;code&gt;--kube-api-qps&lt;/code&gt; 和 &lt;code&gt;--kube-api-burst&lt;/code&gt; 参数的值越大，kube-apiserver 和 etcd 的负载就越高。在我的集群中，通过适当地增加一些负载来解决这个问题是很值得的。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;p-id-h2-原文链接-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;原文链接&lt;/p&gt;&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://engineering.dollarshaveclub.com/kubernetes-fixing-delayed-service-endpoint-updates-fd4d0a31852c&#34; target=&#34;_blank&#34;&gt;Kubernetes: Fixing Delayed Service Endpoint Updates&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
