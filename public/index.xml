@@ -960,9 +960,7 @@ spec:
 
 &lt;p&gt;现在再次访问 Bookinfo 应用程序的 URL (&lt;code&gt;http://$GATEWAY_URL/productpage&lt;/code&gt;)，会发现规则已经生效了。&lt;/p&gt;
 
-&lt;h4 id=&#34;示例一-将-10-请求发送到-v2-版本而其余-90-发送到-v1-版本&#34;&gt;示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本&lt;/h4&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;h4 id=&#34;示例一-将-10-请求发送到-v2-版本而其余-90-发送到-v1-版本-br&#34;&gt;示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本&lt;br /&gt;&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl replace -f -
 apiVersion: networking.istio.io/v1alpha3

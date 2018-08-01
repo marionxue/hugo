@@ -388,9 +388,7 @@ DestinationRule 用于配置在将流量转发到服务时应用的策略集。�
 
 现在再次访问 Bookinfo 应用程序的 URL (`http://$GATEWAY_URL/productpage`)，会发现规则已经生效了。
 
-#### 示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本
-
-<br />
+#### 示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本<br />
 
 ```yaml
 $ cat <<EOF | istioctl replace -f -
