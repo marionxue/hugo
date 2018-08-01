@@ -459,7 +459,7 @@ autocomplete('#aa-search-input',
 <br /></li>
 </ul>
 
-<pre><code class="language-bash">$ kubectl apply -f &lt;(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
+<pre><code class="language-bash">  $ kubectl apply -f &lt;(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
 </code></pre>
 
 <p><a href="https://istio.io/docs/reference/commands/istioctl/#istioctl-kube-inject" target="_blank">istioctl kube-inject</a> 命令用于在在部署应用之前修改 <code>bookinfo.yaml</code></p>
@@ -468,7 +468,7 @@ autocomplete('#aa-search-input',
 <li>如果集群使用的是<a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection" target="_blank">自动 Sidecar 注入</a>，只需简单的 <code>kubectl</code> 就能完成服务的部署。</li>
 </ul>
 
-<pre><code class="language-bash">$ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+<pre><code class="language-bash">  $ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 </code></pre></li>
 </ol>
 
@@ -478,32 +478,32 @@ autocomplete('#aa-search-input',
 <li>给应用定义 Ingress gateway：</li>
 </ol>
 
-<pre><code class="language-bash">  $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+<pre><code class="language-bash">   $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 </code></pre>
 
 <ol>
 <li>确认所有的服务和 Pod 都已经正确的定义和启动：</li>
 </ol>
 
-<pre><code class="language-bash">  $ kubectl get services
+<pre><code class="language-bash">   $ kubectl get services
   
-  NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
-  details       ClusterIP   10.254.86.98     &lt;none&gt;        9080/TCP                        3h
-  kubernetes    ClusterIP   10.254.0.1       &lt;none&gt;        443/TCP                         149d
-  productpage   ClusterIP   10.254.199.214   &lt;none&gt;        9080/TCP                        3h
-  ratings       ClusterIP   10.254.102.147   &lt;none&gt;        9080/TCP                        3h
-  reviews       ClusterIP   10.254.249.86    &lt;none&gt;        9080/TCP                        3h
+   NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+   details       ClusterIP   10.254.86.98     &lt;none&gt;        9080/TCP                        3h
+   kubernetes    ClusterIP   10.254.0.1       &lt;none&gt;        443/TCP                         149d
+   productpage   ClusterIP   10.254.199.214   &lt;none&gt;        9080/TCP                        3h
+   ratings       ClusterIP   10.254.102.147   &lt;none&gt;        9080/TCP                        3h
+   reviews       ClusterIP   10.254.249.86    &lt;none&gt;        9080/TCP                        3h
 </code></pre>
 
-<pre><code class="language-bash">  $ kubectl get pods
+<pre><code class="language-bash">   $ kubectl get pods
   
-  NAME                              READY     STATUS    RESTARTS   AGE
-  details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
-  productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
-  ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
-  reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
-  reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
-  reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
+   NAME                              READY     STATUS    RESTARTS   AGE
+   details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
+   productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
+   ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
+   reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
+   reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
+   reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
 </code></pre>
 
 <ol>
@@ -512,20 +512,20 @@ autocomplete('#aa-search-input',
 
 <p>执行以下命令以确定 <code>ingressgateway</code> 是否启用了 NodePort 模式。</p>
 
-<pre><code class="language-bash">  $ kubectl -n istio-system get svc istio-ingressgateway
-  
-  NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
-  istio-ingressgateway   NodePort   10.254.160.93   &lt;none&gt;        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
+<pre><code class="language-bash">   $ kubectl -n istio-system get svc istio-ingressgateway
+
+   NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
+   istio-ingressgateway   NodePort   10.254.160.93   &lt;none&gt;        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
 </code></pre>
 
 <p>确定 ingress IP：</p>
 
-<pre><code class="language-bash">  $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template='{{range .items}}{{.status.hostIP}}{{end}}')
+<pre><code class="language-bash">   $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template='{{range .items}}{{.status.hostIP}}{{end}}')
 </code></pre>
 
 <p>确定端口：</p>
 
-<pre><code class="language-bash">  $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name &quot;http&quot;}}{{.nodePort}}{{end}}{{end}}')
+<pre><code class="language-bash">   $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name &quot;http&quot;}}{{.nodePort}}{{end}}{{end}}')
 </code></pre>
 
 <ol>

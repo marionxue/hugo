@@ -67,75 +67,75 @@ Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的�
 
 1. 进入 Istio 安装目录。
 2. 启动应用容器：
-    + 如果集群用的是[手工 Sidecar 注入](https://istio.io/docs/setup/kubernetes/sidecar-injection/#manual-sidecar-injection)，使用如下命令：
+      + 如果集群用的是[手工 Sidecar 注入](https://istio.io/docs/setup/kubernetes/sidecar-injection/#manual-sidecar-injection)，使用如下命令：
     
-    ```bash
-    $ kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
-    ```
+      ```bash
+      $ kubectl apply -f <(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
+      ```
     
-    [istioctl kube-inject](https://istio.io/docs/reference/commands/istioctl/#istioctl-kube-inject) 命令用于在在部署应用之前修改 `bookinfo.yaml`
+      [istioctl kube-inject](https://istio.io/docs/reference/commands/istioctl/#istioctl-kube-inject) 命令用于在在部署应用之前修改 `bookinfo.yaml`
     
-    + 如果集群使用的是[自动 Sidecar 注入](https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection)，只需简单的 `kubectl` 就能完成服务的部署。
+      + 如果集群使用的是[自动 Sidecar 注入](https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection)，只需简单的 `kubectl` 就能完成服务的部署。
 
-    ```bash
-    $ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
-    ```
+      ```bash
+      $ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+      ```
     
-  上面的命令会启动全部的四个服务，其中也包括了 `reviews` 服务的三个版本（`v1`、`v2` 以及 `v3`）
+   上面的命令会启动全部的四个服务，其中也包括了 `reviews` 服务的三个版本（`v1`、`v2` 以及 `v3`）
   
 3. 给应用定义 Ingress gateway：
 
-  ```bash
-  $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
-  ```
+   ```bash
+   $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+   ```
   
 4. 确认所有的服务和 Pod 都已经正确的定义和启动：
 
-  ```bash
-  $ kubectl get services
+   ```bash
+   $ kubectl get services
   
-  NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
-  details       ClusterIP   10.254.86.98     <none>        9080/TCP                        3h
-  kubernetes    ClusterIP   10.254.0.1       <none>        443/TCP                         149d
-  productpage   ClusterIP   10.254.199.214   <none>        9080/TCP                        3h
-  ratings       ClusterIP   10.254.102.147   <none>        9080/TCP                        3h
-  reviews       ClusterIP   10.254.249.86    <none>        9080/TCP                        3h
-  ```
+   NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+   details       ClusterIP   10.254.86.98     <none>        9080/TCP                        3h
+   kubernetes    ClusterIP   10.254.0.1       <none>        443/TCP                         149d
+   productpage   ClusterIP   10.254.199.214   <none>        9080/TCP                        3h
+   ratings       ClusterIP   10.254.102.147   <none>        9080/TCP                        3h
+   reviews       ClusterIP   10.254.249.86    <none>        9080/TCP                        3h
+   ```
   
-  ```bash
-  $ kubectl get pods
+   ```bash
+   $ kubectl get pods
   
-  NAME                              READY     STATUS    RESTARTS   AGE
-  details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
-  productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
-  ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
-  reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
-  reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
-  reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
-  ```
+   NAME                              READY     STATUS    RESTARTS   AGE
+   details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
+   productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
+   ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
+   reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
+   reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
+   reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
+   ```
   
 5. 确定 Ingress 的 IP 和端口
 
-  执行以下命令以确定 `ingressgateway` 是否启用了 NodePort 模式。
+   执行以下命令以确定 `ingressgateway` 是否启用了 NodePort 模式。
+
+   ```bash
+   $ kubectl -n istio-system get svc istio-ingressgateway
+
+   NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
+   istio-ingressgateway   NodePort   10.254.160.93   <none>        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
+   ```
   
-  ```bash
-  $ kubectl -n istio-system get svc istio-ingressgateway
+   确定 ingress IP：
   
-  NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
-  istio-ingressgateway   NodePort   10.254.160.93   <none>        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
-  ```
+   ```bash
+   $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template='{{range .items}}{{.status.hostIP}}{{end}}')
+   ```
   
-  确定 ingress IP：
+   确定端口：
   
-  ```bash
-  $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template='{{range .items}}{{.status.hostIP}}{{end}}')
-  ```
-  
-  确定端口：
-  
-  ```bash
-  $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name "http"}}{{.nodePort}}{{end}}{{end}}')
-  ```
+   ```bash
+   $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name "http"}}{{.nodePort}}{{end}}{{end}}')
+   ```
   
 6. 设置 `GATEWAY_URL`：
 

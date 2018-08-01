@@ -648,7 +648,7 @@ net.ipv4.tcp_synack_retries = 5
 &lt;br /&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f &amp;lt;(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl apply -f &amp;lt;(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;a href=&#34;https://istio.io/docs/reference/commands/istioctl/#istioctl-kube-inject&#34; target=&#34;_blank&#34;&gt;istioctl kube-inject&lt;/a&gt; 命令用于在在部署应用之前修改 &lt;code&gt;bookinfo.yaml&lt;/code&gt;&lt;/p&gt;
@@ -657,7 +657,7 @@ net.ipv4.tcp_synack_retries = 5
 &lt;li&gt;如果集群使用的是&lt;a href=&#34;https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection&#34; target=&#34;_blank&#34;&gt;自动 Sidecar 注入&lt;/a&gt;，只需简单的 &lt;code&gt;kubectl&lt;/code&gt; 就能完成服务的部署。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
@@ -667,32 +667,32 @@ net.ipv4.tcp_synack_retries = 5
 &lt;li&gt;给应用定义 Ingress gateway：&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ol&gt;
 &lt;li&gt;确认所有的服务和 Pod 都已经正确的定义和启动：&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl get services
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ kubectl get services
   
-  NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
-  details       ClusterIP   10.254.86.98     &amp;lt;none&amp;gt;        9080/TCP                        3h
-  kubernetes    ClusterIP   10.254.0.1       &amp;lt;none&amp;gt;        443/TCP                         149d
-  productpage   ClusterIP   10.254.199.214   &amp;lt;none&amp;gt;        9080/TCP                        3h
-  ratings       ClusterIP   10.254.102.147   &amp;lt;none&amp;gt;        9080/TCP                        3h
-  reviews       ClusterIP   10.254.249.86    &amp;lt;none&amp;gt;        9080/TCP                        3h
+   NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
+   details       ClusterIP   10.254.86.98     &amp;lt;none&amp;gt;        9080/TCP                        3h
+   kubernetes    ClusterIP   10.254.0.1       &amp;lt;none&amp;gt;        443/TCP                         149d
+   productpage   ClusterIP   10.254.199.214   &amp;lt;none&amp;gt;        9080/TCP                        3h
+   ratings       ClusterIP   10.254.102.147   &amp;lt;none&amp;gt;        9080/TCP                        3h
+   reviews       ClusterIP   10.254.249.86    &amp;lt;none&amp;gt;        9080/TCP                        3h
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl get pods
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ kubectl get pods
   
-  NAME                              READY     STATUS    RESTARTS   AGE
-  details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
-  productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
-  ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
-  reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
-  reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
-  reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
+   NAME                              READY     STATUS    RESTARTS   AGE
+   details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
+   productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
+   ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
+   reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
+   reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
+   reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ol&gt;
@@ -701,20 +701,20 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;p&gt;执行以下命令以确定 &lt;code&gt;ingressgateway&lt;/code&gt; 是否启用了 NodePort 模式。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ kubectl -n istio-system get svc istio-ingressgateway
-  
-  NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
-  istio-ingressgateway   NodePort   10.254.160.93   &amp;lt;none&amp;gt;        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ kubectl -n istio-system get svc istio-ingressgateway
+
+   NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
+   istio-ingressgateway   NodePort   10.254.160.93   &amp;lt;none&amp;gt;        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;确定 ingress IP：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template=&#39;{{range .items}}{{.status.hostIP}}{{end}}&#39;)
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template=&#39;{{range .items}}{{.status.hostIP}}{{end}}&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;确定端口：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;  $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template=&#39;{{range .spec.ports}}{{if eq .name &amp;quot;http&amp;quot;}}{{.nodePort}}{{end}}{{end}}&#39;)
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template=&#39;{{range .spec.ports}}{{if eq .name &amp;quot;http&amp;quot;}}{{.nodePort}}{{end}}{{end}}&#39;)
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ol&gt;
