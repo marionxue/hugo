@@ -139,9 +139,9 @@ Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的�
   
 6. 设置 `GATEWAY_URL`：
 
-   ```bash
-   $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
-   ```
+     ```bash
+     $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+     ```
   
 下面可以用 `curl` 命令来确认 Bookinfo 应用的运行情况：
 
@@ -389,6 +389,8 @@ DestinationRule 用于配置在将流量转发到服务时应用的策略集。�
 现在再次访问 Bookinfo 应用程序的 URL (`http://$GATEWAY_URL/productpage`)，会发现规则已经生效了。
 
 #### 示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本
+
+<br />
 
 ```yaml
 $ cat <<EOF | istioctl replace -f -

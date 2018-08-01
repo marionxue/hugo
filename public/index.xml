@@ -710,11 +710,11 @@ istio-ingressgateway   NodePort   10.254.160.93   &amp;lt;none&amp;gt;        80
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template=&#39;{{range .spec.ports}}{{if eq .name &amp;quot;http&amp;quot;}}{{.nodePort}}{{end}}{{end}}&#39;)
 &lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
 
-&lt;li&gt;&lt;p&gt;设置 &lt;code&gt;GATEWAY_URL&lt;/code&gt;：&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;li&gt;&lt;p&gt;设置 &lt;code&gt;GATEWAY_URL&lt;/code&gt;：&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
-&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt; $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;p&gt;下面可以用 &lt;code&gt;curl&lt;/code&gt; 命令来确认 Bookinfo 应用的运行情况：&lt;/p&gt;
 
@@ -961,6 +961,8 @@ spec:
 &lt;p&gt;现在再次访问 Bookinfo 应用程序的 URL (&lt;code&gt;http://$GATEWAY_URL/productpage&lt;/code&gt;)，会发现规则已经生效了。&lt;/p&gt;
 
 &lt;h4 id=&#34;示例一-将-10-请求发送到-v2-版本而其余-90-发送到-v1-版本&#34;&gt;示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本&lt;/h4&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl replace -f -
 apiVersion: networking.istio.io/v1alpha3

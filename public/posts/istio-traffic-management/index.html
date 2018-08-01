@@ -521,11 +521,11 @@ istio-ingressgateway   NodePort   10.254.160.93   &lt;none&gt;        80:31380/T
 <pre><code class="language-bash">$ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name &quot;http&quot;}}{{.nodePort}}{{end}}{{end}}')
 </code></pre></li>
 
-<li><p>设置 <code>GATEWAY_URL</code>：</p></li>
-</ol>
+<li><p>设置 <code>GATEWAY_URL</code>：</p>
 
-<pre><code class="language-bash">   $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
-</code></pre>
+<pre><code class="language-bash"> $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+</code></pre></li>
+</ol>
 
 <p>下面可以用 <code>curl</code> 命令来确认 Bookinfo 应用的运行情况：</p>
 
@@ -772,6 +772,8 @@ spec:
 <p>现在再次访问 Bookinfo 应用程序的 URL (<code>http://$GATEWAY_URL/productpage</code>)，会发现规则已经生效了。</p>
 
 <h4 id="示例一-将-10-请求发送到-v2-版本而其余-90-发送到-v1-版本">示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本</h4>
+
+<p><br /></p>
 
 <pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl replace -f -
 apiVersion: networking.istio.io/v1alpha3
