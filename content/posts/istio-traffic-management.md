@@ -81,7 +81,7 @@ Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的�
       $ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
       ```
     
-   上面的命令会启动全部的四个服务，其中也包括了 `reviews` 服务的三个版本（`v1`、`v2` 以及 `v3`）
+      上面的命令会启动全部的四个服务，其中也包括了 `reviews` 服务的三个版本（`v1`、`v2` 以及 `v3`）
   
 3. 给应用定义 Ingress gateway：
 
