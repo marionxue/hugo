@@ -1,7 +1,7 @@
 ---
-title: "Istio 0.8 部署"
+title: "Istio 1.0 部署"
 subtitle: "使用 Helm 部署 Istio 服务"
-date: 2018-08-01T015:15:29Z
+date: 2018-08-01T15:15:29Z
 draft: false
 categories: "service mesh"
 tags: ["istio", "service mesh"]
