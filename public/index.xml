@@ -682,13 +682,13 @@ EOF
 &lt;li&gt;&lt;p&gt;为通过 Gateway 进入的流量配置路由&lt;/p&gt;
 
 &lt;p&gt;```yaml
-$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: httpbin
-spec:
-  hosts:&lt;/p&gt;
+ $ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
+ apiVersion: networking.istio.io/v1alpha3
+ kind: VirtualService
+ metadata:
+   name: httpbin
+ spec:
+   hosts:&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&amp;ldquo;httpbin.example.com&amp;rdquo;
@@ -699,14 +699,14 @@ http:&lt;/li&gt;
 
 &lt;ul&gt;
 &lt;li&gt;uri:
-prefix: /status&lt;/li&gt;
+ prefix: /status&lt;/li&gt;
 &lt;li&gt;uri:
-prefix: /delay
+ prefix: /delay
 route:&lt;/li&gt;
 &lt;li&gt;destination:
-port:
-  number: 8000
-host: httpbin
+ port:
+   number: 8000
+ host: httpbin
 EOF
 ```
 &lt;br /&gt;&lt;/li&gt;
