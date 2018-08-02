@@ -475,6 +475,8 @@ EOF
 + [摸索：Istio 路由规则 Alpha v3](https://blog.fleeto.us/post/istio-route-alpha1v3/)
 + [配置请求路由](https://istio.io/zh/docs/tasks/traffic-management/request-routing/)
 
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+
 <br />
 
 
