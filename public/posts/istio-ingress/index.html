@@ -462,29 +462,35 @@ spec:
 <p>让我们看看如何为 Gateway 在 HTTP 80 端口上配置流量。</p>
 
 <ol>
-<li>创建一个 Istio Gateway</li>
-</ol>
+<li><p>创建一个 Istio Gateway</p>
 
-<pre><code class="language-yaml">   $ cat &lt;&lt;EOF | istioctl create -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: Gateway
-   metadata:
-     name: httpbin-gateway
-   spec:
-     selector:
-       istio: ingressgateway # use Istio default gateway implementation
-     servers:
-     - port:
-         number: 80
-         name: http
-         protocol: HTTP
-       hosts:
-       - &quot;httpbin.example.com&quot;
-   EOF
-</code></pre>
+<p>```yaml
+$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: httpbin-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:</p>
 
-<ol>
-<li><p>为通过 <code>Gateway</code> 进入的流量配置路由</p>
+<ul>
+<li>port:
+  number: 80
+  name: http
+  protocol: HTTP
+hosts:
+
+<ul>
+<li>&ldquo;httpbin.example.com&rdquo;
+EOF
+```
+<br /></li>
+</ul></li>
+</ul></li>
+
+<li><p>为通过 Gateway 进入的流量配置路由</p>
 
 <p>```yaml
 $ cat &lt;&lt;EOF | istioctl create -f -

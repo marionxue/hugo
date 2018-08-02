@@ -651,29 +651,35 @@ spec:
 &lt;p&gt;让我们看看如何为 Gateway 在 HTTP 80 端口上配置流量。&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;创建一个 Istio Gateway&lt;/li&gt;
-&lt;/ol&gt;
+&lt;li&gt;&lt;p&gt;创建一个 Istio Gateway&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;   $ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: Gateway
-   metadata:
-     name: httpbin-gateway
-   spec:
-     selector:
-       istio: ingressgateway # use Istio default gateway implementation
-     servers:
-     - port:
-         number: 80
-         name: http
-         protocol: HTTP
-       hosts:
-       - &amp;quot;httpbin.example.com&amp;quot;
-   EOF
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;```yaml
+$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: httpbin-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;为通过 &lt;code&gt;Gateway&lt;/code&gt; 进入的流量配置路由&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;port:
+  number: 80
+  name: http
+  protocol: HTTP
+hosts:
+
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;httpbin.example.com&amp;rdquo;
+EOF
+```
+&lt;br /&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;为通过 Gateway 进入的流量配置路由&lt;/p&gt;
 
 &lt;p&gt;```yaml
 $ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
