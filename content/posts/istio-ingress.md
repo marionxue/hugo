@@ -1,5 +1,5 @@
 ---
-title: "Istio服务网格中的网关"
+title: "Istio 服务网格中的网关"
 subtitle: "使用 Istio 控制 Ingress 流量"
 date: 2018-08-02T13:29:08+08:00
 draft: false

@@ -572,7 +572,7 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
-      <title>Istio服务网格中的网关</title>
+      <title>Istio 服务网格中的网关</title>
       <link>https://www.yangcs.net/posts/istio-ingress/</link>
       <pubDate>Thu, 02 Aug 2018 13:29:08 +0800</pubDate>
       
