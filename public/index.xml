@@ -653,7 +653,7 @@ spec:
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;创建一个 Istio Gateway&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;  $ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  $ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
   apiVersion: networking.istio.io/v1alpha3
   kind: Gateway
   metadata:
