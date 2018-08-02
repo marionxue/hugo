@@ -85,57 +85,57 @@ Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图
 
 1. 创建一个 Istio Gateway
 
-   ```yaml
-   $ cat <<EOF | istioctl create -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: Gateway
-   metadata:
-     name: httpbin-gateway
-   spec:
-     selector:
-       istio: ingressgateway # use Istio default gateway implementation
-     servers:
-     - port:
-         number: 80
-         name: http
-         protocol: HTTP
-       hosts:
-       - "httpbin.example.com"
-   EOF
-   ```
+    ```yaml
+    $ cat <<EOF | istioctl create -f -
+    apiVersion: networking.istio.io/v1alpha3
+    kind: Gateway
+    metadata:
+      name: httpbin-gateway
+    spec:
+      selector:
+        istio: ingressgateway # use Istio default gateway implementation
+      servers:
+      - port:
+          number: 80
+          name: http
+          protocol: HTTP
+        hosts:
+        - "httpbin.example.com"
+    EOF
+    ```
     
 2. 为通过 Gateway 进入的流量配置路由
 
-   ```yaml
-   $ cat <<EOF | istioctl create -f -
-   apiVersion: networking.istio.io/v1alpha3
-   kind: VirtualService
-   metadata:
-     name: httpbin
-   spec:
-     hosts:
-     - "httpbin.example.com"
-     gateways:
-     - httpbin-gateway
-     http:
-     - match:
-       - uri:
-           prefix: /status
-       - uri:
-           prefix: /delay
-       route:
-       - destination:
-           port:
-             number: 8000
-           host: httpbin
-   EOF
-   ```
+    ```yaml
+    $ cat <<EOF | istioctl create -f -
+    apiVersion: networking.istio.io/v1alpha3
+    kind: VirtualService
+    metadata:
+      name: httpbin
+    spec:
+      hosts:
+      - "httpbin.example.com"
+      gateways:
+      - httpbin-gateway
+      http:
+      - match:
+        - uri:
+            prefix: /status
+        - uri:
+            prefix: /delay
+        route:
+        - destination:
+            port:
+              number: 8000
+            host: httpbin
+    EOF
+    ```
     
-   在这里，我们 为服务创建了一个 [VirtualService](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService) 配置 `httpbin` ，其中包含两条路由规则，允许路径 `/status` 和 路径的流量 `/delay`。
+    在这里，我们 为服务创建了一个 [VirtualService](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService) 配置 `httpbin` ，其中包含两条路由规则，允许路径 `/status` 和 路径的流量 `/delay`。
 
-   该[网关](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService-gateways)列表指定，只有通过我们的要求 `httpbin-gateway` 是允许的。所有其他外部请求将被拒绝，并返回 404 响应。
+    该[网关](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService-gateways)列表指定，只有通过我们的要求 `httpbin-gateway` 是允许的。所有其他外部请求将被拒绝，并返回 404 响应。
     
-   请注意，在此配置中，来自网格中其他服务的内部请求不受这些规则约束，而是简单地默认为循环路由。要将这些（或其他规则）应用于内部调用，我们可以**将特殊值 `mesh` 添加到 `gateways` 的列表中**。
+    请注意，在此配置中，来自网格中其他服务的内部请求不受这些规则约束，而是简单地默认为循环路由。要将这些（或其他规则）应用于内部调用，我们可以**将特殊值 `mesh` 添加到 `gateways` 的列表中**。
     
 3. 使用 curl 访问 httpbin 服务。
 
