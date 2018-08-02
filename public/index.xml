@@ -653,8 +653,9 @@ spec:
 &lt;ol&gt;
 &lt;li&gt;&lt;p&gt;创建一个 Istio Gateway&lt;/p&gt;
 
-&lt;p&gt;```yaml
-$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
+&lt;p&gt;```yaml&lt;/p&gt;
+
+&lt;p&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -674,9 +675,11 @@ hosts:
 &lt;ul&gt;
 &lt;li&gt;&amp;ldquo;httpbin.example.com&amp;rdquo;
 EOF
-```&lt;/li&gt;
+&lt;br /&gt;&lt;/li&gt;
 &lt;/ul&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;```&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h3 id=&#34;p-id-h2-3-使用浏览器访问-ingress-服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 使用浏览器访问 Ingress 服务&lt;/p&gt;&lt;/h3&gt;
