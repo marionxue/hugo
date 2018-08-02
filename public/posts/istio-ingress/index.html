@@ -469,17 +469,17 @@ $ cat &lt;&lt;EOF | istioctl create -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
- name: httpbin-gateway
+  name: httpbin-gateway
 spec:
- selector:
-   istio: ingressgateway # use Istio default gateway implementation
- servers:</p>
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:</p>
 
 <ul>
 <li>port:
- number: 80
- name: http
- protocol: HTTP
+  number: 80
+  name: http
+  protocol: HTTP
 hosts:
 
 <ul>
