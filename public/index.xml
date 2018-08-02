@@ -817,7 +817,20 @@ spec:
 
 &lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-4-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 参考&lt;/p&gt;&lt;/h3&gt;
+&lt;h3 id=&#34;p-id-h2-4-清理-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 清理&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;删除 Gateway、VirtualService 和 httpbin 服务：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl delete gateway httpbin-gateway
+$ istioctl delete virtualservice httpbin
+$ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h3&gt;
 
 &lt;hr /&gt;
 

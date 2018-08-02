@@ -255,7 +255,21 @@ $  cat <<EOF | istioctl replace -f -
 
 ![](http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg)
 
-### <p id="h2">4. 参考</p>
+### <p id="h2">4. 清理</p>
+
+----
+
+删除 Gateway、VirtualService 和 httpbin 服务：
+
+```bash
+$ istioctl delete gateway httpbin-gateway
+$ istioctl delete virtualservice httpbin
+$ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
+```
+
+<br />
+
+### <p id="h2">5. 参考</p>
 
 ----
 
