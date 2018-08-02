@@ -464,23 +464,30 @@ spec:
 <ol>
 <li><p>创建一个 Istio Gateway</p>
 
-<pre><code class="language-yaml">  $ cat &lt;&lt;EOF | istioctl create -f -
-  apiVersion: networking.istio.io/v1alpha3
-  kind: Gateway
-  metadata:
-    name: httpbin-gateway
-  spec:
-    selector:
-      istio: ingressgateway # use Istio default gateway implementation
-    servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-      - &quot;httpbin.example.com&quot;
-  EOF    
-</code></pre></li>
+<p>```yaml<br />
+$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: httpbin-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:</p>
+
+<ul>
+<li>port:
+  number: 80
+  name: http
+  protocol: HTTP
+hosts:
+
+<ul>
+<li>&ldquo;httpbin.example.com&rdquo;
+EOF<br />
+```</li>
+</ul></li>
+</ul></li>
 </ol>
 
 <h3 id="p-id-h2-3-使用浏览器访问-ingress-服务-p"><p id="h2">3. 使用浏览器访问 Ingress 服务</p></h3>
