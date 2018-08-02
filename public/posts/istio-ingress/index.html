@@ -377,7 +377,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Thu Aug 2, 2018</h4>
     </section>
-    <h5 id="wc">2100 Words|Read in about 5 Min</h5>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -464,30 +464,55 @@ spec:
 <ol>
 <li><p>创建一个 Istio Gateway</p>
 
-<p>```yaml<br />
-$ cat &lt;&lt;EOF | istioctl create -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: httpbin-gateway
-spec:
-  selector:
-    istio: ingressgateway # use Istio default gateway implementation
-  servers:</p>
+<pre><code class="language-yaml">  $ cat &lt;&lt;EOF | istioctl create -f -
+  apiVersion: networking.istio.io/v1alpha3
+  kind: Gateway
+  metadata:
+    name: httpbin-gateway
+  spec:
+    selector:
+      istio: ingressgateway # use Istio default gateway implementation
+    servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+      - &quot;httpbin.example.com&quot;
+  EOF    
+</code></pre></li>
 
-<ul>
-<li>port:
-  number: 80
-  name: http
-  protocol: HTTP
-hosts:
+<li><p>为通过 Gateway 进入的流量配置路由</p>
 
-<ul>
-<li>&ldquo;httpbin.example.com&rdquo;
-EOF<br />
-```</li>
-</ul></li>
-</ul></li>
+<pre><code class="language-yaml">  $ cat &lt;&lt;EOF | istioctl create -f -
+  apiVersion: networking.istio.io/v1alpha3
+  kind: VirtualService
+  metadata:
+    name: httpbin
+  spec:
+    hosts:
+    - &quot;httpbin.example.com&quot;
+    gateways:
+    - httpbin-gateway
+    http:
+    - match:
+      - uri:
+          prefix: /status
+      - uri:
+          prefix: /delay
+      route:
+      - destination:
+          port:
+            number: 8000
+          host: httpbin
+  EOF
+</code></pre>
+
+<p>在这里，我们 为服务创建了一个 <a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService" target="_blank">VirtualService</a> 配置 <code>httpbin</code> ，其中包含两条路由规则，允许路径 <code>/status</code> 和 路径的流量 <code>/delay</code>。</p>
+
+<p>该<a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService-gateways" target="_blank">网关</a>列表指定，只有通过我们的要求 <code>httpbin-gateway</code> 是允许的。所有其他外部请求将被拒绝，并返回 404 响应。</p>
+
+<p>请注意，在此配置中，来自网格中其他服务的内部请求不受这些规则约束，而是简单地默认为循环路由。要将这些（或其他规则）应用于内部调用，我们可以<strong>将特殊值 <code>mesh</code> 添加到 <code>gateways</code> 的列表中</strong>。</p></li>
 </ol>
 
 <h3 id="p-id-h2-3-使用浏览器访问-ingress-服务-p"><p id="h2">3. 使用浏览器访问 Ingress 服务</p></h3>
@@ -853,7 +878,7 @@ border-top-color: #9954bb;
     <section id="datecount">
         <h4 id="date"> Thu Aug 2, 2018</h4>
     </section>
-    <h5 id="wc">2100 Words|Read in about 5 Min</h5>
+    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
