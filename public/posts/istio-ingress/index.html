@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Istio 流量管理 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> Istio服务网格中的网关 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Istio 流量管理" />
-  <meta name="twitter:title" content="Istio 流量管理" />
-  <meta name="description" content="使用 Istio 实现应用的金丝雀部署">
-  <meta property="og:description" content="使用 Istio 实现应用的金丝雀部署">
-  <meta name="twitter:description" content="使用 Istio 实现应用的金丝雀部署">
+  <meta property="og:title" content="Istio服务网格中的网关" />
+  <meta name="twitter:title" content="Istio服务网格中的网关" />
+  <meta name="description" content="使用 Istio 控制 Ingress 流量">
+  <meta property="og:description" content="使用 Istio 控制 Ingress 流量">
+  <meta name="twitter:description" content="使用 Istio 控制 Ingress 流量">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/istio-traffic-management/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/istio-ingress/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.42.2" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/istio-traffic-management/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/istio-ingress/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -316,7 +316,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>Istio 流量管理</h1>
+                     <h1>Istio服务网格中的网关</h1>
                      
                      
                   
@@ -324,13 +324,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">使用 Istio 实现应用的金丝雀部署</span>
+                      <span class="post-subheading">使用 Istio 控制 Ingress 流量</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on August 1, 2018
+  Posted on August 2, 2018
   
   
 </span>
@@ -351,10 +351,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">Istio 流量管理</h1>
+                <h1 align="center">Istio服务网格中的网关</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">使用 Istio 实现应用的金丝雀部署</h2>
+                    <h2 align="center" class="posts-subheading">使用 Istio 控制 Ingress 流量</h2>
                   
                 
                 
@@ -375,9 +375,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Wed Aug 1, 2018</h4>
+        <h4 id="date"> Thu Aug 2, 2018</h4>
     </section>
-    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
+    <h5 id="wc">2500 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -390,471 +390,267 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>Istio 从 0.8 版本开始出现了一个新的 API 组：<a href="http://networking.istio.io/v1alpha3" target="_blank">networking.istio.io/v1alpha3</a>，应该会替代现有的 <a href="http://config.istio.io/v1alpha2" target="_blank">config.istio.io/v1alpha2</a> API。新的 API 不管是结构上还是功能上、以及命名上，都有很大差异。如果不作特殊说明，本文所有的示例将采用新版 API。</p>
+<p>在一个典型的网格中，通常有一个或多个用于终结外部 TLS 链接，将流量引入网格的负载均衡器（我们称之为 gateway）。 然后流量通过边车网关（sidecar gateway）流经内部服务。 应用程序使用外部服务的情况也很常见（例如访问 Google Maps API），一些情况下，这些外部服务可能被直接调用；但在某些部署中，网格中所有访问外部服务的流量可能被要求强制通过专用的出口网关（Egress gateway）。 下图描绘了网关在网格中的使用情况。</p>
 
-<p>本文将通过简单的示例来演示通过 Istio 实现应用的金丝雀部署。</p>
+<p><img src="https://istio.io/blog/2018/v1alpha3-routing/gateways.svg" alt="" /></p>
 
-<div id="note">
-<p id="note-title">Note</p>
-<br />
-<p>正常情况下 istioctl 和 kubectl 都可以用来操作这些对象，但是 kubectl 缺乏验证功能，因此调试阶段使用 <code>istioctl</code> 会更方便一些。</p>
-</div>
-
-<h3 id="p-id-h2-1-bookinfo-应用介绍-p"><p id="h2">1. Bookinfo 应用介绍</p></h3>
-
-<hr />
-
-<p>以 Bookinfo 应用为示例，它由四个单独的微服务构成，用来演示多种 Istio 特性。这个应用模仿在线书店的一个分类，显示一本书的信息。页面上会显示一本书的描述，书籍的细节（ISBN、页数等），以及关于这本书的一些评论。</p>
-
-<p>Bookinfo 应用分为四个单独的微服务：</p>
-
-<ul>
-<li><code>productpage</code> ：<code>productpage</code> 微服务会调用 <code>details</code> 和 <code>reviews</code> 两个微服务，用来生成页面。</li>
-<li><code>details</code> ：这个微服务包含了书籍的信息。</li>
-<li><code>reviews</code> ：这个微服务包含了书籍相关的评论。它还会调用 ratings 微服务。</li>
-<li><code>ratings</code> ：<code>ratings</code> 微服务中包含了由书籍评价组成的评级信息。</li>
-</ul>
-
-<p><code>reviews</code> 微服务有 3 个版本：</p>
-
-<ul>
-<li>v1 版本不会调用 <code>ratings</code> 服务。</li>
-<li>v2 版本会调用 <code>ratings</code> 服务，并使用 1 到 5 个黑色星形图标来显示评分信息。</li>
-<li>v3 版本会调用 <code>ratings</code> 服务，并使用 1 到 5 个红色星形图标来显示评分信息。</li>
-</ul>
-
-<p>下图展示了这个应用的端到端架构。</p>
-
-<p><img src="https://istio.io/docs/examples/bookinfo/noistio.svg" alt="" /></p>
-
-<p><center><em>Istio 注入之前的 Bookinfo 应用</em></center></p>
+<p><center><em>Istio服务网格中的网关</em></center></p>
 
 <p><br /></p>
 
-<p>Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的。这些服务对 Istio 并无依赖，但是构成了一个有代表性的服务网格的例子：它由多个服务、多个语言构成，并且 <code>reviews</code> 服务具有多个版本。</p>
+<p>其中 <code>Gateway</code> 是一个独立于平台的抽象，用于对流入专用中间设备的流量进行建模。下图描述了跨多个配置资源的控制流程。</p>
 
-<h3 id="p-id-h2-2-部署-bookinfo-应用-p"><p id="h2">2. 部署 Bookinfo 应用</p></h3>
+<p><img src="https://istio.io/blog/2018/v1alpha3-routing/virtualservices-destrules.svg" alt="" /></p>
 
-<hr />
-
-<p>要在 Istio 中运行这一应用，无需对应用自身做出任何改变。我们只要简单的在 Istio 环境中对服务进行配置和运行，具体一点说就是把 Envoy sidecar 注入到每个服务之中。这个过程所需的具体命令和配置方法由运行时环境决定，而部署结果较为一致，如下图所示：</p>
-
-<p><img src="https://istio.io/docs/examples/bookinfo/withistio.svg" alt="" /></p>
-
-<p><center><em>Bookinfo 应用</em></center></p>
+<p><center><em>不同v1alpha3元素之间的关系</em></center></p>
 
 <p><br /></p>
 
-<p>所有的微服务都和 Envoy sidecar 集成在一起，被集成服务所有的出入流量都被 sidecar 所劫持，这样就为外部控制准备了所需的 Hook，然后就可以利用 Istio 控制平面为应用提供服务路由、遥测数据收集以及策略实施等功能。</p>
+<h3 id="p-id-h2-1-gateway-介绍-p"><p id="h2">1. Gateway 介绍</p></h3>
 
-<p>接下来可以根据 Istio 的运行环境，按照下面的讲解完成应用的部署。</p>
+<hr />
+
+<p><a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#Gateway" target="_blank">Gateway</a> 用于为 HTTP / TCP 流量配置负载均衡器，并不管该负载均衡器将在哪里运行。 网格中可以存在任意数量的 Gateway，并且多个不同的 Gateway 实现可以共存。 实际上，通过在配置中指定一组工作负载（Pod）标签，可以将 Gateway 配置绑定到特定的工作负载，从而允许用户通过编写简单的 Gateway Controller 来重用现成的网络设备。</p>
+
+<p>对于入口流量管理，您可能会问： 为什么不直接使用 Kubernetes Ingress API ？ 原因是 Ingress API 无法表达 Istio 的路由需求。 Ingress 试图在不同的 HTTP 代理之间取一个公共的交集，因此只能支持最基本的 HTTP 路由，最终导致需要将代理的其他高级功能放入到注解（annotation）中，而注解的方式在多个代理之间是不兼容的，无法移植。</p>
+
+<p>Istio <code>Gateway</code> 通过将 L4-L6 配置与 L7 配置分离的方式克服了 <code>Ingress</code> 的这些缺点。 <code>Gateway</code> 只用于配置 L4-L6 功能（例如，对外公开的端口，TLS 配置），所有主流的L7代理均以统一的方式实现了这些功能。 然后，通过在 <code>Gateway</code> 上绑定 <code>VirtualService</code> 的方式，可以使用标准的 Istio 规则来控制进入 <code>Gateway</code> 的 HTTP 和 TCP 流量。</p>
+
+<p>例如，下面这个简单的 <code>Gateway</code> 配置了一个 Load Balancer，以允许访问 host <code>bookinfo.com</code> 的 https 外部流量进入网格中：</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+spec:
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - bookinfo.com
+</code></pre>
+
+<p>要为进入上面的 Gateway 的流量配置相应的路由，必须为同一个 host 定义一个 <a href="https://www.yangcs.net/posts/istio-traffic-management/" target="_blank">VirtualService</a>（参考上一篇博文），并使用配置中的 <code>gateways</code> 字段绑定到前面定义的 <code>Gateway</code> 上：</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+    - bookinfo.com
+  gateways:
+  - bookinfo-gateway # &lt;---- bind to gateway
+    http:
+  - match:
+    - uri:
+        prefix: /reviews
+    route:
+    ...
+</code></pre>
+
+<p>Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图所示。 无论在哪个位置，所有网关都可以用相同的方式进行配置和控制。</p>
+
+<p>下面通过一个示例来演示如何配置 Istio 以使用 Istio  Gateway 在服务网格外部公开服务。</p>
+
+<h3 id="p-id-h2-2-使用-istio-网关配置-ingress-p"><p id="h2">2. 使用 Istio 网关配置 Ingress</p></h3>
+
+<hr />
+
+<p>让我们看看如何为 Gateway 在 HTTP 80 端口上配置流量。</p>
 
 <ol>
-<li>进入 Istio 安装目录。</li>
+<li><p>创建一个 Istio <code>Gateway</code></p>
 
-<li><p>启动应用容器：</p>
+<p>```yaml
+$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: httpbin-gateway
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:</p>
 
 <ul>
-<li>如果集群用的是<a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#manual-sidecar-injection" target="_blank">手工 Sidecar 注入</a>，使用如下命令：
+<li>port:
+  number: 80
+  name: http
+  protocol: HTTP
+hosts:
+
+<ul>
+<li>&ldquo;httpbin.example.com&rdquo;
+EOF
+```
 <br /></li>
-</ul>
+</ul></li>
+</ul></li>
 
-<pre><code class="language-bash">  $ kubectl apply -f &lt;(istioctl kube-inject -f samples/bookinfo/platform/kube/bookinfo.yaml)
-</code></pre>
+<li><p>为通过 <code>Gateway</code> 进入的流量配置路由</p>
 
-<p><a href="https://istio.io/docs/reference/commands/istioctl/#istioctl-kube-inject" target="_blank">istioctl kube-inject</a> 命令用于在在部署应用之前修改 <code>bookinfo.yaml</code></p>
+<p>```yaml
+$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: httpbin
+spec:
+  hosts:</p>
 
 <ul>
-<li>如果集群使用的是<a href="https://istio.io/docs/setup/kubernetes/sidecar-injection/#automatic-sidecar-injection" target="_blank">自动 Sidecar 注入</a>，只需简单的 <code>kubectl</code> 就能完成服务的部署。</li>
+<li>&ldquo;httpbin.example.com&rdquo;
+gateways:</li>
+<li>httpbin-gateway
+http:</li>
+<li>match:
+
+<ul>
+<li>uri:
+prefix: /status</li>
+<li>uri:
+prefix: /delay
+route:</li>
+<li>destination:
+port:
+  number: 8000
+host: httpbin
+EOF
+```
+<br /></li>
+</ul></li>
 </ul>
 
-<pre><code class="language-bash">  $ kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+<p>在这里，我们 为服务创建了一个 <a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService" target="_blank">VirtualService</a> 配置 <code>httpbin</code> ，其中包含两条路由规则，允许路径 <code>/status</code> 和 路径的流量 <code>/delay</code>。</p>
+
+<p>该<a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService-gateways" target="_blank">网关</a>列表指定，只有通过我们的要求 <code>httpbin-gateway</code> 是允许的。所有其他外部请求将被拒绝，并返回 404 响应。</p>
+
+<p>请注意，在此配置中，来自网格中其他服务的内部请求不受这些规则约束，而是简单地默认为循环路由。要将这些（或其他规则）应用于内部调用，我们可以<strong>将特殊值 <code>mesh</code> 添加到 <code>gateways</code> 的列表中</strong>。</p></li>
+
+<li><p>使用 curl 访问 httpbin 服务。</p>
+
+<p>首先获取 Ingress Gateway 的 IP 和 端口，参考上一篇文章：<a href="https://www.yangcs.net/posts/istio-traffic-management/" target="_blank">Istio 流量管理</a></p>
+
+<pre><code class="language-bash">$ curl -I -HHost:httpbin.example.com http://$INGRESS_HOST:$INGRESS_PORT/status/200
+    
+HTTP/1.1 200 OK
+server: envoy
+date: Thu, 02 Aug 2018 04:18:41 GMT
+content-type: text/html; charset=utf-8
+access-control-allow-origin: *
+access-control-allow-credentials: true
+content-length: 0
+x-envoy-upstream-service-time: 9
 </code></pre>
 
-<p>上面的命令会启动全部的四个服务，其中也包括了 <code>reviews</code> 服务的三个版本（<code>v1</code>、<code>v2</code> 以及 <code>v3</code>）</p></li>
+<p>请注意，我们使用该 <code>-H</code> 标志将 Host <code>HTTP Header</code> 设置为 “httpbin.example.com”。这是必需的，因为我们的 ingress <code>Gateway</code> 被配置为处理 “httpbin.example.com”，但在我们的测试环境中，我们没有该主机的 DNS 绑定，并且只是将我们的请求发送到 ingress IP。</p></li>
 
-<li><p>给应用定义 Ingress gateway：</p>
+<li><p>访问任何未明确公开的其他 URL。您应该看到一个 HTTP 404 错误：</p>
 
-<pre><code class="language-bash">$ kubectl apply -f samples/bookinfo/networking/bookinfo-gateway.yaml
-</code></pre></li>
-
-<li><p>确认所有的服务和 Pod 都已经正确的定义和启动：</p>
-
-<pre><code class="language-bash">$ kubectl get services
-  
-NAME          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                         AGE
-details       ClusterIP   10.254.86.98     &lt;none&gt;        9080/TCP                        3h
-kubernetes    ClusterIP   10.254.0.1       &lt;none&gt;        443/TCP                         149d
-productpage   ClusterIP   10.254.199.214   &lt;none&gt;        9080/TCP                        3h
-ratings       ClusterIP   10.254.102.147   &lt;none&gt;        9080/TCP                        3h
-reviews       ClusterIP   10.254.249.86    &lt;none&gt;        9080/TCP                        3h
-</code></pre>
-
-<pre><code class="language-bash">$ kubectl get pods
-  
-NAME                              READY     STATUS    RESTARTS   AGE
-details-v1-6456dbdb9-crqnw        2/2       Running   0          3h
-productpage-v1-6f6887645c-52qhn   2/2       Running   0          3h
-ratings-v1-648cf76d8f-g65s5       2/2       Running   0          3h
-reviews-v1-7dcbc85bb5-j748n       2/2       Running   0          3h
-reviews-v2-65fd78f5df-r8n6r       2/2       Running   0          3h
-reviews-v3-95c85969c-zmpfx        2/2       Running   0          3h
-</code></pre></li>
-
-<li><p>确定 Ingress 的 IP 和端口</p>
-
-<p>执行以下命令以确定 <code>ingressgateway</code> 是否启用了 NodePort 模式。</p>
-
-<pre><code class="language-bash">$ kubectl -n istio-system get svc istio-ingressgateway
-
-NAME                   TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)                                                                                                     AGE
-istio-ingressgateway   NodePort   10.254.160.93   &lt;none&gt;        80:31380/TCP,443:31390/TCP,31400:31400/TCP,15011:25059/TCP,8060:36612/TCP,15030:25049/TCP,15031:36810/TCP   3h
-</code></pre>
-
-<p>确定 ingress IP：</p>
-
-<pre><code class="language-bash">$ export INGRESS_HOST=$(kubectl -n istio-system get po -l istio=ingressgateway -o go-template='{{range .items}}{{.status.hostIP}}{{end}}')
-</code></pre>
-
-<p>确定端口：</p>
-
-<pre><code class="language-bash">$ export INGRESS_PORT=$(kubectl -n istio-system get svc istio-ingressgateway -o go-template='{{range .spec.ports}}{{if eq .name &quot;http&quot;}}{{.nodePort}}{{end}}{{end}}')
-</code></pre></li>
-
-<li><p>设置 <code>GATEWAY_URL</code>：</p>
-
-<pre><code class="language-bash"> $ export GATEWAY_URL=$INGRESS_HOST:$INGRESS_PORT
+<pre><code class="language-bash">$ curl -I -HHost:httpbin.example.com http://$INGRESS_HOST:$INGRESS_PORT/headers
+    
+HTTP/1.1 404 Not Found
+date: Thu, 02 Aug 2018 04:21:39 GMT
+server: envoy
+transfer-encoding: chunked
 </code></pre></li>
 </ol>
 
-<p>下面可以用 <code>curl</code> 命令来确认 Bookinfo 应用的运行情况：</p>
+<p><br /></p>
 
-<pre><code class="language-bash">$ curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://${GATEWAY_URL}/productpage
-
-200
-</code></pre>
-
-<p>还可以用浏览器打开网址 <code>http://$GATEWAY_URL/productpage</code>，来浏览应用的 Web 页面。如果刷新几次应用的页面，就会看到页面中会随机展示 <code>reviews</code> 服务的不同版本的效果（红色、黑色的星形或者没有显示）。<code>reviews</code> 服务出现这种情况是因为我们还没有使用 Istio 来控制版本的路由。</p>
-
-<h3 id="p-id-h2-3-金丝雀部署-p"><p id="h2">3. 金丝雀部署</p></h3>
+<h3 id="p-id-h2-3-使用浏览器访问-ingress-服务-p"><p id="h2">3. 使用浏览器访问 Ingress 服务</p></h3>
 
 <hr />
 
-<p>由于 Bookinfo 示例部署了三个版本的 reviews 微服务，因此我们需要设置默认路由。 否则，如果您当多次访问应用程序，您会注意到有时输出包含星级评分，有时又没有。 这是因为没有为应用明确指定缺省路由时，Istio 会将请求随机路由到该服务的所有可用版本上。</p>
+<p>如果你想在浏览器中输入 httpbin 服务的 URL 来访问是行不通的，因为我们没有办法像使用 curl 一样告诉浏览器假装访问 <code>httpbin.example.com</code>，只能通过向 <code>/etc/hosts</code> 文件中添加 hosts 来解决这个问题。</p>
 
-<p><img src="https://istio.io/docs/concepts/traffic-management/ServiceModel_Versions.svg" alt="" /></p>
+<p>但是麻烦又来了，目前这种状况下即使你添加了 hosts，也仍然无法访问，因为 Istio Gateway 使用的是 NodePort 模式，暴露出来的不是 80 端口和 443 端口，而我们要想通过域名来访问服务，必须要求 Gateway 暴露出来的端口是 80 和 443。</p>
 
-<div id="note">
-<p id="note-title">Note</p>
-<br />
-<p>此任务假定您尚未设置任何路由。 如果您已经为示例应用程序创建了存在冲突的路由规则，则需要在下面的命令中使用 <code>replace</code> 代替 <code>create</code>。 请注意：本文档假设还没有设置任何路由规则。</p>
-</div>
+<p>所以我们只能曲线救国了，通过修改 Ingress Gateway 的 <code>Deployment</code>，将 80 端口和 443 端口配置为 <code>hostPort</code> 模式，然后再通过 Node 亲和性将 <code>Gateway</code> 调度到某个固定的主机上。</p>
 
-<p>首先将所有微服务的默认路由设置为 v1。</p>
-
-<pre><code class="language-bash">$ istioctl create -f samples/bookinfo/networking/virtual-service-all-v1.yaml
+<pre><code class="language-bash">$ kubectl -n istio-system edit deployment istio-ingressgateway
 </code></pre>
 
-<pre><code class="language-bash">$ istioctl create -f samples/bookinfo/networking/destination-rule-all.yaml
-</code></pre>
-
-<p>可以通过下面的命令来显示已创建的路由规则：</p>
-
-<pre><code class="language-bash">$ istioctl get virtualservices -o yaml
-</code></pre>
-
-<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+<pre><code class="language-yaml">apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
-  name: details
+  name: istio-ingressgateway
+  namespace: istio-system
   ...
 spec:
-  hosts:
-  - details
-  http:
-  - route:
-    - destination:
-        host: details
-        subset: v1
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: productpage
   ...
-spec:
-  gateways:
-  - bookinfo-gateway
-  - mesh
-  hosts:
-  - productpage
-  http:
-  - route:
-    - destination:
-        host: productpage
-        subset: v1
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: ratings
-  ...
-spec:
-  hosts:
-  - ratings
-  http:
-  - route:
-    - destination:
-        host: ratings
-        subset: v1
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: reviews
-  ...
-spec:
-  hosts:
-  - reviews
-  http:
-  - route:
-    - destination:
-        host: reviews
-        subset: v1
----
+  template:
+    ...
+    spec:
+      affinity:
+        nodeAffinity:
+          ...
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - 192.168.123.248   # 比如你想调度到这台主机上
+      containers:
+        - name: ISTIO_META_POD_NAME
+        ...
+        - containerPort: 80
+          hostPort: 80
+          protocol: TCP
+        - containerPort: 443
+          hostPort: 443
+          protocol: TCP
+        ...
 </code></pre>
 
-<p>由于路由规则是通过异步方式分发到代理的，因此在尝试访问应用程序之前，您应该等待几秒钟，以便规则传播到所有 pod 上。</p>
+<p>修改完之后保存退出，等待 Gateway 的 Pod 重新调度，然后在你的浏览器所在的本地电脑上添加一条 hosts：</p>
 
-<p>现在在浏览器中打开 Bookinfo 应用程序的 URL (<code>http://$GATEWAY_URL/productpage</code>)，你应该可以看到 Bookinfo 应用程序的 <code>productpage</code> 页面。 请注意， <code>productpage</code> 页面显示的内容中没有评分星级，这是因为 <code>reviews:v1</code> 服务不会访问 ratings 服务。</p>
-
-<p>由于新的 API 引入了一些新的配置资源，而且不向后兼容，所以很有必要来解释一下上面两个 yaml 文件提到的两个新概念：<code>VirtualService</code> 和 <code>DestinationRule</code>。</p>
-
-<h4 id="virtualservice">VirtualService</h4>
-
-<p>过去的路由分配比较简单，使用标签即可。新的版本中，提出了 VirtualService 的概念。<span id="inline-blue">VirtualService</span> 由一组路由规则构成，用于对服务实体（在 K8S 中对应为 Pod）进行寻址。一旦有流量符合其中规则的选择条件，就会发送流量给对应的服务（或者服务的一个版本/子集）。</p>
-
-<p><code>VirtualService</code> 描述了一个或多个用户可寻址目标到网格内实际工作负载之间的映射。其中可寻址的目标服务使用 <code>hosts</code> 字段来指定，而网格内的实际工作负载由每个 <code>route</code> 配置项中的 <code>destination</code> 字段指定。在上面的示例中，这两个地址是相同的，但实际上用户可寻址目标可以是任何用于定位服务的、具有可选通配符前缀或 CIDR 前缀的 DNS 名称。</p>
-
-<p>流量的特征除了请求数据之外，还包括流量的来源，这样就能根据一些上下文来进行灵活的定义了。</p>
-
-<p>例如，以下规则定义来自打了标签 <code>app=sleep</code> 的 Pod 对 php-server 的请求，都转向 v1：</p>
-
-<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
-
-kind: VirtualService
-
-metadata:
-
-  name: sleep-server-route
-
-spec:
-
-  hosts:
-
-  - &quot;php-server&quot;
-
-  http:
-
-  - match:
-
-    - sourceLabels:
-
-        app: sleep
-
-    route:
-
-    - destination:
-
-        name: php-server
-
-        subset: v1
-
-  - route:
-
-    - destination:
-
-        name: php-server
-
-        subset: v2
+<pre><code class="language-bash">192.168.123.248 httpbin.example.com
 </code></pre>
 
-<blockquote>
-<p>这里的匹配策略是具有从上到下的优先级的，也就是说，最下一条就是缺省路由。所以没有打标签 app=sleep 的 Pod 对 php-server 的请求，都转向 v2。</p>
-</blockquote>
+<p>重新配置 <code>VirtualService</code>：</p>
 
-<p>而本文的 Bookinfo 示例中创建的路由规则表示：</p>
-
-<ul>
-<li>所有对 details 的请求，都转向 details 的 v1 版本。</li>
-<li>所有对 productpage 的请求，都转向 productpage 的 v1 版本。</li>
-<li>所有对 ratings 的请求，都转向 ratings 的 v1 版本。</li>
-<li>所有对 reviews 的请求，都转向 reviews 的 v1 版本。</li>
-</ul>
-
-<p>可以看到，<code>match</code> 中不再包含 <code>source</code>，这里使用标签来过滤。写完应用之后，我们再次访问 Bookinfo 应用程序的 URL (<code>http://$GATEWAY_URL/productpage</code>)，会发现并没有生效。这是因为，<strong>在 v3 版本的 API 中，目标规则不再是透明了</strong>，路由定义必须以目标策略为基础。</p>
-
-<h4 id="destinationrule">DestinationRule</h4>
-
-<p>因此这里需要定义一个 <span id="inline-blue">DestinationRule</span> 对象，来满足上面的目标需求：</p>
-
-<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: productpage
-spec:
-  host: productpage
-  subsets:
-  - name: v1
-    labels:
-      version: v1
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: reviews
-spec:
-  host: reviews
-  subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
-  - name: v3
-    labels:
-      version: v3
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: ratings
-spec:
-  host: ratings
-  subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
-  - name: v2-mysql
-    labels:
-      version: v2-mysql
-  - name: v2-mysql-vm
-    labels:
-      version: v2-mysql-vm
----
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: details
-spec:
-  host: details
-  subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
----
+<pre><code class="language-yaml">$  cat &lt;&lt;EOF | istioctl replace -f -
+ apiVersion: networking.istio.io/v1alpha3
+ kind: VirtualService
+ metadata:
+   name: httpbin
+ spec:
+   hosts:
+   - &quot;httpbin.example.com&quot;
+     gateways:
+   - httpbin-gateway
+     http:
+   - match:
+     - uri:
+         prefix: /status
+     - uri:
+         prefix: /delay
+     - uri:
+         prefix: /headers
+     route:
+     - destination:
+         port:
+           number: 8000
+         host: httpbin
+ EOF
 </code></pre>
 
-<p>DestinationRule 用于配置在将流量转发到服务时应用的策略集。这些策略应由服务提供者撰写，用于描述断路器、负载均衡、TLS 设置等。</p>
+<p>接下来就可以在浏览器中输入 URL：<code>http://httpbin.example.com/headers</code> 来访问服务啦！</p>
 
-<ul>
-<li>DestinationRule 的 <code>host</code> 可以包含通配符前缀，以允许单个规则应用于多个服务。</li>
-<li>DestinationRule 定义了目的 host 的子集 <code>subsets</code> （例如：命名版本）。 这些 subset 用于 <code>VirtualService</code> 的路由规则设置中，可以将流量导向服务的某些特定版本。通过这种方式为版本命名后，可以在不同的虚拟服务中明确地引用这些命名版本的 subset，简化 Istio 代理发出的统计数据，并可以将 subsets 编码到 SNI 头中。</li>
-</ul>
-
-<p>现在再次访问 Bookinfo 应用程序的 URL (<code>http://$GATEWAY_URL/productpage</code>)，会发现规则已经生效了。</p>
-
-<h4 id="示例一-将-10-请求发送到-v2-版本而其余-90-发送到-v1-版本-br">示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本<br /></h4>
-
-<pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl replace -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: reviews
-spec:
-  hosts:
-    - reviews
-  http:
-  - route:
-    - destination:
-        host: reviews
-        subset: v1
-      weight: 90
-    - destination:
-        host: reviews
-        subset: v2
-      weight: 10
-EOF
-</code></pre>
-
-<p>现在的规则就是刷新 productpage 页面，90% 的概率看到黑色星标的评论，10%的概率看不到星标。</p>
-
-<p><strong>注意：</strong>因为使用Envoy sidecar的实现，你需要刷新页面很多次才能看到接近规则配置的概率分布。</p>
-
-<h4 id="示例二-将-jason-用户的请求全部发到-v2-版本">示例二：将 jason 用户的请求全部发到 v2 版本</h4>
-
-<pre><code class="language-yaml">cat &lt;&lt;EOF | istioctl replace -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: reviews
-spec:
-  hosts:
-    - reviews
-  http:
-  - match:
-    - headers:
-        end-user:
-          exact: jason
-    route:
-    - destination:
-        host: reviews
-        subset: v2
-  - route:
-    - destination:
-        host: reviews
-        subset: v1
-EOF
-</code></pre>
-
-<p>使用 <code>jason</code> 用户登陆 productpage 页面，你可以看到每个刷新页面时，页面上都有一个1到5颗星的评级。如果你使用其他用户登陆的话，将因继续使用 <code>reviews:v1</code> 而看不到星标评分。</p>
-
-<h4 id="示例三-全部切换到-v3-版本">示例三：全部切换到 v3 版本</h4>
-
-<pre><code class="language-yaml">cat &lt;&lt;EOF | istioctl replace -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: reviews
-spec:
-  hosts:
-  - reviews
-  http:
-  - route:
-    - destination:
-        host: reviews
-        subset: v3
-EOF
-</code></pre>
-
-<p>现在不论你使用什么用户登陆 productpage 页面，你都可以看到带红色星标评分的评论了。</p>
-
-<p><br /></p>
+<p><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg" alt="" /></p>
 
 <h3 id="p-id-h2-4-参考-p"><p id="h2">4. 参考</p></h3>
 
 <hr />
 
 <ul>
-<li><a href="https://blog.fleeto.us/post/istio-route-alpha1v3/" target="_blank">摸索：Istio 路由规则 Alpha v3</a></li>
-<li><a href="https://istio.io/zh/docs/tasks/traffic-management/request-routing/" target="_blank">配置请求路由</a></li>
+<li><a href="https://istio.io/zh/docs/tasks/traffic-management/ingress/" target="_blank">控制 Ingress 流量</a></li>
+<li><a href="https://istio.io/zh/docs/concepts/traffic-management/#gateway" target="_blank">Gateway</a></li>
 </ul>
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center></p>
@@ -1093,11 +889,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/istio-1.0-deploy/" data-toggle="tooltip" data-placement="top" title="Istio 1.0 部署">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/istio-traffic-management/" data-toggle="tooltip" data-placement="top" title="Istio 流量管理">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/istio-ingress/" data-toggle="tooltip" data-placement="top" title="Istio服务网格中的网关">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -1107,6 +903,8 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
+                    <li><a href="/posts/istio-traffic-management/">Istio 流量管理</a></li>
+                    
                     <li><a href="/posts/istio-1.0-deploy/">Istio 1.0 部署</a></li>
                     
                     <li><a href="/posts/circuit-breaking/">Envoy 熔断器的原理和使用</a></li>
@@ -1114,8 +912,6 @@ border-top-color: #9954bb;
                     <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
                     
                     <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
-                    
-                    <li><a href="/posts/setting-up-ssl-in-envoy/">为 Envoy 启用证书验证</a></li>
                     
                 </ul>
                 
@@ -1126,9 +922,9 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Wed Aug 1, 2018</h4>
+        <h4 id="date"> Thu Aug 2, 2018</h4>
     </section>
-    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
+    <h5 id="wc">2500 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;

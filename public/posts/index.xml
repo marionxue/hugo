@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Istio服务网格中的网关</title>
+      <link>https://www.yangcs.net/posts/istio-ingress/</link>
+      <pubDate>Thu, 02 Aug 2018 13:29:08 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-ingress/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Istio 流量管理</title>
       <link>https://www.yangcs.net/posts/istio-traffic-management/</link>
       <pubDate>Wed, 01 Aug 2018 20:59:11 +0800</pubDate>
