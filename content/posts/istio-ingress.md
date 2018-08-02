@@ -85,7 +85,7 @@ Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图
 
 1. 创建一个 Istio Gateway
 
-    ```yaml
+  ```yaml
     
     $ cat <<EOF | istioctl create -f -
     apiVersion: networking.istio.io/v1alpha3
@@ -104,7 +104,7 @@ Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图
         - "httpbin.example.com"
     EOF
     
-    ```
+  ```
 
 ### <p id="h2">3. 使用浏览器访问 Ingress 服务</p>
 
