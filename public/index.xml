@@ -849,18 +849,7 @@ sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,resp
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
-
-&lt;link rel=&#34;stylesheet&#34; href=&#34;https://www.yangcs.net/css/hugo-easy-gallery.css&#34; /&gt;
-&lt;div class=&#34;box&#34; &gt;
-  &lt;figure  itemprop=&#34;associatedMedia&#34; itemscope itemtype=&#34;http://schema.org/ImageObject&#34;&gt;
-    &lt;div class=&#34;img&#34;&gt;
-      &lt;img itemprop=&#34;thumbnail&#34; src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; /&gt;
-    &lt;/div&gt;
-      &lt;figcaption&gt;&lt;h4&gt;Steve Francia&lt;/h4&gt;
-      &lt;/figcaption&gt;
-    &lt;a href=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; itemprop=&#34;contentUrl&#34;&gt;&lt;/a&gt;
-  &lt;/figure&gt;
-&lt;/div&gt;
+&lt;script src=&#34;//gist.github.com/spf13/7896402.js&#34;&gt;&lt;/script&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
