@@ -280,7 +280,7 @@ vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.i
 <center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
 
 
-{{< highlight html >}}
+{{< highlight html "linenos=table,hl_lines=3-6,linenostart=5" >}}
 <section id="main">
   <div>
    <h1 id="title">{{ .Title }}</h1>
