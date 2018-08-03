@@ -810,7 +810,11 @@ $Ingree_host vistio-api.istio.io
 &lt;p&gt;在全局范围内，您将看到Istio网格内所有请求的总和，如果你点击 &lt;code&gt;istio-mesh&lt;/code&gt; 气泡，就能查看你的网状网络。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/vistio-mesh1.jpg&#34; alt=&#34;&#34; /&gt;
-&lt;center&gt;&lt;iframe height=393 width=628 src=&#34;http://o7z41ciog.bkt.clouddn.com/vistio.mp4&#34; frameborder=0 allowfullscreen allowfullscreen=&#34;true&#34; &gt;&lt;/iframe&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;div style=&#34;position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;&#34;&gt;
+  &lt;iframe src=&#34;//www.youtube.com/embed/Loy4pJ8aUXc&#34; style=&#34;position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;&#34; allowfullscreen title=&#34;YouTube Video&#34;&gt;&lt;/iframe&gt;
+&lt;/div&gt;
+&lt;/p&gt;
 
 &lt;p&gt;在你的 Istio 网格中，您可以使用许多可视化工具来帮助您查明故障的应用程序。&lt;/p&gt;
 
