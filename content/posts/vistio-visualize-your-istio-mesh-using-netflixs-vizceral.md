@@ -10,7 +10,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-<p id="div-border-left-red">本文转载自 [Jimmy Song 的博客](https://jimmysong.io/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/)，并且有很多改动。</p>
+<p id="div-border-left-red">本文转载自 <a href="https://jimmysong.io/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/" target="_blank">Jimmy Song 的博客</a>，并且有很多改动。</p>
 
 [Vizceral](https://github.com/Netflix/vizceral) 是 `Netflix` 发布的一个开源项目，用于近乎实时地监控应用程序和集群之间的网络流量。[Vistio](https://github.com/nmnellis/vistio) 是使用 Vizceral 对 Istio 和网格监控的改进。它利用 `Istio Mixer` 生成的指标，然后将其输入 Prometheus。Vistio 查询 `Prometheus` 并将数据存储在本地以允许重播流量。关于 Vizceral 可以参考这篇文章：[Vizceral Open Source](https://medium.com/netflix-techblog/vizceral-open-source-acc0c32113fe)。
 
