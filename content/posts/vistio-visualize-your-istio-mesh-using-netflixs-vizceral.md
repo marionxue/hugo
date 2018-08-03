@@ -244,7 +244,6 @@ vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.i
 在全局范围内，您将看到Istio网格内所有请求的总和，如果你点击 `istio-mesh` 气泡，就能查看你的网状网络。
 
 ![](http://o7z41ciog.bkt.clouddn.com/vistio-mesh1.jpg)
-{{< youtube id="Loy4pJ8aUXc" >}}
 
 在你的 Istio 网格中，您可以使用许多可视化工具来帮助您查明故障的应用程序。
 
