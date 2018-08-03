@@ -638,24 +638,20 @@ $Ingree_host vistio-api.istio.io
 <p><img src="http://o7z41ciog.bkt.clouddn.com/TcFuNvCvk5C53rO4vXLkw.png" alt="" /></p>
 
 <ol>
-<li>检查 vistio-api 日志中是否有错误——在大多数情况下，vistio-api 将记录与 Prometheus 通信时遇到的任何问题。</li>
-</ol>
+<li><p>检查 vistio-api 日志中是否有错误——在大多数情况下，vistio-api 将记录与 Prometheus 通信时遇到的任何问题。</p>
 
-<pre><code class="language-bash">   $ kubectl logs -f $(kubectl get pod -l app=vistio-api -o go-template='{{range .items}}{{.metadata.name}}{{end}}') -c vistio-api
-</code></pre>
+<pre><code class="language-bash">$ kubectl logs -f $(kubectl get pod -l app=vistio-api -o go-template='{{range .items}}{{.metadata.name}}{{end}}') -c vistio-api
+</code></pre></li>
 
-<ol>
-<li>验证 Prometheus 查询——vistio-api 使用以下查询检索其数据。您应该确保 Prometheus 内部的数据都存在。</li>
-</ol>
+<li><p>验证 Prometheus 查询——vistio-api 使用以下查询检索其数据。您应该确保 Prometheus 内部的数据都存在。</p>
 
-<pre><code class="language-yaml">   # Global Level Query
-   sum(rate(istio_request_bytes_count{source_workload=&quot;istio-ingressgateway&quot;}[1m])) by (response_code)
-   # Cluster Level Query
-   sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
-</code></pre>
+<pre><code class="language-yaml"># Global Level Query
+sum(rate(istio_request_bytes_count{source_workload=&quot;istio-ingressgateway&quot;}[1m])) by (response_code)
+# Cluster Level Query
+sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
+</code></pre></li>
 
-<ol>
-<li>提交 Issue——如果遇到问题无法解决请提交 Issue：<a href="https://github.com/nmnellis/vistio/issues" target="_blank">https://github.com/nmnellis/vistio/issues</a></li>
+<li><p>提交 Issue——如果遇到问题无法解决请提交 Issue：<a href="https://github.com/nmnellis/vistio/issues" target="_blank">https://github.com/nmnellis/vistio/issues</a></p></li>
 </ol>
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center></p>

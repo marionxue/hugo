@@ -262,18 +262,18 @@ vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.i
 
 1. 检查 vistio-api 日志中是否有错误——在大多数情况下，vistio-api 将记录与 Prometheus 通信时遇到的任何问题。
 
-   ```bash
-   $ kubectl logs -f $(kubectl get pod -l app=vistio-api -o go-template='{{range .items}}{{.metadata.name}}{{end}}') -c vistio-api
-   ```
+    ```bash
+    $ kubectl logs -f $(kubectl get pod -l app=vistio-api -o go-template='{{range .items}}{{.metadata.name}}{{end}}') -c vistio-api
+    ```
    
 2. 验证 Prometheus 查询——vistio-api 使用以下查询检索其数据。您应该确保 Prometheus 内部的数据都存在。
 
-   ```yaml
-   # Global Level Query
-   sum(rate(istio_request_bytes_count{source_workload="istio-ingressgateway"}[1m])) by (response_code)
-   # Cluster Level Query
-   sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
-   ```
+    ```yaml
+    # Global Level Query
+    sum(rate(istio_request_bytes_count{source_workload="istio-ingressgateway"}[1m])) by (response_code)
+    # Cluster Level Query
+    sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
+    ```
    
 3. 提交 Issue——如果遇到问题无法解决请提交 Issue：[https://github.com/nmnellis/vistio/issues](https://github.com/nmnellis/vistio/issues)
 
