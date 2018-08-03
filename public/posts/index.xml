@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Kubernetes 资源管理概述</title>
+      <link>https://www.yangcs.net/posts/kubernetes-resource-management/</link>
+      <pubDate>Fri, 03 Aug 2018 17:34:19 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-resource-management/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</title>
       <link>https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/</link>
       <pubDate>Fri, 03 Aug 2018 15:29:37 +0800</pubDate>

@@ -572,6 +572,648 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>Kubernetes 资源管理概述</title>
+      <link>https://www.yangcs.net/posts/kubernetes-resource-management/</link>
+      <pubDate>Fri, 03 Aug 2018 17:34:19 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-resource-management/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p id=&#34;div-border-left-red&#34;&gt;本文转载自 &lt;a href=&#34;http://cizixs.com/2018/06/25/kubernetes-resource-management&#34; target=&#34;_blank&#34;&gt;Cizixs 的博客&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-1-什么是资源-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 什么是资源？&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;在 kubernetes 中，有两个基础但是非常重要的概念：node 和 pod。node 翻译成节点，是对集群资源的抽象；pod 是对容器的封装，是应用运行的实体。node 提供资源，而 pod 使用资源，这里的资源分为计算（cpu、memory、gpu）、存储（disk、ssd）、网络（network bandwidth、ip、ports）。这些资源提供了应用运行的基础，正确理解这些资源以及集群调度如何使用这些资源，对于大规模的 kubernetes 集群来说至关重要，不仅能保证应用的稳定性，也可以提高资源的利用率。&lt;/p&gt;
+
+&lt;p&gt;在这篇文章，我们主要介绍 CPU 和内存这两个重要的资源，它们虽然都属于计算资源，但也有所差距。CPU 可分配的是使用时间，也就是操作系统管理的时间片，每个进程在一定的时间片里运行自己的任务（另外一种方式是绑核，也就是把 CPU 完全分配给某个 pod 使用，但这种方式不够灵活会造成严重的资源浪费，kubernetes 中并没有提供）；而对于内存，系统提供的是内存大小。&lt;/p&gt;
+
+&lt;p&gt;CPU 的使用时间是可压缩的，换句话说它本身无状态，申请资源很快，也能快速正常回收；而内存大小是不可压缩的，因为它是有状态的（内存里面保存的数据），申请资源很慢（需要计算和分配内存块的空间），并且回收可能失败（被占用的内存一般不可回收）。&lt;/p&gt;
+
+&lt;p&gt;把资源分成 &lt;span id=&#34;inline-blue&#34;&gt;可压缩&lt;/span&gt; 和 &lt;span id=&#34;inline-blue&#34;&gt;不可压缩&lt;/span&gt;，是因为在资源不足的时候，它们的表现很不一样。对于不可压缩资源，如果资源不足，也就无法继续申请资源（内存用完就是用完了），并且会导致 pod 的运行产生无法预测的错误（应用申请内存失败会导致一系列问题）；而对于可压缩资源，比如 CPU 时间片，即使 pod 使用的 CPU 资源很多，CPU 使用也可以按照权重分配给所有 pod 使用，虽然每个人使用的时间片减少，但不会影响程序的逻辑。&lt;/p&gt;
+
+&lt;p&gt;在 kubernetes 集群管理中，有一个非常核心的功能：就是为 pod 选择一个主机运行。调度必须满足一定的条件，其中最基本的是主机上要有足够的资源给 pod 使用。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://cdn-images-1.medium.com/max/800/1*PfGIiTw68JLIUyo0FQY2dA.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;资源除了和调度相关之外，还和很多事情紧密相连，这正是这篇文章要解释的。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-2-kubernetes-资源的表示-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. kubernetes 资源的表示&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;用户在 pod 中可以配置要使用的资源总量，kubernetes 根据配置的资源数进行调度和运行。目前主要可以配置的资源是 CPU 和 memory，对应的配置字段是 &lt;code&gt;spec.containers[].resource.limits/request.cpu/memory&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;需要注意的是，用户是对每个容器配置 request 值，所有容器的资源请求之和就是 pod 的资源请求总量，而我们一般会说 pod 的资源请求和 limits。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;limits&lt;/code&gt; 和 &lt;code&gt;requests&lt;/code&gt; 的区别我们下面会提到，这里先说说比较容易理解的 cpu 和 memory。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;CPU&lt;/code&gt; 一般用核数来标识，一核CPU 相对于物理服务器的一个超线程核，也就是操作系统 &lt;code&gt;/proc/cpuinfo&lt;/code&gt; 中列出来的核数。因为对资源进行了池化和虚拟化，因此 kubernetes 允许配置非整数个的核数，比如 &lt;code&gt;0.5&lt;/code&gt; 是合法的，它标识应用可以使用半个 CPU 核的计算量。CPU 的请求有两种方式，一种是刚提到的 &lt;code&gt;0.5&lt;/code&gt;，&lt;code&gt;1&lt;/code&gt; 这种直接用数字标识 CPU 核心数；另外一种表示是 &lt;code&gt;500m&lt;/code&gt;，它等价于 &lt;code&gt;0.5&lt;/code&gt;，也就是说 &lt;code&gt;1 Core = 1000m&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;内存比较容易理解，是通过字节大小指定的。如果直接一个数字，后面没有任何单位，表示这么多字节的内存；数字后面还可以跟着单位， 支持的单位有 &lt;code&gt;E&lt;/code&gt;、&lt;code&gt;P&lt;/code&gt;、&lt;code&gt;T&lt;/code&gt;、&lt;code&gt;G&lt;/code&gt;、&lt;code&gt;M&lt;/code&gt;、&lt;code&gt;K&lt;/code&gt;，前者分别是后者的 &lt;code&gt;1000&lt;/code&gt; 倍大小的关系，此外还支持 &lt;code&gt;Ei&lt;/code&gt;、&lt;code&gt;Pi&lt;/code&gt;、&lt;code&gt;Ti&lt;/code&gt;、&lt;code&gt;Gi&lt;/code&gt;、&lt;code&gt;Mi&lt;/code&gt;、&lt;code&gt;Ki&lt;/code&gt;，其对应的倍数关系是 &lt;code&gt;2^10 = 1024&lt;/code&gt;。比如要使用 100M 内存的话，直接写成 &lt;code&gt;100Mi&lt;/code&gt; 即可。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-3-节点可用资源-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 节点可用资源&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;理想情况下，我们希望节点上所有的资源都可以分配给 pod 使用，但实际上节点上除了运行 pods 之外，还会运行其他的很多进程：系统相关的进程（比如 sshd、udev等），以及 kubernetes 集群的组件（kubelet、docker等）。我们在分配资源的时候，需要给这些进程预留一些资源，剩下的才能给 pod 使用。预留的资源可以通过下面的参数控制：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;--kube-reserved=[cpu=100m][,][memory=100Mi][,][ephemeral-storage=1Gi]&lt;/code&gt;：控制预留给 kubernetes 集群组件的 CPU、memory 和存储资源&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--system-reserved=[cpu=100mi][,][memory=100Mi][,][ephemeral-storage=1Gi]&lt;/code&gt;：预留给系统的 CPU、memory 和存储资源&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这两块预留之后的资源才是 pod 真正能使用的，不过考虑到 eviction 机制（下面的章节会提到），kubelet 会保证节点上的资源使用率不会真正到 100%，因此 pod 的实际可使用资源会稍微再少一点。主机上的资源逻辑分配图如下所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://i.loli.net/2018/06/25/5b3106f947190.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;需要注意的是，allocatable 不是指当前机器上可以分配的资源，而是指能分配给 pod 使用的资源总量，一旦 kubelet 启动这个值是不会变化的。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;allocatable 的值可以在 node 对象的 status 字段中读取，比如下面这样：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;status:
+  allocatable:
+    cpu: &amp;quot;2&amp;quot;
+    ephemeral-storage: &amp;quot;35730597829&amp;quot;
+    hugepages-2Mi: &amp;quot;0&amp;quot;
+    memory: 3779348Ki
+    pods: &amp;quot;110&amp;quot;
+  capacity:
+    cpu: &amp;quot;2&amp;quot;
+    ephemeral-storage: 38770180Ki
+    hugepages-2Mi: &amp;quot;0&amp;quot;
+    memory: 3881748Ki
+    pods: &amp;quot;110&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-4-kubernetes-资源对象-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. kubernetes 资源对象&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;在这部分，我们来介绍 kubernetes 中提供的让我们管理 pod 资源的原生对象。&lt;/p&gt;
+
+&lt;h4 id=&#34;请求-requests-和上限-limits&#34;&gt;请求（requests）和上限（limits）&lt;/h4&gt;
+
+&lt;p&gt;前面说过用户在创建 pod 的时候，可以指定每个容器的 Requests 和 Limits 两个字段，下面是一个实例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;resources:
+  requests:
+    memory: &amp;quot;64Mi&amp;quot;
+    cpu: &amp;quot;250m&amp;quot;
+  limits:
+    memory: &amp;quot;128Mi&amp;quot;
+    cpu: &amp;quot;500m&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Requests&lt;/code&gt; 是容器请求要使用的资源，kubernetes 会保证 pod 能使用到这么多的资源。请求的资源是调度的依据，只有当节点上的可用资源大于 pod 请求的各种资源时，调度器才会把 pod 调度到该节点上（如果 CPU 资源足够，内存资源不足，调度器也不会选择该节点）。&lt;/p&gt;
+
+&lt;p&gt;需要注意的是，调度器只关心节点上可分配的资源，以及节点上所有 pods 请求的资源，而&lt;strong&gt;不关心&lt;/strong&gt;节点资源的实际使用情况，换句话说，如果节点上的 pods 申请的资源已经把节点上的资源用满，即使它们的使用率非常低，比如说 CPU 和内存使用率都低于 10%，调度器也不会继续调度 pod 上去。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Limits&lt;/code&gt; 是 pod 能使用的资源上限，是实际配置到内核 cgroups 里面的配置数据。对于内存来说，会直接转换成 &lt;code&gt;docker run&lt;/code&gt; 命令行的 &lt;code&gt;--memory&lt;/code&gt; 大小，最终会配置到 cgroups 对应任务的 &lt;code&gt;/sys/fs/cgroup/memory/……/memory.limit_in_bytes&lt;/code&gt; 文件中。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;如果 limit 没有配置，则表明没有资源的上限，只要节点上有对应的资源，pod 就可以使用。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用 requests 和 limits 概念，我们能分配更多的 pod，提升整体的资源使用率。但是这个体系有个非常重要的问题需要考虑，那就是&lt;strong&gt;怎么去准确地评估 pod 的资源 requests？&lt;/strong&gt;如果评估地过低，会导致应用不稳定；如果过高，则会导致使用率降低。这个问题需要开发者和系统管理员共同讨论和定义。&lt;/p&gt;
+
+&lt;h4 id=&#34;limit-range-默认资源配置&#34;&gt;limit range（默认资源配置)&lt;/h4&gt;
+
+&lt;p&gt;为每个 pod 都手动配置这些参数是挺麻烦的事情，kubernetes 提供了 &lt;code&gt;LimitRange&lt;/code&gt; 资源，可以让我们配置某个 namespace 默认的 request 和 limit 值，比如下面的实例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: &amp;quot;v1&amp;quot;
+kind: &amp;quot;LimitRange&amp;quot;
+metadata:
+  name: you-shall-have-limits
+spec:
+  limits:
+    - type: &amp;quot;Container&amp;quot;
+      max:
+        cpu: &amp;quot;2&amp;quot;
+        memory: &amp;quot;1Gi&amp;quot;
+      min:
+        cpu: &amp;quot;100m&amp;quot;
+        memory: &amp;quot;4Mi&amp;quot;
+      default:
+        cpu: &amp;quot;500m&amp;quot;
+        memory: &amp;quot;200Mi&amp;quot;
+      defaultRequest:
+        cpu: &amp;quot;200m&amp;quot;
+        memory: &amp;quot;100Mi&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;如果对应 namespace 创建的 pod 没有写资源的 requests 和 limits 字段，那么它会自动拥有下面的配置信息：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;内存请求是 100Mi，上限是 200Mi&lt;/li&gt;
+&lt;li&gt;CPU 请求是 200m，上限是 500m&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;当然，如果 pod 自己配置了对应的参数，kubernetes 会使用 pod 中的配置。使用 LimitRange 能够让 namespace 中的 pod 资源规范化，便于统一的资源管理。&lt;/p&gt;
+
+&lt;h4 id=&#34;资源配额-resource-quota&#34;&gt;资源配额（resource quota）&lt;/h4&gt;
+
+&lt;p&gt;前面讲到的资源管理和调度可以认为 kubernetes 把这个集群的资源整合起来，组成一个资源池，每个应用（pod）会自动从整个池中分配资源来使用。默认情况下只要集群还有可用的资源，应用就能使用，并没有限制。kubernetes 本身考虑到了多用户和多租户的场景，提出了 namespace 的概念来对集群做一个简单的隔离。&lt;/p&gt;
+
+&lt;p&gt;基于 namespace，kubernetes 还能够对资源进行隔离和限制，这就是 resource quota 的概念，翻译成资源配额，它限制了某个 namespace 可以使用的资源总额度。这里的资源包括 cpu、memory 的总量，也包括 kubernetes 自身对象（比如 pod、services 等）的数量。通过 resource quota，kubernetes 可以防止某个 namespace 下的用户不加限制地使用超过期望的资源，比如说不对资源进行评估就大量申请 16核 CPU 32G内存的 pod。&lt;/p&gt;
+
+&lt;p&gt;下面是一个资源配额的实例，它限制了 namespace 只能使用 20核 CPU 和 1G 内存，并且能创建 10 个 pod、20个 rc、5个 service，可能适用于某个测试场景。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: quota
+spec:
+  hard:
+    cpu: &amp;quot;20&amp;quot;
+    memory: 1Gi
+    pods: &amp;quot;10&amp;quot;
+    replicationcontrollers: &amp;quot;20&amp;quot;
+    resourcequotas: &amp;quot;1&amp;quot;
+    services: &amp;quot;5&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;resource quota 能够配置的选项还很多，比如 GPU、存储、configmaps、persistentvolumeclaims 等等，更多信息可以参考官方的文档。&lt;/p&gt;
+
+&lt;p&gt;Resource quota 要解决的问题和使用都相对独立和简单，但是它也有一个限制：那就是它不能根据集群资源动态伸缩。一旦配置之后，resource quota 就不会改变，即使集群增加了节点，整体资源增多也没有用。kubernetes 现在没有解决这个问题，但是用户可以通过编写一个 controller 的方式来自己实现。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-5-应用优先级-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 应用优先级&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;qos-服务质量&#34;&gt;QoS（服务质量）&lt;/h4&gt;
+
+&lt;p&gt;Requests 和 limits 的配置除了表明资源情况和限制资源使用之外，还有一个隐藏的作用：它决定了 pod 的 QoS 等级。&lt;/p&gt;
+
+&lt;p&gt;上一节我们提到了一个细节：如果 pod 没有配置 limits ，那么它可以使用节点上任意多的可用资源。这类 pod 能灵活使用资源，但这也导致它不稳定且危险，对于这类 pod 我们一定要在它占用过多资源导致节点资源紧张时处理掉。优先处理这类 pod，而不是资源使用处于自己请求范围内的 pod 是非常合理的想法，而这就是 pod QoS 的含义：根据 pod 的资源请求把 pod 分成不同的重要性等级。&lt;/p&gt;
+
+&lt;p&gt;kubernetes 把 pod 分成了三个 QoS 等级：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Guaranteed&lt;/span&gt; ：优先级最高，可以考虑数据库应用或者一些重要的业务应用。除非 pods 使用超过了它们的 limits，或者节点的内存压力很大而且没有 QoS 更低的 pod，否则不会被杀死&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Burstable&lt;/span&gt; ：这种类型的 pod 可以多于自己请求的资源（上限有 limit 指定，如果 limit 没有配置，则可以使用主机的任意可用资源），但是重要性认为比较低，可以是一般性的应用或者批处理任务&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Best Effort&lt;/span&gt; ：优先级最低，集群不知道 pod 的资源请求情况，调度不考虑资源，可以运行到任意节点上（从资源角度来说），可以是一些临时性的不重要应用。pod 可以使用节点上任何可用资源，但在资源不足时也会被优先杀死&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Pod 的 requests 和 limits 是如何对应到这三个 QoS 等级上的，可以用下面一张表格概括：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://i.loli.net/2018/06/25/5b307f4bc7d42.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;看到这里，你也许看出来一个问题了：&lt;strong&gt;如果不配置 requests 和 limits，pod 的 QoS 竟然是最低的&lt;/strong&gt;。没错，所以推荐大家理解 QoS 的概念，并且按照需求&lt;strong&gt;一定要给 pod 配置 requests 和 limits 参数&lt;/strong&gt;，不仅可以让调度更准确，也能让系统更加稳定。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;按照现在的方法根据 pod 请求的资源进行配置不够灵活和直观，更理想的情况是用户可以直接配置 pod 的 QoS，而不用关心具体的资源申请和上限值。但 kubernetes 目前还没有这方面的打算。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Pod 的 QoS 还决定了容器的 OOM（out-of-memory）值，它们对应的关系如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://i.loli.net/2018/06/25/5b307a5b3557c.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;可以看到，QoS 越高的 pod oom 值越低，也就越不容易被系统杀死。对于 Bustable pod，它的值是根据 request 和节点内存总量共同决定的:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;oomScoreAdjust := 1000 - (1000*memoryRequest)/memoryCapacity
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其中 &lt;code&gt;memoryRequest&lt;/code&gt; 是 pod 申请的资源，&lt;code&gt;memoryCapacity&lt;/code&gt; 是节点的内存总量。可以看到，申请的内存越多，oom 值越低，也就越不容易被杀死。&lt;/p&gt;
+
+&lt;p&gt;QoS 的作用会在后面介绍 eviction 的时候详细讲解。&lt;/p&gt;
+
+&lt;h4 id=&#34;pod-优先级-priority&#34;&gt;Pod 优先级（priority）&lt;/h4&gt;
+
+&lt;p&gt;除了 QoS，kubernetes 还允许我们自定义 pod 的优先级，比如：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: scheduling.k8s.io/v1alpha1
+kind: PriorityClass
+metadata:
+  name: high-priority
+value: 1000000
+globalDefault: false
+description: &amp;quot;This priority class should be used for XYZ service pods only.&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;优先级的使用也比较简单，只需要在 &lt;code&gt;pod.spec.PriorityClassName&lt;/code&gt; 指定要使用的优先级名字，即可以设置当前 pod 的优先级为对应的值。&lt;/p&gt;
+
+&lt;p&gt;Pod 的优先级在调度的时候会使用到。首先，待调度的 pod 都在同一个队列中，启用了 pod priority 之后，调度器会根据优先级的大小，把优先级高的 pod 放在前面，提前调度。&lt;/p&gt;
+
+&lt;p&gt;另外，如果在调度的时候，发现某个 pod 因为资源不足无法找到合适的节点，调度器会尝试 preempt 的逻辑。 简单来说，调度器会试图找到这样一个节点：找到它上面优先级低于当前要调度 pod 的所有 pod，如果杀死它们，能腾足够的资源，调度器会执行删除操作，把 pod 调度到节点上。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-6-驱逐-eviction-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;6. 驱逐（Eviction）&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;至此，我们讲述的都是理想情况下 kubernetes 的工作状况，我们假设资源完全够用，而且应用也都是在使用规定范围内的资源。&lt;/p&gt;
+
+&lt;p&gt;但现实不会如此简单，在管理集群的时候我们常常会遇到资源不足的情况，在这种情况下我们要&lt;strong&gt;保证整个集群可用&lt;/strong&gt;，并且尽可能&lt;strong&gt;减少应用的损失&lt;/strong&gt;。保证集群可用比较容易理解，首先要保证系统层面的核心进程正常，其次要保证 kubernetes 本身组件进程不出问题；但是如果量化应用的损失呢？首先能想到的是如果要杀死 pod，要尽量减少总数。另外一个就和 pod 的优先级相关了，那就是尽量杀死不那么重要的应用，让重要的应用不受影响。&lt;/p&gt;
+
+&lt;p&gt;Pod 的驱逐是在 kubelet 中实现的，因为 kubelet 能动态地感知到节点上资源使用率实时的变化情况。其核心的逻辑是：kubelet 实时监控节点上各种资源的使用情况，一旦发现某个不可压缩资源出现要耗尽的情况，就会主动终止节点上的 pod，让节点能够正常运行。被终止的 pod 所有容器会停止，状态会被设置为 failed。&lt;/p&gt;
+
+&lt;h4 id=&#34;驱逐触发条件&#34;&gt;驱逐触发条件&lt;/h4&gt;
+
+&lt;p&gt;那么哪些资源不足会导致 kubelet 执行驱逐程序呢？目前主要有三种情况：实际内存不足、节点文件系统的可用空间（文件系统剩余大小和 inode 数量）不足、以及镜像文件系统的可用空间（包括文件系统剩余大小和 inode 数量）不足。&lt;/p&gt;
+
+&lt;p&gt;下面这图是具体的触发条件：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://i.loli.net/2018/06/24/5b2f1a966a703.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;有了数据的来源，另外一个问题是触发的时机，也就是到什么程度需要触发驱逐程序？kubernetes 运行用户自己配置，并且支持两种模式：按照百分比和按照绝对数量。比如对于一个 32G 内存的节点当可用内存少于 10% 时启动驱逐程序，可以配置 &lt;code&gt;memory.available&amp;lt;10%&lt;/code&gt; 或者 &lt;code&gt;memory.available&amp;lt;3.2Gi&lt;/code&gt;。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;默认情况下，kubelet 的驱逐规则是 &lt;code&gt;memory.available&lt;100Mi&lt;/code&gt;，对于生产环境这个配置是不可接受的，所以一定要根据实际情况进行修改。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&#34;软驱逐-soft-eviction-和硬驱逐-hard-eviction&#34;&gt;软驱逐（soft eviction）和硬驱逐（hard eviction）&lt;/h4&gt;
+
+&lt;p&gt;因为驱逐 pod 是具有毁坏性的行为，因此必须要谨慎。有时候内存使用率增高只是暂时性的，有可能 20s 内就能恢复，这时候启动驱逐程序意义不大，而且可能会导致应用的不稳定，我们要考虑到这种情况应该如何处理；另外需要注意的是，如果内存使用率过高，比如高于 95%（或者 90%，取决于主机内存大小和应用对稳定性的要求），那么我们不应该再多做评估和考虑，而是赶紧启动驱逐程序，因为这种情况再花费时间去判断可能会导致内存继续增长，系统完全崩溃。&lt;/p&gt;
+
+&lt;p&gt;为了解决这个问题，kubernetes 引入了 soft eviction 和 hard eviction 的概念。&lt;/p&gt;
+
+&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;软驱逐&lt;/span&gt; 可以在资源紧缺情况并没有哪些严重的时候触发，比如内存使用率为 85%，软驱逐还需要配置一个时间指定软驱逐条件持续多久才触发，也就是说 kubelet 在发现资源使用率达到设定的阈值之后，并不会立即触发驱逐程序，而是继续观察一段时间，如果资源使用率高于阈值的情况持续一定时间，才开始驱逐。并且驱逐 pod 的时候，会遵循 grace period ，等待 pod 处理完清理逻辑。和软驱逐相关的启动参数是：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;--eviction-soft&lt;/code&gt;：软驱逐触发条件，比如 &lt;code&gt;memory.available&amp;lt;1Gi&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--eviction-sfot-grace-period&lt;/code&gt;：触发条件持续多久才开始驱逐，比如 memory.available=2m30s&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--eviction-max-pod-grace-period&lt;/code&gt;：kill pod 时等待 grace period 的时间让 pod 做一些清理工作，如果到时间还没有结束就做 kill&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;前面两个参数必须同时配置，软驱逐才能正常工作；后一个参数会和 pod 本身配置的 grace period 比较，选择较小的一个生效。&lt;/p&gt;
+
+&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;硬驱逐&lt;/span&gt; 更加直接干脆，kubelet 发现节点达到配置的硬驱逐阈值后，立即开始驱逐程序，并且不会遵循 grace period，也就是说立即强制杀死 pod。对应的配置参数只有一个 &lt;code&gt;--evictio-hard&lt;/code&gt;，可以选择上面表格中的任意条件搭配。&lt;/p&gt;
+
+&lt;p&gt;设置这两种驱逐程序是为了平衡节点稳定性和对 pod 的影响，软驱逐照顾到了 pod 的优雅退出，减少驱逐对 pod 的影响；而硬驱逐则照顾到节点的稳定性，防止资源的快速消耗导致节点不可用。&lt;/p&gt;
+
+&lt;p&gt;软驱逐和硬驱逐可以单独配置，不过还是推荐两者都进行配置，一起使用。&lt;/p&gt;
+
+&lt;h4 id=&#34;驱逐哪些-pods&#34;&gt;驱逐哪些 pods？&lt;/h4&gt;
+
+&lt;p&gt;上面我们已经整体介绍了 kubelet 驱逐 pod 的逻辑和过程，那这里就牵涉到一个具体的问题：&lt;strong&gt;要驱逐哪些 pod？&lt;/strong&gt;驱逐的重要原则是尽量减少对应用程序的影响。&lt;/p&gt;
+
+&lt;p&gt;如果是存储资源不足，kubelet 会根据情况清理状态为 Dead 的 pod 和它的所有容器，以及清理所有没有使用的镜像。如果上述清理并没有让节点回归正常，kubelet 就开始清理 pod。&lt;/p&gt;
+
+&lt;p&gt;一个节点上会运行多个 pod，驱逐所有的 pods 显然是不必要的，因此要做出一个抉择：在节点上运行的所有 pod 中选择一部分来驱逐。虽然这些 pod 乍看起来没有区别，但是它们的地位是不一样的，正如乔治·奥威尔在《动物庄园》的那句话：&lt;/p&gt;
+
+&lt;p id=&#34;div-border-left-purple&#34;&gt;所有动物生而平等，但有些动物比其他动物更平等。&lt;/p&gt;
+
+&lt;p&gt;Pod 也是不平等的，有些 pod 要比其他 pod 更重要。只管来说，系统组件的 pod 要比普通的 pod 更重要，另外运行数据库的 pod 自然要比运行一个无状态应用的 pod 更重要。kubernetes 又是怎么决定 pod 的优先级的呢？这个问题的答案就藏在我们之前已经介绍过的内容里：pod requests 和 limits、优先级（priority），以及 pod 实际的资源使用。&lt;/p&gt;
+
+&lt;p&gt;简单来说，kubelet 会根据以下内容对 pod 进行排序：pod 是否使用了超过请求的紧张资源、pod 的优先级、然后是使用的紧缺资源和请求的紧张资源之间的比例。具体来说，kubelet 会按照如下的顺序驱逐 pod：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;使用的紧张资源超过请求数量的 &lt;code&gt;BestEffort&lt;/code&gt; 和 &lt;code&gt;Burstable pod&lt;/code&gt;，这些 pod 内部又会按照优先级和使用比例进行排序&lt;/li&gt;
+&lt;li&gt;紧张资源使用量低于 requests 的 &lt;code&gt;Burstable&lt;/code&gt; 和 &lt;code&gt;Guaranteed&lt;/code&gt; 的 pod 后面才会驱逐，只有当系统组件（kubelet、docker、journald 等）内存不够，并且没有上面 QoS 比较低的 pod 时才会做。执行的时候还会根据 priority 排序，优先选择优先级低的 pod&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;防止波动&#34;&gt;防止波动&lt;/h4&gt;
+
+&lt;p&gt;这里的波动有两种情况，我们先说说第一种。驱逐条件出发后，如果 kubelet 驱逐一部分 pod，让资源使用率低于阈值就停止，那么很可能过一段时间资源使用率又会达到阈值，从而再次出发驱逐，如此循环往复……为了处理这种问题，我们可以使用 &lt;code&gt;--eviction-minimum-reclaim&lt;/code&gt; 解决，这个参数配置每次驱逐至少清理出来多少资源才会停止。&lt;/p&gt;
+
+&lt;p&gt;另外一个波动情况是这样的：Pod 被驱逐之后并不会从此消失不见，常见的情况是 kubernetes 会自动生成一个新的 pod 来取代，并经过调度选择一个节点继续运行。如果不做额外处理，有理由相信 pod 选择原来节点的可能性比较大（因为调度逻辑没变，而它上次调度选择的就是该节点），之所以说可能而不是绝对会再次选择该节点，是因为集群 pod 的运行和分布和上次调度时极有可能发生了变化。&lt;/p&gt;
+
+&lt;p&gt;无论如何，如果被驱逐的 pod 再次调度到原来的节点，很可能会再次触发驱逐程序，然后 pod 再次被调度到当前节点，循环往复…… 这种事情当然是我们不愿意看到的，虽然看似复杂，但这个问题解决起来非常简单：驱逐发生后，kubelet 更新节点状态，调度器感知到这一情况，暂时不往该节点调度 pod 即可。&lt;code&gt;--eviction-pressure-transition-period&lt;/code&gt; 参数可以指定 kubelet 多久才上报节点的状态，因为默认的上报状态周期比较短，频繁更改节点状态会导致驱逐波动。&lt;/p&gt;
+
+&lt;p&gt;做一个总结，下面是一个使用了上面多种参数的驱逐配置实例（你应该能看懂它们是什么意思了）：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;–eviction-soft=memory.available&amp;lt;80%,nodefs.available&amp;lt;2Gi \
+–eviction-soft-grace-period=memory.available=1m30s,nodefs.available=1m30s \
+–eviction-max-pod-grace-period=120 \
+–eviction-hard=memory.available&amp;lt;500Mi,nodefs.available&amp;lt;1Gi \
+–eviction-pressure-transition-period=30s \
+--eviction-minimum-reclaim=&amp;quot;memory.available=0Mi,nodefs.available=500Mi,imagefs.available=2Gi&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-7-碎片整理和重调度-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;7. 碎片整理和重调度&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Kubernetes 的调度器在为 pod 选择运行节点的时候，只会考虑到调度那个时间点集群的状态，经过一系列的算法选择一个&lt;strong&gt;当时最合适&lt;/strong&gt;的节点。但是集群的状态是不断变化的，用户创建的 pod 也是动态的，随着时间变化，原来调度到某个节点上的 pod 现在看来可能有更好的节点可以选择。比如考虑到下面这些情况：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;调度 pod 的条件已经不再满足，比如节点的 taints 和 labels 发生了变化&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;新节点加入了集群。如果默认配置了把 pod 打散，那么应该有一些 pod 最好运行在新节点上&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;节点的使用率不均匀。调度后，有些节点的分配率和使用率比较高，另外一些比较低&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;节点上有资源碎片。有些节点调度之后还剩余部分资源，但是又低于任何 pod 的请求资源；或者 memory 资源已经用完，但是 CPU 还有挺多没有使用&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;想要解决上述的这些问题，都需要把 pod 重新进行调度（把 pod 从当前节点移动到另外一个节点）。但是默认情况下，一旦 pod 被调度到节点上，除非给杀死否则不会移动到另外一个节点的。&lt;/p&gt;
+
+&lt;p&gt;为此 kubernetes 社区孵化了一个称为 &lt;a href=&#34;https://github.com/kubernetes-incubator/descheduler&#34; target=&#34;_blank&#34;&gt;descheduler&lt;/a&gt; 的项目，专门用来做重调度。重调度的逻辑很简单：找到上面几种情况中已经不是最优的 pod，把它们驱逐掉（eviction）。&lt;/p&gt;
+
+&lt;p&gt;目前，descheduler 不会决定驱逐的 pod 应该调度到哪台机器，而是&lt;strong&gt;假定默认的调度器会做出正确的调度抉择&lt;/strong&gt;。也就是说，之所以 pod 目前不合适，不是因为调度器的算法有问题，而是因为集群的情况发生了变化。如果让调度器重新选择，调度器现在会把 pod 放到合适的节点上。这种做法让 descheduler 逻辑比较简单，而且避免了调度逻辑出现在两个组件中。&lt;/p&gt;
+
+&lt;p&gt;Descheduler 执行的逻辑是可以配置的，目前有几种场景：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;RemoveDuplicates&lt;/code&gt;：RS、deployment 中的 pod 不能同时出现在一台机器上&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;LowNodeUtilization&lt;/code&gt;：找到资源使用率比较低的 node，然后驱逐其他资源使用率比较高节点上的 pod，期望调度器能够重新调度让资源更均衡&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;RemovePodsViolatingInterPodAntiAffinity&lt;/code&gt;：找到已经违反 Pod Anti Affinity 规则的 pods 进行驱逐，可能是因为反亲和是后面加上去的&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;RemovePodsViolatingNodeAffinity&lt;/code&gt;：找到违反 Node Affinity 规则的 pods 进行驱逐，可能是因为 node 后面修改了 label&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;当然，为了保证应用的稳定性，descheduler 并不会随意地驱逐 pod，还是会尊重 pod 运行的规则，包括 pod 的优先级（不会驱逐 Critical pod，并且按照优先级顺序进行驱逐）和 PDB（如果违反了 PDB，则不会进行驱逐），并且不会驱逐没有 deployment、rs、jobs 的 pod 不会驱逐，daemonset pod 不会驱逐，有 local storage 的 pod 也不会驱逐。&lt;/p&gt;
+
+&lt;p&gt;Descheduler 不是一个常驻的任务，每次执行完之后会退出，因此推荐使用 CronJob 来运行。&lt;/p&gt;
+
+&lt;p&gt;总的来说，descheduler 是对原生调度器的补充，用来解决原生调度器的调度决策随着时间会变得失效，或者不够优化的缺陷。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-8-资源动态调整-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;8. 资源动态调整&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;动态调整的思路：应用的实际流量会不断变化，因此使用率也是不断变化的，为了应对应用流量的变化，我们应用能够自动调整应用的资源。比如在线商品应用在促销的时候访问量会增加，我们应该自动增加 pod 运算能力来应对；当促销结束后，有需要自动降低 pod 的运算能力防止浪费。&lt;/p&gt;
+
+&lt;p&gt;运算能力的增减有两种方式：改变单个 pod 的资源，已经增减 pod 的数量。这两种方式对应了 kubernetes 的 HPA 和 VPA。&lt;/p&gt;
+
+&lt;h4 id=&#34;horizontal-pod-autoscaling-横向-pod-自动扩展&#34;&gt;Horizontal Pod AutoScaling（横向 Pod 自动扩展）&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/02/autoscaler_kubernetes.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;横向 pod 自动扩展的思路是这样的：kubernetes 会运行一个 controller，周期性地监听 pod 的资源使用情况，当高于设定的阈值时，会自动增加 pod 的数量；当低于某个阈值时，会自动减少 pod 的数量。自然，这里的阈值以及 pod 的上限和下限的数量都是需要用户配置的。&lt;/p&gt;
+
+&lt;p&gt;上面这句话隐藏了一个重要的信息：HPA 只能和 RC、deployment、RS 这些可以动态修改 replicas 的对象一起使用，而无法用于单个 pod、daemonset（因为它控制的 pod 数量不能随便修改）等对象。&lt;/p&gt;
+
+&lt;p&gt;目前官方的监控数据来源是 metrics server 项目，可以配置的资源只有 CPU，但是用户可以使用自定义的监控数据（比如 prometheus），其他资源（比如 memory）的 HPA 支持也已经在路上了。&lt;/p&gt;
+
+&lt;h4 id=&#34;vertical-pod-autoscaling&#34;&gt;Vertical Pod AutoScaling&lt;/h4&gt;
+
+&lt;p&gt;和 HPA 的思路相似，只不过 VPA 调整的是单个 pod 的 request 值（包括 CPU 和 memory）。VPA 包括三个组件：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Recommander&lt;/code&gt;：消费 metrics server 或者其他监控组件的数据，然后计算 pod 的资源推荐值&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Updater&lt;/code&gt;：找到被 vpa 接管的 pod 中和计算出来的推荐值差距过大的，对其做 update 操作（目前是 evict，新建的 pod 在下面 admission controller 中会使用推荐的资源值作为 request）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Admission Controller&lt;/code&gt;：新建的 pod 会经过该 Admission Controller，如果 pod 是被 vpa 接管的，会使用 recommander 计算出来的推荐值&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;可以看到，这三个组件的功能是互相补充的，共同实现了动态修改 pod 请求资源的功能。相对于 HPA，目前 VPA 还处于 alpha，并且还没有合并到官方的 kubernetes release 中，后续的接口和功能很可能会发生变化。&lt;/p&gt;
+
+&lt;h4 id=&#34;cluster-auto-scaler&#34;&gt;Cluster Auto Scaler&lt;/h4&gt;
+
+&lt;p&gt;随着业务的发展，应用会逐渐增多，每个应用使用的资源也会增加，总会出现集群资源不足的情况。为了动态地应对这一状况，我们还需要 CLuster Auto Scaler，能够根据整个集群的资源使用情况来增减节点。&lt;/p&gt;
+
+&lt;p&gt;对于公有云来说，Cluster Auto Scaler 就是监控这个集群因为资源不足而 pending 的 pod，根据用户配置的阈值调用公有云的接口来申请创建机器或者销毁机器。对于私有云，则需要对接内部的管理平台。&lt;/p&gt;
+
+&lt;p&gt;目前 HPA 和 VPA 不兼容，只能选择一个使用，否则两者会相互干扰。而且 VPA 的调整需要重启 pod，这是因为 pod 资源的修改是比较大的变化，需要重新走一下 apiserver、调度的流程，保证整个系统没有问题。目前社区也有计划在做原地升级，也就是说不通过杀死 pod 再调度新 pod 的方式，而是直接修改原有 pod 来更新。&lt;/p&gt;
+
+&lt;p&gt;理论上 HPA 和 VPA 是可以共同工作的，HPA 负责瓶颈资源，VPA 负责其他资源。比如对于 CPU 密集型的应用，使用 HPA 监听 CPU 使用率来调整 pods 个数，然后用 VPA 监听其他资源（memory、IO）来动态扩展这些资源的 request 大小即可。当然这只是理想情况。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-9-总结-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;9. 总结&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;从前面介绍的各种 kubernetes 调度和资源管理方案可以看出来，提高应用的资源使用率、保证应用的正常运行、维护调度和集群的公平性是件非常复杂的事情，kubernetes 并没有完美的方法，而是对各种可能的问题不断提出一些针对性的方案。&lt;/p&gt;
+
+&lt;p&gt;集群的资源使用并不是静态的，而是随着时间不断变化的，目前 kubernetes 的调度决策都是基于调度时集群的一个静态资源切片进行的，动态地资源调整是通过 kubelet 的驱逐程序进行的，HPA 和 VPA 等方案也不断提出，相信后面会不断完善这方面的功能，让 kubernetes 更加智能。&lt;/p&gt;
+
+&lt;p&gt;资源管理和调度、应用优先级、监控、镜像中心等很多东西相关，是个非常复杂的领域。在具体的实施和操作的过程中，常常要考虑到企业内部的具体情况和需求，做出针对性的调整，并且需要开发者、系统管理员、SRE、监控团队等不同小组一起合作。但是这种付出从整体来看是值得的，提升资源的利用率能有效地节约企业的成本，也能让应用更好地发挥出作用。&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</title>
       <link>https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/</link>
       <pubDate>Fri, 03 Aug 2018 15:29:37 +0800</pubDate>
@@ -5977,577 +6619,6 @@ border-top-color: #9954bb;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://servicemesher.github.io/envoy/&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档中文版&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>在你的笔记本上运行 Envoy</title>
-      <link>https://www.yangcs.net/posts/run-envoy-on-your-laptop/</link>
-      <pubDate>Thu, 28 Jun 2018 08:54:18 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/run-envoy-on-your-laptop/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-前言-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 前言&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;过去一年中，Kubernetes 已经赢得了容器编排大战，如果说 2017 年是 Kubernetes 的元年，那么 2018 将会是 &lt;code&gt;Service Mesh&lt;/code&gt;（服务网格） 的元年，在未来两年中，Service Mesh 将迎来爆发式增长，成为下一代的微服务架构。&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://istio.io/&#34; target=&#34;_blank&#34;&gt;Istio&lt;/a&gt; 作为 Service Mesh 新秀，初出茅庐便声势浩荡，前有 Google，IBM 和 Lyft 倾情奉献，后有业界大佬俯首膜拜。作为一名&lt;strong&gt;斜杠青年&lt;/strong&gt;，如果再不停下脚步认真审视一下这位后起之秀，未免显得太不符合潮流了。&lt;/p&gt;
-
-&lt;p&gt;Istio 这个大家庭的家庭成员很多，为了能够顺利打入 Istio 内部，我们先从它的核心家庭成员 &lt;code&gt;Envoy&lt;/code&gt; 入手。&lt;/p&gt;
-
-&lt;p&gt;从今天起，我将带领大家从零开始学习和使用 Envoy，着重于经验分享和总结，同时也会有相关的概念解析，希望能够帮助大家少走弯路，能不采坑尽量不采坑。&lt;/p&gt;
-
-&lt;p&gt;本篇是 Envoy 系列教程的第一篇，介绍如何在笔记本电脑上运行 Envoy、测试代理配置并观察结果，让我们开始吧！&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-前提-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 前提&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;你可以选择从源代码构建 Envoy，但最简单的办法是通过 &lt;code&gt;Docker&lt;/code&gt; 容器来运行。所以在开始之前，你需要安装并配置以下工具：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://docs.docker.com/install/&#34; target=&#34;_blank&#34;&gt;Docker&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://docs.docker.com/compose/install/&#34; target=&#34;_blank&#34;&gt;Docker Compose&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://help.github.com/articles/set-up-git/&#34; target=&#34;_blank&#34;&gt;Git&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://curl.haxx.se/&#34; target=&#34;_blank&#34;&gt;curl&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;我们使用 Docker 和 Docker Compose 来编排和运行 Envoy 的示例服务，使用 curl 来访问 Envoy 示例服务。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-部署-envoy-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 部署 Envoy&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://github.com/envoyproxy/envoy&#34; target=&#34;_blank&#34;&gt;Envoy 官方&lt;/a&gt;提供了一组 Envoy 的用例，我们将要使用的用例是前端代理，它会将流量发送到两个服务后端。首先克隆 Envoy 的代码仓库并转到 &lt;code&gt;examples/front-proxy&lt;/code&gt; 目录：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/envoyproxy/envoy
-$ cd envoy/examples/front-proxy
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;后端服务&lt;/span&gt; 是一个非常简单的 &lt;code&gt;Flask&lt;/code&gt; 应用程序，在 &lt;code&gt;service.py&lt;/code&gt; 中定义。其中 Envoy 作为一个边车（Sidecar）伴随每个服务一起运行在同一个容器中，所有的规则配置都通过 YAML 文件 &lt;code&gt;service-envoy.yaml&lt;/code&gt; 来完成。最后 &lt;code&gt;Dockerfile-service&lt;/code&gt; 创建一个在启动时同时运行服务和 Envoy 的容器。&lt;/p&gt;
-
-&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;前端代理&lt;/span&gt; 比后端服务更简单，它使用配置文件 &lt;code&gt;front-envoy.yaml&lt;/code&gt; 来运行 Envoy，使用 &lt;code&gt;Dockerfile-frontenvoy&lt;/code&gt; 来构建容器镜像。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;docker-compose.yaml&lt;/code&gt; 文件描述了如何构建、打包和运行前端代理与服务。&lt;/p&gt;
-
-&lt;p&gt;整体架构如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://jimmysong.io/kubernetes-handbook/images/envoyproxy-docker-compose.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;使用 docker-compose 启动容器：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker-compose up --build -d
-$ docker-compose ps
-
-          Name                        Command               State                      Ports
-----------------------------------------------------------------------------------------------------------------
-frontproxy_front-envoy_1   /bin/sh -c /usr/local/bin/ ...   Up      0.0.0.0:8000-&amp;gt;80/tcp, 0.0.0.0:8001-&amp;gt;8001/tcp
-frontproxy_service1_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
-frontproxy_service2_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;该命令将会启动一个前端代理和两个服务实例：service1 和 service2。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-配置-envoy-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 配置 Envoy&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;为了达到演示的目的，本文采用的是 Envoy 的静态配置。后续教程将会告诉你们如何使用动态配置来发挥 Envoy 的强大功能。&lt;/p&gt;
-
-&lt;p&gt;为了了解 Envoy 是如何配置的，先来看看 &lt;code&gt;docker-compose.yaml&lt;/code&gt; 文件的前端代理部分的配置：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  front-envoy:
-    build:
-      context: ../
-      dockerfile: front-proxy/Dockerfile-frontenvoy
-    volumes:
-      - ./front-envoy.yaml:/etc/front-envoy.yaml
-    networks:
-      - envoymesh
-    expose:
-      - &amp;quot;80&amp;quot;
-      - &amp;quot;8001&amp;quot;
-    ports:
-      - &amp;quot;8000:80&amp;quot;
-      - &amp;quot;8001:8001&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从上到下做了这么几件事：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;使用位于当前目录中的 &lt;code&gt;Dockerfile-frontenvoy&lt;/code&gt; 构建镜像。&lt;/li&gt;
-&lt;li&gt;将 &lt;code&gt;front-envoy.yaml&lt;/code&gt; 文件作为 &lt;code&gt;/etc/front-envoy.yaml&lt;/code&gt; 挂载到容器中的 &lt;code&gt;/etc&lt;/code&gt; 目录。&lt;/li&gt;
-&lt;li&gt;为这个容器创建并使用名为 &lt;code&gt;envoymesh&lt;/code&gt; 的 Docker 网络。&lt;/li&gt;
-&lt;li&gt;暴露 80 端口（用于一般通用流量）和 8001 端口（用于管理服务）。&lt;/li&gt;
-&lt;li&gt;将主机的 8000 端口和 8001 端口分别映射到容器的 80 端口和 8001 端口。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;前面已经了解到了前端代理使用 front-envoy.yaml 来配置 Envoy，下面来深入解析一下。该配置文件有两大配置项：&lt;code&gt;static_resources&lt;/code&gt; 和 &lt;code&gt;admin&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;static_resources:
-admin:
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;admin 配置项的内容非常简单：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;admin:
-  access_log_path: &amp;quot;/dev/null&amp;quot;
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 8001
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;access_log_path&lt;/code&gt; 字段的值设置为 &lt;code&gt;/dev/null&lt;/code&gt;，意味着 admin 服务的访问日志将会被丢弃，在测试或生产环境中，你最好将这个值修改为不同的目录。socket_address 字段告诉 Envoy 创建一个监听在 8001 端口的 admin 服务。&lt;/p&gt;
-
-&lt;p&gt;&lt;code&gt;static_resources&lt;/code&gt; 配置项定义了一组静态配置的集群（Cluster）和侦听器（Listener）。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;集群&lt;/strong&gt;是 Envoy 连接到的一组逻辑上相似的上游主机。Envoy 通过服务发现发现集群中的成员。Envoy 可以通过主动运行状况检查来确定集群成员的健康状况。Envoy 如何将请求路由到集群成员由负载均衡策略确定。&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;侦听器&lt;/strong&gt;是服务(程序)监听者，就是真正干活的。 它是可以由下游客户端连接的命名网络位置（例如，端口、unix域套接字等）。&lt;/p&gt;
-
-&lt;h3 id=&#34;listener-配置&#34;&gt;Listener 配置&lt;/h3&gt;
-
-&lt;p&gt;该示例中的前端代理有一个监听在 80 端口的侦听器，并配置了一个&lt;strong&gt;监听器过滤器链&lt;/strong&gt;（filter_chains），用来管理 HTTP 流量：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 80
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 HTTP 连接管理过滤器中，每一个虚拟主机都有单独的配置，并且都配置为接收所有域的流量：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;            virtual_hosts:
-            - name: backend
-              domains:
-              - &amp;quot;*&amp;quot;
-              routes:
-              - match:
-                  prefix: &amp;quot;/service/1&amp;quot;
-                route:
-                  cluster: service1
-              - match:
-                  prefix: &amp;quot;/service/2&amp;quot; 
-                route:
-                  cluster: service2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;HTTP 路由规则将 &lt;code&gt;/service/1&lt;/code&gt; 和 &lt;code&gt;/service/1&lt;/code&gt; 的流量转发到各自的 Cluster。&lt;/p&gt;
-
-&lt;h3 id=&#34;cluster-配置&#34;&gt;Cluster 配置&lt;/h3&gt;
-
-&lt;p&gt;接下来看一下静态 Cluster 的定义：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  clusters:
-  - name: service1
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
-    - socket_address:
-        address: service1
-        port_value: 80
-  - name: service2
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
-    - socket_address:
-        address: service2
-        port_value: 80
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在 Cluster 的配置中，你可以自定义超时、断路器和服务发现等。Cluster 由 Endpoint（端点）组成，其中 Endpoint 是一组可以为 Cluster 的请求提供服务的网络位置。本例中的 Endpoint 是通过 DNS 域名的方式定义的，Envoy 可以从域名中读取 Endpoint。Endpoint 也可以直接定义为 socket 地址，或者通过 &lt;code&gt;EDS&lt;/code&gt;（Endpoint Discovery Service）动态读取。&lt;/p&gt;
-
-&lt;h3 id=&#34;修改配置&#34;&gt;修改配置&lt;/h3&gt;
-
-&lt;p&gt;你可以通过修改配置文件重新构建镜像来进行测试。&lt;code&gt;Listener filter&lt;/code&gt;（监听器过滤器）的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。例如，如果想要将访问日志添加到 HTTP 过滤器中，可以在 filter 的配置中添加 &lt;code&gt;access_log&lt;/code&gt; 配置项：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          access_log:
-            - name: envoy.file_access_log
-              config:
-                path: &amp;quot;/var/log/access.log&amp;quot;
-          route_config:
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;然后停止服务，重新构建并运行容器：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker-compose down
-$ docker-compose up --build -d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;通过 &lt;code&gt;curl&lt;/code&gt; 访问服务，然后通过 &lt;code&gt;docker-compose exec front-envoy /bin/bash&lt;/code&gt; 命令进入容器的终端，你会看到 &lt;code&gt;/var/log/access.log&lt;/code&gt; 文件记录着你的请求结果。&lt;/p&gt;
-
-&lt;h3 id=&#34;admin-server&#34;&gt;Admin Server&lt;/h3&gt;
-
-&lt;p&gt;Envoy 的一大特色是内置的 Admin 服务，如果你在浏览器中访问 &lt;code&gt;http://localhost:8001&lt;/code&gt; ，可以看到 Envoy admin 提供以下管理 API 端点。&lt;/p&gt;
-
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;命令&lt;/th&gt;
-&lt;th&gt;描述&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;/&lt;/td&gt;
-&lt;td&gt;Admin 主页&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/certs&lt;/td&gt;
-&lt;td&gt;打印机器上的 certs&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/clusters&lt;/td&gt;
-&lt;td&gt;upstream cluster 状态&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/config_dump&lt;/td&gt;
-&lt;td&gt;输出当前的 Envoy 配置&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/cpuprofiler&lt;/td&gt;
-&lt;td&gt;开启/关闭 CPU profiler&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/healthcheck/fail&lt;/td&gt;
-&lt;td&gt;导致服务失败健康检查&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/healthcheck/ok&lt;/td&gt;
-&lt;td&gt;导致服务通过健康检查&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/help&lt;/td&gt;
-&lt;td&gt;打印管理命令的帮助信息&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/hot_restart_version&lt;/td&gt;
-&lt;td&gt;打印热重启兼容版本&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/listeners&lt;/td&gt;
-&lt;td&gt;打印 listener 地址&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/logging&lt;/td&gt;
-&lt;td&gt;查询/更改日志级别&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/quitquitquit&lt;/td&gt;
-&lt;td&gt;退出服务&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/reset_counters&lt;/td&gt;
-&lt;td&gt;将计数器重置为 1&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/runtime&lt;/td&gt;
-&lt;td&gt;打印运行时值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/runtime_modify&lt;/td&gt;
-&lt;td&gt;修改运行时值&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/server_info&lt;/td&gt;
-&lt;td&gt;打印服务器版本/状态信息&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/stats&lt;/td&gt;
-&lt;td&gt;打印服务器状态统计信息&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;/stats/prometheus&lt;/td&gt;
-&lt;td&gt;打印 prometheus 格式的服务器状态统计信息&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;通过 API 管理端可以对 Envoy 进行动态配置，参考 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api&#34; target=&#34;_blank&#34;&gt;v2 API reference&lt;/a&gt;。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-进一步探索-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 进一步探索&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果你有兴趣探索 Envoy 的更多其他功能，&lt;a href=&#34;https://github.com/envoyproxy/envoy/tree/master/examples&#34; target=&#34;_blank&#34;&gt;Envoy 官方示例&lt;/a&gt;还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 &lt;a href=&#34;https://www.learnenvoy.io/articles/service-discovery.html&#34; target=&#34;_blank&#34;&gt;Integrating Service Discovery with Envoy&lt;/a&gt; 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 &lt;a href=&#34;https://www.learnenvoy.io/articles/getting-help.html&#34; target=&#34;_blank&#34;&gt;Getting Help&lt;/a&gt; 页面以获取更多的帮助信息。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/envoy-archiecture-and-terminology/&#34; target=&#34;_blank&#34;&gt;Envoy 的架构与基本术语&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/envoy-as-front-proxy/&#34; target=&#34;_blank&#34;&gt;使用 Envoy 作为前端代理&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
