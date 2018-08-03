@@ -625,12 +625,14 @@ net.ipv4.tcp_synack_retries = 5
 
 &lt;hr /&gt;
 
-&lt;p&gt;您可以选择通过 &lt;code&gt;kubectl&lt;/code&gt; 或者 &lt;code&gt;Helm&lt;/code&gt; 来部署 Vistio，下面会分别介绍两种部署方式。有些变量可能需要根据您自己的环境来修改。&lt;/p&gt;
+&lt;p&gt;您可以选择通过 &lt;code&gt;kubectl&lt;/code&gt; 或者 &lt;code&gt;Helm&lt;/code&gt; 来部署 Vistio，下面会主要介绍 Helm 部署方式。有些变量可能需要根据您自己的环境来修改。&lt;/p&gt;
 
 &lt;p&gt;如果你想通过 Helm 部署 Vistio，你将需要在 GitHub 上下载项目来获取 Helm 模板。此外，如果上述假设之一不符合您的需求（例如 prometheus url 不同），则应手动编辑文件。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/nmnellis/vistio.git
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;使用-helm-部署&#34;&gt;使用 Helm 部署&lt;/h4&gt;
 

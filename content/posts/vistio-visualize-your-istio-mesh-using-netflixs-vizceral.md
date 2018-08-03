@@ -52,13 +52,15 @@ Vizceral 有两个可视化级别，全局可视化和集群级别可视化。�
 
 ----
 
-您可以选择通过 `kubectl` 或者 `Helm` 来部署 Vistio，下面会分别介绍两种部署方式。有些变量可能需要根据您自己的环境来修改。
+您可以选择通过 `kubectl` 或者 `Helm` 来部署 Vistio，下面会主要介绍 Helm 部署方式。有些变量可能需要根据您自己的环境来修改。
 
 如果你想通过 Helm 部署 Vistio，你将需要在 GitHub 上下载项目来获取 Helm 模板。此外，如果上述假设之一不符合您的需求（例如 prometheus url 不同），则应手动编辑文件。
 
 ```bash
 $ git clone https://github.com/nmnellis/vistio.git
 ```
+
+<br />
 
 #### 使用 Helm 部署
 
