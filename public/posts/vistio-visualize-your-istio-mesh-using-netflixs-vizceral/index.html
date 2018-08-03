@@ -660,8 +660,6 @@ sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,resp
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center></p>
 
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"> $ kubectl logs -f <span style="color:#66d9ef">$(</span>kubectl get pod -l app<span style="color:#f92672">=</span>vistio-api -o go-template<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{{range .items}}{{.metadata.name}}{{end}}&#39;</span><span style="color:#66d9ef">)</span> -c vistio-api</code></pre></div>
-
 <p><br /></p>
 
 <style>
