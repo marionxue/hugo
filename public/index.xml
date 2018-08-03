@@ -572,6 +572,513 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</title>
+      <link>https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/</link>
+      <pubDate>Fri, 03 Aug 2018 15:29:37 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p id=&#34;div-border-left-red&#34;&gt;本文转载自 [Jimmy Song 的博客](https://jimmysong.io/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/)，并且有很多改动。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/Netflix/vizceral&#34; target=&#34;_blank&#34;&gt;Vizceral&lt;/a&gt; 是 &lt;code&gt;Netflix&lt;/code&gt; 发布的一个开源项目，用于近乎实时地监控应用程序和集群之间的网络流量。&lt;a href=&#34;https://github.com/nmnellis/vistio&#34; target=&#34;_blank&#34;&gt;Vistio&lt;/a&gt; 是使用 Vizceral 对 Istio 和网格监控的改进。它利用 &lt;code&gt;Istio Mixer&lt;/code&gt; 生成的指标，然后将其输入 Prometheus。Vistio 查询 &lt;code&gt;Prometheus&lt;/code&gt; 并将数据存储在本地以允许重播流量。关于 Vizceral 可以参考这篇文章：&lt;a href=&#34;https://medium.com/netflix-techblog/vizceral-open-source-acc0c32113fe&#34; target=&#34;_blank&#34;&gt;Vizceral Open Source&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/YJqKg8M5xnNlqYtNr5Jsmw.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Vizceral 有两个可视化级别，全局可视化和集群级别可视化。在全局范围内（如上所示），您可以通过 Istio Ingress Gateway 等入口点将从 Internet 到 Istio 服务网格网络的网络流量可视化，或者您可以在 Istio 服务网格网络中显示总网络流量。&lt;/p&gt;
+
+&lt;p&gt;在集群级别（如下所示），您可以可视化内部网格的流量。通过设置警告和错误级别警报，当应用程序出现问题时可以被快速检测出来。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/vistio-mesh1.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-1-在-istio-服务网格中安装-vistio-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 在 Istio 服务网格中安装 Vistio&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;依赖&#34;&gt;依赖&lt;/h4&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Prometheus&lt;/li&gt;
+&lt;li&gt;Istio 1.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;假设&#34;&gt;假设&lt;/h4&gt;
+
+&lt;p&gt;以下 Demo 使得这些假设更容易部署。如果您的环境设置不同，则可能需要将代码下载到本地并编辑一些文件。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Prometheus 部署在 &lt;code&gt;istio-system&lt;/code&gt; namespace 下，可以通过 &lt;code&gt;http://prometheus.istio-system:9090&lt;/code&gt; 地址访问&lt;/li&gt;
+&lt;li&gt;Istio mixer 启用了 &lt;code&gt;istio_request_count metric&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Kubernetes 集群包含有 &lt;code&gt;standard StorageClass&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;为了便于部署已安装了 Helm（可选）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;由于测试环境大多数都没有外部网络存储，无法创建 StorageClass，待会儿我们可以将这部分的配置修改为 &lt;code&gt;hostPath&lt;/code&gt;。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;前言&#34;&gt;前言&lt;/h4&gt;
+
+&lt;p&gt;如果您还尚未部署服务网格，可以按照此 &lt;a href=&#34;https://istio.io/docs/guides/bookinfo/&#34; target=&#34;_blank&#34;&gt;Istio Bookinfo Demo&lt;/a&gt; 中的说明部署 Istio 及其示例应用程序。您需要能够在应用程序之间生成流量。要测试指标是否从 Mixer 正确发送到 Prometheus，您可以打开 Prometheus 查询 &lt;code&gt;istio_request_bytes_count&lt;/code&gt;，应该会看到多个条目。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/vistio-prometheus.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-2-部署-vistio-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 部署 Vistio&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;您可以选择通过 &lt;code&gt;kubectl&lt;/code&gt; 或者 &lt;code&gt;Helm&lt;/code&gt; 来部署 Vistio，下面会分别介绍两种部署方式。有些变量可能需要根据您自己的环境来修改。&lt;/p&gt;
+
+&lt;p&gt;如果你想通过 Helm 部署 Vistio，你将需要在 GitHub 上下载项目来获取 Helm 模板。此外，如果上述假设之一不符合您的需求（例如 prometheus url 不同），则应手动编辑文件。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/nmnellis/vistio.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;使用-helm-部署&#34;&gt;使用 Helm 部署&lt;/h4&gt;
+
+&lt;p&gt;由于我们使用的是 Istio 1.0 版本，而 Vistio 已经有相当一段时间没有更新了，很多配置项已经不适用了，需要改动很多地方。&lt;/p&gt;
+
+&lt;p&gt;切换到 Vistio 项目的根目录，修改 &lt;code&gt;values-with-ingress.yaml&lt;/code&gt; 配置文件。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vim helm/vistio/values-with-ingress.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;vistioConfig:
+  graphName: Vistio
+  globalLevel:
+    maxVolume: 2000000
+    clusterConnections:
+      # Total requests per second coming into the ingress controller from internet
+      # 将 istio_request_count 修改为 istio_request_bytes_count
+      # 将 destination_service=&amp;quot;istio-ingressgateway.istio-system.svc.cluster.local&amp;quot; 修改为 source_workload=&amp;quot;istio-ingressgateway&amp;quot;
+      - query: sum(rate(istio_request_bytes_count{source_workload=&amp;quot;istio-ingressgateway&amp;quot;}[1m])) by (response_code)
+        prometheusURL: http://prometheus.istio-system:9090
+        ...
+  clusterLevel:
+    # Cluster name must match &#39;target&#39; name in global
+    - cluster: istio-mesh
+      maxVolume: 3000
+      serviceConnections:
+      # 将 istio_request_count 修改为 istio_request_bytes_count
+      # 将 source_service 修改为 source_app
+        - query: sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
+          prometheusURL: http://prometheus.istio-system:9090
+          source:
+            # 将 source_service 修改为 source_app
+            label: source_app
+            ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改 &lt;code&gt;values.yaml&lt;/code&gt; 配置文件。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vim helm/vistio/values.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;...
+######################################
+## Vistio-web
+######################################
+web:
+  env:
+    # Vistio-web 需要调用 Vistio-api 的 url，而且这个 url 必须是通过浏览器可以访问的，所以可以使用 ingress，后面将会创建
+    updateURL: &amp;quot;http://vistio-api.istio.io/graph&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改 &lt;code&gt;statefulset.yaml&lt;/code&gt; 配置文件。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vim helm/vistio/templates/statefulset.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: vistio-api
+  ...
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  serviceName: vistio
+  template:
+    metadata:
+    ...
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: vistio-api-config
+        # 添加 volume vistio-db
+        - name: vistio-db
+          hostPath:
+            path: /data/vistio
+  # 将 volumeClaimTemplates 配置项注释或删除
+  #volumeClaimTemplates:
+  #- metadata:
+  #    annotations:
+  #      volume.beta.kubernetes.io/storage-class: {{ .Values.api.storage.class }}
+  #    name: vistio-db
+  #  spec:
+  #    accessModes:
+  #    - ReadWriteOnce
+  #    resources:
+  #      requests:
+  #        storage: {{ .Values.api.storage.size }}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;同时你需要在运行 vistio-api 的节点上提前创建 &lt;code&gt;/data/vistio&lt;/code&gt; 目录。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;运行 &lt;code&gt;helm install&lt;/code&gt; 部署 Vistio。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm install helm/vistio -f helm/vistio/values-with-ingress.yaml --name vistio --namespace default
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pod
+
+vistio-api-0                      1/1       Running   0          2m
+vistio-web-5c44b7f76d-hmjdc       1/1       Running   0          2m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-3-验证和暴露-vistio-web-api-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 验证和暴露 Vistio Web/API&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;暴露-vistio-web-api&#34;&gt;暴露 Vistio Web/API&lt;/h4&gt;
+
+&lt;p&gt;为 Service vistio-api 和 vistio-web 创建 &lt;code&gt;Ingress&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat ingress.yaml
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vistio-web
+  namespace: default
+spec:
+  rules:
+  - host: vistio-web.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: vistio-web
+          servicePort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vistio-api
+  namespace: default
+spec:
+  rules:
+  - host: vistio-api.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: vistio-api
+          servicePort: 9091
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create -f ingress.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后在你的本地电脑上添加两条 hosts：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$Ingree_host vistio-web.istio.io
+$Ingree_host vistio-api.istio.io
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;将 &lt;code&gt;$Ingree_host&lt;/code&gt; 替换为 Ingress Controller 运行节点的 IP。&lt;/p&gt;
+
+&lt;h4 id=&#34;验证-visito-api&#34;&gt;验证 visito-api&lt;/h4&gt;
+
+&lt;p&gt;vistio-web 调用 vistio-api 来渲染服务网格。访问 &lt;code&gt;http://vistio-api.istio.io/graph&lt;/code&gt; 您应该会看到类似下列的输出。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/LkvzHsN0VzZSOD_wy7sCgQ.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;访问-vistio&#34;&gt;访问 Vistio&lt;/h4&gt;
+
+&lt;p&gt;如果一切都已经启动并准备就绪，您就可以访问 Vistio UI，开始探索服务网格网络，访问&lt;code&gt;http://vistio-web.istio.io&lt;/code&gt; 您将会看到类似下图的输出。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/vistio-web.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-4-探索-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 探索&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;在全局范围内，您将看到Istio网格内所有请求的总和，如果你点击 &lt;code&gt;istio-mesh&lt;/code&gt; 气泡，就能查看你的网状网络。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/vistio-mesh1.jpg&#34; alt=&#34;&#34; /&gt;
+&lt;center&gt;&lt;iframe height=393 width=628 src=&#34;http://o7z41ciog.bkt.clouddn.com/vistio.mp4&#34; frameborder=0 allowfullscreen allowfullscreen=&#34;true&#34; &gt;&lt;/iframe&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;在你的 Istio 网格中，您可以使用许多可视化工具来帮助您查明故障的应用程序。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/WM6lx-4bms7YBO-EHs_a2g.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;使用屏幕右上方的过滤器可以快速过滤出错误率较高的应用程序。通过高级配置，当错误率超过特定值时，也可以触发警报。警报将显示给定应用程序的当前错误率趋势。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-5-问题排查-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 问题排查&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;访问 &lt;code&gt;http://vistio-api.istio.io/graph&lt;/code&gt;，如果你从 vistio-api 中看到以下输出，表示某些功能无法正常工作。正确的输出显示在教程上面。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/TcFuNvCvk5C53rO4vXLkw.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;检查 vistio-api 日志中是否有错误——在大多数情况下，vistio-api 将记录与 Prometheus 通信时遇到的任何问题。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   $ kubectl logs -f $(kubectl get pod -l app=vistio-api -o go-template=&#39;{{range .items}}{{.metadata.name}}{{end}}&#39;) -c vistio-api
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;验证 Prometheus 查询——vistio-api 使用以下查询检索其数据。您应该确保 Prometheus 内部的数据都存在。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;   # Global Level Query
+   sum(rate(istio_request_bytes_count{source_workload=&amp;quot;istio-ingressgateway&amp;quot;}[1m])) by (response_code)
+   # Cluster Level Query
+   sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;提交 Issue——如果遇到问题无法解决请提交 Issue：&lt;a href=&#34;https://github.com/nmnellis/vistio/issues&#34; target=&#34;_blank&#34;&gt;https://github.com/nmnellis/vistio/issues&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Istio 服务网格中的网关</title>
       <link>https://www.yangcs.net/posts/istio-ingress/</link>
       <pubDate>Thu, 02 Aug 2018 13:29:08 +0800</pubDate>
@@ -6047,381 +6554,6 @@ $ docker-compose up --build -d
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>使用 envoy-docker-shim 替代 docker-proxy</title>
-      <link>https://www.yangcs.net/posts/envoy-docker-shim/</link>
-      <pubDate>Fri, 22 Jun 2018 08:22:07 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/envoy-docker-shim/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;在过去一年中，服务网格技术的崛起引发了吃瓜群众对 Istio 的持续关注，而 Istio 的核心组件 &lt;a href=&#34;https://github.com/envoyproxy/envoy&#34; target=&#34;_blank&#34;&gt;Envoy&lt;/a&gt; 是一款由 Lyft 开源的，使用 C++ 编写的 L7 代理和通信总线，目前是 &lt;a href=&#34;https://cncf.io/&#34; target=&#34;_blank&#34;&gt;CNCF&lt;/a&gt; 旗下的开源项目，代码托管在 GitHub 上，它也是 Istio service mesh 中默认的 data plane。&lt;/p&gt;
-
-&lt;p&gt;目前网上关于 Envoy 的文档非常少，能够找到的比较权威的资料只有官方文档，但官方文档的痛点是只有理论概念，没有实际应用指南。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://servicemesher.github.io/envoy/&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档中文版&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;要想真正掌握 Envoy，只有通过实践融入该语境才能真正理解这门技术，而目前能够找到的最佳实践项目就是 &lt;a href=&#34;https://github.com/Nitro/envoy-docker-shim&#34; target=&#34;_blank&#34;&gt;Envoy Docker Shim&lt;/a&gt;。在实践该项目之前，你需要了解 Envoy 中的基本术语和概念，可以参考 Jimmy Song 的文章：&lt;a href=&#34;https://jimmysong.io/posts/envoy-archiecture-and-terminology/&#34; target=&#34;_blank&#34;&gt;Envoy 的架构与基本术语&lt;/a&gt;。下面我就为大家简单地介绍下这个项目。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-envoy-docker-shim-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Envoy Docker Shim&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;code&gt;Envoy Docker Shim&lt;/code&gt; 是一个预生产项目，它使用 Envoy 来替代 Docker 的 &lt;code&gt;docker-proxy&lt;/code&gt;，这样做的目的是为在 Docker 上运行的服务启用 Envoy 的指标收集和分布式路由跟踪功能。使用了 Envoy Docker Shim，就相当于获得了服务网格的一半功能。该项目由以下四个组件组成：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;envoy-docker-server&lt;/code&gt; : 运行在 Docker 主机上的注册中心，用来向 Envoy 提供 服务发现 API。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;envoy-docker-shim&lt;/code&gt; : 命令行应用程序，采用与 &lt;code&gt;docker-proxy&lt;/code&gt; 相同的命令参数，但它的作用是将新的端点（endpoint）注册到注册中心。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;Envoy 实例&lt;/code&gt; : 以 host 网络模式运行在 Docker 容器中。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;resync&lt;/code&gt; : shell 脚本，当容器重启时用来恢复注册中心的状态。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;通过将这些组件结合在一起，就形成了一个通过 Envoy 来代理 HTTP 和 TCP 流量的系统，对 &lt;code&gt;UDP&lt;/code&gt; 流量的处理继续使用 docker-proxy 的代码逻辑，目前暂不支持 &lt;code&gt;SCTP&lt;/code&gt; 协议。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-安装步骤-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 安装步骤&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;要想使用 Envoy Docker Shim，首先需要修改 &lt;code&gt;dockerd&lt;/code&gt; 的启动参数：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;--userland-proxy-path=/path/to/envoy-docker-shim&lt;/code&gt; : 使用 envoy-docker-shim 替换 &lt;code&gt;docker-proxy&lt;/code&gt;，用来告诉 Envoy 需要监听的服务以及如何转发。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;--iptables=false&lt;/code&gt; : 禁用 Iptables 来转发 Docker 的流量，强制使用 Envoy 来转发 Docker 流量。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;一旦设置了 &amp;ndash;iptables=false，Docker 流量就不会再通过内核直接流入桥接网络。通过配置不同的代理模式，所有的流量都会在 4 层或 7 层进行代理。&lt;/p&gt;
-
-&lt;p&gt;修改完启动参数后，就可以重启 Docker 服务了：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl daemon-reload
-$ systemctl restart docker
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;下载二进制文件和脚本&#34;&gt;下载二进制文件和脚本&lt;/h3&gt;
-
-&lt;p&gt;安装 &lt;code&gt;envoy-docker-server&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ go get github.com/Nitro/envoy-docker-shim/cmd/envoy-docker-server
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;安装 &lt;code&gt;envoy-docker-shim&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ go get github.com/Nitro/envoy-docker-shim/cmd/envoy-docker-shim
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;克隆 envoy-docker-shim 项目：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/Nitro/envoy-docker-shim
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;将脚本 &lt;code&gt;resync&lt;/code&gt; 复制到 /usr/local/bin 目录下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cd envoy-docker-shim
-$ cp scripts/resync /usr/local/bin
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;配置-envoy-docker-server-和-resync&#34;&gt;配置 envoy-docker-server 和 resync&lt;/h3&gt;
-
-&lt;p&gt;修改 examples 目录下的 &lt;code&gt;envoy-docker-server.service&lt;/code&gt; 文件：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-ini&#34;&gt;[Unit]
-Description=Envoy Docker Shim
-PartOf=docker.service
-
-[Service]
-ExecStart=$GOPATH/bin/envoy-docker-server
-ExecStartPost=/usr/local/bin/resync
-ExecReload=/usr/local/bin/resync
-KillMode=process
-Restart=on-failure
-Type=simple
-
-[Install]
-WantedBy=multi-user.target
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;为了防止出现状态不同步的问题，envoy-docker-server 仅将状态存储在内存中，一旦重启了 envoy-docker-server，就需要执行脚本 resync 来同步容器的状态。&lt;/p&gt;
-
-&lt;p&gt;将 envoy-docker-server.service 文件复制到 &lt;code&gt;/etc/systemd/system/&lt;/code&gt; 目录下并启动该服务：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cp examples/envoy-docker-server.service /etc/systemd/system/
-$ systemctl start envoy-docker-server
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;启动-envoy-实例&#34;&gt;启动 Envoy 实例&lt;/h3&gt;
-
-&lt;p&gt;在 examples 目录中包含了一个 &lt;code&gt;envoy.yaml&lt;/code&gt; 文件，你可以通过该配置文件启动 Envoy 实例（在 1.6 和 1.7 版本上测试通过）。你也可以选择通过 Docker 容器来运行 Envoy 实例，这里我们通过容器的方式来启动 Envoy：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker run -d --name envoyproxy --restart always --net host --cap-add NET_ADMIN -e ENVOY_BASE_ID=100 -e ENVOY_PORT=9902 -e ENVOY_UI_LISTEN_PORT=8081 gonitro/envoyproxy:1.7.0-27960f3-tracing
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;该 Envoy 容器还提供了一个 UI 来展示指标和路由，可以通过在浏览器中输入 url：&lt;code&gt;http://host_ip:8081&lt;/code&gt; 来打开 UI 界面：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/envoy.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;至此，Envoy Docker Shim 已经完美地完成了替代 docker-proxy 的工作，接下来就可以不通过 iptables 而使用 Envoy 来实现 Docker 容器的端口映射啦！&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-容器配置-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 容器配置&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;一切准备就绪后，就可以启动一个容器试试了。如果想完美地使用 envoy-docker-shim，你需要在启动容器时指定两个或三个标签，虽然这不是必须的，但可以更方便地跟踪流量。这些 Docker 标签被映射成报告给 &lt;code&gt;Zipkin&lt;/code&gt; 或 &lt;code&gt;Jaeger&lt;/code&gt; 的服务的标签。这三个标签是从 &lt;a href=&#34;https://github.com/Nitro/sidecar&#34; target=&#34;_blank&#34;&gt;Sidecar&lt;/a&gt; 项目集成而来的：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;EnvironmentName&lt;/code&gt; : 这个标签可以成某个客户的名字，或者表示这是生产项目还是测试项目，反正只要对你来说有意义就行。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ServiceName&lt;/code&gt; : 设置 Envoy 跟踪的服务名。例如，如果你将这个标签设置为 &lt;code&gt;nginx&lt;/code&gt;，将 EnvironmentName 标签设置为 &lt;code&gt;prod&lt;/code&gt;，那么该服务名为 &lt;code&gt;nginx-prod&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;ProxyMode&lt;/code&gt; : 设置 Envoy 的代理模式。默认使用 &lt;code&gt;http&lt;/code&gt; 代理模式，如果想使用 tcp 代理模式，需要指定该标签值为 &lt;code&gt;tcp&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;示例：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker run -d -p 80:80 -p 443:443 -l EnvironmentName=proxy -l ServiceName=nginx -l ProxyMode=tcp nginx:alpine
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;打开 Envoy UI：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/envoy-nginx.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;可以看到 nginx 的服务名为 &lt;code&gt;nginx-proxy&lt;/code&gt;。&lt;/p&gt;
 
 &lt;style&gt;
 #h2{

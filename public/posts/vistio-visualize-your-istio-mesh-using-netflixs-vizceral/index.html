@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Istio 服务网格中的网关 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="Istio 服务网格中的网关" />
-  <meta name="twitter:title" content="Istio 服务网格中的网关" />
-  <meta name="description" content="使用 Istio 控制 Ingress 流量">
-  <meta property="og:description" content="使用 Istio 控制 Ingress 流量">
-  <meta name="twitter:description" content="使用 Istio 控制 Ingress 流量">
+  <meta property="og:title" content="Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh" />
+  <meta name="twitter:title" content="Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh" />
+  <meta name="description" content="Vistio 部署使用教程">
+  <meta property="og:description" content="Vistio 部署使用教程">
+  <meta name="twitter:description" content="Vistio 部署使用教程">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/istio-ingress/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.42.2" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/istio-ingress/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -316,7 +316,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>Istio 服务网格中的网关</h1>
+                     <h1>Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</h1>
                      
                      
                   
@@ -324,13 +324,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">使用 Istio 控制 Ingress 流量</span>
+                      <span class="post-subheading">Vistio 部署使用教程</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on August 2, 2018
+  Posted on August 3, 2018
   
   
 </span>
@@ -351,10 +351,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">Istio 服务网格中的网关</h1>
+                <h1 align="center">Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">使用 Istio 控制 Ingress 流量</h2>
+                    <h2 align="center" class="posts-subheading">Vistio 部署使用教程</h2>
                   
                 
                 
@@ -375,9 +375,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Thu Aug 2, 2018</h4>
+        <h4 id="date"> Fri Aug 3, 2018</h4>
     </section>
-    <h5 id="wc">2600 Words|Read in about 6 Min</h5>
+    <h5 id="wc">2400 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -390,265 +390,271 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>在一个典型的网格中，通常有一个或多个用于终结外部 TLS 链接，将流量引入网格的负载均衡器（我们称之为 gateway）。 然后流量通过边车网关（sidecar gateway）流经内部服务。 应用程序使用外部服务的情况也很常见（例如访问 Google Maps API），一些情况下，这些外部服务可能被直接调用；但在某些部署中，网格中所有访问外部服务的流量可能被要求强制通过专用的出口网关（Egress gateway）。 下图描绘了网关在网格中的使用情况。</p>
+<p id="div-border-left-red">本文转载自 [Jimmy Song 的博客](https://jimmysong.io/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/)，并且有很多改动。</p>
 
-<p><img src="https://istio.io/blog/2018/v1alpha3-routing/gateways.svg" alt="" /></p>
+<p><a href="https://github.com/Netflix/vizceral" target="_blank">Vizceral</a> 是 <code>Netflix</code> 发布的一个开源项目，用于近乎实时地监控应用程序和集群之间的网络流量。<a href="https://github.com/nmnellis/vistio" target="_blank">Vistio</a> 是使用 Vizceral 对 Istio 和网格监控的改进。它利用 <code>Istio Mixer</code> 生成的指标，然后将其输入 Prometheus。Vistio 查询 <code>Prometheus</code> 并将数据存储在本地以允许重播流量。关于 Vizceral 可以参考这篇文章：<a href="https://medium.com/netflix-techblog/vizceral-open-source-acc0c32113fe" target="_blank">Vizceral Open Source</a>。</p>
 
-<p><center><em>Istio服务网格中的网关</em></center></p>
+<p><img src="http://o7z41ciog.bkt.clouddn.com/YJqKg8M5xnNlqYtNr5Jsmw.png" alt="" /></p>
 
-<p><br /></p>
+<p>Vizceral 有两个可视化级别，全局可视化和集群级别可视化。在全局范围内（如上所示），您可以通过 Istio Ingress Gateway 等入口点将从 Internet 到 Istio 服务网格网络的网络流量可视化，或者您可以在 Istio 服务网格网络中显示总网络流量。</p>
 
-<p>其中 <code>Gateway</code> 是一个独立于平台的抽象，用于对流入专用中间设备的流量进行建模。下图描述了跨多个配置资源的控制流程。</p>
+<p>在集群级别（如下所示），您可以可视化内部网格的流量。通过设置警告和错误级别警报，当应用程序出现问题时可以被快速检测出来。</p>
 
-<p><img src="https://istio.io/blog/2018/v1alpha3-routing/virtualservices-destrules.svg" alt="" /></p>
+<p><img src="http://o7z41ciog.bkt.clouddn.com/vistio-mesh1.jpg" alt="" /></p>
 
-<p><center><em>不同v1alpha3元素之间的关系</em></center></p>
-
-<p><br /></p>
-
-<h3 id="p-id-h2-1-gateway-介绍-p"><p id="h2">1. Gateway 介绍</p></h3>
+<h3 id="p-id-h2-1-在-istio-服务网格中安装-vistio-p"><p id="h2">1. 在 Istio 服务网格中安装 Vistio</p></h3>
 
 <hr />
 
-<p><a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#Gateway" target="_blank">Gateway</a> 用于为 HTTP / TCP 流量配置负载均衡器，并不管该负载均衡器将在哪里运行。 网格中可以存在任意数量的 Gateway，并且多个不同的 Gateway 实现可以共存。 实际上，通过在配置中指定一组工作负载（Pod）标签，可以将 Gateway 配置绑定到特定的工作负载，从而允许用户通过编写简单的 Gateway Controller 来重用现成的网络设备。</p>
-
-<p>对于入口流量管理，您可能会问： 为什么不直接使用 Kubernetes Ingress API ？ 原因是 Ingress API 无法表达 Istio 的路由需求。 Ingress 试图在不同的 HTTP 代理之间取一个公共的交集，因此只能支持最基本的 HTTP 路由，最终导致需要将代理的其他高级功能放入到注解（annotation）中，而注解的方式在多个代理之间是不兼容的，无法移植。</p>
-
-<p>Istio <code>Gateway</code> 通过将 L4-L6 配置与 L7 配置分离的方式克服了 <code>Ingress</code> 的这些缺点。 <code>Gateway</code> 只用于配置 L4-L6 功能（例如，对外公开的端口，TLS 配置），所有主流的L7代理均以统一的方式实现了这些功能。 然后，通过在 <code>Gateway</code> 上绑定 <code>VirtualService</code> 的方式，可以使用标准的 Istio 规则来控制进入 <code>Gateway</code> 的 HTTP 和 TCP 流量。</p>
-
-<p>例如，下面这个简单的 <code>Gateway</code> 配置了一个 Load Balancer，以允许访问 host <code>bookinfo.com</code> 的 https 外部流量进入网格中：</p>
-
-<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: bookinfo-gateway
-spec:
-  servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - bookinfo.com
-</code></pre>
-
-<p>要为进入上面的 Gateway 的流量配置相应的路由，必须为同一个 host 定义一个 <a href="https://www.yangcs.net/posts/istio-traffic-management/" target="_blank">VirtualService</a>（参考上一篇博文），并使用配置中的 <code>gateways</code> 字段绑定到前面定义的 <code>Gateway</code> 上：</p>
-
-<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: bookinfo
-spec:
-  hosts:
-    - bookinfo.com
-  gateways:
-  - bookinfo-gateway # &lt;---- bind to gateway
-    http:
-  - match:
-    - uri:
-        prefix: /reviews
-    route:
-    ...
-</code></pre>
-
-<p>Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图所示。 无论在哪个位置，所有网关都可以用相同的方式进行配置和控制。</p>
-
-<p>下面通过一个示例来演示如何配置 Istio 以使用 Istio  Gateway 在服务网格外部公开服务。</p>
-
-<h3 id="p-id-h2-2-使用-istio-网关配置-ingress-p"><p id="h2">2. 使用 Istio 网关配置 Ingress</p></h3>
-
-<hr />
-
-<p>让我们看看如何为 Gateway 在 HTTP 80 端口上配置流量。</p>
-
-<ol>
-<li><p>创建一个 Istio Gateway</p>
-
-<pre><code class="language-yaml">  $ cat &lt;&lt;EOF | istioctl create -f -
-  apiVersion: networking.istio.io/v1alpha3
-  kind: Gateway
-  metadata:
-    name: httpbin-gateway
-  spec:
-    selector:
-      istio: ingressgateway # use Istio default gateway implementation
-    servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-      - &quot;httpbin.example.com&quot;
-  EOF    
-</code></pre></li>
-
-<li><p>为通过 Gateway 进入的流量配置路由</p>
-
-<pre><code class="language-yaml">  $ cat &lt;&lt;EOF | istioctl create -f -
-  apiVersion: networking.istio.io/v1alpha3
-  kind: VirtualService
-  metadata:
-    name: httpbin
-  spec:
-    hosts:
-    - &quot;httpbin.example.com&quot;
-    gateways:
-    - httpbin-gateway
-    http:
-    - match:
-      - uri:
-          prefix: /status
-      - uri:
-          prefix: /delay
-      route:
-      - destination:
-          port:
-            number: 8000
-          host: httpbin
-  EOF
-</code></pre>
-
-<p>在这里，我们 为服务创建了一个 <a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService" target="_blank">VirtualService</a> 配置 <code>httpbin</code> ，其中包含两条路由规则，允许路径 <code>/status</code> 和 路径的流量 <code>/delay</code>。</p>
-
-<p>该<a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService-gateways" target="_blank">网关</a>列表指定，只有通过我们的要求 <code>httpbin-gateway</code> 是允许的。所有其他外部请求将被拒绝，并返回 404 响应。</p>
-
-<p>请注意，在此配置中，来自网格中其他服务的内部请求不受这些规则约束，而是简单地默认为循环路由。要将这些（或其他规则）应用于内部调用，我们可以<strong>将特殊值 <code>mesh</code> 添加到 <code>gateways</code> 的列表中</strong>。</p></li>
-
-<li><p>使用 curl 访问 httpbin 服务。</p>
-
-<p>首先获取 Ingress Gateway 的 IP 和 端口，参考上一篇文章：<a href="https://www.yangcs.net/posts/istio-traffic-management/" target="_blank">Istio 流量管理</a></p>
-
-<pre><code class="language-bash">$ curl -I -HHost:httpbin.example.com http://$INGRESS_HOST:$INGRESS_PORT/status/200
-    
-HTTP/1.1 200 OK
-server: envoy
-date: Thu, 02 Aug 2018 04:18:41 GMT
-content-type: text/html; charset=utf-8
-access-control-allow-origin: *
-access-control-allow-credentials: true
-content-length: 0
-x-envoy-upstream-service-time: 9
-</code></pre>
-
-<p>请注意，我们使用该 <code>-H</code> 标志将 Host <code>HTTP Header</code> 设置为 “httpbin.example.com”。这是必需的，因为我们的 ingress <code>Gateway</code> 被配置为处理 “httpbin.example.com”，但在我们的测试环境中，我们没有该主机的 DNS 绑定，并且只是将我们的请求发送到 ingress IP。</p></li>
-
-<li><p>访问任何未明确公开的其他 URL。您应该看到一个 HTTP 404 错误：</p>
-
-<pre><code class="language-bash">$ curl -I -HHost:httpbin.example.com http://$INGRESS_HOST:$INGRESS_PORT/headers
-    
-HTTP/1.1 404 Not Found
-date: Thu, 02 Aug 2018 04:21:39 GMT
-server: envoy
-transfer-encoding: chunked
-</code></pre></li>
-</ol>
-
-<p><br /></p>
-
-<h3 id="p-id-h2-3-使用浏览器访问-ingress-服务-p"><p id="h2">3. 使用浏览器访问 Ingress 服务</p></h3>
-
-<hr />
-
-<p>如果你想在浏览器中输入 httpbin 服务的 URL 来访问是行不通的，因为我们没有办法像使用 curl 一样告诉浏览器假装访问 <code>httpbin.example.com</code>，只能通过向 <code>/etc/hosts</code> 文件中添加 hosts 来解决这个问题。</p>
-
-<p>但是麻烦又来了，目前这种状况下即使你添加了 hosts，也仍然无法访问，因为 Istio Gateway 使用的是 NodePort 模式，暴露出来的不是 80 端口和 443 端口，而我们要想通过域名来访问服务，必须要求 Gateway 暴露出来的端口是 80 和 443。</p>
-
-<p>所以我们只能曲线救国了，通过修改 Ingress Gateway 的 <code>Deployment</code>，将 80 端口和 443 端口配置为 <code>hostPort</code> 模式，然后再通过 Node 亲和性将 <code>Gateway</code> 调度到某个固定的主机上。</p>
-
-<pre><code class="language-bash">$ kubectl -n istio-system edit deployment istio-ingressgateway
-</code></pre>
-
-<pre><code class="language-yaml">apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: istio-ingressgateway
-  namespace: istio-system
-  ...
-spec:
-  ...
-  template:
-    ...
-    spec:
-      affinity:
-        nodeAffinity:
-          ...
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - 192.168.123.248   # 比如你想调度到这台主机上
-      containers:
-        - name: ISTIO_META_POD_NAME
-        ...
-        - containerPort: 80
-          hostPort: 80
-          protocol: TCP
-        - containerPort: 443
-          hostPort: 443
-          protocol: TCP
-        ...
-</code></pre>
-
-<p>修改完之后保存退出，等待 Gateway 的 Pod 重新调度，然后在你的浏览器所在的本地电脑上添加一条 hosts：</p>
-
-<pre><code class="language-bash">192.168.123.248 httpbin.example.com
-</code></pre>
-
-<p>重新配置 <code>VirtualService</code>：</p>
-
-<pre><code class="language-yaml">$  cat &lt;&lt;EOF | istioctl replace -f -
- apiVersion: networking.istio.io/v1alpha3
- kind: VirtualService
- metadata:
-   name: httpbin
- spec:
-   hosts:
-   - &quot;httpbin.example.com&quot;
-     gateways:
-   - httpbin-gateway
-     http:
-   - match:
-     - uri:
-         prefix: /status
-     - uri:
-         prefix: /delay
-     - uri:
-         prefix: /headers
-     route:
-     - destination:
-         port:
-           number: 8000
-         host: httpbin
- EOF
-</code></pre>
-
-<p>接下来就可以在浏览器中输入 URL：<code>http://httpbin.example.com/headers</code> 来访问服务啦！</p>
-
-<p><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg" alt="" /></p>
-
-<h3 id="p-id-h2-4-清理-p"><p id="h2">4. 清理</p></h3>
-
-<hr />
-
-<p>删除 Gateway、VirtualService 和 httpbin 服务：</p>
-
-<pre><code class="language-bash">$ istioctl delete gateway httpbin-gateway
-$ istioctl delete virtualservice httpbin
-$ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
-</code></pre>
-
-<p><br /></p>
-
-<h3 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h3>
-
-<hr />
+<h4 id="依赖">依赖</h4>
 
 <ul>
-<li><a href="https://istio.io/zh/docs/tasks/traffic-management/ingress/" target="_blank">控制 Ingress 流量</a></li>
-<li><a href="https://istio.io/zh/docs/concepts/traffic-management/#gateway" target="_blank">Gateway</a></li>
+<li>Prometheus</li>
+<li>Istio 1.0</li>
 </ul>
+
+<h4 id="假设">假设</h4>
+
+<p>以下 Demo 使得这些假设更容易部署。如果您的环境设置不同，则可能需要将代码下载到本地并编辑一些文件。</p>
+
+<ul>
+<li>Prometheus 部署在 <code>istio-system</code> namespace 下，可以通过 <code>http://prometheus.istio-system:9090</code> 地址访问</li>
+<li>Istio mixer 启用了 <code>istio_request_count metric</code></li>
+<li>Kubernetes 集群包含有 <code>standard StorageClass</code></li>
+<li>为了便于部署已安装了 Helm（可选）</li>
+</ul>
+
+<p><strong>由于测试环境大多数都没有外部网络存储，无法创建 StorageClass，待会儿我们可以将这部分的配置修改为 <code>hostPath</code>。</strong></p>
+
+<h4 id="前言">前言</h4>
+
+<p>如果您还尚未部署服务网格，可以按照此 <a href="https://istio.io/docs/guides/bookinfo/" target="_blank">Istio Bookinfo Demo</a> 中的说明部署 Istio 及其示例应用程序。您需要能够在应用程序之间生成流量。要测试指标是否从 Mixer 正确发送到 Prometheus，您可以打开 Prometheus 查询 <code>istio_request_bytes_count</code>，应该会看到多个条目。</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/vistio-prometheus.jpg" alt="" /></p>
+
+<h3 id="p-id-h2-2-部署-vistio-p"><p id="h2">2. 部署 Vistio</p></h3>
+
+<hr />
+
+<p>您可以选择通过 <code>kubectl</code> 或者 <code>Helm</code> 来部署 Vistio，下面会分别介绍两种部署方式。有些变量可能需要根据您自己的环境来修改。</p>
+
+<p>如果你想通过 Helm 部署 Vistio，你将需要在 GitHub 上下载项目来获取 Helm 模板。此外，如果上述假设之一不符合您的需求（例如 prometheus url 不同），则应手动编辑文件。</p>
+
+<pre><code class="language-bash">$ git clone https://github.com/nmnellis/vistio.git
+</code></pre>
+
+<h4 id="使用-helm-部署">使用 Helm 部署</h4>
+
+<p>由于我们使用的是 Istio 1.0 版本，而 Vistio 已经有相当一段时间没有更新了，很多配置项已经不适用了，需要改动很多地方。</p>
+
+<p>切换到 Vistio 项目的根目录，修改 <code>values-with-ingress.yaml</code> 配置文件。</p>
+
+<pre><code class="language-bash">$ vim helm/vistio/values-with-ingress.yaml
+</code></pre>
+
+<pre><code class="language-yaml">vistioConfig:
+  graphName: Vistio
+  globalLevel:
+    maxVolume: 2000000
+    clusterConnections:
+      # Total requests per second coming into the ingress controller from internet
+      # 将 istio_request_count 修改为 istio_request_bytes_count
+      # 将 destination_service=&quot;istio-ingressgateway.istio-system.svc.cluster.local&quot; 修改为 source_workload=&quot;istio-ingressgateway&quot;
+      - query: sum(rate(istio_request_bytes_count{source_workload=&quot;istio-ingressgateway&quot;}[1m])) by (response_code)
+        prometheusURL: http://prometheus.istio-system:9090
+        ...
+  clusterLevel:
+    # Cluster name must match 'target' name in global
+    - cluster: istio-mesh
+      maxVolume: 3000
+      serviceConnections:
+      # 将 istio_request_count 修改为 istio_request_bytes_count
+      # 将 source_service 修改为 source_app
+        - query: sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
+          prometheusURL: http://prometheus.istio-system:9090
+          source:
+            # 将 source_service 修改为 source_app
+            label: source_app
+            ...
+</code></pre>
+
+<p>修改 <code>values.yaml</code> 配置文件。</p>
+
+<pre><code class="language-bash">$ vim helm/vistio/values.yaml
+</code></pre>
+
+<pre><code class="language-yaml">...
+######################################
+## Vistio-web
+######################################
+web:
+  env:
+    # Vistio-web 需要调用 Vistio-api 的 url，而且这个 url 必须是通过浏览器可以访问的，所以可以使用 ingress，后面将会创建
+    updateURL: &quot;http://vistio-api.istio.io/graph&quot;
+</code></pre>
+
+<p>修改 <code>statefulset.yaml</code> 配置文件。</p>
+
+<pre><code class="language-bash">$ vim helm/vistio/templates/statefulset.yaml
+</code></pre>
+
+<pre><code class="language-yaml">apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: vistio-api
+  ...
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  serviceName: vistio
+  template:
+    metadata:
+    ...
+    spec:
+      volumes:
+        - name: config
+          configMap:
+            name: vistio-api-config
+        # 添加 volume vistio-db
+        - name: vistio-db
+          hostPath:
+            path: /data/vistio
+  # 将 volumeClaimTemplates 配置项注释或删除
+  #volumeClaimTemplates:
+  #- metadata:
+  #    annotations:
+  #      volume.beta.kubernetes.io/storage-class: {{ .Values.api.storage.class }}
+  #    name: vistio-db
+  #  spec:
+  #    accessModes:
+  #    - ReadWriteOnce
+  #    resources:
+  #      requests:
+  #        storage: {{ .Values.api.storage.size }}
+</code></pre>
+
+<p><strong>同时你需要在运行 vistio-api 的节点上提前创建 <code>/data/vistio</code> 目录。</strong></p>
+
+<p>运行 <code>helm install</code> 部署 Vistio。</p>
+
+<pre><code class="language-bash">$ helm install helm/vistio -f helm/vistio/values-with-ingress.yaml --name vistio --namespace default
+</code></pre>
+
+<pre><code class="language-bash">$ kubectl get pod
+
+vistio-api-0                      1/1       Running   0          2m
+vistio-web-5c44b7f76d-hmjdc       1/1       Running   0          2m
+</code></pre>
+
+<p><br /></p>
+
+<h3 id="p-id-h2-3-验证和暴露-vistio-web-api-p"><p id="h2">3. 验证和暴露 Vistio Web/API</p></h3>
+
+<hr />
+
+<h4 id="暴露-vistio-web-api">暴露 Vistio Web/API</h4>
+
+<p>为 Service vistio-api 和 vistio-web 创建 <code>Ingress</code>：</p>
+
+<pre><code class="language-yaml">$ cat ingress.yaml
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vistio-web
+  namespace: default
+spec:
+  rules:
+  - host: vistio-web.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: vistio-web
+          servicePort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: vistio-api
+  namespace: default
+spec:
+  rules:
+  - host: vistio-api.istio.io
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: vistio-api
+          servicePort: 9091
+</code></pre>
+
+<pre><code class="language-bash">$ kubectl create -f ingress.yaml
+</code></pre>
+
+<p>然后在你的本地电脑上添加两条 hosts：</p>
+
+<pre><code class="language-bash">$Ingree_host vistio-web.istio.io
+$Ingree_host vistio-api.istio.io
+</code></pre>
+
+<p>将 <code>$Ingree_host</code> 替换为 Ingress Controller 运行节点的 IP。</p>
+
+<h4 id="验证-visito-api">验证 visito-api</h4>
+
+<p>vistio-web 调用 vistio-api 来渲染服务网格。访问 <code>http://vistio-api.istio.io/graph</code> 您应该会看到类似下列的输出。</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/LkvzHsN0VzZSOD_wy7sCgQ.png" alt="" /></p>
+
+<h4 id="访问-vistio">访问 Vistio</h4>
+
+<p>如果一切都已经启动并准备就绪，您就可以访问 Vistio UI，开始探索服务网格网络，访问<code>http://vistio-web.istio.io</code> 您将会看到类似下图的输出。</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/vistio-web.jpg" alt="" /></p>
+
+<h3 id="p-id-h2-4-探索-p"><p id="h2">4. 探索</p></h3>
+
+<hr />
+
+<p>在全局范围内，您将看到Istio网格内所有请求的总和，如果你点击 <code>istio-mesh</code> 气泡，就能查看你的网状网络。</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/vistio-mesh1.jpg" alt="" />
+<center><iframe height=393 width=628 src="http://o7z41ciog.bkt.clouddn.com/vistio.mp4" frameborder=0 allowfullscreen allowfullscreen="true" ></iframe></center></p>
+
+<p>在你的 Istio 网格中，您可以使用许多可视化工具来帮助您查明故障的应用程序。</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/WM6lx-4bms7YBO-EHs_a2g.png" alt="" /></p>
+
+<p>使用屏幕右上方的过滤器可以快速过滤出错误率较高的应用程序。通过高级配置，当错误率超过特定值时，也可以触发警报。警报将显示给定应用程序的当前错误率趋势。</p>
+
+<h3 id="p-id-h2-5-问题排查-p"><p id="h2">5. 问题排查</p></h3>
+
+<hr />
+
+<p>访问 <code>http://vistio-api.istio.io/graph</code>，如果你从 vistio-api 中看到以下输出，表示某些功能无法正常工作。正确的输出显示在教程上面。</p>
+
+<p><img src="http://o7z41ciog.bkt.clouddn.com/TcFuNvCvk5C53rO4vXLkw.png" alt="" /></p>
+
+<ol>
+<li>检查 vistio-api 日志中是否有错误——在大多数情况下，vistio-api 将记录与 Prometheus 通信时遇到的任何问题。</li>
+</ol>
+
+<pre><code class="language-bash">   $ kubectl logs -f $(kubectl get pod -l app=vistio-api -o go-template='{{range .items}}{{.metadata.name}}{{end}}') -c vistio-api
+</code></pre>
+
+<ol>
+<li>验证 Prometheus 查询——vistio-api 使用以下查询检索其数据。您应该确保 Prometheus 内部的数据都存在。</li>
+</ol>
+
+<pre><code class="language-yaml">   # Global Level Query
+   sum(rate(istio_request_bytes_count{source_workload=&quot;istio-ingressgateway&quot;}[1m])) by (response_code)
+   # Cluster Level Query
+   sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,response_code)
+</code></pre>
+
+<ol>
+<li>提交 Issue——如果遇到问题无法解决请提交 Issue：<a href="https://github.com/nmnellis/vistio/issues" target="_blank">https://github.com/nmnellis/vistio/issues</a></li>
+</ol>
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center></p>
 
@@ -886,11 +892,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/istio-traffic-management/" data-toggle="tooltip" data-placement="top" title="Istio 流量管理">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/istio-ingress/" data-toggle="tooltip" data-placement="top" title="Istio 服务网格中的网关">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/" data-toggle="tooltip" data-placement="top" title="Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -900,6 +906,8 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
+                    <li><a href="/posts/istio-ingress/">Istio 服务网格中的网关</a></li>
+                    
                     <li><a href="/posts/istio-traffic-management/">Istio 流量管理</a></li>
                     
                     <li><a href="/posts/istio-1.0-deploy/">Istio 1.0 部署</a></li>
@@ -907,8 +915,6 @@ border-top-color: #9954bb;
                     <li><a href="/posts/circuit-breaking/">Envoy 熔断器的原理和使用</a></li>
                     
                     <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
-                    
-                    <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
                     
                 </ul>
                 
@@ -919,9 +925,9 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Thu Aug 2, 2018</h4>
+        <h4 id="date"> Fri Aug 3, 2018</h4>
     </section>
-    <h5 id="wc">2600 Words|Read in about 6 Min</h5>
+    <h5 id="wc">2400 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
