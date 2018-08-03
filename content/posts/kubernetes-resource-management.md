@@ -315,11 +315,11 @@ Pod 也是不平等的，有些 pod 要比其他 pod 更重要。只管来说，
 做一个总结，下面是一个使用了上面多种参数的驱逐配置实例（你应该能看懂它们是什么意思了）：
 
 ```bash
-–eviction-soft=memory.available<80%,nodefs.available<2Gi \
-–eviction-soft-grace-period=memory.available=1m30s,nodefs.available=1m30s \
-–eviction-max-pod-grace-period=120 \
-–eviction-hard=memory.available<500Mi,nodefs.available<1Gi \
-–eviction-pressure-transition-period=30s \
+–-eviction-soft=memory.available<80%,nodefs.available<2Gi \
+–-eviction-soft-grace-period=memory.available=1m30s,nodefs.available=1m30s \
+–-eviction-max-pod-grace-period=120 \
+–-eviction-hard=memory.available<500Mi,nodefs.available<1Gi \
+–-eviction-pressure-transition-period=30s \
 --eviction-minimum-reclaim="memory.available=0Mi,nodefs.available=500Mi,imagefs.available=2Gi"
 ```
 

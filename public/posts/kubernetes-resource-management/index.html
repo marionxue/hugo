@@ -696,11 +696,11 @@ description: &quot;This priority class should be used for XYZ service pods only.
 
 <p>做一个总结，下面是一个使用了上面多种参数的驱逐配置实例（你应该能看懂它们是什么意思了）：</p>
 
-<pre><code class="language-bash">–eviction-soft=memory.available&lt;80%,nodefs.available&lt;2Gi \
-–eviction-soft-grace-period=memory.available=1m30s,nodefs.available=1m30s \
-–eviction-max-pod-grace-period=120 \
-–eviction-hard=memory.available&lt;500Mi,nodefs.available&lt;1Gi \
-–eviction-pressure-transition-period=30s \
+<pre><code class="language-bash">–-eviction-soft=memory.available&lt;80%,nodefs.available&lt;2Gi \
+–-eviction-soft-grace-period=memory.available=1m30s,nodefs.available=1m30s \
+–-eviction-max-pod-grace-period=120 \
+–-eviction-hard=memory.available&lt;500Mi,nodefs.available&lt;1Gi \
+–-eviction-pressure-transition-period=30s \
 --eviction-minimum-reclaim=&quot;memory.available=0Mi,nodefs.available=500Mi,imagefs.available=2Gi&quot;
 </code></pre>
 
