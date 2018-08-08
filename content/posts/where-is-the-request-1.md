@@ -264,7 +264,8 @@ spec:
 
 ```bash
 $ istioctl -n istio-system pc listeners istio-ingressgateway-b6db8c46f-qcfks --port 80 -o json
-
+```
+```json
 [
     {
         "name": "0.0.0.0_80",
@@ -303,7 +304,8 @@ $ istioctl -n istio-system pc listeners istio-ingressgateway-b6db8c46f-qcfks --p
 
 ```bash
 $ istioctl -n istio-system pc routes istio-ingressgateway-b6db8c46f-qcfks --name http.80 -o json
-
+```
+```json
 [
     {
         "name": "http.80",
@@ -360,7 +362,8 @@ $ istioctl -n istio-system pc routes istio-ingressgateway-b6db8c46f-qcfks --name
 
 ```bash
 $ istioctl -n istio-system pc clusters istio-ingressgateway-b6db8c46f-qcfks --fqdn productpage.default.svc.cluster.local --port 9080 -o json
-
+```
+```json
 [
     {
         "name": "outbound|9080||productpage.default.svc.cluster.local",

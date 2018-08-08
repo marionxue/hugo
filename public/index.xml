@@ -833,8 +833,9 @@ spec:
 &lt;p&gt;首先查看 &lt;code&gt;Listener&lt;/code&gt; 的配置项：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl -n istio-system pc listeners istio-ingressgateway-b6db8c46f-qcfks --port 80 -o json
+&lt;/code&gt;&lt;/pre&gt;
 
-[
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
     {
         &amp;quot;name&amp;quot;: &amp;quot;0.0.0.0_80&amp;quot;,
         &amp;quot;address&amp;quot;: {
@@ -871,8 +872,9 @@ spec:
 &lt;p&gt;查看 &lt;code&gt;Http Route Table&lt;/code&gt; 配置项：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl -n istio-system pc routes istio-ingressgateway-b6db8c46f-qcfks --name http.80 -o json
+&lt;/code&gt;&lt;/pre&gt;
 
-[
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
     {
         &amp;quot;name&amp;quot;: &amp;quot;http.80&amp;quot;,
         &amp;quot;virtualHosts&amp;quot;: [
@@ -929,8 +931,9 @@ spec:
 &lt;p&gt;查看 &lt;code&gt;Cluster&lt;/code&gt; 配置项：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl -n istio-system pc clusters istio-ingressgateway-b6db8c46f-qcfks --fqdn productpage.default.svc.cluster.local --port 9080 -o json
+&lt;/code&gt;&lt;/pre&gt;
 
-[
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
     {
         &amp;quot;name&amp;quot;: &amp;quot;outbound|9080||productpage.default.svc.cluster.local&amp;quot;,
         &amp;quot;type&amp;quot;: &amp;quot;EDS&amp;quot;,

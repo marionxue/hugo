@@ -646,8 +646,9 @@ spec:
 <p>首先查看 <code>Listener</code> 的配置项：</p>
 
 <pre><code class="language-bash">$ istioctl -n istio-system pc listeners istio-ingressgateway-b6db8c46f-qcfks --port 80 -o json
+</code></pre>
 
-[
+<pre><code class="language-json">[
     {
         &quot;name&quot;: &quot;0.0.0.0_80&quot;,
         &quot;address&quot;: {
@@ -684,8 +685,9 @@ spec:
 <p>查看 <code>Http Route Table</code> 配置项：</p>
 
 <pre><code class="language-bash">$ istioctl -n istio-system pc routes istio-ingressgateway-b6db8c46f-qcfks --name http.80 -o json
+</code></pre>
 
-[
+<pre><code class="language-json">[
     {
         &quot;name&quot;: &quot;http.80&quot;,
         &quot;virtualHosts&quot;: [
@@ -742,8 +744,9 @@ spec:
 <p>查看 <code>Cluster</code> 配置项：</p>
 
 <pre><code class="language-bash">$ istioctl -n istio-system pc clusters istio-ingressgateway-b6db8c46f-qcfks --fqdn productpage.default.svc.cluster.local --port 9080 -o json
+</code></pre>
 
-[
+<pre><code class="language-json">[
     {
         &quot;name&quot;: &quot;outbound|9080||productpage.default.svc.cluster.local&quot;,
         &quot;type&quot;: &quot;EDS&quot;,
