@@ -70,7 +70,7 @@ $ export PILOT_SVC_IP=$(kubectl -n istio-system get svc istio-pilot -o go-templa
 ```bash
 $ curl http://$PILOT_SVC_IP:8080/debug/edsz
 ```
-```yaml
+```json
 [{
     "clusterName": "outbound|9080||reviews.nino.svc.cluster.local",
     "endpoints": [{
@@ -125,7 +125,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz
 ```bash
 $ curl http://$PILOT_SVC_IP:8080/debug/cdsz
 ```
-```yaml
+```json
 [{"node": "sidecar~172.30.104.45~fortio-deploy-56dcc85457-b2pkc.default~default.svc.cluster.local-10", "addr": "172.30.104.45:43876", "connect": "2018-08-07 06:31:08.161483005 +0000 UTC m=+54.337448884","Clusters":[{
   "name": "outbound|9080||details.default.svc.cluster.local",
   "type": "EDS",

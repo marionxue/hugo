@@ -643,7 +643,7 @@ net.ipv4.tcp_synack_retries = 5
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl http://$PILOT_SVC_IP:8080/debug/edsz
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;[{
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[{
     &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080||reviews.nino.svc.cluster.local&amp;quot;,
     &amp;quot;endpoints&amp;quot;: [{
         &amp;quot;lbEndpoints&amp;quot;: [{
@@ -697,7 +697,7 @@ net.ipv4.tcp_synack_retries = 5
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl http://$PILOT_SVC_IP:8080/debug/cdsz
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;[{&amp;quot;node&amp;quot;: &amp;quot;sidecar~172.30.104.45~fortio-deploy-56dcc85457-b2pkc.default~default.svc.cluster.local-10&amp;quot;, &amp;quot;addr&amp;quot;: &amp;quot;172.30.104.45:43876&amp;quot;, &amp;quot;connect&amp;quot;: &amp;quot;2018-08-07 06:31:08.161483005 +0000 UTC m=+54.337448884&amp;quot;,&amp;quot;Clusters&amp;quot;:[{
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[{&amp;quot;node&amp;quot;: &amp;quot;sidecar~172.30.104.45~fortio-deploy-56dcc85457-b2pkc.default~default.svc.cluster.local-10&amp;quot;, &amp;quot;addr&amp;quot;: &amp;quot;172.30.104.45:43876&amp;quot;, &amp;quot;connect&amp;quot;: &amp;quot;2018-08-07 06:31:08.161483005 +0000 UTC m=+54.337448884&amp;quot;,&amp;quot;Clusters&amp;quot;:[{
   &amp;quot;name&amp;quot;: &amp;quot;outbound|9080||details.default.svc.cluster.local&amp;quot;,
   &amp;quot;type&amp;quot;: &amp;quot;EDS&amp;quot;,
   &amp;quot;edsClusterConfig&amp;quot;: {

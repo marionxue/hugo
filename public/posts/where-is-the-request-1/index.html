@@ -456,7 +456,7 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">$ curl http://$PILOT_SVC_IP:8080/debug/edsz
 </code></pre>
 
-<pre><code class="language-yaml">[{
+<pre><code class="language-json">[{
     &quot;clusterName&quot;: &quot;outbound|9080||reviews.nino.svc.cluster.local&quot;,
     &quot;endpoints&quot;: [{
         &quot;lbEndpoints&quot;: [{
@@ -510,7 +510,7 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">$ curl http://$PILOT_SVC_IP:8080/debug/cdsz
 </code></pre>
 
-<pre><code class="language-yaml">[{&quot;node&quot;: &quot;sidecar~172.30.104.45~fortio-deploy-56dcc85457-b2pkc.default~default.svc.cluster.local-10&quot;, &quot;addr&quot;: &quot;172.30.104.45:43876&quot;, &quot;connect&quot;: &quot;2018-08-07 06:31:08.161483005 +0000 UTC m=+54.337448884&quot;,&quot;Clusters&quot;:[{
+<pre><code class="language-json">[{&quot;node&quot;: &quot;sidecar~172.30.104.45~fortio-deploy-56dcc85457-b2pkc.default~default.svc.cluster.local-10&quot;, &quot;addr&quot;: &quot;172.30.104.45:43876&quot;, &quot;connect&quot;: &quot;2018-08-07 06:31:08.161483005 +0000 UTC m=+54.337448884&quot;,&quot;Clusters&quot;:[{
   &quot;name&quot;: &quot;outbound|9080||details.default.svc.cluster.local&quot;,
   &quot;type&quot;: &quot;EDS&quot;,
   &quot;edsClusterConfig&quot;: {
