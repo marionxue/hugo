@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/where-is-the-request-1/</loc>
+    <lastmod>2018-08-08T16:56:31+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/kubernetes-resource-management/</loc>
     <lastmod>2018-08-03T17:34:19+08:00</lastmod>
   </url>
@@ -269,13 +274,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/istio/</loc>
-    <lastmod>2018-08-03T15:29:37+08:00</lastmod>
+    <lastmod>2018-08-08T16:56:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
-    <lastmod>2018-08-03T17:34:19+08:00</lastmod>
+    <lastmod>2018-08-08T16:56:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -329,13 +334,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/service-mesh/</loc>
-    <lastmod>2018-08-03T15:29:37+08:00</lastmod>
+    <lastmod>2018-08-08T16:56:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/service-mesh/</loc>
-    <lastmod>2018-08-03T15:29:37+08:00</lastmod>
+    <lastmod>2018-08-08T16:56:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   

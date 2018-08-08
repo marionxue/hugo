@@ -572,6 +572,622 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>请求都去哪了？</title>
+      <link>https://www.yangcs.net/posts/where-is-the-request-1/</link>
+      <pubDate>Wed, 08 Aug 2018 16:56:31 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/where-is-the-request-1/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;通过几篇文章的学习与实践，我们对 Gateway、VirtualService 和 Destinationrule 的概念和原理有了初步的认知，本篇将对这几个对象资源的配置文件进行深度地解析，具体细节将会深入到每一个配置项与 Envoy 配置项的映射关系。&lt;/p&gt;
+
+&lt;p&gt;在开始之前，需要先搞清楚我们创建的这些对象资源最后都交给谁来处理了，负责处理这些资源的就是 pilot。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-1-pilot总体架构-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. pilot总体架构&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://ws1.sinaimg.cn/large/006tKfTcgy1ftppxdcmwvj31kw0vvtdl.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;首先我们回顾一下 pilot 总体架构，上面是&lt;a href=&#34;https://github.com/istio/old_pilot_repo/blob/master/doc/design.md&#34; target=&#34;_blank&#34;&gt;官方关于pilot的架构图&lt;/a&gt;，因为是 old_pilot_repo 目录下，可能与最新架构有出入，仅供参考。所谓的 pilot 包含两个组件：&lt;code&gt;pilot-agent&lt;/code&gt; 和 &lt;code&gt;pilot-discovery&lt;/code&gt;。图里的 &lt;code&gt;agent&lt;/code&gt; 对应 pilot-agent 二进制，&lt;code&gt;proxy&lt;/code&gt; 对应 Envoy 二进制，它们两个在同一个容器中，&lt;code&gt;discovery service&lt;/code&gt; 对应 pilot-discovery 二进制，在另外一个跟应用分开部署的单独的 Deployment 中。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;discovery service&lt;/span&gt; : 从 Kubernetes apiserver list/watch &lt;code&gt;service&lt;/code&gt;、&lt;code&gt;endpoint&lt;/code&gt;、&lt;code&gt;pod&lt;/code&gt;、&lt;code&gt;node&lt;/code&gt; 等资源信息，监听 istio 控制平面配置信息（如VirtualService、DestinationRule等）， 翻译为 Envoy 可以直接理解的配置格式。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;proxy&lt;/span&gt; : 也就是 Envoy，直接连接 discovery service，间接地从 Kubernetes 等服务注册中心获取集群中微服务的注册情况。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;agent&lt;/span&gt; : 生成 Envoy 配置文件，管理 Envoy 生命周期。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;service A/B&lt;/span&gt; : 使用了 Istio 的应用，如 Service A/B，的进出网络流量会被 proxy 接管。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;简单来说 Istio 做为管理面，集合了配置中心和服务中心两个功能，并把配置发现和服务发现以一组统一的 &lt;code&gt;xDS&lt;/code&gt; 接口提供出来，数据面的 Envoy 通过 xDS 获取需要的信息来做服务间通信和服务治理。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-2-pilot-discovery-为-envoy-提供的-xds-服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. pilot-discovery 为 Envoy 提供的 xds 服务&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;所谓-xds&#34;&gt;所谓 xds&lt;/h4&gt;
+
+&lt;p&gt;pilot-discovery 为数据面（运行在 sidecar 中的 Envoy 等 proxy 组件）提供控制信息服务，也就是所谓的 discovery service 或者 xds 服务。这里的 &lt;code&gt;x&lt;/code&gt; 是一个代词，类似云计算里的 XaaS 可以指代 IaaS、PaaS、SaaS 等。在 Istio 中，xds 包括 &lt;code&gt;cds&lt;/code&gt;(cluster discovery service)、&lt;code&gt;lds&lt;/code&gt;(listener discovery service)、&lt;code&gt;rds&lt;/code&gt;(route discovery service)、&lt;code&gt;eds&lt;/code&gt;(endpoint discovery service)，而 &lt;code&gt;ads&lt;/code&gt;(aggregated discovery service) 是对这些服务的一个统一封装。&lt;/p&gt;
+
+&lt;p&gt;以上 cluster、endpoint、route 等概念的详细介绍和实现细节可以参考 Envoy 在社区推广的 data plane api（&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api&#34; target=&#34;_blank&#34;&gt;github.com/envoyproxy/data-plane-api&lt;/a&gt;），这里只做简单介绍：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;endpoint&lt;/span&gt; : 一个具体的“应用实例”，对应 ip 和端口号，类似 Kubernetes 中的一个 Pod。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;cluster&lt;/span&gt; : 一个 &lt;code&gt;cluster&lt;/code&gt; 是一个“应用集群”，它对应提供相同服务的一个或多个 &lt;code&gt;endpoint&lt;/code&gt;。cluster 类似 Kubernetes 中 &lt;code&gt;Service&lt;/code&gt; 的概念，即一个 Kubernetes Service 对应一个或多个用同一镜像启动，提供相同服务的 Pod。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;route&lt;/span&gt; : 当我们做灰度发布、金丝雀发布时，同一个服务会同时运行多个版本，每个版本对应一个 cluster。这时需要通过 &lt;code&gt;route&lt;/code&gt; 规则规定请求如何路由到其中的某个版本的 cluster 上。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;以上这些内容实际上都是对 Envoy 等 proxy 的配置信息，而所谓的 cluster discovery service、route discovery service 等 xxx discovery service 就是 Envoy 等从 &lt;code&gt;pilot-discovery&lt;/code&gt; 动态获取 endpoint、cluster 等配置信息的协议和实现。为什么要做动态配置加载，自然是为了使用 &lt;code&gt;istioctl&lt;/code&gt; 等工具统一、灵活地配置 service mesh。至于如何通过 istioctl 来查看 xds 信息，下文将会详细介绍。&lt;/p&gt;
+
+&lt;p&gt;而为什么要用 &lt;code&gt;ads&lt;/code&gt; 来“聚合”一系列 &lt;code&gt;xds&lt;/code&gt;，并非仅为了在同一个 gRPC 连接上实现多种 xds 来省下几个网络连接，ads 还有一个非常重要的作用是解决 &lt;code&gt;cds&lt;/code&gt;、&lt;code&gt;rds&lt;/code&gt; 信息更新顺序依赖的问题，从而保证以一定的顺序同步各类配置信息，这方面的讨论可以详见 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service&#34; target=&#34;_blank&#34;&gt;Envoy官网&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;如何查看-xds&#34;&gt;如何查看 xds&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;pilot-discovery&lt;/code&gt; 在初始化阶段依次 init 了各种模块，其中 &lt;code&gt;discovery service&lt;/code&gt; 就是 xDS 相关实现。&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/&#34; target=&#34;_blank&#34;&gt;envoy API reference&lt;/a&gt; 可以查到 v1 和 v2 两个版本的 API 文档。&lt;a href=&#34;https://github.com/envoyproxy/go-control-plane&#34; target=&#34;_blank&#34;&gt;envoy control plane&lt;/a&gt; 给了 v2 grpc 接口相关的数据结构和接口。&lt;/p&gt;
+
+&lt;p&gt;那么如何查看 xds 的信息呢？虽然 v2 是 &lt;code&gt;grpc&lt;/code&gt; 的接口，但是 pilot 提供了 &lt;code&gt;InitDebug&lt;/code&gt;，可以通过 debug 接口查询服务和 routes 等服务和配置信息。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;查看 eds&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;首先找到 Service istio-pilot 的 &lt;code&gt;Cluster IP&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ export PILOT_SVC_IP=$(kubectl -n istio-system get svc istio-pilot -o go-template=&#39;{{.spec.clusterIP}}&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后查看 eds：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl http://$PILOT_SVC_IP:8080/debug/edsz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;[{
+    &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080||reviews.nino.svc.cluster.local&amp;quot;,
+    &amp;quot;endpoints&amp;quot;: [{
+        &amp;quot;lbEndpoints&amp;quot;: [{
+            &amp;quot;endpoint&amp;quot;: {
+                &amp;quot;address&amp;quot;: {
+                    &amp;quot;socketAddress&amp;quot;: {
+                        &amp;quot;address&amp;quot;: &amp;quot;10.244.0.56&amp;quot;,
+                        &amp;quot;portValue&amp;quot;: 9080
+                    }
+                }
+            }
+        }, {
+            &amp;quot;endpoint&amp;quot;: {
+                &amp;quot;address&amp;quot;: {
+                    &amp;quot;socketAddress&amp;quot;: {
+                        &amp;quot;address&amp;quot;: &amp;quot;10.244.0.58&amp;quot;,
+                        &amp;quot;portValue&amp;quot;: 9080
+                    }
+                }
+            }
+        }, {
+            &amp;quot;endpoint&amp;quot;: {
+                &amp;quot;address&amp;quot;: {
+                    &amp;quot;socketAddress&amp;quot;: {
+                        &amp;quot;address&amp;quot;: &amp;quot;10.244.2.25&amp;quot;,
+                        &amp;quot;portValue&amp;quot;: 9080
+                    }
+                }
+            }
+        }]
+    }]
+}, {
+    &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080|v3|reviews.nino.svc.cluster.local&amp;quot;,
+    &amp;quot;endpoints&amp;quot;: [{
+        &amp;quot;lbEndpoints&amp;quot;: [{
+            &amp;quot;endpoint&amp;quot;: {
+                &amp;quot;address&amp;quot;: {
+                    &amp;quot;socketAddress&amp;quot;: {
+                        &amp;quot;address&amp;quot;: &amp;quot;10.244.0.58&amp;quot;,
+                        &amp;quot;portValue&amp;quot;: 9080
+                    }
+                }
+            }
+        }]
+    }]
+}]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;查看 cds&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl http://$PILOT_SVC_IP:8080/debug/cdsz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;[{&amp;quot;node&amp;quot;: &amp;quot;sidecar~172.30.104.45~fortio-deploy-56dcc85457-b2pkc.default~default.svc.cluster.local-10&amp;quot;, &amp;quot;addr&amp;quot;: &amp;quot;172.30.104.45:43876&amp;quot;, &amp;quot;connect&amp;quot;: &amp;quot;2018-08-07 06:31:08.161483005 +0000 UTC m=+54.337448884&amp;quot;,&amp;quot;Clusters&amp;quot;:[{
+  &amp;quot;name&amp;quot;: &amp;quot;outbound|9080||details.default.svc.cluster.local&amp;quot;,
+  &amp;quot;type&amp;quot;: &amp;quot;EDS&amp;quot;,
+  &amp;quot;edsClusterConfig&amp;quot;: {
+    &amp;quot;edsConfig&amp;quot;: {
+      &amp;quot;ads&amp;quot;: {
+
+      }
+    },
+    &amp;quot;serviceName&amp;quot;: &amp;quot;outbound|9080||details.default.svc.cluster.local&amp;quot;
+  },
+  &amp;quot;connectTimeout&amp;quot;: &amp;quot;1.000s&amp;quot;,
+  &amp;quot;circuitBreakers&amp;quot;: {
+    &amp;quot;thresholds&amp;quot;: [
+      {
+
+      }
+    ]
+  }
+},
+...
+{
+  &amp;quot;name&amp;quot;: &amp;quot;outbound|9090||prometheus-k8s.monitoring.svc.cluster.local&amp;quot;,
+  &amp;quot;type&amp;quot;: &amp;quot;EDS&amp;quot;,
+  &amp;quot;edsClusterConfig&amp;quot;: {
+    &amp;quot;edsConfig&amp;quot;: {
+      &amp;quot;ads&amp;quot;: {
+
+      }
+    },
+    &amp;quot;serviceName&amp;quot;: &amp;quot;outbound|9090||prometheus-k8s.monitoring.svc.cluster.local&amp;quot;
+  },
+  &amp;quot;connectTimeout&amp;quot;: &amp;quot;1.000s&amp;quot;,
+  &amp;quot;circuitBreakers&amp;quot;: {
+    &amp;quot;thresholds&amp;quot;: [
+      {
+
+      }
+    ]
+  }
+},
+{
+  &amp;quot;name&amp;quot;: &amp;quot;BlackHoleCluster&amp;quot;,
+  &amp;quot;connectTimeout&amp;quot;: &amp;quot;5.000s&amp;quot;
+}]}
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;查看 ads&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl http://$PILOT_SVC_IP:8080/debug/adsz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;p-id-h2-3-envoy-基本术语回顾-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. Envoy 基本术语回顾&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;为了让大家更容易理解后面所讲的内容，先来回顾一下 Envoy 的基本术语。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Listener&lt;/span&gt; : 监听器（listener）是服务(程序)监听者，就是真正干活的。 它是可以由下游客户端连接的命名网络位置（例如，端口、unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。一般是每台主机运行一个 Envoy，使用单进程运行，但是每个进程中可以启动任意数量的 Listener（监听器），目前只监听 TCP，每个监听器都独立配置一定数量的（L3/L4）网络过滤器。Listenter 也可以通过 Listener Discovery Service（LDS）动态获取。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Listener filter&lt;/span&gt; : Listener 使用 listener filter（监听器过滤器）来操作链接的元数据。它的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。Listener filter 的 API 相对简单，因为这些过滤器最终是在新接受的套接字上运行。在链中可以互相衔接以支持更复杂的场景，例如调用速率限制。Envoy 已经包含了多个监听器过滤器。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Http Route Table&lt;/span&gt; : HTTP 的路由规则，例如请求的域名，Path 符合什么规则，转发给哪个 Cluster。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Cluster&lt;/span&gt; : 集群（cluster）是 Envoy 连接到的一组逻辑上相似的上游主机。Envoy 通过服务发现发现集群中的成员。Envoy 可以通过主动运行状况检查来确定集群成员的健康状况。Envoy 如何将请求路由到集群成员由负载均衡策略确定。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;更多详细信息可以参考 &lt;a href=&#34;https://jimmysong.io/posts/envoy-archiecture-and-terminology/&#34; target=&#34;_blank&#34;&gt;Envoy 的架构与基本术语&lt;/a&gt;，本文重点突出 &lt;code&gt;Listener&lt;/code&gt;、&lt;code&gt;Route&lt;/code&gt; 和 &lt;code&gt;Cluster&lt;/code&gt; 这三个基本术语，同时需要注意流量经过这些术语的先后顺序，请求首先到达 &lt;code&gt;Listener&lt;/code&gt;，然后通过 &lt;code&gt;Http Route Table&lt;/code&gt; 转到具体的 &lt;code&gt;Cluster&lt;/code&gt;，最后由具体的 Cluster 对请求做出响应。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-4-gateway-和-virtualservice-配置解析-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. Gateway 和 VirtualService 配置解析&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;还是拿之前 &lt;a href=&#34;https://www.yangcs.net/posts/istio-traffic-management/&#34; target=&#34;_blank&#34;&gt;Istio 流量管理&lt;/a&gt; 这篇文章中的例子来解析吧，首先创建了一个 &lt;code&gt;Gateway&lt;/code&gt;，配置文件如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - &amp;quot;*&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后又创建了一个 &lt;code&gt;VirtualService&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+spec:
+  hosts:
+  - &amp;quot;*&amp;quot;
+  gateways:
+  - bookinfo-gateway
+  http:
+  - match:
+    - uri:
+        exact: /productpage
+    - uri:
+        exact: /login
+    - uri:
+        exact: /logout
+    - uri:
+        prefix: /api/v1/products
+    route:
+    - destination:
+        host: productpage
+        port:
+          number: 9080
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;VirtualService&lt;/code&gt; 映射的就是 Envoy 中的 &lt;code&gt;Http Route Table&lt;/code&gt;，大家可以注意到上面的 VirtualService 配置文件中有一个 &lt;code&gt;gateways&lt;/code&gt; 字段，如果有这个字段，就表示这个 Http Route Table 是绑在 &lt;code&gt;ingressgateway&lt;/code&gt; 的 &lt;code&gt;Listener&lt;/code&gt; 中的；如果没有这个字段，就表示这个 Http Route Table 是绑在 Istio 所管理的所有微服务应用的 Pod 上的。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;为了分清主次，我决定将本文拆分成两篇文章来讲解，本篇主要围绕 ingressgateway 来解析 Gateway 和 VirtualService，而微服务应用本身的 VirtualService 和 DestinationRule 解析放到下一篇文章再说。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;显而易见，上面这个 VirtualService 映射的 Http Route Table 是被绑在 ingressgateway 中的，可以通过 &lt;code&gt;istioctl&lt;/code&gt; 来查看，istioctl 的具体用法请参考：&lt;a href=&#34;https://istio.io/zh/help/ops/traffic-management/debugging-pilot-envoy/&#34; target=&#34;_blank&#34;&gt;调试 Envoy 和 Pilot&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;首先查看 &lt;code&gt;Listener&lt;/code&gt; 的配置项：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl -n istio-system pc listeners istio-ingressgateway-b6db8c46f-qcfks --port 80 -o json
+
+[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;0.0.0.0_80&amp;quot;,
+        &amp;quot;address&amp;quot;: {
+            &amp;quot;socketAddress&amp;quot;: {
+                &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+                &amp;quot;portValue&amp;quot;: 80
+            }
+        },
+        &amp;quot;filterChains&amp;quot;: [
+            {
+                &amp;quot;filters&amp;quot;: [
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;envoy.http_connection_manager&amp;quot;,
+                        &amp;quot;config&amp;quot;: {
+                            ...
+                            &amp;quot;rds&amp;quot;: {
+                                &amp;quot;config_source&amp;quot;: {
+                                    &amp;quot;ads&amp;quot;: {}
+                                },
+                                &amp;quot;route_config_name&amp;quot;: &amp;quot;http.80&amp;quot;
+                            },
+                            ...
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过 &lt;code&gt;rds&lt;/code&gt; 配置项的 &lt;code&gt;route_config_name&lt;/code&gt; 字段可以知道该 Listener 使用的 Http Route Table 的名字是 &lt;code&gt;http.80&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;查看 &lt;code&gt;Http Route Table&lt;/code&gt; 配置项：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl -n istio-system pc routes istio-ingressgateway-b6db8c46f-qcfks --name http.80 -o json
+
+[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;http.80&amp;quot;,
+        &amp;quot;virtualHosts&amp;quot;: [
+            {
+                &amp;quot;name&amp;quot;: &amp;quot;bookinfo:80&amp;quot;,
+                &amp;quot;domains&amp;quot;: [
+                    &amp;quot;*&amp;quot;
+                ],
+                &amp;quot;routes&amp;quot;: [
+                    {
+                        &amp;quot;match&amp;quot;: {
+                            &amp;quot;path&amp;quot;: &amp;quot;/productpage&amp;quot;
+                        },
+                        &amp;quot;route&amp;quot;: {
+                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|9080||productpage.default.svc.cluster.local&amp;quot;,
+                            &amp;quot;timeout&amp;quot;: &amp;quot;0.000s&amp;quot;,
+                            &amp;quot;maxGrpcTimeout&amp;quot;: &amp;quot;0.000s&amp;quot;
+                        },
+                        ...
+                    },
+                    ...
+                    {
+                        &amp;quot;match&amp;quot;: {
+                            &amp;quot;prefix&amp;quot;: &amp;quot;/api/v1/products&amp;quot;
+                        },
+                        &amp;quot;route&amp;quot;: {
+                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|9080||productpage.default.svc.cluster.local&amp;quot;,
+                            &amp;quot;timeout&amp;quot;: &amp;quot;0.000s&amp;quot;,
+                            &amp;quot;maxGrpcTimeout&amp;quot;: &amp;quot;0.000s&amp;quot;
+                        },
+                        ...
+                    },
+                    ...
+                ]
+            }
+        ],
+        &amp;quot;validateClusters&amp;quot;: false
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;VirtualService 中的 &lt;code&gt;hosts&lt;/code&gt; 字段对应 Http Route Table 中 &lt;code&gt;virtualHosts&lt;/code&gt; 配置项的 &lt;code&gt;domains&lt;/code&gt; 字段。这里表示可以使用任何域名来通过 ingressgateway 访问服务（也可以直接通过 IP 来访问）。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;VirtualService 中的 &lt;code&gt;exact&lt;/code&gt; 字段对应 Http Route Table 中 &lt;code&gt;routes.match&lt;/code&gt; 配置项的 &lt;code&gt;path&lt;/code&gt; 字段。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;VirtualService 中的 &lt;code&gt;prefix&lt;/code&gt; 字段对应 Http Route Table 中 &lt;code&gt;routes.match&lt;/code&gt; 配置项的 &lt;code&gt;prefix&lt;/code&gt; 字段。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;VirtualService 中的 &lt;code&gt;route.destination&lt;/code&gt; 配置项对应 Http Route Table 中 &lt;code&gt;routes.route&lt;/code&gt; 配置项的 &lt;code&gt;cluster&lt;/code&gt; 字段。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;关于 Envoy 中的 HTTP 路由解析可以参考我之前的文章：&lt;a href=&#34;https://www.yangcs.net/posts/routing-basics/&#34; target=&#34;_blank&#34;&gt;HTTP 路由解析&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;查看 &lt;code&gt;Cluster&lt;/code&gt; 配置项：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl -n istio-system pc clusters istio-ingressgateway-b6db8c46f-qcfks --fqdn productpage.default.svc.cluster.local --port 9080 -o json
+
+[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;outbound|9080||productpage.default.svc.cluster.local&amp;quot;,
+        &amp;quot;type&amp;quot;: &amp;quot;EDS&amp;quot;,
+        &amp;quot;edsClusterConfig&amp;quot;: {
+            &amp;quot;edsConfig&amp;quot;: {
+                &amp;quot;ads&amp;quot;: {}
+            },
+            &amp;quot;serviceName&amp;quot;: &amp;quot;outbound|9080||productpage.default.svc.cluster.local&amp;quot;
+        },
+        &amp;quot;connectTimeout&amp;quot;: &amp;quot;1.000s&amp;quot;,
+        &amp;quot;circuitBreakers&amp;quot;: {
+            &amp;quot;thresholds&amp;quot;: [
+                {}
+            ]
+        }
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到，&lt;code&gt;Cluster&lt;/code&gt; 最终将集群外通过 ingressgateway 发起的请求转发给实际的 &lt;code&gt;endpoint&lt;/code&gt;，也就是 Kubernetes 集群中的 Service &lt;code&gt;productpage&lt;/code&gt; 下面的 Pod（由 serviceName 字段指定）。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;实际上 istioctl 正是通过 pilot 的 xds 接口来查看 Listener 、Route 和 Cluster 等信息的。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;好了，现在请求已经转交给 productpage 了，那么接下来这个请求将会如何走完整个旅程呢？请听下回分解！&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Kubernetes 资源管理概述</title>
       <link>https://www.yangcs.net/posts/kubernetes-resource-management/</link>
       <pubDate>Fri, 03 Aug 2018 17:34:19 +0800</pubDate>
@@ -6264,364 +6880,6 @@ $ docker-compose up --build -d
 &lt;p&gt;学会了如何配置基于请求头的路由和加权负载均衡之后，就可以在生产或测试环境中进行实践了。首先需要将&lt;strong&gt;部署&lt;/strong&gt;和&lt;strong&gt;发布&lt;/strong&gt;这两个流程分离，部署了新版本之后，你就可以通过配置基于请求头的路由来让你的团队在内部进行测试，同时又不影响用户的使用。一旦测试通过，就可以通过滚动发布模式（逐步增加权重，如 1%，5%，10%，50% &amp;hellip;）来优雅地发布新版本。&lt;/p&gt;
 
 &lt;p&gt;通过将&lt;strong&gt;部署&lt;/strong&gt;和&lt;strong&gt;发布&lt;/strong&gt;这两个流程分离，使用基于请求头的路由在新版本发布之前进行测试，然后通过滚动部署模式来增量发布，你的团队将会从中受益匪浅。&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>HTTP 路由解析</title>
-      <link>https://www.yangcs.net/posts/routing-basics/</link>
-      <pubDate>Fri, 29 Jun 2018 09:57:33 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/routing-basics/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：&lt;a href=&#34;https://www.yangcs.net/posts/run-envoy-on-your-laptop/&#34; target=&#34;_blank&#34;&gt;在你的笔记本上运行 Envoy&lt;/a&gt;，现在就可以更深入地了解如何在静态文件中配置路由（Route）、集群（Cluster）和监听器（Listener）了。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-相关组件-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 相关组件&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;路由&#34;&gt;路由&lt;/h3&gt;
-
-&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;路由&lt;/span&gt; 是一组将虚拟主机与集群相匹配的规则，通过路由你可以很轻松地创建流量切换规则。路由的定义方式有两种：通过静态配置文件定义或通过路由发现服务（&lt;code&gt;RDS&lt;/code&gt;）进行配置。&lt;/p&gt;
-
-&lt;h3 id=&#34;集群&#34;&gt;集群&lt;/h3&gt;
-
-&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;集群&lt;/span&gt; 是一组逻辑上相似的上游主机，它接收来自 Envoy 的流量。集群可以通过负载均衡策略来提高基础架构的弹性。集群可以通过静态文件进行配置，也可以通过集群发现服务（&lt;code&gt;CDS&lt;/code&gt;）API 动态获取。&lt;/p&gt;
-
-&lt;h3 id=&#34;监听器&#34;&gt;监听器&lt;/h3&gt;
-
-&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;监听器&lt;/span&gt; 是可以接受来自下游客户端的连接的命名网络位置（例如，端口，unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。同样，监听器可以通过静态定义，也可以通过监听器发现服务（LDS）动态获取。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-配置路由-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 配置路由&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Envoy 的路由定义将 &lt;code&gt;域 + URL&lt;/code&gt; 映射到集群。在上一篇文章中，我们定义了两个集群（service1 和 service2），每一个集群都匹配一个单独的 URL（&lt;code&gt;/service1&lt;/code&gt; 和 &lt;code&gt;/service2&lt;/code&gt;）。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;virtual_hosts:
-  - name: backend
-    domains:
-    - &amp;quot;*&amp;quot;
-    routes:
-    - match:
-        prefix: &amp;quot;/service/1&amp;quot;
-      route:
-        cluster: service1
-    - match:
-        prefix: &amp;quot;/service/2&amp;quot;
-      route:
-        cluster: service2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;集群从 DNS 中获取集群成员数据，并对集群中的所有主机使用&lt;strong&gt;轮询&lt;/strong&gt;的方式进行负载均衡。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;clusters:
-  - name: service1
-      connect_timeout: 0.25s
-      type: strict_dns
-      lb_policy: round_robin
-      http2_protocol_options: {}
-      hosts:
-      - socket_address:
-          address: service1
-          port_value: 80
-  - name: service2
-      connect_timeout: 0.25s
-      type: strict_dns
-      lb_policy: round_robin
-      http2_protocol_options: {}
-      hosts:
-      - socket_address:
-          address: service2
-          port_value: 80
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-配置监听器-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 配置监听器&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;路由的配置包含在监听器的配置中，现在我们再回过头来看一下监听器的配置。监听器通过&lt;strong&gt;监听器过滤器&lt;/strong&gt;（Listener filter）来操作路由配置中定义的两个服务。监听器的 API 非常简单，它的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 80
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: backend
-              domains:
-              - &amp;quot;*&amp;quot;
-              routes:
-              - match:
-                  prefix: &amp;quot;/service/1&amp;quot;
-                route:
-                  cluster: service1
-              - match:
-                  prefix: &amp;quot;/service/2&amp;quot;
-                route:
-                  cluster: service2
-          http_filters:
-          - name: envoy.router
-            config: {}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-4-动态发现路由-集群和监听器-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 动态发现路由、集群和监听器&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;到目前为止我们都是通过静态配置文件来配置路由和集群，但你也可以通过 &lt;code&gt;RDS&lt;/code&gt; 和 &lt;code&gt;CDS&lt;/code&gt; 来动态更新路由和集群。特别是当你的基础架构规模非常大时，你可以通过配置动态服务发现的规则来简化你的重复配置成本，并且可以将同一套动态服务发现规则应用于多个 Envoy 集群。&lt;/p&gt;
-
-&lt;p&gt;现在你已经了解了如何配置基本的路由、集群和监听器，下一节我们将学习如何在增量部署中设置更复杂的流量切换和过滤规则。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://servicemesher.github.io/envoy/&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档中文版&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{
