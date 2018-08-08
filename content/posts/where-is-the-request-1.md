@@ -10,7 +10,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-通过几篇文章的学习与实践，我们对 Gateway、VirtualService 和 Destinationrule 的概念和原理有了初步的认知，本篇将对这几个对象资源的配置文件进行深度地解析，具体细节将会深入到每一个配置项与 Envoy 配置项的映射关系。
+通过前几篇文章的学习与实践，我们对 Gateway、VirtualService 和 Destinationrule 的概念和原理有了初步的认知，本篇将对这几个对象资源的配置文件进行深度地解析，具体细节将会深入到每一个配置项与 Envoy 配置项的映射关系。
 
 在开始之前，需要先搞清楚我们创建的这些对象资源最后都交给谁来处理了，负责处理这些资源的就是 pilot。
 
@@ -388,6 +388,20 @@ $ istioctl -n istio-system pc clusters istio-ingressgateway-b6db8c46f-qcfks --fq
 </div>
 
 好了，现在请求已经转交给 productpage 了，那么接下来这个请求将会如何走完整个旅程呢？请听下回分解！
+
+### <p id="h2">5. 参考</p>
+
+----
+
++ [Service Mesh深度学习系列（三）| istio源码分析之pilot-discovery模块分析（中）](https://www.kubernetes.org.cn/4379.html)
++ [调试 Envoy 和 Pilot](https://istio.io/zh/help/ops/traffic-management/debugging-pilot-envoy/)
++ [Envoy 的架构与基本术语](https://jimmysong.io/posts/envoy-archiecture-and-terminology/)
+
+----
+
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+
+<br />
 
 
 <style>

@@ -579,7 +579,7 @@ net.ipv4.tcp_synack_retries = 5
       <guid>https://www.yangcs.net/posts/where-is-the-request-1/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
-&lt;p&gt;通过几篇文章的学习与实践，我们对 Gateway、VirtualService 和 Destinationrule 的概念和原理有了初步的认知，本篇将对这几个对象资源的配置文件进行深度地解析，具体细节将会深入到每一个配置项与 Envoy 配置项的映射关系。&lt;/p&gt;
+&lt;p&gt;通过前几篇文章的学习与实践，我们对 Gateway、VirtualService 和 Destinationrule 的概念和原理有了初步的认知，本篇将对这几个对象资源的配置文件进行深度地解析，具体细节将会深入到每一个配置项与 Envoy 配置项的映射关系。&lt;/p&gt;
 
 &lt;p&gt;在开始之前，需要先搞清楚我们创建的这些对象资源最后都交给谁来处理了，负责处理这些资源的就是 pilot。&lt;/p&gt;
 
@@ -957,6 +957,22 @@ spec:
 &lt;/div&gt;
 
 &lt;p&gt;好了，现在请求已经转交给 productpage 了，那么接下来这个请求将会如何走完整个旅程呢？请听下回分解！&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.kubernetes.org.cn/4379.html&#34; target=&#34;_blank&#34;&gt;Service Mesh深度学习系列（三）| istio源码分析之pilot-discovery模块分析（中）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://istio.io/zh/help/ops/traffic-management/debugging-pilot-envoy/&#34; target=&#34;_blank&#34;&gt;调试 Envoy 和 Pilot&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://jimmysong.io/posts/envoy-archiecture-and-terminology/&#34; target=&#34;_blank&#34;&gt;Envoy 的架构与基本术语&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{
