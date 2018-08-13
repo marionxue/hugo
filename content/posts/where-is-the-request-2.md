@@ -227,7 +227,7 @@ $ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 0.0.
 ...
 ```
 
-**4. `9080` 路由配置仅为每个服务提供虚拟主机。我们的请求正在前往 reviews 服务，因此 Envoy 将选择我们的请求与域匹配的虚拟主机。一旦在域上匹配，Envoy 会查找与请求匹配的第一条路径。在这种情况下，我们没有任何高级路由，因此只有一条路由匹配所有内容。这条路由告诉 Envoy 将请求发送到 `outbound|9080||reviews.default.svc.cluster.local` 集群。**
+<font color="#2780e3">4. `9080` 路由配置仅为每个服务提供虚拟主机。我们的请求正在前往 reviews 服务，因此 Envoy 将选择我们的请求与域匹配的虚拟主机。一旦在域上匹配，Envoy 会查找与请求匹配的第一条路径。在这种情况下，我们没有任何高级路由，因此只有一条路由匹配所有内容。这条路由告诉 Envoy 将请求发送到 `outbound|9080||reviews.default.svc.cluster.local` 集群。</font>
 
 ```bash
 $ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
