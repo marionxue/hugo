@@ -642,7 +642,7 @@ NAME                              READY     STATUS    RESTARTS   AGE
 productpage-v1-76474f6fb7-pmglr   2/2       Running   0          7h
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;1. 查看 productpage 的监听器的基本基本摘要&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#34;#2780e3&#34;&gt;1. 查看 productpage 的监听器的基本基本摘要&lt;/font&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr
 
@@ -744,7 +744,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &amp;quot;outbound|53||kube-dns
 
 &lt;p&gt;可以看出，服务网格内的应用仍然通过 ClusterIP 与网格外的应用通信，但有一点需要注意：&lt;strong&gt;这里并没有 &lt;code&gt;kube-proxy&lt;/code&gt; 的参与！&lt;/strong&gt;Envoy 自己实现了一套流量转发机制，当你访问 ClusterIP 时，Envoy 就把流量转发到具体的 Pod 上去，&lt;strong&gt;不需要借助 kube-proxy 的 &lt;code&gt;iptables&lt;/code&gt; 或 &lt;code&gt;ipvs&lt;/code&gt; 规则&lt;/strong&gt;。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;2. 从上面的摘要中可以看出，每个 Sidecar 都有一个绑定到 &lt;code&gt;0.0.0.0:15001&lt;/code&gt; 的监听器，IP tables 将 pod 的所有入站和出站流量路由到这里。此监听器把 &lt;code&gt;useOriginalDst&lt;/code&gt; 设置为 true，这意味着它将请求交给最符合请求原始目标的监听器。如果找不到任何匹配的虚拟监听器，它会将请求发送给返回 404 的 &lt;code&gt;BlackHoleCluster&lt;/code&gt;。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#34;#2780e3&#34;&gt;2. 从上面的摘要中可以看出，每个 Sidecar 都有一个绑定到 &lt;code&gt;0.0.0.0:15001&lt;/code&gt; 的监听器，IP tables 将 pod 的所有入站和出站流量路由到这里。此监听器把 &lt;code&gt;useOriginalDst&lt;/code&gt; 设置为 true，这意味着它将请求交给最符合请求原始目标的监听器。如果找不到任何匹配的虚拟监听器，它会将请求发送给返回 404 的 &lt;code&gt;BlackHoleCluster&lt;/code&gt;。&lt;/font&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --port 15001 -o json
 &lt;/code&gt;&lt;/pre&gt;
@@ -776,7 +776,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &amp;quot;outbound|53||kube-dns
 ]
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;3. 我们的请求是到 &lt;code&gt;9080&lt;/code&gt; 端口的 HTTP 出站请求，这意味着它被切换到 &lt;code&gt;0.0.0.0:9080&lt;/code&gt; 虚拟监听器。然后，此监听器在其配置的 RDS 中查找路由配置。在这种情况下，它将查找由 Pilot 配置的 RDS 中的路由 &lt;code&gt;9080&lt;/code&gt;（通过 ADS）。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#34;#2780e3&#34;&gt;3. 我们的请求是到 &lt;code&gt;9080&lt;/code&gt; 端口的 HTTP 出站请求，这意味着它被切换到 &lt;code&gt;0.0.0.0:9080&lt;/code&gt; 虚拟监听器。然后，此监听器在其配置的 RDS 中查找路由配置。在这种情况下，它将查找由 Pilot 配置的 RDS 中的路由 &lt;code&gt;9080&lt;/code&gt;（通过 ADS）。&lt;/font&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 0.0.0.0 --port 9080 -o json
 &lt;/code&gt;&lt;/pre&gt;
@@ -828,7 +828,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &amp;quot;outbound|53||kube-dns
 ...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;&lt;strong&gt;5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 &lt;code&gt;serviceName&lt;/code&gt; 字段作为密钥来查找端点列表并将请求代理到其中一个端点。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;font color=&#34;#2780e3&#34;&gt;5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 &lt;code&gt;serviceName&lt;/code&gt; 字段作为密钥来查找端点列表并将请求代理到其中一个端点。&lt;/font&gt;&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local -o json
 
