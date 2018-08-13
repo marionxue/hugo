@@ -109,7 +109,7 @@ Istio 会生成以下的监听器：
 + ③ 每个 Pod 入站流量暴露的端口配置一个虚拟监听器。
 + ④ 每个出站 HTTP 流量的 HTTP `0.0.0.0` 端口配置一个虚拟监听器。
 
-上一节提到服务网格之间的应用是直接通过 PodIP 来进行通信的，但还不知道服务网格内的应用于服务网格外的应用是如何通信的。大家应该可以猜到，这个秘密就隐藏在 Service IP 的虚拟监听器中，以 `kube-dns` 为例，查看 productpage 如何与 kube-dns 进行通信：
+上一节提到服务网格之间的应用是直接通过 PodIP 来进行通信的，但还不知道服务网格内的应用与服务网格外的应用是如何通信的。大家应该可以猜到，这个秘密就隐藏在 Service IP 的虚拟监听器中，以 `kube-dns` 为例，查看 productpage 如何与 kube-dns 进行通信：
 
 ```bash
 $ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 10.254.0.2 --port 53 -o json
