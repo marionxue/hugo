@@ -269,7 +269,8 @@ $ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o js
 
 ```bash
 $ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local -o json
-
+```
+```json
 [
     {
         "name": "outbound|9080||reviews.default.svc.cluster.local",
@@ -390,7 +391,8 @@ EOF
 
 ```bash
 $ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local --subset=v1 -o json
-
+```
+```json
 [
     {
         "name": "outbound|9080|v1|reviews.default.svc.cluster.local",
@@ -421,7 +423,8 @@ reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.10
 ```
 ```bash
 $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080|v1|reviews.default.svc.cluster.local" -A 27 -B 2
-
+```
+```json
 {
   "clusterName": "outbound|9080|v1|reviews.default.svc.cluster.local",
   "endpoints": [

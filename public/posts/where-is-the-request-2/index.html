@@ -644,8 +644,9 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|53||kube-dns.kub
 <p><font color="#2780e3">5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 <code>serviceName</code> 字段作为密钥来查找端点列表并将请求代理到其中一个端点。</font></p>
 
 <pre><code class="language-bash">$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local -o json
+</code></pre>
 
-[
+<pre><code class="language-json">[
     {
         &quot;name&quot;: &quot;outbound|9080||reviews.default.svc.cluster.local&quot;,
         &quot;type&quot;: &quot;EDS&quot;,
@@ -761,8 +762,9 @@ EOF
 <p>其实 <code>DestinationRule</code> 映射到 Envoy 的配置文件中就是 <code>Cluster</code>。现在你应该能看到 <code>SUBSET=v1</code> 的 Cluster 了：</p>
 
 <pre><code class="language-bash">$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local --subset=v1 -o json
+</code></pre>
 
-[
+<pre><code class="language-json">[
     {
         &quot;name&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
         &quot;type&quot;: &quot;EDS&quot;,
@@ -791,8 +793,9 @@ reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.10
 </code></pre>
 
 <pre><code class="language-bash">$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot; -A 27 -B 2
+</code></pre>
 
-{
+<pre><code class="language-json">{
   &quot;clusterName&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
   &quot;endpoints&quot;: [
     {
