@@ -75,7 +75,7 @@ NAME                              READY     STATUS    RESTARTS   AGE
 productpage-v1-76474f6fb7-pmglr   2/2       Running   0          7h
 ```
 
-###### 1. 查看 productpage 的监听器的基本基本摘要
+##### 1. 查看 productpage 的监听器的基本基本摘要
 
 ```bash
 $ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr
@@ -178,7 +178,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|53||kube-dns.kube-sys
 
 可以看出，服务网格内的应用仍然通过 ClusterIP 与网格外的应用通信，但有一点需要注意：**这里并没有 `kube-proxy` 的参与！**Envoy 自己实现了一套流量转发机制，当你访问 ClusterIP 时，Envoy 就把流量转发到具体的 Pod 上去，**不需要借助 kube-proxy 的 `iptables` 或 `ipvs` 规则**。
 
-###### 2. 从上面的摘要中可以看出，每个 Sidecar 都有一个绑定到 `0.0.0.0:15001` 的监听器，IP tables 将 pod 的所有入站和出站流量路由到这里。此监听器把 `useOriginalDst` 设置为 true，这意味着它将请求交给最符合请求原始目标的监听器。如果找不到任何匹配的虚拟监听器，它会将请求发送给返回 404 的 `BlackHoleCluster`。
+##### 2. 从上面的摘要中可以看出，每个 Sidecar 都有一个绑定到 `0.0.0.0:15001` 的监听器，IP tables 将 pod 的所有入站和出站流量路由到这里。此监听器把 `useOriginalDst` 设置为 true，这意味着它将请求交给最符合请求原始目标的监听器。如果找不到任何匹配的虚拟监听器，它会将请求发送给返回 404 的 `BlackHoleCluster`。
 
 ```bash
 $ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --port 15001 -o json
@@ -211,7 +211,7 @@ $ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --port 15001 -
 ]
 ```
 
-###### 3. 我们的请求是到 `9080` 端口的 HTTP 出站请求，这意味着它被切换到 `0.0.0.0:9080` 虚拟监听器。然后，此监听器在其配置的 RDS 中查找路由配置。在这种情况下，它将查找由 Pilot 配置的 RDS 中的路由 `9080`（通过 ADS）。
+##### 3. 我们的请求是到 `9080` 端口的 HTTP 出站请求，这意味着它被切换到 `0.0.0.0:9080` 虚拟监听器。然后，此监听器在其配置的 RDS 中查找路由配置。在这种情况下，它将查找由 Pilot 配置的 RDS 中的路由 `9080`（通过 ADS）。
 
 ```bash
 $ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 0.0.0.0 --port 9080 -o json
@@ -227,7 +227,7 @@ $ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 0.0.
 ...
 ```
 
-###### 4. `9080` 路由配置仅为每个服务提供虚拟主机。我们的请求正在前往 reviews 服务，因此 Envoy 将选择我们的请求与域匹配的虚拟主机。一旦在域上匹配，Envoy 会查找与请求匹配的第一条路径。在这种情况下，我们没有任何高级路由，因此只有一条路由匹配所有内容。这条路由告诉 Envoy 将请求发送到 `outbound|9080||reviews.default.svc.cluster.local` 集群。
+##### 4. `9080` 路由配置仅为每个服务提供虚拟主机。我们的请求正在前往 reviews 服务，因此 Envoy 将选择我们的请求与域匹配的虚拟主机。一旦在域上匹配，Envoy 会查找与请求匹配的第一条路径。在这种情况下，我们没有任何高级路由，因此只有一条路由匹配所有内容。这条路由告诉 Envoy 将请求发送到 `outbound|9080||reviews.default.svc.cluster.local` 集群。
 
 ```bash
 $ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
@@ -265,7 +265,7 @@ $ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o js
 ...
 ```
 
-###### 5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 `serviceName` 字段作为密钥来查找端点列表并将请求代理到其中一个端点。
+##### 5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 `serviceName` 字段作为密钥来查找端点列表并将请求代理到其中一个端点。
 
 ```bash
 $ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local -o json
