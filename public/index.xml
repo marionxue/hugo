@@ -572,6 +572,691 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>请求都去哪了？（续）</title>
+      <link>https://www.yangcs.net/posts/where-is-the-request-2/</link>
+      <pubDate>Mon, 13 Aug 2018 16:30:30 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/where-is-the-request-2/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;书接前文，上文我们通过跟踪&lt;strong&gt;集群外通过 ingressgateway 发起的请求&lt;/strong&gt;来探寻流量在 Istio 服务网格之间的流动方向，先部署 bookinfo 示例应用，然后创建一个监听在 &lt;code&gt;ingressgateway&lt;/code&gt; 上的  GateWay 和 VirtualService，通过分析我们追踪到请求最后转交给了 &lt;code&gt;productpage&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;在继续追踪请求之前，先对之前的内容做一个补充说明。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-1-pod-在服务网格之间如何通信-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Pod 在服务网格之间如何通信？&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;大家都知道，在 Istio 尚未出现之前，Kubernetes 集群内部 Pod 之间是通过 &lt;code&gt;ClusterIP&lt;/code&gt; 来进行通信的，那么通过 Istio 在 Pod 内部插入了 &lt;code&gt;Sidecar&lt;/code&gt; 之后，微服务应用之间是否仍然还是通过 ClusterIP 来通信呢？我们来一探究竟！&lt;/p&gt;
+
+&lt;p&gt;继续拿上文的步骤举例子，来看一下 ingressgateway 和 productpage 之间如何通信，请求通过 ingressgateway 到达了 &lt;code&gt;endpoint&lt;/code&gt; ，那么这个 endpoint 到底是 &lt;code&gt;ClusterIP&lt;/code&gt; + Port 还是 &lt;code&gt;PodIP&lt;/code&gt; + Port 呢？由于 istioctl 没有提供 eds 的查看参数，可以通过 pilot 的 xds debug 接口来查看：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 获取 istio-pilot 的 ClusterIP
+$ export PILOT_SVC_IP=$(kubectl -n istio-system get svc -l app=istio-pilot -o go-template=&#39;{{range .items}}{{.spec.clusterIP}}{{end}}&#39;)
+
+# 查看 eds
+$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &amp;quot;outbound|9080||productpage.default.svc.cluster.local&amp;quot; -A 27 -B 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080||productpage.default.svc.cluster.local&amp;quot;,
+  &amp;quot;endpoints&amp;quot;: [
+    {
+      &amp;quot;lbEndpoints&amp;quot;: [
+        {
+          &amp;quot;endpoint&amp;quot;: {
+            &amp;quot;address&amp;quot;: {
+              &amp;quot;socketAddress&amp;quot;: {
+                &amp;quot;address&amp;quot;: &amp;quot;172.30.135.40&amp;quot;,
+                &amp;quot;portValue&amp;quot;: 9080
+              }
+            }
+          },
+          &amp;quot;metadata&amp;quot;: {
+            &amp;quot;filterMetadata&amp;quot;: {
+              &amp;quot;istio&amp;quot;: {
+                  &amp;quot;uid&amp;quot;: &amp;quot;kubernetes://productpage-v1-76474f6fb7-pmglr.default&amp;quot;
+                }
+            }
+          }
+        }
+      ]
+    }
+  ]
+},
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;从这里可以看出，各个微服务之间是直接通过 &lt;code&gt;PodIP + Port&lt;/code&gt; 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-2-部署-bookinfo-应用的时候发生了什么-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 部署 bookinfo 应用的时候发生了什么？&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;通过 Istio 来部署 bookinfo 示例应用时，Istio 会向应用程序的所有 Pod 中注入 Envoy 容器。但是我们仍然还不清楚注入的 Envoy 容器的配置文件里都有哪些东西，这时候就是 istioctl 命令行工具发挥强大功效的时候了，可以通过 &lt;code&gt;proxy-config&lt;/code&gt; 参数来深度解析 Envoy 的配置文件（上一节我们已经使用过了）。&lt;/p&gt;
+
+&lt;p&gt;我们先把目光锁定在某一个固定的 Pod 上，以 &lt;code&gt;productpage&lt;/code&gt; 为例。先查看 productpage 的 Pod Name：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pod -l app=productpage
+
+NAME                              READY     STATUS    RESTARTS   AGE
+productpage-v1-76474f6fb7-pmglr   2/2       Running   0          7h
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;1-查看-productpage-的监听器的基本基本摘要&#34;&gt;1. 查看 productpage 的监听器的基本基本摘要&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr
+
+ADDRESS            PORT      TYPE
+172.30.135.40      9080      HTTP    // ③ Receives all inbound traffic on 9080 from listener `0.0.0.0_15001`
+10.254.223.255     15011     TCP &amp;lt;---+
+10.254.85.22       20001     TCP     |
+10.254.149.167     443       TCP     |
+10.254.14.157      42422     TCP     |
+10.254.238.17      9090      TCP     |  ② Receives outbound non-HTTP traffic for relevant IP:PORT pair from listener `0.0.0.0_15001`
+10.254.184.32      5556      TCP     |
+10.254.0.1         443       TCP     |
+10.254.52.199      8080      TCP     |
+10.254.118.224     443       TCP &amp;lt;---+  
+0.0.0.0            15031     HTTP &amp;lt;--+
+0.0.0.0            15004     HTTP    |
+0.0.0.0            9093      HTTP    |
+0.0.0.0            15030     HTTP    |
+0.0.0.0            8080      HTTP    |  ④ Receives outbound HTTP traffic for relevant port from listener `0.0.0.0_15001`
+0.0.0.0            8086      HTTP    |
+0.0.0.0            9080      HTTP    |
+0.0.0.0            15010     HTTP &amp;lt;--+
+0.0.0.0            15001     TCP     // ① Receives all inbound and outbound traffic to the pod from IP tables and hands over to virtual listener
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Istio 会生成以下的监听器：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;① &lt;code&gt;0.0.0.0:15001&lt;/code&gt; 上的监听器接收进出 Pod 的所有流量，然后将请求移交给虚拟监听器。&lt;/li&gt;
+&lt;li&gt;② 每个 Service IP 配置一个虚拟监听器，每个出站 TCP/HTTPS 流量一个非 HTTP 监听器。&lt;/li&gt;
+&lt;li&gt;③ 每个 Pod 入站流量暴露的端口配置一个虚拟监听器。&lt;/li&gt;
+&lt;li&gt;④ 每个出站 HTTP 流量的 HTTP &lt;code&gt;0.0.0.0&lt;/code&gt; 端口配置一个虚拟监听器。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上一节提到服务网格之间的应用是直接通过 PodIP 来进行通信的，但还不知道服务网格内的应用于服务网格外的应用是如何通信的。大家应该可以猜到，这个秘密就隐藏在 Service IP 的虚拟监听器中，以 &lt;code&gt;kube-dns&lt;/code&gt; 为例，查看 productpage 如何与 kube-dns 进行通信：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 10.254.0.2 --port 53 -o json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;10.254.0.2_53&amp;quot;,
+        &amp;quot;address&amp;quot;: {
+            &amp;quot;socketAddress&amp;quot;: {
+                &amp;quot;address&amp;quot;: &amp;quot;10.254.0.2&amp;quot;,
+                &amp;quot;portValue&amp;quot;: 53
+            }
+        },
+        &amp;quot;filterChains&amp;quot;: [
+            {
+                &amp;quot;filters&amp;quot;: [
+                    ...
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;envoy.tcp_proxy&amp;quot;,
+                        &amp;quot;config&amp;quot;: {
+                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|53||kube-dns.kube-system.svc.cluster.local&amp;quot;,
+                            &amp;quot;stat_prefix&amp;quot;: &amp;quot;outbound|53||kube-dns.kube-system.svc.cluster.local&amp;quot;
+                        }
+                    }
+                ]
+            }
+        ],
+        &amp;quot;deprecatedV1&amp;quot;: {
+            &amp;quot;bindToPort&amp;quot;: false
+        }
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 查看 eds
+$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &amp;quot;outbound|53||kube-dns.kube-system.svc.cluster.local&amp;quot; -A 27 -B 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|53||kube-dns.kube-system.svc.cluster.local&amp;quot;,
+  &amp;quot;endpoints&amp;quot;: [
+    {
+      &amp;quot;lbEndpoints&amp;quot;: [
+        {
+          &amp;quot;endpoint&amp;quot;: {
+            &amp;quot;address&amp;quot;: {
+              &amp;quot;socketAddress&amp;quot;: {
+                &amp;quot;address&amp;quot;: &amp;quot;172.30.135.21&amp;quot;,
+                &amp;quot;portValue&amp;quot;: 53
+              }
+            }
+          },
+          &amp;quot;metadata&amp;quot;: {
+            &amp;quot;filterMetadata&amp;quot;: {
+              &amp;quot;istio&amp;quot;: {
+                  &amp;quot;uid&amp;quot;: &amp;quot;kubernetes://coredns-64b597b598-4rstj.kube-system&amp;quot;
+                }
+            }
+          }
+        }
+      ]
+    },
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看出，服务网格内的应用仍然通过 ClusterIP 与网格外的应用通信，但有一点需要注意：&lt;strong&gt;这里并没有 &lt;code&gt;kube-proxy&lt;/code&gt; 的参与！&lt;/strong&gt;Envoy 自己实现了一套流量转发机制，当你访问 ClusterIP 时，Envoy 就把流量转发到具体的 Pod 上去，&lt;strong&gt;不需要借助 kube-proxy 的 &lt;code&gt;iptables&lt;/code&gt; 或 &lt;code&gt;ipvs&lt;/code&gt; 规则&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h6 id=&#34;2-从上面的摘要中可以看出-每个-sidecar-都有一个绑定到-0-0-0-0-15001-的监听器-ip-tables-将-pod-的所有入站和出站流量路由到这里-此监听器把-useoriginaldst-设置为-true-这意味着它将请求交给最符合请求原始目标的监听器-如果找不到任何匹配的虚拟监听器-它会将请求发送给返回-404-的-blackholecluster&#34;&gt;2. 从上面的摘要中可以看出，每个 Sidecar 都有一个绑定到 &lt;code&gt;0.0.0.0:15001&lt;/code&gt; 的监听器，IP tables 将 pod 的所有入站和出站流量路由到这里。此监听器把 &lt;code&gt;useOriginalDst&lt;/code&gt; 设置为 true，这意味着它将请求交给最符合请求原始目标的监听器。如果找不到任何匹配的虚拟监听器，它会将请求发送给返回 404 的 &lt;code&gt;BlackHoleCluster&lt;/code&gt;。&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --port 15001 -o json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;virtual&amp;quot;,
+        &amp;quot;address&amp;quot;: {
+            &amp;quot;socketAddress&amp;quot;: {
+                &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+                &amp;quot;portValue&amp;quot;: 15001
+            }
+        },
+        &amp;quot;filterChains&amp;quot;: [
+            {
+                &amp;quot;filters&amp;quot;: [
+                    {
+                        &amp;quot;name&amp;quot;: &amp;quot;envoy.tcp_proxy&amp;quot;,
+                        &amp;quot;config&amp;quot;: {
+                            &amp;quot;cluster&amp;quot;: &amp;quot;BlackHoleCluster&amp;quot;,
+                            &amp;quot;stat_prefix&amp;quot;: &amp;quot;BlackHoleCluster&amp;quot;
+                        }
+                    }
+                ]
+            }
+        ],
+        &amp;quot;useOriginalDst&amp;quot;: true
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;3-我们的请求是到-9080-端口的-http-出站请求-这意味着它被切换到-0-0-0-0-9080-虚拟监听器-然后-此监听器在其配置的-rds-中查找路由配置-在这种情况下-它将查找由-pilot-配置的-rds-中的路由-9080-通过-ads&#34;&gt;3. 我们的请求是到 &lt;code&gt;9080&lt;/code&gt; 端口的 HTTP 出站请求，这意味着它被切换到 &lt;code&gt;0.0.0.0:9080&lt;/code&gt; 虚拟监听器。然后，此监听器在其配置的 RDS 中查找路由配置。在这种情况下，它将查找由 Pilot 配置的 RDS 中的路由 &lt;code&gt;9080&lt;/code&gt;（通过 ADS）。&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 0.0.0.0 --port 9080 -o json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;...
+&amp;quot;rds&amp;quot;: {
+    &amp;quot;config_source&amp;quot;: {
+        &amp;quot;ads&amp;quot;: {}
+    },
+    &amp;quot;route_config_name&amp;quot;: &amp;quot;9080&amp;quot;
+}
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;4-9080-路由配置仅为每个服务提供虚拟主机-我们的请求正在前往-reviews-服务-因此-envoy-将选择我们的请求与域匹配的虚拟主机-一旦在域上匹配-envoy-会查找与请求匹配的第一条路径-在这种情况下-我们没有任何高级路由-因此只有一条路由匹配所有内容-这条路由告诉-envoy-将请求发送到-outbound-9080-reviews-default-svc-cluster-local-集群&#34;&gt;4. &lt;code&gt;9080&lt;/code&gt; 路由配置仅为每个服务提供虚拟主机。我们的请求正在前往 reviews 服务，因此 Envoy 将选择我们的请求与域匹配的虚拟主机。一旦在域上匹配，Envoy 会查找与请求匹配的第一条路径。在这种情况下，我们没有任何高级路由，因此只有一条路由匹配所有内容。这条路由告诉 Envoy 将请求发送到 &lt;code&gt;outbound|9080||reviews.default.svc.cluster.local&lt;/code&gt; 集群。&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;9080&amp;quot;,
+        &amp;quot;virtualHosts&amp;quot;: [
+            {
+                &amp;quot;name&amp;quot;: &amp;quot;reviews.default.svc.cluster.local:9080&amp;quot;,
+                &amp;quot;domains&amp;quot;: [
+                    &amp;quot;reviews.default.svc.cluster.local&amp;quot;,
+                    &amp;quot;reviews.default.svc.cluster.local:9080&amp;quot;,
+                    &amp;quot;reviews&amp;quot;,
+                    &amp;quot;reviews:9080&amp;quot;,
+                    &amp;quot;reviews.default.svc.cluster&amp;quot;,
+                    &amp;quot;reviews.default.svc.cluster:9080&amp;quot;,
+                    &amp;quot;reviews.default.svc&amp;quot;,
+                    &amp;quot;reviews.default.svc:9080&amp;quot;,
+                    &amp;quot;reviews.default&amp;quot;,
+                    &amp;quot;reviews.default:9080&amp;quot;,
+                    &amp;quot;172.21.152.34&amp;quot;,
+                    &amp;quot;172.21.152.34:9080&amp;quot;
+                ],
+                &amp;quot;routes&amp;quot;: [
+                    {
+                        &amp;quot;match&amp;quot;: {
+                            &amp;quot;prefix&amp;quot;: &amp;quot;/&amp;quot;
+                        },
+                        &amp;quot;route&amp;quot;: {
+                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|9080||reviews.default.svc.cluster.local&amp;quot;,
+                            &amp;quot;timeout&amp;quot;: &amp;quot;0.000s&amp;quot;
+                        },
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h6 id=&#34;5-此集群配置为从-pilot-通过-ads-检索关联的端点-因此-envoy-将使用-servicename-字段作为密钥来查找端点列表并将请求代理到其中一个端点&#34;&gt;5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 &lt;code&gt;serviceName&lt;/code&gt; 字段作为密钥来查找端点列表并将请求代理到其中一个端点。&lt;/h6&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local -o json
+
+[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;outbound|9080||reviews.default.svc.cluster.local&amp;quot;,
+        &amp;quot;type&amp;quot;: &amp;quot;EDS&amp;quot;,
+        &amp;quot;edsClusterConfig&amp;quot;: {
+            &amp;quot;edsConfig&amp;quot;: {
+                &amp;quot;ads&amp;quot;: {}
+            },
+            &amp;quot;serviceName&amp;quot;: &amp;quot;outbound|9080||reviews.default.svc.cluster.local&amp;quot;
+        },
+        &amp;quot;connectTimeout&amp;quot;: &amp;quot;1.000s&amp;quot;,
+        &amp;quot;circuitBreakers&amp;quot;: {
+            &amp;quot;thresholds&amp;quot;: [
+                {}
+            ]
+        }
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上面的整个过程就是在不创建任何规则的情况下请求从 &lt;code&gt;productpage&lt;/code&gt; 到 &lt;code&gt;reviews&lt;/code&gt; 的过程，从 reviews 到网格内其他应用的流量与上面类似，就不展开讨论了。接下来分析创建规则之后的请求转发过程。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-3-virtualservice-和-destinationrule-配置解析-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. VirtualService 和 DestinationRule 配置解析&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;virtualservice&#34;&gt;VirtualService&lt;/h4&gt;
+
+&lt;p&gt;首先创建一个 &lt;code&gt;VirtualService&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+    - reviews
+  http:
+  - route:
+    - destination:
+        host: reviews
+        subset: v1
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上一篇文章已经介绍过，&lt;code&gt;VirtualService&lt;/code&gt; 映射的就是 Envoy 中的 &lt;code&gt;Http Route Table&lt;/code&gt;，还是将目标锁定在 productpage 上，我们来查看一下路由配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;9080&amp;quot;,
+        &amp;quot;virtualHosts&amp;quot;: [
+            {
+                &amp;quot;name&amp;quot;: &amp;quot;reviews.default.svc.cluster.local:9080&amp;quot;,
+                &amp;quot;domains&amp;quot;: [
+                    &amp;quot;reviews.default.svc.cluster.local&amp;quot;,
+                    &amp;quot;reviews.default.svc.cluster.local:9080&amp;quot;,
+                    &amp;quot;reviews&amp;quot;,
+                    &amp;quot;reviews:9080&amp;quot;,
+                    &amp;quot;reviews.default.svc.cluster&amp;quot;,
+                    &amp;quot;reviews.default.svc.cluster:9080&amp;quot;,
+                    &amp;quot;reviews.default.svc&amp;quot;,
+                    &amp;quot;reviews.default.svc:9080&amp;quot;,
+                    &amp;quot;reviews.default&amp;quot;,
+                    &amp;quot;reviews.default:9080&amp;quot;,
+                    &amp;quot;172.21.152.34&amp;quot;,
+                    &amp;quot;172.21.152.34:9080&amp;quot;
+                ],
+                &amp;quot;routes&amp;quot;: [
+                    {
+                        &amp;quot;match&amp;quot;: {
+                            &amp;quot;prefix&amp;quot;: &amp;quot;/&amp;quot;
+                        },
+                        &amp;quot;route&amp;quot;: {
+                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|9080|v1|reviews.default.svc.cluster.local&amp;quot;,
+                            &amp;quot;timeout&amp;quot;: &amp;quot;0.000s&amp;quot;
+                        },
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;注意对比一下没创建 VirtualService 之前的路由，现在路由的 &lt;code&gt;cluster&lt;/code&gt; 字段的值已经从之前的 &lt;code&gt;outbound|9080|reviews.default.svc.cluster.local&lt;/code&gt; 变为 &lt;code&gt;outbound|9080|v1|reviews.default.svc.cluster.local&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;请注意：&lt;/strong&gt;我们现在还没有创建 DestinationRule！&lt;/p&gt;
+
+&lt;p&gt;你可以尝试搜索一下有没有 &lt;code&gt;outbound|9080|v1|reviews.default.svc.cluster.local&lt;/code&gt; 这个集群，如果不出意外，你将找不到 &lt;code&gt;SUBSET=v1&lt;/code&gt; 的集群。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160027.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;由于找不到这个集群，所以该路由不可达，这就是为什么你打开 productpage 的页面会出现如下的报错：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160823.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;destinationrule&#34;&gt;DestinationRule&lt;/h4&gt;
+
+&lt;p&gt;为了使上面创建的路由可达，我们需要创建一个 &lt;code&gt;DestinationRule&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: reviews
+spec:
+  host: reviews
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+EOF
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;其实 &lt;code&gt;DestinationRule&lt;/code&gt; 映射到 Envoy 的配置文件中就是 &lt;code&gt;Cluster&lt;/code&gt;。现在你应该能看到 &lt;code&gt;SUBSET=v1&lt;/code&gt; 的 Cluster 了：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local --subset=v1 -o json
+
+[
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;outbound|9080|v1|reviews.default.svc.cluster.local&amp;quot;,
+        &amp;quot;type&amp;quot;: &amp;quot;EDS&amp;quot;,
+        &amp;quot;edsClusterConfig&amp;quot;: {
+            &amp;quot;edsConfig&amp;quot;: {
+                &amp;quot;ads&amp;quot;: {}
+            },
+            &amp;quot;serviceName&amp;quot;: &amp;quot;outbound|9080|v1|reviews.default.svc.cluster.local&amp;quot;
+        },
+        &amp;quot;connectTimeout&amp;quot;: &amp;quot;1.000s&amp;quot;,
+        &amp;quot;circuitBreakers&amp;quot;: {
+            &amp;quot;thresholds&amp;quot;: [
+                {}
+            ]
+        }
+    }
+]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;到了这一步，一切皆明了，后面的事情就跟之前的套路一样了，具体的 Endpoint 对应打了标签 &lt;code&gt;version=v1&lt;/code&gt; 的 Pod：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get pod -l app=reviews,version=v1 -o wide
+
+NAME                          READY     STATUS    RESTARTS   AGE       IP              NODE
+reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.104.38   192.168.123.248
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &amp;quot;outbound|9080|v1|reviews.default.svc.cluster.local&amp;quot; -A 27 -B 2
+
+{
+  &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080|v1|reviews.default.svc.cluster.local&amp;quot;,
+  &amp;quot;endpoints&amp;quot;: [
+    {
+      &amp;quot;locality&amp;quot;: {
+        &amp;quot;zone&amp;quot;: &amp;quot;yangpu/shanghai&amp;quot;
+      },
+      &amp;quot;lbEndpoints&amp;quot;: [
+        {
+          &amp;quot;endpoint&amp;quot;: {
+            &amp;quot;address&amp;quot;: {
+              &amp;quot;socketAddress&amp;quot;: {
+                &amp;quot;address&amp;quot;: &amp;quot;172.30.104.38&amp;quot;,
+                &amp;quot;portValue&amp;quot;: 9080
+              }
+            }
+          },
+          &amp;quot;metadata&amp;quot;: {
+            &amp;quot;filterMetadata&amp;quot;: {
+              &amp;quot;istio&amp;quot;: {
+                  &amp;quot;uid&amp;quot;: &amp;quot;kubernetes://reviews-v1-5b487cc689-njx5t.default&amp;quot;
+                }
+            }
+          }
+        }
+      ]
+    }
+  ]
+},
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在再次用浏览器访问 productpage，你会发现报错已经消失了。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/Jietu20180813-162629.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-4-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 参考&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://istio.io/zh/help/ops/traffic-management/proxy-cmd/&#34; target=&#34;_blank&#34;&gt;调试 Envoy 和 Pilot&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
+&lt;center&gt;扫一扫关注微信公众号&lt;/center&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>干货与湿货分享第4期</title>
       <link>https://www.yangcs.net/posts/weekly-4/</link>
       <pubDate>Sat, 11 Aug 2018 18:17:12 +0800</pubDate>
@@ -6490,518 +7175,6 @@ resources:
 &lt;p&gt;一旦控制平面发现了所有可用服务，就可以在这些服务上配置路由了。下一节将会介绍如何配置路由发现服务（RDS）。&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>为 Envoy 启用证书验证</title>
-      <link>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</link>
-      <pubDate>Tue, 03 Jul 2018 06:43:33 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;如果你准备将服务暴露在互联网上，最好启用 &lt;code&gt;SSL/TLS&lt;/code&gt; 加密协议。当使用 Envoy 作为前端代理或者服务网格代理时，可以通过 SSL/TLS 协议来加密客户端和代理之间的所有通信流量。&lt;/p&gt;
-
-&lt;p&gt;Envoy 同时支持监听器中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v1/listeners/listeners.html#config-listener-ssl-context&#34; target=&#34;_blank&#34;&gt;TLS 终止&lt;/a&gt; 和与上游集群建立连接时的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v1/cluster_manager/cluster_ssl#config-cluster-manager-cluster-ssl&#34; target=&#34;_blank&#34;&gt;TLS 发起&lt;/a&gt;。不管是为现代 web 服务提供标准的边缘代理功能，还是同具有高级 TLS 要求（TLS1.2, SNI, 等等）的外部服务建立连接，Envoy 都提供了充分的支持。&lt;/p&gt;
-
-&lt;p&gt;本文将会演示如何在前端代理中设置 TLS 终止，同时指定访问域名。主要分三个步骤：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;创建 Envoy 需要使用的证书&lt;/li&gt;
-&lt;li&gt;为 Envoy 启用证书验证&lt;/li&gt;
-&lt;li&gt;配置 Envoy 将 80 端口重定向到 443 端口&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-创建证书-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 创建证书&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果要启用 HTTPS，我们就需要从证书授权机构(以下简称 CA) 处获取一个证书。如果你还没有证书，你可以从 &lt;a href=&#34;https://letsencrypt.org/&#34; target=&#34;_blank&#34;&gt;Let’s Encrypt&lt;/a&gt; 获得网站域名的免费的证书，因为 Let’s Encrypt 就是一个 &lt;code&gt;CA&lt;/code&gt;。本文为了测试使用 &lt;code&gt;OpenSSL&lt;/code&gt; 生成私钥文件 &lt;code&gt;example-com.key&lt;/code&gt; 和 自签名证书 &lt;code&gt;example-com.crt&lt;/code&gt;。&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;需要注意的是 &lt;code&gt;Common Name&lt;/code&gt; 字段，本文测试使用的是 &lt;code&gt;example.com&lt;/code&gt;。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 继续沿用前文使用的示例
-$ cd envoy/examples/front-proxy
-
-# 生成2048位的加密私钥
-$ openssl genrsa -out example-com.key 2048
-
-#生成证书签名请求(CSR)
-$ openssl req -new -key example-com.key -out example-com.csr
-
-You are about to be asked to enter information that will be incorporated
-into your certificate request.
-What you are about to enter is what is called a Distinguished Name or a DN.
-There are quite a few fields but you can leave some blank
-For some fields there will be a default value,
-If you enter &#39;.&#39;, the field will be left blank.
------
-Country Name (2 letter code) [XX]:CN
-State or Province Name (full name) []:CA
-Locality Name (eg, city) [Default City]:Shanghai
-Organization Name (eg, company) [Default Company Ltd]:Daocloud
-Organizational Unit Name (eg, section) []:Envoy Division
-Common Name (eg, your name or your server&#39;s hostname) []:example.com
-Email Address []:chuansheng.yang@daocloud.io
-
-Please enter the following &#39;extra&#39; attributes
-to be sent with your certificate request
-A challenge password []:
-An optional company name []:
-
-# 生成X509自签名证书
-$ openssl x509 -req -days 365 -in example-com.csr -signkey example-com.key -out example-com.crt
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-为-envoy-启用证书验证-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 为 Envoy 启用证书验证&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;修改 &lt;code&gt;Dockerfile-frontenvoy&lt;/code&gt; 文件：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Dockerfile&#34;&gt;ADD ./example-com.crt /etc/example-com.crt
-ADD ./example-com.key /etc/example-com.key
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;修改 &lt;code&gt;front-envoy.yaml&lt;/code&gt; 配置文件，在 &lt;code&gt;filters&lt;/code&gt; 列表后面添加 &lt;code&gt;tls_context&lt;/code&gt; 配置项：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;tls_context:
-  common_tls_context:
-    tls_certificates:
-      - certificate_chain:
-          filename: &amp;quot;/etc/example-com.crt&amp;quot;
-        private_key:
-          filename: &amp;quot;/etc/example-com.key&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;将监听器的监听端口改为标准的 TLS 端口：443。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 443
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;还要指定访问的域名，不再使用之前的通配符匹配：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;domains:
-- &amp;quot;example.com&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Envoy 可以通过在同一个监听器中配置多个监听器过滤器链来支持多个域名的 &lt;code&gt;SNI&lt;/code&gt;（如 example.com 和 www.example.com），你可以在 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/faq/sni&#34; target=&#34;_blank&#34;&gt;Envoy 官方文档&lt;/a&gt; 中看到一个示例。&lt;/p&gt;
-
-&lt;p&gt;最后修改 &lt;code&gt;docker-compose.yaml&lt;/code&gt; 文件，将 443 端口暴露出来，同时将 8080 端口替换为 80 端口。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;services:
-  front-envoy:
-  ...
-    expose:
-      - &amp;quot;80&amp;quot;
-      - &amp;quot;443&amp;quot;
-    ports:
-      - &amp;quot;80:80&amp;quot;
-      - &amp;quot;443:443&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重启该示例服务：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker-compose down --remove-orphans
-$ docker-compose up --build -d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;下面就可以使用 curl 来进行测试了。这里有两个需要注意的地方：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;为了确保 curl 能成功验证证书，必须通过 &lt;code&gt;--cacert&lt;/code&gt; 参数将证书文件传递给 Envoy。&lt;/li&gt;
-&lt;li&gt;由于 DNS 无法解析 example.com，所以需要通过参数 &lt;code&gt;--connect-to&lt;/code&gt; 明确指定连接到 localhost，同时在请求的头文件中申明 localhost 的域名为 &lt;code&gt;example.com&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl --cacert example-com.crt --connect-to localhost -H &#39;Host: example.com&#39; https://localhost/service/1
-
-Hello from behind Envoy (service 1)! hostname: 56e8a5bff6bd resolvedhostname: 172.18.0.2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;如果你的 curl 版本不支持 &lt;code&gt;--connect-to&lt;/code&gt; 参数，可以在 &lt;code&gt;/etc/hosts&lt;/code&gt; 中添加一个条目：&lt;code&gt;127.0.0.1    example.com&lt;/code&gt;，然后直接通过域名访问：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl --cacert example-com.crt https://example.com/service/1
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-3-将-80-端口重定向到-443-端口-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 将 80 端口重定向到 443 端口&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;为了将所有 80 端口的流量重定向到 443 端口，可以将 443 端口的路由配置复制一份，然后稍作修改：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 80
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            virtual_hosts:
-            - name: backend
-              domains:
-              - &amp;quot;example.com&amp;quot;
-              routes:
-              - match:
-                  prefix: &amp;quot;/&amp;quot;
-                redirect:
-                  path_redirect: &amp;quot;/&amp;quot;
-                  https_redirect: true
-          http_filters:
-          - name: envoy.router
-            config: {}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重启服务：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker-compose down --remove-orphans
-$ docker-compose up --build -d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;再次通过 &lt;code&gt;HTTP&lt;/code&gt; 协议访问 service1，将会返回 &lt;code&gt;301&lt;/code&gt; 状态码：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl -I -H &#39;Host: example.com&#39; http://localhost/service/1
-
-HTTP/1.1 301 Moved Permanently
-location: https://example.com/
-date: Tue, 03 Jul 2018 06:32:13 GMT
-server: envoy
-content-length: 0
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;OK，大功告成！完整的 front-proxy.yaml 配置文件内容如下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;static_resources:
-  listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 80
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            virtual_hosts:
-            - name: backend
-              domains:
-              - &amp;quot;example.com&amp;quot;
-              routes:
-              - match:
-                  prefix: &amp;quot;/&amp;quot;
-                redirect:
-                  path_redirect: &amp;quot;/&amp;quot;
-                  https_redirect: true
-          http_filters:
-          - name: envoy.router
-            config: {}
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 443
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: backend
-              domains:
-              - &amp;quot;example.com&amp;quot;
-              routes:
-              - match:
-                  prefix: &amp;quot;/service/1&amp;quot;
-                route:
-                  cluster: service1
-              - match:
-                  prefix: &amp;quot;/service/2&amp;quot;
-                route:
-                  cluster: service2
-          http_filters:
-          - name: envoy.router
-            config: {}
-      tls_context:
-        common_tls_context:
-          tls_certificates:
-            - certificate_chain:
-                filename: &amp;quot;/etc/example-com.crt&amp;quot;
-              private_key:
-                filename: &amp;quot;/etc/example-com.key&amp;quot;
-  clusters:
-  - name: service1
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
-    - socket_address:
-        address: service1
-        port_value: 80
-  - name: service2
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
-    - socket_address:
-        address: service2
-        port_value: 80
-admin:
-  access_log_path: &amp;quot;/dev/null&amp;quot;
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 8001
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{

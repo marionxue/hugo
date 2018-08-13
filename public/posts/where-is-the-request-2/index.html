@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 请求都去哪了？（续） - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="请求都去哪了？（续）" />
+  <meta name="twitter:title" content="请求都去哪了？（续）" />
+  <meta name="description" content="服务网格内部的 VirtualService 和 DestinationRule 配置深度解析">
+  <meta property="og:description" content="服务网格内部的 VirtualService 和 DestinationRule 配置深度解析">
+  <meta name="twitter:description" content="服务网格内部的 VirtualService 和 DestinationRule 配置深度解析">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/where-is-the-request-2/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.42.2" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/where-is-the-request-2/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/service-mesh">Service Mesh</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/loadbalance"> 负载均衡</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/share">分享</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="http://istio.doczh.cn">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go">Go 入门指南</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">葵花宝典</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/learn-english"> 英语学习终极秘诀</a>
+                
+                
+                  <a href="https://www.yangcs.net/a-day-in-the-life-of-jeff">A Day in the life of Jeff</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search www.yangcs.net</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("4BELQK2TOI", "bb53f9d51f88373ba37e56a4730aca4c");
+var index = client.initIndex('blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>请求都去哪了？（续）</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">服务网格内部的 VirtualService 和 DestinationRule 配置深度解析</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on August 13, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">请求都去哪了？（续）</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">服务网格内部的 VirtualService 和 DestinationRule 配置深度解析</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Aug 13, 2018</h4>
+    </section>
+    <h5 id="wc">3100 Words|Read in about 7 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<p>书接前文，上文我们通过跟踪<strong>集群外通过 ingressgateway 发起的请求</strong>来探寻流量在 Istio 服务网格之间的流动方向，先部署 bookinfo 示例应用，然后创建一个监听在 <code>ingressgateway</code> 上的  GateWay 和 VirtualService，通过分析我们追踪到请求最后转交给了 <code>productpage</code>。</p>
+
+<p>在继续追踪请求之前，先对之前的内容做一个补充说明。</p>
+
+<h3 id="p-id-h2-1-pod-在服务网格之间如何通信-p"><p id="h2">1. Pod 在服务网格之间如何通信？</p></h3>
+
+<hr />
+
+<p>大家都知道，在 Istio 尚未出现之前，Kubernetes 集群内部 Pod 之间是通过 <code>ClusterIP</code> 来进行通信的，那么通过 Istio 在 Pod 内部插入了 <code>Sidecar</code> 之后，微服务应用之间是否仍然还是通过 ClusterIP 来通信呢？我们来一探究竟！</p>
+
+<p>继续拿上文的步骤举例子，来看一下 ingressgateway 和 productpage 之间如何通信，请求通过 ingressgateway 到达了 <code>endpoint</code> ，那么这个 endpoint 到底是 <code>ClusterIP</code> + Port 还是 <code>PodIP</code> + Port 呢？由于 istioctl 没有提供 eds 的查看参数，可以通过 pilot 的 xds debug 接口来查看：</p>
+
+<pre><code class="language-bash"># 获取 istio-pilot 的 ClusterIP
+$ export PILOT_SVC_IP=$(kubectl -n istio-system get svc -l app=istio-pilot -o go-template='{{range .items}}{{.spec.clusterIP}}{{end}}')
+
+# 查看 eds
+$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|9080||productpage.default.svc.cluster.local&quot; -A 27 -B 1
+</code></pre>
+
+<pre><code class="language-json">{
+  &quot;clusterName&quot;: &quot;outbound|9080||productpage.default.svc.cluster.local&quot;,
+  &quot;endpoints&quot;: [
+    {
+      &quot;lbEndpoints&quot;: [
+        {
+          &quot;endpoint&quot;: {
+            &quot;address&quot;: {
+              &quot;socketAddress&quot;: {
+                &quot;address&quot;: &quot;172.30.135.40&quot;,
+                &quot;portValue&quot;: 9080
+              }
+            }
+          },
+          &quot;metadata&quot;: {
+            &quot;filterMetadata&quot;: {
+              &quot;istio&quot;: {
+                  &quot;uid&quot;: &quot;kubernetes://productpage-v1-76474f6fb7-pmglr.default&quot;
+                }
+            }
+          }
+        }
+      ]
+    }
+  ]
+},
+</code></pre>
+
+<p>从这里可以看出，各个微服务之间是直接通过 <code>PodIP + Port</code> 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。</p>
+
+<h3 id="p-id-h2-2-部署-bookinfo-应用的时候发生了什么-p"><p id="h2">2. 部署 bookinfo 应用的时候发生了什么？</p></h3>
+
+<hr />
+
+<p>通过 Istio 来部署 bookinfo 示例应用时，Istio 会向应用程序的所有 Pod 中注入 Envoy 容器。但是我们仍然还不清楚注入的 Envoy 容器的配置文件里都有哪些东西，这时候就是 istioctl 命令行工具发挥强大功效的时候了，可以通过 <code>proxy-config</code> 参数来深度解析 Envoy 的配置文件（上一节我们已经使用过了）。</p>
+
+<p>我们先把目光锁定在某一个固定的 Pod 上，以 <code>productpage</code> 为例。先查看 productpage 的 Pod Name：</p>
+
+<pre><code class="language-bash">$ kubectl get pod -l app=productpage
+
+NAME                              READY     STATUS    RESTARTS   AGE
+productpage-v1-76474f6fb7-pmglr   2/2       Running   0          7h
+</code></pre>
+
+<h6 id="1-查看-productpage-的监听器的基本基本摘要">1. 查看 productpage 的监听器的基本基本摘要</h6>
+
+<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr
+
+ADDRESS            PORT      TYPE
+172.30.135.40      9080      HTTP    // ③ Receives all inbound traffic on 9080 from listener `0.0.0.0_15001`
+10.254.223.255     15011     TCP &lt;---+
+10.254.85.22       20001     TCP     |
+10.254.149.167     443       TCP     |
+10.254.14.157      42422     TCP     |
+10.254.238.17      9090      TCP     |  ② Receives outbound non-HTTP traffic for relevant IP:PORT pair from listener `0.0.0.0_15001`
+10.254.184.32      5556      TCP     |
+10.254.0.1         443       TCP     |
+10.254.52.199      8080      TCP     |
+10.254.118.224     443       TCP &lt;---+  
+0.0.0.0            15031     HTTP &lt;--+
+0.0.0.0            15004     HTTP    |
+0.0.0.0            9093      HTTP    |
+0.0.0.0            15030     HTTP    |
+0.0.0.0            8080      HTTP    |  ④ Receives outbound HTTP traffic for relevant port from listener `0.0.0.0_15001`
+0.0.0.0            8086      HTTP    |
+0.0.0.0            9080      HTTP    |
+0.0.0.0            15010     HTTP &lt;--+
+0.0.0.0            15001     TCP     // ① Receives all inbound and outbound traffic to the pod from IP tables and hands over to virtual listener
+</code></pre>
+
+<p>Istio 会生成以下的监听器：</p>
+
+<ul>
+<li>① <code>0.0.0.0:15001</code> 上的监听器接收进出 Pod 的所有流量，然后将请求移交给虚拟监听器。</li>
+<li>② 每个 Service IP 配置一个虚拟监听器，每个出站 TCP/HTTPS 流量一个非 HTTP 监听器。</li>
+<li>③ 每个 Pod 入站流量暴露的端口配置一个虚拟监听器。</li>
+<li>④ 每个出站 HTTP 流量的 HTTP <code>0.0.0.0</code> 端口配置一个虚拟监听器。</li>
+</ul>
+
+<p>上一节提到服务网格之间的应用是直接通过 PodIP 来进行通信的，但还不知道服务网格内的应用于服务网格外的应用是如何通信的。大家应该可以猜到，这个秘密就隐藏在 Service IP 的虚拟监听器中，以 <code>kube-dns</code> 为例，查看 productpage 如何与 kube-dns 进行通信：</p>
+
+<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 10.254.0.2 --port 53 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;10.254.0.2_53&quot;,
+        &quot;address&quot;: {
+            &quot;socketAddress&quot;: {
+                &quot;address&quot;: &quot;10.254.0.2&quot;,
+                &quot;portValue&quot;: 53
+            }
+        },
+        &quot;filterChains&quot;: [
+            {
+                &quot;filters&quot;: [
+                    ...
+                    {
+                        &quot;name&quot;: &quot;envoy.tcp_proxy&quot;,
+                        &quot;config&quot;: {
+                            &quot;cluster&quot;: &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot;,
+                            &quot;stat_prefix&quot;: &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot;
+                        }
+                    }
+                ]
+            }
+        ],
+        &quot;deprecatedV1&quot;: {
+            &quot;bindToPort&quot;: false
+        }
+    }
+]
+</code></pre>
+
+<pre><code class="language-bash"># 查看 eds
+$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot; -A 27 -B 1
+</code></pre>
+
+<pre><code class="language-json">{
+  &quot;clusterName&quot;: &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot;,
+  &quot;endpoints&quot;: [
+    {
+      &quot;lbEndpoints&quot;: [
+        {
+          &quot;endpoint&quot;: {
+            &quot;address&quot;: {
+              &quot;socketAddress&quot;: {
+                &quot;address&quot;: &quot;172.30.135.21&quot;,
+                &quot;portValue&quot;: 53
+              }
+            }
+          },
+          &quot;metadata&quot;: {
+            &quot;filterMetadata&quot;: {
+              &quot;istio&quot;: {
+                  &quot;uid&quot;: &quot;kubernetes://coredns-64b597b598-4rstj.kube-system&quot;
+                }
+            }
+          }
+        }
+      ]
+    },
+</code></pre>
+
+<p>可以看出，服务网格内的应用仍然通过 ClusterIP 与网格外的应用通信，但有一点需要注意：<strong>这里并没有 <code>kube-proxy</code> 的参与！</strong>Envoy 自己实现了一套流量转发机制，当你访问 ClusterIP 时，Envoy 就把流量转发到具体的 Pod 上去，<strong>不需要借助 kube-proxy 的 <code>iptables</code> 或 <code>ipvs</code> 规则</strong>。</p>
+
+<h6 id="2-从上面的摘要中可以看出-每个-sidecar-都有一个绑定到-0-0-0-0-15001-的监听器-ip-tables-将-pod-的所有入站和出站流量路由到这里-此监听器把-useoriginaldst-设置为-true-这意味着它将请求交给最符合请求原始目标的监听器-如果找不到任何匹配的虚拟监听器-它会将请求发送给返回-404-的-blackholecluster">2. 从上面的摘要中可以看出，每个 Sidecar 都有一个绑定到 <code>0.0.0.0:15001</code> 的监听器，IP tables 将 pod 的所有入站和出站流量路由到这里。此监听器把 <code>useOriginalDst</code> 设置为 true，这意味着它将请求交给最符合请求原始目标的监听器。如果找不到任何匹配的虚拟监听器，它会将请求发送给返回 404 的 <code>BlackHoleCluster</code>。</h6>
+
+<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --port 15001 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;virtual&quot;,
+        &quot;address&quot;: {
+            &quot;socketAddress&quot;: {
+                &quot;address&quot;: &quot;0.0.0.0&quot;,
+                &quot;portValue&quot;: 15001
+            }
+        },
+        &quot;filterChains&quot;: [
+            {
+                &quot;filters&quot;: [
+                    {
+                        &quot;name&quot;: &quot;envoy.tcp_proxy&quot;,
+                        &quot;config&quot;: {
+                            &quot;cluster&quot;: &quot;BlackHoleCluster&quot;,
+                            &quot;stat_prefix&quot;: &quot;BlackHoleCluster&quot;
+                        }
+                    }
+                ]
+            }
+        ],
+        &quot;useOriginalDst&quot;: true
+    }
+]
+</code></pre>
+
+<h6 id="3-我们的请求是到-9080-端口的-http-出站请求-这意味着它被切换到-0-0-0-0-9080-虚拟监听器-然后-此监听器在其配置的-rds-中查找路由配置-在这种情况下-它将查找由-pilot-配置的-rds-中的路由-9080-通过-ads">3. 我们的请求是到 <code>9080</code> 端口的 HTTP 出站请求，这意味着它被切换到 <code>0.0.0.0:9080</code> 虚拟监听器。然后，此监听器在其配置的 RDS 中查找路由配置。在这种情况下，它将查找由 Pilot 配置的 RDS 中的路由 <code>9080</code>（通过 ADS）。</h6>
+
+<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 0.0.0.0 --port 9080 -o json
+</code></pre>
+
+<pre><code class="language-json">...
+&quot;rds&quot;: {
+    &quot;config_source&quot;: {
+        &quot;ads&quot;: {}
+    },
+    &quot;route_config_name&quot;: &quot;9080&quot;
+}
+...
+</code></pre>
+
+<h6 id="4-9080-路由配置仅为每个服务提供虚拟主机-我们的请求正在前往-reviews-服务-因此-envoy-将选择我们的请求与域匹配的虚拟主机-一旦在域上匹配-envoy-会查找与请求匹配的第一条路径-在这种情况下-我们没有任何高级路由-因此只有一条路由匹配所有内容-这条路由告诉-envoy-将请求发送到-outbound-9080-reviews-default-svc-cluster-local-集群">4. <code>9080</code> 路由配置仅为每个服务提供虚拟主机。我们的请求正在前往 reviews 服务，因此 Envoy 将选择我们的请求与域匹配的虚拟主机。一旦在域上匹配，Envoy 会查找与请求匹配的第一条路径。在这种情况下，我们没有任何高级路由，因此只有一条路由匹配所有内容。这条路由告诉 Envoy 将请求发送到 <code>outbound|9080||reviews.default.svc.cluster.local</code> 集群。</h6>
+
+<pre><code class="language-bash">$ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;9080&quot;,
+        &quot;virtualHosts&quot;: [
+            {
+                &quot;name&quot;: &quot;reviews.default.svc.cluster.local:9080&quot;,
+                &quot;domains&quot;: [
+                    &quot;reviews.default.svc.cluster.local&quot;,
+                    &quot;reviews.default.svc.cluster.local:9080&quot;,
+                    &quot;reviews&quot;,
+                    &quot;reviews:9080&quot;,
+                    &quot;reviews.default.svc.cluster&quot;,
+                    &quot;reviews.default.svc.cluster:9080&quot;,
+                    &quot;reviews.default.svc&quot;,
+                    &quot;reviews.default.svc:9080&quot;,
+                    &quot;reviews.default&quot;,
+                    &quot;reviews.default:9080&quot;,
+                    &quot;172.21.152.34&quot;,
+                    &quot;172.21.152.34:9080&quot;
+                ],
+                &quot;routes&quot;: [
+                    {
+                        &quot;match&quot;: {
+                            &quot;prefix&quot;: &quot;/&quot;
+                        },
+                        &quot;route&quot;: {
+                            &quot;cluster&quot;: &quot;outbound|9080||reviews.default.svc.cluster.local&quot;,
+                            &quot;timeout&quot;: &quot;0.000s&quot;
+                        },
+...
+</code></pre>
+
+<h6 id="5-此集群配置为从-pilot-通过-ads-检索关联的端点-因此-envoy-将使用-servicename-字段作为密钥来查找端点列表并将请求代理到其中一个端点">5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 <code>serviceName</code> 字段作为密钥来查找端点列表并将请求代理到其中一个端点。</h6>
+
+<pre><code class="language-bash">$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local -o json
+
+[
+    {
+        &quot;name&quot;: &quot;outbound|9080||reviews.default.svc.cluster.local&quot;,
+        &quot;type&quot;: &quot;EDS&quot;,
+        &quot;edsClusterConfig&quot;: {
+            &quot;edsConfig&quot;: {
+                &quot;ads&quot;: {}
+            },
+            &quot;serviceName&quot;: &quot;outbound|9080||reviews.default.svc.cluster.local&quot;
+        },
+        &quot;connectTimeout&quot;: &quot;1.000s&quot;,
+        &quot;circuitBreakers&quot;: {
+            &quot;thresholds&quot;: [
+                {}
+            ]
+        }
+    }
+]
+</code></pre>
+
+<p>上面的整个过程就是在不创建任何规则的情况下请求从 <code>productpage</code> 到 <code>reviews</code> 的过程，从 reviews 到网格内其他应用的流量与上面类似，就不展开讨论了。接下来分析创建规则之后的请求转发过程。</p>
+
+<h3 id="p-id-h2-3-virtualservice-和-destinationrule-配置解析-p"><p id="h2">3. VirtualService 和 DestinationRule 配置解析</p></h3>
+
+<hr />
+
+<h4 id="virtualservice">VirtualService</h4>
+
+<p>首先创建一个 <code>VirtualService</code>。</p>
+
+<pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reviews
+spec:
+  hosts:
+    - reviews
+  http:
+  - route:
+    - destination:
+        host: reviews
+        subset: v1
+EOF
+</code></pre>
+
+<p>上一篇文章已经介绍过，<code>VirtualService</code> 映射的就是 Envoy 中的 <code>Http Route Table</code>，还是将目标锁定在 productpage 上，我们来查看一下路由配置：</p>
+
+<pre><code class="language-bash">$ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;9080&quot;,
+        &quot;virtualHosts&quot;: [
+            {
+                &quot;name&quot;: &quot;reviews.default.svc.cluster.local:9080&quot;,
+                &quot;domains&quot;: [
+                    &quot;reviews.default.svc.cluster.local&quot;,
+                    &quot;reviews.default.svc.cluster.local:9080&quot;,
+                    &quot;reviews&quot;,
+                    &quot;reviews:9080&quot;,
+                    &quot;reviews.default.svc.cluster&quot;,
+                    &quot;reviews.default.svc.cluster:9080&quot;,
+                    &quot;reviews.default.svc&quot;,
+                    &quot;reviews.default.svc:9080&quot;,
+                    &quot;reviews.default&quot;,
+                    &quot;reviews.default:9080&quot;,
+                    &quot;172.21.152.34&quot;,
+                    &quot;172.21.152.34:9080&quot;
+                ],
+                &quot;routes&quot;: [
+                    {
+                        &quot;match&quot;: {
+                            &quot;prefix&quot;: &quot;/&quot;
+                        },
+                        &quot;route&quot;: {
+                            &quot;cluster&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
+                            &quot;timeout&quot;: &quot;0.000s&quot;
+                        },
+...
+</code></pre>
+
+<p>注意对比一下没创建 VirtualService 之前的路由，现在路由的 <code>cluster</code> 字段的值已经从之前的 <code>outbound|9080|reviews.default.svc.cluster.local</code> 变为 <code>outbound|9080|v1|reviews.default.svc.cluster.local</code>。</p>
+
+<p><strong>请注意：</strong>我们现在还没有创建 DestinationRule！</p>
+
+<p>你可以尝试搜索一下有没有 <code>outbound|9080|v1|reviews.default.svc.cluster.local</code> 这个集群，如果不出意外，你将找不到 <code>SUBSET=v1</code> 的集群。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160027.jpg" alt="" /></center></p>
+
+<p>由于找不到这个集群，所以该路由不可达，这就是为什么你打开 productpage 的页面会出现如下的报错：</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160823.jpg" alt="" /></center></p>
+
+<h4 id="destinationrule">DestinationRule</h4>
+
+<p>为了使上面创建的路由可达，我们需要创建一个 <code>DestinationRule</code>：</p>
+
+<pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: reviews
+spec:
+  host: reviews
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+EOF
+</code></pre>
+
+<p>其实 <code>DestinationRule</code> 映射到 Envoy 的配置文件中就是 <code>Cluster</code>。现在你应该能看到 <code>SUBSET=v1</code> 的 Cluster 了：</p>
+
+<pre><code class="language-bash">$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local --subset=v1 -o json
+
+[
+    {
+        &quot;name&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
+        &quot;type&quot;: &quot;EDS&quot;,
+        &quot;edsClusterConfig&quot;: {
+            &quot;edsConfig&quot;: {
+                &quot;ads&quot;: {}
+            },
+            &quot;serviceName&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;
+        },
+        &quot;connectTimeout&quot;: &quot;1.000s&quot;,
+        &quot;circuitBreakers&quot;: {
+            &quot;thresholds&quot;: [
+                {}
+            ]
+        }
+    }
+]
+</code></pre>
+
+<p>到了这一步，一切皆明了，后面的事情就跟之前的套路一样了，具体的 Endpoint 对应打了标签 <code>version=v1</code> 的 Pod：</p>
+
+<pre><code class="language-bash">$ kubectl get pod -l app=reviews,version=v1 -o wide
+
+NAME                          READY     STATUS    RESTARTS   AGE       IP              NODE
+reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.104.38   192.168.123.248
+</code></pre>
+
+<pre><code class="language-bash">$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot; -A 27 -B 2
+
+{
+  &quot;clusterName&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
+  &quot;endpoints&quot;: [
+    {
+      &quot;locality&quot;: {
+        &quot;zone&quot;: &quot;yangpu/shanghai&quot;
+      },
+      &quot;lbEndpoints&quot;: [
+        {
+          &quot;endpoint&quot;: {
+            &quot;address&quot;: {
+              &quot;socketAddress&quot;: {
+                &quot;address&quot;: &quot;172.30.104.38&quot;,
+                &quot;portValue&quot;: 9080
+              }
+            }
+          },
+          &quot;metadata&quot;: {
+            &quot;filterMetadata&quot;: {
+              &quot;istio&quot;: {
+                  &quot;uid&quot;: &quot;kubernetes://reviews-v1-5b487cc689-njx5t.default&quot;
+                }
+            }
+          }
+        }
+      ]
+    }
+  ]
+},
+</code></pre>
+
+<p>现在再次用浏览器访问 productpage，你会发现报错已经消失了。</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180813-162629.jpg" alt="" /></center></p>
+
+<h3 id="p-id-h2-4-参考-p"><p id="h2">4. 参考</p></h3>
+
+<hr />
+
+<ul>
+<li><a href="https://istio.io/zh/help/ops/traffic-management/proxy-cmd/" target="_blank">调试 Envoy 和 Pilot</a></li>
+</ul>
+
+<hr />
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
+<center>扫一扫关注微信公众号</center></p>
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/weekly-4/" data-toggle="tooltip" data-placement="top" title="干货与湿货分享第4期">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/where-is-the-request-1/">请求都去哪了？</a></li>
+                    
+                    <li><a href="/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/">Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</a></li>
+                    
+                    <li><a href="/posts/istio-ingress/">Istio 服务网格中的网关</a></li>
+                    
+                    <li><a href="/posts/istio-traffic-management/">Istio 流量管理</a></li>
+                    
+                    <li><a href="/posts/istio-1.0-deploy/">Istio 1.0 部署</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Aug 13, 2018</h4>
+    </section>
+    <h5 id="wc">3100 Words|Read in about 7 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.42.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  </body>
+</html>
+
