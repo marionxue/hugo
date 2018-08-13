@@ -429,9 +429,6 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080|v1|reviews.defau
   "clusterName": "outbound|9080|v1|reviews.default.svc.cluster.local",
   "endpoints": [
     {
-      "locality": {
-        "zone": "yangpu/shanghai"
-      },
       "lbEndpoints": [
         {
           "endpoint": {

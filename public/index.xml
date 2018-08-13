@@ -986,9 +986,6 @@ reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.10
   &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080|v1|reviews.default.svc.cluster.local&amp;quot;,
   &amp;quot;endpoints&amp;quot;: [
     {
-      &amp;quot;locality&amp;quot;: {
-        &amp;quot;zone&amp;quot;: &amp;quot;yangpu/shanghai&amp;quot;
-      },
       &amp;quot;lbEndpoints&amp;quot;: [
         {
           &amp;quot;endpoint&amp;quot;: {
