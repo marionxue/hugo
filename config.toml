@@ -138,7 +138,7 @@ desc = "Using Big Data to make business decision"
 [[menu.main]]
     parent = "Books"
     name = "Istio service mesh"
-    url = "http://istio.doczh.cn"
+    url = "https://istio.io/zh/docs"
     weight = 3 
 
 [[menu.main]]
