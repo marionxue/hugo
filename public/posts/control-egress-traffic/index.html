@@ -812,6 +812,8 @@ sys     0m0.004s
 $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 </code></pre>
 
+<p><br /></p>
+
 <h3 id="p-id-h2-4-总结-p"><p id="h2">4. 总结</p></h3>
 
 <hr />
@@ -831,19 +833,15 @@ $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 
 <hr />
 
-<ol>
-<li>删除规则：</li>
-</ol>
+<p><span id="blue">1. 删除规则：</span></p>
 
-<pre><code class="language-bash">   $ istioctl delete serviceentry httpbin-ext baidu
-   $ istioctl delete virtualservice httpbin-ext baidu
+<pre><code class="language-bash">$ istioctl delete serviceentry httpbin-ext baidu
+$ istioctl delete virtualservice httpbin-ext baidu
 </code></pre>
 
-<ol>
-<li>停止 sleep 服务：</li>
-</ol>
+<p><span id="blue">2. 停止 sleep 服务：</span></p>
 
-<pre><code class="language-bash">   $ kubectl delete -f samples/sleep/sleep.yaml
+<pre><code class="language-bash">$ kubectl delete -f samples/sleep/sleep.yaml
 </code></pre>
 
 <hr />

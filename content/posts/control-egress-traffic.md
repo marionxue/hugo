@@ -435,6 +435,8 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o go-template='{{range .item
 $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 ```
 
+<br />
+
 ### <p id="h2">4. 总结</p>
 
 ----
@@ -452,18 +454,18 @@ $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 
 ----
 
-1. 删除规则：
+<span id="blue">1. 删除规则：</span>
 
-   ```bash
-   $ istioctl delete serviceentry httpbin-ext baidu
-   $ istioctl delete virtualservice httpbin-ext baidu
-   ```
+```bash
+$ istioctl delete serviceentry httpbin-ext baidu
+$ istioctl delete virtualservice httpbin-ext baidu
+```
    
-2. 停止 sleep 服务：
+<span id="blue">2. 停止 sleep 服务：</span>
 
-   ```bash
-   $ kubectl delete -f samples/sleep/sleep.yaml
-   ```
+```bash
+$ kubectl delete -f samples/sleep/sleep.yaml
+```
 
 ----
 
