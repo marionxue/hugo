@@ -479,6 +479,8 @@ spec:
 EOF
 </code></pre>
 
+<p><br /></p>
+
 <h4 id="发起对外部服务的访问">发起对外部服务的访问</h4>
 
 <p>使用 <code>kubectl exec</code> 命令进入测试 Pod。假设使用的是 sleep 服务，运行如下命令：</p>
@@ -496,6 +498,8 @@ $ kubectl exec -it $SOURCE_POD -c sleep bash
 
 <pre><code class="language-bash">$ curl https://www.baidu.com
 </code></pre>
+
+<p><br /></p>
 
 <h4 id="http-serviceentry-配置深度解析">HTTP ServiceEntry 配置深度解析</h4>
 

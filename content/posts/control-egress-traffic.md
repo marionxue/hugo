@@ -99,6 +99,8 @@ spec:
 EOF
 ```
 
+<br />
+
 #### 发起对外部服务的访问
 
 使用 `kubectl exec` 命令进入测试 Pod。假设使用的是 sleep 服务，运行如下命令：
@@ -119,6 +121,8 @@ $ curl http://httpbin.org/headers
 ```bash
 $ curl https://www.baidu.com
 ```
+
+<br />
 
 #### HTTP ServiceEntry 配置深度解析
 
@@ -197,11 +201,11 @@ $ istioctl pc clusters sleep-5bc866558c-89shb --fqdn httpbin.org -o json
 
 + <span id="inline-blue">type</span> : 服务发现类型。`ORIGINAL_DST` 表示原始目的地类型，大概意思就是：连接进入之前已经被解析为一个特定的目标 IP 地址。这种连接通常是由代理使用 IP table REDIRECT 或者 eBPF 之类的机制转发而来的。完成路由相关的转换之后，代理服务器会将连接转发到该 IP 地址。`httpbin.org` 是外网域名，当然可以解析，所以连接进入之前可以被解析为一个特定的目标 IP 地址。Envoy 服务发现类型的详细解析可以参考：[Service discovery](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#arch-overview-service-discovery-types-original-destination)。`ServiceEntry.Resolution` 字段的解析可以参考：[ServiceEntry.Resolution](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry-Resolution)。
 
-  这里我简要说明一下，ServiceEntry 的 `resolution` 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：
+   这里我简要说明一下，ServiceEntry 的 `resolution` 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：
   
-  + `NONE` : 对应于 Envoy 中的 [ORIGINAL_DST](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination)。如果不指定 resolution 字段，默认使用这个策略。
-  + `STATIC` : 对应于 Envoy 中的 [STATIC](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static)。表示使用 `endpoints` 中指定的静态 IP 地址作为服务后端。
-  + `DNS` : 对应于 Envoy 中的 [STRICT_DNS](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns)。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 `endpoints`，并且没有使用通配符，代理服务器会使用 DNS 解析 `hosts` 字段中的地址。如果指定了 `endpoints`，那么指定的地址就会作为目标 IP 地址。
+   + `NONE` : 对应于 Envoy 中的 [ORIGINAL_DST](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination)。如果不指定 resolution 字段，默认使用这个策略。
+   + `STATIC` : 对应于 Envoy 中的 [STATIC](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static)。表示使用 `endpoints` 中指定的静态 IP 地址作为服务后端。
+   + `DNS` : 对应于 Envoy 中的 [STRICT_DNS](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns)。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 `endpoints`，并且没有使用通配符，代理服务器会使用 DNS 解析 `hosts` 字段中的地址。如果指定了 `endpoints`，那么指定的地址就会作为目标 IP 地址。
 
 + <span id="inline-blue">lbPolicy</span> : 负载均衡策略。`ORIGINAL_DST_LB` 表示使用原始目的地的负载均衡策略。具体参考: [Load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/load_balancing)。
 

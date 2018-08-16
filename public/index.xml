@@ -666,6 +666,8 @@ spec:
 EOF
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h4 id=&#34;发起对外部服务的访问&#34;&gt;发起对外部服务的访问&lt;/h4&gt;
 
 &lt;p&gt;使用 &lt;code&gt;kubectl exec&lt;/code&gt; 命令进入测试 Pod。假设使用的是 sleep 服务，运行如下命令：&lt;/p&gt;
@@ -683,6 +685,8 @@ $ kubectl exec -it $SOURCE_POD -c sleep bash
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl https://www.baidu.com
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;http-serviceentry-配置深度解析&#34;&gt;HTTP ServiceEntry 配置深度解析&lt;/h4&gt;
 
