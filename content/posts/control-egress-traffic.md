@@ -357,6 +357,8 @@ $ istioctl pc listeners sleep-5bc866558c-89shb --address 0.0.0.0 --port 443 -o j
 
 > 最后我们来思考一下：既然不创建 TLS VirtualService 也可以访问 `www.baidu.com`，那么创建 TLS VirtualService 和不创建 TLS VirtualService 有什么区别呢？正确答案是：没有关联 `VirtualService` 的 `https-` 或者 `tls-` 端口流量会被视为透传 `TCP` 流量，而不是透传 TLS 和 HTTPS 流量。
 
+<br />
+
 #### 为外部服务设置路由规则
 
 通过 `ServiceEntry` 访问外部服务的流量，和网格内流量类似，都可以进行 Istio [路由规则](https://istio.io/zh/docs/concepts/traffic-management/#%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE) 的配置。下面我们使用 istioctl 为 httpbin.org 服务设置一个超时规则。

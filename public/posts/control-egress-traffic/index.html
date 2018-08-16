@@ -740,6 +740,8 @@ curl: (51) SSL: certificate subject name 'baidu.com' does not match target host 
 <p>最后我们来思考一下：既然不创建 TLS VirtualService 也可以访问 <code>www.baidu.com</code>，那么创建 TLS VirtualService 和不创建 TLS VirtualService 有什么区别呢？正确答案是：没有关联 <code>VirtualService</code> 的 <code>https-</code> 或者 <code>tls-</code> 端口流量会被视为透传 <code>TCP</code> 流量，而不是透传 TLS 和 HTTPS 流量。</p>
 </blockquote>
 
+<p><br /></p>
+
 <h4 id="为外部服务设置路由规则">为外部服务设置路由规则</h4>
 
 <p>通过 <code>ServiceEntry</code> 访问外部服务的流量，和网格内流量类似，都可以进行 Istio <a href="https://istio.io/zh/docs/concepts/traffic-management/#%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE" target="_blank">路由规则</a> 的配置。下面我们使用 istioctl 为 httpbin.org 服务设置一个超时规则。</p>
