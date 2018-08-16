@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 请求都去哪了？（续） - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> 控制 Egress 流量 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="请求都去哪了？（续）" />
-  <meta name="twitter:title" content="请求都去哪了？（续）" />
-  <meta name="description" content="服务网格内部的 VirtualService 和 DestinationRule 配置深度解析">
-  <meta property="og:description" content="服务网格内部的 VirtualService 和 DestinationRule 配置深度解析">
-  <meta name="twitter:description" content="服务网格内部的 VirtualService 和 DestinationRule 配置深度解析">
+  <meta property="og:title" content="控制 Egress 流量" />
+  <meta name="twitter:title" content="控制 Egress 流量" />
+  <meta name="description" content="服务网格内部的 ServiceEntry 配置深度解析以及 Egress 流量的访问策略管理">
+  <meta property="og:description" content="服务网格内部的 ServiceEntry 配置深度解析以及 Egress 流量的访问策略管理">
+  <meta name="twitter:description" content="服务网格内部的 ServiceEntry 配置深度解析以及 Egress 流量的访问策略管理">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/where-is-the-request-2/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/control-egress-traffic/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.42.2" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/where-is-the-request-2/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/control-egress-traffic/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -316,7 +316,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>请求都去哪了？（续）</h1>
+                     <h1>控制 Egress 流量</h1>
                      
                      
                   
@@ -324,13 +324,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">服务网格内部的 VirtualService 和 DestinationRule 配置深度解析</span>
+                      <span class="post-subheading">服务网格内部的 ServiceEntry 配置深度解析以及 Egress 流量的访问策略管理</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on August 13, 2018
+  Posted on August 16, 2018
   
   
 </span>
@@ -351,10 +351,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">请求都去哪了？（续）</h1>
+                <h1 align="center">控制 Egress 流量</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">服务网格内部的 VirtualService 和 DestinationRule 配置深度解析</h2>
+                    <h2 align="center" class="posts-subheading">服务网格内部的 ServiceEntry 配置深度解析以及 Egress 流量的访问策略管理</h2>
                   
                 
                 
@@ -375,9 +375,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Mon Aug 13, 2018</h4>
+        <h4 id="date"> Thu Aug 16, 2018</h4>
     </section>
-    <h5 id="wc">3100 Words|Read in about 7 Min</h5>
+    <h5 id="wc">4500 Words|Read in about 9 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -392,116 +392,227 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>书接前文，上文我们通过跟踪<strong>集群外通过 ingressgateway 发起的请求</strong>来探寻流量在 Istio 服务网格之间的流动方向，先部署 bookinfo 示例应用，然后创建一个监听在 <code>ingressgateway</code> 上的  GateWay 和 VirtualService，通过分析我们追踪到请求最后转交给了 <code>productpage</code>。</p>
+<p id="div-border-left-red">本文主要内容来自 <a href="https://istio.io/zh/docs/tasks/traffic-management/egress/" target="_blank">Istio 官方文档</a>，并对其进行了大量扩展和补充。</p>
 
-<p>在继续追踪请求之前，先对之前的内容做一个补充说明。</p>
+<p>缺省情况下，Istio 服务网格内的 Pod，由于其 iptables 将所有外发流量都透明的转发给了 <code>Sidecar</code>，所以这些集群内的服务无法访问集群之外的 URL，而只能处理集群内部的目标。</p>
 
-<h3 id="p-id-h2-1-pod-在服务网格之间如何通信-p"><p id="h2">1. Pod 在服务网格之间如何通信？</p></h3>
+<p>本文的任务描述了如何将外部服务暴露给 Istio 集群中的客户端。你将会学到如何通过定义 <a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry" target="_blank">ServiceEntry</a> 来调用外部服务；或者简单的对 Istio 进行配置，要求其直接放行对特定 IP 范围的访问。</p>
 
-<hr />
-
-<p>大家都知道，在 Istio 尚未出现之前，Kubernetes 集群内部 Pod 之间是通过 <code>ClusterIP</code> 来进行通信的，那么通过 Istio 在 Pod 内部插入了 <code>Sidecar</code> 之后，微服务应用之间是否仍然还是通过 ClusterIP 来通信呢？我们来一探究竟！</p>
-
-<p>继续拿上文的步骤举例子，来看一下 ingressgateway 和 productpage 之间如何通信，请求通过 ingressgateway 到达了 <code>endpoint</code> ，那么这个 endpoint 到底是 <code>ClusterIP</code> + Port 还是 <code>PodIP</code> + Port 呢？由于 istioctl 没有提供 eds 的查看参数，可以通过 pilot 的 xds debug 接口来查看：</p>
-
-<pre><code class="language-bash"># 获取 istio-pilot 的 ClusterIP
-$ export PILOT_SVC_IP=$(kubectl -n istio-system get svc -l app=istio-pilot -o go-template='{{range .items}}{{.spec.clusterIP}}{{end}}')
-
-# 查看 eds
-$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|9080||productpage.default.svc.cluster.local&quot; -A 27 -B 1
-</code></pre>
-
-<pre><code class="language-json">{
-  &quot;clusterName&quot;: &quot;outbound|9080||productpage.default.svc.cluster.local&quot;,
-  &quot;endpoints&quot;: [
-    {
-      &quot;lbEndpoints&quot;: [
-        {
-          &quot;endpoint&quot;: {
-            &quot;address&quot;: {
-              &quot;socketAddress&quot;: {
-                &quot;address&quot;: &quot;172.30.135.40&quot;,
-                &quot;portValue&quot;: 9080
-              }
-            }
-          },
-          &quot;metadata&quot;: {
-            &quot;filterMetadata&quot;: {
-              &quot;istio&quot;: {
-                  &quot;uid&quot;: &quot;kubernetes://productpage-v1-76474f6fb7-pmglr.default&quot;
-                }
-            }
-          }
-        }
-      ]
-    }
-  ]
-},
-</code></pre>
-
-<p>从这里可以看出，各个微服务之间是直接通过 <code>PodIP + Port</code> 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。</p>
-
-<h3 id="p-id-h2-2-部署-bookinfo-应用的时候发生了什么-p"><p id="h2">2. 部署 bookinfo 应用的时候发生了什么？</p></h3>
+<h3 id="p-id-h2-1-开始之前-p"><p id="h2">1. 开始之前</p></h3>
 
 <hr />
-
-<p>通过 Istio 来部署 bookinfo 示例应用时，Istio 会向应用程序的所有 Pod 中注入 Envoy 容器。但是我们仍然还不清楚注入的 Envoy 容器的配置文件里都有哪些东西，这时候就是 istioctl 命令行工具发挥强大功效的时候了，可以通过 <code>proxy-config</code> 参数来深度解析 Envoy 的配置文件（上一节我们已经使用过了）。</p>
-
-<p>我们先把目光锁定在某一个固定的 Pod 上，以 <code>productpage</code> 为例。先查看 productpage 的 Pod Name：</p>
-
-<pre><code class="language-bash">$ kubectl get pod -l app=productpage
-
-NAME                              READY     STATUS    RESTARTS   AGE
-productpage-v1-76474f6fb7-pmglr   2/2       Running   0          7h
-</code></pre>
-
-<p><font color="#2780e3">1. 查看 productpage 的监听器的基本基本摘要</font></p>
-
-<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr
-
-ADDRESS            PORT      TYPE
-172.30.135.40      9080      HTTP    // ③ Receives all inbound traffic on 9080 from listener `0.0.0.0_15001`
-10.254.223.255     15011     TCP &lt;---+
-10.254.85.22       20001     TCP     |
-10.254.149.167     443       TCP     |
-10.254.14.157      42422     TCP     |
-10.254.238.17      9090      TCP     |  ② Receives outbound non-HTTP traffic for relevant IP:PORT pair from listener `0.0.0.0_15001`
-10.254.184.32      5556      TCP     |
-10.254.0.1         443       TCP     |
-10.254.52.199      8080      TCP     |
-10.254.118.224     443       TCP &lt;---+  
-0.0.0.0            15031     HTTP &lt;--+
-0.0.0.0            15004     HTTP    |
-0.0.0.0            9093      HTTP    |
-0.0.0.0            15030     HTTP    |
-0.0.0.0            8080      HTTP    |  ④ Receives outbound HTTP traffic for relevant port from listener `0.0.0.0_15001`
-0.0.0.0            8086      HTTP    |
-0.0.0.0            9080      HTTP    |
-0.0.0.0            15010     HTTP &lt;--+
-0.0.0.0            15001     TCP     // ① Receives all inbound and outbound traffic to the pod from IP tables and hands over to virtual listener
-</code></pre>
-
-<p>Istio 会生成以下的监听器：</p>
 
 <ul>
-<li>① <code>0.0.0.0:15001</code> 上的监听器接收进出 Pod 的所有流量，然后将请求移交给虚拟监听器。</li>
-<li>② 每个 Service IP 配置一个虚拟监听器，每个出站 TCP/HTTPS 流量一个非 HTTP 监听器。</li>
-<li>③ 每个 Pod 入站流量暴露的端口配置一个虚拟监听器。</li>
-<li>④ 每个出站 HTTP 流量的 HTTP <code>0.0.0.0</code> 端口配置一个虚拟监听器。</li>
+<li>根据<a href="https://www.yangcs.net/posts/istio-1.0-deploy/" target="_blank">安装指南</a>的内容，部署 Istio。</li>
+<li>启动 <a href="https://github.com/istio/istio/tree/release-1.0/samples/sleep" target="_blank">sleep</a> 示例应用，我们将会使用这一应用来完成对外部服务的调用过程。 如果启用了 <a href="https://istio.io/zh/docs/setup/kubernetes/sidecar-injection/#sidecar-%E7%9A%84%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5" target="_blank">Sidecar 的自动注入功能</a>，运行：</li>
 </ul>
 
-<p>上一节提到服务网格之间的应用是直接通过 PodIP 来进行通信的，但还不知道服务网格内的应用与服务网格外的应用是如何通信的。大家应该可以猜到，这个秘密就隐藏在 Service IP 的虚拟监听器中，以 <code>kube-dns</code> 为例，查看 productpage 如何与 kube-dns 进行通信：</p>
+<pre><code class="language-bash">$ kubectl apply -f samples/sleep/sleep.yaml
+</code></pre>
 
-<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 10.254.0.2 --port 53 -o json
+<p>否则在部署 <code>sleep</code> 应用之前，就需要手工注入 Sidecar：</p>
+
+<pre><code class="language-bash">$ kubectl apply -f &lt;(istioctl kube-inject -f samples/sleep/sleep.yaml)
+</code></pre>
+
+<p>实际上任何可以 <code>exec</code> 和 <code>curl</code> 的 Pod 都可以用来完成这一任务。</p>
+
+<h3 id="p-id-h2-2-istio-中配置外部服务-p"><p id="h2">2. Istio 中配置外部服务</p></h3>
+
+<hr />
+
+<p>通过配置 Istio <code>ServiceEntry</code>，可以从 Istio 集群中访问外部任意的可用服务。这里我们会使用 <a href="http://httpbin.org/" target="_blank">httpbin.org</a> 以及 <a href="https://www.baidu.com/" target="_blank">www.baidu.com</a> 进行试验。</p>
+
+<h4 id="配置外部服务">配置外部服务</h4>
+
+<p id="blue">1. 创建一个 <code>ServiceEntry</code> 对象，放行对一个外部 HTTP 服务的访问：</p>
+
+<pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: httpbin-ext
+spec:
+  hosts:
+  - httpbin.org
+  ports:
+  - number: 80
+    name: http
+    protocol: HTTP
+EOF
+</code></pre>
+
+<p id="blue">2. 另外创建一个 <code>ServiceEntry</code> 对象和一个 <code>VirtualService</code>，放行对一个外部 HTTPS 服务的访问：</p>
+
+<pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl create -f -
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: baidu
+spec:
+  hosts:
+  - www.baidu.com
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: baidu
+spec:
+  hosts:
+  - www.baidu.com
+  tls:
+  - match:
+    - port: 443
+      sniHosts:
+      - www.baidu.com
+    route:
+    - destination:
+        host: www.baidu.com
+        port:
+          number: 443
+      weight: 100
+EOF
+</code></pre>
+
+<h4 id="发起对外部服务的访问">发起对外部服务的访问</h4>
+
+<p>使用 <code>kubectl exec</code> 命令进入测试 Pod。假设使用的是 sleep 服务，运行如下命令：</p>
+
+<pre><code class="language-bash">$ export SOURCE_POD=$(kubectl get pod -l app=sleep -o go-template='{{range .items}}{{.metadata.name}}{{end}}')
+$ kubectl exec -it $SOURCE_POD -c sleep bash
+</code></pre>
+
+<p>发起一个对外部 HTTP 服务的请求：</p>
+
+<pre><code class="language-bash">$ curl http://httpbin.org/headers
+</code></pre>
+
+<p>发起一个对外部 HTTPS 服务的请求：</p>
+
+<pre><code class="language-bash">$ curl https://www.baidu.com
+</code></pre>
+
+<h4 id="http-serviceentry-配置深度解析">HTTP ServiceEntry 配置深度解析</h4>
+
+<p>按照之前的惯例，还是先来解读一下 HTTP 协议的 <code>ServiceEntry</code> 映射到 Envoy 配置层面具体是哪些内容，这样才能对 ServiceEntry 有更加深刻的认识。</p>
+
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>创建一个 <code>HTTP</code> 协议的 ServiceEntry（不指定 <code>GateWay</code>） 本质上是在服务网格内的<strong>所有应用的所有 Pod</strong>上创建相应的路由规则和与之对应的 Cluster。指定 GateWay 的 ServiceEntry 遵循的是另一套法则，后面我们再说。</p>
+</div>
+
+<p>可以通过 istioctl 来验证一下（以 <code>httpbin-ext</code> 为例）：</p>
+
+<pre><code class="language-bash"># 查看 sleep 的 Pod Name：
+$ kubectl get pod -l app=sleep
+
+NAME                     READY     STATUS    RESTARTS   AGE
+sleep-5bc866558c-89shb   2/2       Running   0          49m
+</code></pre>
+
+<p>查看路由</p>
+
+<pre><code class="language-bash">$ istioctl pc routes sleep-5bc866558c-89shb --name 80 -o json
 </code></pre>
 
 <pre><code class="language-json">[
     {
-        &quot;name&quot;: &quot;10.254.0.2_53&quot;,
+        &quot;name&quot;: &quot;80&quot;,
+        &quot;virtualHosts&quot;: [
+            {
+                &quot;name&quot;: &quot;httpbin.org:80&quot;,
+                &quot;domains&quot;: [
+                    &quot;httpbin.org&quot;,
+                    &quot;httpbin.org:80&quot;
+                ],
+                &quot;routes&quot;: [
+                    {
+                        &quot;match&quot;: {
+                            &quot;prefix&quot;: &quot;/&quot;
+                        },
+                        &quot;route&quot;: {
+                            &quot;cluster&quot;: &quot;outbound|80||httpbin.org&quot;,
+                            &quot;timeout&quot;: &quot;0.000s&quot;,
+                            &quot;maxGrpcTimeout&quot;: &quot;0.000s&quot;
+                        },
+                        &quot;decorator&quot;: {
+                            &quot;operation&quot;: &quot;httpbin.org:80/*&quot;
+                        },
+...
+</code></pre>
+
+<p>可以看到从 Pod sleep-5bc866558c-89shb 内部对域名 <code>httpbin.org</code> 发起的请求通过 HTTP 路由被定向到集群 <code>outbound|80||httpbin.org</code>。<code>outbound</code> 表示这是出站流量</p>
+
+<p>查看 <code>Cluster</code>：</p>
+
+<pre><code class="language-bash">$ istioctl pc clusters sleep-5bc866558c-89shb --fqdn httpbin.org -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;outbound|80||httpbin.org&quot;,
+        &quot;type&quot;: &quot;ORIGINAL_DST&quot;,
+        &quot;connectTimeout&quot;: &quot;1.000s&quot;,
+        &quot;lbPolicy&quot;: &quot;ORIGINAL_DST_LB&quot;,
+        &quot;circuitBreakers&quot;: {
+            &quot;thresholds&quot;: [
+                {}
+            ]
+        }
+    }
+]
+</code></pre>
+
+<ul>
+<li><span id="inline-blue">type</span> : 服务发现类型。<code>ORIGINAL_DST</code> 表示原始目的地类型，大概意思就是：连接进入之前已经被解析为一个特定的目标 IP 地址。这种连接通常是由代理使用 IP table REDIRECT 或者 eBPF 之类的机制转发而来的。完成路由相关的转换之后，代理服务器会将连接转发到该 IP 地址。<code>httpbin.org</code> 是外网域名，当然可以解析，所以连接进入之前可以被解析为一个特定的目标 IP 地址。Envoy 服务发现类型的详细解析可以参考：<a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#arch-overview-service-discovery-types-original-destination" target="_blank">Service discovery</a>。<code>ServiceEntry.Resolution</code> 字段的解析可以参考：<a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry-Resolution" target="_blank">ServiceEntry.Resolution</a>。</li>
+</ul>
+
+<p>这里我简要说明一下，ServiceEntry 的 <code>resolution</code> 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：</p>
+
+<ul>
+<li><code>NONE</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination" target="_blank">ORIGINAL_DST</a>。如果不指定 resolution 字段，默认使用这个策略。</li>
+<li><code>STATIC</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static" target="_blank">STATIC</a>。表示使用 <code>endpoints</code> 中指定的静态 IP 地址作为服务后端。</li>
+
+<li><p><code>DNS</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns" target="_blank">STRICT_DNS</a>。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 <code>endpoints</code>，并且没有使用通配符，代理服务器会使用 DNS 解析 <code>hosts</code> 字段中的地址。如果指定了 <code>endpoints</code>，那么指定的地址就会作为目标 IP 地址。</p></li>
+
+<li><p><span id="inline-blue">lbPolicy</span> : 负载均衡策略。<code>ORIGINAL_DST_LB</code> 表示使用原始目的地的负载均衡策略。具体参考: <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/load_balancing" target="_blank">Load balancing</a>。</p></li>
+</ul>
+
+<p>如果你还部署了 <code>bookinfo</code> 示例应用，可以通过执行 <code>istioctl pc routes &lt;productpage_pod_name&gt; --name 80 -o json</code> 和 <code>istioctl pc clusters &lt;productpage_pod_name&gt; --fqdn httpbin.org -o json</code> 来验证一下，你会发现输出的结果和上面一模一样。如果还不放心，可以查看 bookinfo 应用内的所有 Pod，你会得到相同的答案。至此你应该可以理解<strong>在服务网格内的所有应用的所有 Pod上创建相应的路由规则和与之对应的 Cluster</strong>这句话的含义了。</p>
+
+<h4 id="https-serviceentry-配置深度解析">HTTPS ServiceEntry 配置深度解析</h4>
+
+<p><code>HTTPS</code> 协议的 ServiceEntry 与 Envoy 配置文件的映射关系与 HTTP 协议有所不同。</p>
+
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>创建一个 <code>HTTPS</code> 协议的 ServiceEntry（不指定 <code>GateWay</code>） 本质上是在服务网格内的<strong>所有应用的所有 Pod</strong>上创建相应的<strong>监听器</strong>和与之对应的 Cluster。指定 GateWay 的 ServiceEntry 我会另行发文详说。</p>
+</div>
+
+<p>可以通过 istioctl 来验证（以 <code>baidu</code> 为例）。为了更精确地分析该 ServiceEntry，可以先把 <code>VirtualService</code> 删除：</p>
+
+<pre><code class="language-bash">$ istioctl delete virtualservice baidu
+</code></pre>
+
+<p>查看监听器：</p>
+
+<pre><code class="language-bash">$ istioctl pc listeners sleep-5bc866558c-89shb --address 0.0.0.0 --port 443 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;0.0.0.0_443&quot;,
         &quot;address&quot;: {
             &quot;socketAddress&quot;: {
-                &quot;address&quot;: &quot;10.254.0.2&quot;,
-                &quot;portValue&quot;: 53
+                &quot;address&quot;: &quot;0.0.0.0&quot;,
+                &quot;portValue&quot;: 443
             }
         },
         &quot;filterChains&quot;: [
@@ -511,329 +622,224 @@ ADDRESS            PORT      TYPE
                     {
                         &quot;name&quot;: &quot;envoy.tcp_proxy&quot;,
                         &quot;config&quot;: {
-                            &quot;cluster&quot;: &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot;,
-                            &quot;stat_prefix&quot;: &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot;
+                            &quot;cluster&quot;: &quot;outbound|443||www.baidu.com&quot;,
+                            &quot;stat_prefix&quot;: &quot;outbound|443||www.baidu.com&quot;
                         }
                     }
-                ]
-            }
-        ],
-        &quot;deprecatedV1&quot;: {
-            &quot;bindToPort&quot;: false
-        }
-    }
-]
+...
 </code></pre>
 
-<pre><code class="language-bash"># 查看 eds
-$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot; -A 27 -B 1
-</code></pre>
+<ul>
+<li><span id="inline-blue">name</span> : 监听器过滤器的名称。该字段的值必须与 Envoy 所支持的过滤器匹配，不可随意填写，具体参考：<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#listener-filter" target="_blank">listener.Filter</a>。此处 <code>envoy.tcp_proxy</code> 表示使用 TCP 代理，而 TCP 代理是无法基于路由过滤的，所以这里不会创建路由规则，而是直接将请求转到 <code>Cluster</code>。</li>
+</ul>
 
-<pre><code class="language-json">{
-  &quot;clusterName&quot;: &quot;outbound|53||kube-dns.kube-system.svc.cluster.local&quot;,
-  &quot;endpoints&quot;: [
-    {
-      &quot;lbEndpoints&quot;: [
-        {
-          &quot;endpoint&quot;: {
-            &quot;address&quot;: {
-              &quot;socketAddress&quot;: {
-                &quot;address&quot;: &quot;172.30.135.21&quot;,
-                &quot;portValue&quot;: 53
-              }
-            }
-          },
-          &quot;metadata&quot;: {
-            &quot;filterMetadata&quot;: {
-              &quot;istio&quot;: {
-                  &quot;uid&quot;: &quot;kubernetes://coredns-64b597b598-4rstj.kube-system&quot;
-                }
-            }
-          }
-        }
-      ]
-    },
-</code></pre>
+<p>查看 Cluster：</p>
 
-<p>可以看出，服务网格内的应用仍然通过 ClusterIP 与网格外的应用通信，但有一点需要注意：<strong>这里并没有 <code>kube-proxy</code> 的参与！</strong>Envoy 自己实现了一套流量转发机制，当你访问 ClusterIP 时，Envoy 就把流量转发到具体的 Pod 上去，<strong>不需要借助 kube-proxy 的 <code>iptables</code> 或 <code>ipvs</code> 规则</strong>。</p>
-
-<p><font color="#2780e3">2. 从上面的摘要中可以看出，每个 Sidecar 都有一个绑定到 <code>0.0.0.0:15001</code> 的监听器，IP tables 将 pod 的所有入站和出站流量路由到这里。此监听器把 <code>useOriginalDst</code> 设置为 true，这意味着它将请求交给最符合请求原始目标的监听器。如果找不到任何匹配的虚拟监听器，它会将请求发送给返回 404 的 <code>BlackHoleCluster</code>。</font></p>
-
-<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --port 15001 -o json
+<pre><code class="language-bash">$ istioctl pc clusters sleep-5bc866558c-89shb --fqdn www.baidu.com -o json
 </code></pre>
 
 <pre><code class="language-json">[
     {
-        &quot;name&quot;: &quot;virtual&quot;,
+        &quot;name&quot;: &quot;outbound|443||www.baidu.com&quot;,
+        &quot;type&quot;: &quot;STRICT_DNS&quot;,
+        &quot;connectTimeout&quot;: &quot;1.000s&quot;,
+        &quot;hosts&quot;: [
+            {
+                &quot;socketAddress&quot;: {
+                    &quot;address&quot;: &quot;www.baidu.com&quot;,
+                    &quot;portValue&quot;: 443
+                }
+            }
+        ],
+        &quot;circuitBreakers&quot;: {
+            &quot;thresholds&quot;: [
+                {}
+            ]
+        },
+        &quot;dnsLookupFamily&quot;: &quot;V4_ONLY&quot;
+    }
+]
+</code></pre>
+
+<p>从监听器的配置来看，由于绑定的是 <code>0.0.0.0</code>，而且也没有指定域名，看起来应该可以访问集群外任何 443 端口的服务。实际上这是行不通的，因为当请求通过监听器转到 Cluster 之后，由于 Cluster 采用的是严格的 DNS 服务发现策略，只要域名不是 <code>www.baidu.com</code>，都不会解析。你可以使用 kubectl exec 命令进入 sleep Pod 来测试一下：</p>
+
+<pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep bash
+</code></pre>
+
+<p>发起对外部 HTTPS 服务的请求：</p>
+
+<pre><code class="language-bash">$ curl https://www.163.com
+curl: (51) SSL: no alternative certificate subject name matches target host name 'www.163.com'
+
+$ curl https://www.taobao.com
+curl: (51) SSL: no alternative certificate subject name matches target host name 'www.taobao.com'
+
+$ curl https://192.192.192.192
+curl: (51) SSL: certificate subject name 'baidu.com' does not match target host name '192.192.192.192'
+</code></pre>
+
+<p>而如果你将服务发现策略改为 <code>NONE</code>，就会发现除了可以访问 <code>www.baidu.com</code>，还可以访问 <code>www.163.com</code> 和 <code>www.taobao.com</code> 等其他 https 协议的网站，至于为什么会这样，前面介绍服务发现策略的时候我已经详细解释过了。</p>
+
+<h4 id="tls-virtualservice-配置深度解析">TLS VirtualService 配置深度解析</h4>
+
+<p>关于 VirtualService 的解析之前的文章已有相关说明，不过这里的 VirtualService 与之前遇到的不同，涉及到了 <code>TLSRoute</code>。</p>
+
+<ul>
+<li><p><span id="inline-blue">tls</span> : 透传 TLS 和 HTTPS 流量。TLS 路由通常应用在 <code>https-</code>、<code>tls-</code> 前缀的平台服务端口，或者经 <code>Gateway</code> 透传的 HTTPS、TLS 协议 端口，以及使用 HTTPS 或者 TLS 协议的 <code>ServiceEntry</code> 端口上。具体参考：<a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#TLSRoute" target="_blank">TLSRoute</a>。</p>
+
+<ul>
+<li><span id="inline-blue">sniHosts</span> : 必要字段。要匹配的 SNI（服务器名称指示）。可以在 SNI 匹配值中使用通配符。比如 <code>*.com</code> 可以同时匹配 <code>foo.example.com</code> 和 <code>example.com</code>。</li>
+</ul></li>
+
+<li><p><span id="inline-blue">route</span> : 流量的转发目标。目前 TLS 服务只允许一个转发目标(所以权重必须设置为 100)。当 Envoy 支持 TCP 权重路由之后，这里就可以使用多个目标了。</p></li>
+</ul>
+
+<p>查看映射到 Envoy 中的配置：</p>
+
+<pre><code class="language-bash">$ istioctl pc listeners sleep-5bc866558c-89shb --address 0.0.0.0 --port 443 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;0.0.0.0_443&quot;,
         &quot;address&quot;: {
             &quot;socketAddress&quot;: {
                 &quot;address&quot;: &quot;0.0.0.0&quot;,
-                &quot;portValue&quot;: 15001
+                &quot;portValue&quot;: 443
             }
         },
         &quot;filterChains&quot;: [
             {
+                &quot;filterChainMatch&quot;: {
+                    &quot;serverNames&quot;: [
+                        &quot;www.baidu.com&quot;
+                    ]
+                },
                 &quot;filters&quot;: [
+                    ...
                     {
                         &quot;name&quot;: &quot;envoy.tcp_proxy&quot;,
                         &quot;config&quot;: {
-                            &quot;cluster&quot;: &quot;BlackHoleCluster&quot;,
-                            &quot;stat_prefix&quot;: &quot;BlackHoleCluster&quot;
+                            &quot;cluster&quot;: &quot;outbound|443||www.baidu.com&quot;,
+                            &quot;stat_prefix&quot;: &quot;outbound|443||www.baidu.com&quot;
                         }
                     }
-                ]
-            }
-        ],
-        &quot;useOriginalDst&quot;: true
-    }
-]
-</code></pre>
-
-<p><font color="#2780e3">3. 我们的请求是到 <code>9080</code> 端口的 HTTP 出站请求，这意味着它被切换到 <code>0.0.0.0:9080</code> 虚拟监听器。然后，此监听器在其配置的 RDS 中查找路由配置。在这种情况下，它将查找由 Pilot 配置的 RDS 中的路由 <code>9080</code>（通过 ADS）。</font></p>
-
-<pre><code class="language-bash">$ istioctl proxy-config listeners productpage-v1-76474f6fb7-pmglr --address 0.0.0.0 --port 9080 -o json
-</code></pre>
-
-<pre><code class="language-json">...
-&quot;rds&quot;: {
-    &quot;config_source&quot;: {
-        &quot;ads&quot;: {}
-    },
-    &quot;route_config_name&quot;: &quot;9080&quot;
-}
 ...
 </code></pre>
 
-<p><font color="#2780e3">4. <code>9080</code> 路由配置仅为每个服务提供虚拟主机。我们的请求正在前往 reviews 服务，因此 Envoy 将选择我们的请求与域匹配的虚拟主机。一旦在域上匹配，Envoy 会查找与请求匹配的第一条路径。在这种情况下，我们没有任何高级路由，因此只有一条路由匹配所有内容。这条路由告诉 Envoy 将请求发送到 <code>outbound|9080||reviews.default.svc.cluster.local</code> 集群。</font></p>
+<ul>
+<li><span id="inline-blue">filterChainMatch</span> : 用于为<strong>监听器过滤器链</strong>指定匹配条件，具体参考：<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#listener-filterchainmatch" target="_blank">listener.FilterChainMatch</a>。</li>
+</ul>
 
-<pre><code class="language-bash">$ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
+<blockquote>
+<p>最后我们来思考一下：既然不创建 TLS VirtualService 也可以访问 <code>www.baidu.com</code>，那么创建 TLS VirtualService 和不创建 TLS VirtualService 有什么区别呢？正确答案是：没有关联 <code>VirtualService</code> 的 <code>https-</code> 或者 <code>tls-</code> 端口流量会被视为透传 <code>TCP</code> 流量，而不是透传 TLS 和 HTTPS 流量。</p>
+</blockquote>
+
+<h4 id="为外部服务设置路由规则">为外部服务设置路由规则</h4>
+
+<p>通过 <code>ServiceEntry</code> 访问外部服务的流量，和网格内流量类似，都可以进行 Istio <a href="https://istio.io/zh/docs/concepts/traffic-management/#%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE" target="_blank">路由规则</a> 的配置。下面我们使用 istioctl 为 httpbin.org 服务设置一个超时规则。</p>
+
+<p id="blue">1. 在测试 Pod 内部，调用 httpbin.org 这一外部服务的 <code>/delay</code> 端点：</p>
+
+<pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep bash
+$ time curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://httpbin.org/delay/5
+
+200
+
+real    0m5.024s
+user    0m0.003s
+sys     0m0.003s
 </code></pre>
 
-<pre><code class="language-json">[
-    {
-        &quot;name&quot;: &quot;9080&quot;,
-        &quot;virtualHosts&quot;: [
-            {
-                &quot;name&quot;: &quot;reviews.default.svc.cluster.local:9080&quot;,
-                &quot;domains&quot;: [
-                    &quot;reviews.default.svc.cluster.local&quot;,
-                    &quot;reviews.default.svc.cluster.local:9080&quot;,
-                    &quot;reviews&quot;,
-                    &quot;reviews:9080&quot;,
-                    &quot;reviews.default.svc.cluster&quot;,
-                    &quot;reviews.default.svc.cluster:9080&quot;,
-                    &quot;reviews.default.svc&quot;,
-                    &quot;reviews.default.svc:9080&quot;,
-                    &quot;reviews.default&quot;,
-                    &quot;reviews.default:9080&quot;,
-                    &quot;172.21.152.34&quot;,
-                    &quot;172.21.152.34:9080&quot;
-                ],
-                &quot;routes&quot;: [
-                    {
-                        &quot;match&quot;: {
-                            &quot;prefix&quot;: &quot;/&quot;
-                        },
-                        &quot;route&quot;: {
-                            &quot;cluster&quot;: &quot;outbound|9080||reviews.default.svc.cluster.local&quot;,
-                            &quot;timeout&quot;: &quot;0.000s&quot;
-                        },
-...
-</code></pre>
+<p>这个请求会在大概五秒钟左右返回一个内容为 <code>200 (OK)</code> 的响应。</p>
 
-<p><font color="#2780e3">5. 此集群配置为从 Pilot（通过 ADS）检索关联的端点。因此，Envoy 将使用 <code>serviceName</code> 字段作为密钥来查找端点列表并将请求代理到其中一个端点。</font></p>
+<p id="blue">2. 退出测试 Pod，使用 <code>istioctl</code> 为 httpbin.org 外部服务的访问设置一个 3 秒钟的超时：</p>
 
-<pre><code class="language-bash">$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local -o json
-</code></pre>
-
-<pre><code class="language-json">[
-    {
-        &quot;name&quot;: &quot;outbound|9080||reviews.default.svc.cluster.local&quot;,
-        &quot;type&quot;: &quot;EDS&quot;,
-        &quot;edsClusterConfig&quot;: {
-            &quot;edsConfig&quot;: {
-                &quot;ads&quot;: {}
-            },
-            &quot;serviceName&quot;: &quot;outbound|9080||reviews.default.svc.cluster.local&quot;
-        },
-        &quot;connectTimeout&quot;: &quot;1.000s&quot;,
-        &quot;circuitBreakers&quot;: {
-            &quot;thresholds&quot;: [
-                {}
-            ]
-        }
-    }
-]
-</code></pre>
-
-<p>上面的整个过程就是在不创建任何规则的情况下请求从 <code>productpage</code> 到 <code>reviews</code> 的过程，从 reviews 到网格内其他应用的流量与上面类似，就不展开讨论了。接下来分析创建规则之后的请求转发过程。</p>
-
-<h3 id="p-id-h2-3-virtualservice-和-destinationrule-配置解析-p"><p id="h2">3. VirtualService 和 DestinationRule 配置解析</p></h3>
-
-<hr />
-
-<h4 id="virtualservice">VirtualService</h4>
-
-<p>首先创建一个 <code>VirtualService</code>。</p>
-
-<pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl create -f -
+<pre><code class="language-yaml">cat &lt;&lt;EOF | istioctl create -f -
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: reviews
+  name: httpbin-ext
 spec:
   hosts:
-    - reviews
+    - httpbin.org
   http:
-  - route:
-    - destination:
-        host: reviews
-        subset: v1
+  - timeout: 3s
+    route:
+      - destination:
+          host: httpbin.org
+        weight: 100
 EOF
 </code></pre>
 
-<p>上一篇文章已经介绍过，<code>VirtualService</code> 映射的就是 Envoy 中的 <code>Http Route Table</code>，还是将目标锁定在 productpage 上，我们来查看一下路由配置：</p>
+<p id="blue">3. 等待几秒钟之后，再次发起 `curl` 请求：</p>
 
-<pre><code class="language-bash">$ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o json
+<pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep bash
+$ time curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://httpbin.org/delay/5
+
+504
+
+real    0m3.149s
+user    0m0.004s
+sys     0m0.004s
 </code></pre>
 
-<pre><code class="language-json">[
-    {
-        &quot;name&quot;: &quot;9080&quot;,
-        &quot;virtualHosts&quot;: [
-            {
-                &quot;name&quot;: &quot;reviews.default.svc.cluster.local:9080&quot;,
-                &quot;domains&quot;: [
-                    &quot;reviews.default.svc.cluster.local&quot;,
-                    &quot;reviews.default.svc.cluster.local:9080&quot;,
-                    &quot;reviews&quot;,
-                    &quot;reviews:9080&quot;,
-                    &quot;reviews.default.svc.cluster&quot;,
-                    &quot;reviews.default.svc.cluster:9080&quot;,
-                    &quot;reviews.default.svc&quot;,
-                    &quot;reviews.default.svc:9080&quot;,
-                    &quot;reviews.default&quot;,
-                    &quot;reviews.default:9080&quot;,
-                    &quot;172.21.152.34&quot;,
-                    &quot;172.21.152.34:9080&quot;
-                ],
-                &quot;routes&quot;: [
-                    {
-                        &quot;match&quot;: {
-                            &quot;prefix&quot;: &quot;/&quot;
-                        },
-                        &quot;route&quot;: {
-                            &quot;cluster&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
-                            &quot;timeout&quot;: &quot;0.000s&quot;
-                        },
-...
-</code></pre>
+<p>这一次会在 3 秒钟之后收到一个内容为 <code>504 (Gateway Timeout)</code> 的响应。虽然 httpbin.org 还在等待他的 5 秒钟，Istio 却在 3 秒钟的时候切断了请求。</p>
 
-<p>注意对比一下没创建 VirtualService 之前的路由，现在路由的 <code>cluster</code> 字段的值已经从之前的 <code>outbound|9080|reviews.default.svc.cluster.local</code> 变为 <code>outbound|9080|v1|reviews.default.svc.cluster.local</code>。</p>
-
-<p><strong>请注意：</strong>我们现在还没有创建 DestinationRule！</p>
-
-<p>你可以尝试搜索一下有没有 <code>outbound|9080|v1|reviews.default.svc.cluster.local</code> 这个集群，如果不出意外，你将找不到 <code>SUBSET=v1</code> 的集群。</p>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160027.jpg" alt="" /></center></p>
-
-<p>由于找不到这个集群，所以该路由不可达，这就是为什么你打开 productpage 的页面会出现如下的报错：</p>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160823.jpg" alt="" /></center></p>
-
-<h4 id="destinationrule">DestinationRule</h4>
-
-<p>为了使上面创建的路由可达，我们需要创建一个 <code>DestinationRule</code>：</p>
-
-<pre><code class="language-yaml">$ cat &lt;&lt;EOF | istioctl create -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: reviews
-spec:
-  host: reviews
-  subsets:
-  - name: v1
-    labels:
-      version: v1
-EOF
-</code></pre>
-
-<p>其实 <code>DestinationRule</code> 映射到 Envoy 的配置文件中就是 <code>Cluster</code>。现在你应该能看到 <code>SUBSET=v1</code> 的 Cluster 了：</p>
-
-<pre><code class="language-bash">$ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.default.svc.cluster.local --subset=v1 -o json
-</code></pre>
-
-<pre><code class="language-json">[
-    {
-        &quot;name&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
-        &quot;type&quot;: &quot;EDS&quot;,
-        &quot;edsClusterConfig&quot;: {
-            &quot;edsConfig&quot;: {
-                &quot;ads&quot;: {}
-            },
-            &quot;serviceName&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;
-        },
-        &quot;connectTimeout&quot;: &quot;1.000s&quot;,
-        &quot;circuitBreakers&quot;: {
-            &quot;thresholds&quot;: [
-                {}
-            ]
-        }
-    }
-]
-</code></pre>
-
-<p>到了这一步，一切皆明了，后面的事情就跟之前的套路一样了，具体的 Endpoint 对应打了标签 <code>version=v1</code> 的 Pod：</p>
-
-<pre><code class="language-bash">$ kubectl get pod -l app=reviews,version=v1 -o wide
-
-NAME                          READY     STATUS    RESTARTS   AGE       IP              NODE
-reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.104.38   192.168.123.248
-</code></pre>
-
-<pre><code class="language-bash">$ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot; -A 27 -B 2
-</code></pre>
-
-<pre><code class="language-json">{
-  &quot;clusterName&quot;: &quot;outbound|9080|v1|reviews.default.svc.cluster.local&quot;,
-  &quot;endpoints&quot;: [
-    {
-      &quot;lbEndpoints&quot;: [
-        {
-          &quot;endpoint&quot;: {
-            &quot;address&quot;: {
-              &quot;socketAddress&quot;: {
-                &quot;address&quot;: &quot;172.30.104.38&quot;,
-                &quot;portValue&quot;: 9080
-              }
-            }
-          },
-          &quot;metadata&quot;: {
-            &quot;filterMetadata&quot;: {
-              &quot;istio&quot;: {
-                  &quot;uid&quot;: &quot;kubernetes://reviews-v1-5b487cc689-njx5t.default&quot;
-                }
-            }
-          }
-        }
-      ]
-    }
-  ]
-},
-</code></pre>
-
-<p>现在再次用浏览器访问 productpage，你会发现报错已经消失了。</p>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180813-162629.jpg" alt="" /></center></p>
-
-<h3 id="p-id-h2-4-参考-p"><p id="h2">4. 参考</p></h3>
+<h3 id="p-id-h2-3-直接调用外部服务-p"><p id="h2">3. 直接调用外部服务</p></h3>
 
 <hr />
 
-<ul>
-<li><a href="https://istio.io/zh/help/ops/traffic-management/proxy-cmd/" target="_blank">调试 Envoy 和 Pilot</a></li>
-</ul>
+<p>如果想要跳过 Istio，直接访问某个 IP 范围内的外部服务，就需要对 Envoy sidecar 进行配置，阻止 Envoy 对外部请求的<a href="https://istio.io/zh/docs/concepts/traffic-management/#%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF" target="_blank">劫持</a>。可以在 <a href="https://istio.io/docs/reference/config/installation-options/" target="_blank">Helm</a> 中设置 <code>global.proxy.includeIPRanges</code> 变量，然后使用 kubectl apply 命令来更新名为 <code>istio-sidecar-injector</code> 的 <code>Configmap</code>。在 istio-sidecar-injector 更新之后，global.proxy.includeIPRanges 会在所有未来部署的 Pod 中生效。</p>
+
+<p>使用 <code>global.proxy.includeIPRanges</code> 变量的最简单方式就是把内部服务的 IP 地址范围传递给它，这样就在 Sidecar proxy 的重定向列表中排除掉了外部服务的地址了。</p>
+
+<p>内部服务的 IP 范围取决于集群的部署情况。例如你的集群中这一范围是 <code>10.0.0.1/24</code>，这个配置中，就应该这样更新 istio-sidecar-injector：</p>
+
+<pre><code class="language-bash">$ helm template install/kubernetes/helm/istio &lt;安装 Istio 时所使用的参数&gt; --set global.proxy.includeIPRanges=&quot;10.0.0.1/24&quot; -x templates/sidecar-injector-configmap.yaml | kubectl apply -f -
+</code></pre>
+
+<p>注意这里应该使用和之前部署 Istio 的时候同样的 Helm 命令，尤其是 &ndash;namespace 参数。在安装 Istio 原有命令的基础之上，加入 <code>--set global.proxy.includeIPRanges=&quot;10.0.0.1/24&quot; -x templates/sidecar-injector-configmap.yaml</code> 即可。</p>
+
+<p>然后和前面一样，重新部署 sleep 应用。更新了 <code>ConfigMap istio-sidecar-injector</code> 并且重新部署了 sleep 应用之后，Istio sidecar 就应该只劫持和管理集群内部的请求了。任意的外部请求都会简单的绕过 Sidecar，直接访问目的地址。</p>
+
+<pre><code class="language-bash">$ export SOURCE_POD=$(kubectl get pod -l app=sleep -o go-template='{{range .items}}{{.metadata.name}}{{end}}')
+$ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
+</code></pre>
+
+<h3 id="p-id-h2-4-总结-p"><p id="h2">4. 总结</p></h3>
+
+<hr />
+
+<p>这个任务中，我们使用两种方式从 Istio 服务网格内部来完成对外部服务的调用：</p>
+
+<ol>
+<li>使用 <code>ServiceEntry</code> (推荐方式)</li>
+<li>配置 Istio sidecar，从它的重定向 IP 表中排除外部服务的 IP 范围</li>
+</ol>
+
+<p>第一种方式（<code>ServiceEntry</code>）中，网格内部的服务不论是访问内部还是外部的服务，都可以使用同样的 Istio 服务网格的特性。我们通过为外部服务访问设置超时规则的例子，来证实了这一优势。</p>
+
+<p>第二种方式越过了 Istio sidecar proxy，让服务直接访问到对应的外部地址。然而要进行这种配置，需要了解云供应商特定的知识和配置。</p>
+
+<h3 id="p-id-h2-5-清理-p"><p id="h2">5. 清理</p></h3>
+
+<hr />
+
+<ol>
+<li>删除规则：</li>
+</ol>
+
+<pre><code class="language-bash">   $ istioctl delete serviceentry httpbin-ext baidu
+   $ istioctl delete virtualservice httpbin-ext baidu
+</code></pre>
+
+<ol>
+<li>停止 sleep 服务：</li>
+</ol>
+
+<pre><code class="language-bash">   $ kubectl delete -f samples/sleep/sleep.yaml
+</code></pre>
 
 <hr />
 
@@ -853,6 +859,9 @@ reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.10
     border-radius:5px;
     text-shadow: rgb(102, 102, 102) 1px 1px 1px;
     box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#blue {
+color: #2780e3;
 }
 #note {
     font-size: 1.5rem;
@@ -1072,11 +1081,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/weekly-4/" data-toggle="tooltip" data-placement="top" title="干货与湿货分享第4期">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/where-is-the-request-2/" data-toggle="tooltip" data-placement="top" title="请求都去哪了？（续）">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/control-egress-traffic/" data-toggle="tooltip" data-placement="top" title="控制 Egress 流量">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -1086,6 +1095,8 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
+                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
+                    
                     <li><a href="/posts/where-is-the-request-1/">请求都去哪了？</a></li>
                     
                     <li><a href="/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/">Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</a></li>
@@ -1093,8 +1104,6 @@ border-top-color: #9954bb;
                     <li><a href="/posts/istio-ingress/">Istio 服务网格中的网关</a></li>
                     
                     <li><a href="/posts/istio-traffic-management/">Istio 流量管理</a></li>
-                    
-                    <li><a href="/posts/istio-1.0-deploy/">Istio 1.0 部署</a></li>
                     
                 </ul>
                 
@@ -1105,9 +1114,9 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Mon Aug 13, 2018</h4>
+        <h4 id="date"> Thu Aug 16, 2018</h4>
     </section>
-    <h5 id="wc">3100 Words|Read in about 7 Min</h5>
+    <h5 id="wc">4500 Words|Read in about 9 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;

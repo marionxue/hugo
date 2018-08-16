@@ -6,10 +6,19 @@
     <description>Recent content in Service Mesh on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 13 Aug 2018 16:30:30 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 16 Aug 2018 13:40:27 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/categories/service-mesh/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>控制 Egress 流量</title>
+      <link>https://www.yangcs.net/posts/control-egress-traffic/</link>
+      <pubDate>Thu, 16 Aug 2018 13:40:27 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/control-egress-traffic/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>请求都去哪了？（续）</title>

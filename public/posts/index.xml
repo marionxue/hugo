@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>控制 Egress 流量</title>
+      <link>https://www.yangcs.net/posts/control-egress-traffic/</link>
+      <pubDate>Thu, 16 Aug 2018 13:40:27 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/control-egress-traffic/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>请求都去哪了？（续）</title>
       <link>https://www.yangcs.net/posts/where-is-the-request-2/</link>
       <pubDate>Mon, 13 Aug 2018 16:30:30 +0800</pubDate>
