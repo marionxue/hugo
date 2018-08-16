@@ -761,16 +761,15 @@ sleep-5bc866558c-89shb   2/2       Running   0          49m
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;type&lt;/span&gt; : 服务发现类型。&lt;code&gt;ORIGINAL_DST&lt;/code&gt; 表示原始目的地类型，大概意思就是：连接进入之前已经被解析为一个特定的目标 IP 地址。这种连接通常是由代理使用 IP table REDIRECT 或者 eBPF 之类的机制转发而来的。完成路由相关的转换之后，代理服务器会将连接转发到该 IP 地址。&lt;code&gt;httpbin.org&lt;/code&gt; 是外网域名，当然可以解析，所以连接进入之前可以被解析为一个特定的目标 IP 地址。Envoy 服务发现类型的详细解析可以参考：&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#arch-overview-service-discovery-types-original-destination&#34; target=&#34;_blank&#34;&gt;Service discovery&lt;/a&gt;。&lt;code&gt;ServiceEntry.Resolution&lt;/code&gt; 字段的解析可以参考：&lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry-Resolution&#34; target=&#34;_blank&#34;&gt;ServiceEntry.Resolution&lt;/a&gt;。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;type&lt;/span&gt; : 服务发现类型。&lt;code&gt;ORIGINAL_DST&lt;/code&gt; 表示原始目的地类型，大概意思就是：连接进入之前已经被解析为一个特定的目标 IP 地址。这种连接通常是由代理使用 IP table REDIRECT 或者 eBPF 之类的机制转发而来的。完成路由相关的转换之后，代理服务器会将连接转发到该 IP 地址。&lt;code&gt;httpbin.org&lt;/code&gt; 是外网域名，当然可以解析，所以连接进入之前可以被解析为一个特定的目标 IP 地址。Envoy 服务发现类型的详细解析可以参考：&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#arch-overview-service-discovery-types-original-destination&#34; target=&#34;_blank&#34;&gt;Service discovery&lt;/a&gt;。&lt;code&gt;ServiceEntry.Resolution&lt;/code&gt; 字段的解析可以参考：&lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry-Resolution&#34; target=&#34;_blank&#34;&gt;ServiceEntry.Resolution&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;这里我简要说明一下，ServiceEntry 的 &lt;code&gt;resolution&lt;/code&gt; 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;NONE&lt;/code&gt; : 对应于 Envoy 中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination&#34; target=&#34;_blank&#34;&gt;ORIGINAL_DST&lt;/a&gt;。如果不指定 resolution 字段，默认使用这个策略。&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;STATIC&lt;/code&gt; : 对应于 Envoy 中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static&#34; target=&#34;_blank&#34;&gt;STATIC&lt;/a&gt;。表示使用 &lt;code&gt;endpoints&lt;/code&gt; 中指定的静态 IP 地址作为服务后端。&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;DNS&lt;/code&gt; : 对应于 Envoy 中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns&#34; target=&#34;_blank&#34;&gt;STRICT_DNS&lt;/a&gt;。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 &lt;code&gt;endpoints&lt;/code&gt;，并且没有使用通配符，代理服务器会使用 DNS 解析 &lt;code&gt;hosts&lt;/code&gt; 字段中的地址。如果指定了 &lt;code&gt;endpoints&lt;/code&gt;，那么指定的地址就会作为目标 IP 地址。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DNS&lt;/code&gt; : 对应于 Envoy 中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns&#34; target=&#34;_blank&#34;&gt;STRICT_DNS&lt;/a&gt;。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 &lt;code&gt;endpoints&lt;/code&gt;，并且没有使用通配符，代理服务器会使用 DNS 解析 &lt;code&gt;hosts&lt;/code&gt; 字段中的地址。如果指定了 &lt;code&gt;endpoints&lt;/code&gt;，那么指定的地址就会作为目标 IP 地址。&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
 
 &lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;lbPolicy&lt;/span&gt; : 负载均衡策略。&lt;code&gt;ORIGINAL_DST_LB&lt;/code&gt; 表示使用原始目的地的负载均衡策略。具体参考: &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/load_balancing&#34; target=&#34;_blank&#34;&gt;Load balancing&lt;/a&gt;。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
