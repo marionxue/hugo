@@ -204,7 +204,9 @@ $ istioctl pc clusters sleep-5bc866558c-89shb --fqdn httpbin.org -o json
     这里我简要说明一下，ServiceEntry 的 `resolution` 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：
   
     + `NONE` : 对应于 Envoy 中的 [ORIGINAL_DST](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination)。如果不指定 resolution 字段，默认使用这个策略。
+
     + `STATIC` : 对应于 Envoy 中的 [STATIC](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static)。表示使用 `endpoints` 中指定的静态 IP 地址作为服务后端。
+
     + `DNS` : 对应于 Envoy 中的 [STRICT_DNS](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns)。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 `endpoints`，并且没有使用通配符，代理服务器会使用 DNS 解析 `hosts` 字段中的地址。如果指定了 `endpoints`，那么指定的地址就会作为目标 IP 地址。
 
 + <span id="inline-blue">lbPolicy</span> : 负载均衡策略。`ORIGINAL_DST_LB` 表示使用原始目的地的负载均衡策略。具体参考: [Load balancing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/load_balancing)。

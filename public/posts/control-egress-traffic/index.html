@@ -579,9 +579,11 @@ sleep-5bc866558c-89shb   2/2       Running   0          49m
 <p>这里我简要说明一下，ServiceEntry 的 <code>resolution</code> 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：</p>
 
 <ul>
-<li><code>NONE</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination" target="_blank">ORIGINAL_DST</a>。如果不指定 resolution 字段，默认使用这个策略。</li>
-<li><code>STATIC</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static" target="_blank">STATIC</a>。表示使用 <code>endpoints</code> 中指定的静态 IP 地址作为服务后端。</li>
-<li><code>DNS</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns" target="_blank">STRICT_DNS</a>。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 <code>endpoints</code>，并且没有使用通配符，代理服务器会使用 DNS 解析 <code>hosts</code> 字段中的地址。如果指定了 <code>endpoints</code>，那么指定的地址就会作为目标 IP 地址。</li>
+<li><p><code>NONE</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination" target="_blank">ORIGINAL_DST</a>。如果不指定 resolution 字段，默认使用这个策略。</p></li>
+
+<li><p><code>STATIC</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static" target="_blank">STATIC</a>。表示使用 <code>endpoints</code> 中指定的静态 IP 地址作为服务后端。</p></li>
+
+<li><p><code>DNS</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns" target="_blank">STRICT_DNS</a>。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 <code>endpoints</code>，并且没有使用通配符，代理服务器会使用 DNS 解析 <code>hosts</code> 字段中的地址。如果指定了 <code>endpoints</code>，那么指定的地址就会作为目标 IP 地址。</p></li>
 </ul></li>
 
 <li><p><span id="inline-blue">lbPolicy</span> : 负载均衡策略。<code>ORIGINAL_DST_LB</code> 表示使用原始目的地的负载均衡策略。具体参考: <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/load_balancing" target="_blank">Load balancing</a>。</p></li>
