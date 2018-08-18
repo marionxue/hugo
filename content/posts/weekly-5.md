@@ -35,7 +35,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 #### 3. [一大波筹拍中的国产烂片正朝你涌来](https://zhuanlan.zhihu.com/p/41978032)
 
-<center>![](http://pic3.zhimg.com/80/v2-b1e144fcb22a7a3ef7a8a0b96aa7a4d0_hd.jpg)</center>
+<center>![](http://o7z41ciog.bkt.clouddn.com/aiqinggongyu.jpg)</center>
 
 最近，一部披着抄袭剧的皮，卖着《盗墓笔记》肉的借壳电影《爱情公寓》深陷舆论漩涡。
 
