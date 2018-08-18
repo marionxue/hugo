@@ -17,7 +17,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 #### 1. [“国产”红芯浏览器被指造假](https://www.leiphone.com/news/201808/MKoth1WE1VXo3uq7.html)
 
-<center>![](https://static.cnbetacdn.com/article/2018/0818/72f418169de91cf.png)</center>
+<center>![](http://static.cnbetacdn.com/article/2018/0818/72f418169de91cf.png)</center>
 
 8 月 16 日，自称“打破美国垄断，世界第五颗浏览器内核、唯一属于中国人自己的浏览器内核”的红芯浏览器，被网友发现“只是谷歌浏览器换了一层皮”——红芯浏览器安装包解压后发现，最终可以得到一个版本号为 49.1.2623.213 的 Chrome 文件。
 
@@ -35,13 +35,13 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 #### 3. [一大波筹拍中的国产烂片正朝你涌来](https://zhuanlan.zhihu.com/p/41978032)
 
-<center>![](https://pic3.zhimg.com/80/v2-b1e144fcb22a7a3ef7a8a0b96aa7a4d0_hd.jpg)</center>
+<center>![](http://pic3.zhimg.com/80/v2-b1e144fcb22a7a3ef7a8a0b96aa7a4d0_hd.jpg)</center>
 
 最近，一部披着抄袭剧的皮，卖着《盗墓笔记》肉的借壳电影《爱情公寓》深陷舆论漩涡。
 
 即使片方采取了删评、买水军、举报等方式在 SNS 上力挽狂澜，却仍然没有摆脱与著名烂片《逐梦演艺圈》同分段的命运。
 
-<center>![](https://pic2.zhimg.com/80/v2-c30957991c5a0ba31716056f11d068c1_hd.jpg)</center>
+<center>![](http://pic2.zhimg.com/80/v2-c30957991c5a0ba31716056f11d068c1_hd.jpg)</center>
 
 其实对于国产影视作品我国观众一直存在着一种逆向歧视 —— 对外语片的追捧和对国产片的贬低。但这并不是因为我们存在偏见，也不是崇洋媚外，而是对国产片现状的恨铁不成钢。
 
