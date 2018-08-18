@@ -572,6 +572,493 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>干货与湿货分享第5期</title>
+      <link>https://www.yangcs.net/posts/weekly-5/</link>
+      <pubDate>Sat, 18 Aug 2018 19:09:02 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/weekly-5/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;这是《干货与湿货分享》系列的第五期，主要记录过去一周我所见到的听到的值得分享的东西。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-新闻-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;新闻&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;1-国产-红芯浏览器被指造假-https-www-leiphone-com-news-201808-mkoth1we1vxo3uq7-html&#34;&gt;1. &lt;a href=&#34;https://www.leiphone.com/news/201808/MKoth1WE1VXo3uq7.html&#34; target=&#34;_blank&#34;&gt;“国产”红芯浏览器被指造假&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://static.cnbetacdn.com/article/2018/0818/72f418169de91cf.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;8 月 16 日，自称“打破美国垄断，世界第五颗浏览器内核、唯一属于中国人自己的浏览器内核”的红芯浏览器，被网友发现“只是谷歌浏览器换了一层皮”——红芯浏览器安装包解压后发现，最终可以得到一个版本号为 49.1.2623.213 的 Chrome 文件。&lt;/p&gt;
+
+&lt;p&gt;据中新网16日消息，红芯联合创始人高婧回应称，网上文章断章取义，安装包里之所以有Chrome文件，&lt;strong&gt;因为本来就是基于开源的Chrome架构&lt;/strong&gt;。但红芯依然是自主可控的国产内核，因为有智能感知渲染等其他方面的创新。&lt;strong&gt;至于安装包为何下线，是因为技术部启动应急预案，开始自查&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;孔乙己争辩道，“封装不能算抄袭。软件界的事，能算抄袭么？”接连便是难懂的话，什么“智能感知渲染引擎”，什么“应用安全方面都有创新”之类，引得众人都哄笑起来：微博内外充满了快活的空气。&lt;/p&gt;
+
+&lt;h4 id=&#34;2-谷歌员工签联名信抗议重返中国项目-http-cn-rfi-fr-e7-be-8e-e6-b4-b2-20180817-e7-ba-bd-e7-ba-a6-e6-97-b6-e6-8a-a5-e8-b0-b7-e6-ad-8c-e5-91-98-e5-b7-a5-e7-ad-be-e8-81-94-e5-90-8d-e4-bf-a1-e6-8a-97-e8-ae-ae-e9-87-8d-e8-bf-94-e4-b8-ad-e5-9b-bd-e9-a1-b9-e7-9b-ae&#34;&gt;2. &lt;a href=&#34;http://cn.rfi.fr/%E7%BE%8E%E6%B4%B2/20180817-%E7%BA%BD%E7%BA%A6%E6%97%B6%E6%8A%A5%E8%B0%B7%E6%AD%8C%E5%91%98%E5%B7%A5%E7%AD%BE%E8%81%94%E5%90%8D%E4%BF%A1%E6%8A%97%E8%AE%AE%E9%87%8D%E8%BF%94%E4%B8%AD%E5%9B%BD%E9%A1%B9%E7%9B%AE&#34; target=&#34;_blank&#34;&gt;谷歌员工签联名信抗议重返中国项目&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/Jietu20180818-155529.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;据 NYT 报道，自谷歌打造阉割版搜索引擎、欲重返中国的项目经媒体报道公开后，谷歌内部越来越多员工对此表示担忧，认为如果搜索引擎遵循中国政府的审查要求则可能有严重的道德问题，已有超过 1400 名谷歌员工在内部信上签名抗议，要求审查该项目。&lt;/p&gt;
+
+&lt;p&gt;在信中，员工写道，此项目以及谷歌愿意遵守中国的审核制度已“引起严重的道德问题”，“目前我们没收到要求关于此项目需要遵守道德标准的通知。我们急切需要更多的透明度，更多的消息及知情权：谷歌的员工需要清楚自己究竟在从事什么样的工作。” 这场抗议代表了谷歌可能重返中国的另一个障碍。该公司8年前公开撤出中国，就是为了抗议审查和政府黑客入侵。&lt;/p&gt;
+
+&lt;h4 id=&#34;3-一大波筹拍中的国产烂片正朝你涌来-https-zhuanlan-zhihu-com-p-41978032&#34;&gt;3. &lt;a href=&#34;https://zhuanlan.zhihu.com/p/41978032&#34; target=&#34;_blank&#34;&gt;一大波筹拍中的国产烂片正朝你涌来&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://pic3.zhimg.com/80/v2-b1e144fcb22a7a3ef7a8a0b96aa7a4d0_hd.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;最近，一部披着抄袭剧的皮，卖着《盗墓笔记》肉的借壳电影《爱情公寓》深陷舆论漩涡。&lt;/p&gt;
+
+&lt;p&gt;即使片方采取了删评、买水军、举报等方式在 SNS 上力挽狂澜，却仍然没有摆脱与著名烂片《逐梦演艺圈》同分段的命运。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://pic2.zhimg.com/80/v2-c30957991c5a0ba31716056f11d068c1_hd.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;其实对于国产影视作品我国观众一直存在着一种逆向歧视 —— 对外语片的追捧和对国产片的贬低。但这并不是因为我们存在偏见，也不是崇洋媚外，而是对国产片现状的恨铁不成钢。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;观众甚至不止一次地发出灵魂拷问：这样的烂片到底为什么能上映？！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;4-这个挂钟-蓝牙音箱-将给你带来一整片星空-https-hypebeast-com-2016-5-cosmos-constellation-clock-bluetooth-speaker&#34;&gt;4. &lt;a href=&#34;https://hypebeast.com/2016/5/cosmos-constellation-clock-bluetooth-speaker&#34; target=&#34;_blank&#34;&gt;这个挂钟+蓝牙音箱，将给你带来一整片星空&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://images.ifanr.cn/wp-content/uploads/2018/08/01-star.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;设计师 Jay Hyun Kim 设计了一个颇有诗意的挂钟+蓝牙音箱合体 Cosmos，除了可以看时间和听音乐，它还会把银河星空带到你家里。所有北半球的星座都收录其中，放在桌面上就是一整个神秘宇宙。&lt;/p&gt;
+
+&lt;h4 id=&#34;5-google-亲儿子pixel-3-系列渲染图曝光-https-www-martinhajek-com-pixel-3-3xl-cad-models-released&#34;&gt;5. &lt;a href=&#34;https://www.martinhajek.com/pixel-3-3xl-cad-models-released/&#34; target=&#34;_blank&#34;&gt;Google 亲儿子Pixel 3 系列渲染图曝光&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://images.ifanr.cn/wp-content/uploads/2018/08/b75327a9-0676-453f-9941-8ba0d4e5ecb2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;对于果粉来说下半年最值得买的手机肯定是 iPhone，但对于「硬核谷粉」来说，其他第三方品牌的手机都难以看得上眼，下半年最想要的手机肯定是亲儿子系列——Pixel 3/Pixel 3 XL。&lt;/p&gt;
+
+&lt;p&gt;继上月 OnLeaks 曝光关于 Pixel 3 的部分信息图之后，近日其又曝出了 Pixel 3 和 Pixel 3 XL 这两款手机细节更加丰富的渲染图。&lt;/p&gt;
+
+&lt;h4 id=&#34;6-apple-store-京都店将开业-https-9to5mac-com-2018-08-13-apple-kyoto-zero-gate-august-25&#34;&gt;6. &lt;a href=&#34;https://9to5mac.com/2018/08/13/apple-kyoto-zero-gate-august-25/&#34; target=&#34;_blank&#34;&gt;Apple Store 京都店将开业&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://images.ifanr.cn/wp-content/uploads/2018/08/0d0113bf-872c-49cf-8ee3-1eefea79f19b.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;苹果近日宣布，日本京都全新 Apple Store 将于当地时间 8 月 25 日上午 10 点开幕。这家 Apple Store 位于京都府京都市下京区 Kyoto Zero Gate 购物中心，是苹果在日本的第 9 家直营门店。&lt;/p&gt;
+
+&lt;h4 id=&#34;7-ai-组队在-dota-2-五对五团战中战胜人类-http-www-sohu-com-a-237764438-354973&#34;&gt;7. &lt;a href=&#34;http://www.sohu.com/a/237764438_354973&#34; target=&#34;_blank&#34;&gt;AI 组队在 Dota 2 五对五团战中战胜人类&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://5b0988e595225.cdn.sohucs.com/images/20180626/69db48fc3886480eb6787a4432d48362.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;去年，OpenAI 在 DOTA 的 1v1 比赛中战胜了职业玩家 Dendi，而在距离进阶版 OpenAI Five 系统战胜人类业余玩家不过一个月的时间，近日，它又以 2:1 的战绩再次完成对人类高级玩家的“屠杀”，GG（人类赢的最后一局纯属耍赖）。&lt;/p&gt;
+
+&lt;h4 id=&#34;8-google-one-来了-onedrive-和-dropbox-害怕吗-https-www-leiphone-com-news-201808-9nkmpz06tt2d2j8m-html&#34;&gt;8. &lt;a href=&#34;https://www.leiphone.com/news/201808/9NKMPZ06tt2D2j8M.html&#34; target=&#34;_blank&#34;&gt;Google One 来了，OneDrive 和 Dropbox 害怕吗？&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://static.leiphone.com/uploads/new/images/20180816/5b74e95cdfc6c.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;近日，雷锋网收到邮件，Google日前正式推出了云存储服务的全新品牌 “Google One”，另外对存储资费进行了四年来第一次大幅下调。这意味着Google提供了更灵活的定价区间，也为消费者提供了更多的存储空间。据了解，此次推出的 “Google One” 是对 “Google Drive” 的一次更名。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-工具-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;工具&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;1-速盘双引擎版-https-www-speedpan-com-index-html&#34;&gt;1. &lt;a href=&#34;https://www.speedpan.com/index.html&#34; target=&#34;_blank&#34;&gt;速盘双引擎版&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/snipaste_20180806_191035.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;不知不觉间，百度云网盘几乎已成为国内互联网上最重要的网络资源分享和下载渠道了。平时无论是工作还是娱乐，不可避免地都需要下载&lt;strong&gt;百度网盘&lt;/strong&gt;的文件。&lt;/p&gt;
+
+&lt;p&gt;然而现在百度网盘限速真的非常狠，几 KB/s 的下载速度简直慢到你怀疑人生。当然花钱开通会员是解决限速最简单的办法，但如果只是偶尔才下载一两个文件，充钱似乎又过于浪费。这时，**速盘 (SpeedPan) **这款免登录全速下载百度网盘的神器级小工具就可解你燃眉之急了……&lt;/p&gt;
+
+&lt;h4 id=&#34;2-微博小程序-https-www-ifanr-com-minapp-1082708&#34;&gt;2. &lt;a href=&#34;https://www.ifanr.com/minapp/1082708&#34; target=&#34;_blank&#34;&gt;微博小程序&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://images.ifanr.cn/wp-content/uploads/2018/08/99-2.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;不得不吐槽的是，以往在微信中打开微博链接的体验极差，尤其是 iOS 用户，想要完整阅读该条内容，必须先在 Safari 浏览器中打开，判断手机中是否安装了微博，判断的结果是安装了才能跳转到微博 app，打开这条微博信息。&lt;/p&gt;
+
+&lt;p&gt;不过这两天我发现，把微博分享给微信好友，变成了以小程序方式呈现！现在的形式和之前的网页分享相比，「微博」小程序显然更加人性化：不必下载 app 即可查看微博原文、评论信息等。&lt;/p&gt;
+
+&lt;h4 id=&#34;3-osx-kvm-https-github-com-kholia-osx-kvm&#34;&gt;3. &lt;a href=&#34;https://github.com/kholia/OSX-KVM&#34; target=&#34;_blank&#34;&gt;OSX-KVM&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;一个可以在 Linux 系统中通过 KVM 虚拟化技术运行 MacOS 的项目。&lt;/p&gt;
+
+&lt;h4 id=&#34;4-chrono-下载管理器-https-chrome-google-com-webstore-detail-chrono-download-manager-mciiogijehkdemklbdcbfkefimifhecn-hl-zh-cn&#34;&gt;4. &lt;a href=&#34;https://chrome.google.com/webstore/detail/chrono-download-manager/mciiogijehkdemklbdcbfkefimifhecn?hl=zh-CN&#34; target=&#34;_blank&#34;&gt;Chrono 下载管理器&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;众所周知, Chrome 原生的下载功能并不好用，不仅功能简陋，还会限制文件下载速度和数量。其中最最让人反感的，就是一旦开始下载就自动出现的底部栏。这个底部栏占用了浏览器不小的页面，存在感极强。除非手动关闭，否则哪怕是下载完毕它都不会自动消失，非常影响上网体验。&lt;/p&gt;
+
+&lt;p&gt;这时候，大家或许就需要这款chrono下载管理器来解决这个问题了。（&lt;strong&gt;注意：是chrono不是chrome！&lt;/strong&gt;）&lt;/p&gt;
+
+&lt;h4 id=&#34;5-medis-https-github-com-luin-medis&#34;&gt;5. &lt;a href=&#34;https://github.com/luin/medis&#34; target=&#34;_blank&#34;&gt;Medis&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/meids.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;Medis 是一款Mac上优秀的Redis图形界面客户端，提供了大部分常用的功能，包括键空间的浏览、键和键值的增删改查、重命名修改 TTL 等。也提供了一些 redis-cli 难以实现的功能，包括创建键副本、修改列表值等，很不错！&lt;/p&gt;
+
+&lt;h4 id=&#34;6-prometheus-formatter-https-github-com-fhemberger-chrome-prometheus-formatter&#34;&gt;6. &lt;a href=&#34;https://github.com/fhemberger/chrome-prometheus-formatter&#34; target=&#34;_blank&#34;&gt;Prometheus Formatter&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/prometheus-formatter.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;随着 Prometheus 从 CNCF 正式毕业，各种工具如雨后春笋。这款 Chrome 扩展就是用来高亮显示纯文本的 Prometheus 指标。&lt;/p&gt;
+
+&lt;h4 id=&#34;7-promauthproxy-https-github-com-cherti-promauthproxy&#34;&gt;7. &lt;a href=&#34;https://github.com/cherti/PromAuthProxy&#34; target=&#34;_blank&#34;&gt;PromAuthProxy&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;这是一个 Prometheus 的加成工具，允许与多个用户共享 Prometheus 实例，每个用户只能看到自己的指标。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-教程-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;教程&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;1-kubebuilder-https-book-kubebuilder-io&#34;&gt;1. &lt;a href=&#34;https://book.kubebuilder.io/&#34; target=&#34;_blank&#34;&gt;KubeBuilder&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;如今的 Kubernetes 是如此的受欢迎。它继续主导容器技术的未来发展，同时 Kubernetes 也会带来越来越多的好东西。Kubebuilder 是一个用于在 Go 中快速构建和发布 Kubernetes API 的 SDK。它建立在用于构建核心 Kubernetes API 的规范技术之上，以提供简化的抽象，减少样板和工作。类似于 Ruby on Rails 和 SpringBoot 等 Web 开发框架，Kubebuilder 提高了速度并降低了开发人员管理的复杂性。&lt;/p&gt;
+
+&lt;p&gt;简而言之，Kubebuilder 提供了开发人员为构建和发布 Kubernetes API 所需的所有强大的库和工具。它的理念非常简单。Kubebuilder 希望提供清晰的库的抽象，包括清晰且完好的示例。&lt;/p&gt;
+
+&lt;h4 id=&#34;2-the-site-reliability-workbook-https-landing-google-com-sre-book-html&#34;&gt;2. &lt;a href=&#34;https://landing.google.com/sre/book.html&#34; target=&#34;_blank&#34;&gt;The Site Reliability Workbook&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/workbook-2x.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;在 7 月 24 日的 Google Next &amp;lsquo;18 大会上，Google 发布了 SRE 系列新书《The Site Reliability Workbook — Practical Ways to Implement SRE》纸质版。&lt;/p&gt;
+
+&lt;p&gt;这是 Google SRE 系列的第二本书，第一本书《Site Reliability Engineering：How Google Runs Production Systems》于 2016 年 4 月 16 日首次出版，中译版《SRE：Google 运维解密》于 2016 年 10 月 1 日出版。如果你读过《SRE：Google 运维解密》，不妨也可以接着看看这本新书。现在 Google 提供了这本书的免费 PDF 下载，&lt;strong&gt;限时到 8 月 23 日！&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;3-prometheus-up-and-running-https-www-robustperception-io-prometheus-up-and-running-is-out&#34;&gt;3. &lt;a href=&#34;https://www.robustperception.io/prometheus-up-and-running-is-out&#34; target=&#34;_blank&#34;&gt;Prometheus: Up and Running&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/book-cover-914x1200.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;这是一本 Prometheus 的操作指南，内容非常详实，从架构设计到仪表盘、配置、查询和管理，应有尽有。全书共 386 页，目前美国亚马逊官网有出售，国内尚未引进。&lt;/p&gt;
+
+&lt;h4 id=&#34;4-vue-js-源码分析-https-github-com-ustbhuangyi-vue-analysis&#34;&gt;4. &lt;a href=&#34;https://github.com/ustbhuangyi/vue-analysis&#34; target=&#34;_blank&#34;&gt;Vue.js 源码分析&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/vue-analysis.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;目前社区有很多 Vue.js 的源码解析文章，但是质量层次不齐，不够系统和全面，这本电子书的目标是全方位细致深度解析 Vue.js 的实现原理，让同学们可以彻底掌握 Vue.js。&lt;/p&gt;
+
+&lt;h4 id=&#34;5-you-don-t-know-js-https-github-com-getify-you-dont-know-js&#34;&gt;5. &lt;a href=&#34;https://github.com/getify/You-Dont-Know-JS&#34; target=&#34;_blank&#34;&gt;You Don&amp;rsquo;t Know JS&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/you-don%27t-know-js.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;这是一套深入探讨 JavaScript 语言核心机制的系列丛书。本系列的第一版已经完成，诚意推荐给所有的前端工程师（或者 JavaScript 工程师，以及其它想了解这门语言一些细节的人），不过初学者并不建议阅读，这本书里没有任何基础知识，主要面向的是有经验的工程师，用来加深对一些概念和细节的认识和理解，但并不能教会你如何写 JavaScript。&lt;/p&gt;
+
+&lt;h4 id=&#34;6-interview-notes-chinese-https-github-com-imhuay-interview-notes-chinese&#34;&gt;6. &lt;a href=&#34;https://github.com/imhuay/Interview_Notes-Chinese&#34; target=&#34;_blank&#34;&gt;Interview_Notes-Chinese&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;2018/2019/校招/春招/秋招/自然语言处理(NLP)/深度学习(Deep Learning)/机器学习(Machine Learning)/C/C++/Python/面试笔记&lt;/p&gt;
+
+&lt;h4 id=&#34;7-build-your-own-x-https-github-com-danistefanovic-build-your-own-x&#34;&gt;7. &lt;a href=&#34;https://github.com/danistefanovic/build-your-own-x&#34; target=&#34;_blank&#34;&gt;build-your-own-x&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/feynman.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;费曼：“我不能创造的东西，我就不了解。”该项目收集了不同编程语言造轮子的教程。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-资源-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;资源&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;1-google空间-gplayspace-http-gplayspace-com&#34;&gt;1. &lt;a href=&#34;http://gplayspace.com/&#34; target=&#34;_blank&#34;&gt;Google空间（Gplayspace）&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;这是一个可以直连 Google Play 商店的良心应用。软件内置的国外节点，相当于中转的功能。安装后自动安装谷歌框架和服务，在搜索框中输入关键词，就可以搜索美国、香港、日本、韩国等多地的谷歌市场。&lt;/p&gt;
+
+&lt;p&gt;Gplayspace 相当于生成一个空间，空间内的软件有富强功能，可以用它来看 bilibili 的海外版权视频，也可以用来玩外服的安卓游戏，也可以将本地的软件添加进去，达到富强目的。&lt;/p&gt;
+
+&lt;h4 id=&#34;2-paascloud-master-https-github-com-paascloud-paascloud-master&#34;&gt;2. &lt;a href=&#34;https://github.com/paascloud/paascloud-master&#34; target=&#34;_blank&#34;&gt;paascloud-master&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;spring cloud + vue 全家桶实战，模拟商城，完整的购物流程、后端运营平台，可以实现快速搭建企业级微服务项目。&lt;/p&gt;
+
+&lt;h4 id=&#34;3-react-tetris-https-github-com-chvin-react-tetris&#34;&gt;3. &lt;a href=&#34;https://github.com/chvin/react-tetris&#34; target=&#34;_blank&#34;&gt;react-tetris&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/react-tetris.gif&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;逼真的俄罗斯方块（非常逼真、强大！），有详细的技术介绍。&lt;a href=&#34;https://chvin.github.io/react-tetris/?lan=zh&#34; target=&#34;_blank&#34;&gt;在线试玩&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;4-chinese-programmer-wrong-pronunciation-https-github-com-shimohq-chinese-programmer-wrong-pronunciation&#34;&gt;4. &lt;a href=&#34;https://github.com/shimohq/chinese-programmer-wrong-pronunciation&#34; target=&#34;_blank&#34;&gt;chinese-programmer-wrong-pronunciation&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;收集了中国程序员容易发音错误的单词，比如 App 正确读音为 ✅ [æp] 而不是 [eipi&amp;rsquo;pi]&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-奇闻-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;奇闻&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;1-日本人名的历史起源&#34;&gt;1. 日本人名的历史起源&lt;/h4&gt;
+
+&lt;p&gt;幕府时代的日本很穷，在黑暗的等级制度下，再加上资源匮乏，日本的生产力水平不仅无法跟当时的中华帝国相比，在全世界范围内都算比较低的。根据一些史料记载，很长一段时间里日本人都没有解决住房问题。一家人要居住了，就随便找个地方挖个洞，而这个洞要挖得很有水平。&lt;/p&gt;
+
+&lt;p&gt;他们叫“直洞”，也就是在地上直挖下去，洞口用茅草挡着雨水，洞中间插根木棒棒作为双手攀爬的直梯工具。早上出去劳动，爬上之前要朝洞口大喊一声：“我出去了！”这是为了防止有人在洞外准备撒尿或者鸟拉屎到头上；同理，晚上回来跳下来之前还要大喊一声：“我回来了！”&lt;/p&gt;
+
+&lt;p&gt;如果事先不打那声招呼，那是很容易踩到洞里家人的头上的。&lt;/p&gt;
+
+&lt;p&gt;西方人称日本人为“亚洲黄猴”，除了脸长，脖子短、腿短等因素外，会爬树也是一个原因。“嗖”的一声，他就出去了。&lt;/p&gt;
+
+&lt;p&gt;还有一种说法，日本人挖这些洞有另外的一些讲究。为了能遮风挡雨，方便进出，经常挖在一些对生活比较便利的地方，比如“松下”、“渡边”、“山口”、“田中”、“竹下”等，天长日久，这些地标就成了日本人最常见的姓氏，方便大家记忆————你是从松下来的，你是从渡边来的。。。&lt;/p&gt;
+
+&lt;h4 id=&#34;2-黑洞很污&#34;&gt;2. 黑洞很污&lt;/h4&gt;
+
+&lt;p&gt;1915年左右的时代，黑洞的名字叫做“史瓦西奇点”。由于大物理学家如爱因斯坦，爱丁顿，奥本海默都不愿意承认黑洞的存在，这个名字就这么用着。&lt;/p&gt;
+
+&lt;p&gt;1965年左右的时代，苏联称黑洞为“冻星”，西方称黑洞为“视界”，前者在意人们观测到的，星体似乎在临界周长处冻结的静止特点，后者在意光无法从临界周长处逃出的运动特点。两者都有道理，也都不够形象。&lt;/p&gt;
+
+&lt;p&gt;于是，大物理学家惠勒，取名“黑洞”。信。达。这个词在法语里是“trou noir”，不雅，法国抵制了很多年。据说法国的黑洞研究因此停滞。&lt;/p&gt;
+
+&lt;p&gt;后来，物理学家金兹堡提出黑洞形成后不会保留形成之前恒星的特性，物理学家伊斯雷尔首先在论文中使用“无毛”一词，由此传开。这回，在法语和俄语里一起不雅，但还是被广泛使用了。因为十分信。十分达。&lt;/p&gt;
+
+&lt;p&gt;据说物理学家们为了追求真理，才不在乎雅不雅的，是吧。&lt;/p&gt;
+
+&lt;h4 id=&#34;3-韩国国旗的来历&#34;&gt;3. 韩国国旗的来历&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/chaoxian.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;在明朝，朝鲜（包括现在的朝鲜和韩国）是大明帝国的藩属国，天聪元年（1627年），皇太极对明作战失败，缺少银两，就先易后难，派大将阿敏攻下了朝鲜（打朝鲜不攻山海关），从此朝鲜成为八旗军的后勤供应基地，&lt;strong&gt;粮食可能不管饱，但人参随便拿。。。&lt;/strong&gt;你想没事就喝个参汤的军队打仗有多猛。就这样，八旗一边流鼻血一边砍敌人，一路杀进山海关。大清建立后，朝鲜自然而然沦为大清藩属国（虽然他们一直很想念明朝）。&lt;/p&gt;
+
+&lt;p&gt;所谓藩属国，有点类似于被老大保护老二的意思。朝鲜只有“国王”，而没有“皇帝”，因为他们的“皇帝”就是大清皇帝，使用的年号也是大清的年号。而朝鲜国王在级别上只相当于大清国的亲王。由于这个原因，朝鲜国王的王宫和老百姓的民居都必须比清国的矮小。我们知道如今大韩民国的国旗是太极旗，实际上当年朝鲜人设计国旗时，清国依据自己的国旗是黄龙旗，给朝鲜的指导方案是————蟒旗（蟒是一种在地上爬的龙）。朝鲜人终于有想法了：大家都是做龙的，你们在天上飞，我们在地上爬，娘的这版本也差得太大了吧，于是就改成了太极旗。&lt;/p&gt;
+
+&lt;h4 id=&#34;4-wi-fi-之母&#34;&gt;4. Wi-Fi 之母&lt;/h4&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/Hedy_Lamarr_Publicity_Photo_for_The_Heavenly_Body_1944.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;今天我要介绍一位超级大美女给大家认识。&lt;/p&gt;
+
+&lt;p&gt;她是好莱坞艳绝一时的女明星，创办过自己的电影公司，被称为&lt;strong&gt;“世界上最美丽的女人”&lt;/strong&gt;，也是世界上第一个&lt;strong&gt;全裸出镜&lt;/strong&gt;的女演员，第一个在电影里“高潮”的女演员，甚至惊动了教皇。。。&lt;/p&gt;
+
+&lt;p&gt;更重要的是，她发明的跳频技术，是现代 CDMA、Wi-Fi、GPS、军事卫星系统的基础，如今&lt;strong&gt;市场价值约300亿美元。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;她就是&lt;strong&gt;海蒂·拉玛（Hedy Lamarr）&lt;/strong&gt;，有史以来颜值最高的科学家、发明家，通信行业的骄傲。想不到给了我第二条生命（Wi-Fi）的母亲竟然这么美！&lt;/p&gt;
+
+&lt;p&gt;在 2005 年出版的《高通方程式》一书中，著名通讯专家&lt;strong&gt;戴夫·莫克&lt;/strong&gt;是这样评价她的：只要你使用过移动电话，你就有必要感谢海蒂·拉玛。要知道，这位性感的女明星为全球无线通讯技术所做的贡献至今&lt;strong&gt;无人能及&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;她有着近乎完美的容颜，几乎是所有男人的梦中情人，所有女性羡慕的对象。就连《乱世佳人》女主费雯·丽，也因被说长得像海蒂·拉玛而感到暗自窃喜。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;此刻正在玩手机的你，一定要认识感谢她呀！&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-欢迎关注-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;欢迎关注&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;该系列每周六发布，同步更新在我的&lt;a href=&#34;https://www.yangcs.net/&#34; target=&#34;_blank&#34;&gt;个人博客&lt;/a&gt;和微信公众号上。&lt;/p&gt;
+
+&lt;p&gt;微信搜索 “云原生实验室” 或者扫描二维码即可关注。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>控制 Egress 流量</title>
       <link>https://www.yangcs.net/posts/control-egress-traffic/</link>
       <pubDate>Thu, 16 Aug 2018 13:40:27 +0800</pubDate>
@@ -7231,301 +7718,6 @@ border-top-color: #9954bb;
 &lt;h3 id=&#34;基于长连接重试队列设置熔断&#34;&gt;基于长连接重试队列设置熔断&lt;/h3&gt;
 
 &lt;p&gt;由于重试有可能将请求流量增加到两倍以上甚至更多，因此通过 &lt;code&gt;max_retries&lt;/code&gt; 参数可以防止服务因为过多的重试而过载。建议将此参数的值设置为服务通常在 10 秒窗口中处理的请求总数的一小部分，最好不要将重试次数设置为与服务在 10 秒窗口中处理的请求总数差不多。&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>通过控制平面提供路由</title>
-      <link>https://www.yangcs.net/posts/routing-with-a-control-plane/</link>
-      <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/routing-with-a-control-plane/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;当微服务集群规模非常庞大时，控制平面包含了大量的 Envoy 配置项和基础设施状态，这时最好将数据平面与控制平面分离。控制平面最主要的功能包括自动重试和&lt;a href=&#34;https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/&#34; target=&#34;_blank&#34;&gt;集成服务发现&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;单独创建控制平面的最大优势之一是可以为路由配置提供统一的来源。传统架构的路由定义分散存储在 Web 服务器的配置文件、负载均衡器配置文件和特定应用程序的配置中（如 &lt;code&gt;routes.rb&lt;/code&gt;），使用单独的控制平面可以集中所有的路由配置，使它们更易于更改和管理，同时也为应用的迁移和发布提供了更高的灵活性。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-1-通过-rds-提供路由-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 通过 RDS 提供路由&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Envoy 的动态配置功能允许通过路由发现服务（RDS）的 &lt;code&gt;API&lt;/code&gt; 来动态获取路由配置。控制平面通过 RDS 提供路由配置，将 &lt;strong&gt;域名+路径&lt;/strong&gt; 映射到 Envoy 中的某个集群（cluster），而实际的流量控制由 Envoy 实例来完成。&lt;/p&gt;
-
-&lt;p&gt;这里是一个使用 RDS 来动态获取路由的示例：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;version_info: &amp;quot;0&amp;quot;
-resources:
-- &amp;quot;@type&amp;quot;: type.googleapis.com/envoy.api.v2.RouteConfiguration
-  name: local_route
-  virtual_hosts:
-  - name: local_service
-    domains: [&amp;quot;*&amp;quot;]
-    routes:
-    - match: { prefix: &amp;quot;/&amp;quot; }
-      route: { cluster: some_service }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;开源项目 &lt;a href=&#34;https://github.com/envoyproxy/go-control-plane&#34; target=&#34;_blank&#34;&gt;go-control-plane&lt;/a&gt;，&lt;a href=&#34;https://istio.io/docs/concepts/traffic-management/pilot.html&#34; target=&#34;_blank&#34;&gt;Istio Pilot&lt;/a&gt; 和 商业项目 &lt;a href=&#34;http://turbinelabs.io/product&#34; target=&#34;_blank&#34;&gt;Houston&lt;/a&gt; 都提供了 RDS 的 API，Envoy 官方文档也定义了一个&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#v2-grpc-streaming-endpoints&#34; target=&#34;_blank&#34;&gt;完整的 RDS 规范&lt;/a&gt;。RDS 规范只是一种流量传输机制，如何对路由进行管理还是要取决于你。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-2-路由定义的最佳实践-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 路由定义的最佳实践&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;当你的系统中有数千个 Envoy 实例时，应该选择控制平面来作为所有路由的统一来源。客户端请求可以直接来自用户、内部服务或者来自不同的云区域，因此最好使用 Envoy 来处理这些不同的网络拓扑（例如，作为客户流量的前端代理以及内部流量的服务网格），虽然流量来自不同的方向，但它们的行为都是相似的。&lt;/p&gt;
-
-&lt;p&gt;为了扩展单个系统的路由定义，通常需要遵循以下三个关键原则：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;将路由视为数据，而不是配置&lt;/li&gt;
-&lt;li&gt;将控制权分配给具有 &lt;code&gt;ACL&lt;/code&gt; 权限的团队&lt;/li&gt;
-&lt;li&gt;使用审计日志和回滚操作来管理路由的更改&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h3 id=&#34;将路由视为数据&#34;&gt;将路由视为数据&lt;/h3&gt;
-
-&lt;p&gt;将路由视为一组相互关联的服务的数据可以防止发生冲突，同时确保了其语义的正确性。虽然像 &lt;code&gt;Istio&lt;/code&gt; 这样的工具可以很容易地编写基于 &lt;code&gt;YAML&lt;/code&gt; 配置文件的路由，但是在数千行 YAML 文件中管理数百条路由很难保证每个定义都是有效的路由。或许你也想过使用版本控制来管理这些配置文件，但如果合并分支时发生致命错误将会导致灾难性的后果（如路由丢失或通过 API 重写）。&lt;/p&gt;
-
-&lt;p&gt;实际上，从静态配置文件转移到动态配置文件是在大规模集群中使用 Envoy 的第一步。为了能够将 Envoy 投入生产，建议至少使用像 &lt;a href=&#34;https://github.com/envoyproxy/go-control-plane&#34; target=&#34;_blank&#34;&gt;go-control-plane&lt;/a&gt; 这样实现了 &lt;code&gt;xDS&lt;/code&gt; 的控制平面统一提供路由配置。通过将路由的来源转移到 &lt;code&gt;RDS API&lt;/code&gt; 背后，可以实现路由的并发更新，同时也可以防止对路由进行无意义的更新。&lt;/p&gt;
-
-&lt;h3 id=&#34;将控制权分配给具有-acl-权限的团队&#34;&gt;将控制权分配给具有 &lt;code&gt;ACL&lt;/code&gt; 权限的团队&lt;/h3&gt;
-
-&lt;p&gt;通过对流量进行管控可以解锁更强大的工作流程（如蓝绿发布和增量迁移），同时也能让服务团队确保各个服务之间的路由是安全可用的。你可以根据需要来隐藏管控区域之外的路由以防止误点击或者发生意外事故，你也可以完全禁止某些成员修改路由。&lt;/p&gt;
-
-&lt;h3 id=&#34;管理路由的更改&#34;&gt;管理路由的更改&lt;/h3&gt;
-
-&lt;p&gt;了解路由何时被更改以及被谁更改是极其重要的，许多团队会发现，在他们分配好了定义路由的任务之后，实际路由的数量将会超出他们的预期，因此为了保险起见，最好对路由的更改进行记录。例如，&lt;code&gt;master&lt;/code&gt; 分支中的自动蓝绿发布应该打上最后一个合并分支的人的标签。&lt;/p&gt;
-
-&lt;p&gt;为了更好地管理路由，团队内部必须要知道如何在两个时间点之间更改路由以及如何在必要时将其回滚，同时最好将这些操作收集到监控系统中。当你需要进一步优化时，这些操作记录是很有价值的（例如 git 历史记录在编写新代码时很有帮助）。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{
