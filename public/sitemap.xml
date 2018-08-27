@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/kubernetes-dns/</loc>
+    <lastmod>2018-08-27T18:11:52+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/weekly-6/</loc>
     <lastmod>2018-08-25T14:33:39+08:00</lastmod>
   </url>
@@ -305,13 +310,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
-    <lastmod>2018-08-16T13:40:27+08:00</lastmod>
+    <lastmod>2018-08-27T18:11:52+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/kubernetes/</loc>
-    <lastmod>2018-08-03T17:34:19+08:00</lastmod>
+    <lastmod>2018-08-27T18:11:52+08:00</lastmod>
     <priority>0</priority>
   </url>
   

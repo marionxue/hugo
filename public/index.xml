@@ -572,6 +572,604 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
+      <title>Kubernetes DNS 高阶指南</title>
+      <link>https://www.yangcs.net/posts/kubernetes-dns/</link>
+      <pubDate>Mon, 27 Aug 2018 18:11:52 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-dns/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;DNS&lt;/code&gt; 是 Kubernetes 的核心功能之一，Kubernetes 通过 &lt;code&gt;kube-dns&lt;/code&gt; 或 &lt;code&gt;CoreDNS&lt;/code&gt; 作为集群的必备扩展来提供命名服务，通过 DNS 扩展，每一个 &lt;code&gt;Service&lt;/code&gt; 都会产生一个独一无二的 FQDN（Fully Qualified Domain Name）名称。&lt;/p&gt;
+
+&lt;p&gt;在大多数使用场景下，我们并不会太关心 DNS 插件的内部运作细节，直接使用 Kubernetes 预设的 DNS 配置和策略就可以满足需求。然而随着使用场景越来越复杂，譬如跟 NFV（Network Function Virtualization）相关的场景，我们的应用（Pod）可能就会需要更加个性化的 DNS 配置。&lt;/p&gt;
+
+&lt;p&gt;接下来使用下面这张架构图来说明可能的使用场景：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/DcFCnLw.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-1-为什么需要自定义-dns-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 为什么需要自定义 DNS&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;一般的使用场景下，我们的 Kubernetes 集群的使用方式就像图中&lt;strong&gt;紫色/粉红色（Pod3）&lt;/strong&gt;区域一样，所有的 Pod 如果有任何要存取 &lt;code&gt;DNS&lt;/code&gt; 的需求，都会透过集群内的的 &lt;code&gt;k8s DNS&lt;/code&gt; 来处理对应的请求与回复。&lt;/p&gt;
+
+&lt;p&gt;然而在 &lt;code&gt;NFV&lt;/code&gt; 的使用场景下，网络变成一个很重要的区域，整体的性能都取决于该应用的设计与集群的网络架构设计。这部分应用通常都会追求高输出或是低延迟，为了得到更好的性能，需要避免这些流量跟其他无关的流量使用相同的网络线路进行传输。&lt;/p&gt;
+
+&lt;p&gt;在这种情况下，通常就会把整个集群的网络设计成两种架构，分别是 &lt;code&gt;Control Network&lt;/code&gt; 和 &lt;code&gt;Data Network&lt;/code&gt; 这两个不同用途的网络架构。在 Kubernetes 中，&lt;code&gt;Control Network&lt;/code&gt; 就类似于图中的 &lt;code&gt;Cluster Network&lt;/code&gt;，负责整个集群之间的沟通。图中&lt;strong&gt;绿色/橘色（Pod1，Pod2）&lt;/strong&gt;这两个区域就是所谓的 &lt;code&gt;Data Network&lt;/code&gt;，其网卡本身也被独立出来，不会与本来的 Kubernetes 集群发生冲突，它们之间的流量通过独立的网络进行传输。&lt;/p&gt;
+
+&lt;p&gt;存在于独立出来的网络架构中的这些特殊的 Pod 基本上没法跟 Kubernetes 集群内的 DNS 互连，而且这些应用还有可能在外部有自己的 &lt;code&gt;DNS Server&lt;/code&gt;，所以在这种场景下，我们希望这些应用（Pod1/Pod2）能够使用自定义的 &lt;code&gt;DNS Server&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-2-如何自定义-dns-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 如何自定义 DNS&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;为了让用户更容易控制 Pod 中的 DNS 设置，Kubernetes v1.9 引入了一项新的 Alpha 特性（在 v1.10 中处于 Beta 阶段）。该特性在 v1.10 中被默认启用，在 v1.9 中如果想要启用此功能，集群管理员需要在 apiserver 和 kubelet 上启用 &lt;code&gt;CustomPodDNS&lt;/code&gt; 特性，例如：&lt;code&gt;“--feature-gates=CustomPodDNS=true,...”&lt;/code&gt;。启用了该特性之后，用户可以将 Pod 的 &lt;code&gt;dnsPolicy&lt;/code&gt; 字段设置为 &lt;code&gt;&amp;quot;None&amp;quot;&lt;/code&gt;，并且可以在 &lt;code&gt;Pod.Spec&lt;/code&gt; 中添加新的字段 &lt;code&gt;dnsConfig&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;其中 &lt;code&gt;dnsConfig&lt;/code&gt; 用来自定义 DNS 参数，而 &lt;code&gt;dnsPolicy&lt;/code&gt; 用来给 Pod 选取预设的 DNS。接下来就看看可以通过哪些手段自定义 DNS。&lt;/p&gt;
+
+&lt;h4 id=&#34;dnsconfig&#34;&gt;dnsConfig&lt;/h4&gt;
+
+&lt;p&gt;dnsConfig 可以让操作者延伸到 Pod 内部关于 DNS 的配置，这边需要特别注意的是，我使用的字眼是 &lt;strong&gt;延伸&lt;/strong&gt; 而不是 &lt;strong&gt;配置&lt;/strong&gt;，这是因为通过下一节的 dnsPolicy，每个 Pod 都会有一组预设的 DNS 配置。通过 dnsConfig 我们可以继续往上叠加相关的 DNS 参数到 Pod 之中。&lt;/p&gt;
+
+&lt;p&gt;目前总共支持三个参数，分别是：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;nameservers&lt;/li&gt;
+&lt;li&gt;searches&lt;/li&gt;
+&lt;li&gt;options&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这三个参数对应的就是大家熟悉的 &lt;code&gt;/etc/resolv.conf&lt;/code&gt; 里面的三个参数，这里就不针对 DNS 进行详细解释了，不熟悉的朋友可以自行去 &lt;strong&gt;Google&lt;/strong&gt; 学一下这些参数的意思。&lt;/p&gt;
+
+&lt;p&gt;在 Kubernetes 里面，这三个参数都包含在 dnsConfig 配置项中，而 dnsConfig 包含在 &lt;code&gt;PodSpec&lt;/code&gt; 配置项中，因为 Pod 内所有的容器都共享相同的 Network Namespace，所以网络方面的配置都会共享。&lt;/p&gt;
+
+&lt;p&gt;这边提供一个简单的 yaml 示例：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-setting
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &amp;quot;360000&amp;quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsConfig:
+    nameservers:
+      - 1.2.3.4
+    searches:
+      - ns1.svc.cluster.local
+      - my.dns.search.suffix
+    options:
+      - name: ndots
+        value: &amp;quot;2&amp;quot;
+      - name: edns0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过上述 yaml 创建 Pod 之后，通过下面的命令可以观察到容器中 DNS 配置文件中会出现额外的配置。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec ubuntu-setting cat /etc/resolv.conf
+
+nameserver 10.254.0.2
+nameserver 1.2.3.4
+search default.svc.cluster.local svc.cluster.local cluster.local ns1.svc.cluster.local my.dns.search.suffix
+options ndots:2 edns0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到 nameserver 多了一个 1.2.3.4，而 search 则多了 &lt;code&gt;ns1.svc.cluster.local my.dns.search.suffix&lt;/code&gt; 这两个自定义的值，最后 options 则增加了我们示例中指定的 &lt;code&gt;ndots:2 edns0&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;dnsConfig 非常简单直观，如果你需要自定义 DNS 参数，就可以通过这个字段来指定。&lt;/p&gt;
+
+&lt;h4 id=&#34;dnspolicy&#34;&gt;dnsPolicy&lt;/h4&gt;
+
+&lt;p&gt;前面提过，&lt;code&gt;dnsConfig&lt;/code&gt; 提供的是延伸 Pod 内预设的 DNS 配置，而 &lt;code&gt;dnsPolicy&lt;/code&gt; 就是决定 Pod 内预设的 DNS 配置有哪些。&lt;/p&gt;
+
+&lt;p&gt;目前总共有四个类型可以选择：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;None&lt;/li&gt;
+&lt;li&gt;Default&lt;/li&gt;
+&lt;li&gt;ClusterFirst&lt;/li&gt;
+&lt;li&gt;ClusterFirstHostNet&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;接下来针对这四个类型分别介绍。&lt;/p&gt;
+
+&lt;p id=&#34;blue&#34;&gt;None&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;None&lt;/code&gt; 表示会清除 Pod 预设的 DNS 配置，当 dnsPolicy 设置成这个值之后，Kubernetes 不会为 Pod 预先载入任何自身逻辑判断得到的 DNS 配置。因此若要将 dnsPolicy 的值设为 None，为了避免 Pod 里面没有配置任何 DNS，最好再添加 dnsConfig 来描述自定义的 DNS 参数。&lt;/p&gt;
+
+&lt;p&gt;使用下面的示例来进行测试：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-none
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &amp;quot;360000&amp;quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsPolicy: None
+  dnsConfig:
+    nameservers:
+      - 1.2.3.4
+    searches:
+      - ns1.svc.cluster.local
+      - my.dns.search.suffix
+    options:
+      - name: ndots
+        value: &amp;quot;2&amp;quot;
+      - name: edns0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过上述 yaml 创建 Pod 之后，通过下面的命令可以观察容器中的 DNS 配置文件，可以观察到跟之前的 &lt;code&gt;dnsConfig&lt;/code&gt; 的结果有一点差异，这里只有我们在 yaml 里配置的那些参数，而没有加入集群预设的 DNS 配置。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec ubuntu-none cat /etc/resolv.conf
+
+nameserver 1.2.3.4
+search ns1.svc.cluster.local my.dns.search.suffix
+options ndots:2 edns0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p id=&#34;blue&#34;&gt;Default&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;Default&lt;/code&gt; 表示 Pod 里面的 DNS 配置继承了宿主机上的 DNS 配置。简单来说，就是该 Pod 的 DNS 配置会跟宿主机完全一致。&lt;/p&gt;
+
+&lt;p&gt;使用下面的示例来进行测试：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-default
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &amp;quot;360000&amp;quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsPolicy: Default
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;首先，我们先观察 Node 上面的 DNS 配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat /etc/resolv.conf
+
+# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 10.0.2.3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以观察到，Node 上面的 DNS 配置得很简单，只有单纯的 &lt;code&gt;10.0.2.3&lt;/code&gt;。
+接下来我们观察该 Pod 内的 DNS 配置：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec ubuntu-default cat /etc/resolv.conf
+
+nameserver 10.0.2.3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到这两个的 DNS 配置完全一致，该 Pod 内的 DNS 配置已经直接继承 Node 上面的配置了。&lt;/p&gt;
+
+&lt;p id=&#34;blue&#34;&gt;ClusterFirst&lt;/p&gt;
+
+&lt;p&gt;相对于上述的 Default，&lt;code&gt;ClusterFirst&lt;/code&gt; 是完全相反的操作，它会预先把 &lt;code&gt;kube-dns&lt;/code&gt;（或 CoreDNS）的信息当作预设参数写入到该 Pod 内的 DNS 配置。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;ClusterFirst 是预设的行为，若没有在 Pod 內特別描述 PodPolicy, 则会将 dnsPolicy 预设为 ClusterFirst。&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;使用下面的示例来进行测试：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-clusterfirst
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &amp;quot;360000&amp;quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsPolicy: ClusterFirst
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过上述 yaml 创建 Pod 之后，通过下面的命令观察容器中的 DNS 配置文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec ubuntu-clusterfirst cat /etc/resolv.conf
+
+nameserver 10.254.0.2
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以看到这里使用的是 k8s DNS 的设置。&lt;/p&gt;
+
+&lt;p&gt;此外，ClusterFirst 还有一个冲突，如果你的 Pod 设置了 &lt;code&gt;HostNetwork=true&lt;/code&gt;，则 ClusterFirst 就会被强制转换成 &lt;code&gt;Default&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p id=&#34;blue&#34;&gt;HostNetwork&lt;/p&gt;
+
+&lt;p&gt;使用下面的示例来进行测试：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-hostnetwork-policy-default
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &amp;quot;360000&amp;quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  hostNetwork: true
+  restartPolicy: Always
+  dnsPolicy: ClusterFirst
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过上述 yaml 创建 Pod 之后，通过下面的命令观察容器中的 DNS 配置文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec ubuntu-hostnetwork-policy-default cat /etc/resolv.conf
+
+nameserver 10.0.2.3
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以观察到，Pod 里面的 DNS 配置直接继承了宿主机上的 DNS 配置。&lt;/p&gt;
+
+&lt;p&gt;这边稍微来解释一下这个设计上的原理以及流程：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;因为设置了 &lt;code&gt;HostNetwork=true&lt;/code&gt;, 会让该 Pod 与该节点共用相同的网路空间(网卡/路由等功能)。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;预设的 k8s DNS 是使用 &lt;code&gt;ClusterIP&lt;/code&gt; 的 kubernetes serivce. 这种情况下，只有属于 Cluster 內的 &lt;code&gt;Pod&lt;/code&gt; 可以获取该 ClusterIP。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;所以设置了 &lt;code&gt;HostNetwork=true&lt;/code&gt; 的 Pod 就没有办法获取该 ClusterIP。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;于是预设就会将对应的 DNS 配置改回 &lt;code&gt;Default&lt;/code&gt; 的形式，从节点继承其 DNS 配置信息。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这种情况下，就会有人想要问，如果我刻意想要这样设置不行吗？&lt;/p&gt;
+
+&lt;p&gt;原先的设计中，是没有办法刻意处理的，原因是当 &lt;code&gt;Pod yaml&lt;/code&gt; 配置文件被发送出去后，在发现没有设定 &lt;code&gt;dnsPolicy&lt;/code&gt; 的情况下，会自动帮你把该 dnsPolicy 补上 &lt;code&gt;ClusterFirst&lt;/code&gt; 的数值。&lt;/p&gt;
+
+&lt;p&gt;然后最后面的程序处理逻辑中，其实並没有办法分別下列两种情况：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;HostNetwork：我希望走 Host DNS&lt;/li&gt;
+&lt;li&gt;HostNetwork &amp;amp; dnsPolicy=ClusterFirst：我希望走 ClusterIP DNS&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;上述两种情况对于后端的程序来看都长得一样，完全没有办法分辨，我们可以直接从 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/release-1.11/pkg/kubelet/network/dns/dns.go#L258&#34; target=&#34;_blank&#34;&gt;Kubernetes 源码&lt;/a&gt; 来阅读一下其运作流程：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;func getPodDNSType(pod *v1.Pod) (podDNSType, error) {
+	dnsPolicy := pod.Spec.DNSPolicy
+	switch dnsPolicy {
+	case v1.DNSNone:
+		if utilfeature.DefaultFeatureGate.Enabled(features.CustomPodDNS) {
+			return podDNSNone, nil
+		}
+		// This should not happen as kube-apiserver should have rejected
+		// setting dnsPolicy to DNSNone when feature gate is disabled.
+		return podDNSCluster, fmt.Errorf(fmt.Sprintf(&amp;quot;invalid DNSPolicy=%v: custom pod DNS is disabled&amp;quot;, dnsPolicy))
+	case v1.DNSClusterFirstWithHostNet:
+		return podDNSCluster, nil
+	case v1.DNSClusterFirst:
+		if !kubecontainer.IsHostNetworkPod(pod) {
+			return podDNSCluster, nil
+		}
+		// Fallback to DNSDefault for pod on hostnetowrk.
+		fallthrough
+	case v1.DNSDefault:
+		return podDNSHost, nil
+	}
+	// This should not happen as kube-apiserver should have rejected
+	// invalid dnsPolicy.
+	return podDNSCluster, fmt.Errorf(fmt.Sprintf(&amp;quot;invalid DNSPolicy=%v&amp;quot;, dnsPolicy))
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这边可以看到一旦是 &lt;code&gt;DNSClusterFirst&lt;/code&gt; 的情况下，若设置了 HostNetwork, 最后就会直节回传 &lt;code&gt;podDNSHost&lt;/code&gt; 节点的 DNS 设定回去。&lt;/p&gt;
+
+&lt;p&gt;为了解决上述的问题，所以引进了一个新的类型 &lt;code&gt;ClusterFirstHostNet&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p id=&#34;blue&#34;&gt;ClusterFirstWithHostNet&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ClusterFirstWithHostNet&lt;/code&gt; 用途非常简单，我希望满足使用 HostNetwork 同时使用 &lt;code&gt;k8s DNS&lt;/code&gt; 作为我 Pod 预设 DNS 的配置。&lt;/p&gt;
+
+&lt;p&gt;根据上面的程式码也可以观察到：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;case v1.DNSClusterFirstWithHostNet:
+	return podDNSCluster, nil
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;只要將 dnsPolicy 设置为 &lt;code&gt;ClusterFirstWithHostNet&lt;/code&gt;, 就会一律回传 k8s DNS 的 &lt;code&gt;clusterIP&lt;/code&gt; 这种形式。&lt;/p&gt;
+
+&lt;p&gt;使用下面的示例来进行测试：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-hostnetwork-policy
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &amp;quot;360000&amp;quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  hostNetwork: true
+  restartPolicy: Always
+  dnsPolicy: ClusterFirstWithHostNet
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;通过上述 yaml 创建 Pod 之后，通过下面的命令观察该 Pod 的状态：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;
+$ kubectl exec ubuntu-hostnetwork-policy cat /etc/resolv.conf
+
+nameserver 10.254.0.2
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;可以发现这时候的 DNS 就会配置成 k8s DNS 的 &lt;code&gt;ClusterIP&lt;/code&gt; 了。&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#blue {
+color: #2780e3;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>干货与湿货分享第6期</title>
       <link>https://www.yangcs.net/posts/weekly-6/</link>
       <pubDate>Sat, 25 Aug 2018 14:33:39 +0800</pubDate>
@@ -7531,419 +8129,6 @@ border-top-color: #9954bb;
 &lt;p&gt;该系列每周六发布，同步更新在我的&lt;a href=&#34;https://www.yangcs.net/&#34; target=&#34;_blank&#34;&gt;个人博客&lt;/a&gt;和微信公众号上。&lt;/p&gt;
 
 &lt;p&gt;微信搜索 “云原生实验室” 或者扫描二维码即可关注。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>干货与湿货分享第1期</title>
-      <link>https://www.yangcs.net/posts/weekly-1/</link>
-      <pubDate>Sat, 14 Jul 2018 05:31:48 +0000</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/weekly-1/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;人类社会未来几十年肯定会发生天翻地覆的变化，自从我坚信这一点之后，我就把所有的精力都投在了技术领域。所有的变化从根本上来说都是技术的变革引起的，只有掌握了技术，才有可能应对这些变化。&lt;/p&gt;
-
-&lt;p&gt;我相信未来绝大多数的机会都是技术带来的，虽然其他行业依然可以赚钱，但我仍然觉得最有前景的是技术人员，因为当人工智能爆发以后，必将引发第四次工业革命，未来一定是人工智能在帮你看病和打官司。&lt;/p&gt;
-
-&lt;p&gt;由于技术变化日新月异，新观点新工具层出不穷，让人有点目不暇接。我的私人收藏夹里已经屯了好几吨的货，这个时候我想知识如果不分享，就会变得没有意义。所以决定写成文章分享出来，也许会收获一些志同道合的朋友，将来可以一起做一些有用的事情。&lt;/p&gt;
-
-&lt;p&gt;这是《干货分享》系列的第一期，主要记录过去一周我所见到的听到的值得分享的东西，这里只涉及技术，不涉及其他领域。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-新闻-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;新闻&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;1-paypal-向已故女子发账号违规通知-http-jandan-net-2018-07-14-paypal-terms-html&#34;&gt;1. &lt;a href=&#34;http://jandan.net/2018/07/14/paypal-terms.html&#34; target=&#34;_blank&#34;&gt;PayPal 向已故女子发账号违规通知&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://img.jandan.net/news/2018/07/dbf68dc1b4f586fa112e7d130d790eb8.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;PayPal 最近遭遇了一起让无数网友感到愤怒的公关危机，事件起因是该公司竟然向一位已故女士发去了一封信件，解释她的死亡违反了帐户持有人相关的政策。她的丈夫还没从失去爱妻的悲痛中缓过来，又遇到了这么一件丧心病狂的事情。周二的时候，Howard Durdle 怒而将该文件发到 Twitter 和 Facebook 等社群上。&lt;/p&gt;
-
-&lt;h3 id=&#34;2-google-chrome-浏览器将带来新面孔-https-imcn-me-html-y2018-33653-html&#34;&gt;2. &lt;a href=&#34;https://imcn.me/html/y2018/33653.html&#34; target=&#34;_blank&#34;&gt;Google Chrome 浏览器将带来新面孔&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://imcn.me/wp-content/uploads/2018/07/chrome-new-look-macos.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;无论是经历了技术更迭还是审美升级，谷歌 Chrome 浏览器的用户界面依然巍然不动，多年来都保存同一个样式。但是改变很快就会来了，这两日谷歌透露，预计将于 9 月 2 号（Chrome 的生日）将 Material Design 作为正式版 Chrome 的默认用户界面，视觉重新设计基于更圆、更柔和，更具触感的 Material Design 2（在Android P 中完全展示并且与 Chrome OS 桌面零散地结合）。&lt;/p&gt;
-
-&lt;h3 id=&#34;3-htc-首款区块链手机-exodus-正式开放登记-https-cn-engadget-com-2018-07-10-htc-exodus-registration&#34;&gt;3. &lt;a href=&#34;https://cn.engadget.com/2018/07/10/htc-exodus-registration/&#34; target=&#34;_blank&#34;&gt;HTC 首款区块链手机 Exodus 正式开放登记&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://o.aolcdn.com/images/dims?thumbnail=600%2C400&amp;amp;quality=80&amp;amp;image_uri=https%3A%2F%2Fs.aolcdn.com%2Fhss%2Fstorage%2Fmidas%2Fc00a959b6f5784ba6ef5451cf350cc93%2F206517826%2Fdims.jpg&amp;amp;client=cbc79c14efcebee57402&amp;amp;signature=dd0892fd01c1d886694e61e2704ce82836f94b24&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;阵子在 U12+ 的发布会之前，HTC 突然再透露了他们正准备另一台全新的手机产品 Exodus，这是一台趁着近年科技界对区块链技术的追求而生的区块链手机。今天 HTC 再释出更多有关这台 Exodus 的信息，而且也在今天正式开放登记计划，让有兴趣的朋友预约登记，抢先在今年的第三季体验这台 Exodus 手机。&lt;/p&gt;
-
-&lt;h3 id=&#34;4-日本第二次私人火箭发射失败-https-cn-engadget-com-2018-07-01-japan-interstellar-private-rocket-crash&#34;&gt;4. &lt;a href=&#34;https://cn.engadget.com/2018/07/01/japan-interstellar-private-rocket-crash/&#34; target=&#34;_blank&#34;&gt;日本第二次私人火箭发射失败&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://s.aolcdn.com/hss/storage/midas/ca779bdc8b01018cd047f96dc1e46bf1/206496734/this-combo-of-video-grabs-provided-by-interstellars-technologies-the-picture-id987515668.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;由颇具争议的企业家堀江贵文于 2005 年创立的 Interstellar Technologies 公司，和 SpaceX、Blue Origins、Rocket Labs 等有不少相似之处，都希望在新一代的私人太空领域中占据立足之地。然而和这三者不同的是，虽然 Interstellar Technologies 发射的是一枚相对简单得多的火箭（仅长 10m、直径 50cm），发射高度也只是勉强构到 100km 线，并不能进入轨道，但到目前为止还没有成功的记录。&lt;/p&gt;
-
-&lt;p&gt;第一次试射发生在 2017 年，当时的 Momo 火箭在发射 66 秒后因为失去与地面的联系而自毁，只达到了 20km 的高度，而这次更是在发射后没几秒便又垂直落下，以一团火球告终。除了从视频中可以很明显看出发射后没三秒引擎就突然「没力」之外，Interstellar Technologies 没有给更进一步的原因或说明。&lt;/p&gt;
-
-&lt;h3 id=&#34;5-苹果前华人工程师窃密被捕-http-www-sohu-com-a-240500768-610300&#34;&gt;5. &lt;a href=&#34;http://www.sohu.com/a/240500768_610300&#34; target=&#34;_blank&#34;&gt;苹果前华人工程师窃密被捕&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://cdn-fs.d1ev.com/d/file/custom/30018/file/201807/1531280057974180.jpg!w720&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;7月7日，一名曾在苹果自动驾驶汽车项目工作的工程师在加州圣何塞机场准备登机飞往中国时，被美国联邦调查局（FBI）的执法人员逮捕。据知情人士称，这位名为 Xiaolang Zhang（张晓浪）的工程师跳槽入职国内创业公司小鹏汽车。&lt;/p&gt;
-
-&lt;p&gt;根据提交给加州北区法院的文件，美国联邦调查局于本周指控苹果前员工 Xiaolang Zhang 窃取商业机密。而法院文件显示，目前共有5000名员工在为苹果的自动驾驶汽车项目工作。&lt;/p&gt;
-
-&lt;h3 id=&#34;6-特斯拉计划在上海建全资工厂-https-www-ifanr-com-1063536&#34;&gt;6. &lt;a href=&#34;https://www.ifanr.com/1063536&#34; target=&#34;_blank&#34;&gt;特斯拉计划在上海建全资工厂&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://images.ifanr.cn/wp-content/uploads/2018/07/WechatIMG4071531228156_.pic_hd.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;在特斯拉宣布将在上海临港地区独资建厂的两天后，CEO 埃隆·马斯克低调访华。此行分别敲定了上海建厂和北京建立科技创新中心事宜，随后他就匆匆离开。&lt;/p&gt;
-
-&lt;p&gt;本项目直接涵盖了电动车最重要的研发、制造、销售三大环节，计划兴建的有特斯拉（上海）有限公司和特斯拉（上海）电动汽车研发创新中心以及代号 Gigafactory 3 的特斯拉超级工厂。&lt;/p&gt;
-
-&lt;p&gt;虽然马老板行踪保密至极，没透露一丝风声，不过，还是有人记录下了马老板在华的奇妙经历。&lt;/p&gt;
-
-&lt;p&gt;比如，街头吃煎饼果子：&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/s_c98cb49fa3c7472ca75a3b7b8c2cc75f.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-工具-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;工具&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;1-baidupcs-go-https-github-com-iikira-baidupcs-go&#34;&gt;1. &lt;a href=&#34;https://github.com/iikira/BaiduPCS-Go&#34; target=&#34;_blank&#34;&gt;BaiduPCS-Go&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;关于百度网盘大家都是又爱又恨吧，毕竟要拿来存东西，分享什么的，但是这个下载 限速实在是难以忍受呀。这里给大家介绍一款全平台通用的下载神器：&lt;code&gt;BaiduPCS--go&lt;/code&gt;。使用 Go 语言编写，支持网盘内目录 (文件夹) 下载, 支持多个文件或目录下载, 支持断点续传和高并发高速下载。&lt;/p&gt;
-
-&lt;h3 id=&#34;2-ivideo-https-github-com-phobal-ivideo&#34;&gt;2. &lt;a href=&#34;https://github.com/phobal/ivideo&#34; target=&#34;_blank&#34;&gt;ivideo&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;一个可以观看国内主流视频平台所有视频的客户端（Mac、Windows、Linux），包括 VIP 资源。&lt;/p&gt;
-
-&lt;h3 id=&#34;3-dochub-https-github-com-truthhun-dochub&#34;&gt;3. &lt;a href=&#34;https://github.com/TruthHun/DocHub&#34; target=&#34;_blank&#34;&gt;DocHub&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;参考百度文库，使用Beego（Golang）开发的开源文库系统。&lt;/p&gt;
-
-&lt;h3 id=&#34;4-annie-https-github-com-iawia002-annie&#34;&gt;4. &lt;a href=&#34;https://github.com/iawia002/annie&#34; target=&#34;_blank&#34;&gt;annie&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;一个可以下载 YouTube 视频的命令行工具，与 &lt;a href=&#34;https://github.com/soimort/you-get&#34; target=&#34;_blank&#34;&gt;youget&lt;/a&gt; 类似，但使用 Go 语言编写，除了支持 YouTube 之外，还可以下载国内各大视频网站的视频&lt;/p&gt;
-
-&lt;h3 id=&#34;5-painter-https-github-com-kujiale-mobile-painter&#34;&gt;5. &lt;a href=&#34;https://github.com/Kujiale-Mobile/Painter&#34; target=&#34;_blank&#34;&gt;Painter&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;小程序生成图片库，轻松通过 json 方式绘制一张可以发到朋友圈的图片&lt;/p&gt;
-
-&lt;h3 id=&#34;6-taro-https-github-com-nervjs-taro&#34;&gt;6. &lt;a href=&#34;https://github.com/NervJS/taro&#34; target=&#34;_blank&#34;&gt;taro&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;多端统一开发框架，支持用 React 的开发方式编写一次代码，生成能运行在微信小程序、H5、React Native 等的应用。&lt;/p&gt;
-
-&lt;h3 id=&#34;7-termtosvg-https-github-com-nbedos-termtosvg&#34;&gt;7. &lt;a href=&#34;https://github.com/nbedos/termtosvg&#34; target=&#34;_blank&#34;&gt;termtosvg&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;将终端会话记录为 SVG 动画&lt;/p&gt;
-
-&lt;h3 id=&#34;8-jib-http-github-com-googlecontainertools-jib&#34;&gt;8. &lt;a href=&#34;http://github.com/GoogleContainerTools/jib&#34; target=&#34;_blank&#34;&gt;Jib&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;谷歌开源的 Java 应用容器生成工具，不用写 Dockerfile，构造过程中自动生成一个 Docker 容器。&lt;/p&gt;
-
-&lt;h3 id=&#34;9-简悦-simpread-https-github-com-kenshin-simpread&#34;&gt;9. &lt;a href=&#34;https://github.com/Kenshin/simpread&#34; target=&#34;_blank&#34;&gt;简悦 ( SimpRead ) &lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://raw.githubusercontent.com/521xueweihan/HelloGitHub/master/content/27/img/simpread-min.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;让你瞬间进入沉浸式阅读的扩展，还原阅读的本质，提升你的阅读体验。使用它可以为你剔除页面上无关的干扰信息，让用户专注于阅读主要的内容。通过这个项目，还可以学习如何开发 Chrome 扩展。&lt;/p&gt;
-
-&lt;h3 id=&#34;10-aesma-http-www-aesma-cn&#34;&gt;10. &lt;a href=&#34;http://www.aesma.cn/&#34; target=&#34;_blank&#34;&gt;Aesma&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;说到网盘离线下载，115网盘和百度网盘肯定是第一时间进入你脑海里的网盘，毕竟是大公司，功能还是非常不错的，离线下载速度杠杠的，基本秒下载，然后可以直接在线观看。但唯一的遗憾就是。。。太。。。贵。。。年费会员接近300元的价格，还是让不少喜欢看片的伙伴们在充值和不充值之间犹豫徘徊。&lt;/p&gt;
-
-&lt;p&gt;百度网盘提供免费BT离线下载功能，但在线观看速度会有一定的限制，且很多资源无法离线，版权或其他原因。&lt;/p&gt;
-
-&lt;p&gt;最近出了一个 Aesma 阿斯离线云网盘，官网自称可能是目前最好用的离线下载工具，看来还是有几把刷子。据悉，Aesma 是破解的的 115 的数据流，所以离线下载和在线播放性能还是毋庸置疑的。&lt;/p&gt;
-
-&lt;p&gt;网盘之前可以免费试用，不过现在推广期已过，开始收费了，但费用并不高，经济会员仅仅6元每月，普通会员10元每月，最贵的高级会员也就16元每月，还是比115或者百度网盘便宜了不少。更多详情大家可以自行探索。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-教程-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;教程&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;1-deeplearningbook读书笔记-https-github-com-exacity-simplified-deeplearning&#34;&gt;1. &lt;a href=&#34;https://github.com/exacity/simplified-deeplearning&#34; target=&#34;_blank&#34;&gt;DeepLearningBook读书笔记&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;DeepLearningBook是目前第一本系统和完整的介绍深度学习的书籍，其作者包括深度学习领域的奠基人、处于研究生涯中期的领域中坚、更有近年来涌现的新星，非常适合搭建理论基础。但是直至去年，本书只有英文原版，对于大多数开发者来说，啃一本800页7*9英寸的书籍，难度可想而知。 好消息是，在翻译人员的不懈努力下，DeepLearningBook中文版也已在GitHub上公开，中文翻译版已经由人民邮电出版社出版。&lt;/p&gt;
-
-&lt;h3 id=&#34;2-go语言高级编程-https-github-com-chai2010-advanced-go-programming-book&#34;&gt;2. &lt;a href=&#34;https://github.com/chai2010/advanced-go-programming-book&#34; target=&#34;_blank&#34;&gt;Go语言高级编程&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;《Go语言高级编程》该书针对 Go 语言有一定经验，想更加深入了解 Go 语言各种高级用法的开发人员。&lt;/p&gt;
-
-&lt;h3 id=&#34;3-后端架构师技术图谱-https-github-com-xingshaocheng-architect-awesome&#34;&gt;3. &lt;a href=&#34;https://github.com/xingshaocheng/architect-awesome&#34; target=&#34;_blank&#34;&gt;后端架构师技术图谱&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;后端架构师的技术图谱，非常全面，从数据结构、常用算法到分布式系统设计模式应有尽有。&lt;/p&gt;
-
-&lt;h3 id=&#34;4-深度学习框架-pytorch-入门与实践-https-github-com-chenyuntc-pytorch-book&#34;&gt;4. &lt;a href=&#34;https://github.com/chenyuntc/pytorch-book&#34; target=&#34;_blank&#34;&gt;深度学习框架 PyTorch：入门与实践&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;书籍《深度学习框架 PyTorch：入门与实践》的示例代码，可以作为一个独立的 PyTorch 入门指南和教程。内容结构如下图所示：&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://raw.githubusercontent.com/521xueweihan/HelloGitHub/master/content/25/img/pytorch-book-show-min.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;5-自己动手做聊天机器人-https-github-com-warmheartli-chatbotcourse&#34;&gt;5. &lt;a href=&#34;https://github.com/warmheartli/ChatBotCourse&#34; target=&#34;_blank&#34;&gt;自己动手做聊天机器人&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;该项目介绍了如何自己动手做聊天机器人。全面地介绍了所需要的技术：自然语言识别、分词、语料库、机器学习等，包含所需的 Java 和 Python 代码。&lt;/p&gt;
-
-&lt;h3 id=&#34;6-free-programming-books-zh-cn-https-github-com-justjavac-free-programming-books-zh-cn&#34;&gt;6. &lt;a href=&#34;https://github.com/justjavac/free-programming-books-zh_CN&#34; target=&#34;_blank&#34;&gt;free-programming-books-zh_CN&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;免费的计算机编程类中文书籍。&lt;/p&gt;
-
-&lt;h3 id=&#34;7-golang-区块链教程-https-github-com-liuchengxu-blockchain-tutorial&#34;&gt;7. &lt;a href=&#34;https://github.com/liuchengxu/blockchain-tutorial&#34; target=&#34;_blank&#34;&gt;Golang 区块链教程&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;区块链不仅仅是计算机科学，还涉及了政治经济制度，社会分工协作等等很多方面，本教程的关注点不仅在于深度，更在于其广度，更多是站在研究的角度，而非仅仅是一个程序员的视角。&lt;/p&gt;
-
-&lt;h3 id=&#34;8-prometheus-操作指南-云原生监控之道-https-github-com-yunlzheng-prometheus-book&#34;&gt;8. &lt;a href=&#34;https://github.com/yunlzheng/prometheus-book&#34; target=&#34;_blank&#34;&gt;Prometheus 操作指南：云原生监控之道&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Prometheus是一个开源的完整监控解决方案，其对传统监控系统的测试和告警模型进行了彻底的颠覆，形成了基于中央化的规则计算、统一分析和告警的新模型。本教程应该是国内第一个全面剖析 Prometheus 的教程，从原理到实战。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-资源-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;资源&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&#34;1-telegramgroup-https-github-com-itgoyo-telegramgroup&#34;&gt;1. &lt;a href=&#34;https://github.com/itgoyo/TelegramGroup&#34; target=&#34;_blank&#34;&gt;TelegramGroup&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;Telegram 群合集，收集了非常全面好玩的 telegram 群。&lt;/p&gt;
-
-&lt;h3 id=&#34;2-飞流直播-http-chaochaolive-icntv-xyz-channel-movie&#34;&gt;2. &lt;a href=&#34;http://chaochaolive.icntv.xyz/channel/movie&#34; target=&#34;_blank&#34;&gt;飞流直播&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;海外中文网络电视直播，直接通过浏览器播放。&lt;/p&gt;
-
-&lt;h3 id=&#34;3-factory-images-for-nexus-and-pixel-devices-https-developers-google-com-android-images&#34;&gt;3. &lt;a href=&#34;https://developers.google.com/android/images&#34; target=&#34;_blank&#34;&gt;Factory Images for Nexus and Pixel Devices&lt;/a&gt;&lt;/h3&gt;
-
-&lt;p&gt;安卓原生镜像下载地址，包括 Nexus 和 Pixel 系列。&lt;/p&gt;
-
-&lt;h2 id=&#34;p-id-h2-欢迎关注-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;欢迎关注&lt;/p&gt;&lt;/h2&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;该系列每周六发布，同步更新在我的&lt;a href=&#34;https://www.yangcs.net/&#34; target=&#34;_blank&#34;&gt;个人博客&lt;/a&gt;和微信公众号上。&lt;/p&gt;
-
-&lt;p&gt;微信搜索 &lt;strong&gt;“云原生实验室”&lt;/strong&gt; 或者扫描二维码即可关注。&lt;/p&gt;
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 

@@ -6,10 +6,19 @@
     <description>Recent content in Kubernetes on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 16 Aug 2018 13:40:27 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 Aug 2018 18:11:52 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kubernetes DNS 高阶指南</title>
+      <link>https://www.yangcs.net/posts/kubernetes-dns/</link>
+      <pubDate>Mon, 27 Aug 2018 18:11:52 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-dns/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>控制 Egress 流量</title>

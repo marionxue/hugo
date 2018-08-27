@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Kubernetes DNS 高阶指南 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="Kubernetes DNS 高阶指南" />
+  <meta name="twitter:title" content="Kubernetes DNS 高阶指南" />
+  <meta name="description" content="为你的 Pod 自定义 DNS">
+  <meta property="og:description" content="为你的 Pod 自定义 DNS">
+  <meta name="twitter:description" content="为你的 Pod 自定义 DNS">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/kubernetes-dns/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.42.2" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/kubernetes-dns/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?11f7d254cfa4e0ca44b175c66d379ecc";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124447767-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/service-mesh">Service Mesh</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/loadbalance"> 负载均衡</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/share">分享</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="https://istio.io/zh/docs">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go">Go 入门指南</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">葵花宝典</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/learn-english"> 英语学习终极秘诀</a>
+                
+                
+                  <a href="https://www.yangcs.net/a-day-in-the-life-of-jeff">A Day in the life of Jeff</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search www.yangcs.net</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("4BELQK2TOI", "bb53f9d51f88373ba37e56a4730aca4c");
+var index = client.initIndex('blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Kubernetes DNS 高阶指南</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">为你的 Pod 自定义 DNS</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on August 27, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Kubernetes DNS 高阶指南</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">为你的 Pod 自定义 DNS</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Aug 27, 2018</h4>
+    </section>
+    <h5 id="wc">3700 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<p><code>DNS</code> 是 Kubernetes 的核心功能之一，Kubernetes 通过 <code>kube-dns</code> 或 <code>CoreDNS</code> 作为集群的必备扩展来提供命名服务，通过 DNS 扩展，每一个 <code>Service</code> 都会产生一个独一无二的 FQDN（Fully Qualified Domain Name）名称。</p>
+
+<p>在大多数使用场景下，我们并不会太关心 DNS 插件的内部运作细节，直接使用 Kubernetes 预设的 DNS 配置和策略就可以满足需求。然而随着使用场景越来越复杂，譬如跟 NFV（Network Function Virtualization）相关的场景，我们的应用（Pod）可能就会需要更加个性化的 DNS 配置。</p>
+
+<p>接下来使用下面这张架构图来说明可能的使用场景：</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/DcFCnLw.png" alt="" /></center></p>
+
+<h3 id="p-id-h2-1-为什么需要自定义-dns-p"><p id="h2">1. 为什么需要自定义 DNS</p></h3>
+
+<hr />
+
+<p>一般的使用场景下，我们的 Kubernetes 集群的使用方式就像图中<strong>紫色/粉红色（Pod3）</strong>区域一样，所有的 Pod 如果有任何要存取 <code>DNS</code> 的需求，都会透过集群内的的 <code>k8s DNS</code> 来处理对应的请求与回复。</p>
+
+<p>然而在 <code>NFV</code> 的使用场景下，网络变成一个很重要的区域，整体的性能都取决于该应用的设计与集群的网络架构设计。这部分应用通常都会追求高输出或是低延迟，为了得到更好的性能，需要避免这些流量跟其他无关的流量使用相同的网络线路进行传输。</p>
+
+<p>在这种情况下，通常就会把整个集群的网络设计成两种架构，分别是 <code>Control Network</code> 和 <code>Data Network</code> 这两个不同用途的网络架构。在 Kubernetes 中，<code>Control Network</code> 就类似于图中的 <code>Cluster Network</code>，负责整个集群之间的沟通。图中<strong>绿色/橘色（Pod1，Pod2）</strong>这两个区域就是所谓的 <code>Data Network</code>，其网卡本身也被独立出来，不会与本来的 Kubernetes 集群发生冲突，它们之间的流量通过独立的网络进行传输。</p>
+
+<p>存在于独立出来的网络架构中的这些特殊的 Pod 基本上没法跟 Kubernetes 集群内的 DNS 互连，而且这些应用还有可能在外部有自己的 <code>DNS Server</code>，所以在这种场景下，我们希望这些应用（Pod1/Pod2）能够使用自定义的 <code>DNS Server</code>。</p>
+
+<h3 id="p-id-h2-2-如何自定义-dns-p"><p id="h2">2. 如何自定义 DNS</p></h3>
+
+<hr />
+
+<p>为了让用户更容易控制 Pod 中的 DNS 设置，Kubernetes v1.9 引入了一项新的 Alpha 特性（在 v1.10 中处于 Beta 阶段）。该特性在 v1.10 中被默认启用，在 v1.9 中如果想要启用此功能，集群管理员需要在 apiserver 和 kubelet 上启用 <code>CustomPodDNS</code> 特性，例如：<code>“--feature-gates=CustomPodDNS=true,...”</code>。启用了该特性之后，用户可以将 Pod 的 <code>dnsPolicy</code> 字段设置为 <code>&quot;None&quot;</code>，并且可以在 <code>Pod.Spec</code> 中添加新的字段 <code>dnsConfig</code>。</p>
+
+<p>其中 <code>dnsConfig</code> 用来自定义 DNS 参数，而 <code>dnsPolicy</code> 用来给 Pod 选取预设的 DNS。接下来就看看可以通过哪些手段自定义 DNS。</p>
+
+<h4 id="dnsconfig">dnsConfig</h4>
+
+<p>dnsConfig 可以让操作者延伸到 Pod 内部关于 DNS 的配置，这边需要特别注意的是，我使用的字眼是 <strong>延伸</strong> 而不是 <strong>配置</strong>，这是因为通过下一节的 dnsPolicy，每个 Pod 都会有一组预设的 DNS 配置。通过 dnsConfig 我们可以继续往上叠加相关的 DNS 参数到 Pod 之中。</p>
+
+<p>目前总共支持三个参数，分别是：</p>
+
+<ul>
+<li>nameservers</li>
+<li>searches</li>
+<li>options</li>
+</ul>
+
+<p>这三个参数对应的就是大家熟悉的 <code>/etc/resolv.conf</code> 里面的三个参数，这里就不针对 DNS 进行详细解释了，不熟悉的朋友可以自行去 <strong>Google</strong> 学一下这些参数的意思。</p>
+
+<p>在 Kubernetes 里面，这三个参数都包含在 dnsConfig 配置项中，而 dnsConfig 包含在 <code>PodSpec</code> 配置项中，因为 Pod 内所有的容器都共享相同的 Network Namespace，所以网络方面的配置都会共享。</p>
+
+<p>这边提供一个简单的 yaml 示例：</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-setting
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &quot;360000&quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsConfig:
+    nameservers:
+      - 1.2.3.4
+    searches:
+      - ns1.svc.cluster.local
+      - my.dns.search.suffix
+    options:
+      - name: ndots
+        value: &quot;2&quot;
+      - name: edns0
+</code></pre>
+
+<p>通过上述 yaml 创建 Pod 之后，通过下面的命令可以观察到容器中 DNS 配置文件中会出现额外的配置。</p>
+
+<pre><code class="language-bash">$ kubectl exec ubuntu-setting cat /etc/resolv.conf
+
+nameserver 10.254.0.2
+nameserver 1.2.3.4
+search default.svc.cluster.local svc.cluster.local cluster.local ns1.svc.cluster.local my.dns.search.suffix
+options ndots:2 edns0
+</code></pre>
+
+<p>可以看到 nameserver 多了一个 1.2.3.4，而 search 则多了 <code>ns1.svc.cluster.local my.dns.search.suffix</code> 这两个自定义的值，最后 options 则增加了我们示例中指定的 <code>ndots:2 edns0</code>。</p>
+
+<p>dnsConfig 非常简单直观，如果你需要自定义 DNS 参数，就可以通过这个字段来指定。</p>
+
+<h4 id="dnspolicy">dnsPolicy</h4>
+
+<p>前面提过，<code>dnsConfig</code> 提供的是延伸 Pod 内预设的 DNS 配置，而 <code>dnsPolicy</code> 就是决定 Pod 内预设的 DNS 配置有哪些。</p>
+
+<p>目前总共有四个类型可以选择：</p>
+
+<ul>
+<li>None</li>
+<li>Default</li>
+<li>ClusterFirst</li>
+<li>ClusterFirstHostNet</li>
+</ul>
+
+<p>接下来针对这四个类型分别介绍。</p>
+
+<p id="blue">None</p>
+
+<p><code>None</code> 表示会清除 Pod 预设的 DNS 配置，当 dnsPolicy 设置成这个值之后，Kubernetes 不会为 Pod 预先载入任何自身逻辑判断得到的 DNS 配置。因此若要将 dnsPolicy 的值设为 None，为了避免 Pod 里面没有配置任何 DNS，最好再添加 dnsConfig 来描述自定义的 DNS 参数。</p>
+
+<p>使用下面的示例来进行测试：</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-none
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &quot;360000&quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsPolicy: None
+  dnsConfig:
+    nameservers:
+      - 1.2.3.4
+    searches:
+      - ns1.svc.cluster.local
+      - my.dns.search.suffix
+    options:
+      - name: ndots
+        value: &quot;2&quot;
+      - name: edns0
+</code></pre>
+
+<p>通过上述 yaml 创建 Pod 之后，通过下面的命令可以观察容器中的 DNS 配置文件，可以观察到跟之前的 <code>dnsConfig</code> 的结果有一点差异，这里只有我们在 yaml 里配置的那些参数，而没有加入集群预设的 DNS 配置。</p>
+
+<pre><code class="language-bash">$ kubectl exec ubuntu-none cat /etc/resolv.conf
+
+nameserver 1.2.3.4
+search ns1.svc.cluster.local my.dns.search.suffix
+options ndots:2 edns0
+</code></pre>
+
+<p id="blue">Default</p>
+
+<p><code>Default</code> 表示 Pod 里面的 DNS 配置继承了宿主机上的 DNS 配置。简单来说，就是该 Pod 的 DNS 配置会跟宿主机完全一致。</p>
+
+<p>使用下面的示例来进行测试：</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-default
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &quot;360000&quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsPolicy: Default
+</code></pre>
+
+<p>首先，我们先观察 Node 上面的 DNS 配置：</p>
+
+<pre><code class="language-bash">$ cat /etc/resolv.conf
+
+# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
+#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
+nameserver 10.0.2.3
+</code></pre>
+
+<p>可以观察到，Node 上面的 DNS 配置得很简单，只有单纯的 <code>10.0.2.3</code>。
+接下来我们观察该 Pod 内的 DNS 配置：</p>
+
+<pre><code class="language-bash">$ kubectl exec ubuntu-default cat /etc/resolv.conf
+
+nameserver 10.0.2.3
+</code></pre>
+
+<p>可以看到这两个的 DNS 配置完全一致，该 Pod 内的 DNS 配置已经直接继承 Node 上面的配置了。</p>
+
+<p id="blue">ClusterFirst</p>
+
+<p>相对于上述的 Default，<code>ClusterFirst</code> 是完全相反的操作，它会预先把 <code>kube-dns</code>（或 CoreDNS）的信息当作预设参数写入到该 Pod 内的 DNS 配置。</p>
+
+<div id="note">
+<p id="note-title">Note</p>
+<br />
+<p>ClusterFirst 是预设的行为，若没有在 Pod 內特別描述 PodPolicy, 则会将 dnsPolicy 预设为 ClusterFirst。</p>
+</div>
+
+<p>使用下面的示例来进行测试：</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-clusterfirst
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &quot;360000&quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  restartPolicy: Always
+  dnsPolicy: ClusterFirst
+</code></pre>
+
+<p>通过上述 yaml 创建 Pod 之后，通过下面的命令观察容器中的 DNS 配置文件：</p>
+
+<pre><code class="language-bash">$ kubectl exec ubuntu-clusterfirst cat /etc/resolv.conf
+
+nameserver 10.254.0.2
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+</code></pre>
+
+<p>可以看到这里使用的是 k8s DNS 的设置。</p>
+
+<p>此外，ClusterFirst 还有一个冲突，如果你的 Pod 设置了 <code>HostNetwork=true</code>，则 ClusterFirst 就会被强制转换成 <code>Default</code>。</p>
+
+<p id="blue">HostNetwork</p>
+
+<p>使用下面的示例来进行测试：</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-hostnetwork-policy-default
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &quot;360000&quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  hostNetwork: true
+  restartPolicy: Always
+  dnsPolicy: ClusterFirst
+</code></pre>
+
+<p>通过上述 yaml 创建 Pod 之后，通过下面的命令观察容器中的 DNS 配置文件：</p>
+
+<pre><code class="language-bash">$ kubectl exec ubuntu-hostnetwork-policy-default cat /etc/resolv.conf
+
+nameserver 10.0.2.3
+</code></pre>
+
+<p>可以观察到，Pod 里面的 DNS 配置直接继承了宿主机上的 DNS 配置。</p>
+
+<p>这边稍微来解释一下这个设计上的原理以及流程：</p>
+
+<ol>
+<li><p>因为设置了 <code>HostNetwork=true</code>, 会让该 Pod 与该节点共用相同的网路空间(网卡/路由等功能)。</p></li>
+
+<li><p>预设的 k8s DNS 是使用 <code>ClusterIP</code> 的 kubernetes serivce. 这种情况下，只有属于 Cluster 內的 <code>Pod</code> 可以获取该 ClusterIP。</p></li>
+
+<li><p>所以设置了 <code>HostNetwork=true</code> 的 Pod 就没有办法获取该 ClusterIP。</p></li>
+
+<li><p>于是预设就会将对应的 DNS 配置改回 <code>Default</code> 的形式，从节点继承其 DNS 配置信息。</p></li>
+</ol>
+
+<p>这种情况下，就会有人想要问，如果我刻意想要这样设置不行吗？</p>
+
+<p>原先的设计中，是没有办法刻意处理的，原因是当 <code>Pod yaml</code> 配置文件被发送出去后，在发现没有设定 <code>dnsPolicy</code> 的情况下，会自动帮你把该 dnsPolicy 补上 <code>ClusterFirst</code> 的数值。</p>
+
+<p>然后最后面的程序处理逻辑中，其实並没有办法分別下列两种情况：</p>
+
+<ol>
+<li>HostNetwork：我希望走 Host DNS</li>
+<li>HostNetwork &amp; dnsPolicy=ClusterFirst：我希望走 ClusterIP DNS</li>
+</ol>
+
+<p>上述两种情况对于后端的程序来看都长得一样，完全没有办法分辨，我们可以直接从 <a href="https://github.com/kubernetes/kubernetes/blob/release-1.11/pkg/kubelet/network/dns/dns.go#L258" target="_blank">Kubernetes 源码</a> 来阅读一下其运作流程：</p>
+
+<pre><code class="language-go">func getPodDNSType(pod *v1.Pod) (podDNSType, error) {
+	dnsPolicy := pod.Spec.DNSPolicy
+	switch dnsPolicy {
+	case v1.DNSNone:
+		if utilfeature.DefaultFeatureGate.Enabled(features.CustomPodDNS) {
+			return podDNSNone, nil
+		}
+		// This should not happen as kube-apiserver should have rejected
+		// setting dnsPolicy to DNSNone when feature gate is disabled.
+		return podDNSCluster, fmt.Errorf(fmt.Sprintf(&quot;invalid DNSPolicy=%v: custom pod DNS is disabled&quot;, dnsPolicy))
+	case v1.DNSClusterFirstWithHostNet:
+		return podDNSCluster, nil
+	case v1.DNSClusterFirst:
+		if !kubecontainer.IsHostNetworkPod(pod) {
+			return podDNSCluster, nil
+		}
+		// Fallback to DNSDefault for pod on hostnetowrk.
+		fallthrough
+	case v1.DNSDefault:
+		return podDNSHost, nil
+	}
+	// This should not happen as kube-apiserver should have rejected
+	// invalid dnsPolicy.
+	return podDNSCluster, fmt.Errorf(fmt.Sprintf(&quot;invalid DNSPolicy=%v&quot;, dnsPolicy))
+}
+</code></pre>
+
+<p>这边可以看到一旦是 <code>DNSClusterFirst</code> 的情况下，若设置了 HostNetwork, 最后就会直节回传 <code>podDNSHost</code> 节点的 DNS 设定回去。</p>
+
+<p>为了解决上述的问题，所以引进了一个新的类型 <code>ClusterFirstHostNet</code>。</p>
+
+<p id="blue">ClusterFirstWithHostNet</p>
+
+<p><code>ClusterFirstWithHostNet</code> 用途非常简单，我希望满足使用 HostNetwork 同时使用 <code>k8s DNS</code> 作为我 Pod 预设 DNS 的配置。</p>
+
+<p>根据上面的程式码也可以观察到：</p>
+
+<pre><code class="language-go">case v1.DNSClusterFirstWithHostNet:
+	return podDNSCluster, nil
+</code></pre>
+
+<p>只要將 dnsPolicy 设置为 <code>ClusterFirstWithHostNet</code>, 就会一律回传 k8s DNS 的 <code>clusterIP</code> 这种形式。</p>
+
+<p>使用下面的示例来进行测试：</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-hostnetwork-policy
+  namespace: default
+spec:
+  containers:
+  - image: hwchiu/netutils
+    command:
+      - sleep
+      - &quot;360000&quot;
+    imagePullPolicy: IfNotPresent
+    name: ubuntu
+  hostNetwork: true
+  restartPolicy: Always
+  dnsPolicy: ClusterFirstWithHostNet
+</code></pre>
+
+<p>通过上述 yaml 创建 Pod 之后，通过下面的命令观察该 Pod 的状态：</p>
+
+<pre><code class="language-bash">
+$ kubectl exec ubuntu-hostnetwork-policy cat /etc/resolv.conf
+
+nameserver 10.254.0.2
+search default.svc.cluster.local svc.cluster.local cluster.local
+options ndots:5
+</code></pre>
+
+<p>可以发现这时候的 DNS 就会配置成 k8s DNS 的 <code>ClusterIP</code> 了。</p>
+
+<style>
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#blue {
+color: #2780e3;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+</style>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/weekly-6/" data-toggle="tooltip" data-placement="top" title="干货与湿货分享第6期">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
+                    
+                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
+                    
+                    <li><a href="/posts/where-is-the-request-1/">请求都去哪了？</a></li>
+                    
+                    <li><a href="/posts/kubernetes-resource-management/">Kubernetes 资源管理概述</a></li>
+                    
+                    <li><a href="/posts/custom-metrics-hpa/">使用自定义指标进行弹性伸缩</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Mon Aug 27, 2018</h4>
+    </section>
+    <h5 id="wc">3700 Words|Read in about 8 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.42.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  </body>
+</html>
+
