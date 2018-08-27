@@ -339,7 +339,7 @@ case v1.DNSClusterFirstWithHostNet:
 	return podDNSCluster, nil
 ```
 
-只要將 dnsPolicy 设置为 `ClusterFirstWithHostNet`, 就会一律回传 k8s DNS 的 `clusterIP` 这种形式。
+只要將 dnsPolicy 设置为 `ClusterFirstWithHostNet`, 就会一律返回 k8s DNS 的 `clusterIP` 这种形式。
 
 使用下面的示例来进行测试：
 
@@ -375,6 +375,10 @@ options ndots:5
 
 可以发现这时候的 DNS 就会配置成 k8s DNS 的 `ClusterIP` 了。
 
+----
+
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>扫一扫关注微信公众号</center>
 
 
 <style>

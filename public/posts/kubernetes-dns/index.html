@@ -723,7 +723,7 @@ nameserver 10.0.2.3
 	return podDNSCluster, nil
 </code></pre>
 
-<p>只要將 dnsPolicy 设置为 <code>ClusterFirstWithHostNet</code>, 就会一律回传 k8s DNS 的 <code>clusterIP</code> 这种形式。</p>
+<p>只要將 dnsPolicy 设置为 <code>ClusterFirstWithHostNet</code>, 就会一律返回 k8s DNS 的 <code>clusterIP</code> 这种形式。</p>
 
 <p>使用下面的示例来进行测试：</p>
 
@@ -756,6 +756,11 @@ options ndots:5
 </code></pre>
 
 <p>可以发现这时候的 DNS 就会配置成 k8s DNS 的 <code>ClusterIP</code> 了。</p>
+
+<hr />
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
+<center>扫一扫关注微信公众号</center></p>
 
 <style>
 #h2{
