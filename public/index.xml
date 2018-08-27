@@ -897,7 +897,7 @@ nameserver 10.0.2.3
 
 &lt;p&gt;&lt;code&gt;ClusterFirstWithHostNet&lt;/code&gt; 用途非常简单，我希望满足使用 HostNetwork 同时使用 &lt;code&gt;k8s DNS&lt;/code&gt; 作为我 Pod 预设 DNS 的配置。&lt;/p&gt;
 
-&lt;p&gt;根据上面的程式码也可以观察到：&lt;/p&gt;
+&lt;p&gt;根据上面的源码也可以观察到：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-go&#34;&gt;case v1.DNSClusterFirstWithHostNet:
 	return podDNSCluster, nil

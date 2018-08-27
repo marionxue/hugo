@@ -332,7 +332,7 @@ func getPodDNSType(pod *v1.Pod) (podDNSType, error) {
 
 `ClusterFirstWithHostNet` 用途非常简单，我希望满足使用 HostNetwork 同时使用 `k8s DNS` 作为我 Pod 预设 DNS 的配置。
 
-根据上面的程式码也可以观察到：
+根据上面的源码也可以观察到：
 
 ```go
 case v1.DNSClusterFirstWithHostNet:
