@@ -176,7 +176,7 @@ aggregator-ca-config.json  aggregator-ca.csr  aggregator-ca-csr.json  aggregator
 **生成 aggregator 证书和私钥**
 
 ```bash
-$ cfssl gencert -ca=ca.pem -ca-key=ca-key.pem -config=ca-config.json -profile=aggregator aggregator-csr.json | cfssljson -bare aggregator
+$ cfssl gencert -ca=aggregator-ca.pem -ca-key=aggregator-ca-key.pem -config=aggregator-ca-config.json -profile=aggregator aggregator-csr.json | cfssljson -bare aggregator
 $ ls aggregator*
 aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 ```
