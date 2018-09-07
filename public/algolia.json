@@ -851,5 +851,21 @@
                 "src": "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"
             }
         ]
+    },
+    {
+        "title": "Prometheus 中文文档",
+        "uri": "prometheus-handbook",
+        "content": "Prometheus                  Kubernetes                   Prometheus       Cloud Native Computing Foundation    CNCF                Kubernetes         Kubernetes               Prometheus                       Prometheus                                                   Gitbook   https   www yangcs net prometheus  Gitbook      https   ryanyang gitbook io prometheus               Github   https   github com yangchuansheng prometheus handbook                                                             CONTRIBUTING                 contributors",
+        "objectID": "prometheus-handbook",
+        "subtitle": "使用 Prometheus 监控云原生应用",
+        "date": "2018-09-07T10:10:36.000Z",
+        "draft": false,
+        "bigimg": [
+            {
+                "src": "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"
+            }
+        ],
+        "postmeta": false,
+        "nocomment": true
     }
 ]
