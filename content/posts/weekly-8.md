@@ -2,6 +2,7 @@
 title: "干货与湿货分享第8期"
 date: 2018-09-08T12:32:27+08:00
 draft: false
+mathjax: true
 categories: "分享"
 tags: ["share"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]

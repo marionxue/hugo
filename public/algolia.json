@@ -764,6 +764,7 @@
         "objectID": "posts/weekly-8",
         "date": "2018-09-08T04:32:27.000Z",
         "draft": false,
+        "mathjax": true,
         "categories": "分享",
         "tags": [
             "share"
