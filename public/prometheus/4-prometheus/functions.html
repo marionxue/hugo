@@ -1,0 +1,537 @@
+
+<!DOCTYPE HTML>
+<html lang="zh-hans" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>PromQL 内置函数 · Prometheus 中文文档</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        <meta name="author" content="杨传胜">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-splitter/splitter.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-alerts/style.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-advanced-emoji/emoji-website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchor-navigation-ex/style/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-theme-comscore/test.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="operators.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="输入并搜索" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                     序言
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第一章：介绍</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../1-introduction/overview.html">
+            
+                <a href="../1-introduction/overview.html">
+            
+                    
+                    第一节：Prometheus 简介
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第二章：概念</li>
+        
+        
+    
+
+    
+        
+        <li class="header">第三章：Prometheus</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" >
+            
+                <span>
+            
+                    
+                    第1节：初识 Prometheus
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" >
+            
+                <span>
+            
+                    
+                    第2节：安装
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" >
+            
+                <span>
+            
+                    
+                    第3节：配置
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4" >
+            
+                <span>
+            
+                    
+                    第4节：查询
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="4.4.1" data-path="basics.html">
+            
+                <a href="basics.html">
+            
+                    
+                    初识 PromQL
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.4.2" data-path="operators.html">
+            
+                <a href="operators.html">
+            
+                    
+                    操作符
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="4.4.3" data-path="functions.html">
+            
+                <a href="functions.html">
+            
+                    
+                    PromQL 内置函数
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="4.5" >
+            
+                <span>
+            
+                    
+                    第5节：存储
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.6" >
+            
+                <span>
+            
+                    
+                    第6节：联邦集群
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.7" >
+            
+                <span>
+            
+                    
+                    第7节：迁移
+            
+                </span>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.8" >
+            
+                <span>
+            
+                    
+                    第8节：API 稳定性
+            
+                </span>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">第四章：可视化</li>
+        
+        
+    
+
+    
+        
+        <li class="header">第五章：其他操作</li>
+        
+        
+    
+
+    
+        
+        <li class="header">第六章：告警</li>
+        
+        
+    
+
+    
+        
+        <li class="header">第七章：最佳实践</li>
+        
+        
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            本书使用 GitBook 发布
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >PromQL 内置函数</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div class="search-plus" id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#promql-&#x5185;&#x7F6E;&#x51FD;&#x6570;"><b> </b>PromQL &#x5185;&#x7F6E;&#x51FD;&#x6570;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#abs"><b>1. </b>abs()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#absent"><b>2. </b>absent()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#ceil"><b>3. </b>ceil()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#changes"><b>4. </b>changes()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#clampmax"><b>5. </b>clamp_max()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#clampmin"><b>6. </b>clamp_min()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#dayofmonth"><b>7. </b>day_of_month()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#dayofweek"><b>8. </b>day_of_week()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#daysinmonth"><b>9. </b>days_in_month()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#delta"><b>10. </b>delta()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#deriv"><b>11. </b>deriv()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#exp"><b>12. </b>exp()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#floor"><b>13. </b>floor()</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#histogramquantile"><b>14. </b>histogram_quantile()</a></li></ul></ul></div><a href="#promql-&#x5185;&#x7F6E;&#x51FD;&#x6570;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="promql-&#x5185;&#x7F6E;&#x51FD;&#x6570;"><a name="promql-&#x5185;&#x7F6E;&#x51FD;&#x6570;" class="anchor-navigation-ex-anchor" href="#promql-&#x5185;&#x7F6E;&#x51FD;&#x6570;"><i class="fa fa-link" aria-hidden="true"></i></a> PromQL &#x5185;&#x7F6E;&#x51FD;&#x6570;</h1>
+<p>Prometheus &#x63D0;&#x4F9B;&#x4E86;&#x5176;&#x5B83;&#x5927;&#x91CF;&#x7684;&#x5185;&#x7F6E;&#x51FD;&#x6570;&#xFF0C;&#x53EF;&#x4EE5;&#x5BF9;&#x65F6;&#x5E8F;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x4E30;&#x5BCC;&#x7684;&#x5904;&#x7406;&#x3002;&#x67D0;&#x4E9B;&#x51FD;&#x6570;&#x6709;&#x9ED8;&#x8BA4;&#x7684;&#x53C2;&#x6570;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;<code>year(v=vector(time()) instant-vector)</code>&#x3002;&#x5176;&#x4E2D;&#x53C2;&#x6570; <code>v</code> &#x662F;&#x4E00;&#x4E2A;&#x77AC;&#x65F6;&#x5411;&#x91CF;&#xFF0C;&#x5982;&#x679C;&#x4E0D;&#x63D0;&#x4F9B;&#x8BE5;&#x53C2;&#x6570;&#xFF0C;&#x5C06;&#x4F7F;&#x7528;&#x9ED8;&#x8BA4;&#x503C; <code>vector(time())</code>&#x3002;instant-vector &#x8868;&#x793A;&#x53C2;&#x6570;&#x7C7B;&#x578B;&#x3002;</p>
+<h2 id="abs"><a name="abs" class="anchor-navigation-ex-anchor" href="#abs"><i class="fa fa-link" aria-hidden="true"></i></a>1. abs()</h2>
+<p><code>abs(v instant-vector)</code> &#x8FD4;&#x56DE;&#x8F93;&#x5165;&#x5411;&#x91CF;&#x7684;&#x6240;&#x6709;&#x6837;&#x672C;&#x7684;&#x7EDD;&#x5BF9;&#x503C;&#x3002;</p>
+<h2 id="absent"><a name="absent" class="anchor-navigation-ex-anchor" href="#absent"><i class="fa fa-link" aria-hidden="true"></i></a>2. absent()</h2>
+<p><code>absent(v instant-vector)</code>&#xFF0C;&#x5982;&#x679C;&#x4F20;&#x9012;&#x7ED9;&#x5B83;&#x7684;&#x5411;&#x91CF;&#x53C2;&#x6570;&#x5177;&#x6709;&#x6837;&#x672C;&#x6570;&#x636E;&#xFF0C;&#x5219;&#x8FD4;&#x56DE;&#x7A7A;&#x5411;&#x91CF;&#xFF1B;&#x5982;&#x679C;&#x4F20;&#x9012;&#x7684;&#x5411;&#x91CF;&#x53C2;&#x6570;&#x6CA1;&#x6709;&#x6837;&#x672C;&#x6570;&#x636E;&#xFF0C;&#x5219;&#x8FD4;&#x56DE;&#x4E0D;&#x5E26;&#x5EA6;&#x91CF;&#x6307;&#x6807;&#x540D;&#x79F0;&#x4E14;&#x5E26;&#x6709;&#x6807;&#x7B7E;&#x7684;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#xFF0C;&#x4E14;&#x6837;&#x672C;&#x503C;&#x4E3A;1&#x3002;</p>
+<p>&#x5F53;&#x76D1;&#x63A7;&#x5EA6;&#x91CF;&#x6307;&#x6807;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x83B7;&#x53D6;&#x5230;&#x7684;&#x6837;&#x672C;&#x6570;&#x636E;&#x662F;&#x7A7A;&#x7684;&#xFF0C; &#x4F7F;&#x7528; absent &#x65B9;&#x6CD5;&#x5BF9;&#x544A;&#x8B66;&#x662F;&#x975E;&#x5E38;&#x6709;&#x7528;&#x7684;&#x3002;&#x4F8B;&#x5982;&#xFF1A;</p>
+<pre class="language-"><code class="lang-bash"><span class="token comment"># &#x8FD9;&#x91CC;&#x63D0;&#x4F9B;&#x7684;&#x5411;&#x91CF;&#x6709;&#x6837;&#x672C;&#x6570;&#x636E;</span>
+absent<span class="token punctuation">(</span>http_requests_total<span class="token punctuation">{</span>method<span class="token operator">=</span><span class="token string">&quot;get&quot;</span><span class="token punctuation">}</span><span class="token punctuation">)</span>  <span class="token operator">=</span><span class="token operator">&gt;</span> no data
+absent<span class="token punctuation">(</span>sum<span class="token punctuation">(</span>http_requests_total<span class="token punctuation">{</span>method<span class="token operator">=</span><span class="token string">&quot;get&quot;</span><span class="token punctuation">}</span><span class="token punctuation">))</span>  <span class="token operator">=</span><span class="token operator">&gt;</span> no data
+
+<span class="token comment"># &#x7531;&#x4E8E;&#x4E0D;&#x5B58;&#x5728;&#x5EA6;&#x91CF;&#x6307;&#x6807; nonexistent&#xFF0C;&#x6240;&#x4EE5; &#x8FD4;&#x56DE;&#x4E0D;&#x5E26;&#x5EA6;&#x91CF;&#x6307;&#x6807;&#x540D;&#x79F0;&#x4E14;&#x5E26;&#x6709;&#x6807;&#x7B7E;&#x7684;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#xFF0C;&#x4E14;&#x6837;&#x672C;&#x503C;&#x4E3A;1</span>
+absent<span class="token punctuation">(</span>nonexistent<span class="token punctuation">{</span>job<span class="token operator">=</span><span class="token string">&quot;myjob&quot;</span><span class="token punctuation">}</span><span class="token punctuation">)</span>  <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>job<span class="token operator">=</span><span class="token string">&quot;myjob&quot;</span><span class="token punctuation">}</span>  1
+<span class="token comment"># &#x6B63;&#x5219;&#x5339;&#x914D;&#x7684; instance &#x4E0D;&#x4F5C;&#x4E3A;&#x8FD4;&#x56DE; labels &#x4E2D;&#x7684;&#x4E00;&#x90E8;&#x5206;</span>
+absent<span class="token punctuation">(</span>nonexistent<span class="token punctuation">{</span>job<span class="token operator">=</span><span class="token string">&quot;myjob&quot;</span>,instance<span class="token operator">=</span>~<span class="token string">&quot;.*&quot;</span><span class="token punctuation">}</span><span class="token punctuation">)</span>  <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>job<span class="token operator">=</span><span class="token string">&quot;myjob&quot;</span><span class="token punctuation">}</span>  1
+
+<span class="token comment"># sum &#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x7684;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x4E0D;&#x5E26;&#x6709;&#x6807;&#x7B7E;&#xFF0C;&#x4E14;&#x6CA1;&#x6709;&#x6837;&#x672C;&#x6570;&#x636E;</span>
+absent<span class="token punctuation">(</span>sum<span class="token punctuation">(</span>nonexistent<span class="token punctuation">{</span>job<span class="token operator">=</span><span class="token string">&quot;myjob&quot;</span><span class="token punctuation">}</span><span class="token punctuation">))</span>  <span class="token operator">=</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>  1
+</code></pre>
+<h2 id="ceil"><a name="ceil" class="anchor-navigation-ex-anchor" href="#ceil"><i class="fa fa-link" aria-hidden="true"></i></a>3. ceil()</h2>
+<p><code>ceil(v instant-vector)</code> &#x5C06; v &#x4E2D;&#x6240;&#x6709;&#x5143;&#x7D20;&#x7684;&#x6837;&#x672C;&#x503C;&#x5411;&#x4E0A;&#x56DB;&#x820D;&#x4E94;&#x5165;&#x5230;&#x6700;&#x63A5;&#x8FD1;&#x7684;&#x6574;&#x6570;&#x3002;&#x4F8B;&#x5982;&#xFF1A;</p>
+<pre class="language-"><code class="lang-bash">node_load5<span class="token punctuation">{</span>instance<span class="token operator">=</span><span class="token string">&quot;192.168.1.75:9100&quot;</span><span class="token punctuation">}</span> <span class="token comment"># &#x7ED3;&#x679C;&#x4E3A; 2.79</span>
+ceil<span class="token punctuation">(</span>node_load5<span class="token punctuation">{</span>instance<span class="token operator">=</span><span class="token string">&quot;192.168.1.75:9100&quot;</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment"># &#x7ED3;&#x679C;&#x4E3A; 3</span>
+</code></pre>
+<h2 id="changes"><a name="changes" class="anchor-navigation-ex-anchor" href="#changes"><i class="fa fa-link" aria-hidden="true"></i></a>4. changes()</h2>
+<p><code>changes(v range-vector)</code> &#x8F93;&#x5165;&#x4E00;&#x4E2A;&#x533A;&#x95F4;&#x5411;&#x91CF;&#xFF0C; &#x8FD4;&#x56DE;&#x8FD9;&#x4E2A;&#x533A;&#x95F4;&#x5411;&#x91CF;&#x5185;&#x6BCF;&#x4E2A;&#x6837;&#x672C;&#x6570;&#x636E;&#x503C;&#x53D8;&#x5316;&#x7684;&#x6B21;&#x6570;&#xFF08;&#x77AC;&#x65F6;&#x5411;&#x91CF;&#xFF09;&#x3002;&#x4F8B;&#x5982;&#xFF1A;</p>
+<pre class="language-"><code class="lang-bash"><span class="token comment"># &#x5982;&#x679C;&#x6837;&#x672C;&#x6570;&#x636E;&#x503C;&#x6CA1;&#x6709;&#x53D1;&#x751F;&#x53D8;&#x5316;&#xFF0C;&#x5219;&#x8FD4;&#x56DE;&#x7ED3;&#x679C;&#x4E3A; 1</span>
+changes<span class="token punctuation">(</span>node_load5<span class="token punctuation">{</span>instance<span class="token operator">=</span><span class="token string">&quot;192.168.1.75:9100&quot;</span><span class="token punctuation">}</span><span class="token punctuation">[</span>1m<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment"># &#x7ED3;&#x679C;&#x4E3A; 1</span>
+</code></pre>
+<h2 id="clampmax"><a name="clampmax" class="anchor-navigation-ex-anchor" href="#clampmax"><i class="fa fa-link" aria-hidden="true"></i></a>5. clamp_max()</h2>
+<p><code>clamp_max(v instant-vector, max scalar)</code> &#x51FD;&#x6570;&#xFF0C;&#x8F93;&#x5165;&#x4E00;&#x4E2A;&#x77AC;&#x65F6;&#x5411;&#x91CF;&#x548C;&#x6700;&#x5927;&#x503C;&#xFF0C;&#x6837;&#x672C;&#x6570;&#x636E;&#x503C;&#x82E5;&#x5927;&#x4E8E; max&#xFF0C;&#x5219;&#x6539;&#x4E3A; max&#xFF0C;&#x5426;&#x5219;&#x4E0D;&#x53D8;&#x3002;&#x4F8B;&#x5982;&#xFF1A;</p>
+<pre class="language-"><code class="lang-bash">node_load5<span class="token punctuation">{</span>instance<span class="token operator">=</span><span class="token string">&quot;192.168.1.75:9100&quot;</span><span class="token punctuation">}</span> <span class="token comment"># &#x7ED3;&#x679C;&#x4E3A; 2.79</span>
+clamp_max<span class="token punctuation">(</span>node_load5<span class="token punctuation">{</span>instance<span class="token operator">=</span><span class="token string">&quot;192.168.1.75:9100&quot;</span><span class="token punctuation">}</span>, 2<span class="token punctuation">)</span> <span class="token comment"># &#x7ED3;&#x679C;&#x4E3A; 2</span>
+</code></pre>
+<h2 id="clampmin"><a name="clampmin" class="anchor-navigation-ex-anchor" href="#clampmin"><i class="fa fa-link" aria-hidden="true"></i></a>6. clamp_min()</h2>
+<p><code>clamp_min(v instant-vector, min scalar)</code> &#x51FD;&#x6570;&#xFF0C;&#x8F93;&#x5165;&#x4E00;&#x4E2A;&#x77AC;&#x65F6;&#x5411;&#x91CF;&#x548C;&#x6700;&#x5C0F;&#x503C;&#xFF0C;&#x6837;&#x672C;&#x6570;&#x636E;&#x503C;&#x82E5;&#x5C0F;&#x4E8E; min&#xFF0C;&#x5219;&#x6539;&#x4E3A; min&#xFF0C;&#x5426;&#x5219;&#x4E0D;&#x53D8;&#x3002;&#x4F8B;&#x5982;&#xFF1A;</p>
+<pre class="language-"><code class="lang-bash">node_load5<span class="token punctuation">{</span>instance<span class="token operator">=</span><span class="token string">&quot;192.168.1.75:9100&quot;</span><span class="token punctuation">}</span> <span class="token comment"># &#x7ED3;&#x679C;&#x4E3A; 2.79</span>
+clamp_min<span class="token punctuation">(</span>node_load5<span class="token punctuation">{</span>instance<span class="token operator">=</span><span class="token string">&quot;192.168.1.75:9100&quot;</span><span class="token punctuation">}</span>, 3<span class="token punctuation">)</span> <span class="token comment"># &#x7ED3;&#x679C;&#x4E3A; 3</span>
+</code></pre>
+<h2 id="dayofmonth"><a name="dayofmonth" class="anchor-navigation-ex-anchor" href="#dayofmonth"><i class="fa fa-link" aria-hidden="true"></i></a>7. day_of_month()</h2>
+<p><code>day_of_month(v=vector(time()) instant-vector)</code> &#x51FD;&#x6570;&#xFF0C;&#x8FD4;&#x56DE;&#x88AB;&#x7ED9;&#x5B9A; UTC &#x65F6;&#x95F4;&#x6240;&#x5728;&#x6708;&#x7684;&#x7B2C;&#x51E0;&#x5929;&#x3002;&#x8FD4;&#x56DE;&#x503C;&#x8303;&#x56F4;&#xFF1A;1~31&#x3002;</p>
+<h2 id="dayofweek"><a name="dayofweek" class="anchor-navigation-ex-anchor" href="#dayofweek"><i class="fa fa-link" aria-hidden="true"></i></a>8. day_of_week()</h2>
+<p><code>day_of_week(v=vector(time()) instant-vector)</code> &#x51FD;&#x6570;&#xFF0C;&#x8FD4;&#x56DE;&#x88AB;&#x7ED9;&#x5B9A; UTC &#x65F6;&#x95F4;&#x6240;&#x5728;&#x5468;&#x7684;&#x7B2C;&#x51E0;&#x5929;&#x3002;&#x8FD4;&#x56DE;&#x503C;&#x8303;&#x56F4;&#xFF1A;0~6&#xFF0C;0 &#x8868;&#x793A;&#x661F;&#x671F;&#x5929;&#x3002;</p>
+<h2 id="daysinmonth"><a name="daysinmonth" class="anchor-navigation-ex-anchor" href="#daysinmonth"><i class="fa fa-link" aria-hidden="true"></i></a>9. days_in_month()</h2>
+<p><code>days_in_month(v=vector(time()) instant-vector)</code> &#x51FD;&#x6570;&#xFF0C;&#x8FD4;&#x56DE;&#x5F53;&#x6708;&#x4E00;&#x5171;&#x6709;&#x591A;&#x5C11;&#x5929;&#x3002;&#x8FD4;&#x56DE;&#x503C;&#x8303;&#x56F4;&#xFF1A;28~31&#x3002;</p>
+<h2 id="delta"><a name="delta" class="anchor-navigation-ex-anchor" href="#delta"><i class="fa fa-link" aria-hidden="true"></i></a>10. delta()</h2>
+<p><code>delta(v range-vector)</code> &#x7684;&#x53C2;&#x6570;&#x662F;&#x4E00;&#x4E2A;&#x533A;&#x95F4;&#x5411;&#x91CF;&#xFF0C;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x77AC;&#x65F6;&#x5411;&#x91CF;&#x3002;&#x5B83;&#x8BA1;&#x7B97;&#x4E00;&#x4E2A;&#x533A;&#x95F4;&#x5411;&#x91CF; v &#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x548C;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x4E4B;&#x95F4;&#x7684;&#x5DEE;&#x503C;&#x3002;&#x7531;&#x4E8E;&#x8FD9;&#x4E2A;&#x503C;&#x88AB;&#x5916;&#x63A8;&#x5230;&#x6307;&#x5B9A;&#x7684;&#x6574;&#x4E2A;&#x65F6;&#x95F4;&#x8303;&#x56F4;&#xFF0C;&#x6240;&#x4EE5;&#x5373;&#x4F7F;&#x6837;&#x672C;&#x503C;&#x90FD;&#x662F;&#x6574;&#x6570;&#xFF0C;&#x4F60;&#x4ECD;&#x7136;&#x53EF;&#x80FD;&#x4F1A;&#x5F97;&#x5230;&#x4E00;&#x4E2A;&#x975E;&#x6574;&#x6570;&#x503C;&#x3002;</p>
+<p>&#x4F8B;&#x5982;&#xFF0C;&#x4E0B;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x8FD4;&#x56DE;&#x8FC7;&#x53BB;&#x4E24;&#x5C0F;&#x65F6;&#x7684; CPU &#x6E29;&#x5EA6;&#x5DEE;&#xFF1A;</p>
+<pre class="language-"><code class="lang-bash">delta<span class="token punctuation">(</span>cpu_temp_celsius<span class="token punctuation">{</span>host<span class="token operator">=</span><span class="token string">&quot;zeus&quot;</span><span class="token punctuation">}</span><span class="token punctuation">[</span>2h<span class="token punctuation">]</span><span class="token punctuation">)</span>
+</code></pre>
+<p>&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x4E00;&#x822C;&#x53EA;&#x7528;&#x5728; Gauge &#x7C7B;&#x578B;&#x7684;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x4E0A;&#x3002;</p>
+<h2 id="deriv"><a name="deriv" class="anchor-navigation-ex-anchor" href="#deriv"><i class="fa fa-link" aria-hidden="true"></i></a>11. deriv()</h2>
+<p><code>deriv(v range-vector)</code> &#x7684;&#x53C2;&#x6570;&#x662F;&#x4E00;&#x4E2A;&#x533A;&#x95F4;&#x5411;&#x91CF;,&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x77AC;&#x65F6;&#x5411;&#x91CF;&#x3002;&#x5B83;&#x4F7F;&#x7528;<a href="http://en.wikipedia.org/wiki/Simple_linear_regression" target="_blank">&#x7B80;&#x5355;&#x7684;&#x7EBF;&#x6027;&#x56DE;&#x5F52;</a>&#x8BA1;&#x7B97;&#x533A;&#x95F4;&#x5411;&#x91CF; v &#x4E2D;&#x5404;&#x4E2A;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x7684;&#x5BFC;&#x6570;&#x3002;</p>
+<p>&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x4E00;&#x822C;&#x53EA;&#x7528;&#x5728; Gauge &#x7C7B;&#x578B;&#x7684;&#x65F6;&#x95F4;&#x5E8F;&#x5217;&#x4E0A;&#x3002;</p>
+<h2 id="exp"><a name="exp" class="anchor-navigation-ex-anchor" href="#exp"><i class="fa fa-link" aria-hidden="true"></i></a>12. exp()</h2>
+<p><code>exp(v instant-vector)</code> &#x51FD;&#x6570;&#xFF0C;&#x8F93;&#x5165;&#x4E00;&#x4E2A;&#x77AC;&#x65F6;&#x5411;&#x91CF;&#xFF0C;&#x8FD4;&#x56DE;&#x5404;&#x4E2A;&#x6837;&#x672C;&#x503C;&#x7684; <code>e</code> &#x7684;&#x6307;&#x6570;&#x503C;&#xFF0C;&#x5373; e &#x7684; N &#x6B21;&#x65B9;&#x3002;&#x5F53; N &#x7684;&#x503C;&#x8DB3;&#x591F;&#x5927;&#x65F6;&#x4F1A;&#x8FD4;&#x56DE; <code>+Inf</code>&#x3002;&#x7279;&#x6B8A;&#x60C5;&#x51B5;&#x4E3A;&#xFF1A;</p>
+<ul>
+<li><code>Exp(+Inf) = +Inf</code></li>
+<li><code>Exp(NaN) = NaN</code></li>
+</ul>
+<h2 id="floor"><a name="floor" class="anchor-navigation-ex-anchor" href="#floor"><i class="fa fa-link" aria-hidden="true"></i></a>13. floor()</h2>
+<p><code>floor(v instant-vector)</code> &#x51FD;&#x6570;&#x4E0E; ceil() &#x51FD;&#x6570;&#x76F8;&#x53CD;&#xFF0C;&#x5C06; v &#x4E2D;&#x6240;&#x6709;&#x5143;&#x7D20;&#x7684;&#x6837;&#x672C;&#x503C;&#x5411;&#x4E0B;&#x56DB;&#x820D;&#x4E94;&#x5165;&#x5230;&#x6700;&#x63A5;&#x8FD1;&#x7684;&#x6574;&#x6570;&#x3002;</p>
+<h2 id="histogramquantile"><a name="histogramquantile" class="anchor-navigation-ex-anchor" href="#histogramquantile"><i class="fa fa-link" aria-hidden="true"></i></a>14. histogram_quantile()</h2>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="operators.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 操作符">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"PromQL 内置函数","level":"4.4.3","depth":2,"next":{"title":"第5节：存储","level":"4.5","depth":1,"ref":"","articles":[]},"previous":{"title":"操作符","level":"4.4.2","depth":2,"path":"4-prometheus/operators.md","ref":"4-prometheus/operators.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"https://www.gitbook.com/download/pdf/book/yangchuansheng/the-way-to-go","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"杨传胜","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Prometheus 中文文档","language":"zh-hans","gitbook":"*","description":"Prometheus 中文文档"},"file":{"path":"4-prometheus/functions.md","mtime":"2018-09-10T09:17:25.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-10T09:21:44.355Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-splitter/splitter.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-alerts/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/jquery.mark.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search-plus/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing-plus/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-theme-comscore/test.js"></script>
+        
+    
+
+    </body>
+</html>
+

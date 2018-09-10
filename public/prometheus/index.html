@@ -4,11 +4,11 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title> 序言 · Go入门指南</title>
+        <title> 序言 · Prometheus 中文文档</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
-        <meta name="author" content="Ivo Balbaert">
+        <meta name="author" content="杨传胜">
         
         
     
@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -233,6 +241,19 @@
             
         </li>
     
+        <li class="chapter " data-level="4.4.3" data-path="4-prometheus/functions.html">
+            
+                <a href="4-prometheus/functions.html">
+            
+                    
+                    PromQL 内置函数
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -363,20 +384,20 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;"><b></b>Prometheus &#x4E2D;&#x6587;&#x6587;&#x6863;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x5728;&#x7EBF;&#x9605;&#x8BFB;"><b></b>&#x5728;&#x7EBF;&#x9605;&#x8BFB;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x9879;&#x76EE;&#x6E90;&#x7801;"><b></b>&#x9879;&#x76EE;&#x6E90;&#x7801;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;"><b></b>&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x8D21;&#x732E;&#x8005;"><b></b>&#x8D21;&#x732E;&#x8005;</a></li></ul></ul></div><a href="#prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;"><a name="prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;" class="anchor-navigation-ex-anchor" href="#prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;"><i class="fa fa-link" aria-hidden="true"></i></a>Prometheus &#x4E2D;&#x6587;&#x6587;&#x6863;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;"><b> </b>Prometheus &#x4E2D;&#x6587;&#x6587;&#x6863;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x5728;&#x7EBF;&#x9605;&#x8BFB;"><b>1. </b>&#x5728;&#x7EBF;&#x9605;&#x8BFB;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x9879;&#x76EE;&#x6E90;&#x7801;"><b>2. </b>&#x9879;&#x76EE;&#x6E90;&#x7801;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;"><b>3. </b>&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x8D21;&#x732E;&#x8005;"><b>4. </b>&#x8D21;&#x732E;&#x8005;</a></li></ul></ul></div><a href="#prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;"><a name="prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;" class="anchor-navigation-ex-anchor" href="#prometheus-&#x4E2D;&#x6587;&#x6587;&#x6863;"><i class="fa fa-link" aria-hidden="true"></i></a> Prometheus &#x4E2D;&#x6587;&#x6587;&#x6863;</h1>
 <p>&#x968F;&#x7740;&#x5BB9;&#x5668;&#x6280;&#x672F;&#x7684;&#x8FC5;&#x901F;&#x53D1;&#x5C55;&#xFF0C;Kubernetes &#x5DF2;&#x7136;&#x6210;&#x4E3A;&#x5927;&#x5BB6;&#x8FFD;&#x6367;&#x7684;&#x5BB9;&#x5668;&#x96C6;&#x7FA4;&#x7BA1;&#x7406;&#x7CFB;&#x7EDF;&#x3002;<a href="https://prometheus.io" target="_blank">Prometheus</a> &#x4F5C;&#x4E3A;&#x751F;&#x6001;&#x5708; Cloud Native Computing Foundation&#xFF08;&#x7B80;&#x79F0;&#xFF1A;CNCF&#xFF09;&#x4E2D;&#x7684;&#x91CD;&#x8981;&#x4E00;&#x5458;,&#x5176;&#x6D3B;&#x8DC3;&#x5EA6;&#x4EC5;&#x6B21;&#x4E8E; Kubernetes, &#x73B0;&#x5DF2;&#x5E7F;&#x6CDB;&#x7528;&#x4E8E; Kubernetes &#x96C6;&#x7FA4;&#x7684;&#x76D1;&#x63A7;&#x7CFB;&#x7EDF;&#x4E2D;&#x3002;</p>
 <p>&#x672C;&#x6587;&#x662F; Prometheus &#x5B98;&#x65B9;&#x6587;&#x6863;&#x7684;&#x4E2D;&#x6587;&#x7248;&#xFF0C;&#x540C;&#x65F6;&#x5305;&#x62EC;&#x4E86;&#x672C;&#x4EBA;&#x5E73;&#x65F6;&#x5728;&#x4F7F;&#x7528; Prometheus &#x65F6;&#x7684;&#x53C2;&#x8003;&#x6307;&#x5357;&#x548C;&#x5B9E;&#x8DF5;&#x603B;&#x7ED3;&#xFF0C;&#x5F62;&#x6210;&#x4E00;&#x4E2A;&#x7CFB;&#x7EDF;&#x5316;&#x7684;&#x53C2;&#x8003;&#x6307;&#x5357;&#x4EE5;&#x65B9;&#x4FBF;&#x67E5;&#x9605;&#x3002;&#x6B22;&#x8FCE;&#x5927;&#x5BB6;&#x5173;&#x6CE8;&#x548C;&#x6DFB;&#x52A0;&#x5B8C;&#x5584;&#x5185;&#x5BB9;&#x3002;</p>
-<h2 id="&#x5728;&#x7EBF;&#x9605;&#x8BFB;"><a name="&#x5728;&#x7EBF;&#x9605;&#x8BFB;" class="anchor-navigation-ex-anchor" href="#&#x5728;&#x7EBF;&#x9605;&#x8BFB;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5728;&#x7EBF;&#x9605;&#x8BFB;</h2>
+<h2 id="&#x5728;&#x7EBF;&#x9605;&#x8BFB;"><a name="&#x5728;&#x7EBF;&#x9605;&#x8BFB;" class="anchor-navigation-ex-anchor" href="#&#x5728;&#x7EBF;&#x9605;&#x8BFB;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x5728;&#x7EBF;&#x9605;&#x8BFB;</h2>
 <ul>
 <li>Gitbook : <a href="https://www.yangcs.net/prometheus/" target="_blank">https://www.yangcs.net/prometheus/</a></li>
 <li>Gitbook &#x65B0;&#x7248; : <a href="https://ryanyang.gitbook.io/prometheus/" target="_blank">https://ryanyang.gitbook.io/prometheus/</a></li>
 </ul>
-<h2 id="&#x9879;&#x76EE;&#x6E90;&#x7801;"><a name="&#x9879;&#x76EE;&#x6E90;&#x7801;" class="anchor-navigation-ex-anchor" href="#&#x9879;&#x76EE;&#x6E90;&#x7801;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x9879;&#x76EE;&#x6E90;&#x7801;</h2>
+<h2 id="&#x9879;&#x76EE;&#x6E90;&#x7801;"><a name="&#x9879;&#x76EE;&#x6E90;&#x7801;" class="anchor-navigation-ex-anchor" href="#&#x9879;&#x76EE;&#x6E90;&#x7801;"><i class="fa fa-link" aria-hidden="true"></i></a>2. &#x9879;&#x76EE;&#x6E90;&#x7801;</h2>
 <p>&#x9879;&#x76EE;&#x6E90;&#x7801;&#x5B58;&#x653E;&#x4E8E; Github &#x4E0A;&#xFF0C;<a href="https://github.com/yangchuansheng/prometheus-handbook" target="_blank">https://github.com/yangchuansheng/prometheus-handbook</a>&#x3002;</p>
-<h2 id="&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;"><a name="&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;" class="anchor-navigation-ex-anchor" href="#&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;</h2>
+<h2 id="&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;"><a name="&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;" class="anchor-navigation-ex-anchor" href="#&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;"><i class="fa fa-link" aria-hidden="true"></i></a>3. &#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;</h2>
 <p>&#x626B;&#x7801;&#x5173;&#x6CE8;&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;&#xFF0C;&#x540E;&#x7EED;&#x90E8;&#x5206;&#x7AE0;&#x8282;&#x4F1A;&#x5728;&#x5FAE;&#x4FE1;&#x516C;&#x4F17;&#x53F7;&#x4E2D;&#x540C;&#x6B65;&#x66F4;&#x65B0;&#x3002;</p>
 <p><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg" alt=""></p>
-<h2 id="&#x8D21;&#x732E;&#x8005;"><a name="&#x8D21;&#x732E;&#x8005;" class="anchor-navigation-ex-anchor" href="#&#x8D21;&#x732E;&#x8005;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x8D21;&#x732E;&#x8005;</h2>
+<h2 id="&#x8D21;&#x732E;&#x8005;"><a name="&#x8D21;&#x732E;&#x8005;" class="anchor-navigation-ex-anchor" href="#&#x8D21;&#x732E;&#x8005;"><i class="fa fa-link" aria-hidden="true"></i></a>4. &#x8D21;&#x732E;&#x8005;</h2>
 <p>&#x6B22;&#x8FCE;&#x53C2;&#x4E0E;&#x8D21;&#x732E;&#x548C;&#x5B8C;&#x5584;&#x5185;&#x5BB9;&#xFF0C;&#x8D21;&#x732E;&#x65B9;&#x6CD5;&#x53C2;&#x8003; <a href="https://github.com/yangchuansheng/prometheus-handbook/blob/master/CONTRIBUTING.md" target="_blank">CONTRIBUTING</a>&#x3002;&#x611F;&#x8C22;&#x6240;&#x6709;&#x7684;&#x8D21;&#x732E;&#x8005;&#xFF0C;&#x8D21;&#x732E;&#x8005;&#x5217;&#x8868;&#x89C1; <a href="https://github.com/yangchuansheng/prometheus-handbook/graphs/contributors" target="_blank">contributors</a>&#x3002;</p>
 
                                 
@@ -417,7 +438,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":" 序言","level":"1.1","depth":1,"next":{"title":"第一节：Prometheus 简介","level":"2.1","depth":1,"path":"1-introduction/overview.md","ref":"1-introduction/overview.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button","download-pdf-link"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"download-pdf-link":{"label":"Download PDF","base":"https://www.gitbook.com/download/pdf/book/yangchuansheng/the-way-to-go","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"README.md","mtime":"2018-09-07T10:04:56.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-07T10:06:54.479Z"},"basePath":".","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":" 序言","level":"1.1","depth":1,"next":{"title":"第一节：Prometheus 简介","level":"2.1","depth":1,"path":"1-introduction/overview.md","ref":"1-introduction/overview.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"https://www.gitbook.com/download/pdf/book/yangchuansheng/the-way-to-go","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"杨传胜","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Prometheus 中文文档","language":"zh-hans","gitbook":"*","description":"Prometheus 中文文档"},"file":{"path":"README.md","mtime":"2018-09-07T14:30:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-10T09:21:44.355Z"},"basePath":".","book":{"language":""}});
         });
     </script>
 </div>
@@ -447,11 +468,11 @@
         
     
         
-        <script src="gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
         
     
         
-        <script src="gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        <script src="gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         
