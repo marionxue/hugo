@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,39 +2600,39 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;"><b></b>8.6 &#x5C06; map &#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;"><a name="86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;" class="anchor-navigation-ex-anchor" href="#86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;"><i class="fa fa-link" aria-hidden="true"></i></a>8.6 &#x5C06; map &#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;"><b> </b>8.6 &#x5C06; map &#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;"><a name="86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;" class="anchor-navigation-ex-anchor" href="#86-&#x5C06;-map-&#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;"><i class="fa fa-link" aria-hidden="true"></i></a> 8.6 &#x5C06; map &#x7684;&#x952E;&#x503C;&#x5BF9;&#x8C03;</h1>
 <p>&#x8FD9;&#x91CC;&#x5BF9;&#x8C03;&#x662F;&#x6307;&#x8C03;&#x6362; key &#x548C; value&#x3002;&#x5982;&#x679C; map &#x7684;&#x503C;&#x7C7B;&#x578B;&#x53EF;&#x4EE5;&#x4F5C;&#x4E3A; key &#x4E14;&#x6240;&#x6709;&#x7684; value &#x662F;&#x552F;&#x4E00;&#x7684;&#xFF0C;&#x90A3;&#x4E48;&#x901A;&#x8FC7;&#x4E0B;&#x9762;&#x7684;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x7B80;&#x5355;&#x7684;&#x505A;&#x5230;&#x952E;&#x503C;&#x5BF9;&#x8C03;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 8.7 <a href="examples/chapter_8/invert_map.go">invert_map.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-)
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">var</span> (
-    barVal = <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">int</span>{<span class="hljs-string">&quot;alpha&quot;</span>: <span class="hljs-number">34</span>, <span class="hljs-string">&quot;bravo&quot;</span>: <span class="hljs-number">56</span>, <span class="hljs-string">&quot;charlie&quot;</span>: <span class="hljs-number">23</span>,
-                            <span class="hljs-string">&quot;delta&quot;</span>: <span class="hljs-number">87</span>, <span class="hljs-string">&quot;echo&quot;</span>: <span class="hljs-number">56</span>, <span class="hljs-string">&quot;foxtrot&quot;</span>: <span class="hljs-number">12</span>,
-                            <span class="hljs-string">&quot;golf&quot;</span>: <span class="hljs-number">34</span>, <span class="hljs-string">&quot;hotel&quot;</span>: <span class="hljs-number">16</span>, <span class="hljs-string">&quot;indio&quot;</span>: <span class="hljs-number">87</span>,
-                            <span class="hljs-string">&quot;juliet&quot;</span>: <span class="hljs-number">65</span>, <span class="hljs-string">&quot;kili&quot;</span>: <span class="hljs-number">43</span>, <span class="hljs-string">&quot;lima&quot;</span>: <span class="hljs-number">98</span>}
-)
+<span class="token keyword">var</span> <span class="token punctuation">(</span>
+    barVal <span class="token operator">=</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token string">&quot;alpha&quot;</span><span class="token punctuation">:</span> <span class="token number">34</span><span class="token punctuation">,</span> <span class="token string">&quot;bravo&quot;</span><span class="token punctuation">:</span> <span class="token number">56</span><span class="token punctuation">,</span> <span class="token string">&quot;charlie&quot;</span><span class="token punctuation">:</span> <span class="token number">23</span><span class="token punctuation">,</span>
+                            <span class="token string">&quot;delta&quot;</span><span class="token punctuation">:</span> <span class="token number">87</span><span class="token punctuation">,</span> <span class="token string">&quot;echo&quot;</span><span class="token punctuation">:</span> <span class="token number">56</span><span class="token punctuation">,</span> <span class="token string">&quot;foxtrot&quot;</span><span class="token punctuation">:</span> <span class="token number">12</span><span class="token punctuation">,</span>
+                            <span class="token string">&quot;golf&quot;</span><span class="token punctuation">:</span> <span class="token number">34</span><span class="token punctuation">,</span> <span class="token string">&quot;hotel&quot;</span><span class="token punctuation">:</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token string">&quot;indio&quot;</span><span class="token punctuation">:</span> <span class="token number">87</span><span class="token punctuation">,</span>
+                            <span class="token string">&quot;juliet&quot;</span><span class="token punctuation">:</span> <span class="token number">65</span><span class="token punctuation">,</span> <span class="token string">&quot;kili&quot;</span><span class="token punctuation">:</span> <span class="token number">43</span><span class="token punctuation">,</span> <span class="token string">&quot;lima&quot;</span><span class="token punctuation">:</span> <span class="token number">98</span><span class="token punctuation">}</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    invMap := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">string</span>, <span class="hljs-built_in">len</span>(barVal))
-    <span class="hljs-keyword">for</span> k, v := <span class="hljs-keyword">range</span> barVal {
-        invMap[v] = k
-    }
-    fmt.Println(<span class="hljs-string">&quot;inverted:&quot;</span>)
-    <span class="hljs-keyword">for</span> k, v := <span class="hljs-keyword">range</span> invMap {
-        fmt.Printf(<span class="hljs-string">&quot;Key: %v, Value: %v / &quot;</span>, k, v)
-    }
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    invMap <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>barVal<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> barVal <span class="token punctuation">{</span>
+        invMap<span class="token punctuation">[</span>v<span class="token punctuation">]</span> <span class="token operator">=</span> k
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;inverted:&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> invMap <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Key: %v, Value: %v / &quot;</span><span class="token punctuation">,</span> k<span class="token punctuation">,</span> v<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF1A;</p>
-<pre><code>inverted:
+<pre class="language-"><code>inverted:
 Key: 34, Value: golf / Key: 23, Value: charlie / Key: 16, Value: hotel / Key: 87, Value: delta / Key: 98, Value: lima / Key: 12, Value: foxtrot / Key: 43, Value: kili / Key: 56, Value: bravo / Key: 65, Value: juliet /
 </code></pre><p>&#x5982;&#x679C;&#x539F;&#x59CB; value &#x503C;&#x4E0D;&#x552F;&#x4E00;&#x90A3;&#x4E48;&#x8FD9;&#x4E48;&#x505A;&#x80AF;&#x5B9A;&#x4F1A;&#x51FA;&#x9519;&#xFF1B;&#x4E3A;&#x4E86;&#x4FDD;&#x8BC1;&#x4E0D;&#x51FA;&#x9519;&#xFF0C;&#x5F53;&#x9047;&#x5230;&#x4E0D;&#x552F;&#x4E00;&#x7684; key &#x65F6;&#x5E94;&#x5F53;&#x7ACB;&#x523B;&#x505C;&#x6B62;&#xFF0C;&#x8FD9;&#x6837;&#x53EF;&#x80FD;&#x4F1A;&#x5BFC;&#x81F4;&#x6CA1;&#x6709;&#x5305;&#x542B;&#x539F; map &#x7684;&#x6240;&#x6709;&#x952E;&#x503C;&#x5BF9;&#xFF01;&#x4E00;&#x79CD;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#x5C31;&#x662F;&#x4ED4;&#x7EC6;&#x68C0;&#x67E5;&#x552F;&#x4E00;&#x6027;&#x5E76;&#x4E14;&#x4F7F;&#x7528;&#x591A;&#x503C; map&#xFF0C;&#x6BD4;&#x5982;&#x4F7F;&#x7528; <code>map[int][]string</code> &#x7C7B;&#x578B;&#x3002;</p>
 <p><strong>&#x7EC3;&#x4E60; 8.2</strong></p>
 <p>&#x6784;&#x9020;&#x4E00;&#x4E2A;&#x5C06;&#x82F1;&#x6587;&#x996E;&#x6599;&#x540D;&#x6620;&#x5C04;&#x4E3A;&#x6CD5;&#x8BED;&#xFF08;&#x6216;&#x8005;&#x4EFB;&#x610F;&#x4F60;&#x7684;&#x6BCD;&#x8BED;&#xFF09;&#x7684;&#x96C6;&#x5408;&#xFF1B;&#x5148;&#x6253;&#x5370;&#x6240;&#x6709;&#x7684;&#x996E;&#x6599;&#xFF0C;&#x7136;&#x540E;&#x6253;&#x5370;&#x539F;&#x540D;&#x548C;&#x7FFB;&#x8BD1;&#x540E;&#x7684;&#x540D;&#x5B57;&#x3002;&#x63A5;&#x4E0B;&#x6765;&#x6309;&#x7167;&#x82F1;&#x6587;&#x540D;&#x6392;&#x5E8F;&#x540E;&#x518D;&#x6253;&#x5370;&#x51FA;&#x6765;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="08.5.html">map &#x7684;&#x6392;&#x5E8F;</a></li>
@@ -2673,7 +2681,7 @@ Key: 34, Value: golf / Key: 23, Value: charlie / Key: 16, Value: hotel / Key: 87
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"将 map 的键值对调","level":"3.5.6","depth":2,"next":{"title":"第9章：包（package）","level":"3.6","depth":1,"path":"eBook/09.0.md","ref":"eBook/09.0.md","articles":[{"title":"标准库概述","level":"3.6.1","depth":2,"path":"eBook/09.1.md","ref":"eBook/09.1.md","articles":[]},{"title":"regexp 包","level":"3.6.2","depth":2,"path":"eBook/09.2.md","ref":"eBook/09.2.md","articles":[]},{"title":"锁和 sync 包","level":"3.6.3","depth":2,"path":"eBook/09.3.md","ref":"eBook/09.3.md","articles":[]},{"title":"精密计算和 big 包","level":"3.6.4","depth":2,"path":"eBook/09.4.md","ref":"eBook/09.4.md","articles":[]},{"title":"自定义包和可见性","level":"3.6.5","depth":2,"path":"eBook/09.5.md","ref":"eBook/09.5.md","articles":[]},{"title":"为自定义包使用 godoc","level":"3.6.6","depth":2,"path":"eBook/09.6.md","ref":"eBook/09.6.md","articles":[]},{"title":"使用 go install 安装自定义包","level":"3.6.7","depth":2,"path":"eBook/09.7.md","ref":"eBook/09.7.md","articles":[]},{"title":"自定义包的目录结构、go install 和 go test","level":"3.6.8","depth":2,"path":"eBook/09.8.md","ref":"eBook/09.8.md","articles":[]},{"title":"通过 Git 打包和安装","level":"3.6.9","depth":2,"path":"eBook/09.9.md","ref":"eBook/09.9.md","articles":[]},{"title":"Go 的外部包和项目","level":"3.6.10","depth":2,"path":"eBook/09.10.md","ref":"eBook/09.10.md","articles":[]},{"title":"在 Go 程序中使用外部库","level":"3.6.11","depth":2,"path":"eBook/09.11.md","ref":"eBook/09.11.md","articles":[]}]},"previous":{"title":"map 的排序","level":"3.5.5","depth":2,"path":"eBook/08.5.md","ref":"eBook/08.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/08.6.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"将 map 的键值对调","level":"3.5.6","depth":2,"next":{"title":"第9章：包（package）","level":"3.6","depth":1,"path":"eBook/09.0.md","ref":"eBook/09.0.md","articles":[{"title":"标准库概述","level":"3.6.1","depth":2,"path":"eBook/09.1.md","ref":"eBook/09.1.md","articles":[]},{"title":"regexp 包","level":"3.6.2","depth":2,"path":"eBook/09.2.md","ref":"eBook/09.2.md","articles":[]},{"title":"锁和 sync 包","level":"3.6.3","depth":2,"path":"eBook/09.3.md","ref":"eBook/09.3.md","articles":[]},{"title":"精密计算和 big 包","level":"3.6.4","depth":2,"path":"eBook/09.4.md","ref":"eBook/09.4.md","articles":[]},{"title":"自定义包和可见性","level":"3.6.5","depth":2,"path":"eBook/09.5.md","ref":"eBook/09.5.md","articles":[]},{"title":"为自定义包使用 godoc","level":"3.6.6","depth":2,"path":"eBook/09.6.md","ref":"eBook/09.6.md","articles":[]},{"title":"使用 go install 安装自定义包","level":"3.6.7","depth":2,"path":"eBook/09.7.md","ref":"eBook/09.7.md","articles":[]},{"title":"自定义包的目录结构、go install 和 go test","level":"3.6.8","depth":2,"path":"eBook/09.8.md","ref":"eBook/09.8.md","articles":[]},{"title":"通过 Git 打包和安装","level":"3.6.9","depth":2,"path":"eBook/09.9.md","ref":"eBook/09.9.md","articles":[]},{"title":"Go 的外部包和项目","level":"3.6.10","depth":2,"path":"eBook/09.10.md","ref":"eBook/09.10.md","articles":[]},{"title":"在 Go 程序中使用外部库","level":"3.6.11","depth":2,"path":"eBook/09.11.md","ref":"eBook/09.11.md","articles":[]}]},"previous":{"title":"map 的排序","level":"3.5.5","depth":2,"path":"eBook/08.5.md","ref":"eBook/08.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/08.6.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2703,7 +2711,11 @@ Key: 34, Value: golf / Key: 23, Value: charlie / Key: 16, Value: hotel / Key: 87
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

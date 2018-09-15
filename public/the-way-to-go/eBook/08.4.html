@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,35 +2600,35 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;"><b></b>8.4 map &#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;"><a name="84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;" class="anchor-navigation-ex-anchor" href="#84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;"><i class="fa fa-link" aria-hidden="true"></i></a>8.4 map &#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;"><b> </b>8.4 map &#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;"><a name="84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;" class="anchor-navigation-ex-anchor" href="#84-map-&#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;"><i class="fa fa-link" aria-hidden="true"></i></a> 8.4 map &#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;</h1>
 <p>&#x5047;&#x8BBE;&#x6211;&#x4EEC;&#x60F3;&#x83B7;&#x53D6;&#x4E00;&#x4E2A; map &#x7C7B;&#x578B;&#x7684;&#x5207;&#x7247;&#xFF0C;&#x6211;&#x4EEC;&#x5FC5;&#x987B;&#x4F7F;&#x7528;&#x4E24;&#x6B21; <code>make()</code> &#x51FD;&#x6570;&#xFF0C;&#x7B2C;&#x4E00;&#x6B21;&#x5206;&#x914D;&#x5207;&#x7247;&#xFF0C;&#x7B2C;&#x4E8C;&#x6B21;&#x5206;&#x914D; &#x5207;&#x7247;&#x4E2D;&#x6BCF;&#x4E2A; map &#x5143;&#x7D20;&#xFF08;&#x53C2;&#x89C1;&#x4E0B;&#x9762;&#x7684;&#x4F8B;&#x5B50; 8.4&#xFF09;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 8.4 <a href="examples/chapter_8/maps_forrange2.go">maps_forrange2.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-comment">// Version A:</span>
-    items := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">int</span>, <span class="hljs-number">5</span>)
-    <span class="hljs-keyword">for</span> i:= <span class="hljs-keyword">range</span> items {
-        items[i] = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">int</span>, <span class="hljs-number">1</span>)
-        items[i][<span class="hljs-number">1</span>] = <span class="hljs-number">2</span>
-    }
-    fmt.Printf(<span class="hljs-string">&quot;Version A: Value of items: %v\n&quot;</span>, items)
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Version A:</span>
+    items <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i<span class="token operator">:=</span> <span class="token keyword">range</span> items <span class="token punctuation">{</span>
+        items<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+        items<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span>
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Version A: Value of items: %v\n&quot;</span><span class="token punctuation">,</span> items<span class="token punctuation">)</span>
 
-    <span class="hljs-comment">// Version B: NOT GOOD!</span>
-    items2 := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">int</span>, <span class="hljs-number">5</span>)
-    <span class="hljs-keyword">for</span> _, item := <span class="hljs-keyword">range</span> items2 {
-        item = <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">int</span>]<span class="hljs-keyword">int</span>, <span class="hljs-number">1</span>) <span class="hljs-comment">// item is only a copy of the slice element.</span>
-        item[<span class="hljs-number">1</span>] = <span class="hljs-number">2</span> <span class="hljs-comment">// This &apos;item&apos; will be lost on the next iteration.</span>
-    }
-    fmt.Printf(<span class="hljs-string">&quot;Version B: Value of items: %v\n&quot;</span>, items2)
-}
+    <span class="token comment">// Version B: NOT GOOD!</span>
+    items2 <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> item <span class="token operator">:=</span> <span class="token keyword">range</span> items2 <span class="token punctuation">{</span>
+        item <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment">// item is only a copy of the slice element.</span>
+        item<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span> <span class="token comment">// This &apos;item&apos; will be lost on the next iteration.</span>
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Version B: Value of items: %v\n&quot;</span><span class="token punctuation">,</span> items2<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF1A;</p>
-<pre><code>Version A: Value of items: [map[1:2] map[1:2] map[1:2] map[1:2] map[1:2]]
+<pre class="language-"><code>Version A: Value of items: [map[1:2] map[1:2] map[1:2] map[1:2] map[1:2]]
 Version B: Value of items: [map[] map[] map[] map[] map[]]
 </code></pre><p>&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x5E94;&#x5F53;&#x50CF; A &#x7248;&#x672C;&#x90A3;&#x6837;&#x901A;&#x8FC7;&#x7D22;&#x5F15;&#x4F7F;&#x7528;&#x5207;&#x7247;&#x7684; map &#x5143;&#x7D20;&#x3002;&#x5728; B &#x7248;&#x672C;&#x4E2D;&#x83B7;&#x5F97;&#x7684;&#x9879;&#x53EA;&#x662F; map &#x503C;&#x7684;&#x4E00;&#x4E2A;&#x62F7;&#x8D1D;&#x800C;&#x5DF2;&#xFF0C;&#x6240;&#x4EE5;&#x771F;&#x6B63;&#x7684; map &#x5143;&#x7D20;&#x6CA1;&#x6709;&#x5F97;&#x5230;&#x521D;&#x59CB;&#x5316;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="08.3.html">for-range &#x7684;&#x914D;&#x5957;&#x7528;&#x6CD5;</a></li>
@@ -2669,7 +2677,7 @@ Version B: Value of items: [map[] map[] map[] map[] map[]]
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"map 类型的切片","level":"3.5.4","depth":2,"next":{"title":"map 的排序","level":"3.5.5","depth":2,"path":"eBook/08.5.md","ref":"eBook/08.5.md","articles":[]},"previous":{"title":"for-range 的配套用法","level":"3.5.3","depth":2,"path":"eBook/08.3.md","ref":"eBook/08.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/08.4.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"map 类型的切片","level":"3.5.4","depth":2,"next":{"title":"map 的排序","level":"3.5.5","depth":2,"path":"eBook/08.5.md","ref":"eBook/08.5.md","articles":[]},"previous":{"title":"for-range 的配套用法","level":"3.5.3","depth":2,"path":"eBook/08.3.md","ref":"eBook/08.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/08.4.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2699,7 +2707,11 @@ Version B: Value of items: [map[] map[] map[] map[] map[]]
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

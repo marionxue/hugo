@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,132 +2600,132 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#131-&#x9519;&#x8BEF;&#x5904;&#x7406;"><b></b>13.1 &#x9519;&#x8BEF;&#x5904;&#x7406;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;"><b></b>13.1.1 &#x5B9A;&#x4E49;&#x9519;&#x8BEF;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;"><b></b>13.1.2 &#x7528; fmt &#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#131-&#x9519;&#x8BEF;&#x5904;&#x7406;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="131-&#x9519;&#x8BEF;&#x5904;&#x7406;"><a name="131-&#x9519;&#x8BEF;&#x5904;&#x7406;" class="anchor-navigation-ex-anchor" href="#131-&#x9519;&#x8BEF;&#x5904;&#x7406;"><i class="fa fa-link" aria-hidden="true"></i></a>13.1 &#x9519;&#x8BEF;&#x5904;&#x7406;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#131-&#x9519;&#x8BEF;&#x5904;&#x7406;"><b> </b>13.1 &#x9519;&#x8BEF;&#x5904;&#x7406;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;"><b>1. </b>13.1.1 &#x5B9A;&#x4E49;&#x9519;&#x8BEF;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;"><b>2. </b>13.1.2 &#x7528; fmt &#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>3. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#131-&#x9519;&#x8BEF;&#x5904;&#x7406;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="131-&#x9519;&#x8BEF;&#x5904;&#x7406;"><a name="131-&#x9519;&#x8BEF;&#x5904;&#x7406;" class="anchor-navigation-ex-anchor" href="#131-&#x9519;&#x8BEF;&#x5904;&#x7406;"><i class="fa fa-link" aria-hidden="true"></i></a> 13.1 &#x9519;&#x8BEF;&#x5904;&#x7406;</h1>
 <p>Go &#x6709;&#x4E00;&#x4E2A;&#x9884;&#x5148;&#x5B9A;&#x4E49;&#x7684; error &#x63A5;&#x53E3;&#x7C7B;&#x578B;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">type</span> error <span class="hljs-keyword">interface</span> {
-    Error() <span class="hljs-keyword">string</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">type</span> <span class="token builtin">error</span> <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+    <span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x9519;&#x8BEF;&#x503C;&#x7528;&#x6765;&#x8868;&#x793A;&#x5F02;&#x5E38;&#x72B6;&#x6001;&#xFF1B;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728; <a href="05.2.html">5.2 &#x8282;</a>&#x4E2D;&#x770B;&#x5230;&#x5B83;&#x7684;&#x6807;&#x51C6;&#x7528;&#x6CD5;&#x3002;&#x5904;&#x7406;&#x6587;&#x4EF6;&#x64CD;&#x4F5C;&#x7684;&#x4F8B;&#x5B50;&#x53EF;&#x4EE5;&#x5728; 12 &#x7AE0;&#x627E;&#x5230;&#xFF1B;&#x6211;&#x4EEC;&#x5C06;&#x5728; 15 &#x7AE0;&#x770B;&#x5230;&#x7F51;&#x7EDC;&#x64CD;&#x4F5C;&#x7684;&#x4F8B;&#x5B50;&#x3002;errors &#x5305;&#x4E2D;&#x6709;&#x4E00;&#x4E2A; errorString &#x7ED3;&#x6784;&#x4F53;&#x5B9E;&#x73B0;&#x4E86; error &#x63A5;&#x53E3;&#x3002;&#x5F53;&#x7A0B;&#x5E8F;&#x5904;&#x4E8E;&#x9519;&#x8BEF;&#x72B6;&#x6001;&#x65F6;&#x53EF;&#x4EE5;&#x7528; <code>os.Exit(1)</code> &#x6765;&#x4E2D;&#x6B62;&#x8FD0;&#x884C;&#x3002;</p>
-<h2 id="1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;"><a name="1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;" class="anchor-navigation-ex-anchor" href="#1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;"><i class="fa fa-link" aria-hidden="true"></i></a>13.1.1 &#x5B9A;&#x4E49;&#x9519;&#x8BEF;</h2>
+<h2 id="1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;"><a name="1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;" class="anchor-navigation-ex-anchor" href="#1311-&#x5B9A;&#x4E49;&#x9519;&#x8BEF;"><i class="fa fa-link" aria-hidden="true"></i></a>1. 13.1.1 &#x5B9A;&#x4E49;&#x9519;&#x8BEF;</h2>
 <p>&#x4EFB;&#x4F55;&#x65F6;&#x5019;&#x5F53;&#x4F60;&#x9700;&#x8981;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x9519;&#x8BEF;&#x7C7B;&#x578B;&#xFF0C;&#x90FD;&#x53EF;&#x4EE5;&#x7528; <code>errors</code>&#xFF08;&#x5FC5;&#x987B;&#x5148; import&#xFF09;&#x5305;&#x7684; <code>errors.New</code> &#x51FD;&#x6570;&#x63A5;&#x6536;&#x5408;&#x9002;&#x7684;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x6765;&#x521B;&#x5EFA;&#xFF0C;&#x50CF;&#x4E0B;&#x9762;&#x8FD9;&#x6837;&#xFF1A;</p>
-<pre><code class="lang-go">err := errors.New(&#x201C;math - square root of negative number&#x201D;)
+<pre class="language-"><code class="lang-go">err <span class="token operator">:=</span> errors<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token string">&quot;math - square root of negative number&quot;</span><span class="token punctuation">)</span>
 </code></pre>
 <p>&#x5728;&#x793A;&#x4F8B; 13.1 &#x4E2D;&#x4F60;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x7528;&#x4F8B;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 13.1 <a href="examples/chapter_13/errors.go">errors.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// errors.go</span>
-<span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token comment">// errors.go</span>
+<span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;errors&quot;</span>
-    <span class="hljs-string">&quot;fmt&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;errors&quot;</span>
+    <span class="token string">&quot;fmt&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">var</span> errNotFound error = errors.New(<span class="hljs-string">&quot;Not found error&quot;</span>)
+<span class="token keyword">var</span> errNotFound <span class="token builtin">error</span> <span class="token operator">=</span> errors<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token string">&quot;Not found error&quot;</span><span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    fmt.Printf(<span class="hljs-string">&quot;error: %v&quot;</span>, errNotFound)
-}
-<span class="hljs-comment">// error: Not found error</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;error: %v&quot;</span><span class="token punctuation">,</span> errNotFound<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// error: Not found error</span>
 </code></pre>
 <p>&#x53EF;&#x4EE5;&#x628A;&#x5B83;&#x7528;&#x4E8E;&#x8BA1;&#x7B97;&#x5E73;&#x65B9;&#x6839;&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x6D4B;&#x8BD5;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> Sqrt(f <span class="hljs-keyword">float64</span>) (<span class="hljs-keyword">float64</span>, error) {
-    <span class="hljs-keyword">if</span> f &lt; <span class="hljs-number">0</span> {
-        <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, errors.New (<span class="hljs-string">&quot;math - square root of negative number&quot;</span>)
-    }
-   <span class="hljs-comment">// implementation of Sqrt</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">Sqrt</span><span class="token punctuation">(</span>f <span class="token builtin">float64</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">float64</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> f <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">,</span> errors<span class="token punctuation">.</span>New <span class="token punctuation">(</span><span class="token string">&quot;math - square root of negative number&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+   <span class="token comment">// implementation of Sqrt</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4F60;&#x53EF;&#x4EE5;&#x50CF;&#x4E0B;&#x9762;&#x8FD9;&#x6837;&#x8C03;&#x7528; Sqrt &#x51FD;&#x6570;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> f, err := Sqrt(<span class="hljs-number">-1</span>); err != <span class="hljs-literal">nil</span> {
-    fmt.Printf(<span class="hljs-string">&quot;Error: %s\n&quot;</span>, err)
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> f<span class="token punctuation">,</span> err <span class="token operator">:=</span> <span class="token function">Sqrt</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Error: %s\n&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x7531;&#x4E8E; <code>fmt.Printf</code> &#x4F1A;&#x81EA;&#x52A8;&#x8C03;&#x7528; <code>String()</code> &#x65B9;&#x6CD5; &#xFF08;&#x53C2;&#x89C1; <a href="10.7.html">10.7 &#x8282;</a>&#xFF09;&#xFF0C;&#x6240;&#x4EE5;&#x9519;&#x8BEF;&#x4FE1;&#x606F; &#x201C;Error: math - square root of negative number&#x201D; &#x4F1A;&#x6253;&#x5370;&#x51FA;&#x6765;&#x3002;&#x901A;&#x5E38;&#xFF08;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#xFF09;&#x90FD;&#x4F1A;&#x6709;&#x50CF; &#x201C;Error:&#x201D; &#x8FD9;&#x6837;&#x7684;&#x524D;&#x7F00;&#xFF0C;&#x6240;&#x4EE5;&#x4F60;&#x7684;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x4E0D;&#x8981;&#x4EE5;&#x5927;&#x5199;&#x5B57;&#x6BCD;&#x5F00;&#x5934;&#x3002;</p>
 <p>&#x5728;&#x5927;&#x90E8;&#x5206;&#x60C5;&#x51B5;&#x4E0B;&#x81EA;&#x5B9A;&#x4E49;&#x9519;&#x8BEF;&#x7ED3;&#x6784;&#x7C7B;&#x578B;&#x5F88;&#x6709;&#x610F;&#x4E49;&#x7684;&#xFF0C;&#x53EF;&#x4EE5;&#x5305;&#x542B;&#x9664;&#x4E86;&#xFF08;&#x4F4E;&#x5C42;&#x7EA7;&#x7684;&#xFF09;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#x4EE5;&#x5916;&#x7684;&#x5176;&#x5B83;&#x6709;&#x7528;&#x4FE1;&#x606F;&#xFF0C;&#x4F8B;&#x5982;&#xFF0C;&#x6B63;&#x5728;&#x8FDB;&#x884C;&#x7684;&#x64CD;&#x4F5C;&#xFF08;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x7B49;&#xFF09;&#xFF0C;&#x5168;&#x8DEF;&#x5F84;&#x6216;&#x540D;&#x5B57;&#x3002;&#x770B;&#x4E0B;&#x9762;&#x4F8B;&#x5B50;&#x4E2D; os.Open &#x64CD;&#x4F5C;&#x89E6;&#x53D1;&#x7684; PathError &#x9519;&#x8BEF;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// PathError records an error and the operation and file path that caused it.</span>
-<span class="hljs-keyword">type</span> PathError <span class="hljs-keyword">struct</span> {
-    Op <span class="hljs-keyword">string</span>    <span class="hljs-comment">// &quot;open&quot;, &quot;unlink&quot;, etc.</span>
-    Path <span class="hljs-keyword">string</span>  <span class="hljs-comment">// The associated file.</span>
-    Err error  <span class="hljs-comment">// Returned by the system call.</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token comment">// PathError records an error and the operation and file path that caused it.</span>
+<span class="token keyword">type</span> PathError <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Op <span class="token builtin">string</span>    <span class="token comment">// &quot;open&quot;, &quot;unlink&quot;, etc.</span>
+    Path <span class="token builtin">string</span>  <span class="token comment">// The associated file.</span>
+    Err <span class="token builtin">error</span>  <span class="token comment">// Returned by the system call.</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> (e *PathError) String() <span class="hljs-keyword">string</span> {
-    <span class="hljs-keyword">return</span> e.Op + <span class="hljs-string">&quot; &quot;</span> + e.Path + <span class="hljs-string">&quot;: &quot;</span>+ e.Err.Error()
-}
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>PathError<span class="token punctuation">)</span> <span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> e<span class="token punctuation">.</span>Op <span class="token operator">+</span> <span class="token string">&quot; &quot;</span> <span class="token operator">+</span> e<span class="token punctuation">.</span>Path <span class="token operator">+</span> <span class="token string">&quot;: &quot;</span><span class="token operator">+</span> e<span class="token punctuation">.</span>Err<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5982;&#x679C;&#x6709;&#x4E0D;&#x540C;&#x9519;&#x8BEF;&#x6761;&#x4EF6;&#x53EF;&#x80FD;&#x53D1;&#x751F;&#xFF0C;&#x90A3;&#x4E48;&#x5BF9;&#x5B9E;&#x9645;&#x7684;&#x9519;&#x8BEF;&#x4F7F;&#x7528;&#x7C7B;&#x578B;&#x65AD;&#x8A00;&#x6216;&#x7C7B;&#x578B;&#x5224;&#x65AD;&#xFF08;type-switch&#xFF09;&#x662F;&#x5F88;&#x6709;&#x7528;&#x7684;&#xFF0C;&#x5E76;&#x4E14;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x9519;&#x8BEF;&#x573A;&#x666F;&#x505A;&#x4E00;&#x4E9B;&#x8865;&#x6551;&#x548C;&#x6062;&#x590D;&#x64CD;&#x4F5C;&#x3002;</p>
-<pre><code class="lang-go"><span class="hljs-comment">//  err != nil</span>
-<span class="hljs-keyword">if</span> e, ok := err.(*os.PathError); ok {
-    <span class="hljs-comment">// remedy situation</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token comment">//  err != nil</span>
+<span class="token keyword">if</span> e<span class="token punctuation">,</span> ok <span class="token operator">:=</span> err<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>os<span class="token punctuation">.</span>PathError<span class="token punctuation">)</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+    <span class="token comment">// remedy situation</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x6216;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">switch</span> err := err.(<span class="hljs-keyword">type</span>) {
-    <span class="hljs-keyword">case</span> ParseError:
-        PrintParseError(err)
-    <span class="hljs-keyword">case</span> PathError:
-        PrintPathError(err)
-    ...
-    <span class="hljs-keyword">default</span>:
-        fmt.Printf(<span class="hljs-string">&quot;Not a special error, just %s\n&quot;</span>, err)
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">switch</span> err <span class="token operator">:=</span> err<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token keyword">type</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> ParseError<span class="token punctuation">:</span>
+        <span class="token function">PrintParseError</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+    <span class="token keyword">case</span> PathError<span class="token punctuation">:</span>
+        <span class="token function">PrintPathError</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+    <span class="token operator">...</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Not a special error, just %s\n&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4F5C;&#x4E3A;&#x7B2C;&#x4E8C;&#x4E2A;&#x4F8B;&#x5B50;&#x8003;&#x8651;&#x7528; json &#x5305;&#x7684;&#x60C5;&#x51B5;&#x3002;&#x5F53; json.Decode &#x5728;&#x89E3;&#x6790; JSON &#x6587;&#x6863;&#x53D1;&#x751F;&#x8BED;&#x6CD5;&#x9519;&#x8BEF;&#x65F6;&#xFF0C;&#x6307;&#x5B9A;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A; SyntaxError &#x7C7B;&#x578B;&#x7684;&#x9519;&#x8BEF;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">type</span> SyntaxError <span class="hljs-keyword">struct</span> {
-    msg    <span class="hljs-keyword">string</span> <span class="hljs-comment">// description of error</span>
-<span class="hljs-comment">// error occurred after reading Offset bytes, from which line and columnnr can be obtained</span>
-    Offset <span class="hljs-keyword">int64</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">type</span> SyntaxError <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    msg    <span class="token builtin">string</span> <span class="token comment">// description of error</span>
+<span class="token comment">// error occurred after reading Offset bytes, from which line and columnnr can be obtained</span>
+    Offset <span class="token builtin">int64</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> (e *SyntaxError) String() <span class="hljs-keyword">string</span> { <span class="hljs-keyword">return</span> e.msg }
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>SyntaxError<span class="token punctuation">)</span> <span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> e<span class="token punctuation">.</span>msg <span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5728;&#x8C03;&#x7528;&#x4EE3;&#x7801;&#x4E2D;&#x4F60;&#x53EF;&#x4EE5;&#x50CF;&#x8FD9;&#x6837;&#x7528;&#x7C7B;&#x578B;&#x65AD;&#x8A00;&#x6D4B;&#x8BD5;&#x9519;&#x8BEF;&#x662F;&#x4E0D;&#x662F;&#x4E0A;&#x9762;&#x7684;&#x7C7B;&#x578B;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> serr, ok := err.(*json.SyntaxError); ok {
-    line, col := findLine(f, serr.Offset)
-    <span class="hljs-keyword">return</span> fmt.Errorf(<span class="hljs-string">&quot;%s:%d:%d: %v&quot;</span>, f.Name(), line, col, err)
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> serr<span class="token punctuation">,</span> ok <span class="token operator">:=</span> err<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>json<span class="token punctuation">.</span>SyntaxError<span class="token punctuation">)</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+    line<span class="token punctuation">,</span> col <span class="token operator">:=</span> <span class="token function">findLine</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> serr<span class="token punctuation">.</span>Offset<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;%s:%d:%d: %v&quot;</span><span class="token punctuation">,</span> f<span class="token punctuation">.</span><span class="token function">Name</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> line<span class="token punctuation">,</span> col<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5305;&#x4E5F;&#x53EF;&#x4EE5;&#x7528;&#x989D;&#x5916;&#x7684;&#x65B9;&#x6CD5;&#xFF08;methods&#xFF09;&#x5B9A;&#x4E49;&#x7279;&#x5B9A;&#x7684;&#x9519;&#x8BEF;&#xFF0C;&#x6BD4;&#x5982; net.Error&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> net
-<span class="hljs-keyword">type</span> Error <span class="hljs-keyword">interface</span> {
-    Timeout() <span class="hljs-keyword">bool</span>   <span class="hljs-comment">// Is the error a timeout?</span>
-    Temporary() <span class="hljs-keyword">bool</span> <span class="hljs-comment">// Is the error temporary?</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> net
+<span class="token keyword">type</span> Error <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+    <span class="token function">Timeout</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">bool</span>   <span class="token comment">// Is the error a timeout?</span>
+    <span class="token function">Temporary</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token comment">// Is the error temporary?</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5728; <a href="15.1.html">15.1 &#x8282;</a> &#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x600E;&#x4E48;&#x4F7F;&#x7528;&#x5B83;&#x3002;</p>
 <p>&#x6B63;&#x5982;&#x4F60;&#x6240;&#x770B;&#x5230;&#x7684;&#x4E00;&#x6837;&#xFF0C;&#x6240;&#x6709;&#x7684;&#x4F8B;&#x5B50;&#x90FD;&#x9075;&#x5FAA;&#x540C;&#x4E00;&#x79CD;&#x547D;&#x540D;&#x89C4;&#x8303;&#xFF1A;&#x9519;&#x8BEF;&#x7C7B;&#x578B;&#x4EE5; &#x201C;Error&#x201D; &#x7ED3;&#x5C3E;&#xFF0C;&#x9519;&#x8BEF;&#x53D8;&#x91CF;&#x4EE5; &#x201C;err&#x201D; &#x6216; &#x201C;Err&#x201D; &#x5F00;&#x5934;&#x3002;</p>
 <p>syscall &#x662F;&#x4F4E;&#x9636;&#x5916;&#x90E8;&#x5305;&#xFF0C;&#x7528;&#x6765;&#x63D0;&#x4F9B;&#x7CFB;&#x7EDF;&#x57FA;&#x672C;&#x8C03;&#x7528;&#x7684;&#x539F;&#x59CB;&#x63A5;&#x53E3;&#x3002;&#x5B83;&#x4EEC;&#x8FD4;&#x56DE;&#x6574;&#x6570;&#x7684;&#x9519;&#x8BEF;&#x7801;&#xFF1B;&#x7C7B;&#x578B; syscall.Errno &#x5B9E;&#x73B0;&#x4E86; Error &#x63A5;&#x53E3;&#x3002;</p>
 <p>&#x5927;&#x90E8;&#x5206; syscall &#x51FD;&#x6570;&#x90FD;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x7ED3;&#x679C;&#x548C;&#x53EF;&#x80FD;&#x7684;&#x9519;&#x8BEF;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-go">r, err := syscall.Open(name, mode, perm)
-<span class="hljs-keyword">if</span> err != <span class="hljs-number">0</span> {
-    fmt.Println(err.Error())
-}
+<pre class="language-"><code class="lang-go">r<span class="token punctuation">,</span> err <span class="token operator">:=</span> syscall<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> mode<span class="token punctuation">,</span> perm<span class="token punctuation">)</span>
+<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>err<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>os &#x5305;&#x4E5F;&#x63D0;&#x4F9B;&#x4E86;&#x4E00;&#x5957;&#x50CF; os.EINAL &#x8FD9;&#x6837;&#x7684;&#x6807;&#x51C6;&#x9519;&#x8BEF;&#xFF0C;&#x5B83;&#x4EEC;&#x57FA;&#x4E8E; syscall &#x9519;&#x8BEF;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">var</span> (
-    EPERM        Error = Errno(syscall.EPERM)
-    ENOENT        Error = Errno(syscall.ENOENT)
-    ESRCH        Error = Errno(syscall.ESRCH)
-    EINTR        Error = Errno(syscall.EINTR)
-    EIO            Error = Errno(syscall.EIO)
-    ...
-)
+<pre class="language-"><code class="lang-go"><span class="token keyword">var</span> <span class="token punctuation">(</span>
+    EPERM        Error <span class="token operator">=</span> <span class="token function">Errno</span><span class="token punctuation">(</span>syscall<span class="token punctuation">.</span>EPERM<span class="token punctuation">)</span>
+    ENOENT        Error <span class="token operator">=</span> <span class="token function">Errno</span><span class="token punctuation">(</span>syscall<span class="token punctuation">.</span>ENOENT<span class="token punctuation">)</span>
+    ESRCH        Error <span class="token operator">=</span> <span class="token function">Errno</span><span class="token punctuation">(</span>syscall<span class="token punctuation">.</span>ESRCH<span class="token punctuation">)</span>
+    EINTR        Error <span class="token operator">=</span> <span class="token function">Errno</span><span class="token punctuation">(</span>syscall<span class="token punctuation">.</span>EINTR<span class="token punctuation">)</span>
+    EIO            Error <span class="token operator">=</span> <span class="token function">Errno</span><span class="token punctuation">(</span>syscall<span class="token punctuation">.</span>EIO<span class="token punctuation">)</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">)</span>
 </code></pre>
-<h2 id="1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;"><a name="1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;" class="anchor-navigation-ex-anchor" href="#1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;"><i class="fa fa-link" aria-hidden="true"></i></a>13.1.2 &#x7528; fmt &#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;</h2>
-<p>&#x901A;&#x5E38;&#x4F60;&#x60F3;&#x8981;&#x8FD4;&#x56DE;&#x5305;&#x542B;&#x9519;&#x8BEF;&#x53C2;&#x6570;&#x7684;&#x66F4;&#x6709;&#x4FE1;&#x606F;&#x91CF;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&#x53EF;&#x4EE5;&#x7528; <code>fmt.Errorf()</code> &#x6765;&#x5B9E;&#x73B0;&#xFF1A;&#x5B83;&#x548C; fmt.Printf() &#x5B8C;&#x5168;&#x4E00;&#x6837;&#xFF0C;&#x63A5;&#x6536;&#x6709;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x683C;&#x5F0F;&#x5360;&#x4F4D;&#x7B26;&#x7684;&#x683C;&#x5F0F;&#x5316;&#x5B57;&#x7B26;&#x4E32;&#x548C;&#x76F8;&#x5E94;&#x6570;&#x91CF;&#x7684;&#x5360;&#x4F4D;&#x53D8;&#x91CF;&#x3002;&#x548C;&#x6253;&#x5370;&#x4FE1;&#x606F;&#x4E0D;&#x540C;&#x7684;&#x662F;&#x5B83;&#x7528;&#x4FE1;&#x606F;&#x751F;&#x6210;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;&#x3002;</p>
+<h2 id="1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;"><a name="1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;" class="anchor-navigation-ex-anchor" href="#1312-&#x7528;-fmt-&#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;"><i class="fa fa-link" aria-hidden="true"></i></a>2. 13.1.2 &#x7528; fmt &#x521B;&#x5EFA;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;</h2>
+<p>&#x901A;&#x5E38;&#x4F60;&#x60F3;&#x8981;&#x8FD4;&#x56DE;&#x5305;&#x542B;&#x9519;&#x8BEF;&#x53C2;&#x6570;&#x7684;&#x66F4;&#x6709;&#x4FE1;&#x606F;&#x91CF;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&#x53EF;&#x4EE5;&#x7528; <code>fmt.Errorf()</code> &#x6765;&#x5B9E;&#x73B0;&#xFF1A;&#x5B83;&#x548C; fmt.Printf() &#x5B8C;&#x5168;&#x4E00;&#x6837;&#xFF0C;&#x63A5;&#x6536;&#x4E00;&#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x683C;&#x5F0F;&#x5360;&#x4F4D;&#x7B26;&#x7684;&#x683C;&#x5F0F;&#x5316;&#x5B57;&#x7B26;&#x4E32;&#x548C;&#x76F8;&#x5E94;&#x6570;&#x91CF;&#x7684;&#x5360;&#x4F4D;&#x53D8;&#x91CF;&#x3002;&#x548C;&#x6253;&#x5370;&#x4FE1;&#x606F;&#x4E0D;&#x540C;&#x7684;&#x662F;&#x5B83;&#x7528;&#x4FE1;&#x606F;&#x751F;&#x6210;&#x9519;&#x8BEF;&#x5BF9;&#x8C61;&#x3002;</p>
 <p>&#x6BD4;&#x5982;&#x5728;&#x524D;&#x9762;&#x7684;&#x5E73;&#x65B9;&#x6839;&#x4F8B;&#x5B50;&#x4E2D;&#x4F7F;&#x7528;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> f &lt; <span class="hljs-number">0</span> {
-    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>, fmt.Errorf(<span class="hljs-string">&quot;math: square root of negative number %g&quot;</span>, f)
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> f <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;math: square root of negative number %g&quot;</span><span class="token punctuation">,</span> f<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x7B2C;&#x4E8C;&#x4E2A;&#x4F8B;&#x5B50;&#xFF1A;&#x4ECE;&#x547D;&#x4EE4;&#x884C;&#x8BFB;&#x53D6;&#x8F93;&#x5165;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x52A0;&#x4E86; help &#x6807;&#x5FD7;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x7528;&#x6709;&#x7528;&#x7684;&#x4FE1;&#x606F;&#x4EA7;&#x751F;&#x4E00;&#x4E2A;&#x9519;&#x8BEF;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(os.Args) &gt; <span class="hljs-number">1</span> &amp;&amp; (os.Args[<span class="hljs-number">1</span>] == <span class="hljs-string">&quot;-h&quot;</span> || os.Args[<span class="hljs-number">1</span>] == <span class="hljs-string">&quot;--help&quot;</span>) {
-    err = fmt.Errorf(<span class="hljs-string">&quot;usage: %s infile.txt outfile.txt&quot;</span>, filepath.Base(os.Args[<span class="hljs-number">0</span>]))
-    <span class="hljs-keyword">return</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> <span class="token function">len</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Args<span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>os<span class="token punctuation">.</span>Args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">&quot;-h&quot;</span> <span class="token operator">||</span> os<span class="token punctuation">.</span>Args<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token string">&quot;--help&quot;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    err <span class="token operator">=</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;usage: %s infile.txt outfile.txt&quot;</span><span class="token punctuation">,</span> filepath<span class="token punctuation">.</span><span class="token function">Base</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
 </code></pre>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>3. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="13.0.html">&#x9519;&#x8BEF;&#x5904;&#x7406;&#x4E0E;&#x6D4B;&#x8BD5;</a></li>
@@ -2766,7 +2774,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"错误处理","level":"4.2.1","depth":2,"next":{"title":"运行时异常和 panic","level":"4.2.2","depth":2,"path":"eBook/13.2.md","ref":"eBook/13.2.md","articles":[]},"previous":{"title":"第13章：错误处理与测试","level":"4.2","depth":1,"path":"eBook/13.0.md","ref":"eBook/13.0.md","articles":[{"title":"错误处理","level":"4.2.1","depth":2,"path":"eBook/13.1.md","ref":"eBook/13.1.md","articles":[]},{"title":"运行时异常和 panic","level":"4.2.2","depth":2,"path":"eBook/13.2.md","ref":"eBook/13.2.md","articles":[]},{"title":"从 panic 中恢复（Recover）","level":"4.2.3","depth":2,"path":"eBook/13.3.md","ref":"eBook/13.3.md","articles":[]},{"title":"自定义包中的错误处理和 panicking","level":"4.2.4","depth":2,"path":"eBook/13.4.md","ref":"eBook/13.4.md","articles":[]},{"title":"一种用闭包处理错误的模式","level":"4.2.5","depth":2,"path":"eBook/13.5.md","ref":"eBook/13.5.md","articles":[]},{"title":"启动外部命令和程序","level":"4.2.6","depth":2,"path":"eBook/13.6.md","ref":"eBook/13.6.md","articles":[]},{"title":"Go 中的单元测试和基准测试","level":"4.2.7","depth":2,"path":"eBook/13.7.md","ref":"eBook/13.7.md","articles":[]},{"title":"测试的具体例子","level":"4.2.8","depth":2,"path":"eBook/13.8.md","ref":"eBook/13.8.md","articles":[]},{"title":"用（测试数据）表驱动测试","level":"4.2.9","depth":2,"path":"eBook/13.9.md","ref":"eBook/13.9.md","articles":[]},{"title":"性能调试：分析并优化 Go 程序","level":"4.2.10","depth":2,"path":"eBook/13.10.md","ref":"eBook/13.10.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/13.1.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"错误处理","level":"4.2.1","depth":2,"next":{"title":"运行时异常和 panic","level":"4.2.2","depth":2,"path":"eBook/13.2.md","ref":"eBook/13.2.md","articles":[]},"previous":{"title":"第13章：错误处理与测试","level":"4.2","depth":1,"path":"eBook/13.0.md","ref":"eBook/13.0.md","articles":[{"title":"错误处理","level":"4.2.1","depth":2,"path":"eBook/13.1.md","ref":"eBook/13.1.md","articles":[]},{"title":"运行时异常和 panic","level":"4.2.2","depth":2,"path":"eBook/13.2.md","ref":"eBook/13.2.md","articles":[]},{"title":"从 panic 中恢复（Recover）","level":"4.2.3","depth":2,"path":"eBook/13.3.md","ref":"eBook/13.3.md","articles":[]},{"title":"自定义包中的错误处理和 panicking","level":"4.2.4","depth":2,"path":"eBook/13.4.md","ref":"eBook/13.4.md","articles":[]},{"title":"一种用闭包处理错误的模式","level":"4.2.5","depth":2,"path":"eBook/13.5.md","ref":"eBook/13.5.md","articles":[]},{"title":"启动外部命令和程序","level":"4.2.6","depth":2,"path":"eBook/13.6.md","ref":"eBook/13.6.md","articles":[]},{"title":"Go 中的单元测试和基准测试","level":"4.2.7","depth":2,"path":"eBook/13.7.md","ref":"eBook/13.7.md","articles":[]},{"title":"测试的具体例子","level":"4.2.8","depth":2,"path":"eBook/13.8.md","ref":"eBook/13.8.md","articles":[]},{"title":"用（测试数据）表驱动测试","level":"4.2.9","depth":2,"path":"eBook/13.9.md","ref":"eBook/13.9.md","articles":[]},{"title":"性能调试：分析并优化 Go 程序","level":"4.2.10","depth":2,"path":"eBook/13.10.md","ref":"eBook/13.10.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/13.1.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2796,7 +2804,11 @@
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

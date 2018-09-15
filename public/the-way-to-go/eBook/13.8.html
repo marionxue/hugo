@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,63 +2600,63 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;"><b></b>13.8 &#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;"><a name="138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;" class="anchor-navigation-ex-anchor" href="#138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;"><i class="fa fa-link" aria-hidden="true"></i></a>13.8 &#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;"><b> </b>13.8 &#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;"><a name="138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;" class="anchor-navigation-ex-anchor" href="#138-&#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;"><i class="fa fa-link" aria-hidden="true"></i></a> 13.8 &#x6D4B;&#x8BD5;&#x7684;&#x5177;&#x4F53;&#x4F8B;&#x5B50;</h1>
 <p>&#x5728;&#x7EC3;&#x4E60; 9.4 &#x4E2D;&#x4F60;&#x5199;&#x4E86;&#x4E00;&#x4E2A;&#x53EB; <a href="exercises/chapter_9/main_oddeven.go">main_oddeven.go</a> &#x7684;&#x7A0B;&#x5E8F;&#x7528;&#x6765;&#x6D4B;&#x8BD5;&#x524D; 100 &#x4E2A;&#x6574;&#x6570;&#x662F;&#x5426;&#x662F;&#x5076;&#x6570;&#x3002;&#x8FD9;&#x4E2A;&#x51FD;&#x6570;&#x5C5E;&#x4E8E; even &#x5305;&#x3002;</p>
 <p>&#x4E0B;&#x9762;&#x662F;&#x4E00;&#x79CD;&#x53EF;&#x80FD;&#x7684;&#x65B9;&#x6848;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 13.7 <a href="examples/chapter_13/even/even_main/even_main.go">even_main.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;even/even&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;even/even&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">for</span> i:=<span class="hljs-number">0</span>; i&lt;=<span class="hljs-number">100</span>; i++ {
-        fmt.Printf(<span class="hljs-string">&quot;Is the integer %d even? %v\n&quot;</span>, i, even.Even(i))
-    }
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span><span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Is the integer %d even? %v\n&quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> even<span class="token punctuation">.</span><span class="token function">Even</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4E0A;&#x9762;&#x4F7F;&#x7528;&#x4E86; even.go &#x4E2D;&#x7684; even &#x5305;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 13.8 <a href="examples/chapter_13/even/even/even.go">even/even.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> even
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> even
 
-<span class="hljs-keyword">func</span> Even(i <span class="hljs-keyword">int</span>) <span class="hljs-keyword">bool</span> {        <span class="hljs-comment">// Exported function</span>
-    <span class="hljs-keyword">return</span> i%<span class="hljs-number">2</span> == <span class="hljs-number">0</span>
-}
+<span class="token keyword">func</span> <span class="token function">Even</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>        <span class="token comment">// Exported function</span>
+    <span class="token keyword">return</span> i<span class="token operator">%</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> Odd(i <span class="hljs-keyword">int</span>) <span class="hljs-keyword">bool</span> {        <span class="hljs-comment">// Exported function</span>
-    <span class="hljs-keyword">return</span> i%<span class="hljs-number">2</span> != <span class="hljs-number">0</span>
-}
+<span class="token keyword">func</span> <span class="token function">Odd</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>        <span class="token comment">// Exported function</span>
+    <span class="token keyword">return</span> i<span class="token operator">%</span><span class="token number">2</span> <span class="token operator">!=</span> <span class="token number">0</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5728; even &#x5305;&#x7684;&#x8DEF;&#x5F84;&#x4E0B;&#xFF0C;&#x6211;&#x4EEC;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x540D;&#x4E3A; oddeven_test.go &#x7684;&#x6D4B;&#x8BD5;&#x7A0B;&#x5E8F;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 13.9 <a href="examples/chapter_13/even/even/oddeven_test.go">even/oddeven_test.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> even
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> even
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;testing&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;testing&quot;</span>
 
-<span class="hljs-keyword">func</span> TestEven(t *testing.T) {
-    <span class="hljs-keyword">if</span> !Even(<span class="hljs-number">10</span>) {
-        t.Log(<span class="hljs-string">&quot; 10 must be even!&quot;</span>)
-        t.Fail()
-    }
-    <span class="hljs-keyword">if</span> Even(<span class="hljs-number">7</span>) {
-        t.Log(<span class="hljs-string">&quot; 7 is not even!&quot;</span>)
-        t.Fail()
-    }
+<span class="token keyword">func</span> <span class="token function">TestEven</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span><span class="token function">Even</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        t<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">&quot; 10 must be even!&quot;</span><span class="token punctuation">)</span>
+        t<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token function">Even</span><span class="token punctuation">(</span><span class="token number">7</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        t<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">&quot; 7 is not even!&quot;</span><span class="token punctuation">)</span>
+        t<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
 
-}
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> TestOdd(t *testing.T) {
-    <span class="hljs-keyword">if</span> !Odd(<span class="hljs-number">11</span>) {
-        t.Log(<span class="hljs-string">&quot; 11 must be odd!&quot;</span>)
-        t.Fail()
-    }
-    <span class="hljs-keyword">if</span> Odd(<span class="hljs-number">10</span>) {
-        t.Log(<span class="hljs-string">&quot; 10 is not odd!&quot;</span>)
-        t.Fail()
-    }
-}
+<span class="token keyword">func</span> <span class="token function">TestOdd</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span><span class="token function">Odd</span><span class="token punctuation">(</span><span class="token number">11</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        t<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">&quot; 11 must be odd!&quot;</span><span class="token punctuation">)</span>
+        t<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token function">Odd</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        t<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">&quot; 10 is not odd!&quot;</span><span class="token punctuation">)</span>
+        t<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x7531;&#x4E8E;&#x6D4B;&#x8BD5;&#x9700;&#x8981;&#x5177;&#x4F53;&#x7684;&#x8F93;&#x5165;&#x7528;&#x4F8B;&#x4E14;&#x4E0D;&#x53EF;&#x80FD;&#x6D4B;&#x8BD5;&#x5230;&#x6240;&#x6709;&#x7684;&#x7528;&#x4F8B;&#xFF08;&#x975E;&#x5E38;&#x50CF;&#x4E00;&#x4E2A;&#x65E0;&#x7A77;&#x7684;&#x6570;&#xFF09;&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x5FC5;&#x987B;&#x5BF9;&#x8981;&#x4F7F;&#x7528;&#x7684;&#x6D4B;&#x8BD5;&#x7528;&#x4F8B;&#x601D;&#x8003;&#x518D;&#x4E09;&#x3002;</p>
 <p>&#x81F3;&#x5C11;&#x5E94;&#x8BE5;&#x5305;&#x62EC;&#xFF1A;</p>
@@ -2658,34 +2666,34 @@
 <li>&#x8FB9;&#x754C;&#x68C0;&#x67E5;&#x7528;&#x4F8B;&#xFF08;&#x5982;&#x679C;&#x53C2;&#x6570;&#x7684;&#x53D6;&#x503C;&#x8303;&#x56F4;&#x662F; 0 &#x5230; 1000&#xFF0C;&#x68C0;&#x67E5; 0 &#x548C; 1000 &#x7684;&#x60C5;&#x51B5;&#xFF09;</li>
 </ul>
 <p>&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x6267;&#x884C; go install &#x5B89;&#x88C5; even &#x6216;&#x8005;&#x521B;&#x5EFA;&#x4E00;&#x4E2A; &#x4EE5;&#x4E0B;&#x5185;&#x5BB9;&#x7684; Makefile&#xFF1A;</p>
-<pre><code class="lang-bash">include $(GOROOT)/src/Make.inc
-TARG=even
-GOFILES=\
+<pre class="language-"><code class="lang-bash">include <span class="token variable"><span class="token variable">$(</span>GOROOT<span class="token variable">)</span></span>/src/Make.inc
+TARG<span class="token operator">=</span>even
+GOFILES<span class="token operator">=</span>\
        even.go\
-include $(GOROOT)/src/Make.pkg
+include <span class="token variable"><span class="token variable">$(</span>GOROOT<span class="token variable">)</span></span>/src/Make.pkg
 </code></pre>
 <p>&#x7136;&#x540E;&#x6267;&#x884C; make&#xFF08;&#x6216; gomake&#xFF09;&#x547D;&#x4EE4;&#x6765;&#x6784;&#x5EFA;&#x5F52;&#x6863;&#x6587;&#x4EF6; even.a</p>
 <p>&#x6D4B;&#x8BD5;&#x4EE3;&#x7801;&#x4E0D;&#x80FD;&#x5728; GOFILES &#x53C2;&#x6570;&#x4E2D;&#x5F15;&#x7528;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x4EEC;&#x4E0D;&#x5E0C;&#x671B;&#x751F;&#x6210;&#x7684;&#x7A0B;&#x5E8F;&#x4E2D;&#x6709;&#x6D4B;&#x8BD5;&#x4EE3;&#x7801;&#x3002;&#x5982;&#x679C;&#x5305;&#x542B;&#x4E86;&#x6D4B;&#x8BD5;&#x4EE3;&#x7801;&#xFF0C;go test &#x4F1A;&#x7ED9;&#x51FA;&#x9519;&#x8BEF;&#x63D0;&#x793A;&#xFF01;go test &#x4F1A;&#x751F;&#x6210;&#x4E00;&#x4E2A;&#x5355;&#x72EC;&#x7684;&#x5305;&#x542B;&#x6D4B;&#x8BD5;&#x4EE3;&#x7801;&#x7684; <code>_test</code> &#x7A0B;&#x5E8F;&#x3002;</p>
 <p>&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x7528;&#x547D;&#x4EE4;&#xFF1A;<code>go test</code>&#xFF08;&#x6216; <code>make test</code>&#xFF09;&#x6765;&#x6D4B;&#x8BD5; even &#x5305;&#x3002;</p>
 <p>&#x56E0;&#x4E3A;&#x793A;&#x4F8B; 13.5 &#x4E2D;&#x7684;&#x6D4B;&#x8BD5;&#x51FD;&#x6570;&#x4E0D;&#x4F1A;&#x8C03;&#x7528; t.Log &#x548C; t.Fail&#xFF0C;&#x6240;&#x4EE5;&#x4F1A;&#x5F97;&#x5230;&#x4E00;&#x4E2A; PASS &#x7684;&#x7ED3;&#x679C;&#x3002;&#x5728;&#x8FD9;&#x4E2A;&#x7B80;&#x5355;&#x4F8B;&#x5B50;&#x4E2D;&#x4E00;&#x5207;&#x90FD;&#x6B63;&#x5E38;&#x6267;&#x884C;&#x3002;</p>
 <p>&#x4E3A;&#x4E86;&#x770B;&#x5230;&#x5931;&#x8D25;&#x65F6;&#x7684;&#x8F93;&#x51FA;&#xFF0C;&#x628A;&#x51FD;&#x6570; TestEven &#x6539;&#x4E3A;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> TestEven(t *testing.T) {
-    <span class="hljs-keyword">if</span> Even(<span class="hljs-number">10</span>) {
-        t.Log(&#x201C;Everything OK: <span class="hljs-number">10</span> is even, just a test to see failed output!&#x201D;)
-        t.Fail()
-     }
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">TestEven</span><span class="token punctuation">(</span>t <span class="token operator">*</span>testing<span class="token punctuation">.</span>T<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token function">Even</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        t<span class="token punctuation">.</span><span class="token function">Log</span><span class="token punctuation">(</span><span class="token string">&quot;Everything OK: 10 is even, just a test to see failed output!&quot;</span><span class="token punctuation">)</span>
+        t<span class="token punctuation">.</span><span class="token function">Fail</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+     <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x73B0;&#x5728;&#x4F1A;&#x8C03;&#x7528; t.Log &#x548C; t.Fail&#xFF0C;&#x5F97;&#x5230;&#x7684;&#x7ED3;&#x679C;&#x5982;&#x4E0B;&#xFF1A;</p>
-<pre><code class="lang-go">--- FAIL: even.TestEven (<span class="hljs-number">0.00</span> seconds)
-Everything OK: <span class="hljs-number">10</span> is even, just a test to see failed output!
+<pre class="language-"><code class="lang-go"><span class="token operator">--</span><span class="token operator">-</span> FAIL<span class="token punctuation">:</span> even<span class="token punctuation">.</span>TestEven <span class="token punctuation">(</span><span class="token number">0.00</span> seconds<span class="token punctuation">)</span>
+Everything OK<span class="token punctuation">:</span> <span class="token number">10</span> is even<span class="token punctuation">,</span> just a test to see failed output<span class="token operator">!</span>
 FAIL
 </code></pre>
 <p><strong>&#x7EC3;&#x4E60; 13.4&#xFF1A;</strong><a href="exercises/chapter_13/string_reverse_test.go">string_reverse_test.go</a></p>
 <p>&#x4E3A;&#x7EC3;&#x4E60; 7.11 <a href="exercises/chapter_7/string_reverse.go">string_reverse.go</a> &#x5199;&#x4E00;&#x4E2A;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x3002;</p>
 <p>&#x628A; string_reverse &#x653E;&#x5230;&#x81EA;&#x5DF1;&#x7684;&#x5305; strev &#x4E2D;&#xFF0C;&#x53EA;&#x5305;&#x542B;&#x4E00;&#x4E2A;&#x53EF;&#x5BFC;&#x51FA;&#x51FD;&#x6570; reverse&#x3002;</p>
 <p>&#x5B9E;&#x73B0;&#x5E76;&#x6D4B;&#x8BD5;&#x5B83;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="13.7.html">Go &#x4E2D;&#x7684;&#x5355;&#x5143;&#x6D4B;&#x8BD5;&#x548C;&#x57FA;&#x51C6;&#x6D4B;&#x8BD5;</a></li>
@@ -2734,7 +2742,7 @@ FAIL
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"测试的具体例子","level":"4.2.8","depth":2,"next":{"title":"用（测试数据）表驱动测试","level":"4.2.9","depth":2,"path":"eBook/13.9.md","ref":"eBook/13.9.md","articles":[]},"previous":{"title":"Go 中的单元测试和基准测试","level":"4.2.7","depth":2,"path":"eBook/13.7.md","ref":"eBook/13.7.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/13.8.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"测试的具体例子","level":"4.2.8","depth":2,"next":{"title":"用（测试数据）表驱动测试","level":"4.2.9","depth":2,"path":"eBook/13.9.md","ref":"eBook/13.9.md","articles":[]},"previous":{"title":"Go 中的单元测试和基准测试","level":"4.2.7","depth":2,"path":"eBook/13.7.md","ref":"eBook/13.7.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/13.8.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2764,7 +2772,11 @@ FAIL
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

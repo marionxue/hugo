@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,43 +2600,43 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#56-&#x6807;&#x7B7E;&#x4E0E;-goto"><b></b>5.6 &#x6807;&#x7B7E;&#x4E0E; goto</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#56-&#x6807;&#x7B7E;&#x4E0E;-goto" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="56-&#x6807;&#x7B7E;&#x4E0E;-goto"><a name="56-&#x6807;&#x7B7E;&#x4E0E;-goto" class="anchor-navigation-ex-anchor" href="#56-&#x6807;&#x7B7E;&#x4E0E;-goto"><i class="fa fa-link" aria-hidden="true"></i></a>5.6 &#x6807;&#x7B7E;&#x4E0E; goto</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#56-&#x6807;&#x7B7E;&#x4E0E;-goto"><b> </b>5.6 &#x6807;&#x7B7E;&#x4E0E; goto</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#56-&#x6807;&#x7B7E;&#x4E0E;-goto" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="56-&#x6807;&#x7B7E;&#x4E0E;-goto"><a name="56-&#x6807;&#x7B7E;&#x4E0E;-goto" class="anchor-navigation-ex-anchor" href="#56-&#x6807;&#x7B7E;&#x4E0E;-goto"><i class="fa fa-link" aria-hidden="true"></i></a> 5.6 &#x6807;&#x7B7E;&#x4E0E; goto</h1>
 <p>for&#x3001;switch &#x6216; select &#x8BED;&#x53E5;&#x90FD;&#x53EF;&#x4EE5;&#x914D;&#x5408;&#x6807;&#x7B7E;&#xFF08;label&#xFF09;&#x5F62;&#x5F0F;&#x7684;&#x6807;&#x8BC6;&#x7B26;&#x4F7F;&#x7528;&#xFF0C;&#x5373;&#x67D0;&#x4E00;&#x884C;&#x7B2C;&#x4E00;&#x4E2A;&#x4EE5;&#x5192;&#x53F7;&#xFF08;<code>:</code>&#xFF09;&#x7ED3;&#x5C3E;&#x7684;&#x5355;&#x8BCD;&#xFF08;gofmt &#x4F1A;&#x5C06;&#x540E;&#x7EED;&#x4EE3;&#x7801;&#x81EA;&#x52A8;&#x79FB;&#x81F3;&#x4E0B;&#x4E00;&#x884C;&#xFF09;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 5.13 <a href="examples/chapter_5/for6.go">for6.go</a>&#xFF1A;</p>
 <p>&#xFF08;&#x6807;&#x7B7E;&#x7684;&#x540D;&#x79F0;&#x662F;&#x5927;&#x5C0F;&#x5199;&#x654F;&#x611F;&#x7684;&#xFF0C;&#x4E3A;&#x4E86;&#x63D0;&#x5347;&#x53EF;&#x8BFB;&#x6027;&#xFF0C;&#x4E00;&#x822C;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;&#x5168;&#x90E8;&#x5927;&#x5199;&#x5B57;&#x6BCD;&#xFF09;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 
-LABEL1:
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt;= <span class="hljs-number">5</span>; i++ {
-        <span class="hljs-keyword">for</span> j := <span class="hljs-number">0</span>; j &lt;= <span class="hljs-number">5</span>; j++ {
-            <span class="hljs-keyword">if</span> j == <span class="hljs-number">4</span> {
-                <span class="hljs-keyword">continue</span> LABEL1
-            }
-            fmt.Printf(<span class="hljs-string">&quot;i is: %d, and j is: %d\n&quot;</span>, i, j)
-        }
-    }
+LABEL1<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> j <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> j <span class="token operator">&lt;=</span> <span class="token number">5</span><span class="token punctuation">;</span> j<span class="token operator">++</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> j <span class="token operator">==</span> <span class="token number">4</span> <span class="token punctuation">{</span>
+                <span class="token keyword">continue</span> LABEL1
+            <span class="token punctuation">}</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;i is: %d, and j is: %d\n&quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> j<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
 
-}
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x672C;&#x4F8B;&#x4E2D;&#xFF0C;continue &#x8BED;&#x53E5;&#x6307;&#x5411; LABEL1&#xFF0C;&#x5F53;&#x6267;&#x884C;&#x5230;&#x8BE5;&#x8BED;&#x53E5;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x5C31;&#x4F1A;&#x8DF3;&#x8F6C;&#x5230; LABEL1 &#x6807;&#x7B7E;&#x7684;&#x4F4D;&#x7F6E;&#x3002;</p>
 <p>&#x60A8;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5F53; j==4 &#x548C; j==5 &#x7684;&#x65F6;&#x5019;&#xFF0C;&#x6CA1;&#x6709;&#x4EFB;&#x4F55;&#x8F93;&#x51FA;&#xFF1A;&#x6807;&#x7B7E;&#x7684;&#x4F5C;&#x7528;&#x5BF9;&#x8C61;&#x4E3A;&#x5916;&#x90E8;&#x5FAA;&#x73AF;&#xFF0C;&#x56E0;&#x6B64; i &#x4F1A;&#x76F4;&#x63A5;&#x53D8;&#x6210;&#x4E0B;&#x4E00;&#x4E2A;&#x5FAA;&#x73AF;&#x7684;&#x503C;&#xFF0C;&#x800C;&#x6B64;&#x65F6; j &#x7684;&#x503C;&#x5C31;&#x88AB;&#x91CD;&#x8BBE;&#x4E3A; 0&#xFF0C;&#x5373;&#x5B83;&#x7684;&#x521D;&#x59CB;&#x503C;&#x3002;&#x5982;&#x679C;&#x5C06; continue &#x6539;&#x4E3A; break&#xFF0C;&#x5219;&#x4E0D;&#x4F1A;&#x53EA;&#x9000;&#x51FA;&#x5185;&#x5C42;&#x5FAA;&#x73AF;&#xFF0C;&#x800C;&#x662F;&#x76F4;&#x63A5;&#x9000;&#x51FA;&#x5916;&#x5C42;&#x5FAA;&#x73AF;&#x4E86;&#x3002;&#x53E6;&#x5916;&#xFF0C;&#x8FD8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; goto &#x8BED;&#x53E5;&#x548C;&#x6807;&#x7B7E;&#x914D;&#x5408;&#x4F7F;&#x7528;&#x6765;&#x6A21;&#x62DF;&#x5FAA;&#x73AF;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 5.14 <a href="examples/chapter_5/goto.go">goto.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">func</span> main() {
-    i:=<span class="hljs-number">0</span>
-    HERE:
-        <span class="hljs-built_in">print</span>(i)
-        i++
-        <span class="hljs-keyword">if</span> i==<span class="hljs-number">5</span> {
-            <span class="hljs-keyword">return</span>
-        }
-        <span class="hljs-keyword">goto</span> HERE
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    i<span class="token operator">:=</span><span class="token number">0</span>
+    HERE<span class="token punctuation">:</span>
+        <span class="token function">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+        i<span class="token operator">++</span>
+        <span class="token keyword">if</span> i<span class="token operator">==</span><span class="token number">5</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">goto</span> HERE
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x4F1A;&#x8F93;&#x51FA; <code>01234</code>&#x3002;</p>
 <p>&#x4F7F;&#x7528;&#x9006;&#x5411;&#x7684; goto &#x4F1A;&#x5F88;&#x5FEB;&#x5BFC;&#x81F4;&#x610F;&#x5927;&#x5229;&#x9762;&#x6761;&#x5F0F;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x6240;&#x4EE5;&#x4E0D;&#x5E94;&#x5F53;&#x4F7F;&#x7528;&#x800C;&#x9009;&#x62E9;&#x66F4;&#x597D;&#x7684;&#x66FF;&#x4EE3;&#x65B9;&#x6848;&#x3002;</p>
@@ -2637,38 +2645,38 @@ LABEL1:
 <p>&#x5B9A;&#x4E49;&#x4F46;&#x672A;&#x4F7F;&#x7528;&#x6807;&#x7B7E;&#x4F1A;&#x5BFC;&#x81F4;&#x7F16;&#x8BD1;&#x9519;&#x8BEF;&#xFF1A;<code>label &#x2026; defined and not used</code>&#x3002;</p>
 <p>&#x5982;&#x679C;&#x60A8;&#x5FC5;&#x987B;&#x4F7F;&#x7528; goto&#xFF0C;&#x5E94;&#x5F53;&#x53EA;&#x4F7F;&#x7528;&#x6B63;&#x5E8F;&#x7684;&#x6807;&#x7B7E;&#xFF08;&#x6807;&#x7B7E;&#x4F4D;&#x4E8E; goto &#x8BED;&#x53E5;&#x4E4B;&#x540E;&#xFF09;&#xFF0C;&#x4F46;&#x6CE8;&#x610F;&#x6807;&#x7B7E;&#x548C; goto &#x8BED;&#x53E5;&#x4E4B;&#x95F4;&#x4E0D;&#x80FD;&#x51FA;&#x73B0;&#x5B9A;&#x4E49;&#x65B0;&#x53D8;&#x91CF;&#x7684;&#x8BED;&#x53E5;&#xFF0C;&#x5426;&#x5219;&#x4F1A;&#x5BFC;&#x81F4;&#x7F16;&#x8BD1;&#x5931;&#x8D25;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 5.15 <a href="examples/chapter_5/got2o.go">goto2.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// compile error goto2.go:8: goto TARGET jumps over declaration of b at goto2.go:8</span>
-<span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token comment">// compile error goto2.go:8: goto TARGET jumps over declaration of b at goto2.go:8</span>
+<span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-        a := <span class="hljs-number">1</span>
-        <span class="hljs-keyword">goto</span> TARGET <span class="hljs-comment">// compile error</span>
-        b := <span class="hljs-number">9</span>
-    TARGET:  
-        b += a
-        fmt.Printf(<span class="hljs-string">&quot;a is %v *** b is %v&quot;</span>, a, b)
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        a <span class="token operator">:=</span> <span class="token number">1</span>
+        <span class="token keyword">goto</span> TARGET <span class="token comment">// compile error</span>
+        b <span class="token operator">:=</span> <span class="token number">9</span>
+    TARGET<span class="token punctuation">:</span>  
+        b <span class="token operator">+=</span> a
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;a is %v *** b is %v&quot;</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p><strong>&#x95EE;&#x9898; 5.3</strong> &#x8BF7;&#x63CF;&#x8FF0;&#x4E0B;&#x9762; for &#x5FAA;&#x73AF;&#x7684;&#x8F93;&#x51FA;&#xFF1A;</p>
 <p>1.</p>
-<pre><code class="lang-go">i := <span class="hljs-number">0</span>
-<span class="hljs-keyword">for</span> { <span class="hljs-comment">//since there are no checks, this is an infinite loop</span>
-    <span class="hljs-keyword">if</span> i &gt;= <span class="hljs-number">3</span> { <span class="hljs-keyword">break</span> }
-    <span class="hljs-comment">//break out of this for loop when this condition is met</span>
-    fmt.Println(<span class="hljs-string">&quot;Value of i is:&quot;</span>, i)
-    i++;
-}
-fmt.Println(<span class="hljs-string">&quot;A statement just after for loop.&quot;</span>)
+<pre class="language-"><code class="lang-go">i <span class="token operator">:=</span> <span class="token number">0</span>
+<span class="token keyword">for</span> <span class="token punctuation">{</span> <span class="token comment">//since there are no checks, this is an infinite loop</span>
+    <span class="token keyword">if</span> i <span class="token operator">&gt;=</span> <span class="token number">3</span> <span class="token punctuation">{</span> <span class="token keyword">break</span> <span class="token punctuation">}</span>
+    <span class="token comment">//break out of this for loop when this condition is met</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Value of i is:&quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+    i<span class="token operator">++</span>
+<span class="token punctuation">}</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;A statement just after for loop.&quot;</span><span class="token punctuation">)</span>
 </code></pre>
 <p>2.</p>
-<pre><code class="lang-go"><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i&lt;<span class="hljs-number">7</span> ; i++ {
-    <span class="hljs-keyword">if</span> i%<span class="hljs-number">2</span> == <span class="hljs-number">0</span> { <span class="hljs-keyword">continue</span> }
-    fmt.Println(<span class="hljs-string">&quot;Odd:&quot;</span>, i)
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">7</span> <span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> i<span class="token operator">%</span><span class="token number">2</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span> <span class="token keyword">continue</span> <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Odd:&quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="05.5.html">Break &#x4E0E; continue</a></li>
@@ -2717,7 +2725,7 @@ fmt.Println(<span class="hljs-string">&quot;A statement just after for loop.&quo
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"标签与 goto","level":"3.2.6","depth":2,"next":{"title":"第6章：函数（function）","level":"3.3","depth":1,"path":"eBook/06.0.md","ref":"eBook/06.0.md","articles":[{"title":"介绍","level":"3.3.1","depth":2,"path":"eBook/06.1.md","ref":"eBook/06.1.md","articles":[]},{"title":"函数参数与返回值","level":"3.3.2","depth":2,"path":"eBook/06.2.md","ref":"eBook/06.2.md","articles":[]},{"title":"传递变长参数","level":"3.3.3","depth":2,"path":"eBook/06.3.md","ref":"eBook/06.3.md","articles":[]},{"title":"defer 和追踪","level":"3.3.4","depth":2,"path":"eBook/06.4.md","ref":"eBook/06.4.md","articles":[]},{"title":"内置函数","level":"3.3.5","depth":2,"path":"eBook/06.5.md","ref":"eBook/06.5.md","articles":[]},{"title":"递归函数","level":"3.3.6","depth":2,"path":"eBook/06.6.md","ref":"eBook/06.6.md","articles":[]},{"title":"将函数作为参数","level":"3.3.7","depth":2,"path":"eBook/06.7.md","ref":"eBook/06.7.md","articles":[]},{"title":"闭包","level":"3.3.8","depth":2,"path":"eBook/06.8.md","ref":"eBook/06.8.md","articles":[]},{"title":"应用闭包：将函数作为返回值","level":"3.3.9","depth":2,"path":"eBook/06.9.md","ref":"eBook/06.9.md","articles":[]},{"title":"使用闭包调试","level":"3.3.10","depth":2,"path":"eBook/06.10.md","ref":"eBook/06.10.md","articles":[]},{"title":"计算函数执行时间","level":"3.3.11","depth":2,"path":"eBook/06.11.md","ref":"eBook/06.11.md","articles":[]},{"title":"通过内存缓存来提升性能","level":"3.3.12","depth":2,"path":"eBook/06.12.md","ref":"eBook/06.12.md","articles":[]}]},"previous":{"title":"Break 与 continue","level":"3.2.5","depth":2,"path":"eBook/05.5.md","ref":"eBook/05.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/05.6.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"标签与 goto","level":"3.2.6","depth":2,"next":{"title":"第6章：函数（function）","level":"3.3","depth":1,"path":"eBook/06.0.md","ref":"eBook/06.0.md","articles":[{"title":"介绍","level":"3.3.1","depth":2,"path":"eBook/06.1.md","ref":"eBook/06.1.md","articles":[]},{"title":"函数参数与返回值","level":"3.3.2","depth":2,"path":"eBook/06.2.md","ref":"eBook/06.2.md","articles":[]},{"title":"传递变长参数","level":"3.3.3","depth":2,"path":"eBook/06.3.md","ref":"eBook/06.3.md","articles":[]},{"title":"defer 和追踪","level":"3.3.4","depth":2,"path":"eBook/06.4.md","ref":"eBook/06.4.md","articles":[]},{"title":"内置函数","level":"3.3.5","depth":2,"path":"eBook/06.5.md","ref":"eBook/06.5.md","articles":[]},{"title":"递归函数","level":"3.3.6","depth":2,"path":"eBook/06.6.md","ref":"eBook/06.6.md","articles":[]},{"title":"将函数作为参数","level":"3.3.7","depth":2,"path":"eBook/06.7.md","ref":"eBook/06.7.md","articles":[]},{"title":"闭包","level":"3.3.8","depth":2,"path":"eBook/06.8.md","ref":"eBook/06.8.md","articles":[]},{"title":"应用闭包：将函数作为返回值","level":"3.3.9","depth":2,"path":"eBook/06.9.md","ref":"eBook/06.9.md","articles":[]},{"title":"使用闭包调试","level":"3.3.10","depth":2,"path":"eBook/06.10.md","ref":"eBook/06.10.md","articles":[]},{"title":"计算函数执行时间","level":"3.3.11","depth":2,"path":"eBook/06.11.md","ref":"eBook/06.11.md","articles":[]},{"title":"通过内存缓存来提升性能","level":"3.3.12","depth":2,"path":"eBook/06.12.md","ref":"eBook/06.12.md","articles":[]}]},"previous":{"title":"Break 与 continue","level":"3.2.5","depth":2,"path":"eBook/05.5.md","ref":"eBook/05.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/05.6.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2747,7 +2755,11 @@ fmt.Println(<span class="hljs-string">&quot;A statement just after for loop.&quo
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

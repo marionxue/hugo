@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,97 +2600,97 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking"><b></b>13.4 &#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C; panicking</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking"><a name="134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking" class="anchor-navigation-ex-anchor" href="#134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking"><i class="fa fa-link" aria-hidden="true"></i></a>13.4 &#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C; panicking</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking"><b> </b>13.4 &#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C; panicking</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking"><a name="134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking" class="anchor-navigation-ex-anchor" href="#134-&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C;-panicking"><i class="fa fa-link" aria-hidden="true"></i></a> 13.4 &#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x9519;&#x8BEF;&#x5904;&#x7406;&#x548C; panicking</h1>
 <p>&#x8FD9;&#x662F;&#x6240;&#x6709;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x5B9E;&#x73B0;&#x8005;&#x5E94;&#x8BE5;&#x9075;&#x5B88;&#x7684;&#x6700;&#x4F73;&#x5B9E;&#x8DF5;&#xFF1A;</p>
 <p>1&#xFF09;<em>&#x5728;&#x5305;&#x5185;&#x90E8;&#xFF0C;&#x603B;&#x662F;&#x5E94;&#x8BE5;&#x4ECE; panic &#x4E2D; recover</em>&#xFF1A;&#x4E0D;&#x5141;&#x8BB8;&#x663E;&#x5F0F;&#x7684;&#x8D85;&#x51FA;&#x5305;&#x8303;&#x56F4;&#x7684; panic()</p>
 <p>2&#xFF09;<em>&#x5411;&#x5305;&#x7684;&#x8C03;&#x7528;&#x8005;&#x8FD4;&#x56DE;&#x9519;&#x8BEF;&#x503C;&#xFF08;&#x800C;&#x4E0D;&#x662F; panic&#xFF09;&#x3002;</em></p>
 <p>&#x5728;&#x5305;&#x5185;&#x90E8;&#xFF0C;&#x7279;&#x522B;&#x662F;&#x5728;&#x975E;&#x5BFC;&#x51FA;&#x51FD;&#x6570;&#x4E2D;&#x6709;&#x5F88;&#x6DF1;&#x5C42;&#x6B21;&#x7684;&#x5D4C;&#x5957;&#x8C03;&#x7528;&#x65F6;&#xFF0C;&#x5BF9;&#x4E3B;&#x8C03;&#x51FD;&#x6570;&#x6765;&#x8BF4;&#x7528; panic &#x6765;&#x8868;&#x793A;&#x5E94;&#x8BE5;&#x88AB;&#x7FFB;&#x8BD1;&#x6210;&#x9519;&#x8BEF;&#x7684;&#x9519;&#x8BEF;&#x573A;&#x666F;&#x662F;&#x5F88;&#x6709;&#x7528;&#x7684;&#xFF08;&#x5E76;&#x4E14;&#x63D0;&#x9AD8;&#x4E86;&#x4EE3;&#x7801;&#x53EF;&#x8BFB;&#x6027;&#xFF09;&#x3002;</p>
 <p>&#x8FD9;&#x5728;&#x4E0B;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x4E2D;&#x88AB;&#x5F88;&#x597D;&#x5730;&#x9610;&#x8FF0;&#x4E86;&#x3002;&#x6211;&#x4EEC;&#x6709;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684; parse &#x5305;&#xFF08;&#x793A;&#x4F8B; 13.4&#xFF09;&#x7528;&#x6765;&#x628A;&#x8F93;&#x5165;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x89E3;&#x6790;&#x4E3A;&#x6574;&#x6570;&#x5207;&#x7247;&#xFF1B;&#x8FD9;&#x4E2A;&#x5305;&#x6709;&#x81EA;&#x5DF1;&#x7279;&#x6B8A;&#x7684; <code>ParseError</code>&#x3002;</p>
-<p>&#x5F53;&#x6CA1;&#x6709;&#x4E1C;&#x897F;&#x9700;&#x8981;&#x8F6C;&#x6362;&#x6216;&#x8005;&#x8F6C;&#x6362;&#x6210;&#x6574;&#x6570;&#x5931;&#x8D25;&#x65F6;&#xFF0C;&#x8FD9;&#x4E2A;&#x5305;&#x4F1A; panic&#xFF08;&#x5728;&#x51FD;&#x6570; fields2numbers &#x4E2D;&#xFF09;&#x3002;&#x4F46;&#x662F;&#x53EF;&#x5BFC;&#x51FA;&#x7684; Parse &#x51FD;&#x6570;&#x4F1A;&#x4ECE; panic &#x4E2D; recover &#x5E76;&#x7528;&#x6240;&#x6709;&#x8FD9;&#x4E9B;&#x4FE1;&#x606F;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x9519;&#x8BEF;&#x7ED9;&#x8C03;&#x7528;&#x8005;&#x3002;&#x4E3A;&#x4E86;&#x6F14;&#x793A;&#x8FD9;&#x4E2A;&#x8FC7;&#x7A0B;&#xFF0C;&#x5728; <a href="examples/chapter_13/panic_recover.go">panic_recover.go</a> &#x4E2D; &#x8C03;&#x7528;&#x4E86; parse &#x5305;&#xFF08;&#x793A;&#x4F8B; 13.4&#xFF09;&#xFF1B;&#x4E0D;&#x53EF;&#x89E3;&#x6790;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x4F1A;&#x5BFC;&#x81F4;&#x9519;&#x8BEF;&#x5E76;&#x88AB;&#x6253;&#x5370;&#x51FA;&#x6765;&#x3002;</p>
+<p>&#x5F53;&#x6CA1;&#x6709;&#x4E1C;&#x897F;&#x9700;&#x8981;&#x8F6C;&#x6362;&#x6216;&#x8005;&#x8F6C;&#x6362;&#x6210;&#x6574;&#x6570;&#x5931;&#x8D25;&#x65F6;&#xFF0C;&#x8FD9;&#x4E2A;&#x5305;&#x4F1A; panic&#xFF08;&#x5728;&#x51FD;&#x6570; fields2numbers &#x4E2D;&#xFF09;&#x3002;&#x4F46;&#x662F;&#x53EF;&#x5BFC;&#x51FA;&#x7684; Parse &#x51FD;&#x6570;&#x4F1A;&#x4ECE; panic &#x4E2D; recover &#x5E76;&#x7528;&#x6240;&#x6709;&#x8FD9;&#x4E9B;&#x4FE1;&#x606F;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x9519;&#x8BEF;&#x7ED9;&#x8C03;&#x7528;&#x8005;&#x3002;&#x4E3A;&#x4E86;&#x6F14;&#x793A;&#x8FD9;&#x4E2A;&#x8FC7;&#x7A0B;&#xFF0C;&#x5728; <a href="examples/chapter_13/panic_recover.go">panic_recover.go</a> &#x4E2D; &#x8C03;&#x7528;&#x4E86; parse &#x5305;&#xFF08;&#x793A;&#x4F8B; 13.5&#xFF09;&#xFF1B;&#x4E0D;&#x53EF;&#x89E3;&#x6790;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#x4F1A;&#x5BFC;&#x81F4;&#x9519;&#x8BEF;&#x5E76;&#x88AB;&#x6253;&#x5370;&#x51FA;&#x6765;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 13.4 <a href="examples/chapter_13/parse/parse.go">parse.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// parse.go</span>
-<span class="hljs-keyword">package</span> parse
+<pre class="language-"><code class="lang-go"><span class="token comment">// parse.go</span>
+<span class="token keyword">package</span> parse
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strings&quot;</span>
-    <span class="hljs-string">&quot;strconv&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strings&quot;</span>
+    <span class="token string">&quot;strconv&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-comment">// A ParseError indicates an error in converting a word into an integer.</span>
-<span class="hljs-keyword">type</span> ParseError <span class="hljs-keyword">struct</span> {
-    Index <span class="hljs-keyword">int</span>      <span class="hljs-comment">// The index into the space-separated list of words.</span>
-    Word  <span class="hljs-keyword">string</span>   <span class="hljs-comment">// The word that generated the parse error.</span>
-    Err error <span class="hljs-comment">// The raw error that precipitated this error, if any.</span>
-}
+<span class="token comment">// A ParseError indicates an error in converting a word into an integer.</span>
+<span class="token keyword">type</span> ParseError <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Index <span class="token builtin">int</span>      <span class="token comment">// The index into the space-separated list of words.</span>
+    Word  <span class="token builtin">string</span>   <span class="token comment">// The word that generated the parse error.</span>
+    Err <span class="token builtin">error</span> <span class="token comment">// The raw error that precipitated this error, if any.</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// String returns a human-readable error message.</span>
-<span class="hljs-keyword">func</span> (e *ParseError) String() <span class="hljs-keyword">string</span> {
-    <span class="hljs-keyword">return</span> fmt.Sprintf(<span class="hljs-string">&quot;pkg parse: error parsing %q as int&quot;</span>, e.Word)
-}
+<span class="token comment">// String returns a human-readable error message.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>ParseError<span class="token punctuation">)</span> <span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Sprintf</span><span class="token punctuation">(</span><span class="token string">&quot;pkg parse: error parsing %q as int&quot;</span><span class="token punctuation">,</span> e<span class="token punctuation">.</span>Word<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Parse parses the space-separated words in in put as integers.</span>
-<span class="hljs-keyword">func</span> Parse(input <span class="hljs-keyword">string</span>) (numbers []<span class="hljs-keyword">int</span>, err error) {
-    <span class="hljs-keyword">defer</span> <span class="hljs-keyword">func</span>() {
-        <span class="hljs-keyword">if</span> r := <span class="hljs-built_in">recover</span>(); r != <span class="hljs-literal">nil</span> {
-            <span class="hljs-keyword">var</span> ok <span class="hljs-keyword">bool</span>
-            err, ok = r.(error)
-            <span class="hljs-keyword">if</span> !ok {
-                err = fmt.Errorf(<span class="hljs-string">&quot;pkg: %v&quot;</span>, r)
-            }
-        }
-    }()
+<span class="token comment">// Parse parses the space-separated words in in put as integers.</span>
+<span class="token keyword">func</span> <span class="token function">Parse</span><span class="token punctuation">(</span>input <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>numbers <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> r <span class="token operator">:=</span> <span class="token function">recover</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> r <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            <span class="token keyword">var</span> ok <span class="token builtin">bool</span>
+            err<span class="token punctuation">,</span> ok <span class="token operator">=</span> r<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">error</span><span class="token punctuation">)</span>
+            <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token punctuation">{</span>
+                err <span class="token operator">=</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">&quot;pkg: %v&quot;</span><span class="token punctuation">,</span> r<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    fields := strings.Fields(input)
-    numbers = fields2numbers(fields)
-    <span class="hljs-keyword">return</span>
-}
+    fields <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Fields</span><span class="token punctuation">(</span>input<span class="token punctuation">)</span>
+    numbers <span class="token operator">=</span> <span class="token function">fields2numbers</span><span class="token punctuation">(</span>fields<span class="token punctuation">)</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> fields2numbers(fields []<span class="hljs-keyword">string</span>) (numbers []<span class="hljs-keyword">int</span>) {
-    <span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(fields) == <span class="hljs-number">0</span> {
-        <span class="hljs-built_in">panic</span>(<span class="hljs-string">&quot;no words to parse&quot;</span>)
-    }
-    <span class="hljs-keyword">for</span> idx, field := <span class="hljs-keyword">range</span> fields {
-        num, err := strconv.Atoi(field)
-        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
-            <span class="hljs-built_in">panic</span>(&amp;ParseError{idx, field, err})
-        }
-        numbers = <span class="hljs-built_in">append</span>(numbers, num)
-    }
-    <span class="hljs-keyword">return</span>
-}
+<span class="token keyword">func</span> <span class="token function">fields2numbers</span><span class="token punctuation">(</span>fields <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>numbers <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token function">len</span><span class="token punctuation">(</span>fields<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        <span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">&quot;no words to parse&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">for</span> idx<span class="token punctuation">,</span> field <span class="token operator">:=</span> <span class="token keyword">range</span> fields <span class="token punctuation">{</span>
+        num<span class="token punctuation">,</span> err <span class="token operator">:=</span> strconv<span class="token punctuation">.</span><span class="token function">Atoi</span><span class="token punctuation">(</span>field<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            <span class="token function">panic</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>ParseError<span class="token punctuation">{</span>idx<span class="token punctuation">,</span> field<span class="token punctuation">,</span> err<span class="token punctuation">}</span><span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        numbers <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>numbers<span class="token punctuation">,</span> num<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x793A;&#x4F8B; 13.5 <a href="examples/chapter_13/panic_package.go">panic_package.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// panic_package.go</span>
-<span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token comment">// panic_package.go</span>
+<span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;./parse/parse&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;./parse/parse&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> examples = []<span class="hljs-keyword">string</span>{
-            <span class="hljs-string">&quot;1 2 3 4 5&quot;</span>,
-            <span class="hljs-string">&quot;100 50 25 12.5 6.25&quot;</span>,
-            <span class="hljs-string">&quot;2 + 2 = 4&quot;</span>,
-            <span class="hljs-string">&quot;1st class&quot;</span>,
-            <span class="hljs-string">&quot;&quot;</span>,
-    }
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> examples <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span>
+            <span class="token string">&quot;1 2 3 4 5&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;100 50 25 12.5 6.25&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;2 + 2 = 4&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;1st class&quot;</span><span class="token punctuation">,</span>
+            <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
 
-    <span class="hljs-keyword">for</span> _, ex := <span class="hljs-keyword">range</span> examples {
-        fmt.Printf(<span class="hljs-string">&quot;Parsing %q:\n  &quot;</span>, ex)
-        nums, err := parse.Parse(ex)
-        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
-            fmt.Println(err) <span class="hljs-comment">// here String() method from ParseError is used</span>
-            <span class="hljs-keyword">continue</span>
-        }
-        fmt.Println(nums)
-    }
-}
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> ex <span class="token operator">:=</span> <span class="token keyword">range</span> examples <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Parsing %q:\n  &quot;</span><span class="token punctuation">,</span> ex<span class="token punctuation">)</span>
+        nums<span class="token punctuation">,</span> err <span class="token operator">:=</span> parse<span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span>ex<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token comment">// here String() method from ParseError is used</span>
+            <span class="token keyword">continue</span>
+        <span class="token punctuation">}</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>nums<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>Parsing &quot;1 2 3 4 5&quot;:
+<pre class="language-"><code>Parsing &quot;1 2 3 4 5&quot;:
   [1 2 3 4 5]
 Parsing &quot;100 50 25 12.5 6.25&quot;:
   pkg parse: error parsing &quot;12.5&quot; as int
@@ -2692,7 +2700,7 @@ Parsing &quot;1st class&quot;:
   pkg parse: error parsing &quot;1st&quot; as int
 Parsing &quot;&quot;:
   pkg: no words to parse
-</code></pre><h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+</code></pre><h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="13.3.html">&#x4ECE; panic &#x4E2D;&#x6062;&#x590D;&#xFF08;Recover&#xFF09;</a></li>
@@ -2741,7 +2749,7 @@ Parsing &quot;&quot;:
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"自定义包中的错误处理和 panicking","level":"4.2.4","depth":2,"next":{"title":"一种用闭包处理错误的模式","level":"4.2.5","depth":2,"path":"eBook/13.5.md","ref":"eBook/13.5.md","articles":[]},"previous":{"title":"从 panic 中恢复（Recover）","level":"4.2.3","depth":2,"path":"eBook/13.3.md","ref":"eBook/13.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/13.4.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"自定义包中的错误处理和 panicking","level":"4.2.4","depth":2,"next":{"title":"一种用闭包处理错误的模式","level":"4.2.5","depth":2,"path":"eBook/13.5.md","ref":"eBook/13.5.md","articles":[]},"previous":{"title":"从 panic 中恢复（Recover）","level":"4.2.3","depth":2,"path":"eBook/13.3.md","ref":"eBook/13.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/13.4.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2771,7 +2779,11 @@ Parsing &quot;&quot;:
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

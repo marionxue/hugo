@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,68 +2600,68 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#73-for-range-&#x7ED3;&#x6784;"><b></b>7.3 For-range &#x7ED3;&#x6784;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#73-for-range-&#x7ED3;&#x6784;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="73-for-range-&#x7ED3;&#x6784;"><a name="73-for-range-&#x7ED3;&#x6784;" class="anchor-navigation-ex-anchor" href="#73-for-range-&#x7ED3;&#x6784;"><i class="fa fa-link" aria-hidden="true"></i></a>7.3 For-range &#x7ED3;&#x6784;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#73-for-range-&#x7ED3;&#x6784;"><b> </b>7.3 For-range &#x7ED3;&#x6784;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#73-for-range-&#x7ED3;&#x6784;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="73-for-range-&#x7ED3;&#x6784;"><a name="73-for-range-&#x7ED3;&#x6784;" class="anchor-navigation-ex-anchor" href="#73-for-range-&#x7ED3;&#x6784;"><i class="fa fa-link" aria-hidden="true"></i></a> 7.3 For-range &#x7ED3;&#x6784;</h1>
 <p>&#x8FD9;&#x79CD;&#x6784;&#x5EFA;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x5E94;&#x7528;&#x4E8E;&#x6570;&#x7EC4;&#x548C;&#x5207;&#x7247;:</p>
-<pre><code class="lang-go"><span class="hljs-keyword">for</span> ix, value := <span class="hljs-keyword">range</span> slice1 {
-    ...
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">for</span> ix<span class="token punctuation">,</span> value <span class="token operator">:=</span> <span class="token keyword">range</span> slice1 <span class="token punctuation">{</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x7B2C;&#x4E00;&#x4E2A;&#x8FD4;&#x56DE;&#x503C; ix &#x662F;&#x6570;&#x7EC4;&#x6216;&#x8005;&#x5207;&#x7247;&#x7684;&#x7D22;&#x5F15;&#xFF0C;&#x7B2C;&#x4E8C;&#x4E2A;&#x662F;&#x5728;&#x8BE5;&#x7D22;&#x5F15;&#x4F4D;&#x7F6E;&#x7684;&#x503C;&#xFF1B;&#x4ED6;&#x4EEC;&#x90FD;&#x662F;&#x4EC5;&#x5728; for &#x5FAA;&#x73AF;&#x5185;&#x90E8;&#x53EF;&#x89C1;&#x7684;&#x5C40;&#x90E8;&#x53D8;&#x91CF;&#x3002;value &#x53EA;&#x662F; slice1 &#x67D0;&#x4E2A;&#x7D22;&#x5F15;&#x4F4D;&#x7F6E;&#x7684;&#x503C;&#x7684;&#x4E00;&#x4E2A;&#x62F7;&#x8D1D;&#xFF0C;&#x4E0D;&#x80FD;&#x7528;&#x6765;&#x4FEE;&#x6539; slice1 &#x8BE5;&#x7D22;&#x5F15;&#x4F4D;&#x7F6E;&#x7684;&#x503C;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 7.9 <a href="examples/chapter_7/slices_forrange.go">slices_forrange.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> slice1 []<span class="hljs-keyword">int</span> = <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">int</span>, <span class="hljs-number">4</span>)
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> slice1 <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
 
-    slice1[<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>
-    slice1[<span class="hljs-number">1</span>] = <span class="hljs-number">2</span>
-    slice1[<span class="hljs-number">2</span>] = <span class="hljs-number">3</span>
-    slice1[<span class="hljs-number">3</span>] = <span class="hljs-number">4</span>
+    slice1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+    slice1<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">2</span>
+    slice1<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">3</span>
+    slice1<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">4</span>
 
-    <span class="hljs-keyword">for</span> ix, value := <span class="hljs-keyword">range</span> slice1 {
-        fmt.Printf(<span class="hljs-string">&quot;Slice at %d is: %d\n&quot;</span>, ix, value)
-    }
-}
+    <span class="token keyword">for</span> ix<span class="token punctuation">,</span> value <span class="token operator">:=</span> <span class="token keyword">range</span> slice1 <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Slice at %d is: %d\n&quot;</span><span class="token punctuation">,</span> ix<span class="token punctuation">,</span> value<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x793A;&#x4F8B; 7.10 <a href="examples/chapter_7/slices_forrange2.go">slices_forrange2.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    seasons := []<span class="hljs-keyword">string</span>{<span class="hljs-string">&quot;Spring&quot;</span>, <span class="hljs-string">&quot;Summer&quot;</span>, <span class="hljs-string">&quot;Autumn&quot;</span>, <span class="hljs-string">&quot;Winter&quot;</span>}
-    <span class="hljs-keyword">for</span> ix, season := <span class="hljs-keyword">range</span> seasons {
-        fmt.Printf(<span class="hljs-string">&quot;Season %d is: %s\n&quot;</span>, ix, season)
-    }
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    seasons <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">&quot;Spring&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Summer&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Autumn&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Winter&quot;</span><span class="token punctuation">}</span>
+    <span class="token keyword">for</span> ix<span class="token punctuation">,</span> season <span class="token operator">:=</span> <span class="token keyword">range</span> seasons <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Season %d is: %s\n&quot;</span><span class="token punctuation">,</span> ix<span class="token punctuation">,</span> season<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
 
-    <span class="hljs-keyword">var</span> season <span class="hljs-keyword">string</span>
-    <span class="hljs-keyword">for</span> _, season = <span class="hljs-keyword">range</span> seasons {
-        fmt.Printf(<span class="hljs-string">&quot;%s\n&quot;</span>, season)
-    }
-}
+    <span class="token keyword">var</span> season <span class="token builtin">string</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> season <span class="token operator">=</span> <span class="token keyword">range</span> seasons <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%s\n&quot;</span><span class="token punctuation">,</span> season<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>slices<em>forrange2.go &#x7ED9;&#x51FA;&#x4E86;&#x4E00;&#x4E2A;&#x5173;&#x4E8E;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x4F8B;&#x5B50;&#xFF0C; `</em>` &#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x5FFD;&#x7565;&#x7D22;&#x5F15;&#x3002;</p>
 <p>&#x5982;&#x679C;&#x4F60;&#x53EA;&#x9700;&#x8981;&#x7D22;&#x5F15;&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x5FFD;&#x7565;&#x7B2C;&#x4E8C;&#x4E2A;&#x53D8;&#x91CF;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">for</span> ix := <span class="hljs-keyword">range</span> seasons {
-    fmt.Printf(<span class="hljs-string">&quot;%d&quot;</span>, ix)
-}
-<span class="hljs-comment">// Output: 0 1 2 3</span>
+<pre class="language-"><code class="lang-go"><span class="token keyword">for</span> ix <span class="token operator">:=</span> <span class="token keyword">range</span> seasons <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d&quot;</span><span class="token punctuation">,</span> ix<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// Output: 0 1 2 3</span>
 </code></pre>
 <p>&#x5982;&#x679C;&#x4F60;&#x9700;&#x8981;&#x4FEE;&#x6539; <code>seasons[ix]</code> &#x7684;&#x503C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x8FD9;&#x4E2A;&#x7248;&#x672C;&#x3002;</p>
 <p><strong>&#x591A;&#x7EF4;&#x5207;&#x7247;&#x4E0B;&#x7684; for-range&#xFF1A;</strong></p>
 <p>&#x901A;&#x8FC7;&#x8BA1;&#x7B97;&#x884C;&#x6570;&#x548C;&#x77E9;&#x9635;&#x503C;&#x53EF;&#x4EE5;&#x5F88;&#x65B9;&#x4FBF;&#x7684;&#x5199;&#x51FA;&#x5982;&#xFF08;&#x53C2;&#x8003;&#x7B2C; 7.1.3 &#x8282;&#xFF09;&#x7684; for &#x5FAA;&#x73AF;&#x6765;&#xFF0C;&#x4F8B;&#x5982;&#xFF08;&#x53C2;&#x8003;&#x7B2C; 7.5 &#x8282;&#x7684;&#x4F8B;&#x5B50; multidim_array.go&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">for</span> row := <span class="hljs-keyword">range</span> screen {
-    <span class="hljs-keyword">for</span> column := <span class="hljs-keyword">range</span> screen[row] {
-        screen[row][column] = <span class="hljs-number">1</span>
-    }
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">for</span> row <span class="token operator">:=</span> <span class="token keyword">range</span> screen <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> column <span class="token operator">:=</span> <span class="token keyword">range</span> screen<span class="token punctuation">[</span>row<span class="token punctuation">]</span> <span class="token punctuation">{</span>
+        screen<span class="token punctuation">[</span>row<span class="token punctuation">]</span><span class="token punctuation">[</span>column<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p><strong>&#x95EE;&#x9898; 7.5</strong> &#x5047;&#x8BBE;&#x6211;&#x4EEC;&#x6709;&#x5982;&#x4E0B;&#x6570;&#x7EC4;&#xFF1A;<code>items := [...]int{10, 20, 30, 40, 50}</code></p>
 <p>a) &#x5982;&#x679C;&#x6211;&#x4EEC;&#x5199;&#x4E86;&#x5982;&#x4E0B;&#x7684; for &#x5FAA;&#x73AF;&#xFF0C;&#x90A3;&#x4E48;&#x6267;&#x884C;&#x5B8C; for &#x5FAA;&#x73AF;&#x540E;&#x7684; <code>items</code> &#x7684;&#x503C;&#x662F;&#x591A;&#x5C11;&#xFF1F;&#x5982;&#x679C;&#x4F60;&#x4E0D;&#x786E;&#x5B9A;&#x7684;&#x8BDD;&#x53EF;&#x4EE5;&#x6D4B;&#x8BD5;&#x4E00;&#x4E0B;:)</p>
-<pre><code class="lang-go"><span class="hljs-keyword">for</span> _, item := <span class="hljs-keyword">range</span> items {
-    item *= <span class="hljs-number">2</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> item <span class="token operator">:=</span> <span class="token keyword">range</span> items <span class="token punctuation">{</span>
+    item <span class="token operator">*=</span> <span class="token number">2</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>b) &#x5982;&#x679C; a) &#x65E0;&#x6CD5;&#x6B63;&#x5E38;&#x5DE5;&#x4F5C;&#xFF0C;&#x5199;&#x4E00;&#x4E2A; for &#x5FAA;&#x73AF;&#x8BA9;&#x503C;&#x53EF;&#x4EE5; double&#x3002;</p>
 <p><strong>&#x95EE;&#x9898; 7.6</strong> &#x901A;&#x8FC7;&#x4F7F;&#x7528;&#x7701;&#x7565;&#x53F7;&#x64CD;&#x4F5C;&#x7B26; <code>...</code> &#x6765;&#x5B9E;&#x73B0;&#x7D2F;&#x52A0;&#x65B9;&#x6CD5;&#x3002;</p>
@@ -2663,7 +2671,7 @@
 <p>b) &#x5199;&#x4E00;&#x4E2A; SumAndAverage &#x65B9;&#x6CD5;&#xFF0C;&#x8FD4;&#x56DE;&#x4E24;&#x4E2A; int &#x548C; float32 &#x7C7B;&#x578B;&#x7684;&#x672A;&#x547D;&#x540D;&#x53D8;&#x91CF;&#x7684;&#x548C;&#x4E0E;&#x5E73;&#x5747;&#x503C;&#x3002;</p>
 <p><strong>&#x7EC3;&#x4E60; 7.8</strong> min_max.go</p>
 <p>&#x5199;&#x4E00;&#x4E2A; minSlice &#x65B9;&#x6CD5;&#xFF0C;&#x4F20;&#x5165;&#x4E00;&#x4E2A; int &#x7684;&#x5207;&#x7247;&#x5E76;&#x4E14;&#x8FD4;&#x56DE;&#x6700;&#x5C0F;&#x503C;&#xFF0C;&#x518D;&#x5199;&#x4E00;&#x4E2A; maxSlice &#x65B9;&#x6CD5;&#x8FD4;&#x56DE;&#x6700;&#x5927;&#x503C;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="07.2.html">&#x5207;&#x7247;</a></li>
@@ -2712,7 +2720,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"For-range 结构","level":"3.4.3","depth":2,"next":{"title":"切片重组（reslice）","level":"3.4.4","depth":2,"path":"eBook/07.4.md","ref":"eBook/07.4.md","articles":[]},"previous":{"title":"切片","level":"3.4.2","depth":2,"path":"eBook/07.2.md","ref":"eBook/07.2.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/07.3.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"For-range 结构","level":"3.4.3","depth":2,"next":{"title":"切片重组（reslice）","level":"3.4.4","depth":2,"path":"eBook/07.4.md","ref":"eBook/07.4.md","articles":[]},"previous":{"title":"切片","level":"3.4.2","depth":2,"path":"eBook/07.2.md","ref":"eBook/07.2.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/07.3.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2742,7 +2750,11 @@
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

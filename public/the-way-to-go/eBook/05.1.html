@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,61 +2600,61 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#51-if-else-&#x7ED3;&#x6784;"><b></b>5.1 if-else &#x7ED3;&#x6784;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#51-if-else-&#x7ED3;&#x6784;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="51-if-else-&#x7ED3;&#x6784;"><a name="51-if-else-&#x7ED3;&#x6784;" class="anchor-navigation-ex-anchor" href="#51-if-else-&#x7ED3;&#x6784;"><i class="fa fa-link" aria-hidden="true"></i></a>5.1 if-else &#x7ED3;&#x6784;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#51-if-else-&#x7ED3;&#x6784;"><b> </b>5.1 if-else &#x7ED3;&#x6784;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#51-if-else-&#x7ED3;&#x6784;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="51-if-else-&#x7ED3;&#x6784;"><a name="51-if-else-&#x7ED3;&#x6784;" class="anchor-navigation-ex-anchor" href="#51-if-else-&#x7ED3;&#x6784;"><i class="fa fa-link" aria-hidden="true"></i></a> 5.1 if-else &#x7ED3;&#x6784;</h1>
 <p>if &#x662F;&#x7528;&#x4E8E;&#x6D4B;&#x8BD5;&#x67D0;&#x4E2A;&#x6761;&#x4EF6;&#xFF08;&#x5E03;&#x5C14;&#x578B;&#x6216;&#x903B;&#x8F91;&#x578B;&#xFF09;&#x7684;&#x8BED;&#x53E5;&#xFF0C;&#x5982;&#x679C;&#x8BE5;&#x6761;&#x4EF6;&#x6210;&#x7ACB;&#xFF0C;&#x5219;&#x4F1A;&#x6267;&#x884C; if &#x540E;&#x7531;&#x5927;&#x62EC;&#x53F7;&#x62EC;&#x8D77;&#x6765;&#x7684;&#x4EE3;&#x7801;&#x5757;&#xFF0C;&#x5426;&#x5219;&#x5C31;&#x5FFD;&#x7565;&#x8BE5;&#x4EE3;&#x7801;&#x5757;&#x7EE7;&#x7EED;&#x6267;&#x884C;&#x540E;&#x7EED;&#x7684;&#x4EE3;&#x7801;&#x3002;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> condition {
-    <span class="hljs-comment">// do something    </span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> condition <span class="token punctuation">{</span>
+    <span class="token comment">// do something    </span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5982;&#x679C;&#x5B58;&#x5728;&#x7B2C;&#x4E8C;&#x4E2A;&#x5206;&#x652F;&#xFF0C;&#x5219;&#x53EF;&#x4EE5;&#x5728;&#x4E0A;&#x9762;&#x4EE3;&#x7801;&#x7684;&#x57FA;&#x7840;&#x4E0A;&#x6DFB;&#x52A0; else &#x5173;&#x952E;&#x5B57;&#x4EE5;&#x53CA;&#x53E6;&#x4E00;&#x4EE3;&#x7801;&#x5757;&#xFF0C;&#x8FD9;&#x4E2A;&#x4EE3;&#x7801;&#x5757;&#x4E2D;&#x7684;&#x4EE3;&#x7801;&#x53EA;&#x6709;&#x5728;&#x6761;&#x4EF6;&#x4E0D;&#x6EE1;&#x8DB3;&#x65F6;&#x624D;&#x4F1A;&#x6267;&#x884C;&#x3002;if &#x548C; else &#x540E;&#x7684;&#x4E24;&#x4E2A;&#x4EE3;&#x7801;&#x5757;&#x662F;&#x76F8;&#x4E92;&#x72EC;&#x7ACB;&#x7684;&#x5206;&#x652F;&#xFF0C;&#x53EA;&#x53EF;&#x80FD;&#x6267;&#x884C;&#x5176;&#x4E2D;&#x4E00;&#x4E2A;&#x3002;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> condition {
-    <span class="hljs-comment">// do something    </span>
-} <span class="hljs-keyword">else</span> {
-    <span class="hljs-comment">// do something    </span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> condition <span class="token punctuation">{</span>
+    <span class="token comment">// do something    </span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// do something    </span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5982;&#x679C;&#x5B58;&#x5728;&#x7B2C;&#x4E09;&#x4E2A;&#x5206;&#x652F;&#xFF0C;&#x5219;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x4E0B;&#x9762;&#x8FD9;&#x79CD;&#x4E09;&#x4E2A;&#x72EC;&#x7ACB;&#x5206;&#x652F;&#x7684;&#x5F62;&#x5F0F;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> condition1 {
-    <span class="hljs-comment">// do something    </span>
-} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> condition2 {
-    <span class="hljs-comment">// do something else    </span>
-}<span class="hljs-keyword">else</span> {
-    <span class="hljs-comment">// catch-all or default</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> condition1 <span class="token punctuation">{</span>
+    <span class="token comment">// do something    </span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> condition2 <span class="token punctuation">{</span>
+    <span class="token comment">// do something else    </span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token comment">// catch-all or default</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>else-if &#x5206;&#x652F;&#x7684;&#x6570;&#x91CF;&#x662F;&#x6CA1;&#x6709;&#x9650;&#x5236;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x4E3A;&#x4E86;&#x4EE3;&#x7801;&#x7684;&#x53EF;&#x8BFB;&#x6027;&#xFF0C;&#x8FD8;&#x662F;&#x4E0D;&#x8981;&#x5728; if &#x540E;&#x9762;&#x52A0;&#x5165;&#x592A;&#x591A;&#x7684; else-if &#x7ED3;&#x6784;&#x3002;&#x5982;&#x679C;&#x4F60;&#x5FC5;&#x987B;&#x4F7F;&#x7528;&#x8FD9;&#x79CD;&#x5F62;&#x5F0F;&#xFF0C;&#x5219;&#x628A;&#x5C3D;&#x53EF;&#x80FD;&#x5148;&#x6EE1;&#x8DB3;&#x7684;&#x6761;&#x4EF6;&#x653E;&#x5728;&#x524D;&#x9762;&#x3002;</p>
 <p>&#x5373;&#x4F7F;&#x5F53;&#x4EE3;&#x7801;&#x5757;&#x4E4B;&#x95F4;&#x53EA;&#x6709;&#x4E00;&#x6761;&#x8BED;&#x53E5;&#x65F6;&#xFF0C;&#x5927;&#x62EC;&#x53F7;&#x4E5F;&#x4E0D;&#x53EF;&#x88AB;&#x7701;&#x7565;(&#x5C3D;&#x7BA1;&#x6709;&#x4E9B;&#x4EBA;&#x5E76;&#x4E0D;&#x8D5E;&#x6210;&#xFF0C;&#x4F46;&#x8FD9;&#x8FD8;&#x662F;&#x7B26;&#x5408;&#x4E86;&#x8F6F;&#x4EF6;&#x5DE5;&#x7A0B;&#x539F;&#x5219;&#x7684;&#x4E3B;&#x6D41;&#x505A;&#x6CD5;)&#x3002;</p>
 <p>&#x5173;&#x952E;&#x5B57; if &#x548C; else &#x4E4B;&#x540E;&#x7684;&#x5DE6;&#x5927;&#x62EC;&#x53F7; <code>{</code> &#x5FC5;&#x987B;&#x548C;&#x5173;&#x952E;&#x5B57;&#x5728;&#x540C;&#x4E00;&#x884C;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x4F7F;&#x7528;&#x4E86; else-if &#x7ED3;&#x6784;&#xFF0C;&#x5219;&#x524D;&#x6BB5;&#x4EE3;&#x7801;&#x5757;&#x7684;&#x53F3;&#x5927;&#x62EC;&#x53F7; <code>}</code> &#x5FC5;&#x987B;&#x548C; else-if &#x5173;&#x952E;&#x5B57;&#x5728;&#x540C;&#x4E00;&#x884C;&#x3002;&#x8FD9;&#x4E24;&#x6761;&#x89C4;&#x5219;&#x90FD;&#x662F;&#x88AB;&#x7F16;&#x8BD1;&#x5668;&#x5F3A;&#x5236;&#x89C4;&#x5B9A;&#x7684;&#x3002;</p>
 <p>&#x975E;&#x6CD5;&#x7684; Go &#x4EE3;&#x7801;:</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> x{
-}
-<span class="hljs-keyword">else</span> {    <span class="hljs-comment">// &#x65E0;&#x6548;&#x7684;</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> x<span class="token punctuation">{</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">else</span> <span class="token punctuation">{</span>    <span class="token comment">// &#x65E0;&#x6548;&#x7684;</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x5728;&#x4F60;&#x4F7F;&#x7528; <code>gofmt</code> &#x683C;&#x5F0F;&#x5316;&#x4EE3;&#x7801;&#x4E4B;&#x540E;&#xFF0C;&#x6BCF;&#x4E2A;&#x5206;&#x652F;&#x5185;&#x7684;&#x4EE3;&#x7801;&#x90FD;&#x4F1A;&#x7F29;&#x8FDB; 4 &#x4E2A;&#x6216; 8 &#x4E2A;&#x7A7A;&#x683C;&#xFF0C;&#x6216;&#x8005;&#x662F; 1 &#x4E2A; tab&#xFF0C;&#x5E76;&#x4E14;&#x53F3;&#x5927;&#x62EC;&#x53F7;&#x4E0E;&#x5BF9;&#x5E94;&#x7684; if &#x5173;&#x952E;&#x5B57;&#x5782;&#x76F4;&#x5BF9;&#x9F50;&#x3002;</p>
 <p>&#x5728;&#x6709;&#x4E9B;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6761;&#x4EF6;&#x8BED;&#x53E5;&#x4E24;&#x4FA7;&#x7684;&#x62EC;&#x53F7;&#x662F;&#x53EF;&#x4EE5;&#x88AB;&#x7701;&#x7565;&#x7684;&#xFF1B;&#x5F53;&#x6761;&#x4EF6;&#x6BD4;&#x8F83;&#x590D;&#x6742;&#x65F6;&#xFF0C;&#x5219;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x62EC;&#x53F7;&#x8BA9;&#x4EE3;&#x7801;&#x66F4;&#x6613;&#x8BFB;&#x3002;&#x6761;&#x4EF6;&#x5141;&#x8BB8;&#x662F;&#x7B26;&#x5408;&#x6761;&#x4EF6;&#xFF0C;&#x9700;&#x4F7F;&#x7528; &amp;&amp;&#x3001;|| &#x6216; !&#xFF0C;&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x62EC;&#x53F7;&#x6765;&#x63D0;&#x5347;&#x67D0;&#x4E2A;&#x8868;&#x8FBE;&#x5F0F;&#x7684;&#x8FD0;&#x7B97;&#x4F18;&#x5148;&#x7EA7;&#xFF0C;&#x5E76;&#x63D0;&#x9AD8;&#x4EE3;&#x7801;&#x7684;&#x53EF;&#x8BFB;&#x6027;&#x3002;</p>
 <p>&#x4E00;&#x79CD;&#x53EF;&#x80FD;&#x7528;&#x5230;&#x6761;&#x4EF6;&#x8BED;&#x53E5;&#x7684;&#x573A;&#x666F;&#x662F;&#x6D4B;&#x8BD5;&#x53D8;&#x91CF;&#x7684;&#x503C;&#xFF0C;&#x5728;&#x4E0D;&#x540C;&#x7684;&#x60C5;&#x51B5;&#x6267;&#x884C;&#x4E0D;&#x540C;&#x7684;&#x8BED;&#x53E5;&#xFF0C;&#x4E0D;&#x8FC7;&#x5C06;&#x5728;&#x7B2C; 5.3 &#x8282;&#x8BB2;&#x5230;&#x7684; switch &#x7ED3;&#x6784;&#x4F1A;&#x66F4;&#x9002;&#x5408;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 5.1 <a href="examples/chapter_5/booleans.go">booleans.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
-<span class="hljs-keyword">func</span> main() {
-    bool1 := <span class="hljs-literal">true</span>
-    <span class="hljs-keyword">if</span> bool1 {
-        fmt.Printf(<span class="hljs-string">&quot;The value is true\n&quot;</span>)
-    } <span class="hljs-keyword">else</span> {
-        fmt.Printf(<span class="hljs-string">&quot;The value is false\n&quot;</span>)
-    }
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    bool1 <span class="token operator">:=</span> <span class="token boolean">true</span>
+    <span class="token keyword">if</span> bool1 <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The value is true\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The value is false\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>The value is true
+<pre class="language-"><code>The value is true
 </code></pre><p><strong>&#x6CE8;&#x610F;&#x4E8B;&#x9879;</strong> &#x8FD9;&#x91CC;&#x4E0D;&#x9700;&#x8981;&#x4F7F;&#x7528; <code>if bool1 == true</code> &#x6765;&#x5224;&#x65AD;&#xFF0C;&#x56E0;&#x4E3A; <code>bool1</code> &#x672C;&#x8EAB;&#x5DF2;&#x7ECF;&#x662F;&#x4E00;&#x4E2A;&#x5E03;&#x5C14;&#x7C7B;&#x578B;&#x7684;&#x503C;&#x3002;</p>
 <p>&#x8FD9;&#x79CD;&#x505A;&#x6CD5;&#x4E00;&#x822C;&#x90FD;&#x7528;&#x5728;&#x6D4B;&#x8BD5; <code>true</code> &#x6216;&#x8005;&#x6709;&#x5229;&#x6761;&#x4EF6;&#x65F6;&#xFF0C;&#x4F46;&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x53D6;&#x53CD; <code>!</code> &#x6765;&#x5224;&#x65AD;&#x503C;&#x7684;&#x76F8;&#x53CD;&#x7ED3;&#x679C;&#xFF0C;&#x5982;&#xFF1A;<code>if !bool1</code> &#x6216;&#x8005; <code>if !(condition)</code>&#x3002;&#x540E;&#x8005;&#x7684;&#x62EC;&#x53F7;&#x5927;&#x591A;&#x6570;&#x60C5;&#x51B5;&#x4E0B;&#x662F;&#x5FC5;&#x987B;&#x7684;&#xFF0C;&#x5982;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#xFF1A;<code>if !(var1 == var2)</code>&#x3002;</p>
 <p>&#x5F53; if &#x7ED3;&#x6784;&#x5185;&#x6709; break&#x3001;continue&#x3001;goto &#x6216;&#x8005; return &#x8BED;&#x53E5;&#x65F6;&#xFF0C;Go &#x4EE3;&#x7801;&#x7684;&#x5E38;&#x89C1;&#x5199;&#x6CD5;&#x662F;&#x7701;&#x7565; else &#x90E8;&#x5206;&#xFF08;&#x53E6;&#x89C1;&#x7B2C; 5.2 &#x8282;&#xFF09;&#x3002;&#x65E0;&#x8BBA;&#x6EE1;&#x8DB3;&#x54EA;&#x4E2A;&#x6761;&#x4EF6;&#x90FD;&#x4F1A;&#x8FD4;&#x56DE; x &#x6216;&#x8005; y &#x65F6;&#xFF0C;&#x4E00;&#x822C;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x5199;&#x6CD5;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> condition {
-    <span class="hljs-keyword">return</span> x
-}
-<span class="hljs-keyword">return</span> y
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> condition <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> x
+<span class="token punctuation">}</span>
+<span class="token keyword">return</span> y
 </code></pre>
 <p><strong>&#x6CE8;&#x610F;&#x4E8B;&#x9879;</strong> &#x4E0D;&#x8981;&#x540C;&#x65F6;&#x5728; if-else &#x7ED3;&#x6784;&#x7684;&#x4E24;&#x4E2A;&#x5206;&#x652F;&#x91CC;&#x90FD;&#x4F7F;&#x7528; return &#x8BED;&#x53E5;&#xFF0C;&#x8FD9;&#x5C06;&#x5BFC;&#x81F4;&#x7F16;&#x8BD1;&#x62A5;&#x9519; <code>function ends without a return statement</code>&#xFF08;&#x4F60;&#x53EF;&#x4EE5;&#x8BA4;&#x4E3A;&#x8FD9;&#x662F;&#x4E00;&#x4E2A;&#x7F16;&#x8BD1;&#x5668;&#x7684; Bug &#x6216;&#x8005;&#x7279;&#x6027;&#xFF09;&#x3002;&#xFF08; <strong>&#x8BD1;&#x8005;&#x6CE8;&#xFF1A;&#x8BE5;&#x95EE;&#x9898;&#x5DF2;&#x7ECF;&#x5728; Go 1.1 &#x4E2D;&#x88AB;&#x4FEE;&#x590D;&#x6216;&#x8005;&#x8BF4;&#x6539;&#x8FDB;</strong> &#xFF09;</p>
 <p>&#x8FD9;&#x91CC;&#x4E3E;&#x4E00;&#x4E9B;&#x6709;&#x7528;&#x7684;&#x4F8B;&#x5B50;&#xFF1A;</p>
@@ -2657,13 +2665,13 @@
 </ul>
 </li>
 <li><p>&#x5224;&#x65AD;&#x8FD0;&#x884C; Go &#x7A0B;&#x5E8F;&#x7684;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x7C7B;&#x578B;&#xFF0C;&#x8FD9;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5E38;&#x91CF; <code>runtime.GOOS</code> &#x6765;&#x5224;&#x65AD;(&#x7B2C; 2.2 &#x8282;)&#x3002;</p>
-<pre><code> if runtime.GOOS == &quot;windows&quot;     {
+<pre class="language-"><code> if runtime.GOOS == &quot;windows&quot;     {
      .    ..
  } else { // Unix-like
      .    ..
  }
 </code></pre><p> &#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x4E00;&#x822C;&#x88AB;&#x653E;&#x5728; init() &#x51FD;&#x6570;&#x4E2D;&#x6267;&#x884C;&#x3002;&#x8FD9;&#x513F;&#x8FD8;&#x6709;&#x4E00;&#x6BB5;&#x793A;&#x4F8B;&#x6765;&#x6F14;&#x793A;&#x5982;&#x4F55;&#x6839;&#x636E;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x6765;&#x51B3;&#x5B9A;&#x8F93;&#x5165;&#x7ED3;&#x675F;&#x7684;&#x63D0;&#x793A;&#xFF1A;</p>
-<pre><code> var prompt = &quot;Enter a digit, e.g. 3 &quot;+ &quot;or %s to quit.&quot;
+<pre class="language-"><code> var prompt = &quot;Enter a digit, e.g. 3 &quot;+ &quot;or %s to quit.&quot;
 
  func init() {
      if runtime.GOOS == &quot;windows&quot; {
@@ -2674,7 +2682,7 @@
  }
 </code></pre></li>
 <li><p>&#x51FD;&#x6570; <code>Abs()</code> &#x7528;&#x4E8E;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x6574;&#x578B;&#x6570;&#x5B57;&#x7684;&#x7EDD;&#x5BF9;&#x503C;:</p>
-<pre><code> func Abs(x int) int {
+<pre class="language-"><code> func Abs(x int) int {
      if x &lt; 0 {
          return -x
      }
@@ -2682,7 +2690,7 @@
  }
 </code></pre></li>
 <li><p><code>isGreater</code> &#x7528;&#x4E8E;&#x6BD4;&#x8F83;&#x4E24;&#x4E2A;&#x6574;&#x578B;&#x6570;&#x5B57;&#x7684;&#x5927;&#x5C0F;:</p>
-<pre><code> func isGreater(x, y int) bool {
+<pre class="language-"><code> func isGreater(x, y int) bool {
      if x &gt; y {
          return true    
      }
@@ -2691,58 +2699,58 @@
 </code></pre></li>
 </ol>
 <p>&#x5728;&#x7B2C;&#x56DB;&#x79CD;&#x60C5;&#x51B5;&#x4E2D;&#xFF0C;if &#x53EF;&#x4EE5;&#x5305;&#x542B;&#x4E00;&#x4E2A;&#x521D;&#x59CB;&#x5316;&#x8BED;&#x53E5;&#xFF08;&#x5982;&#xFF1A;&#x7ED9;&#x4E00;&#x4E2A;&#x53D8;&#x91CF;&#x8D4B;&#x503C;&#xFF09;&#x3002;&#x8FD9;&#x79CD;&#x5199;&#x6CD5;&#x5177;&#x6709;&#x56FA;&#x5B9A;&#x7684;&#x683C;&#x5F0F;&#xFF08;&#x5728;&#x521D;&#x59CB;&#x5316;&#x8BED;&#x53E5;&#x540E;&#x65B9;&#x5FC5;&#x987B;&#x52A0;&#x4E0A;&#x5206;&#x53F7;&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> initialization; condition {
-    <span class="hljs-comment">// do something</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> initialization<span class="token punctuation">;</span> condition <span class="token punctuation">{</span>
+    <span class="token comment">// do something</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4F8B;&#x5982;:</p>
-<pre><code class="lang-go">val := <span class="hljs-number">10</span>
-<span class="hljs-keyword">if</span> val &gt; max {
-    <span class="hljs-comment">// do something</span>
-}
+<pre class="language-"><code class="lang-go">val <span class="token operator">:=</span> <span class="token number">10</span>
+<span class="token keyword">if</span> val <span class="token operator">&gt;</span> max <span class="token punctuation">{</span>
+    <span class="token comment">// do something</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4F60;&#x4E5F;&#x53EF;&#x4EE5;&#x8FD9;&#x6837;&#x5199;:</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> val := <span class="hljs-number">10</span>; val &gt; max {
-    <span class="hljs-comment">// do something</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> val <span class="token operator">:=</span> <span class="token number">10</span><span class="token punctuation">;</span> val <span class="token operator">&gt;</span> max <span class="token punctuation">{</span>
+    <span class="token comment">// do something</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4F46;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x4F7F;&#x7528;&#x7B80;&#x77ED;&#x65B9;&#x5F0F; <code>:=</code> &#x58F0;&#x660E;&#x7684;&#x53D8;&#x91CF;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x53EA;&#x5B58;&#x5728;&#x4E8E; if &#x7ED3;&#x6784;&#x4E2D;&#xFF08;&#x5728; if &#x7ED3;&#x6784;&#x7684;&#x5927;&#x62EC;&#x53F7;&#x4E4B;&#x95F4;&#xFF0C;&#x5982;&#x679C;&#x4F7F;&#x7528; if-else &#x7ED3;&#x6784;&#x5219;&#x5728; else &#x4EE3;&#x7801;&#x5757;&#x4E2D;&#x53D8;&#x91CF;&#x4E5F;&#x4F1A;&#x5B58;&#x5728;&#xFF09;&#x3002;&#x5982;&#x679C;&#x53D8;&#x91CF;&#x5728; if &#x7ED3;&#x6784;&#x4E4B;&#x524D;&#x5C31;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#xFF0C;&#x90A3;&#x4E48;&#x5728; if &#x7ED3;&#x6784;&#x4E2D;&#xFF0C;&#x8BE5;&#x53D8;&#x91CF;&#x539F;&#x6765;&#x7684;&#x503C;&#x4F1A;&#x88AB;&#x9690;&#x85CF;&#x3002;&#x6700;&#x7B80;&#x5355;&#x7684;&#x89E3;&#x51B3;&#x65B9;&#x6848;&#x5C31;&#x662F;&#x4E0D;&#x8981;&#x5728;&#x521D;&#x59CB;&#x5316;&#x8BED;&#x53E5;&#x4E2D;&#x58F0;&#x660E;&#x53D8;&#x91CF;&#xFF08;&#x89C1; 5.2 &#x8282;&#x7684;&#x4F8B; 3 &#x4E86;&#x89E3;&#x66F4;&#x591A;)&#x3002;</p>
 <p>&#x793A;&#x4F8B; 5.2 <a href="examples/chapter_5/ifelse.go">ifelse.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> first <span class="hljs-keyword">int</span> = <span class="hljs-number">10</span>
-    <span class="hljs-keyword">var</span> cond <span class="hljs-keyword">int</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> first <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">10</span>
+    <span class="token keyword">var</span> cond <span class="token builtin">int</span>
 
-    <span class="hljs-keyword">if</span> first &lt;= <span class="hljs-number">0</span> {
+    <span class="token keyword">if</span> first <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
 
-        fmt.Printf(<span class="hljs-string">&quot;first is less than or equal to 0\n&quot;</span>)
-    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> first &gt; <span class="hljs-number">0</span> &amp;&amp; first &lt; <span class="hljs-number">5</span> {
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;first is less than or equal to 0\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> first <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> first <span class="token operator">&lt;</span> <span class="token number">5</span> <span class="token punctuation">{</span>
 
-        fmt.Printf(<span class="hljs-string">&quot;first is between 0 and 5\n&quot;</span>)
-    } <span class="hljs-keyword">else</span> {
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;first is between 0 and 5\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
 
-        fmt.Printf(<span class="hljs-string">&quot;first is 5 or greater\n&quot;</span>)
-    }
-    <span class="hljs-keyword">if</span> cond = <span class="hljs-number">5</span>; cond &gt; <span class="hljs-number">10</span> {
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;first is 5 or greater\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> cond <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span> cond <span class="token operator">&gt;</span> <span class="token number">10</span> <span class="token punctuation">{</span>
 
-        fmt.Printf(<span class="hljs-string">&quot;cond is greater than 10\n&quot;</span>)
-    } <span class="hljs-keyword">else</span> {
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;cond is greater than 10\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
 
-        fmt.Printf(<span class="hljs-string">&quot;cond is not greater than 10\n&quot;</span>)
-    }
-}
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;cond is not greater than 10\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>first is 5 or greater cond is not greater than 10
+<pre class="language-"><code>first is 5 or greater cond is not greater than 10
 </code></pre><p>&#x4E0B;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x7247;&#x6BB5;&#x5C55;&#x793A;&#x4E86;&#x5982;&#x4F55;&#x901A;&#x8FC7;&#x5728;&#x521D;&#x59CB;&#x5316;&#x8BED;&#x53E5;&#x4E2D;&#x83B7;&#x53D6;&#x51FD;&#x6570; <code>process()</code> &#x7684;&#x8FD4;&#x56DE;&#x503C;&#xFF0C;&#x5E76;&#x5728;&#x6761;&#x4EF6;&#x8BED;&#x53E5;&#x4E2D;&#x4F5C;&#x4E3A;&#x5224;&#x5B9A;&#x6761;&#x4EF6;&#x6765;&#x51B3;&#x5B9A;&#x662F;&#x5426;&#x6267;&#x884C; if &#x7ED3;&#x6784;&#x4E2D;&#x7684;&#x4EE3;&#x7801;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">if</span> value := process(data); value &gt; max {
-    ...
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">if</span> value <span class="token operator">:=</span> <span class="token function">process</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> value <span class="token operator">&gt;</span> max <span class="token punctuation">{</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span>
 </code></pre>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="05.0.html">&#x63A7;&#x5236;&#x7ED3;&#x6784;</a></li>
@@ -2791,7 +2799,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"if-else 结构","level":"3.2.1","depth":2,"next":{"title":"测试多返回值函数的错误","level":"3.2.2","depth":2,"path":"eBook/05.2.md","ref":"eBook/05.2.md","articles":[]},"previous":{"title":"第5章：控制结构","level":"3.2","depth":1,"path":"eBook/05.0.md","ref":"eBook/05.0.md","articles":[{"title":"if-else 结构","level":"3.2.1","depth":2,"path":"eBook/05.1.md","ref":"eBook/05.1.md","articles":[]},{"title":"测试多返回值函数的错误","level":"3.2.2","depth":2,"path":"eBook/05.2.md","ref":"eBook/05.2.md","articles":[]},{"title":"switch 结构","level":"3.2.3","depth":2,"path":"eBook/05.3.md","ref":"eBook/05.3.md","articles":[]},{"title":"for 结构","level":"3.2.4","depth":2,"path":"eBook/05.4.md","ref":"eBook/05.4.md","articles":[]},{"title":"Break 与 continue","level":"3.2.5","depth":2,"path":"eBook/05.5.md","ref":"eBook/05.5.md","articles":[]},{"title":"标签与 goto","level":"3.2.6","depth":2,"path":"eBook/05.6.md","ref":"eBook/05.6.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/05.1.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"if-else 结构","level":"3.2.1","depth":2,"next":{"title":"测试多返回值函数的错误","level":"3.2.2","depth":2,"path":"eBook/05.2.md","ref":"eBook/05.2.md","articles":[]},"previous":{"title":"第5章：控制结构","level":"3.2","depth":1,"path":"eBook/05.0.md","ref":"eBook/05.0.md","articles":[{"title":"if-else 结构","level":"3.2.1","depth":2,"path":"eBook/05.1.md","ref":"eBook/05.1.md","articles":[]},{"title":"测试多返回值函数的错误","level":"3.2.2","depth":2,"path":"eBook/05.2.md","ref":"eBook/05.2.md","articles":[]},{"title":"switch 结构","level":"3.2.3","depth":2,"path":"eBook/05.3.md","ref":"eBook/05.3.md","articles":[]},{"title":"for 结构","level":"3.2.4","depth":2,"path":"eBook/05.4.md","ref":"eBook/05.4.md","articles":[]},{"title":"Break 与 continue","level":"3.2.5","depth":2,"path":"eBook/05.5.md","ref":"eBook/05.5.md","articles":[]},{"title":"标签与 goto","level":"3.2.6","depth":2,"path":"eBook/05.6.md","ref":"eBook/05.6.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/05.1.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2821,7 +2829,11 @@
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

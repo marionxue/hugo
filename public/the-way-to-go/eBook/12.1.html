@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,53 +2600,53 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;"><b></b>12.1 &#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;"><a name="121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;" class="anchor-navigation-ex-anchor" href="#121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;"><i class="fa fa-link" aria-hidden="true"></i></a>12.1 &#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;"><b> </b>12.1 &#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;"><a name="121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;" class="anchor-navigation-ex-anchor" href="#121-&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;"><i class="fa fa-link" aria-hidden="true"></i></a> 12.1 &#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x8F93;&#x5165;</h1>
 <p>&#x6211;&#x4EEC;&#x5982;&#x4F55;&#x8BFB;&#x53D6;&#x7528;&#x6237;&#x7684;&#x952E;&#x76D8;&#xFF08;&#x63A7;&#x5236;&#x53F0;&#xFF09;&#x8F93;&#x5165;&#x5462;&#xFF1F;&#x4ECE;&#x952E;&#x76D8;&#x548C;&#x6807;&#x51C6;&#x8F93;&#x5165; <code>os.Stdin</code> &#x8BFB;&#x53D6;&#x8F93;&#x5165;&#xFF0C;&#x6700;&#x7B80;&#x5355;&#x7684;&#x529E;&#x6CD5;&#x662F;&#x4F7F;&#x7528; <code>fmt</code> &#x5305;&#x63D0;&#x4F9B;&#x7684; Scan &#x548C; Sscan &#x5F00;&#x5934;&#x7684;&#x51FD;&#x6570;&#x3002;&#x8BF7;&#x770B;&#x4EE5;&#x4E0B;&#x7A0B;&#x5E8F;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 12.1 <a href="examples/chapter_12/readinput1.go">readinput1.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// &#x4ECE;&#x63A7;&#x5236;&#x53F0;&#x8BFB;&#x53D6;&#x8F93;&#x5165;:</span>
-<span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<pre class="language-"><code class="lang-go"><span class="token comment">// &#x4ECE;&#x63A7;&#x5236;&#x53F0;&#x8BFB;&#x53D6;&#x8F93;&#x5165;:</span>
+<span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">var</span> (
-   firstName, lastName, s <span class="hljs-keyword">string</span>
-   i <span class="hljs-keyword">int</span>
-   f <span class="hljs-keyword">float32</span>
-   input = <span class="hljs-string">&quot;56.12 / 5212 / Go&quot;</span>
-   format = <span class="hljs-string">&quot;%f / %d / %s&quot;</span>
-)
+<span class="token keyword">var</span> <span class="token punctuation">(</span>
+   firstName<span class="token punctuation">,</span> lastName<span class="token punctuation">,</span> s <span class="token builtin">string</span>
+   i <span class="token builtin">int</span>
+   f <span class="token builtin">float32</span>
+   input <span class="token operator">=</span> <span class="token string">&quot;56.12 / 5212 / Go&quot;</span>
+   format <span class="token operator">=</span> <span class="token string">&quot;%f / %d / %s&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-   fmt.Println(<span class="hljs-string">&quot;Please enter your full name: &quot;</span>)
-   fmt.Scanln(&amp;firstName, &amp;lastName)
-   <span class="hljs-comment">// fmt.Scanf(&quot;%s %s&quot;, &amp;firstName, &amp;lastName)</span>
-   fmt.Printf(<span class="hljs-string">&quot;Hi %s %s!\n&quot;</span>, firstName, lastName) <span class="hljs-comment">// Hi Chris Naegels</span>
-   fmt.Sscanf(input, format, &amp;f, &amp;i, &amp;s)
-   fmt.Println(<span class="hljs-string">&quot;From the string we read: &quot;</span>, f, i, s)
-    <span class="hljs-comment">// &#x8F93;&#x51FA;&#x7ED3;&#x679C;: From the string we read: 56.12 5212 Go</span>
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Please enter your full name: &quot;</span><span class="token punctuation">)</span>
+   fmt<span class="token punctuation">.</span><span class="token function">Scanln</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>firstName<span class="token punctuation">,</span> <span class="token operator">&amp;</span>lastName<span class="token punctuation">)</span>
+   <span class="token comment">// fmt.Scanf(&quot;%s %s&quot;, &amp;firstName, &amp;lastName)</span>
+   fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Hi %s %s!\n&quot;</span><span class="token punctuation">,</span> firstName<span class="token punctuation">,</span> lastName<span class="token punctuation">)</span> <span class="token comment">// Hi Chris Naegels</span>
+   fmt<span class="token punctuation">.</span><span class="token function">Sscanf</span><span class="token punctuation">(</span>input<span class="token punctuation">,</span> format<span class="token punctuation">,</span> <span class="token operator">&amp;</span>f<span class="token punctuation">,</span> <span class="token operator">&amp;</span>i<span class="token punctuation">,</span> <span class="token operator">&amp;</span>s<span class="token punctuation">)</span>
+   fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;From the string we read: &quot;</span><span class="token punctuation">,</span> f<span class="token punctuation">,</span> i<span class="token punctuation">,</span> s<span class="token punctuation">)</span>
+    <span class="token comment">// &#x8F93;&#x51FA;&#x7ED3;&#x679C;: From the string we read: 56.12 5212 Go</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p><code>Scanln</code> &#x626B;&#x63CF;&#x6765;&#x81EA;&#x6807;&#x51C6;&#x8F93;&#x5165;&#x7684;&#x6587;&#x672C;&#xFF0C;&#x5C06;&#x7A7A;&#x683C;&#x5206;&#x9694;&#x7684;&#x503C;&#x4F9D;&#x6B21;&#x5B58;&#x653E;&#x5230;&#x540E;&#x7EED;&#x7684;&#x53C2;&#x6570;&#x5185;&#xFF0C;&#x76F4;&#x5230;&#x78B0;&#x5230;&#x6362;&#x884C;&#x3002;<code>Scanf</code> &#x4E0E;&#x5176;&#x7C7B;&#x4F3C;&#xFF0C;&#x9664;&#x4E86; <code>Scanf</code> &#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x7528;&#x4F5C;&#x683C;&#x5F0F;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x7528;&#x6765;&#x51B3;&#x5B9A;&#x5982;&#x4F55;&#x8BFB;&#x53D6;&#x3002;<code>Sscan</code> &#x548C;&#x4EE5; <code>Sscan</code> &#x5F00;&#x5934;&#x7684;&#x51FD;&#x6570;&#x5219;&#x662F;&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x8BFB;&#x53D6;&#xFF0C;&#x9664;&#x6B64;&#x4E4B;&#x5916;&#xFF0C;&#x4E0E; <code>Scanf</code> &#x76F8;&#x540C;&#x3002;&#x5982;&#x679C;&#x8FD9;&#x4E9B;&#x51FD;&#x6570;&#x8BFB;&#x53D6;&#x5230;&#x7684;&#x7ED3;&#x679C;&#x4E0E;&#x60A8;&#x9884;&#x60F3;&#x7684;&#x4E0D;&#x540C;&#xFF0C;&#x60A8;&#x53EF;&#x4EE5;&#x68C0;&#x67E5;&#x6210;&#x529F;&#x8BFB;&#x5165;&#x6570;&#x636E;&#x7684;&#x4E2A;&#x6570;&#x548C;&#x8FD4;&#x56DE;&#x7684;&#x9519;&#x8BEF;&#x3002;</p>
 <p>&#x60A8;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>bufio</code> &#x5305;&#x63D0;&#x4F9B;&#x7684;&#x7F13;&#x51B2;&#x8BFB;&#x53D6;&#xFF08;buffered reader&#xFF09;&#x6765;&#x8BFB;&#x53D6;&#x6570;&#x636E;&#xFF0C;&#x6B63;&#x5982;&#x4EE5;&#x4E0B;&#x4F8B;&#x5B50;&#x6240;&#x793A;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 12.2 <a href="examples/chapter_12/readinput2.go">readinput2.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;bufio&quot;</span>
-    <span class="hljs-string">&quot;os&quot;</span>
-)
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;bufio&quot;</span>
+    <span class="token string">&quot;os&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">var</span> inputReader *bufio.Reader
-<span class="hljs-keyword">var</span> input <span class="hljs-keyword">string</span>
-<span class="hljs-keyword">var</span> err error
+<span class="token keyword">var</span> inputReader <span class="token operator">*</span>bufio<span class="token punctuation">.</span>Reader
+<span class="token keyword">var</span> input <span class="token builtin">string</span>
+<span class="token keyword">var</span> err <span class="token builtin">error</span>
 
-<span class="hljs-keyword">func</span> main() {
-    inputReader = bufio.NewReader(os.Stdin)
-    fmt.Println(<span class="hljs-string">&quot;Please enter some input: &quot;</span>)
-    input, err = inputReader.ReadString(<span class="hljs-string">&apos;\n&apos;</span>)
-    <span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> {
-        fmt.Printf(<span class="hljs-string">&quot;The input was: %s\n&quot;</span>, input)
-    }
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    inputReader <span class="token operator">=</span> bufio<span class="token punctuation">.</span><span class="token function">NewReader</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Stdin<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Please enter some input: &quot;</span><span class="token punctuation">)</span>
+    input<span class="token punctuation">,</span> err <span class="token operator">=</span> inputReader<span class="token punctuation">.</span><span class="token function">ReadString</span><span class="token punctuation">(</span><span class="token string">&apos;\n&apos;</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The input was: %s\n&quot;</span><span class="token punctuation">,</span> input<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p><code>inputReader</code> &#x662F;&#x4E00;&#x4E2A;&#x6307;&#x5411; <code>bufio.Reader</code> &#x7684;&#x6307;&#x9488;&#x3002;<code>inputReader := bufio.NewReader(os.Stdin)</code> &#x8FD9;&#x884C;&#x4EE3;&#x7801;&#xFF0C;&#x5C06;&#x4F1A;&#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x8BFB;&#x53D6;&#x5668;&#xFF0C;&#x5E76;&#x5C06;&#x5176;&#x4E0E;&#x6807;&#x51C6;&#x8F93;&#x5165;&#x7ED1;&#x5B9A;&#x3002;</p>
 <p><code>bufio.NewReader()</code> &#x6784;&#x9020;&#x51FD;&#x6570;&#x7684;&#x7B7E;&#x540D;&#x4E3A;&#xFF1A;<code>func NewReader(rd io.Reader) *Reader</code></p>
@@ -2648,52 +2656,52 @@
 <p>&#x5728;&#x4E0A;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x8BFB;&#x53D6;&#x952E;&#x76D8;&#x8F93;&#x5165;&#xFF0C;&#x76F4;&#x5230;&#x56DE;&#x8F66;&#x952E;&#xFF08;\n&#xFF09;&#x88AB;&#x6309;&#x4E0B;&#x3002;</p>
 <p>&#x5C4F;&#x5E55;&#x662F;&#x6807;&#x51C6;&#x8F93;&#x51FA; <code>os.Stdout</code>&#xFF1B;<code>os.Stderr</code> &#x7528;&#x4E8E;&#x663E;&#x793A;&#x9519;&#x8BEF;&#x4FE1;&#x606F;&#xFF0C;&#x5927;&#x591A;&#x6570;&#x60C5;&#x51B5;&#x4E0B;&#x7B49;&#x540C;&#x4E8E; <code>os.Stdout</code>&#x3002;</p>
 <p>&#x4E00;&#x822C;&#x60C5;&#x51B5;&#x4E0B;&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x7701;&#x7565;&#x53D8;&#x91CF;&#x58F0;&#x660E;&#xFF0C;&#x800C;&#x4F7F;&#x7528; <code>:=</code>&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-go">inputReader := bufio.NewReader(os.Stdin)
-input, err := inputReader.ReadString(<span class="hljs-string">&apos;\n&apos;</span>)
+<pre class="language-"><code class="lang-go">inputReader <span class="token operator">:=</span> bufio<span class="token punctuation">.</span><span class="token function">NewReader</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Stdin<span class="token punctuation">)</span>
+input<span class="token punctuation">,</span> err <span class="token operator">:=</span> inputReader<span class="token punctuation">.</span><span class="token function">ReadString</span><span class="token punctuation">(</span><span class="token string">&apos;\n&apos;</span><span class="token punctuation">)</span>
 </code></pre>
 <p>&#x6211;&#x4EEC;&#x5C06;&#x4ECE;&#x73B0;&#x5728;&#x5F00;&#x59CB;&#x4F7F;&#x7528;&#x8FD9;&#x79CD;&#x5199;&#x6CD5;&#x3002;</p>
 <p>&#x7B2C;&#x4E8C;&#x4E2A;&#x4F8B;&#x5B50;&#x4ECE;&#x952E;&#x76D8;&#x8BFB;&#x53D6;&#x8F93;&#x5165;&#xFF0C;&#x4F7F;&#x7528;&#x4E86; <code>switch</code> &#x8BED;&#x53E5;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 12.3 <a href="examples/chapter_12/switch_input.go">switch_input.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;os&quot;</span>
-    <span class="hljs-string">&quot;bufio&quot;</span>
-)
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;os&quot;</span>
+    <span class="token string">&quot;bufio&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    inputReader := bufio.NewReader(os.Stdin)
-    fmt.Println(<span class="hljs-string">&quot;Please enter your name:&quot;</span>)
-    input, err := inputReader.ReadString(<span class="hljs-string">&apos;\n&apos;</span>)
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    inputReader <span class="token operator">:=</span> bufio<span class="token punctuation">.</span><span class="token function">NewReader</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Stdin<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Please enter your name:&quot;</span><span class="token punctuation">)</span>
+    input<span class="token punctuation">,</span> err <span class="token operator">:=</span> inputReader<span class="token punctuation">.</span><span class="token function">ReadString</span><span class="token punctuation">(</span><span class="token string">&apos;\n&apos;</span><span class="token punctuation">)</span>
 
-    <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
-        fmt.Println(<span class="hljs-string">&quot;There were errors reading, exiting program.&quot;</span>)
-        <span class="hljs-keyword">return</span>
-    }
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;There were errors reading, exiting program.&quot;</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;Your name is %s&quot;</span>, input)
-    <span class="hljs-comment">// For Unix: test with delimiter &quot;\n&quot;, for Windows: test with &quot;\r\n&quot;</span>
-    <span class="hljs-keyword">switch</span> input {
-    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Philip\r\n&quot;</span>:  fmt.Println(<span class="hljs-string">&quot;Welcome Philip!&quot;</span>)
-    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Chris\r\n&quot;</span>:   fmt.Println(<span class="hljs-string">&quot;Welcome Chris!&quot;</span>)
-    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Ivo\r\n&quot;</span>:     fmt.Println(<span class="hljs-string">&quot;Welcome Ivo!&quot;</span>)
-    <span class="hljs-keyword">default</span>: fmt.Printf(<span class="hljs-string">&quot;You are not welcome here! Goodbye!&quot;</span>)
-    }
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Your name is %s&quot;</span><span class="token punctuation">,</span> input<span class="token punctuation">)</span>
+    <span class="token comment">// For Unix: test with delimiter &quot;\n&quot;, for Windows: test with &quot;\r\n&quot;</span>
+    <span class="token keyword">switch</span> input <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">&quot;Philip\r\n&quot;</span><span class="token punctuation">:</span>  fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Welcome Philip!&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token string">&quot;Chris\r\n&quot;</span><span class="token punctuation">:</span>   fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Welcome Chris!&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token string">&quot;Ivo\r\n&quot;</span><span class="token punctuation">:</span>     fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Welcome Ivo!&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span> fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;You are not welcome here! Goodbye!&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
 
-    <span class="hljs-comment">// version 2:   </span>
-    <span class="hljs-keyword">switch</span> input {
-    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Philip\r\n&quot;</span>:  <span class="hljs-keyword">fallthrough</span>
-    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Ivo\r\n&quot;</span>:     <span class="hljs-keyword">fallthrough</span>
-    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Chris\r\n&quot;</span>:   fmt.Printf(<span class="hljs-string">&quot;Welcome %s\n&quot;</span>, input)
-    <span class="hljs-keyword">default</span>: fmt.Printf(<span class="hljs-string">&quot;You are not welcome here! Goodbye!\n&quot;</span>)
-    }
+    <span class="token comment">// version 2:   </span>
+    <span class="token keyword">switch</span> input <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">&quot;Philip\r\n&quot;</span><span class="token punctuation">:</span>  <span class="token keyword">fallthrough</span>
+    <span class="token keyword">case</span> <span class="token string">&quot;Ivo\r\n&quot;</span><span class="token punctuation">:</span>     <span class="token keyword">fallthrough</span>
+    <span class="token keyword">case</span> <span class="token string">&quot;Chris\r\n&quot;</span><span class="token punctuation">:</span>   fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Welcome %s\n&quot;</span><span class="token punctuation">,</span> input<span class="token punctuation">)</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span> fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;You are not welcome here! Goodbye!\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
 
-    <span class="hljs-comment">// version 3:</span>
-    <span class="hljs-keyword">switch</span> input {
-    <span class="hljs-keyword">case</span> <span class="hljs-string">&quot;Philip\r\n&quot;</span>, <span class="hljs-string">&quot;Ivo\r\n&quot;</span>:   fmt.Printf(<span class="hljs-string">&quot;Welcome %s\n&quot;</span>, input)
-    <span class="hljs-keyword">default</span>: fmt.Printf(<span class="hljs-string">&quot;You are not welcome here! Goodbye!\n&quot;</span>)
-    }
-}
+    <span class="token comment">// version 3:</span>
+    <span class="token keyword">switch</span> input <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">&quot;Philip\r\n&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Ivo\r\n&quot;</span><span class="token punctuation">:</span>   fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Welcome %s\n&quot;</span><span class="token punctuation">,</span> input<span class="token punctuation">)</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span> fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;You are not welcome here! Goodbye!\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x6CE8;&#x610F;&#xFF1A;Unix&#x548C;Windows&#x7684;&#x884C;&#x7ED3;&#x675F;&#x7B26;&#x662F;&#x4E0D;&#x540C;&#x7684;&#xFF01;</p>
 <p><strong>&#x7EC3;&#x4E60;</strong></p>
@@ -2701,7 +2709,7 @@ input, err := inputReader.ReadString(<span class="hljs-string">&apos;\n&apos;</s
 <p>&#x7F16;&#x5199;&#x4E00;&#x4E2A;&#x7A0B;&#x5E8F;&#xFF0C;&#x4ECE;&#x952E;&#x76D8;&#x8BFB;&#x53D6;&#x8F93;&#x5165;&#x3002;&#x5F53;&#x7528;&#x6237;&#x8F93;&#x5165; &apos;S&apos; &#x7684;&#x65F6;&#x5019;&#x8868;&#x793A;&#x8F93;&#x5165;&#x7ED3;&#x675F;&#xFF0C;&#x8FD9;&#x65F6;&#x7A0B;&#x5E8F;&#x8F93;&#x51FA; 3 &#x4E2A;&#x6570;&#x5B57;&#xFF1A;<br>i) &#x8F93;&#x5165;&#x7684;&#x5B57;&#x7B26;&#x7684;&#x4E2A;&#x6570;&#xFF0C;&#x5305;&#x62EC;&#x7A7A;&#x683C;&#xFF0C;&#x4F46;&#x4E0D;&#x5305;&#x62EC; &apos;\r&apos; &#x548C; &apos;\n&apos;<br>ii) &#x8F93;&#x5165;&#x7684;&#x5355;&#x8BCD;&#x7684;&#x4E2A;&#x6570;<br>iii) &#x8F93;&#x5165;&#x7684;&#x884C;&#x6570;</p>
 <p><strong>&#x7EC3;&#x4E60; 12.2:</strong> <a href="exercises/chapter_12/calculator.go">calculator.go</a></p>
 <p>&#x7F16;&#x5199;&#x4E00;&#x4E2A;&#x7B80;&#x5355;&#x7684;&#x9006;&#x6CE2;&#x5170;&#x5F0F;&#x8BA1;&#x7B97;&#x5668;&#xFF0C;&#x5B83;&#x63A5;&#x53D7;&#x7528;&#x6237;&#x8F93;&#x5165;&#x7684;&#x6574;&#x578B;&#x6570;&#xFF08;&#x6700;&#x5927;&#x503C; 999999&#xFF09;&#x548C;&#x8FD0;&#x7B97;&#x7B26; +&#x3001;-&#x3001;*&#x3001;/&#x3002;<br>&#x8F93;&#x5165;&#x7684;&#x683C;&#x5F0F;&#x4E3A;&#xFF1A;number1 ENTER number2 ENTER operator ENTER --&gt; &#x663E;&#x793A;&#x7ED3;&#x679C;<br>&#x5F53;&#x7528;&#x6237;&#x8F93;&#x5165;&#x5B57;&#x7B26; &apos;q&apos; &#x65F6;&#xFF0C;&#x7A0B;&#x5E8F;&#x7ED3;&#x675F;&#x3002;&#x8BF7;&#x4F7F;&#x7528;&#x60A8;&#x5728;&#x7EC3;&#x4E60;11.3&#x4E2D;&#x5F00;&#x53D1;&#x7684; <code>stack</code> &#x5305;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="12.0.html">&#x8BFB;&#x5199;&#x6570;&#x636E;</a></li>
@@ -2750,7 +2758,7 @@ input, err := inputReader.ReadString(<span class="hljs-string">&apos;\n&apos;</s
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"读取用户的输入","level":"4.1.1","depth":2,"next":{"title":"文件读写","level":"4.1.2","depth":2,"path":"eBook/12.2.md","ref":"eBook/12.2.md","articles":[]},"previous":{"title":"第12章：读写数据","level":"4.1","depth":1,"path":"eBook/12.0.md","ref":"eBook/12.0.md","articles":[{"title":"读取用户的输入","level":"4.1.1","depth":2,"path":"eBook/12.1.md","ref":"eBook/12.1.md","articles":[]},{"title":"文件读写","level":"4.1.2","depth":2,"path":"eBook/12.2.md","ref":"eBook/12.2.md","articles":[]},{"title":"文件拷贝","level":"4.1.3","depth":2,"path":"eBook/12.3.md","ref":"eBook/12.3.md","articles":[]},{"title":"从命令行读取参数","level":"4.1.4","depth":2,"path":"eBook/12.4.md","ref":"eBook/12.4.md","articles":[]},{"title":"用 buffer 读取文件","level":"4.1.5","depth":2,"path":"eBook/12.5.md","ref":"eBook/12.5.md","articles":[]},{"title":"用切片读写文件","level":"4.1.6","depth":2,"path":"eBook/12.6.md","ref":"eBook/12.6.md","articles":[]},{"title":"用 defer 关闭文件","level":"4.1.7","depth":2,"path":"eBook/12.7.md","ref":"eBook/12.7.md","articles":[]},{"title":"使用接口的实际例子：fmt.Fprintf","level":"4.1.8","depth":2,"path":"eBook/12.8.md","ref":"eBook/12.8.md","articles":[]},{"title":"格式化 JSON 数据","level":"4.1.9","depth":2,"path":"eBook/12.9.md","ref":"eBook/12.9.md","articles":[]},{"title":"XML 数据格式","level":"4.1.10","depth":2,"path":"eBook/12.10.md","ref":"eBook/12.10.md","articles":[]},{"title":"用 Gob 传输数据","level":"4.1.11","depth":2,"path":"eBook/12.11.md","ref":"eBook/12.11.md","articles":[]},{"title":"Go 中的密码学","level":"4.1.12","depth":2,"path":"eBook/12.12.md","ref":"eBook/12.12.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/12.1.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"读取用户的输入","level":"4.1.1","depth":2,"next":{"title":"文件读写","level":"4.1.2","depth":2,"path":"eBook/12.2.md","ref":"eBook/12.2.md","articles":[]},"previous":{"title":"第12章：读写数据","level":"4.1","depth":1,"path":"eBook/12.0.md","ref":"eBook/12.0.md","articles":[{"title":"读取用户的输入","level":"4.1.1","depth":2,"path":"eBook/12.1.md","ref":"eBook/12.1.md","articles":[]},{"title":"文件读写","level":"4.1.2","depth":2,"path":"eBook/12.2.md","ref":"eBook/12.2.md","articles":[]},{"title":"文件拷贝","level":"4.1.3","depth":2,"path":"eBook/12.3.md","ref":"eBook/12.3.md","articles":[]},{"title":"从命令行读取参数","level":"4.1.4","depth":2,"path":"eBook/12.4.md","ref":"eBook/12.4.md","articles":[]},{"title":"用 buffer 读取文件","level":"4.1.5","depth":2,"path":"eBook/12.5.md","ref":"eBook/12.5.md","articles":[]},{"title":"用切片读写文件","level":"4.1.6","depth":2,"path":"eBook/12.6.md","ref":"eBook/12.6.md","articles":[]},{"title":"用 defer 关闭文件","level":"4.1.7","depth":2,"path":"eBook/12.7.md","ref":"eBook/12.7.md","articles":[]},{"title":"使用接口的实际例子：fmt.Fprintf","level":"4.1.8","depth":2,"path":"eBook/12.8.md","ref":"eBook/12.8.md","articles":[]},{"title":"格式化 JSON 数据","level":"4.1.9","depth":2,"path":"eBook/12.9.md","ref":"eBook/12.9.md","articles":[]},{"title":"XML 数据格式","level":"4.1.10","depth":2,"path":"eBook/12.10.md","ref":"eBook/12.10.md","articles":[]},{"title":"用 Gob 传输数据","level":"4.1.11","depth":2,"path":"eBook/12.11.md","ref":"eBook/12.11.md","articles":[]},{"title":"Go 中的密码学","level":"4.1.12","depth":2,"path":"eBook/12.12.md","ref":"eBook/12.12.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/12.1.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2780,7 +2788,11 @@ input, err := inputReader.ReadString(<span class="hljs-string">&apos;\n&apos;</s
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

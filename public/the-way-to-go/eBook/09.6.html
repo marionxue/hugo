@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,7 +2600,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc"><b></b>9.6 &#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528; godoc</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc"><a name="96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc" class="anchor-navigation-ex-anchor" href="#96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc"><i class="fa fa-link" aria-hidden="true"></i></a>9.6 &#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528; godoc</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc"><b> </b>9.6 &#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528; godoc</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc"><a name="96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc" class="anchor-navigation-ex-anchor" href="#96-&#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528;-godoc"><i class="fa fa-link" aria-hidden="true"></i></a> 9.6 &#x4E3A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4F7F;&#x7528; godoc</h1>
 <p>godoc&#x5DE5;&#x5177;&#xFF08;&#x7B2C; 3.6 &#x8282;&#xFF09;&#x5728;&#x663E;&#x793A;&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x4E2D;&#x7684;&#x6CE8;&#x91CA;&#x4E5F;&#x6709;&#x5F88;&#x597D;&#x7684;&#x6548;&#x679C;&#xFF1A;&#x6CE8;&#x91CA;&#x5FC5;&#x987B;&#x4EE5; <code>//</code> &#x5F00;&#x59CB;&#x5E76;&#x65E0;&#x7A7A;&#x884C;&#x653E;&#x5728;&#x58F0;&#x660E;&#xFF08;&#x5305;&#xFF0C;&#x7C7B;&#x578B;&#xFF0C;&#x51FD;&#x6570;&#xFF09;&#x524D;&#x3002;godoc &#x4F1A;&#x4E3A;&#x6BCF;&#x4E2A;&#x6587;&#x4EF6;&#x751F;&#x6210;&#x4E00;&#x7CFB;&#x5217;&#x7684;&#x7F51;&#x9875;&#x3002;</p>
 <p>&#x4F8B;&#x5982;&#xFF1A;</p>
 <ul>
@@ -2610,43 +2618,43 @@
 <p>doc_example | Packages | Commands | Specification</p>
 <p>&#x4E0B;&#x9762;&#x662F;&#x94FE;&#x63A5;&#x5230;&#x6E90;&#x7801;&#x548C;&#x6240;&#x6709;&#x5BF9;&#x8C61;&#x65F6;&#x6709;&#x5E8F;&#x6982;&#x8FF0;&#xFF08;&#x6240;&#x4EE5;&#x662F;&#x5F88;&#x597D;&#x7684;&#x6D4F;&#x89C8;&#x548C;&#x67E5;&#x627E;&#x6E90;&#x4EE3;&#x7801;&#x7684;&#x65B9;&#x5F0F;&#xFF09;&#xFF0C;&#x8FDE;&#x540C;&#x6587;&#x4EF6;/&#x6CE8;&#x91CA;&#xFF1A;</p>
 <p>sort &#x5305;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> Float64sAreSorted
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> Float64sAreSorted
 
-<span class="hljs-keyword">type</span> IntArray
+<span class="token keyword">type</span> IntArray
 
-<span class="hljs-keyword">func</span> IntsAreSortedfunc IsSortedfunc Sort
+<span class="token keyword">func</span> IntsAreSortedfunc IsSortedfunc Sort
 
-<span class="hljs-keyword">func</span> (IntArray) Len
+<span class="token keyword">func</span> <span class="token punctuation">(</span>IntArray<span class="token punctuation">)</span> Len
 
-<span class="hljs-keyword">func</span> SortFloat64s
+<span class="token keyword">func</span> SortFloat64s
 
-<span class="hljs-keyword">func</span> (IntArray) Less
+<span class="token keyword">func</span> <span class="token punctuation">(</span>IntArray<span class="token punctuation">)</span> Less
 
-<span class="hljs-keyword">func</span> SortInts
+<span class="token keyword">func</span> SortInts
 
-<span class="hljs-keyword">func</span> (IntArray) Swap
+<span class="token keyword">func</span> <span class="token punctuation">(</span>IntArray<span class="token punctuation">)</span> Swap
 
-<span class="hljs-keyword">func</span> SortStrings <span class="hljs-keyword">type</span> Interface
+<span class="token keyword">func</span> SortStrings <span class="token keyword">type</span> Interface
 
-<span class="hljs-keyword">func</span> StringsAreSorted <span class="hljs-keyword">type</span> StringArray <span class="hljs-keyword">type</span> Float64Array
+<span class="token keyword">func</span> StringsAreSorted <span class="token keyword">type</span> StringArray <span class="token keyword">type</span> Float64Array
 
-<span class="hljs-keyword">func</span> (StringArray) Len
+<span class="token keyword">func</span> <span class="token punctuation">(</span>StringArray<span class="token punctuation">)</span> Len
 
-<span class="hljs-keyword">func</span> (Float64Array) Len
+<span class="token keyword">func</span> <span class="token punctuation">(</span>Float64Array<span class="token punctuation">)</span> Len
 
-<span class="hljs-keyword">func</span> (StringArray) Less
+<span class="token keyword">func</span> <span class="token punctuation">(</span>StringArray<span class="token punctuation">)</span> Less
 
-<span class="hljs-keyword">func</span> (Float64Array) Less
+<span class="token keyword">func</span> <span class="token punctuation">(</span>Float64Array<span class="token punctuation">)</span> Less
 
-<span class="hljs-keyword">func</span> (StringArray) Swap
+<span class="token keyword">func</span> <span class="token punctuation">(</span>StringArray<span class="token punctuation">)</span> Swap
 
-<span class="hljs-keyword">func</span> (Float64Array) Swap
+<span class="token keyword">func</span> <span class="token punctuation">(</span>Float64Array<span class="token punctuation">)</span> Swap
 
-<span class="hljs-comment">// Other packages</span>
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;doc_example&quot;</span>
+<span class="token comment">// Other packages</span>
+<span class="token keyword">import</span> <span class="token string">&quot;doc_example&quot;</span>
 </code></pre>
 <p>&#x4F7F;&#x7528;&#x901A;&#x7528;&#x7684;&#x63A5;&#x53E3;&#x6392;&#x5E8F;:</p>
-<pre><code>func Float64sAreSorted[Top]
+<pre class="language-"><code>func Float64sAreSorted[Top]
 func Float64sAreSorted(a []float64) bool
 
 func IntsAreSorted[Top]
@@ -2665,8 +2673,8 @@ func SortInts(a []int)
 
 Convenience wrappers for common cases: type IntArray[Top]
 Convenience types for common cases: IntArray type IntArray []int
-</code></pre><p>&#x5982;&#x679C;&#x4F60;&#x5728;&#x4E00;&#x4E2A;&#x56E2;&#x961F;&#x4E2D;&#x5DE5;&#x4F5C;&#xFF0C;&#x5E76;&#x5728;&#x6E90;&#x4EE3;&#x7801;&#x6811;&#x88AB;&#x5B58;&#x50A8;&#x5728;&#x7F51;&#x7EDC;&#x786C;&#x76D8;&#x4E0A;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; godoc &#x7ED9;&#x6240;&#x6709;&#x56E2;&#x961F;&#x6210;&#x5458;&#x8FDE;&#x7EED;&#x6587;&#x6863;&#x7684;&#x652F;&#x6301;&#x3002;&#x901A;&#x8FC7;&#x8BBE;&#x7F6E; <code>sync_minutes=n</code>&#xFF0C;&#x4F60;&#x751A;&#x81F3;&#x53EF;&#x4EE5;&#x8BA9;&#x5B83;&#x6BCF; n &#x5206;&#x949F;&#x81EA;&#x52A8;&#x66F4;&#x65B0;&#x60A8;&#x7684;&#x6587;&#x6863;&#xFF01;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+</code></pre><p>&#x5982;&#x679C;&#x4F60;&#x5728;&#x4E00;&#x4E2A;&#x56E2;&#x961F;&#x4E2D;&#x5DE5;&#x4F5C;&#xFF0C;&#x5E76;&#x4E14;&#x6E90;&#x4EE3;&#x7801;&#x6811;&#x88AB;&#x5B58;&#x50A8;&#x5728;&#x7F51;&#x7EDC;&#x786C;&#x76D8;&#x4E0A;&#xFF0C;&#x5C31;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; godoc &#x7ED9;&#x6240;&#x6709;&#x56E2;&#x961F;&#x6210;&#x5458;&#x8FDE;&#x7EED;&#x6587;&#x6863;&#x7684;&#x652F;&#x6301;&#x3002;&#x901A;&#x8FC7;&#x8BBE;&#x7F6E; <code>sync_minutes=n</code>&#xFF0C;&#x4F60;&#x751A;&#x81F3;&#x53EF;&#x4EE5;&#x8BA9;&#x5B83;&#x6BCF; n &#x5206;&#x949F;&#x81EA;&#x52A8;&#x66F4;&#x65B0;&#x60A8;&#x7684;&#x6587;&#x6863;&#xFF01;</p>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="09.5.html">&#x81EA;&#x5B9A;&#x4E49;&#x5305;&#x548C;&#x53EF;&#x89C1;&#x6027;</a></li>
@@ -2715,7 +2723,7 @@ Convenience types for common cases: IntArray type IntArray []int
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"为自定义包使用 godoc","level":"3.6.6","depth":2,"next":{"title":"使用 go install 安装自定义包","level":"3.6.7","depth":2,"path":"eBook/09.7.md","ref":"eBook/09.7.md","articles":[]},"previous":{"title":"自定义包和可见性","level":"3.6.5","depth":2,"path":"eBook/09.5.md","ref":"eBook/09.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/09.6.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"为自定义包使用 godoc","level":"3.6.6","depth":2,"next":{"title":"使用 go install 安装自定义包","level":"3.6.7","depth":2,"path":"eBook/09.7.md","ref":"eBook/09.7.md","articles":[]},"previous":{"title":"自定义包和可见性","level":"3.6.5","depth":2,"path":"eBook/09.5.md","ref":"eBook/09.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/09.6.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2745,7 +2753,11 @@ Convenience types for common cases: IntArray type IntArray []int
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,26 +2600,26 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;"><b></b>14.6 &#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;"><a name="146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;" class="anchor-navigation-ex-anchor" href="#146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;"><i class="fa fa-link" aria-hidden="true"></i></a>14.6 &#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;"><b> </b>14.6 &#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;"><a name="146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;" class="anchor-navigation-ex-anchor" href="#146-&#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;"><i class="fa fa-link" aria-hidden="true"></i></a> 14.6 &#x534F;&#x7A0B;&#x548C;&#x6062;&#x590D;&#xFF08;recover&#xFF09;</h1>
 <p>&#x4E00;&#x4E2A;&#x7528;&#x5230; <code>recover</code> &#x7684;&#x7A0B;&#x5E8F;&#xFF08;&#x53C2;&#x89C1;&#x7B2C; 13.3 &#x8282;&#xFF09;&#x505C;&#x6389;&#x4E86;&#x670D;&#x52A1;&#x5668;&#x5185;&#x90E8;&#x4E00;&#x4E2A;&#x5931;&#x8D25;&#x7684;&#x534F;&#x7A0B;&#x800C;&#x4E0D;&#x5F71;&#x54CD;&#x5176;&#x4ED6;&#x534F;&#x7A0B;&#x7684;&#x5DE5;&#x4F5C;&#x3002;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> server(workChan &lt;-<span class="hljs-keyword">chan</span> *Work) {
-    <span class="hljs-keyword">for</span> work := <span class="hljs-keyword">range</span> workChan {
-        <span class="hljs-keyword">go</span> safelyDo(work)   <span class="hljs-comment">// start the goroutine for that work</span>
-    }
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">server</span><span class="token punctuation">(</span>workChan <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token operator">*</span>Work<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> work <span class="token operator">:=</span> <span class="token keyword">range</span> workChan <span class="token punctuation">{</span>
+        <span class="token keyword">go</span> <span class="token function">safelyDo</span><span class="token punctuation">(</span>work<span class="token punctuation">)</span>   <span class="token comment">// start the goroutine for that work</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> safelyDo(work *Work) {
-    <span class="hljs-keyword">defer</span> <span class="hljs-keyword">func</span> {
-        <span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> {
-            log.Printf(<span class="hljs-string">&quot;Work failed with %s in %v&quot;</span>, err, work)
-        }
-    }()
-    do(work)
-}
+<span class="token keyword">func</span> <span class="token function">safelyDo</span><span class="token punctuation">(</span>work <span class="token operator">*</span>Work<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> err <span class="token operator">:=</span> <span class="token function">recover</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            log<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Work failed with %s in %v&quot;</span><span class="token punctuation">,</span> err<span class="token punctuation">,</span> work<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">do</span><span class="token punctuation">(</span>work<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4E0A;&#x8FB9;&#x7684;&#x4EE3;&#x7801;&#xFF0C;&#x5982;&#x679C; <code>do(work)</code> &#x53D1;&#x751F; panic&#xFF0C;&#x9519;&#x8BEF;&#x4F1A;&#x88AB;&#x8BB0;&#x5F55;&#x4E14;&#x534F;&#x7A0B;&#x4F1A;&#x9000;&#x51FA;&#x5E76;&#x91CA;&#x653E;&#xFF0C;&#x800C;&#x5176;&#x4ED6;&#x534F;&#x7A0B;&#x4E0D;&#x53D7;&#x5F71;&#x54CD;&#x3002;</p>
 <p>&#x56E0;&#x4E3A; <code>recover</code> &#x603B;&#x662F;&#x8FD4;&#x56DE; <code>nil</code>&#xFF0C;&#x9664;&#x975E;&#x76F4;&#x63A5;&#x5728; <code>defer</code> &#x4FEE;&#x9970;&#x7684;&#x51FD;&#x6570;&#x4E2D;&#x8C03;&#x7528;&#xFF0C;<code>defer</code> &#x4FEE;&#x9970;&#x7684;&#x4EE3;&#x7801;&#x53EF;&#x4EE5;&#x8C03;&#x7528;&#x90A3;&#x4E9B;&#x81EA;&#x8EAB;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>panic</code> &#x548C; <code>recover</code> &#x907F;&#x514D;&#x5931;&#x8D25;&#x7684;&#x5E93;&#x4F8B;&#x7A0B;&#xFF08;&#x5E93;&#x51FD;&#x6570;&#xFF09;&#x3002;&#x4E3E;&#x4F8B;&#xFF0C;<code>safelyDo()</code> &#x4E2D; <code>defer</code> &#x4FEE;&#x9970;&#x7684;&#x51FD;&#x6570;&#x53EF;&#x80FD;&#x5728;&#x8C03;&#x7528; <code>recover</code> &#x4E4B;&#x524D;&#x5C31;&#x8C03;&#x7528;&#x4E86;&#x4E00;&#x4E2A; <code>logging</code> &#x51FD;&#x6570;&#xFF0C;<code>panicking</code> &#x72B6;&#x6001;&#x4E0D;&#x4F1A;&#x5F71;&#x54CD; <code>logging</code> &#x4EE3;&#x7801;&#x7684;&#x8FD0;&#x884C;&#x3002;&#x56E0;&#x4E3A;&#x52A0;&#x5165;&#x4E86;&#x6062;&#x590D;&#x6A21;&#x5F0F;&#xFF0C;&#x51FD;&#x6570; <code>do</code>&#xFF08;&#x4EE5;&#x53CA;&#x5B83;&#x8C03;&#x7528;&#x7684;&#x4EFB;&#x4F55;&#x4E1C;&#x897F;&#xFF09;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x8C03;&#x7528; <code>panic</code> &#x6765;&#x6446;&#x8131;&#x4E0D;&#x597D;&#x7684;&#x60C5;&#x51B5;&#x3002;&#x4F46;&#x662F;&#x6062;&#x590D;&#x662F;&#x5728; <code>panicking</code> &#x7684;&#x534F;&#x7A0B;&#x5185;&#x90E8;&#x7684;&#xFF1A;&#x4E0D;&#x80FD;&#x88AB;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x534F;&#x7A0B;&#x6062;&#x590D;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="14.5.html">&#x901A;&#x9053;&#xFF0C;&#x8D85;&#x65F6;&#x548C;&#x8BA1;&#x65F6;&#x5668;</a></li>
@@ -2660,7 +2668,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"协程和恢复（recover）","level":"4.3.6","depth":2,"next":{"title":"第15章：网络、模版与网页应用","level":"4.4","depth":1,"path":"eBook/15.0.md","ref":"eBook/15.0.md","articles":[{"title":"tcp服务器","level":"4.4.1","depth":2,"path":"eBook/15.1.md","ref":"eBook/15.1.md","articles":[]},{"title":"一个简单的web服务器","level":"4.4.2","depth":2,"path":"eBook/15.2.md","ref":"eBook/15.2.md","articles":[]},{"title":"访问并读取页面数据","level":"4.4.3","depth":2,"path":"eBook/15.3.md","ref":"eBook/15.3.md","articles":[]},{"title":"写一个简单的网页应用","level":"4.4.4","depth":2,"path":"eBook/15.4.md","ref":"eBook/15.4.md","articles":[]}]},"previous":{"title":"通道，超时和计时器（Ticker）","level":"4.3.5","depth":2,"path":"eBook/14.5.md","ref":"eBook/14.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/14.6.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"协程和恢复（recover）","level":"4.3.6","depth":2,"next":{"title":"第15章：网络、模版与网页应用","level":"4.4","depth":1,"path":"eBook/15.0.md","ref":"eBook/15.0.md","articles":[{"title":"tcp服务器","level":"4.4.1","depth":2,"path":"eBook/15.1.md","ref":"eBook/15.1.md","articles":[]},{"title":"一个简单的web服务器","level":"4.4.2","depth":2,"path":"eBook/15.2.md","ref":"eBook/15.2.md","articles":[]},{"title":"访问并读取页面数据","level":"4.4.3","depth":2,"path":"eBook/15.3.md","ref":"eBook/15.3.md","articles":[]},{"title":"写一个简单的网页应用","level":"4.4.4","depth":2,"path":"eBook/15.4.md","ref":"eBook/15.4.md","articles":[]}]},"previous":{"title":"通道，超时和计时器（Ticker）","level":"4.3.5","depth":2,"path":"eBook/14.5.md","ref":"eBook/14.5.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/14.6.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2690,7 +2698,11 @@
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

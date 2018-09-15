@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,50 +2600,50 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;"><b></b>12.5 &#x7528; buffer &#x8BFB;&#x53D6;&#x6587;&#x4EF6;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;"><a name="125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;" class="anchor-navigation-ex-anchor" href="#125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;"><i class="fa fa-link" aria-hidden="true"></i></a>12.5 &#x7528; buffer &#x8BFB;&#x53D6;&#x6587;&#x4EF6;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;"><b> </b>12.5 &#x7528; buffer &#x8BFB;&#x53D6;&#x6587;&#x4EF6;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;"><a name="125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;" class="anchor-navigation-ex-anchor" href="#125-&#x7528;-buffer-&#x8BFB;&#x53D6;&#x6587;&#x4EF6;"><i class="fa fa-link" aria-hidden="true"></i></a> 12.5 &#x7528; buffer &#x8BFB;&#x53D6;&#x6587;&#x4EF6;</h1>
 <p>&#x5728;&#x4E0B;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x7ED3;&#x5408;&#x4F7F;&#x7528;&#x4E86;&#x7F13;&#x51B2;&#x8BFB;&#x53D6;&#x6587;&#x4EF6;&#x548C;&#x547D;&#x4EE4;&#x884C; flag &#x89E3;&#x6790;&#x8FD9;&#x4E24;&#x9879;&#x6280;&#x672F;&#x3002;&#x5982;&#x679C;&#x4E0D;&#x52A0;&#x53C2;&#x6570;&#xFF0C;&#x90A3;&#x4E48;&#x4F60;&#x8F93;&#x5165;&#x4EC0;&#x4E48;&#x5C4F;&#x5E55;&#x5C31;&#x6253;&#x5370;&#x4EC0;&#x4E48;&#x3002;</p>
 <p>&#x53C2;&#x6570;&#x88AB;&#x8BA4;&#x4E3A;&#x662F;&#x6587;&#x4EF6;&#x540D;&#xFF0C;&#x5982;&#x679C;&#x6587;&#x4EF6;&#x5B58;&#x5728;&#x7684;&#x8BDD;&#x5C31;&#x6253;&#x5370;&#x6587;&#x4EF6;&#x5185;&#x5BB9;&#x5230;&#x5C4F;&#x5E55;&#x3002;&#x547D;&#x4EE4;&#x884C;&#x6267;&#x884C; <code>cat test</code> &#x6D4B;&#x8BD5;&#x8F93;&#x51FA;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 12.11 <a href="examples/chapter_12/cat.go">cat.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;bufio&quot;</span>
-    <span class="hljs-string">&quot;flag&quot;</span>
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;io&quot;</span>
-    <span class="hljs-string">&quot;os&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;bufio&quot;</span>
+    <span class="token string">&quot;flag&quot;</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;io&quot;</span>
+    <span class="token string">&quot;os&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> cat(r *bufio.Reader) {
-    <span class="hljs-keyword">for</span> {
-        buf, err := r.ReadBytes(<span class="hljs-string">&apos;\n&apos;</span>)
-        <span class="hljs-keyword">if</span> err == io.EOF {
-            <span class="hljs-keyword">break</span>
-        }
-        fmt.Fprintf(os.Stdout, <span class="hljs-string">&quot;%s&quot;</span>, buf)
-    }
-    <span class="hljs-keyword">return</span>
-}
+<span class="token keyword">func</span> <span class="token function">cat</span><span class="token punctuation">(</span>r <span class="token operator">*</span>bufio<span class="token punctuation">.</span>Reader<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        buf<span class="token punctuation">,</span> err <span class="token operator">:=</span> r<span class="token punctuation">.</span><span class="token function">ReadBytes</span><span class="token punctuation">(</span><span class="token string">&apos;\n&apos;</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">==</span> io<span class="token punctuation">.</span>EOF <span class="token punctuation">{</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Fprintf</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Stdout<span class="token punctuation">,</span> <span class="token string">&quot;%s&quot;</span><span class="token punctuation">,</span> buf<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> main() {
-    flag.Parse()
-    <span class="hljs-keyword">if</span> flag.NArg() == <span class="hljs-number">0</span> {
-        cat(bufio.NewReader(os.Stdin))
-    }
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; flag.NArg(); i++ {
-        f, err := os.Open(flag.Arg(i))
-        <span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
-            fmt.Fprintf(os.Stderr, <span class="hljs-string">&quot;%s:error reading from %s: %s\n&quot;</span>, os.Args[<span class="hljs-number">0</span>], flag.Arg(i), err.Error())
-            <span class="hljs-keyword">continue</span>
-        }
-        cat(bufio.NewReader(f))
-    }
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    flag<span class="token punctuation">.</span><span class="token function">Parse</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> flag<span class="token punctuation">.</span><span class="token function">NArg</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        <span class="token function">cat</span><span class="token punctuation">(</span>bufio<span class="token punctuation">.</span><span class="token function">NewReader</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Stdin<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> flag<span class="token punctuation">.</span><span class="token function">NArg</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        f<span class="token punctuation">,</span> err <span class="token operator">:=</span> os<span class="token punctuation">.</span><span class="token function">Open</span><span class="token punctuation">(</span>flag<span class="token punctuation">.</span><span class="token function">Arg</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            fmt<span class="token punctuation">.</span><span class="token function">Fprintf</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>Stderr<span class="token punctuation">,</span> <span class="token string">&quot;%s:error reading from %s: %s\n&quot;</span><span class="token punctuation">,</span> os<span class="token punctuation">.</span>Args<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> flag<span class="token punctuation">.</span><span class="token function">Arg</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span> err<span class="token punctuation">.</span><span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">continue</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">cat</span><span class="token punctuation">(</span>bufio<span class="token punctuation">.</span><span class="token function">NewReader</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5728; 12.6 &#x7AE0;&#x8282;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x770B;&#x5230;&#x5982;&#x4F55;&#x4F7F;&#x7528;&#x7F13;&#x51B2;&#x5199;&#x5165;&#x3002;</p>
 <p><strong>&#x7EC3;&#x4E60; 12.5</strong>&#xFF1A;<a href="exercises/chapter_12/cat_numbered.go">cat_numbered.go</a></p>
 <p>&#x6269;&#x5C55; cat.go &#x4F8B;&#x5B50;&#xFF0C;&#x4F7F;&#x7528; flag &#x6DFB;&#x52A0;&#x4E00;&#x4E2A;&#x9009;&#x9879;&#xFF0C;&#x76EE;&#x7684;&#x662F;&#x4E3A;&#x6BCF;&#x4E00;&#x884C;&#x5934;&#x90E8;&#x52A0;&#x5165;&#x4E00;&#x4E2A;&#x884C;&#x53F7;&#x3002;&#x4F7F;&#x7528; <code>cat -n test</code> &#x6D4B;&#x8BD5;&#x8F93;&#x51FA;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="12.4.html">&#x4ECE;&#x547D;&#x4EE4;&#x884C;&#x8BFB;&#x53D6;&#x53C2;&#x6570;</a></li>
@@ -2684,7 +2692,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"用 buffer 读取文件","level":"4.1.5","depth":2,"next":{"title":"用切片读写文件","level":"4.1.6","depth":2,"path":"eBook/12.6.md","ref":"eBook/12.6.md","articles":[]},"previous":{"title":"从命令行读取参数","level":"4.1.4","depth":2,"path":"eBook/12.4.md","ref":"eBook/12.4.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/12.5.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"用 buffer 读取文件","level":"4.1.5","depth":2,"next":{"title":"用切片读写文件","level":"4.1.6","depth":2,"path":"eBook/12.6.md","ref":"eBook/12.6.md","articles":[]},"previous":{"title":"从命令行读取参数","level":"4.1.4","depth":2,"path":"eBook/12.4.md","ref":"eBook/12.4.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/12.5.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2714,7 +2722,11 @@
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

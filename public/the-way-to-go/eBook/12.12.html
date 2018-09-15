@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,7 +2600,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;"><b></b>12.12 Go &#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;"><a name="1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;" class="anchor-navigation-ex-anchor" href="#1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;"><i class="fa fa-link" aria-hidden="true"></i></a>12.12 Go &#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;"><b> </b>12.12 Go &#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;"><a name="1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;" class="anchor-navigation-ex-anchor" href="#1212-go-&#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;"><i class="fa fa-link" aria-hidden="true"></i></a> 12.12 Go &#x4E2D;&#x7684;&#x5BC6;&#x7801;&#x5B66;</h1>
 <p>&#x901A;&#x8FC7;&#x7F51;&#x7EDC;&#x4F20;&#x8F93;&#x7684;&#x6570;&#x636E;&#x5FC5;&#x987B;&#x52A0;&#x5BC6;&#xFF0C;&#x4EE5;&#x9632;&#x6B62;&#x88AB; hacker&#xFF08;&#x9ED1;&#x5BA2;&#xFF09;&#x8BFB;&#x53D6;&#x6216;&#x7BE1;&#x6539;&#xFF0C;&#x5E76;&#x4E14;&#x4FDD;&#x8BC1;&#x53D1;&#x51FA;&#x7684;&#x6570;&#x636E;&#x548C;&#x6536;&#x5230;&#x7684;&#x6570;&#x636E;&#x68C0;&#x9A8C;&#x548C;&#x4E00;&#x81F4;&#x3002;
 &#x9274;&#x4E8E; Go &#x6BCD;&#x516C;&#x53F8;&#x7684;&#x4E1A;&#x52A1;&#xFF0C;&#x6211;&#x4EEC;&#x6BEB;&#x4E0D;&#x60CA;&#x8BB6;&#x5730;&#x770B;&#x5230; Go &#x7684;&#x6807;&#x51C6;&#x5E93;&#x4E3A;&#x8BE5;&#x9886;&#x57DF;&#x63D0;&#x4F9B;&#x4E86;&#x8D85;&#x8FC7; 30 &#x4E2A;&#x7684;&#x5305;&#xFF1A;</p>
 <ul>
@@ -2601,64 +2609,64 @@
 </ul>
 <p>&#x4E0B;&#x9762;&#x7684;&#x793A;&#x4F8B;&#x7528; <code>sha1</code> &#x548C; <code>md5</code> &#x8BA1;&#x7B97;&#x5E76;&#x8F93;&#x51FA;&#x4E86;&#x4E00;&#x4E9B;&#x6821;&#x9A8C;&#x503C;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 12.20 <a href="examples/chapter_12/hash_sha1.go">hash_sha1.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// hash_sha1.go</span>
-<span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token comment">// hash_sha1.go</span>
+<span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;crypto/sha1&quot;</span>
-    <span class="hljs-string">&quot;io&quot;</span>
-    <span class="hljs-string">&quot;log&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;crypto/sha1&quot;</span>
+    <span class="token string">&quot;io&quot;</span>
+    <span class="token string">&quot;log&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    hasher := sha1.New()
-    io.WriteString(hasher, <span class="hljs-string">&quot;test&quot;</span>)
-    b := []<span class="hljs-keyword">byte</span>{}
-    fmt.Printf(<span class="hljs-string">&quot;Result: %x\n&quot;</span>, hasher.Sum(b))
-    fmt.Printf(<span class="hljs-string">&quot;Result: %d\n&quot;</span>, hasher.Sum(b))
-    <span class="hljs-comment">//</span>
-    hasher.Reset()
-    data := []<span class="hljs-keyword">byte</span>(<span class="hljs-string">&quot;We shall overcome!&quot;</span>)
-    n, err := hasher.Write(data)
-    <span class="hljs-keyword">if</span> n!=<span class="hljs-built_in">len</span>(data) || err!=<span class="hljs-literal">nil</span> {
-        log.Printf(<span class="hljs-string">&quot;Hash write error: %v / %v&quot;</span>, n, err)
-    }
-    checksum := hasher.Sum(b)
-    fmt.Printf(<span class="hljs-string">&quot;Result: %x\n&quot;</span>, checksum)
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    hasher <span class="token operator">:=</span> sha1<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    io<span class="token punctuation">.</span><span class="token function">WriteString</span><span class="token punctuation">(</span>hasher<span class="token punctuation">,</span> <span class="token string">&quot;test&quot;</span><span class="token punctuation">)</span>
+    b <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Result: %x\n&quot;</span><span class="token punctuation">,</span> hasher<span class="token punctuation">.</span><span class="token function">Sum</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Result: %d\n&quot;</span><span class="token punctuation">,</span> hasher<span class="token punctuation">.</span><span class="token function">Sum</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">//</span>
+    hasher<span class="token punctuation">.</span><span class="token function">Reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    data <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token function">byte</span><span class="token punctuation">(</span><span class="token string">&quot;We shall overcome!&quot;</span><span class="token punctuation">)</span>
+    n<span class="token punctuation">,</span> err <span class="token operator">:=</span> hasher<span class="token punctuation">.</span><span class="token function">Write</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> n<span class="token operator">!=</span><span class="token function">len</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">||</span> err<span class="token operator">!=</span><span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Hash write error: %v / %v&quot;</span><span class="token punctuation">,</span> n<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    checksum <span class="token operator">:=</span> hasher<span class="token punctuation">.</span><span class="token function">Sum</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Result: %x\n&quot;</span><span class="token punctuation">,</span> checksum<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>Result: a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
+<pre class="language-"><code>Result: a94a8fe5ccb19ba61c4c0873d391e987982fbbd3
 Result: [169 74 143 229 204 177 155 166 28 76 8 115 211 145 233 135 152 47 187 211]
 Result: e2222bfc59850bbb00a722e764a555603bb59b2a
 </code></pre><p>&#x901A;&#x8FC7;&#x8C03;&#x7528; <code>sha1.New()</code> &#x521B;&#x5EFA;&#x4E86;&#x4E00;&#x4E2A;&#x65B0;&#x7684; <code>hash.Hash</code> &#x5BF9;&#x8C61;&#xFF0C;&#x7528;&#x6765;&#x8BA1;&#x7B97; SHA1 &#x6821;&#x9A8C;&#x503C;&#x3002;<code>Hash</code> &#x7C7B;&#x578B;&#x5B9E;&#x9645;&#x4E0A;&#x662F;&#x4E00;&#x4E2A;&#x63A5;&#x53E3;&#xFF0C;&#x5B83;&#x5B9E;&#x73B0;&#x4E86; <code>io.Writer</code> &#x63A5;&#x53E3;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">type</span> Hash <span class="hljs-keyword">interface</span> {
-    <span class="hljs-comment">// Write (via the embedded io.Writer interface) adds more data to the running hash.</span>
-    <span class="hljs-comment">// It never returns an error.</span>
-    io.Writer
+<pre class="language-"><code class="lang-go"><span class="token keyword">type</span> Hash <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Write (via the embedded io.Writer interface) adds more data to the running hash.</span>
+    <span class="token comment">// It never returns an error.</span>
+    io<span class="token punctuation">.</span>Writer
 
-    <span class="hljs-comment">// Sum appends the current hash to b and returns the resulting slice.</span>
-    <span class="hljs-comment">// It does not change the underlying hash state.</span>
-    Sum(b []<span class="hljs-keyword">byte</span>) []<span class="hljs-keyword">byte</span>
+    <span class="token comment">// Sum appends the current hash to b and returns the resulting slice.</span>
+    <span class="token comment">// It does not change the underlying hash state.</span>
+    <span class="token function">Sum</span><span class="token punctuation">(</span>b <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span>
 
-    <span class="hljs-comment">// Reset resets the Hash to its initial state.</span>
-    Reset()
+    <span class="token comment">// Reset resets the Hash to its initial state.</span>
+    <span class="token function">Reset</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-    <span class="hljs-comment">// Size returns the number of bytes Sum will return.</span>
-    Size() <span class="hljs-keyword">int</span>
+    <span class="token comment">// Size returns the number of bytes Sum will return.</span>
+    <span class="token function">Size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
 
-    <span class="hljs-comment">// BlockSize returns the hash&apos;s underlying block size.</span>
-    <span class="hljs-comment">// The Write method must be able to accept any amount</span>
-    <span class="hljs-comment">// of data, but it may operate more efficiently if all writes</span>
-    <span class="hljs-comment">// are a multiple of the block size.</span>
-    BlockSize() <span class="hljs-keyword">int</span>
-}
+    <span class="token comment">// BlockSize returns the hash&apos;s underlying block size.</span>
+    <span class="token comment">// The Write method must be able to accept any amount</span>
+    <span class="token comment">// of data, but it may operate more efficiently if all writes</span>
+    <span class="token comment">// are a multiple of the block size.</span>
+    <span class="token function">BlockSize</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x901A;&#x8FC7; io.WriteString &#x6216; hasher.Write &#x5C06;&#x7ED9;&#x5B9A;&#x7684; []byte &#x9644;&#x52A0;&#x5230;&#x5F53;&#x524D;&#x7684; <code>hash.Hash</code> &#x5BF9;&#x8C61;&#x4E2D;&#x3002;</p>
 <p><strong>&#x7EC3;&#x4E60; 12.9</strong>&#xFF1A;<a href="exercises/chapter_12/hash_md5.go">hash_md5.go</a>&#xFF1A;</p>
 <p>&#x5728;&#x793A;&#x4F8B; 12.20 &#x4E2D;&#x68C0;&#x9A8C; md5 &#x7B97;&#x6CD5;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="12.11.html">&#x7528; Gob &#x4F20;&#x8F93;&#x6570;&#x636E;</a></li>
@@ -2707,7 +2715,7 @@ Result: e2222bfc59850bbb00a722e764a555603bb59b2a
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Go 中的密码学","level":"4.1.12","depth":2,"next":{"title":"第13章：错误处理与测试","level":"4.2","depth":1,"path":"eBook/13.0.md","ref":"eBook/13.0.md","articles":[{"title":"错误处理","level":"4.2.1","depth":2,"path":"eBook/13.1.md","ref":"eBook/13.1.md","articles":[]},{"title":"运行时异常和 panic","level":"4.2.2","depth":2,"path":"eBook/13.2.md","ref":"eBook/13.2.md","articles":[]},{"title":"从 panic 中恢复（Recover）","level":"4.2.3","depth":2,"path":"eBook/13.3.md","ref":"eBook/13.3.md","articles":[]},{"title":"自定义包中的错误处理和 panicking","level":"4.2.4","depth":2,"path":"eBook/13.4.md","ref":"eBook/13.4.md","articles":[]},{"title":"一种用闭包处理错误的模式","level":"4.2.5","depth":2,"path":"eBook/13.5.md","ref":"eBook/13.5.md","articles":[]},{"title":"启动外部命令和程序","level":"4.2.6","depth":2,"path":"eBook/13.6.md","ref":"eBook/13.6.md","articles":[]},{"title":"Go 中的单元测试和基准测试","level":"4.2.7","depth":2,"path":"eBook/13.7.md","ref":"eBook/13.7.md","articles":[]},{"title":"测试的具体例子","level":"4.2.8","depth":2,"path":"eBook/13.8.md","ref":"eBook/13.8.md","articles":[]},{"title":"用（测试数据）表驱动测试","level":"4.2.9","depth":2,"path":"eBook/13.9.md","ref":"eBook/13.9.md","articles":[]},{"title":"性能调试：分析并优化 Go 程序","level":"4.2.10","depth":2,"path":"eBook/13.10.md","ref":"eBook/13.10.md","articles":[]}]},"previous":{"title":"用 Gob 传输数据","level":"4.1.11","depth":2,"path":"eBook/12.11.md","ref":"eBook/12.11.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/12.12.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Go 中的密码学","level":"4.1.12","depth":2,"next":{"title":"第13章：错误处理与测试","level":"4.2","depth":1,"path":"eBook/13.0.md","ref":"eBook/13.0.md","articles":[{"title":"错误处理","level":"4.2.1","depth":2,"path":"eBook/13.1.md","ref":"eBook/13.1.md","articles":[]},{"title":"运行时异常和 panic","level":"4.2.2","depth":2,"path":"eBook/13.2.md","ref":"eBook/13.2.md","articles":[]},{"title":"从 panic 中恢复（Recover）","level":"4.2.3","depth":2,"path":"eBook/13.3.md","ref":"eBook/13.3.md","articles":[]},{"title":"自定义包中的错误处理和 panicking","level":"4.2.4","depth":2,"path":"eBook/13.4.md","ref":"eBook/13.4.md","articles":[]},{"title":"一种用闭包处理错误的模式","level":"4.2.5","depth":2,"path":"eBook/13.5.md","ref":"eBook/13.5.md","articles":[]},{"title":"启动外部命令和程序","level":"4.2.6","depth":2,"path":"eBook/13.6.md","ref":"eBook/13.6.md","articles":[]},{"title":"Go 中的单元测试和基准测试","level":"4.2.7","depth":2,"path":"eBook/13.7.md","ref":"eBook/13.7.md","articles":[]},{"title":"测试的具体例子","level":"4.2.8","depth":2,"path":"eBook/13.8.md","ref":"eBook/13.8.md","articles":[]},{"title":"用（测试数据）表驱动测试","level":"4.2.9","depth":2,"path":"eBook/13.9.md","ref":"eBook/13.9.md","articles":[]},{"title":"性能调试：分析并优化 Go 程序","level":"4.2.10","depth":2,"path":"eBook/13.10.md","ref":"eBook/13.10.md","articles":[]}]},"previous":{"title":"用 Gob 传输数据","level":"4.1.11","depth":2,"path":"eBook/12.11.md","ref":"eBook/12.11.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/12.12.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2737,7 +2745,11 @@ Result: e2222bfc59850bbb00a722e764a555603bb59b2a
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,37 +2600,37 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;"><b></b>7.4 &#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;"><a name="74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;" class="anchor-navigation-ex-anchor" href="#74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;"><i class="fa fa-link" aria-hidden="true"></i></a>7.4 &#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;"><b> </b>7.4 &#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;"><a name="74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;" class="anchor-navigation-ex-anchor" href="#74-&#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;"><i class="fa fa-link" aria-hidden="true"></i></a> 7.4 &#x5207;&#x7247;&#x91CD;&#x7EC4;&#xFF08;reslice&#xFF09;</h1>
 <p>&#x6211;&#x4EEC;&#x5DF2;&#x7ECF;&#x77E5;&#x9053;&#x5207;&#x7247;&#x521B;&#x5EFA;&#x7684;&#x65F6;&#x5019;&#x901A;&#x5E38;&#x6BD4;&#x76F8;&#x5173;&#x6570;&#x7EC4;&#x5C0F;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-go">slice1 := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">type</span>, start_length, capacity)
+<pre class="language-"><code class="lang-go">slice1 <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token keyword">type</span><span class="token punctuation">,</span> start_length<span class="token punctuation">,</span> capacity<span class="token punctuation">)</span>
 </code></pre>
 <p>&#x5176;&#x4E2D; <code>start_length</code> &#x4F5C;&#x4E3A;&#x5207;&#x7247;&#x521D;&#x59CB;&#x957F;&#x5EA6;&#x800C; <code>capacity</code> &#x4F5C;&#x4E3A;&#x76F8;&#x5173;&#x6570;&#x7EC4;&#x7684;&#x957F;&#x5EA6;&#x3002;</p>
 <p>&#x8FD9;&#x4E48;&#x505A;&#x7684;&#x597D;&#x5904;&#x662F;&#x6211;&#x4EEC;&#x7684;&#x5207;&#x7247;&#x5728;&#x8FBE;&#x5230;&#x5BB9;&#x91CF;&#x4E0A;&#x9650;&#x540E;&#x53EF;&#x4EE5;&#x6269;&#x5BB9;&#x3002;&#x6539;&#x53D8;&#x5207;&#x7247;&#x957F;&#x5EA6;&#x7684;&#x8FC7;&#x7A0B;&#x79F0;&#x4E4B;&#x4E3A;&#x5207;&#x7247;&#x91CD;&#x7EC4; <strong>reslicing</strong>&#xFF0C;&#x505A;&#x6CD5;&#x5982;&#x4E0B;&#xFF1A;<code>slice1 = slice1[0:end]</code>&#xFF0C;&#x5176;&#x4E2D; end &#x662F;&#x65B0;&#x7684;&#x672B;&#x5C3E;&#x7D22;&#x5F15;&#xFF08;&#x5373;&#x957F;&#x5EA6;&#xFF09;&#x3002;</p>
 <p>&#x5C06;&#x5207;&#x7247;&#x6269;&#x5C55; 1 &#x4F4D;&#x53EF;&#x4EE5;&#x8FD9;&#x4E48;&#x505A;&#xFF1A;</p>
-<pre><code class="lang-go">sl = sl[<span class="hljs-number">0</span>:<span class="hljs-built_in">len</span>(sl)+<span class="hljs-number">1</span>]
+<pre class="language-"><code class="lang-go">sl <span class="token operator">=</span> sl<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token function">len</span><span class="token punctuation">(</span>sl<span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span>
 </code></pre>
 <p>&#x5207;&#x7247;&#x53EF;&#x4EE5;&#x53CD;&#x590D;&#x6269;&#x5C55;&#x76F4;&#x5230;&#x5360;&#x636E;&#x6574;&#x4E2A;&#x76F8;&#x5173;&#x6570;&#x7EC4;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 7.11 <a href="examples/chapter_7/reslicing.go">reslicing.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    slice1 := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">int</span>, <span class="hljs-number">0</span>, <span class="hljs-number">10</span>)
-    <span class="hljs-comment">// load the slice, cap(slice1) is 10:</span>
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">cap</span>(slice1); i++ {
-        slice1 = slice1[<span class="hljs-number">0</span>:i+<span class="hljs-number">1</span>]
-        slice1[i] = i
-        fmt.Printf(<span class="hljs-string">&quot;The length of slice is %d\n&quot;</span>, <span class="hljs-built_in">len</span>(slice1))
-    }
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    slice1 <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+    <span class="token comment">// load the slice, cap(slice1) is 10:</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">cap</span><span class="token punctuation">(</span>slice1<span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        slice1 <span class="token operator">=</span> slice1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span>
+        slice1<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> i
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The length of slice is %d\n&quot;</span><span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>slice1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
 
-    <span class="hljs-comment">// print the slice:</span>
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-built_in">len</span>(slice1); i++ {
-        fmt.Printf(<span class="hljs-string">&quot;Slice at %d is %d\n&quot;</span>, i, slice1[i])
-    }
-}
+    <span class="token comment">// print the slice:</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token function">len</span><span class="token punctuation">(</span>slice1<span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Slice at %d is %d\n&quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> slice1<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#xFF1A;</p>
-<pre><code>The length of slice is 1
+<pre class="language-"><code>The length of slice is 1
 The length of slice is 2
 The length of slice is 3
 The length of slice is 4
@@ -2643,16 +2651,16 @@ Slice at 7 is 7
 Slice at 8 is 8
 Slice at 9 is 9
 </code></pre><p>&#x53E6;&#x4E00;&#x4E2A;&#x4F8B;&#x5B50;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">var</span> ar = [<span class="hljs-number">10</span>]<span class="hljs-keyword">int</span>{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">8</span>,<span class="hljs-number">9</span>}
-<span class="hljs-keyword">var</span> a = ar[<span class="hljs-number">5</span>:<span class="hljs-number">7</span>] <span class="hljs-comment">// reference to subarray {5,6} - len(a) is 2 and cap(a) is 5</span>
+<pre class="language-"><code class="lang-go"><span class="token keyword">var</span> ar <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">,</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">}</span>
+<span class="token keyword">var</span> a <span class="token operator">=</span> ar<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">:</span><span class="token number">7</span><span class="token punctuation">]</span> <span class="token comment">// reference to subarray {5,6} - len(a) is 2 and cap(a) is 5</span>
 </code></pre>
 <p>&#x5C06; a &#x91CD;&#x65B0;&#x5206;&#x7247;&#xFF1A;</p>
-<pre><code class="lang-go">a = a[<span class="hljs-number">0</span>:<span class="hljs-number">4</span>] <span class="hljs-comment">// ref of subarray {5,6,7,8} - len(a) is now 4 but cap(a) is still 5</span>
+<pre class="language-"><code class="lang-go">a <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">:</span><span class="token number">4</span><span class="token punctuation">]</span> <span class="token comment">// ref of subarray {5,6,7,8} - len(a) is now 4 but cap(a) is still 5</span>
 </code></pre>
 <p><strong>&#x95EE;&#x9898; 7.7</strong></p>
 <p>1) &#x5982;&#x679C; a &#x662F;&#x4E00;&#x4E2A;&#x5207;&#x7247;&#xFF0C;&#x90A3;&#x4E48; <code>s[n:n]</code> &#x7684;&#x957F;&#x5EA6;&#x662F;&#x591A;&#x5C11;&#xFF1F;</p>
 <p>2) <code>s[n:n+1]</code> &#x7684;&#x957F;&#x5EA6;&#x53C8;&#x662F;&#x591A;&#x5C11;&#xFF1F;          </p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="07.3.html">For-range &#x7ED3;&#x6784;</a></li>
@@ -2701,7 +2709,7 @@ Slice at 9 is 9
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"切片重组（reslice）","level":"3.4.4","depth":2,"next":{"title":"切片的复制与追加","level":"3.4.5","depth":2,"path":"eBook/07.5.md","ref":"eBook/07.5.md","articles":[]},"previous":{"title":"For-range 结构","level":"3.4.3","depth":2,"path":"eBook/07.3.md","ref":"eBook/07.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/07.4.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"切片重组（reslice）","level":"3.4.4","depth":2,"next":{"title":"切片的复制与追加","level":"3.4.5","depth":2,"path":"eBook/07.5.md","ref":"eBook/07.5.md","articles":[]},"previous":{"title":"For-range 结构","level":"3.4.3","depth":2,"path":"eBook/07.3.md","ref":"eBook/07.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/07.4.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2731,7 +2739,11 @@ Slice at 9 is 9
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

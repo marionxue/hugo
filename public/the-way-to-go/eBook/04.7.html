@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,207 +2600,211 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#47-strings-&#x548C;-strconv-&#x5305;"><b></b>4.7 strings &#x548C; strconv &#x5305;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;"><b></b>4.7.1 &#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;"><b></b>4.7.2 &#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;"><b></b>4.7.3 &#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;"><b></b>4.7.4 &#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;"><b></b>4.7.5 &#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;"><b></b>4.7.6 &#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;"><b></b>4.7.7 &#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;"><b></b>4.7.8 &#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"><b></b>4.7.9 &#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;"><b></b>4.7.10 &#x62FC;&#x63A5; slice &#x5230;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;"><b></b>4.7.11 &#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;"><b></b>4.7.12 &#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#47-strings-&#x548C;-strconv-&#x5305;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="47-strings-&#x548C;-strconv-&#x5305;"><a name="47-strings-&#x548C;-strconv-&#x5305;" class="anchor-navigation-ex-anchor" href="#47-strings-&#x548C;-strconv-&#x5305;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7 strings &#x548C; strconv &#x5305;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#47-strings-&#x548C;-strconv-&#x5305;"><b> </b>4.7 strings &#x548C; strconv &#x5305;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;"><b>1. </b>4.7.1 &#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;"><b>2. </b>4.7.2 &#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;"><b>3. </b>4.7.3 &#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;"><b>4. </b>4.7.4 &#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;"><b>5. </b>4.7.5 &#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;"><b>6. </b>4.7.6 &#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;"><b>7. </b>4.7.7 &#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;"><b>8. </b>4.7.8 &#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"><b>9. </b>4.7.9 &#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;"><b>10. </b>4.7.10 &#x62FC;&#x63A5; slice &#x5230;&#x5B57;&#x7B26;&#x4E32;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;"><b>11. </b>4.7.11 &#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;"><b>12. </b>4.7.12 &#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;</a></li><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>13. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#47-strings-&#x548C;-strconv-&#x5305;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="47-strings-&#x548C;-strconv-&#x5305;"><a name="47-strings-&#x548C;-strconv-&#x5305;" class="anchor-navigation-ex-anchor" href="#47-strings-&#x548C;-strconv-&#x5305;"><i class="fa fa-link" aria-hidden="true"></i></a> 4.7 strings &#x548C; strconv &#x5305;</h1>
 <p>&#x4F5C;&#x4E3A;&#x4E00;&#x79CD;&#x57FA;&#x672C;&#x6570;&#x636E;&#x7ED3;&#x6784;&#xFF0C;&#x6BCF;&#x79CD;&#x8BED;&#x8A00;&#x90FD;&#x6709;&#x4E00;&#x4E9B;&#x5BF9;&#x4E8E;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x9884;&#x5B9A;&#x4E49;&#x5904;&#x7406;&#x51FD;&#x6570;&#x3002;Go &#x4E2D;&#x4F7F;&#x7528; <code>strings</code> &#x5305;&#x6765;&#x5B8C;&#x6210;&#x5BF9;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x4E3B;&#x8981;&#x64CD;&#x4F5C;&#x3002;</p>
-<h2 id="471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;"><a name="471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;" class="anchor-navigation-ex-anchor" href="#471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.1 &#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;</h2>
+<h2 id="471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;"><a name="471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;" class="anchor-navigation-ex-anchor" href="#471-&#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;"><i class="fa fa-link" aria-hidden="true"></i></a>1. 4.7.1 &#x524D;&#x7F00;&#x548C;&#x540E;&#x7F00;</h2>
 <p><code>HasPrefix</code> &#x5224;&#x65AD;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x662F;&#x5426;&#x4EE5; <code>prefix</code> &#x5F00;&#x5934;&#xFF1A;</p>
-<pre><code class="lang-go">strings.HasPrefix(s, prefix <span class="hljs-keyword">string</span>) <span class="hljs-keyword">bool</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">HasPrefix</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> prefix <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">bool</span>
 </code></pre>
 <p><code>HasSuffix</code> &#x5224;&#x65AD;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x662F;&#x5426;&#x4EE5; <code>suffix</code> &#x7ED3;&#x5C3E;&#xFF1A;</p>
-<pre><code class="lang-go">strings.HasSuffix(s, suffix <span class="hljs-keyword">string</span>) <span class="hljs-keyword">bool</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">HasSuffix</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> suffix <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">bool</span>
 </code></pre>
 <p>&#x793A;&#x4F8B; 4.13 <a href="examples/chapter_4/presuffix.go">presuffix.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strings&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strings&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> str <span class="hljs-keyword">string</span> = <span class="hljs-string">&quot;This is an example of a string&quot;</span>
-    fmt.Printf(<span class="hljs-string">&quot;T/F? Does the string \&quot;%s\&quot; have prefix %s? &quot;</span>, str, <span class="hljs-string">&quot;Th&quot;</span>)
-    fmt.Printf(<span class="hljs-string">&quot;%t\n&quot;</span>, strings.HasPrefix(str, <span class="hljs-string">&quot;Th&quot;</span>))
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> str <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">&quot;This is an example of a string&quot;</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;T/F? Does the string \&quot;%s\&quot; have prefix %s? &quot;</span><span class="token punctuation">,</span> str<span class="token punctuation">,</span> <span class="token string">&quot;Th&quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%t\n&quot;</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span><span class="token function">HasPrefix</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token string">&quot;Th&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>T/F? Does the string &quot;This is an example of a string&quot; have prefix Th? true
+<pre class="language-"><code>T/F? Does the string &quot;This is an example of a string&quot; have prefix Th? true
 </code></pre><p>&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x540C;&#x6837;&#x6F14;&#x793A;&#x4E86;&#x8F6C;&#x4E49;&#x5B57;&#x7B26; <code>\</code> &#x548C;&#x683C;&#x5F0F;&#x5316;&#x5B57;&#x7B26;&#x4E32;&#x7684;&#x4F7F;&#x7528;&#x3002;</p>
-<h2 id="472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;"><a name="472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;" class="anchor-navigation-ex-anchor" href="#472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.2 &#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;</h2>
+<h2 id="472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;"><a name="472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;" class="anchor-navigation-ex-anchor" href="#472-&#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;"><i class="fa fa-link" aria-hidden="true"></i></a>2. 4.7.2 &#x5B57;&#x7B26;&#x4E32;&#x5305;&#x542B;&#x5173;&#x7CFB;</h2>
 <p><code>Contains</code> &#x5224;&#x65AD;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x662F;&#x5426;&#x5305;&#x542B; <code>substr</code>&#xFF1A;</p>
-<pre><code>strings.Contains(s, substr string) bool
-</code></pre><h2 id="473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;"><a name="473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;" class="anchor-navigation-ex-anchor" href="#473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.3 &#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;</h2>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">Contains</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> substr <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">bool</span>
+</code></pre>
+<h2 id="473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;"><a name="473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;" class="anchor-navigation-ex-anchor" href="#473-&#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;"><i class="fa fa-link" aria-hidden="true"></i></a>3. 4.7.3 &#x5224;&#x65AD;&#x5B50;&#x5B57;&#x7B26;&#x4E32;&#x6216;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x4F4D;&#x7F6E;&#xFF08;&#x7D22;&#x5F15;&#xFF09;</h2>
 <p><code>Index</code> &#x8FD4;&#x56DE;&#x5B57;&#x7B26;&#x4E32; <code>str</code> &#x5728;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x4E2D;&#x7684;&#x7D22;&#x5F15;&#xFF08;<code>str</code> &#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x7684;&#x7D22;&#x5F15;&#xFF09;&#xFF0C;-1 &#x8868;&#x793A;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x4E0D;&#x5305;&#x542B;&#x5B57;&#x7B26;&#x4E32; <code>str</code>&#xFF1A;</p>
-<pre><code class="lang-go">strings.Index(s, str <span class="hljs-keyword">string</span>) <span class="hljs-keyword">int</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> str <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
 </code></pre>
 <p><code>LastIndex</code> &#x8FD4;&#x56DE;&#x5B57;&#x7B26;&#x4E32; <code>str</code> &#x5728;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x4E2D;&#x6700;&#x540E;&#x51FA;&#x73B0;&#x4F4D;&#x7F6E;&#x7684;&#x7D22;&#x5F15;&#xFF08;<code>str</code> &#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x7684;&#x7D22;&#x5F15;&#xFF09;&#xFF0C;-1 &#x8868;&#x793A;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x4E0D;&#x5305;&#x542B;&#x5B57;&#x7B26;&#x4E32; <code>str</code>&#xFF1A;</p>
-<pre><code class="lang-go">strings.LastIndex(s, str <span class="hljs-keyword">string</span>) <span class="hljs-keyword">int</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">LastIndex</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> str <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
 </code></pre>
-<p>&#x5982;&#x679C; <code>ch</code> &#x662F;&#x975E; ASCII &#x7F16;&#x7801;&#x7684;&#x5B57;&#x7B26;&#xFF0C;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x51FD;&#x6570;&#x6765;&#x5BF9;&#x5B57;&#x7B26;&#x8FDB;&#x884C;&#x5B9A;&#x4F4D;&#xFF1A;</p>
-<pre><code class="lang-go">strings.IndexRune(s <span class="hljs-keyword">string</span>, r <span class="hljs-keyword">rune</span>) <span class="hljs-keyword">int</span>
+<p>&#x5982;&#x679C;&#x9700;&#x8981;&#x67E5;&#x8BE2;&#x975E; ASCII &#x7F16;&#x7801;&#x7684;&#x5B57;&#x7B26;&#x5728;&#x7236;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x7684;&#x4F4D;&#x7F6E;&#xFF0C;&#x5EFA;&#x8BAE;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x51FD;&#x6570;&#x6765;&#x5BF9;&#x5B57;&#x7B26;&#x8FDB;&#x884C;&#x5B9A;&#x4F4D;&#xFF1A;</p>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">IndexRune</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">,</span> r <span class="token builtin">rune</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
 </code></pre>
-<p>&#x793A;&#x4F8B; 4.14 <a href="examples/chapter_4/index_in_string.go">index_in_string.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code>&#x6CE8;: &#x539F;&#x6587;&#x4E3A; &quot;If ch is a non-ASCII character use strings.IndexRune(s string, ch int) int.&quot;
+&#x8BE5;&#x65B9;&#x6CD5;&#x5728;&#x6700;&#x65B0;&#x7248;&#x672C;&#x7684; Go &#x4E2D;&#x5B9A;&#x4E49;&#x4E3A; func IndexRune(s string, r rune) int
+&#x5B9E;&#x9645;&#x4F7F;&#x7528;&#x4E2D;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570; rune &#x53EF;&#x4EE5;&#x662F; rune &#x6216; int, &#x4F8B;&#x5982; strings.IndexRune(&quot;chicken&quot;, 99) &#x6216; strings.IndexRune(&quot;chicken&quot;, rune(&apos;k&apos;))
+</code></pre><p>&#x793A;&#x4F8B; 4.14 <a href="examples/chapter_4/index_in_string.go">index_in_string.go</a></p>
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strings&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strings&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> str <span class="hljs-keyword">string</span> = <span class="hljs-string">&quot;Hi, I&apos;m Marc, Hi.&quot;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> str <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">&quot;Hi, I&apos;m Marc, Hi.&quot;</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;The position of \&quot;Marc\&quot; is: &quot;</span>)
-    fmt.Printf(<span class="hljs-string">&quot;%d\n&quot;</span>, strings.Index(str, <span class="hljs-string">&quot;Marc&quot;</span>))
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The position of \&quot;Marc\&quot; is: &quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d\n&quot;</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token string">&quot;Marc&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;The position of the first instance of \&quot;Hi\&quot; is: &quot;</span>)
-    fmt.Printf(<span class="hljs-string">&quot;%d\n&quot;</span>, strings.Index(str, <span class="hljs-string">&quot;Hi&quot;</span>))
-    fmt.Printf(<span class="hljs-string">&quot;The position of the last instance of \&quot;Hi\&quot; is: &quot;</span>)
-    fmt.Printf(<span class="hljs-string">&quot;%d\n&quot;</span>, strings.LastIndex(str, <span class="hljs-string">&quot;Hi&quot;</span>))
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The position of the first instance of \&quot;Hi\&quot; is: &quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d\n&quot;</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token string">&quot;Hi&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The position of the last instance of \&quot;Hi\&quot; is: &quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d\n&quot;</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span><span class="token function">LastIndex</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token string">&quot;Hi&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;The position of \&quot;Burger\&quot; is: &quot;</span>)
-    fmt.Printf(<span class="hljs-string">&quot;%d\n&quot;</span>, strings.Index(str, <span class="hljs-string">&quot;Burger&quot;</span>))
-}
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The position of \&quot;Burger\&quot; is: &quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d\n&quot;</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span><span class="token function">Index</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token string">&quot;Burger&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>The position of &quot;Marc&quot; is: 8
+<pre class="language-"><code>The position of &quot;Marc&quot; is: 8
 The position of the first instance of &quot;Hi&quot; is: 0
 The position of the last instance of &quot;Hi&quot; is: 14
 The position of &quot;Burger&quot; is: -1
-</code></pre><h2 id="474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;"><a name="474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;" class="anchor-navigation-ex-anchor" href="#474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.4 &#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;</h2>
+</code></pre><h2 id="474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;"><a name="474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;" class="anchor-navigation-ex-anchor" href="#474-&#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;"><i class="fa fa-link" aria-hidden="true"></i></a>4. 4.7.4 &#x5B57;&#x7B26;&#x4E32;&#x66FF;&#x6362;</h2>
 <p><code>Replace</code> &#x7528;&#x4E8E;&#x5C06;&#x5B57;&#x7B26;&#x4E32; <code>str</code> &#x4E2D;&#x7684;&#x524D; <code>n</code> &#x4E2A;&#x5B57;&#x7B26;&#x4E32; <code>old</code> &#x66FF;&#x6362;&#x4E3A;&#x5B57;&#x7B26;&#x4E32; <code>new</code>&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x5982;&#x679C; <code>n = -1</code> &#x5219;&#x66FF;&#x6362;&#x6240;&#x6709;&#x5B57;&#x7B26;&#x4E32; <code>old</code> &#x4E3A;&#x5B57;&#x7B26;&#x4E32; <code>new</code>&#xFF1A;</p>
-<pre><code class="lang-go">strings.Replace(str, old, <span class="hljs-built_in">new</span>, n) <span class="hljs-keyword">string</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">Replace</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> old<span class="token punctuation">,</span> <span class="token builtin">new</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span> <span class="token builtin">string</span>
 </code></pre>
-<h2 id="475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;"><a name="475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;" class="anchor-navigation-ex-anchor" href="#475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.5 &#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;</h2>
+<h2 id="475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;"><a name="475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;" class="anchor-navigation-ex-anchor" href="#475-&#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;"><i class="fa fa-link" aria-hidden="true"></i></a>5. 4.7.5 &#x7EDF;&#x8BA1;&#x5B57;&#x7B26;&#x4E32;&#x51FA;&#x73B0;&#x6B21;&#x6570;</h2>
 <p><code>Count</code> &#x7528;&#x4E8E;&#x8BA1;&#x7B97;&#x5B57;&#x7B26;&#x4E32; <code>str</code> &#x5728;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x4E2D;&#x51FA;&#x73B0;&#x7684;&#x975E;&#x91CD;&#x53E0;&#x6B21;&#x6570;&#xFF1A;</p>
-<pre><code class="lang-go">strings.Count(s, str <span class="hljs-keyword">string</span>) <span class="hljs-keyword">int</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> str <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">int</span>
 </code></pre>
 <p>&#x793A;&#x4F8B; 4.15 <a href="examples/chapter_4/count_substring.go">count_substring.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strings&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strings&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> str <span class="hljs-keyword">string</span> = <span class="hljs-string">&quot;Hello, how is it going, Hugo?&quot;</span>
-    <span class="hljs-keyword">var</span> manyG = <span class="hljs-string">&quot;gggggggggg&quot;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> str <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">&quot;Hello, how is it going, Hugo?&quot;</span>
+    <span class="token keyword">var</span> manyG <span class="token operator">=</span> <span class="token string">&quot;gggggggggg&quot;</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;Number of H&apos;s in %s is: &quot;</span>, str)
-    fmt.Printf(<span class="hljs-string">&quot;%d\n&quot;</span>, strings.Count(str, <span class="hljs-string">&quot;H&quot;</span>))
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Number of H&apos;s in %s is: &quot;</span><span class="token punctuation">,</span> str<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d\n&quot;</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> <span class="token string">&quot;H&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;Number of double g&apos;s in %s is: &quot;</span>, manyG)
-    fmt.Printf(<span class="hljs-string">&quot;%d\n&quot;</span>, strings.Count(manyG, <span class="hljs-string">&quot;gg&quot;</span>))
-}
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Number of double g&apos;s in %s is: &quot;</span><span class="token punctuation">,</span> manyG<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d\n&quot;</span><span class="token punctuation">,</span> strings<span class="token punctuation">.</span><span class="token function">Count</span><span class="token punctuation">(</span>manyG<span class="token punctuation">,</span> <span class="token string">&quot;gg&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>Number of H&apos;s in Hello, how is it going, Hugo? is: 2
+<pre class="language-"><code>Number of H&apos;s in Hello, how is it going, Hugo? is: 2
 Number of double g&#x2019;s in gggggggggg is: 5
-</code></pre><h2 id="476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;"><a name="476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.6 &#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;</h2>
+</code></pre><h2 id="476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;"><a name="476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#476-&#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>6. 4.7.6 &#x91CD;&#x590D;&#x5B57;&#x7B26;&#x4E32;</h2>
 <p><code>Repeat</code> &#x7528;&#x4E8E;&#x91CD;&#x590D; <code>count</code> &#x6B21;&#x5B57;&#x7B26;&#x4E32; <code>s</code> &#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x65B0;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#xFF1A;</p>
-<pre><code class="lang-go">strings.Repeat(s, count <span class="hljs-keyword">int</span>) <span class="hljs-keyword">string</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">Repeat</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> count <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
 </code></pre>
 <p>&#x793A;&#x4F8B; 4.16 <a href="examples/chapter_4/repeat_string.go">repeat_string.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strings&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strings&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> origS <span class="hljs-keyword">string</span> = <span class="hljs-string">&quot;Hi there! &quot;</span>
-    <span class="hljs-keyword">var</span> newS <span class="hljs-keyword">string</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> origS <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">&quot;Hi there! &quot;</span>
+    <span class="token keyword">var</span> newS <span class="token builtin">string</span>
 
-    newS = strings.Repeat(origS, <span class="hljs-number">3</span>)
-    fmt.Printf(<span class="hljs-string">&quot;The new repeated string is: %s\n&quot;</span>, newS)
-}
+    newS <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">Repeat</span><span class="token punctuation">(</span>origS<span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The new repeated string is: %s\n&quot;</span><span class="token punctuation">,</span> newS<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>The new repeated string is: Hi there! Hi there! Hi there!
-</code></pre><h2 id="477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;"><a name="477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;" class="anchor-navigation-ex-anchor" href="#477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.7 &#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;</h2>
+<pre class="language-"><code>The new repeated string is: Hi there! Hi there! Hi there!
+</code></pre><h2 id="477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;"><a name="477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;" class="anchor-navigation-ex-anchor" href="#477-&#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;"><i class="fa fa-link" aria-hidden="true"></i></a>7. 4.7.7 &#x4FEE;&#x6539;&#x5B57;&#x7B26;&#x4E32;&#x5927;&#x5C0F;&#x5199;</h2>
 <p><code>ToLower</code> &#x5C06;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x7684; Unicode &#x5B57;&#x7B26;&#x5168;&#x90E8;&#x8F6C;&#x6362;&#x4E3A;&#x76F8;&#x5E94;&#x7684;&#x5C0F;&#x5199;&#x5B57;&#x7B26;&#xFF1A;</p>
-<pre><code class="lang-go">strings.ToLower(s) <span class="hljs-keyword">string</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">ToLower</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token builtin">string</span>
 </code></pre>
 <p><code>ToUpper</code> &#x5C06;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x7684; Unicode &#x5B57;&#x7B26;&#x5168;&#x90E8;&#x8F6C;&#x6362;&#x4E3A;&#x76F8;&#x5E94;&#x7684;&#x5927;&#x5199;&#x5B57;&#x7B26;&#xFF1A;</p>
-<pre><code class="lang-go">strings.ToUpper(s) <span class="hljs-keyword">string</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">ToUpper</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token builtin">string</span>
 </code></pre>
 <p>&#x793A;&#x4F8B; 4.17 <a href="examples/chapter_4/toupper_lower.go">toupper_lower.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strings&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strings&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> orig <span class="hljs-keyword">string</span> = <span class="hljs-string">&quot;Hey, how are you George?&quot;</span>
-    <span class="hljs-keyword">var</span> lower <span class="hljs-keyword">string</span>
-    <span class="hljs-keyword">var</span> upper <span class="hljs-keyword">string</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> orig <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">&quot;Hey, how are you George?&quot;</span>
+    <span class="token keyword">var</span> lower <span class="token builtin">string</span>
+    <span class="token keyword">var</span> upper <span class="token builtin">string</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;The original string is: %s\n&quot;</span>, orig)
-    lower = strings.ToLower(orig)
-    fmt.Printf(<span class="hljs-string">&quot;The lowercase string is: %s\n&quot;</span>, lower)
-    upper = strings.ToUpper(orig)
-    fmt.Printf(<span class="hljs-string">&quot;The uppercase string is: %s\n&quot;</span>, upper)
-}
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The original string is: %s\n&quot;</span><span class="token punctuation">,</span> orig<span class="token punctuation">)</span>
+    lower <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">ToLower</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The lowercase string is: %s\n&quot;</span><span class="token punctuation">,</span> lower<span class="token punctuation">)</span>
+    upper <span class="token operator">=</span> strings<span class="token punctuation">.</span><span class="token function">ToUpper</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The uppercase string is: %s\n&quot;</span><span class="token punctuation">,</span> upper<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>The original string is: Hey, how are you George?
+<pre class="language-"><code>The original string is: Hey, how are you George?
 The lowercase string is: hey, how are you george?
 The uppercase string is: HEY, HOW ARE YOU GEORGE?
-</code></pre><h2 id="478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;"><a name="478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.8 &#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;</h2>
+</code></pre><h2 id="478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;"><a name="478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#478-&#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>8. 4.7.8 &#x4FEE;&#x526A;&#x5B57;&#x7B26;&#x4E32;</h2>
 <p>&#x4F60;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>strings.TrimSpace(s)</code> &#x6765;&#x5254;&#x9664;&#x5B57;&#x7B26;&#x4E32;&#x5F00;&#x5934;&#x548C;&#x7ED3;&#x5C3E;&#x7684;&#x7A7A;&#x767D;&#x7B26;&#x53F7;&#xFF1B;&#x5982;&#x679C;&#x4F60;&#x60F3;&#x8981;&#x5254;&#x9664;&#x6307;&#x5B9A;&#x5B57;&#x7B26;&#xFF0C;&#x5219;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>strings.Trim(s, &quot;cut&quot;)</code> &#x6765;&#x5C06;&#x5F00;&#x5934;&#x548C;&#x7ED3;&#x5C3E;&#x7684; <code>cut</code> &#x53BB;&#x9664;&#x6389;&#x3002;&#x8BE5;&#x51FD;&#x6570;&#x7684;&#x7B2C;&#x4E8C;&#x4E2A;&#x53C2;&#x6570;&#x53EF;&#x4EE5;&#x5305;&#x542B;&#x4EFB;&#x4F55;&#x5B57;&#x7B26;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x53EA;&#x60F3;&#x5254;&#x9664;&#x5F00;&#x5934;&#x6216;&#x8005;&#x7ED3;&#x5C3E;&#x7684;&#x5B57;&#x7B26;&#x4E32;&#xFF0C;&#x5219;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; <code>TrimLeft</code> &#x6216;&#x8005; <code>TrimRight</code> &#x6765;&#x5B9E;&#x73B0;&#x3002;</p>
-<h2 id="479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"><a name="479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.9 &#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;</h2>
+<h2 id="479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"><a name="479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#479-&#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>9. 4.7.9 &#x5206;&#x5272;&#x5B57;&#x7B26;&#x4E32;</h2>
 <p><code>strings.Fields(s)</code> &#x5C06;&#x4F1A;&#x5229;&#x7528; 1 &#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x7A7A;&#x767D;&#x7B26;&#x53F7;&#x6765;&#x4F5C;&#x4E3A;&#x52A8;&#x6001;&#x957F;&#x5EA6;&#x7684;&#x5206;&#x9694;&#x7B26;&#x5C06;&#x5B57;&#x7B26;&#x4E32;&#x5206;&#x5272;&#x6210;&#x82E5;&#x5E72;&#x5C0F;&#x5757;&#xFF0C;&#x5E76;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A; slice&#xFF0C;&#x5982;&#x679C;&#x5B57;&#x7B26;&#x4E32;&#x53EA;&#x5305;&#x542B;&#x7A7A;&#x767D;&#x7B26;&#x53F7;&#xFF0C;&#x5219;&#x8FD4;&#x56DE;&#x4E00;&#x4E2A;&#x957F;&#x5EA6;&#x4E3A; 0 &#x7684; slice&#x3002;</p>
 <p><code>strings.Split(s, sep)</code> &#x7528;&#x4E8E;&#x81EA;&#x5B9A;&#x4E49;&#x5206;&#x5272;&#x7B26;&#x53F7;&#x6765;&#x5BF9;&#x6307;&#x5B9A;&#x5B57;&#x7B26;&#x4E32;&#x8FDB;&#x884C;&#x5206;&#x5272;&#xFF0C;&#x540C;&#x6837;&#x8FD4;&#x56DE; slice&#x3002;</p>
 <p>&#x56E0;&#x4E3A;&#x8FD9; 2 &#x4E2A;&#x51FD;&#x6570;&#x90FD;&#x4F1A;&#x8FD4;&#x56DE; slice&#xFF0C;&#x6240;&#x4EE5;&#x4E60;&#x60EF;&#x4F7F;&#x7528; for-range &#x5FAA;&#x73AF;&#x6765;&#x5BF9;&#x5176;&#x8FDB;&#x884C;&#x5904;&#x7406;&#xFF08;&#x7B2C; 7.3 &#x8282;&#xFF09;&#x3002;</p>
-<h2 id="4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;"><a name="4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.10 &#x62FC;&#x63A5; slice &#x5230;&#x5B57;&#x7B26;&#x4E32;</h2>
+<h2 id="4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;"><a name="4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;" class="anchor-navigation-ex-anchor" href="#4710-&#x62FC;&#x63A5;-slice-&#x5230;&#x5B57;&#x7B26;&#x4E32;"><i class="fa fa-link" aria-hidden="true"></i></a>10. 4.7.10 &#x62FC;&#x63A5; slice &#x5230;&#x5B57;&#x7B26;&#x4E32;</h2>
 <p><code>Join</code> &#x7528;&#x4E8E;&#x5C06;&#x5143;&#x7D20;&#x7C7B;&#x578B;&#x4E3A; string &#x7684; slice &#x4F7F;&#x7528;&#x5206;&#x5272;&#x7B26;&#x53F7;&#x6765;&#x62FC;&#x63A5;&#x7EC4;&#x6210;&#x4E00;&#x4E2A;&#x5B57;&#x7B26;&#x4E32;&#xFF1A;</p>
-<pre><code class="lang-go">strings.Join(sl []<span class="hljs-keyword">string</span>, sep <span class="hljs-keyword">string</span>) <span class="hljs-keyword">string</span>
+<pre class="language-"><code class="lang-go">strings<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span>sl <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">,</span> sep <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span>
 </code></pre>
 <p>&#x793A;&#x4F8B; 4.18 <a href="examples/chapter_4/strings_splitjoin.go">strings_splitjoin.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strings&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strings&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    str := <span class="hljs-string">&quot;The quick brown fox jumps over the lazy dog&quot;</span>
-    sl := strings.Fields(str)
-    fmt.Printf(<span class="hljs-string">&quot;Splitted in slice: %v\n&quot;</span>, sl)
-    <span class="hljs-keyword">for</span> _, val := <span class="hljs-keyword">range</span> sl {
-        fmt.Printf(<span class="hljs-string">&quot;%s - &quot;</span>, val)
-    }
-    fmt.Println()
-    str2 := <span class="hljs-string">&quot;GO1|The ABC of Go|25&quot;</span>
-    sl2 := strings.Split(str2, <span class="hljs-string">&quot;|&quot;</span>)
-    fmt.Printf(<span class="hljs-string">&quot;Splitted in slice: %v\n&quot;</span>, sl2)
-    <span class="hljs-keyword">for</span> _, val := <span class="hljs-keyword">range</span> sl2 {
-        fmt.Printf(<span class="hljs-string">&quot;%s - &quot;</span>, val)
-    }
-    fmt.Println()
-    str3 := strings.Join(sl2,<span class="hljs-string">&quot;;&quot;</span>)
-    fmt.Printf(<span class="hljs-string">&quot;sl2 joined by ;: %s\n&quot;</span>, str3)
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    str <span class="token operator">:=</span> <span class="token string">&quot;The quick brown fox jumps over the lazy dog&quot;</span>
+    sl <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Fields</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Splitted in slice: %v\n&quot;</span><span class="token punctuation">,</span> sl<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> val <span class="token operator">:=</span> <span class="token keyword">range</span> sl <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%s - &quot;</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    str2 <span class="token operator">:=</span> <span class="token string">&quot;GO1|The ABC of Go|25&quot;</span>
+    sl2 <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Split</span><span class="token punctuation">(</span>str2<span class="token punctuation">,</span> <span class="token string">&quot;|&quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Splitted in slice: %v\n&quot;</span><span class="token punctuation">,</span> sl2<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> val <span class="token operator">:=</span> <span class="token keyword">range</span> sl2 <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%s - &quot;</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    str3 <span class="token operator">:=</span> strings<span class="token punctuation">.</span><span class="token function">Join</span><span class="token punctuation">(</span>sl2<span class="token punctuation">,</span><span class="token string">&quot;;&quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;sl2 joined by ;: %s\n&quot;</span><span class="token punctuation">,</span> str3<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>Splitted in slice: [The quick brown fox jumps over the lazy dog]
+<pre class="language-"><code>Splitted in slice: [The quick brown fox jumps over the lazy dog]
 The - quick - brown - fox - jumps - over - the - lazy - dog -
 Splitted in slice: [GO1 The ABC of Go 25]
 GO1 - The ABC of Go - 25 -
 sl2 joined by ;: GO1;The ABC of Go;25
 </code></pre><p>&#x5176;&#x5B83;&#x6709;&#x5173;&#x5B57;&#x7B26;&#x4E32;&#x64CD;&#x4F5C;&#x7684;&#x6587;&#x6863;&#x8BF7;&#x53C2;&#x9605; <a href="http://golang.org/pkg/strings/" target="_blank">&#x5B98;&#x65B9;&#x6587;&#x6863;</a>&#xFF08; <strong>&#x8BD1;&#x8005;&#x6CE8;&#xFF1A;&#x56FD;&#x5185;&#x7528;&#x6237;&#x53EF;&#x8BBF;&#x95EE; <a href="http://docs.studygolang.com/pkg/strings/" target="_blank">&#x8BE5;&#x9875;&#x9762;</a></strong> &#xFF09;&#x3002;</p>
-<h2 id="4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;"><a name="4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;" class="anchor-navigation-ex-anchor" href="#4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.11 &#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;</h2>
+<h2 id="4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;"><a name="4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;" class="anchor-navigation-ex-anchor" href="#4711-&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;"><i class="fa fa-link" aria-hidden="true"></i></a>11. 4.7.11 &#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;</h2>
 <p>&#x51FD;&#x6570; <code>strings.NewReader(str)</code> &#x7528;&#x4E8E;&#x751F;&#x6210;&#x4E00;&#x4E2A; <code>Reader</code> &#x5E76;&#x8BFB;&#x53D6;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x7684;&#x5185;&#x5BB9;&#xFF0C;&#x7136;&#x540E;&#x8FD4;&#x56DE;&#x6307;&#x5411;&#x8BE5; <code>Reader</code> &#x7684;&#x6307;&#x9488;&#xFF0C;&#x4ECE;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;&#x7684;&#x51FD;&#x6570;&#x8FD8;&#x6709;&#xFF1A;</p>
 <ul>
 <li><code>Read()</code> &#x4ECE; []byte &#x4E2D;&#x8BFB;&#x53D6;&#x5185;&#x5BB9;&#x3002;</li>
 <li><code>ReadByte()</code> &#x548C; <code>ReadRune()</code> &#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x4E2D;&#x8BFB;&#x53D6;&#x4E0B;&#x4E00;&#x4E2A; byte &#x6216;&#x8005; rune&#x3002;</li>
 </ul>
-<h2 id="4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;"><a name="4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;" class="anchor-navigation-ex-anchor" href="#4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;"><i class="fa fa-link" aria-hidden="true"></i></a>4.7.12 &#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;</h2>
+<h2 id="4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;"><a name="4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;" class="anchor-navigation-ex-anchor" href="#4712-&#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;"><i class="fa fa-link" aria-hidden="true"></i></a>12. 4.7.12 &#x5B57;&#x7B26;&#x4E32;&#x4E0E;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;</h2>
 <p>&#x4E0E;&#x5B57;&#x7B26;&#x4E32;&#x76F8;&#x5173;&#x7684;&#x7C7B;&#x578B;&#x8F6C;&#x6362;&#x90FD;&#x662F;&#x901A;&#x8FC7; <code>strconv</code> &#x5305;&#x5B9E;&#x73B0;&#x7684;&#x3002;</p>
 <p>&#x8BE5;&#x5305;&#x5305;&#x542B;&#x4E86;&#x4E00;&#x4E9B;&#x53D8;&#x91CF;&#x7528;&#x4E8E;&#x83B7;&#x53D6;&#x7A0B;&#x5E8F;&#x8FD0;&#x884C;&#x7684;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x5E73;&#x53F0;&#x4E0B; int &#x7C7B;&#x578B;&#x6240;&#x5360;&#x7684;&#x4F4D;&#x6570;&#xFF0C;&#x5982;&#xFF1A;<code>strconv.IntSize</code>&#x3002;</p>
 <p>&#x4EFB;&#x4F55;&#x7C7B;&#x578B; <strong>T</strong> &#x8F6C;&#x6362;&#x4E3A;&#x5B57;&#x7B26;&#x4E32;&#x603B;&#x662F;&#x6210;&#x529F;&#x7684;&#x3002;</p>
@@ -2808,32 +2820,32 @@ sl2 joined by ;: GO1;The ABC of Go;25
 <li><code>strconv.ParseFloat(s string, bitSize int) (f float64, err error)</code> &#x5C06;&#x5B57;&#x7B26;&#x4E32;&#x8F6C;&#x6362;&#x4E3A; float64 &#x578B;&#x3002;</li>
 </ul>
 <p>&#x5229;&#x7528;&#x591A;&#x8FD4;&#x56DE;&#x503C;&#x7684;&#x7279;&#x6027;&#xFF0C;&#x8FD9;&#x4E9B;&#x51FD;&#x6570;&#x4F1A;&#x8FD4;&#x56DE; 2 &#x4E2A;&#x503C;&#xFF0C;&#x7B2C; 1 &#x4E2A;&#x662F;&#x8F6C;&#x6362;&#x540E;&#x7684;&#x7ED3;&#x679C;&#xFF08;&#x5982;&#x679C;&#x8F6C;&#x6362;&#x6210;&#x529F;&#xFF09;&#xFF0C;&#x7B2C; 2 &#x4E2A;&#x662F;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x7684;&#x9519;&#x8BEF;&#xFF0C;&#x56E0;&#x6B64;&#xFF0C;&#x6211;&#x4EEC;&#x4E00;&#x822C;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x5F62;&#x5F0F;&#x6765;&#x8FDB;&#x884C;&#x4ECE;&#x5B57;&#x7B26;&#x4E32;&#x5230;&#x5176;&#x5B83;&#x7C7B;&#x578B;&#x7684;&#x8F6C;&#x6362;&#xFF1A;</p>
-<pre><code>val, err = strconv.Atoi(s)
+<pre class="language-"><code>val, err = strconv.Atoi(s)
 </code></pre><p>&#x5728;&#x4E0B;&#x9762;&#x8FD9;&#x4E2A;&#x793A;&#x4F8B;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x5FFD;&#x7565;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x7684;&#x8F6C;&#x6362;&#x9519;&#x8BEF;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 4.19 <a href="examples/chapter_4/string_conversion.go">string_conversion.go</a></p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-    <span class="hljs-string">&quot;strconv&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+    <span class="token string">&quot;strconv&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">var</span> orig <span class="hljs-keyword">string</span> = <span class="hljs-string">&quot;666&quot;</span>
-    <span class="hljs-keyword">var</span> an <span class="hljs-keyword">int</span>
-    <span class="hljs-keyword">var</span> newS <span class="hljs-keyword">string</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> orig <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token string">&quot;666&quot;</span>
+    <span class="token keyword">var</span> an <span class="token builtin">int</span>
+    <span class="token keyword">var</span> newS <span class="token builtin">string</span>
 
-    fmt.Printf(<span class="hljs-string">&quot;The size of ints is: %d\n&quot;</span>, strconv.IntSize)      
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The size of ints is: %d\n&quot;</span><span class="token punctuation">,</span> strconv<span class="token punctuation">.</span>IntSize<span class="token punctuation">)</span>      
 
-    an, _ = strconv.Atoi(orig)
-    fmt.Printf(<span class="hljs-string">&quot;The integer is: %d\n&quot;</span>, an) 
-    an = an + <span class="hljs-number">5</span>
-    newS = strconv.Itoa(an)
-    fmt.Printf(<span class="hljs-string">&quot;The new string is: %s\n&quot;</span>, newS)
-}
+    an<span class="token punctuation">,</span> <span class="token boolean">_</span> <span class="token operator">=</span> strconv<span class="token punctuation">.</span><span class="token function">Atoi</span><span class="token punctuation">(</span>orig<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The integer is: %d\n&quot;</span><span class="token punctuation">,</span> an<span class="token punctuation">)</span> 
+    an <span class="token operator">=</span> an <span class="token operator">+</span> <span class="token number">5</span>
+    newS <span class="token operator">=</span> strconv<span class="token punctuation">.</span><span class="token function">Itoa</span><span class="token punctuation">(</span>an<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The new string is: %s\n&quot;</span><span class="token punctuation">,</span> newS<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>64 &#x4F4D;&#x7CFB;&#x7EDF;&#xFF1A;
+<pre class="language-"><code>64 &#x4F4D;&#x7CFB;&#x7EDF;&#xFF1A;
 The size of ints is: 64
 32 &#x4F4D;&#x7CFB;&#x7EDF;&#xFF1A;
 The size of ints is: 32
@@ -2841,7 +2853,7 @@ The integer is: 666
 The new string is: 671
 </code></pre><p>&#x5728;&#x7B2C; 5.1 &#x8282;&#xFF0C;&#x6211;&#x4EEC;&#x5C06;&#x4F1A;&#x5229;&#x7528; if &#x8BED;&#x53E5;&#x6765;&#x5BF9;&#x53EF;&#x80FD;&#x51FA;&#x73B0;&#x7684;&#x9519;&#x8BEF;&#x8FDB;&#x884C;&#x5206;&#x7C7B;&#x5904;&#x7406;&#x3002;</p>
 <p>&#x66F4;&#x591A;&#x6709;&#x5173;&#x8BE5;&#x5305;&#x7684;&#x8BA8;&#x8BBA;&#xFF0C;&#x8BF7;&#x53C2;&#x9605; <a href="http://golang.org/pkg/strconv/" target="_blank">&#x5B98;&#x65B9;&#x6587;&#x6863;</a>&#xFF08; <strong>&#x8BD1;&#x8005;&#x6CE8;&#xFF1A;&#x56FD;&#x5185;&#x7528;&#x6237;&#x53EF;&#x8BBF;&#x95EE; <a href="http://docs.studygolang.com/pkg/strconv/" target="_blank">&#x8BE5;&#x9875;&#x9762;</a></strong> &#xFF09;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>13. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="04.6.html">&#x5B57;&#x7B26;&#x4E32;</a></li>
@@ -2890,7 +2902,7 @@ The new string is: 671
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"strings 和 strconv 包","level":"3.1.7","depth":2,"next":{"title":"时间和日期","level":"3.1.8","depth":2,"path":"eBook/04.8.md","ref":"eBook/04.8.md","articles":[]},"previous":{"title":"字符串","level":"3.1.6","depth":2,"path":"eBook/04.6.md","ref":"eBook/04.6.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/04.7.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"strings 和 strconv 包","level":"3.1.7","depth":2,"next":{"title":"时间和日期","level":"3.1.8","depth":2,"path":"eBook/04.8.md","ref":"eBook/04.8.md","articles":[]},"previous":{"title":"字符串","level":"3.1.6","depth":2,"path":"eBook/04.6.md","ref":"eBook/04.6.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/04.7.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2920,7 +2932,11 @@ The new string is: 671
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

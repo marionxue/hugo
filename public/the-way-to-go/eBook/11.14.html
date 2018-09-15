@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,179 +2600,179 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;"><b></b>&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;"><a name="&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;" class="anchor-navigation-ex-anchor" href="#&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#1114-&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;"><b> </b>11.14 &#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#1114-&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="1114-&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;"><a name="1114-&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;" class="anchor-navigation-ex-anchor" href="#1114-&#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;"><i class="fa fa-link" aria-hidden="true"></i></a> 11.14 &#x7ED3;&#x6784;&#x4F53;&#x3001;&#x96C6;&#x5408;&#x548C;&#x9AD8;&#x9636;&#x51FD;&#x6570;</h1>
 <p>&#x901A;&#x5E38;&#x4F60;&#x5728;&#x5E94;&#x7528;&#x4E2D;&#x5B9A;&#x4E49;&#x4E86;&#x4E00;&#x4E2A;&#x7ED3;&#x6784;&#x4F53;&#xFF0C;&#x90A3;&#x4E48;&#x4F60;&#x4E5F;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x8FD9;&#x4E2A;&#x7ED3;&#x6784;&#x4F53;&#x7684;&#xFF08;&#x6307;&#x9488;&#xFF09;&#x5BF9;&#x8C61;&#x96C6;&#x5408;&#xFF0C;&#x6BD4;&#x5982;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">type</span> Any <span class="hljs-keyword">interface</span>{}
-<span class="hljs-keyword">type</span> Car <span class="hljs-keyword">struct</span> {
-    Model        <span class="hljs-keyword">string</span>
-    Manufacturer <span class="hljs-keyword">string</span>
-    BuildYear    <span class="hljs-keyword">int</span>
-    <span class="hljs-comment">// ...</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">type</span> Any <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">type</span> Car <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Model        <span class="token builtin">string</span>
+    Manufacturer <span class="token builtin">string</span>
+    BuildYear    <span class="token builtin">int</span>
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">type</span> Cars []*Car
+<span class="token keyword">type</span> Cars <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car
 </code></pre>
 <p>&#x5728;&#x5B9A;&#x4E49;&#x6240;&#x9700;&#x529F;&#x80FD;&#x65F6;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5229;&#x7528;&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x4F5C;&#x4E3A;&#xFF08;&#x5176;&#x5B83;&#x51FD;&#x6570;&#x7684;&#xFF09;&#x53C2;&#x6570;&#x7684;&#x4E8B;&#x5B9E;&#x6765;&#x4F7F;&#x7528;&#x9AD8;&#x9636;&#x51FD;&#x6570;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;</p>
 <p>1&#xFF09;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x901A;&#x7528;&#x7684; <code>Process()</code> &#x51FD;&#x6570;&#xFF0C;&#x5B83;&#x63A5;&#x6536;&#x4E00;&#x4E2A;&#x4F5C;&#x7528;&#x4E8E;&#x6BCF;&#x4E00;&#x8F86; car &#x7684; f &#x51FD;&#x6570;&#x4F5C;&#x53C2;&#x6570;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// Process all cars with the given function f:</span>
-<span class="hljs-keyword">func</span> (cs Cars) Process(f <span class="hljs-keyword">func</span>(car *Car)) {
-    <span class="hljs-keyword">for</span> _, c := <span class="hljs-keyword">range</span> cs {
-        f(c)
-    }
-}
+<pre class="language-"><code class="lang-go"><span class="token comment">// Process all cars with the given function f:</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>cs Cars<span class="token punctuation">)</span> <span class="token function">Process</span><span class="token punctuation">(</span>f <span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> c <span class="token operator">:=</span> <span class="token keyword">range</span> cs <span class="token punctuation">{</span>
+        <span class="token function">f</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>2&#xFF09;&#x5728;&#x4E0A;&#x9762;&#x7684;&#x57FA;&#x7840;&#x4E0A;&#xFF0C;&#x5B9E;&#x73B0;&#x4E00;&#x4E2A;&#x67E5;&#x627E;&#x51FD;&#x6570;&#x6765;&#x83B7;&#x53D6;&#x5B50;&#x96C6;&#x5408;&#xFF0C;&#x5E76;&#x5728; <code>Process()</code> &#x4E2D;&#x4F20;&#x5165;&#x4E00;&#x4E2A;&#x95ED;&#x5305;&#x6267;&#x884C;&#xFF08;&#x8FD9;&#x6837;&#x5C31;&#x53EF;&#x4EE5;&#x8BBF;&#x95EE;&#x5C40;&#x90E8;&#x5207;&#x7247; <code>cars</code>&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// Find all cars matching a given criteria.</span>
-<span class="hljs-keyword">func</span> (cs Cars) FindAll(f <span class="hljs-keyword">func</span>(car *Car) <span class="hljs-keyword">bool</span>) Cars {
+<pre class="language-"><code class="lang-go"><span class="token comment">// Find all cars matching a given criteria.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>cs Cars<span class="token punctuation">)</span> <span class="token function">FindAll</span><span class="token punctuation">(</span>f <span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> Cars <span class="token punctuation">{</span>
 
-    cars := <span class="hljs-built_in">make</span>([]*Car, <span class="hljs-number">0</span>)
-    cs.Process(<span class="hljs-keyword">func</span>(c *Car) {
-        <span class="hljs-keyword">if</span> f(c) {
-            cars = <span class="hljs-built_in">append</span>(cars, c)
-        }
-    })
-    <span class="hljs-keyword">return</span> cars
-}
+    cars <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    cs<span class="token punctuation">.</span><span class="token function">Process</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>c <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token function">f</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            cars <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>cars<span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> cars
+<span class="token punctuation">}</span>
 </code></pre>
 <p>3&#xFF09;&#x5B9E;&#x73B0; Map &#x529F;&#x80FD;&#xFF0C;&#x4EA7;&#x51FA;&#x9664; car &#x5BF9;&#x8C61;&#x4EE5;&#x5916;&#x7684;&#x4E1C;&#x897F;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// Process cars and create new data.</span>
-<span class="hljs-keyword">func</span> (cs Cars) Map(f <span class="hljs-keyword">func</span>(car *Car) Any) []Any {
-        result := <span class="hljs-built_in">make</span>([]Any, <span class="hljs-number">0</span>)
-        ix := <span class="hljs-number">0</span>
-        cs.Process(<span class="hljs-keyword">func</span>(c *Car) {
-                result[ix] = f(c)
-                ix++
-        })
-           <span class="hljs-keyword">return</span> result
-}
+<pre class="language-"><code class="lang-go"><span class="token comment">// Process cars and create new data.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>cs Cars<span class="token punctuation">)</span> <span class="token function">Map</span><span class="token punctuation">(</span>f <span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span> Any<span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>Any <span class="token punctuation">{</span>
+    result <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span>Any<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    ix <span class="token operator">:=</span> <span class="token number">0</span>
+    cs<span class="token punctuation">.</span><span class="token function">Process</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>c <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        result<span class="token punctuation">[</span>ix<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+        ix<span class="token operator">++</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> result
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x4E0B;&#x9762;&#x8FD9;&#x6837;&#x7684;&#x5177;&#x4F53;&#x67E5;&#x8BE2;&#xFF1A;</p>
-<pre><code class="lang-go">allNewBMWs := allCars.FindAll(<span class="hljs-keyword">func</span>(car *Car) <span class="hljs-keyword">bool</span> {
-       <span class="hljs-keyword">return</span> (car.Manufacturer == &#x201C;BMW&#x201D;) &amp;&amp; (car.BuildYear &gt; <span class="hljs-number">2010</span>)
-})
+<pre class="language-"><code class="lang-go">allNewBMWs <span class="token operator">:=</span> allCars<span class="token punctuation">.</span><span class="token function">FindAll</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token punctuation">(</span>car<span class="token punctuation">.</span>Manufacturer <span class="token operator">==</span> <span class="token string">&quot;BMW&quot;</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>car<span class="token punctuation">.</span>BuildYear <span class="token operator">&gt;</span> <span class="token number">2010</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
 </code></pre>
 <p>4&#xFF09;&#x6211;&#x4EEC;&#x4E5F;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x5165;&#x53C2;&#x8FD4;&#x56DE;&#x4E0D;&#x540C;&#x7684;&#x51FD;&#x6570;&#x3002;&#x4E5F;&#x8BB8;&#x6211;&#x4EEC;&#x60F3;&#x6839;&#x636E;&#x4E0D;&#x540C;&#x7684;&#x5382;&#x5546;&#x6DFB;&#x52A0;&#x6C7D;&#x8F66;&#x5230;&#x4E0D;&#x540C;&#x7684;&#x96C6;&#x5408;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x53EF;&#x80FD;&#x4F1A;&#x662F;&#x591A;&#x53D8;&#x7684;&#x3002;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x6765;&#x4EA7;&#x751F;&#x7279;&#x5B9A;&#x7684;&#x6DFB;&#x52A0;&#x51FD;&#x6570;&#x548C; map &#x96C6;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> MakeSortedAppender(manufacturers[]<span class="hljs-keyword">string</span>)(<span class="hljs-keyword">func</span>(car*Car),<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]Cars) {
-    <span class="hljs-comment">// Prepare maps of sorted cars.</span>
-    sortedCars := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]Cars)
-    <span class="hljs-keyword">for</span> _, m := <span class="hljs-keyword">range</span> manufacturers {
-        sortedCars[m] = <span class="hljs-built_in">make</span>([]*Car, <span class="hljs-number">0</span>)
-    }
-    sortedCars[&#x201C;Default&#x201D;] = <span class="hljs-built_in">make</span>([]*Car, <span class="hljs-number">0</span>)
-    <span class="hljs-comment">// Prepare appender function:</span>
-    appender := <span class="hljs-keyword">func</span>(c *Car) {
-        <span class="hljs-keyword">if</span> _, ok := sortedCars[c.Manufacturer]; ok {
-            sortedCars[c.Manufacturer] = <span class="hljs-built_in">append</span>(sortedCars[c.Manufacturer], c)
-        } <span class="hljs-keyword">else</span> {
-            sortedCars[&#x201C;Default&#x201D;] = <span class="hljs-built_in">append</span>(sortedCars[&#x201C;Default&#x201D;], c)
-        }
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">MakeSortedAppender</span><span class="token punctuation">(</span>manufacturers<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>car<span class="token operator">*</span>Car<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Cars<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Prepare maps of sorted cars.</span>
+    sortedCars <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Cars<span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> m <span class="token operator">:=</span> <span class="token keyword">range</span> manufacturers <span class="token punctuation">{</span>
+        sortedCars<span class="token punctuation">[</span>m<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    sortedCars<span class="token punctuation">[</span><span class="token string">&quot;Default&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token comment">// Prepare appender function:</span>
+    appender <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>c <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token boolean">_</span><span class="token punctuation">,</span> ok <span class="token operator">:=</span> sortedCars<span class="token punctuation">[</span>c<span class="token punctuation">.</span>Manufacturer<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+            sortedCars<span class="token punctuation">[</span>c<span class="token punctuation">.</span>Manufacturer<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>sortedCars<span class="token punctuation">[</span>c<span class="token punctuation">.</span>Manufacturer<span class="token punctuation">]</span><span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            sortedCars<span class="token punctuation">[</span><span class="token string">&quot;Default&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>sortedCars<span class="token punctuation">[</span><span class="token string">&quot;Default&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
 
-     }
-    <span class="hljs-keyword">return</span> appender, sortedCars
-}
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> appender<span class="token punctuation">,</span> sortedCars
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x73B0;&#x5728;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x7528;&#x5B83;&#x628A;&#x6C7D;&#x8F66;&#x5206;&#x7C7B;&#x4E3A;&#x72EC;&#x7ACB;&#x7684;&#x96C6;&#x5408;&#xFF0C;&#x50CF;&#x8FD9;&#x6837;&#xFF1A;</p>
-<pre><code class="lang-go">manufacturers := []<span class="hljs-keyword">string</span>{&#x201C;Ford&#x201D;, &#x201C;Aston Martin&#x201D;, &#x201C;Land Rover&#x201D;, &#x201C;BMW&#x201D;, &#x201C;Jaguar&#x201D;}
-sortedAppender, sortedCars := MakeSortedAppender(manufacturers)
-allUnsortedCars.Process(sortedAppender)
-BMWCount := <span class="hljs-built_in">len</span>(sortedCars[&#x201C;BMW&#x201D;])
+<pre class="language-"><code class="lang-go">manufacturers <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">&quot;Ford&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Aston Martin&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Land Rover&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;BMW&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Jaguar&quot;</span><span class="token punctuation">}</span>
+sortedAppender<span class="token punctuation">,</span> sortedCars <span class="token operator">:=</span> <span class="token function">MakeSortedAppender</span><span class="token punctuation">(</span>manufacturers<span class="token punctuation">)</span>
+allUnsortedCars<span class="token punctuation">.</span><span class="token function">Process</span><span class="token punctuation">(</span>sortedAppender<span class="token punctuation">)</span>
+BMWCount <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>sortedCars<span class="token punctuation">[</span><span class="token string">&quot;BMW&quot;</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 </code></pre>
 <p>&#x6211;&#x4EEC;&#x8BA9;&#x8FD9;&#x4E9B;&#x4EE3;&#x7801;&#x5728;&#x4E0B;&#x9762;&#x7684;&#x7A0B;&#x5E8F; cars.go &#x4E2D;&#x6267;&#x884C;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 11.18 <a href="examples/chapter_11/cars.go">cars.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-comment">// cars.go</span>
-<span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token comment">// cars.go</span>
+<span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;fmt&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;fmt&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">type</span> Any <span class="hljs-keyword">interface</span>{}
-<span class="hljs-keyword">type</span> Car <span class="hljs-keyword">struct</span> {
-    Model       <span class="hljs-keyword">string</span>
-    Manufacturer    <span class="hljs-keyword">string</span>
-    BuildYear    <span class="hljs-keyword">int</span>
-    <span class="hljs-comment">// ...</span>
-}
-<span class="hljs-keyword">type</span> Cars []*Car
+<span class="token keyword">type</span> Any <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">type</span> Car <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Model        <span class="token builtin">string</span>
+    Manufacturer <span class="token builtin">string</span>
+    BuildYear    <span class="token builtin">int</span>
+    <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">type</span> Cars <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-comment">// make some cars:</span>
-    ford := &amp;Car{<span class="hljs-string">&quot;Fiesta&quot;</span>,<span class="hljs-string">&quot;Ford&quot;</span>, <span class="hljs-number">2008</span>}
-    bmw  := &amp;Car{<span class="hljs-string">&quot;XL 450&quot;</span>, <span class="hljs-string">&quot;BMW&quot;</span>, <span class="hljs-number">2011</span>}
-    merc := &amp;Car{<span class="hljs-string">&quot;D600&quot;</span>, <span class="hljs-string">&quot;Mercedes&quot;</span>, <span class="hljs-number">2009</span>}
-    bmw2 := &amp;Car{<span class="hljs-string">&quot;X 800&quot;</span>, <span class="hljs-string">&quot;BMW&quot;</span>, <span class="hljs-number">2008</span>}
-    <span class="hljs-comment">// query:</span>
-    allCars := Cars([]*Car{ford, bmw, merc, bmw2})
-    allNewBMWs := allCars.FindAll(<span class="hljs-keyword">func</span>(car *Car) <span class="hljs-keyword">bool</span> {
-      <span class="hljs-keyword">return</span> (car.Manufacturer == <span class="hljs-string">&quot;BMW&quot;</span>) &amp;&amp; (car.BuildYear &gt; <span class="hljs-number">2010</span>)
-    })
-    fmt.Println(<span class="hljs-string">&quot;AllCars: &quot;</span>, allCars)
-    fmt.Println(<span class="hljs-string">&quot;New BMWs: &quot;</span>, allNewBMWs)
-    <span class="hljs-comment">//</span>
-    manufacturers := []<span class="hljs-keyword">string</span>{<span class="hljs-string">&quot;Ford&quot;</span>, <span class="hljs-string">&quot;Aston Martin&quot;</span>, <span class="hljs-string">&quot;Land Rover&quot;</span>, <span class="hljs-string">&quot;BMW&quot;</span>, <span class="hljs-string">&quot;Jaguar&quot;</span>}
-    sortedAppender, sortedCars := MakeSortedAppender(manufacturers)
-    allCars.Process(sortedAppender)
-    fmt.Println(<span class="hljs-string">&quot;Map sortedCars: &quot;</span>, sortedCars)
-    BMWCount := <span class="hljs-built_in">len</span>(sortedCars[<span class="hljs-string">&quot;BMW&quot;</span>])
-    fmt.Println(<span class="hljs-string">&quot;We have &quot;</span>, BMWCount, <span class="hljs-string">&quot; BMWs&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// make some cars:</span>
+    ford <span class="token operator">:=</span> <span class="token operator">&amp;</span>Car<span class="token punctuation">{</span><span class="token string">&quot;Fiesta&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Ford&quot;</span><span class="token punctuation">,</span> <span class="token number">2008</span><span class="token punctuation">}</span>
+    bmw <span class="token operator">:=</span> <span class="token operator">&amp;</span>Car<span class="token punctuation">{</span><span class="token string">&quot;XL 450&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;BMW&quot;</span><span class="token punctuation">,</span> <span class="token number">2011</span><span class="token punctuation">}</span>
+    merc <span class="token operator">:=</span> <span class="token operator">&amp;</span>Car<span class="token punctuation">{</span><span class="token string">&quot;D600&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Mercedes&quot;</span><span class="token punctuation">,</span> <span class="token number">2009</span><span class="token punctuation">}</span>
+    bmw2 <span class="token operator">:=</span> <span class="token operator">&amp;</span>Car<span class="token punctuation">{</span><span class="token string">&quot;X 800&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;BMW&quot;</span><span class="token punctuation">,</span> <span class="token number">2008</span><span class="token punctuation">}</span>
+    <span class="token comment">// query:</span>
+    allCars <span class="token operator">:=</span> <span class="token function">Cars</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car<span class="token punctuation">{</span>ford<span class="token punctuation">,</span> bmw<span class="token punctuation">,</span> merc<span class="token punctuation">,</span> bmw2<span class="token punctuation">}</span><span class="token punctuation">)</span>
+    allNewBMWs <span class="token operator">:=</span> allCars<span class="token punctuation">.</span><span class="token function">FindAll</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token builtin">bool</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>car<span class="token punctuation">.</span>Manufacturer <span class="token operator">==</span> <span class="token string">&quot;BMW&quot;</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>car<span class="token punctuation">.</span>BuildYear <span class="token operator">&gt;</span> <span class="token number">2010</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;AllCars: &quot;</span><span class="token punctuation">,</span> allCars<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;New BMWs: &quot;</span><span class="token punctuation">,</span> allNewBMWs<span class="token punctuation">)</span>
+    <span class="token comment">//</span>
+    manufacturers <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">&quot;Ford&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Aston Martin&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Land Rover&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;BMW&quot;</span><span class="token punctuation">,</span> <span class="token string">&quot;Jaguar&quot;</span><span class="token punctuation">}</span>
+    sortedAppender<span class="token punctuation">,</span> sortedCars <span class="token operator">:=</span> <span class="token function">MakeSortedAppender</span><span class="token punctuation">(</span>manufacturers<span class="token punctuation">)</span>
+    allCars<span class="token punctuation">.</span><span class="token function">Process</span><span class="token punctuation">(</span>sortedAppender<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Map sortedCars: &quot;</span><span class="token punctuation">,</span> sortedCars<span class="token punctuation">)</span>
+    BMWCount <span class="token operator">:=</span> <span class="token function">len</span><span class="token punctuation">(</span>sortedCars<span class="token punctuation">[</span><span class="token string">&quot;BMW&quot;</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;We have &quot;</span><span class="token punctuation">,</span> BMWCount<span class="token punctuation">,</span> <span class="token string">&quot; BMWs&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Process all cars with the given function f:</span>
-<span class="hljs-keyword">func</span> (cs Cars) Process(f <span class="hljs-keyword">func</span>(car *Car)) {
-     <span class="hljs-keyword">for</span> _, c := <span class="hljs-keyword">range</span> cs {
-         f(c)
-     }
-}
+<span class="token comment">// Process all cars with the given function f:</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>cs Cars<span class="token punctuation">)</span> <span class="token function">Process</span><span class="token punctuation">(</span>f <span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> c <span class="token operator">:=</span> <span class="token keyword">range</span> cs <span class="token punctuation">{</span>
+        <span class="token function">f</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Find all cars matching a given criteria.</span>
-<span class="hljs-keyword">func</span> (cs Cars) FindAll(f <span class="hljs-keyword">func</span>(car *Car) <span class="hljs-keyword">bool</span>) Cars {
-    cars := <span class="hljs-built_in">make</span>([]*Car, <span class="hljs-number">0</span>)
+<span class="token comment">// Find all cars matching a given criteria.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>cs Cars<span class="token punctuation">)</span> <span class="token function">FindAll</span><span class="token punctuation">(</span>f <span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> Cars <span class="token punctuation">{</span>
+    cars <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
 
-    cs.Process(<span class="hljs-keyword">func</span>(c *Car) {
-        <span class="hljs-keyword">if</span> f(c) {
-            cars = <span class="hljs-built_in">append</span>(cars, c)
-        }
-    })
-    <span class="hljs-keyword">return</span> cars
-}
+    cs<span class="token punctuation">.</span><span class="token function">Process</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>c <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token function">f</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            cars <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>cars<span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> cars
+<span class="token punctuation">}</span>
 
-<span class="hljs-comment">// Process cars and create new data.</span>
-<span class="hljs-keyword">func</span> (cs Cars) Map(f <span class="hljs-keyword">func</span>(car *Car) Any) []Any {
-       result := <span class="hljs-built_in">make</span>([]Any, <span class="hljs-built_in">len</span>(cs))
-       ix := <span class="hljs-number">0</span>
-       cs.Process(<span class="hljs-keyword">func</span>(c *Car) {
-           result[ix] = f(c)
-           ix++
-       })
-       <span class="hljs-keyword">return</span> result
-}
+<span class="token comment">// Process cars and create new data.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>cs Cars<span class="token punctuation">)</span> <span class="token function">Map</span><span class="token punctuation">(</span>f <span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span> Any<span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>Any <span class="token punctuation">{</span>
+    result <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span>Any<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>cs<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    ix <span class="token operator">:=</span> <span class="token number">0</span>
+    cs<span class="token punctuation">.</span><span class="token function">Process</span><span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>c <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        result<span class="token punctuation">[</span>ix<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span>
+        ix<span class="token operator">++</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> result
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> MakeSortedAppender(manufacturers []<span class="hljs-keyword">string</span>) (<span class="hljs-keyword">func</span>(car *Car), <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]Cars) {
-     <span class="hljs-comment">// Prepare maps of sorted cars.</span>
-       sortedCars := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]Cars)
+<span class="token keyword">func</span> <span class="token function">MakeSortedAppender</span><span class="token punctuation">(</span>manufacturers <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span>car <span class="token operator">*</span>Car<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Cars<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Prepare maps of sorted cars.</span>
+    sortedCars <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span>Cars<span class="token punctuation">)</span>
 
-       <span class="hljs-keyword">for</span> _, m := <span class="hljs-keyword">range</span> manufacturers {
-           sortedCars[m] = <span class="hljs-built_in">make</span>([]*Car, <span class="hljs-number">0</span>)
-       }
-       sortedCars[<span class="hljs-string">&quot;Default&quot;</span>] = <span class="hljs-built_in">make</span>([]*Car, <span class="hljs-number">0</span>)
+    <span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> m <span class="token operator">:=</span> <span class="token keyword">range</span> manufacturers <span class="token punctuation">{</span>
+        sortedCars<span class="token punctuation">[</span>m<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    sortedCars<span class="token punctuation">[</span><span class="token string">&quot;Default&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">*</span>Car<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
 
-       <span class="hljs-comment">// Prepare appender function:</span>
-       appender := <span class="hljs-keyword">func</span>(c *Car) {
-           <span class="hljs-keyword">if</span> _, ok := sortedCars[c.Manufacturer]; ok {
-               sortedCars[c.Manufacturer] = <span class="hljs-built_in">append</span>(sortedCars[c.Manufacturer], c)
-           } <span class="hljs-keyword">else</span> {
-               sortedCars[<span class="hljs-string">&quot;Default&quot;</span>] = <span class="hljs-built_in">append</span>(sortedCars[<span class="hljs-string">&quot;Default&quot;</span>], c)
-           }
-       }
-       <span class="hljs-keyword">return</span> appender, sortedCars
-}
+    <span class="token comment">// Prepare appender function:</span>
+    appender <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>c <span class="token operator">*</span>Car<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token boolean">_</span><span class="token punctuation">,</span> ok <span class="token operator">:=</span> sortedCars<span class="token punctuation">[</span>c<span class="token punctuation">.</span>Manufacturer<span class="token punctuation">]</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+            sortedCars<span class="token punctuation">[</span>c<span class="token punctuation">.</span>Manufacturer<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>sortedCars<span class="token punctuation">[</span>c<span class="token punctuation">.</span>Manufacturer<span class="token punctuation">]</span><span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            sortedCars<span class="token punctuation">[</span><span class="token string">&quot;Default&quot;</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>sortedCars<span class="token punctuation">[</span><span class="token string">&quot;Default&quot;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> appender<span class="token punctuation">,</span> sortedCars
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>AllCars:  [0xf8400038a0 0xf840003bd0 0xf840003ba0 0xf840003b70]
+<pre class="language-"><code>AllCars:  [0xf8400038a0 0xf840003bd0 0xf840003ba0 0xf840003b70]
 New BMWs:  [0xf840003bd0]
 Map sortedCars:  map[Default:[0xf840003ba0] Jaguar:[] Land Rover:[] BMW:[0xf840003bd0 0xf840003b70] Aston Martin:[] Ford:[0xf8400038a0]]
 We have  2  BMWs
-</code></pre><h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+</code></pre><h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="11.13.html">Go &#x4E2D;&#x7684;&#x9762;&#x5411;&#x5BF9;&#x8C61;</a></li>
@@ -2813,7 +2821,7 @@ We have  2  BMWs
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"结构体、集合和高阶函数","level":"3.8.14","depth":2,"next":{"title":"第12章：读写数据","level":"4.1","depth":1,"path":"eBook/12.0.md","ref":"eBook/12.0.md","articles":[{"title":"读取用户的输入","level":"4.1.1","depth":2,"path":"eBook/12.1.md","ref":"eBook/12.1.md","articles":[]},{"title":"文件读写","level":"4.1.2","depth":2,"path":"eBook/12.2.md","ref":"eBook/12.2.md","articles":[]},{"title":"文件拷贝","level":"4.1.3","depth":2,"path":"eBook/12.3.md","ref":"eBook/12.3.md","articles":[]},{"title":"从命令行读取参数","level":"4.1.4","depth":2,"path":"eBook/12.4.md","ref":"eBook/12.4.md","articles":[]},{"title":"用 buffer 读取文件","level":"4.1.5","depth":2,"path":"eBook/12.5.md","ref":"eBook/12.5.md","articles":[]},{"title":"用切片读写文件","level":"4.1.6","depth":2,"path":"eBook/12.6.md","ref":"eBook/12.6.md","articles":[]},{"title":"用 defer 关闭文件","level":"4.1.7","depth":2,"path":"eBook/12.7.md","ref":"eBook/12.7.md","articles":[]},{"title":"使用接口的实际例子：fmt.Fprintf","level":"4.1.8","depth":2,"path":"eBook/12.8.md","ref":"eBook/12.8.md","articles":[]},{"title":"格式化 JSON 数据","level":"4.1.9","depth":2,"path":"eBook/12.9.md","ref":"eBook/12.9.md","articles":[]},{"title":"XML 数据格式","level":"4.1.10","depth":2,"path":"eBook/12.10.md","ref":"eBook/12.10.md","articles":[]},{"title":"用 Gob 传输数据","level":"4.1.11","depth":2,"path":"eBook/12.11.md","ref":"eBook/12.11.md","articles":[]},{"title":"Go 中的密码学","level":"4.1.12","depth":2,"path":"eBook/12.12.md","ref":"eBook/12.12.md","articles":[]}]},"previous":{"title":"总结：Go 中的面向对象","level":"3.8.13","depth":2,"path":"eBook/11.13.md","ref":"eBook/11.13.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/11.14.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"结构体、集合和高阶函数","level":"3.8.14","depth":2,"next":{"title":"第12章：读写数据","level":"4.1","depth":1,"path":"eBook/12.0.md","ref":"eBook/12.0.md","articles":[{"title":"读取用户的输入","level":"4.1.1","depth":2,"path":"eBook/12.1.md","ref":"eBook/12.1.md","articles":[]},{"title":"文件读写","level":"4.1.2","depth":2,"path":"eBook/12.2.md","ref":"eBook/12.2.md","articles":[]},{"title":"文件拷贝","level":"4.1.3","depth":2,"path":"eBook/12.3.md","ref":"eBook/12.3.md","articles":[]},{"title":"从命令行读取参数","level":"4.1.4","depth":2,"path":"eBook/12.4.md","ref":"eBook/12.4.md","articles":[]},{"title":"用 buffer 读取文件","level":"4.1.5","depth":2,"path":"eBook/12.5.md","ref":"eBook/12.5.md","articles":[]},{"title":"用切片读写文件","level":"4.1.6","depth":2,"path":"eBook/12.6.md","ref":"eBook/12.6.md","articles":[]},{"title":"用 defer 关闭文件","level":"4.1.7","depth":2,"path":"eBook/12.7.md","ref":"eBook/12.7.md","articles":[]},{"title":"使用接口的实际例子：fmt.Fprintf","level":"4.1.8","depth":2,"path":"eBook/12.8.md","ref":"eBook/12.8.md","articles":[]},{"title":"格式化 JSON 数据","level":"4.1.9","depth":2,"path":"eBook/12.9.md","ref":"eBook/12.9.md","articles":[]},{"title":"XML 数据格式","level":"4.1.10","depth":2,"path":"eBook/12.10.md","ref":"eBook/12.10.md","articles":[]},{"title":"用 Gob 传输数据","level":"4.1.11","depth":2,"path":"eBook/12.11.md","ref":"eBook/12.11.md","articles":[]},{"title":"Go 中的密码学","level":"4.1.12","depth":2,"path":"eBook/12.12.md","ref":"eBook/12.12.md","articles":[]}]},"previous":{"title":"总结：Go 中的面向对象","level":"3.8.13","depth":2,"path":"eBook/11.13.md","ref":"eBook/11.13.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/11.14.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2843,7 +2851,11 @@ We have  2  BMWs
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

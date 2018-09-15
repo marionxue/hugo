@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,105 +2600,105 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#64-defer-&#x548C;&#x8FFD;&#x8E2A;"><b></b>6.4 defer &#x548C;&#x8FFD;&#x8E2A;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#64-defer-&#x548C;&#x8FFD;&#x8E2A;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="64-defer-&#x548C;&#x8FFD;&#x8E2A;"><a name="64-defer-&#x548C;&#x8FFD;&#x8E2A;" class="anchor-navigation-ex-anchor" href="#64-defer-&#x548C;&#x8FFD;&#x8E2A;"><i class="fa fa-link" aria-hidden="true"></i></a>6.4 defer &#x548C;&#x8FFD;&#x8E2A;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#64-defer-&#x548C;&#x8FFD;&#x8E2A;"><b> </b>6.4 defer &#x548C;&#x8FFD;&#x8E2A;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#64-defer-&#x548C;&#x8FFD;&#x8E2A;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="64-defer-&#x548C;&#x8FFD;&#x8E2A;"><a name="64-defer-&#x548C;&#x8FFD;&#x8E2A;" class="anchor-navigation-ex-anchor" href="#64-defer-&#x548C;&#x8FFD;&#x8E2A;"><i class="fa fa-link" aria-hidden="true"></i></a> 6.4 defer &#x548C;&#x8FFD;&#x8E2A;</h1>
 <p>&#x5173;&#x952E;&#x5B57; defer &#x5141;&#x8BB8;&#x6211;&#x4EEC;&#x63A8;&#x8FDF;&#x5230;&#x51FD;&#x6570;&#x8FD4;&#x56DE;&#x4E4B;&#x524D;&#xFF08;&#x6216;&#x4EFB;&#x610F;&#x4F4D;&#x7F6E;&#x6267;&#x884C; <code>return</code> &#x8BED;&#x53E5;&#x4E4B;&#x540E;&#xFF09;&#x4E00;&#x523B;&#x624D;&#x6267;&#x884C;&#x67D0;&#x4E2A;&#x8BED;&#x53E5;&#x6216;&#x51FD;&#x6570;&#xFF08;&#x4E3A;&#x4EC0;&#x4E48;&#x8981;&#x5728;&#x8FD4;&#x56DE;&#x4E4B;&#x540E;&#x624D;&#x6267;&#x884C;&#x8FD9;&#x4E9B;&#x8BED;&#x53E5;&#xFF1F;&#x56E0;&#x4E3A; <code>return</code> &#x8BED;&#x53E5;&#x540C;&#x6837;&#x53EF;&#x4EE5;&#x5305;&#x542B;&#x4E00;&#x4E9B;&#x64CD;&#x4F5C;&#xFF0C;&#x800C;&#x4E0D;&#x662F;&#x5355;&#x7EAF;&#x5730;&#x8FD4;&#x56DE;&#x67D0;&#x4E2A;&#x503C;&#xFF09;&#x3002;</p>
 <p>&#x5173;&#x952E;&#x5B57; defer &#x7684;&#x7528;&#x6CD5;&#x7C7B;&#x4F3C;&#x4E8E;&#x9762;&#x5411;&#x5BF9;&#x8C61;&#x7F16;&#x7A0B;&#x8BED;&#x8A00; Java &#x548C; C# &#x7684; <code>finally</code> &#x8BED;&#x53E5;&#x5757;&#xFF0C;&#x5B83;&#x4E00;&#x822C;&#x7528;&#x4E8E;&#x91CA;&#x653E;&#x67D0;&#x4E9B;&#x5DF2;&#x5206;&#x914D;&#x7684;&#x8D44;&#x6E90;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 6.8 <a href="examples/chapter_6/defer.go">defer.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    function1()
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> function1() {
-    fmt.Printf(<span class="hljs-string">&quot;In function1 at the top\n&quot;</span>)
-    <span class="hljs-keyword">defer</span> function2()
-    fmt.Printf(<span class="hljs-string">&quot;In function1 at the bottom!\n&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">function1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;In function1 at the top\n&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> <span class="token function">function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;In function1 at the bottom!\n&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> function2() {
-    fmt.Printf(<span class="hljs-string">&quot;function2: Deferred until the end of the calling function!&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">function2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;Function2: Deferred until the end of the calling function!&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>In Function1 at the top
+<pre class="language-"><code>In Function1 at the top
 In Function1 at the bottom!
 Function2: Deferred until the end of the calling function!
 </code></pre><p>&#x8BF7;&#x5C06; defer &#x5173;&#x952E;&#x5B57;&#x53BB;&#x6389;&#x5E76;&#x5BF9;&#x6BD4;&#x8F93;&#x51FA;&#x7ED3;&#x679C;&#x3002;</p>
 <p>&#x4F7F;&#x7528; defer &#x7684;&#x8BED;&#x53E5;&#x540C;&#x6837;&#x53EF;&#x4EE5;&#x63A5;&#x53D7;&#x53C2;&#x6570;&#xFF0C;&#x4E0B;&#x9762;&#x8FD9;&#x4E2A;&#x4F8B;&#x5B50;&#x5C31;&#x4F1A;&#x5728;&#x6267;&#x884C; defer &#x8BED;&#x53E5;&#x65F6;&#x6253;&#x5370; <code>0</code>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> a() {
-    i := <span class="hljs-number">0</span>
-    <span class="hljs-keyword">defer</span> fmt.Println(i)
-    i++
-    <span class="hljs-keyword">return</span>
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    i <span class="token operator">:=</span> <span class="token number">0</span>
+    <span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+    i<span class="token operator">++</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x5F53;&#x6709;&#x591A;&#x4E2A; defer &#x884C;&#x4E3A;&#x88AB;&#x6CE8;&#x518C;&#x65F6;&#xFF0C;&#x5B83;&#x4EEC;&#x4F1A;&#x4EE5;&#x9006;&#x5E8F;&#x6267;&#x884C;&#xFF08;&#x7C7B;&#x4F3C;&#x6808;&#xFF0C;&#x5373;&#x540E;&#x8FDB;&#x5148;&#x51FA;&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> f() {
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++ {
-        <span class="hljs-keyword">defer</span> fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i)
-    }
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        <span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d &quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x5C06;&#x4F1A;&#x8F93;&#x51FA;&#xFF1A;<code>4 3 2 1 0</code>&#x3002;</p>
 <p>&#x5173;&#x952E;&#x5B57; defer &#x5141;&#x8BB8;&#x6211;&#x4EEC;&#x8FDB;&#x884C;&#x4E00;&#x4E9B;&#x51FD;&#x6570;&#x6267;&#x884C;&#x5B8C;&#x6210;&#x540E;&#x7684;&#x6536;&#x5C3E;&#x5DE5;&#x4F5C;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;</p>
 <ol>
 <li>&#x5173;&#x95ED;&#x6587;&#x4EF6;&#x6D41; &#xFF08;&#x8BE6;&#x89C1; <a href="12.2.html">&#x7B2C; 12.2 &#x8282;</a>&#xFF09;</li>
 </ol>
-<pre><code class="lang-go"><span class="hljs-comment">// open a file  </span>
-<span class="hljs-keyword">defer</span> file.Close()
+<pre class="language-"><code class="lang-go"><span class="token comment">// open a file  </span>
+<span class="token keyword">defer</span> file<span class="token punctuation">.</span><span class="token function">Close</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </code></pre>
 <ol>
 <li>&#x89E3;&#x9501;&#x4E00;&#x4E2A;&#x52A0;&#x9501;&#x7684;&#x8D44;&#x6E90; &#xFF08;&#x8BE6;&#x89C1; <a href="09.3.html">&#x7B2C; 9.3 &#x8282;</a>&#xFF09;</li>
 </ol>
-<pre><code class="lang-go">mu.Lock()  
-<span class="hljs-keyword">defer</span> mu.Unlock()
+<pre class="language-"><code class="lang-go">mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token keyword">defer</span> mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </code></pre>
 <ol>
 <li>&#x6253;&#x5370;&#x6700;&#x7EC8;&#x62A5;&#x544A;</li>
 </ol>
-<pre><code class="lang-go">printHeader()  
-<span class="hljs-keyword">defer</span> printFooter()
+<pre class="language-"><code class="lang-go"><span class="token function">printHeader</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  
+<span class="token keyword">defer</span> <span class="token function">printFooter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </code></pre>
 <ol>
 <li>&#x5173;&#x95ED;&#x6570;&#x636E;&#x5E93;&#x94FE;&#x63A5;</li>
 </ol>
-<pre><code class="lang-go"><span class="hljs-comment">// open a database connection  </span>
-<span class="hljs-keyword">defer</span> disconnectFromDB()
+<pre class="language-"><code class="lang-go"><span class="token comment">// open a database connection  </span>
+<span class="token keyword">defer</span> <span class="token function">disconnectFromDB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </code></pre>
 <p>&#x5408;&#x7406;&#x4F7F;&#x7528; defer &#x8BED;&#x53E5;&#x80FD;&#x591F;&#x4F7F;&#x5F97;&#x4EE3;&#x7801;&#x66F4;&#x52A0;&#x7B80;&#x6D01;&#x3002;</p>
 <p>&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x6A21;&#x62DF;&#x4E86;&#x4E0A;&#x9762;&#x63CF;&#x8FF0;&#x7684;&#x7B2C; 4 &#x79CD;&#x60C5;&#x51B5;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    doDBOperations()
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">doDBOperations</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> connectToDB() {
-    fmt.Println(<span class="hljs-string">&quot;ok, connected to db&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">connectToDB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;ok, connected to db&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> disconnectFromDB() {
-    fmt.Println(<span class="hljs-string">&quot;ok, disconnected from db&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">disconnectFromDB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;ok, disconnected from db&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> doDBOperations() {
-    connectToDB()
-    fmt.Println(<span class="hljs-string">&quot;Defering the database disconnect.&quot;</span>)
-    <span class="hljs-keyword">defer</span> disconnectFromDB() <span class="hljs-comment">//function called here with defer</span>
-    fmt.Println(<span class="hljs-string">&quot;Doing some DB operations ...&quot;</span>)
-    fmt.Println(<span class="hljs-string">&quot;Oops! some crash or network error ...&quot;</span>)
-    fmt.Println(<span class="hljs-string">&quot;Returning from function here!&quot;</span>)
-    <span class="hljs-keyword">return</span> <span class="hljs-comment">//terminate the program</span>
-    <span class="hljs-comment">// deferred function executed here just before actually returning, even if</span>
-    <span class="hljs-comment">// there is a return or abnormal termination before</span>
-}
+<span class="token keyword">func</span> <span class="token function">doDBOperations</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">connectToDB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Defering the database disconnect.&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> <span class="token function">disconnectFromDB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//function called here with defer</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Doing some DB operations ...&quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Oops! some crash or network error ...&quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;Returning from function here!&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token comment">//terminate the program</span>
+    <span class="token comment">// deferred function executed here just before actually returning, even if</span>
+    <span class="token comment">// there is a return or abnormal termination before</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>ok, connected to db
+<pre class="language-"><code>ok, connected to db
 Defering the database disconnect.
 Doing some DB operations ...
 Oops! some crash or network error ...
@@ -2698,94 +2706,94 @@ Returning from function here!
 ok, disconnected from db
 </code></pre><p><strong>&#x4F7F;&#x7528; defer &#x8BED;&#x53E5;&#x5B9E;&#x73B0;&#x4EE3;&#x7801;&#x8FFD;&#x8E2A;</strong></p>
 <p>&#x4E00;&#x4E2A;&#x57FA;&#x7840;&#x4F46;&#x5341;&#x5206;&#x5B9E;&#x7528;&#x7684;&#x5B9E;&#x73B0;&#x4EE3;&#x7801;&#x6267;&#x884C;&#x8FFD;&#x8E2A;&#x7684;&#x65B9;&#x6848;&#x5C31;&#x662F;&#x5728;&#x8FDB;&#x5165;&#x548C;&#x79BB;&#x5F00;&#x67D0;&#x4E2A;&#x51FD;&#x6570;&#x6253;&#x5370;&#x76F8;&#x5173;&#x7684;&#x6D88;&#x606F;&#xFF0C;&#x5373;&#x53EF;&#x4EE5;&#x63D0;&#x70BC;&#x4E3A;&#x4E0B;&#x9762;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> trace(s <span class="hljs-keyword">string</span>) { fmt.Println(<span class="hljs-string">&quot;entering:&quot;</span>, s) }
-<span class="hljs-keyword">func</span> untrace(s <span class="hljs-keyword">string</span>) { fmt.Println(<span class="hljs-string">&quot;leaving:&quot;</span>, s) }
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token function">trace</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;entering:&quot;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">untrace</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;leaving:&quot;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span> <span class="token punctuation">}</span>
 </code></pre>
-<p>&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x5C55;&#x793A;&#x4E86;&#x4F55;&#x65F6;&#x8C03;&#x7528;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#xFF1A;</p>
+<p>&#x4EE5;&#x4E0B;&#x4EE3;&#x7801;&#x5C55;&#x793A;&#x4E86;&#x4F55;&#x65F6;&#x8C03;&#x7528;&#x8FD9;&#x4E24;&#x4E2A;&#x51FD;&#x6570;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 6.10 <a href="examples/chapter_6/defer_tracing.go">defer_tracing.go</a>:</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> trace(s <span class="hljs-keyword">string</span>)   { fmt.Println(<span class="hljs-string">&quot;entering:&quot;</span>, s) }
-<span class="hljs-keyword">func</span> untrace(s <span class="hljs-keyword">string</span>) { fmt.Println(<span class="hljs-string">&quot;leaving:&quot;</span>, s) }
+<span class="token keyword">func</span> <span class="token function">trace</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span>   <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;entering:&quot;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">untrace</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;leaving:&quot;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span> <span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> a() {
-    trace(<span class="hljs-string">&quot;a&quot;</span>)
-    <span class="hljs-keyword">defer</span> untrace(<span class="hljs-string">&quot;a&quot;</span>)
-    fmt.Println(<span class="hljs-string">&quot;in a&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">trace</span><span class="token punctuation">(</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> <span class="token function">untrace</span><span class="token punctuation">(</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;in a&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> b() {
-    trace(<span class="hljs-string">&quot;b&quot;</span>)
-    <span class="hljs-keyword">defer</span> untrace(<span class="hljs-string">&quot;b&quot;</span>)
-    fmt.Println(<span class="hljs-string">&quot;in b&quot;</span>)
-    a()
-}
+<span class="token keyword">func</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">trace</span><span class="token punctuation">(</span><span class="token string">&quot;b&quot;</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> <span class="token function">untrace</span><span class="token punctuation">(</span><span class="token string">&quot;b&quot;</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;in b&quot;</span><span class="token punctuation">)</span>
+    <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> main() {
-    b()
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>entering: b
+<pre class="language-"><code>entering: b
 in b
 entering: a
 in a
 leaving: a
 leaving: b
 </code></pre><p>&#x4E0A;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x8FD8;&#x53EF;&#x4EE5;&#x4FEE;&#x6539;&#x4E3A;&#x66F4;&#x52A0;&#x7B80;&#x4FBF;&#x7684;&#x7248;&#x672C;&#xFF08;&#x793A;&#x4F8B; 6.11 <a href="examples/chapter_6/defer_tracing2.go">defer_tracing2.go</a>&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> trace(s <span class="hljs-keyword">string</span>) <span class="hljs-keyword">string</span> {
-    fmt.Println(<span class="hljs-string">&quot;entering:&quot;</span>, s)
-    <span class="hljs-keyword">return</span> s
-}
+<span class="token keyword">func</span> <span class="token function">trace</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;entering:&quot;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> s
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> un(s <span class="hljs-keyword">string</span>) {
-    fmt.Println(<span class="hljs-string">&quot;leaving:&quot;</span>, s)
-}
+<span class="token keyword">func</span> <span class="token function">un</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;leaving:&quot;</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> a() {
-    <span class="hljs-keyword">defer</span> un(trace(<span class="hljs-string">&quot;a&quot;</span>))
-    fmt.Println(<span class="hljs-string">&quot;in a&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token function">un</span><span class="token punctuation">(</span><span class="token function">trace</span><span class="token punctuation">(</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;in a&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> b() {
-    <span class="hljs-keyword">defer</span> un(trace(<span class="hljs-string">&quot;b&quot;</span>))
-    fmt.Println(<span class="hljs-string">&quot;in b&quot;</span>)
-    a()
-}
+<span class="token keyword">func</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token function">un</span><span class="token punctuation">(</span><span class="token function">trace</span><span class="token punctuation">(</span><span class="token string">&quot;b&quot;</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">&quot;in b&quot;</span><span class="token punctuation">)</span>
+    <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> main() {
-    b()
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">b</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p><strong>&#x4F7F;&#x7528; defer &#x8BED;&#x53E5;&#x6765;&#x8BB0;&#x5F55;&#x51FD;&#x6570;&#x7684;&#x53C2;&#x6570;&#x4E0E;&#x8FD4;&#x56DE;&#x503C;</strong></p>
 <p>&#x4E0B;&#x9762;&#x7684;&#x4EE3;&#x7801;&#x5C55;&#x793A;&#x4E86;&#x53E6;&#x4E00;&#x79CD;&#x5728;&#x8C03;&#x8BD5;&#x65F6;&#x4F7F;&#x7528; defer &#x8BED;&#x53E5;&#x7684;&#x624B;&#x6CD5;&#xFF08;&#x793A;&#x4F8B; 6.12 <a href="examples/chapter_6/defer_logvalues.go">defer_logvalues.go</a>&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> (
-    <span class="hljs-string">&quot;io&quot;</span>
-    <span class="hljs-string">&quot;log&quot;</span>
-)
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;io&quot;</span>
+    <span class="token string">&quot;log&quot;</span>
+<span class="token punctuation">)</span>
 
-<span class="hljs-keyword">func</span> func1(s <span class="hljs-keyword">string</span>) (n <span class="hljs-keyword">int</span>, err error) {
-    <span class="hljs-keyword">defer</span> <span class="hljs-keyword">func</span>() {
-        log.Printf(<span class="hljs-string">&quot;func1(%q) = %d, %v&quot;</span>, s, n, err)
-    }()
-    <span class="hljs-keyword">return</span> <span class="hljs-number">7</span>, io.EOF
-}
+<span class="token keyword">func</span> <span class="token function">func1</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>n <span class="token builtin">int</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        log<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;func1(%q) = %d, %v&quot;</span><span class="token punctuation">,</span> s<span class="token punctuation">,</span> n<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token number">7</span><span class="token punctuation">,</span> io<span class="token punctuation">.</span>EOF
+<span class="token punctuation">}</span>
 
-<span class="hljs-keyword">func</span> main() {
-    func1(<span class="hljs-string">&quot;Go&quot;</span>)
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">func1</span><span class="token punctuation">(</span><span class="token string">&quot;Go&quot;</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>Output: 2011/10/04 10:46:11 func1(&quot;Go&quot;) = 7, EOF
-</code></pre><h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<pre class="language-"><code>Output: 2011/10/04 10:46:11 func1(&quot;Go&quot;) = 7, EOF
+</code></pre><h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="06.3.html">&#x4F20;&#x9012;&#x53D8;&#x957F;&#x53C2;&#x6570;</a></li>
@@ -2834,7 +2842,7 @@ leaving: b
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"defer 和追踪","level":"3.3.4","depth":2,"next":{"title":"内置函数","level":"3.3.5","depth":2,"path":"eBook/06.5.md","ref":"eBook/06.5.md","articles":[]},"previous":{"title":"传递变长参数","level":"3.3.3","depth":2,"path":"eBook/06.3.md","ref":"eBook/06.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/06.4.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"defer 和追踪","level":"3.3.4","depth":2,"next":{"title":"内置函数","level":"3.3.5","depth":2,"path":"eBook/06.5.md","ref":"eBook/06.5.md","articles":[]},"previous":{"title":"传递变长参数","level":"3.3.3","depth":2,"path":"eBook/06.3.md","ref":"eBook/06.3.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/06.4.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2864,7 +2872,11 @@ leaving: b
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

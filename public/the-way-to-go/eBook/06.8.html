@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,38 +2600,38 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#68-&#x95ED;&#x5305;"><b></b>6.8 &#x95ED;&#x5305;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#68-&#x95ED;&#x5305;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="68-&#x95ED;&#x5305;"><a name="68-&#x95ED;&#x5305;" class="anchor-navigation-ex-anchor" href="#68-&#x95ED;&#x5305;"><i class="fa fa-link" aria-hidden="true"></i></a>6.8 &#x95ED;&#x5305;</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#68-&#x95ED;&#x5305;"><b> </b>6.8 &#x95ED;&#x5305;</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#68-&#x95ED;&#x5305;" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="68-&#x95ED;&#x5305;"><a name="68-&#x95ED;&#x5305;" class="anchor-navigation-ex-anchor" href="#68-&#x95ED;&#x5305;"><i class="fa fa-link" aria-hidden="true"></i></a> 6.8 &#x95ED;&#x5305;</h1>
 <p>&#x5F53;&#x6211;&#x4EEC;&#x4E0D;&#x5E0C;&#x671B;&#x7ED9;&#x51FD;&#x6570;&#x8D77;&#x540D;&#x5B57;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x533F;&#x540D;&#x51FD;&#x6570;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;<code>func(x, y int) int { return x + y }</code>&#x3002;</p>
 <p>&#x8FD9;&#x6837;&#x7684;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x4E0D;&#x80FD;&#x591F;&#x72EC;&#x7ACB;&#x5B58;&#x5728;&#xFF08;&#x7F16;&#x8BD1;&#x5668;&#x4F1A;&#x8FD4;&#x56DE;&#x9519;&#x8BEF;&#xFF1A;<code>non-declaration statement
 outside function body</code>&#xFF09;&#xFF0C;&#x4F46;&#x53EF;&#x4EE5;&#x88AB;&#x8D4B;&#x503C;&#x4E8E;&#x67D0;&#x4E2A;&#x53D8;&#x91CF;&#xFF0C;&#x5373;&#x4FDD;&#x5B58;&#x51FD;&#x6570;&#x7684;&#x5730;&#x5740;&#x5230;&#x53D8;&#x91CF;&#x4E2D;&#xFF1A;<code>fplus := func(x, y int) int { return x + y }</code>&#xFF0C;&#x7136;&#x540E;&#x901A;&#x8FC7;&#x53D8;&#x91CF;&#x540D;&#x5BF9;&#x51FD;&#x6570;&#x8FDB;&#x884C;&#x8C03;&#x7528;&#xFF1A;<code>fplus(3,4)</code>&#x3002;</p>
 <p>&#x5F53;&#x7136;&#xFF0C;&#x60A8;&#x4E5F;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x5BF9;&#x533F;&#x540D;&#x51FD;&#x6570;&#x8FDB;&#x884C;&#x8C03;&#x7528;&#xFF1A;<code>func(x, y int) int { return x + y } (3, 4)</code>&#x3002;</p>
 <p>&#x4E0B;&#x9762;&#x662F;&#x4E00;&#x4E2A;&#x8BA1;&#x7B97;&#x4ECE; 1 &#x5230; 1 &#x767E;&#x4E07;&#x6574;&#x6570;&#x7684;&#x603B;&#x548C;&#x7684;&#x533F;&#x540D;&#x51FD;&#x6570;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span>() {
-    sum := <span class="hljs-number">0</span>
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">1</span>; i &lt;= <span class="hljs-number">1e6</span>; i++ {
-        sum += i
-    }
-}()
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    sum <span class="token operator">:=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token number">1e6</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        sum <span class="token operator">+=</span> i
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </code></pre>
 <p>&#x8868;&#x793A;&#x53C2;&#x6570;&#x5217;&#x8868;&#x7684;&#x7B2C;&#x4E00;&#x5BF9;&#x62EC;&#x53F7;&#x5FC5;&#x987B;&#x7D27;&#x6328;&#x7740;&#x5173;&#x952E;&#x5B57; <code>func</code>&#xFF0C;&#x56E0;&#x4E3A;&#x533F;&#x540D;&#x51FD;&#x6570;&#x6CA1;&#x6709;&#x540D;&#x79F0;&#x3002;&#x82B1;&#x62EC;&#x53F7; <code>{}</code> &#x6DB5;&#x76D6;&#x7740;&#x51FD;&#x6570;&#x4F53;&#xFF0C;&#x6700;&#x540E;&#x7684;&#x4E00;&#x5BF9;&#x62EC;&#x53F7;&#x8868;&#x793A;&#x5BF9;&#x8BE5;&#x533F;&#x540D;&#x51FD;&#x6570;&#x7684;&#x8C03;&#x7528;&#x3002;</p>
 <p>&#x4E0B;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x5C55;&#x793A;&#x4E86;&#x5982;&#x4F55;&#x5C06;&#x533F;&#x540D;&#x51FD;&#x6570;&#x8D4B;&#x503C;&#x7ED9;&#x53D8;&#x91CF;&#x5E76;&#x5BF9;&#x5176;&#x8FDB;&#x884C;&#x8C03;&#x7528;&#xFF08;function_literal.go&#xFF09;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> main() {
-    f()
-}
-<span class="hljs-keyword">func</span> f() {
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">4</span>; i++ {
-        g := <span class="hljs-keyword">func</span>(i <span class="hljs-keyword">int</span>) { fmt.Printf(<span class="hljs-string">&quot;%d &quot;</span>, i) } <span class="hljs-comment">//&#x6B64;&#x4F8B;&#x5B50;&#x4E2D;&#x53EA;&#x662F;&#x4E3A;&#x4E86;&#x6F14;&#x793A;&#x533F;&#x540D;&#x51FD;&#x6570;&#x53EF;&#x5206;&#x914D;&#x4E0D;&#x540C;&#x7684;&#x5185;&#x5B58;&#x5730;&#x5740;&#xFF0C;&#x5728;&#x73B0;&#x5B9E;&#x5F00;&#x53D1;&#x4E2D;&#xFF0C;&#x4E0D;&#x5E94;&#x8BE5;&#x628A;&#x8BE5;&#x90E8;&#x5206;&#x4FE1;&#x606F;&#x653E;&#x7F6E;&#x5230;&#x5FAA;&#x73AF;&#x4E2D;&#x3002;</span>
-        g(i)
-        fmt.Printf(<span class="hljs-string">&quot; - g is of type %T and has value %v\n&quot;</span>, g, g)
-    }
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">4</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        g <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;%d &quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token punctuation">}</span> <span class="token comment">//&#x6B64;&#x4F8B;&#x5B50;&#x4E2D;&#x53EA;&#x662F;&#x4E3A;&#x4E86;&#x6F14;&#x793A;&#x533F;&#x540D;&#x51FD;&#x6570;&#x53EF;&#x5206;&#x914D;&#x4E0D;&#x540C;&#x7684;&#x5185;&#x5B58;&#x5730;&#x5740;&#xFF0C;&#x5728;&#x73B0;&#x5B9E;&#x5F00;&#x53D1;&#x4E2D;&#xFF0C;&#x4E0D;&#x5E94;&#x8BE5;&#x628A;&#x8BE5;&#x90E8;&#x5206;&#x4FE1;&#x606F;&#x653E;&#x7F6E;&#x5230;&#x5FAA;&#x73AF;&#x4E2D;&#x3002;</span>
+        <span class="token function">g</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot; - g is of type %T and has value %v\n&quot;</span><span class="token punctuation">,</span> g<span class="token punctuation">,</span> g<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>0 - g is of type func(int) and has value 0x681a80
+<pre class="language-"><code>0 - g is of type func(int) and has value 0x681a80
 1 - g is of type func(int) and has value 0x681b00
 2 - g is of type func(int) and has value 0x681ac0
 3 - g is of type func(int) and has value 0x681400
@@ -2631,25 +2639,25 @@ outside function body</code>&#xFF09;&#xFF0C;&#x4F46;&#x53EF;&#x4EE5;&#x88AB;&#x8
 <p>&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x5B9E;&#x9645;&#x4E0A;&#x62E5;&#x6709;&#x7684;&#x662F;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x503C;&#xFF1A;&#x533F;&#x540D;&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x88AB;&#x8D4B;&#x503C;&#x7ED9;&#x53D8;&#x91CF;&#x5E76;&#x4F5C;&#x4E3A;&#x503C;&#x4F7F;&#x7528;&#x3002;</p>
 <p><strong>&#x7EC3;&#x4E60; 6.8</strong> &#x5728; main &#x51FD;&#x6570;&#x4E2D;&#x5199;&#x4E00;&#x4E2A;&#x7528;&#x4E8E;&#x6253;&#x5370; <code>Hello World</code> &#x5B57;&#x7B26;&#x4E32;&#x7684;&#x533F;&#x540D;&#x51FD;&#x6570;&#x5E76;&#x8D4B;&#x503C;&#x7ED9;&#x53D8;&#x91CF; <code>fv</code>&#xFF0C;&#x7136;&#x540E;&#x8C03;&#x7528;&#x8BE5;&#x51FD;&#x6570;&#x5E76;&#x6253;&#x5370;&#x53D8;&#x91CF; <code>fv</code> &#x7684;&#x7C7B;&#x578B;&#x3002;</p>
 <p>&#x533F;&#x540D;&#x51FD;&#x6570;&#x50CF;&#x6240;&#x6709;&#x51FD;&#x6570;&#x4E00;&#x6837;&#x53EF;&#x4EE5;&#x63A5;&#x53D7;&#x6216;&#x4E0D;&#x63A5;&#x53D7;&#x53C2;&#x6570;&#x3002;&#x4E0B;&#x9762;&#x7684;&#x4F8B;&#x5B50;&#x5C55;&#x793A;&#x4E86;&#x5982;&#x4F55;&#x4F20;&#x9012;&#x53C2;&#x6570;&#x5230;&#x533F;&#x540D;&#x51FD;&#x6570;&#x4E2D;&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">func</span> (u <span class="hljs-keyword">string</span>) {
-    fmt.Println(u)
+<pre class="language-"><code class="lang-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>u <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>u<span class="token punctuation">)</span>
     &#x2026;
-}(v)
+<span class="token punctuation">}</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span>
 </code></pre>
 <p>&#x8BF7;&#x5B66;&#x4E60;&#x4EE5;&#x4E0B;&#x793A;&#x4F8B;&#x5E76;&#x601D;&#x8003;&#xFF08;return_defer.go&#xFF09;&#xFF1A;&#x51FD;&#x6570; <code>f</code> &#x8FD4;&#x56DE;&#x65F6;&#xFF0C;&#x53D8;&#x91CF; <code>ret</code> &#x7684;&#x503C;&#x662F;&#x4EC0;&#x4E48;&#xFF1F;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">import</span> <span class="hljs-string">&quot;fmt&quot;</span>
+<span class="token keyword">import</span> <span class="token string">&quot;fmt&quot;</span>
 
-<span class="hljs-keyword">func</span> f() (ret <span class="hljs-keyword">int</span>) {
-    <span class="hljs-keyword">defer</span> <span class="hljs-keyword">func</span>() {
-        ret++
-    }()
-    <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>
-}
-<span class="hljs-keyword">func</span> main() {
-    fmt.Println(f())
-}
+<span class="token keyword">func</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>ret <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ret<span class="token operator">++</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x53D8;&#x91CF; <code>ret</code> &#x7684;&#x503C;&#x4E3A; 2&#xFF0C;&#x56E0;&#x4E3A; <code>ret++</code> &#x662F;&#x5728;&#x6267;&#x884C; <code>return 1</code> &#x8BED;&#x53E5;&#x540E;&#x53D1;&#x751F;&#x7684;&#x3002;</p>
 <p>&#x8FD9;&#x53EF;&#x7528;&#x4E8E;&#x5728;&#x8FD4;&#x56DE;&#x8BED;&#x53E5;&#x4E4B;&#x540E;&#x4FEE;&#x6539;&#x8FD4;&#x56DE;&#x7684; <code>error</code> &#x65F6;&#x4F7F;&#x7528;&#x3002;</p>
@@ -2657,7 +2665,7 @@ outside function body</code>&#xFF09;&#xFF0C;&#x4F46;&#x53EF;&#x4EE5;&#x88AB;&#x8
 <p>&#x5173;&#x952E;&#x5B57; <code>defer</code> &#xFF08;&#x8BE6;&#x89C1;&#x7B2C; 6.4 &#x8282;&#xFF09;&#x7ECF;&#x5E38;&#x914D;&#x5408;&#x533F;&#x540D;&#x51FD;&#x6570;&#x4F7F;&#x7528;&#xFF0C;&#x5B83;&#x53EF;&#x4EE5;&#x7528;&#x4E8E;&#x6539;&#x53D8;&#x51FD;&#x6570;&#x7684;&#x547D;&#x540D;&#x8FD4;&#x56DE;&#x503C;&#x3002;</p>
 <p>&#x533F;&#x540D;&#x51FD;&#x6570;&#x8FD8;&#x53EF;&#x4EE5;&#x914D;&#x5408; <code>go</code> &#x5173;&#x952E;&#x5B57;&#x6765;&#x4F5C;&#x4E3A; goroutine &#x4F7F;&#x7528;&#xFF08;&#x8BE6;&#x89C1;&#x7B2C; 14 &#x7AE0;&#x548C;&#x7B2C; 16.9 &#x8282;&#xFF09;&#x3002;</p>
 <p>&#x533F;&#x540D;&#x51FD;&#x6570;&#x540C;&#x6837;&#x88AB;&#x79F0;&#x4E4B;&#x4E3A;&#x95ED;&#x5305;&#xFF08;&#x51FD;&#x6570;&#x5F0F;&#x8BED;&#x8A00;&#x7684;&#x672F;&#x8BED;&#xFF09;&#xFF1A;&#x5B83;&#x4EEC;&#x88AB;&#x5141;&#x8BB8;&#x8C03;&#x7528;&#x5B9A;&#x4E49;&#x5728;&#x5176;&#x5B83;&#x73AF;&#x5883;&#x4E0B;&#x7684;&#x53D8;&#x91CF;&#x3002;&#x95ED;&#x5305;&#x53EF;&#x4F7F;&#x5F97;&#x67D0;&#x4E2A;&#x51FD;&#x6570;&#x6355;&#x6349;&#x5230;&#x4E00;&#x4E9B;&#x5916;&#x90E8;&#x72B6;&#x6001;&#xFF0C;&#x4F8B;&#x5982;&#xFF1A;&#x51FD;&#x6570;&#x88AB;&#x521B;&#x5EFA;&#x65F6;&#x7684;&#x72B6;&#x6001;&#x3002;&#x53E6;&#x4E00;&#x79CD;&#x8868;&#x793A;&#x65B9;&#x5F0F;&#x4E3A;&#xFF1A;&#x4E00;&#x4E2A;&#x95ED;&#x5305;&#x7EE7;&#x627F;&#x4E86;&#x51FD;&#x6570;&#x6240;&#x58F0;&#x660E;&#x65F6;&#x7684;&#x4F5C;&#x7528;&#x57DF;&#x3002;&#x8FD9;&#x79CD;&#x72B6;&#x6001;&#xFF08;&#x4F5C;&#x7528;&#x57DF;&#x5185;&#x7684;&#x53D8;&#x91CF;&#xFF09;&#x90FD;&#x88AB;&#x5171;&#x4EAB;&#x5230;&#x95ED;&#x5305;&#x7684;&#x73AF;&#x5883;&#x4E2D;&#xFF0C;&#x56E0;&#x6B64;&#x8FD9;&#x4E9B;&#x53D8;&#x91CF;&#x53EF;&#x4EE5;&#x5728;&#x95ED;&#x5305;&#x4E2D;&#x88AB;&#x64CD;&#x4F5C;&#xFF0C;&#x76F4;&#x5230;&#x88AB;&#x9500;&#x6BC1;&#xFF0C;&#x8BE6;&#x89C1;&#x7B2C; 6.9 &#x8282;&#x4E2D;&#x7684;&#x793A;&#x4F8B;&#x3002;&#x95ED;&#x5305;&#x7ECF;&#x5E38;&#x88AB;&#x7528;&#x4F5C;&#x5305;&#x88C5;&#x51FD;&#x6570;&#xFF1A;&#x5B83;&#x4EEC;&#x4F1A;&#x9884;&#x5148;&#x5B9A;&#x4E49;&#x597D; 1 &#x4E2A;&#x6216;&#x591A;&#x4E2A;&#x53C2;&#x6570;&#x4EE5;&#x7528;&#x4E8E;&#x5305;&#x88C5;&#xFF0C;&#x8BE6;&#x89C1;&#x4E0B;&#x4E00;&#x8282;&#x4E2D;&#x7684;&#x793A;&#x4F8B;&#x3002;&#x53E6;&#x4E00;&#x4E2A;&#x4E0D;&#x9519;&#x7684;&#x5E94;&#x7528;&#x5C31;&#x662F;&#x4F7F;&#x7528;&#x95ED;&#x5305;&#x6765;&#x5B8C;&#x6210;&#x66F4;&#x52A0;&#x7B80;&#x6D01;&#x7684;&#x9519;&#x8BEF;&#x68C0;&#x67E5;&#xFF08;&#x8BE6;&#x89C1;&#x7B2C; 16.10.2 &#x8282;&#xFF09;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="06.7.html">&#x5C06;&#x51FD;&#x6570;&#x4F5C;&#x4E3A;&#x53C2;&#x6570;</a></li>
@@ -2706,7 +2714,7 @@ outside function body</code>&#xFF09;&#xFF0C;&#x4F46;&#x53EF;&#x4EE5;&#x88AB;&#x8
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"闭包","level":"3.3.8","depth":2,"next":{"title":"应用闭包：将函数作为返回值","level":"3.3.9","depth":2,"path":"eBook/06.9.md","ref":"eBook/06.9.md","articles":[]},"previous":{"title":"将函数作为参数","level":"3.3.7","depth":2,"path":"eBook/06.7.md","ref":"eBook/06.7.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/06.8.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"闭包","level":"3.3.8","depth":2,"next":{"title":"应用闭包：将函数作为返回值","level":"3.3.9","depth":2,"path":"eBook/06.9.md","ref":"eBook/06.9.md","articles":[]},"previous":{"title":"将函数作为参数","level":"3.3.7","depth":2,"path":"eBook/06.7.md","ref":"eBook/06.7.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/06.8.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2736,7 +2744,11 @@ outside function body</code>&#xFF09;&#xFF0C;&#x4F46;&#x53EF;&#x4EE5;&#x88AB;&#x8
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         

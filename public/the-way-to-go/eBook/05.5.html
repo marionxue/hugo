@@ -25,6 +25,10 @@
                 
             
                 
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
                 <link rel="stylesheet" href="../gitbook/gitbook-plugin-search-plus/search.css">
                 
             
@@ -37,7 +41,11 @@
                 
             
                 
-                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-code/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-prism/prism-base16-ateliersulphurpool.light.css">
                 
             
                 
@@ -122,9 +130,9 @@
             
         </li>
     
-        <li class="chapter " data-level="1.2" data-path="../preface.html">
+        <li class="chapter " data-level="1.2" data-path="preface.html">
             
-                <a href="../preface.html">
+                <a href="preface.html">
             
                     
                     前言
@@ -2592,56 +2600,56 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#55-break-&#x4E0E;-continue"><b></b>5.5 Break &#x4E0E; continue</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b></b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#55-break-&#x4E0E;-continue" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="55-break-&#x4E0E;-continue"><a name="55-break-&#x4E0E;-continue" class="anchor-navigation-ex-anchor" href="#55-break-&#x4E0E;-continue"><i class="fa fa-link" aria-hidden="true"></i></a>5.5 Break &#x4E0E; continue</h1>
+                                <div id="anchor-navigation-ex-navbar"><i class="fa fa-anchor"></i><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#55-break-&#x4E0E;-continue"><b> </b>5.5 Break &#x4E0E; continue</a></li><ul><li><span class="title-icon fa fa-hand-o-right"></span><a href="#&#x94FE;&#x63A5;"><b>1. </b>&#x94FE;&#x63A5;</a></li></ul></ul></div><a href="#55-break-&#x4E0E;-continue" id="anchorNavigationExGoTop"><i class="fa fa-arrow-up"></i></a><h1 id="55-break-&#x4E0E;-continue"><a name="55-break-&#x4E0E;-continue" class="anchor-navigation-ex-anchor" href="#55-break-&#x4E0E;-continue"><i class="fa fa-link" aria-hidden="true"></i></a> 5.5 Break &#x4E0E; continue</h1>
 <p>&#x60A8;&#x53EF;&#x4EE5;&#x4F7F;&#x7528; break &#x8BED;&#x53E5;&#x91CD;&#x5199; for2.go &#x7684;&#x4EE3;&#x7801;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 5.10 <a href="examples/chapter_5/for3.go">for3.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">for</span> {
-    i = i - <span class="hljs-number">1</span>
-    fmt.Printf(<span class="hljs-string">&quot;The variable i is now: %d\n&quot;</span>, i)
-    <span class="hljs-keyword">if</span> i &lt; <span class="hljs-number">0</span> {
-        <span class="hljs-keyword">break</span>
-    }
-}
+<pre class="language-"><code class="lang-go"><span class="token keyword">for</span> <span class="token punctuation">{</span>
+    i <span class="token operator">=</span> i <span class="token operator">-</span> <span class="token number">1</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">&quot;The variable i is now: %d\n&quot;</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> i <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        <span class="token keyword">break</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x56E0;&#x6B64;&#x6BCF;&#x6B21;&#x8FED;&#x4EE3;&#x90FD;&#x4F1A;&#x5BF9;&#x6761;&#x4EF6;&#x8FDB;&#x884C;&#x68C0;&#x67E5;&#xFF08;i &lt; 0&#xFF09;&#xFF0C;&#x4EE5;&#x6B64;&#x5224;&#x65AD;&#x662F;&#x5426;&#x9700;&#x8981;&#x505C;&#x6B62;&#x5FAA;&#x73AF;&#x3002;&#x5982;&#x679C;&#x9000;&#x51FA;&#x6761;&#x4EF6;&#x6EE1;&#x8DB3;&#xFF0C;&#x5219;&#x4F7F;&#x7528; break &#x8BED;&#x53E5;&#x9000;&#x51FA;&#x5FAA;&#x73AF;&#x3002;</p>
 <p>&#x4E00;&#x4E2A; break &#x7684;&#x4F5C;&#x7528;&#x8303;&#x56F4;&#x4E3A;&#x8BE5;&#x8BED;&#x53E5;&#x51FA;&#x73B0;&#x540E;&#x7684;&#x6700;&#x5185;&#x90E8;&#x7684;&#x7ED3;&#x6784;&#xFF0C;&#x5B83;&#x53EF;&#x4EE5;&#x88AB;&#x7528;&#x4E8E;&#x4EFB;&#x4F55;&#x5F62;&#x5F0F;&#x7684; for &#x5FAA;&#x73AF;&#xFF08;&#x8BA1;&#x6570;&#x5668;&#x3001;&#x6761;&#x4EF6;&#x5224;&#x65AD;&#x7B49;&#xFF09;&#x3002;&#x4F46;&#x5728; switch &#x6216; select &#x8BED;&#x53E5;&#x4E2D;&#xFF08;&#x8BE6;&#x89C1;&#x7B2C; 13 &#x7AE0;&#xFF09;&#xFF0C;break &#x8BED;&#x53E5;&#x7684;&#x4F5C;&#x7528;&#x7ED3;&#x679C;&#x662F;&#x8DF3;&#x8FC7;&#x6574;&#x4E2A;&#x4EE3;&#x7801;&#x5757;&#xFF0C;&#x6267;&#x884C;&#x540E;&#x7EED;&#x7684;&#x4EE3;&#x7801;&#x3002;</p>
 <p>&#x4E0B;&#x9762;&#x7684;&#x793A;&#x4F8B;&#x4E2D;&#x5305;&#x542B;&#x4E86;&#x5D4C;&#x5957;&#x7684;&#x5FAA;&#x73AF;&#x4F53;&#xFF08;for4.go&#xFF09;&#xFF0C;break &#x53EA;&#x4F1A;&#x9000;&#x51FA;&#x6700;&#x5185;&#x5C42;&#x7684;&#x5FAA;&#x73AF;&#xFF1A;</p>
 <p>&#x793A;&#x4F8B; 5.11 <a href="examples/chapter_5/for4.go">for4.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">for</span> i:=<span class="hljs-number">0</span>; i&lt;<span class="hljs-number">3</span>; i++ {
-        <span class="hljs-keyword">for</span> j:=<span class="hljs-number">0</span>; j&lt;<span class="hljs-number">10</span>; j++ {
-            <span class="hljs-keyword">if</span> j&gt;<span class="hljs-number">5</span> {
-                <span class="hljs-keyword">break</span>   
-            }
-            <span class="hljs-built_in">print</span>(j)
-        }
-        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;  &quot;</span>)
-    }
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> i<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;</span><span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        <span class="token keyword">for</span> j<span class="token operator">:=</span><span class="token number">0</span><span class="token punctuation">;</span> j<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">;</span> j<span class="token operator">++</span> <span class="token punctuation">{</span>
+            <span class="token keyword">if</span> j<span class="token operator">&gt;</span><span class="token number">5</span> <span class="token punctuation">{</span>
+                <span class="token keyword">break</span>   
+            <span class="token punctuation">}</span>
+            <span class="token function">print</span><span class="token punctuation">(</span>j<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">&quot;  &quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>012345 012345 012345
+<pre class="language-"><code>012345 012345 012345
 </code></pre><p>&#x5173;&#x952E;&#x5B57; continue &#x5FFD;&#x7565;&#x5269;&#x4F59;&#x7684;&#x5FAA;&#x73AF;&#x4F53;&#x800C;&#x76F4;&#x63A5;&#x8FDB;&#x5165;&#x4E0B;&#x4E00;&#x6B21;&#x5FAA;&#x73AF;&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;&#x4F46;&#x4E0D;&#x662F;&#x65E0;&#x6761;&#x4EF6;&#x6267;&#x884C;&#x4E0B;&#x4E00;&#x6B21;&#x5FAA;&#x73AF;&#xFF0C;&#x6267;&#x884C;&#x4E4B;&#x524D;&#x4F9D;&#x65E7;&#x9700;&#x8981;&#x6EE1;&#x8DB3;&#x5FAA;&#x73AF;&#x7684;&#x5224;&#x65AD;&#x6761;&#x4EF6;&#x3002;</p>
 <p>&#x793A;&#x4F8B; 5.12 <a href="examples/chapter_5/for5.go">for5.go</a>&#xFF1A;</p>
-<pre><code class="lang-go"><span class="hljs-keyword">package</span> main
+<pre class="language-"><code class="lang-go"><span class="token keyword">package</span> main
 
-<span class="hljs-keyword">func</span> main() {
-    <span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ {
-        <span class="hljs-keyword">if</span> i == <span class="hljs-number">5</span> {
-            <span class="hljs-keyword">continue</span>
-        }
-        <span class="hljs-built_in">print</span>(i)
-        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot; &quot;</span>)
-    }
-}
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> i <span class="token operator">==</span> <span class="token number">5</span> <span class="token punctuation">{</span>
+            <span class="token keyword">continue</span>
+        <span class="token punctuation">}</span>
+        <span class="token function">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+        <span class="token function">print</span><span class="token punctuation">(</span><span class="token string">&quot; &quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>&#x8F93;&#x51FA;&#xFF1A;</p>
-<pre><code>0 1 2 3 4 6 7 8 9
+<pre class="language-"><code>0 1 2 3 4 6 7 8 9
 </code></pre><p>&#x663E;&#x7136;&#xFF0C;5 &#x88AB;&#x8DF3;&#x8FC7;&#x4E86;&#x3002;</p>
 <p>&#x53E6;&#x5916;&#xFF0C;&#x5173;&#x952E;&#x5B57; continue &#x53EA;&#x80FD;&#x88AB;&#x7528;&#x4E8E; for &#x5FAA;&#x73AF;&#x4E2D;&#x3002;</p>
-<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>&#x94FE;&#x63A5;</h2>
+<h2 id="&#x94FE;&#x63A5;"><a name="&#x94FE;&#x63A5;" class="anchor-navigation-ex-anchor" href="#&#x94FE;&#x63A5;"><i class="fa fa-link" aria-hidden="true"></i></a>1. &#x94FE;&#x63A5;</h2>
 <ul>
 <li><a href="directory.md">&#x76EE;&#x5F55;</a></li>
 <li>&#x4E0A;&#x4E00;&#x8282;&#xFF1A;<a href="05.4.html">for &#x7ED3;&#x6784;</a></li>
@@ -2690,7 +2698,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Break 与 continue","level":"3.2.5","depth":2,"next":{"title":"标签与 goto","level":"3.2.6","depth":2,"path":"eBook/05.6.md","ref":"eBook/05.6.md","articles":[]},"previous":{"title":"for 结构","level":"3.2.4","depth":2,"path":"eBook/05.4.md","ref":"eBook/05.4.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","copy-code-button"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":true,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showLevel":false},"theme-comscore":{},"alerts":{},"copy-code-button":{},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/05.5.md","mtime":"2018-01-31T02:14:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-02-07T10:10:47.043Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Break 与 continue","level":"3.2.5","depth":2,"next":{"title":"标签与 goto","level":"3.2.6","depth":2,"path":"eBook/05.6.md","ref":"eBook/05.6.md","articles":[]},"previous":{"title":"for 结构","level":"3.2.4","depth":2,"path":"eBook/05.4.md","ref":"eBook/05.4.md","articles":[]},"dir":"ltr"},"config":{"plugins":["splitter","todo","alerts","anchors","-lunr","-search","search-plus","advanced-emoji","-sharing","sharing-plus","simple-page-toc","anchor-navigation-ex","theme-comscore","download-pdf-link","code","-highlight","prism","prism-themes","favicon-plus"],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"prism":{"css":["prism-themes/themes/prism-base16-ateliersulphurpool.light.css"]},"simple-page-toc":{"maxDepth":3,"skipFirstH1":true},"todo":{},"splitter":{},"sharing-plus":{"qq":false,"all":["facebook","google","twitter","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":true,"weibo":false,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":true,"messenger":false,"line":false,"vk":false,"pocket":true,"google":false,"viber":false,"stumbleupon":false,"qzone":false,"linkedin":false},"code":{"copyButtons":true},"fontsettings":{"theme":"white","family":"sans","size":2},"favicon-plus":{"appleTouchIconPrecomposed152":"","favicon":"./favicon-96x96.png","output":"_book"},"anchor-navigation-ex":{"associatedWithSummary":true,"float":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":true},"mode":"float","multipleH1":false,"pageTop":{"level1Icon":"fa fa-hand-o-right","level2Icon":"fa fa-hand-o-right","level3Icon":"fa fa-hand-o-right","showLevelIcon":false},"printLog":false,"showGoTop":true,"showLevel":true},"theme-comscore":{},"prism-themes":{},"alerts":{},"download-pdf-link":{"label":"Download PDF","base":"http://default-1252251317.file.myqcloud.com/the-way-to-go_ZH_CN.pdf","multilingual":false},"advanced-emoji":{"embedEmojis":false},"sharing":{"qq":false,"all":["facebook","google","twitter","weibo","instapaper","linkedin","pocket","stumbleupon"],"douban":false,"facebook":false,"weibo":true,"instapaper":false,"whatsapp":false,"hatenaBookmark":false,"twitter":false,"messenger":false,"line":true,"vk":false,"pocket":false,"google":true,"viber":false,"stumbleupon":false,"qzone":true,"linkedin":true},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{},"search-plus":{}},"theme":"default","author":"Ivo Balbaert","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Go入门指南","language":"zh-hans","gitbook":"*","description":"《The Way to Go》中文译本"},"file":{"path":"eBook/05.5.md","mtime":"2018-09-15T13:09:04.000Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-09-15T13:53:12.064Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
@@ -2720,7 +2728,11 @@
         
     
         
-        <script src="../gitbook/gitbook-plugin-copy-code-button/toggle.js"></script>
+        <script src="../gitbook/gitbook-plugin-download-pdf-link/plugin.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-code/plugin.js"></script>
         
     
         
