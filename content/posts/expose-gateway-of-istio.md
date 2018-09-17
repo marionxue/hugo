@@ -1,6 +1,6 @@
 ---
-title: "暴露 Istio Service Mesh 中的 GateWay"
-subtitle: "使用 Envoy 作为 Ingress GateWay 的前端代理"
+title: "暴露 Istio Service Mesh 中的 Gateway"
+subtitle: "使用 Envoy 作为 Ingress Gateway 的前端代理"
 date: 2018-09-17T13:14:55+08:00
 draft: false
 categories: "service mesh"

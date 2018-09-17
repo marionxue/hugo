@@ -572,7 +572,7 @@ net.ipv4.tcp_synack_retries = 5
     </item>
     
     <item>
-      <title>暴露 Istio Service Mesh 中的 GateWay</title>
+      <title>暴露 Istio Service Mesh 中的 Gateway</title>
       <link>https://www.yangcs.net/posts/expose-gateway-of-istio/</link>
       <pubDate>Mon, 17 Sep 2018 13:14:55 +0800</pubDate>
       
