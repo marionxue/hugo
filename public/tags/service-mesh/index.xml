@@ -6,10 +6,19 @@
     <description>Recent content in Service Mesh on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 16 Aug 2018 13:40:27 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 17 Sep 2018 13:14:55 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/service-mesh/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>暴露 Istio Service Mesh 中的 GateWay</title>
+      <link>https://www.yangcs.net/posts/expose-gateway-of-istio/</link>
+      <pubDate>Mon, 17 Sep 2018 13:14:55 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/expose-gateway-of-istio/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>控制 Egress 流量</title>
