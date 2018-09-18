@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Istio CRD 汇总与 Helm Chart 配置解析 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
+  <meta property="og:title" content="Istio CRD 汇总与 Helm Chart 配置解析" />
+  <meta name="twitter:title" content="Istio CRD 汇总与 Helm Chart 配置解析" />
+  <meta name="description" content="两个神奇的表格">
+  <meta property="og:description" content="两个神奇的表格">
+  <meta name="twitter:description" content="两个神奇的表格">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/istio-helm-chart-and-crd/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.42.2" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/istio-helm-chart-and-crd/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?cffe439e37449bb1c07ab26ab56484bb";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124447767-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/service-mesh">Service Mesh</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/loadbalance"> 负载均衡</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/share">分享</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="https://istio.io/zh/docs">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go">Go 入门指南</a>
+                
+                
+                  <a href="https://www.yangcs.net/prometheus-handbook">Prometheus 中文文档</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">葵花宝典</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/learn-english"> 英语学习终极秘诀</a>
+                
+                
+                  <a href="https://www.yangcs.net/a-day-in-the-life-of-jeff">A Day in the life of Jeff</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net/">
+            <img class="avatar-img" src="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search www.yangcs.net</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("4BELQK2TOI", "bb53f9d51f88373ba37e56a4730aca4c");
+var index = client.initIndex('blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="http://o7z41ciog.bkt.clouddn.com/picHD_12.png" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Istio CRD 汇总与 Helm Chart 配置解析</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">两个神奇的表格</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on September 18, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Istio CRD 汇总与 Helm Chart 配置解析</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">两个神奇的表格</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Sep 18, 2018</h4>
+    </section>
+    <h5 id="wc">6900 Words|Read in about 14 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                <p></p>
+
+<h3 id="istio-中包含的-crd-总共-50-个-及其分类和用途">Istio 中包含的 <code>CRD</code>(总共 <code>50</code> 个) 及其分类和用途</h3>
+
+<p><style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg" style="undefined;table-layout: fixed; width: 1003px">
+<colgroup>
+<col style="width: 67px">
+<col style="width: 227px">
+<col style="width: 367px">
+<col style="width: 279px">
+<col style="width: 63px">
+</colgroup>
+  <tr>
+    <th class="tg-baqh">﻿序号</th>
+    <th class="tg-0lax">名称</th>
+    <th class="tg-0lax">用途</th>
+    <th class="tg-0lax">分类</th>
+    <th class="tg-0lax">归属</th>
+  </tr>
+  <tr>
+    <td class="tg-baqh">1</td>
+    <td class="tg-0lax">virtualservices.networking.istio.io</td>
+    <td class="tg-0lax">用于路由，定义virtual service</td>
+    <td class="tg-0lax">networking</td>
+    <td class="tg-0lax">pilot</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">2</td>
+    <td class="tg-0lax">destinationrules.networking.istio.io</td>
+    <td class="tg-0lax">用于路由，定义destination rule</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">3</td>
+    <td class="tg-0lax">serviceentries.networking.istio.io</td>
+    <td class="tg-0lax">用于路由，定义service entry</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">4</td>
+    <td class="tg-0lax">gateways.networking.istio.io</td>
+    <td class="tg-0lax">用于路由，定义gateway</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">5</td>
+    <td class="tg-0lax">envoyfilters.networking.istio.io</td>
+    <td class="tg-0lax">使用filter为特定envoy添加特定配置</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">6</td>
+    <td class="tg-0lax">policies.authentication.istio.io</td>
+    <td class="tg-0lax">用于authn，作用域为namespace</td>
+    <td class="tg-0lax">authentication</td>
+    <td class="tg-0lax">citadel</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">7</td>
+    <td class="tg-0lax">meshpolicies.authentication.istio.io</td>
+    <td class="tg-0lax">用于authn，作用域为global</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">8</td>
+    <td class="tg-0lax">httpapispecbindings.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">apim</td>
+    <td class="tg-0lax">mixer</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">9</td>
+    <td class="tg-0lax">httpapispecs.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">10</td>
+    <td class="tg-0lax">quotaspecbindings.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">11</td>
+    <td class="tg-0lax">quotaspecs.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">12</td>
+    <td class="tg-0lax">rules.config.istio.io</td>
+    <td class="tg-0lax">mixer rule，用于绑定handler和instance</td>
+    <td class="tg-0lax">mixer core</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">13</td>
+    <td class="tg-0lax">attributemanifests.config.istio.io</td>
+    <td class="tg-0lax">定义envoy传递给mixer的用于policy和telemetry的attribute</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">14</td>
+    <td class="tg-0lax">bypasses.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">mixer adapter用于处理从envoy收集的数据</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">15</td>
+    <td class="tg-0lax">circonuses.config.istio.io</td>
+    <td class="tg-0lax">定义circonus adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">16</td>
+    <td class="tg-0lax">deniers.config.istio.io</td>
+    <td class="tg-0lax">定义dinier adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">17</td>
+    <td class="tg-0lax">fluentds.config.istio.io</td>
+    <td class="tg-0lax">定义fluentd adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">18</td>
+    <td class="tg-0lax">kubernetesenvs.config.istio.io</td>
+    <td class="tg-0lax">定义kubernetesenv adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">19</td>
+    <td class="tg-0lax">listcheckers.config.istio.io</td>
+    <td class="tg-0lax">定义list adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">20</td>
+    <td class="tg-0lax">memquotas.config.istio.io</td>
+    <td class="tg-0lax">定义memquota adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">21</td>
+    <td class="tg-0lax">noops.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">22</td>
+    <td class="tg-0lax">opas.config.istio.io</td>
+    <td class="tg-0lax">定义opa adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">23</td>
+    <td class="tg-0lax">prometheuses.config.istio.io</td>
+    <td class="tg-0lax">定义prometheus adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">24</td>
+    <td class="tg-0lax">rbacs.config.istio.io</td>
+    <td class="tg-0lax">定义rbac adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">25</td>
+    <td class="tg-0lax">redisquotas.config.istio.io</td>
+    <td class="tg-0lax">定义redisquota adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">26</td>
+    <td class="tg-0lax">servicecontrols.config.istio.io</td>
+    <td class="tg-0lax">定义servicecontrol adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">27</td>
+    <td class="tg-0lax">signalfxs.config.istio.io</td>
+    <td class="tg-0lax">定义signalfx adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">28</td>
+    <td class="tg-0lax">solarwindses.config.istio.io</td>
+    <td class="tg-0lax">定义solarwinds adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">29</td>
+    <td class="tg-0lax">stackdrivers.config.istio.io</td>
+    <td class="tg-0lax">定义stackdriver adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">30</td>
+    <td class="tg-0lax">statsds.config.istio.io</td>
+    <td class="tg-0lax">定义statsd adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">31</td>
+    <td class="tg-0lax">stdios.config.istio.io</td>
+    <td class="tg-0lax">定义stdio adapter</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">32</td>
+    <td class="tg-0lax">apikeys.config.istio.io</td>
+    <td class="tg-0lax">定义apikey template</td>
+    <td class="tg-0lax">mixer instance用于定义从envoy收集的数据</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">33</td>
+    <td class="tg-0lax">authorizations.config.istio.io</td>
+    <td class="tg-0lax">定义authorization template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">34</td>
+    <td class="tg-0lax">checknothings.config.istio.io</td>
+    <td class="tg-0lax">定义checknothing template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">35</td>
+    <td class="tg-0lax">kuberneteses.config.istio.io</td>
+    <td class="tg-0lax">定义kubernetes template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">36</td>
+    <td class="tg-0lax">listentries.config.istio.io</td>
+    <td class="tg-0lax">定义listentry template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">37</td>
+    <td class="tg-0lax">logentries.config.istio.io</td>
+    <td class="tg-0lax">定义logentry template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">38</td>
+    <td class="tg-0lax">edges.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">39</td>
+    <td class="tg-0lax">metrics.config.istio.io</td>
+    <td class="tg-0lax">定义metric template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">40</td>
+    <td class="tg-0lax">quotas.config.istio.io</td>
+    <td class="tg-0lax">定义quota template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">41</td>
+    <td class="tg-0lax">reportnothings.config.istio.io</td>
+    <td class="tg-0lax">定义reportnothing template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">42</td>
+    <td class="tg-0lax">servicecontrolreports.config.istio.io</td>
+    <td class="tg-0lax">定义servicecontrolreport template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">43</td>
+    <td class="tg-0lax">tracespans.config.istio.io</td>
+    <td class="tg-0lax">定义tracespan template</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">44</td>
+    <td class="tg-0lax">rbacconfigs.rbac.istio.io</td>
+    <td class="tg-0lax">用于authz，定义istio的rbac策略</td>
+    <td class="tg-0lax">rbac</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">45</td>
+    <td class="tg-0lax">serviceroles.rbac.istio.io</td>
+    <td class="tg-0lax">用于authz，定义service role</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">46</td>
+    <td class="tg-0lax">servicerolebindings.rbac.istio.io</td>
+    <td class="tg-0lax">用于authz，定义service role binding</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">47</td>
+    <td class="tg-0lax">adapters.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">others</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">48</td>
+    <td class="tg-0lax">instances.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">49</td>
+    <td class="tg-0lax">templates.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">50</td>
+    <td class="tg-0lax">handlers.config.istio.io</td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+  </tr>
+</table></p>
+
+<h3 id="istio-helm-chart-的安装配置解析">Istio Helm Chart 的安装配置解析</h3>
+
+<p><style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#bbb;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#594F4F;background-color:#E0FFEB;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#493F3F;background-color:#9DE0AD;}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg" style="undefined;table-layout: fixed; width: 1281px">
+<colgroup>
+<col style="width: 51px">
+<col style="width: 161px">
+<col style="width: 251px">
+<col style="width: 214px">
+<col style="width: 219px">
+<col style="width: 385px">
+</colgroup>
+  <tr>
+    <th class="tg-baqh">﻿序号</th>
+    <th class="tg-0lax">chart</th>
+    <th class="tg-0lax">文件</th>
+    <th class="tg-0lax">k8s组件类型</th>
+    <th class="tg-0lax">k8s组件名称</th>
+    <th class="tg-0lax">用途</th>
+  </tr>
+  <tr>
+    <td class="tg-baqh">1</td>
+    <td class="tg-0lax">main</td>
+    <td class="tg-0lax">_affinity.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义各个组件deployment chart中的nodeAffinity</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义各个组件chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">istio</td>
+    <td class="tg-0lax">istio主配置configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">crds.yaml</td>
+    <td class="tg-0lax">CustomResourceDefinition</td>
+    <td class="tg-0lax">共50个</td>
+    <td class="tg-0lax">istio需要的所有的crd资源</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">install-custom-resources.sh.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义grafana和security chart中configmap中所包含的脚本，验证istio-galley validatingwebhookconfiguration已经存在并且部署组件相关其他资源</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">sidecar-injector-configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">istio-sidecar-injector</td>
+    <td class="tg-0lax">用于定义sidecar injector的configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">2</td>
+    <td class="tg-0lax">sidecarInjectorWebhook默认开启</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义sidecarInjectorWebhook chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-sidecar-injector-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义sidecarInjectorWebhook使用的clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-sidecar-injector-admin-role-binding-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义sidecarInjectorWebhook使用的clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-sidecar-injector</td>
+    <td class="tg-0lax">用于定义sidecarInjectorWebhook使用的deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">mutatingwebhook.yaml</td>
+    <td class="tg-0lax">MutatingWebhookConfiguration</td>
+    <td class="tg-0lax">istio-sidecar-injector</td>
+    <td class="tg-0lax">用于定义sidecarInjectorWebhook使用的mutatingwebhookconfiguration</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-sidecar-injector</td>
+    <td class="tg-0lax">用于定义sidecarInjectorWebhook使用的service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-sidecar-injector-service-account</td>
+    <td class="tg-0lax">用于定义sidecarInjectorWebhook使用的serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">3</td>
+    <td class="tg-0lax">security默认开启</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义security chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">cleanup-secrets.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-cleanup-secrets-service-account</td>
+    <td class="tg-0lax">在helm删除istio后对citadel中的secret进行清理</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-cleanup-secrets-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-cleanup-secrets-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Job</td>
+    <td class="tg-0lax">istio-cleanup-secrets</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-citadel-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义citadel相关clusterole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-citadel-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义citdel相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">istio-security-custom-resources</td>
+    <td class="tg-0lax">用于定义citidel相关configmap，与global values中的mtls.enabled相关，是否启用全局的mtls authn</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">create-custom-resources-job.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-security-post-install-account</td>
+    <td class="tg-0lax">在global values的mtls.enabled设置为true后才会生效，建立mtls相关serviceaccount，clusterrole，clusterrolebinding，以及comfigmap中定义的其他相关对象</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-security-post-install-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-security-post-install-role-binding-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Job</td>
+    <td class="tg-0lax">istio-security-post-install</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-citadel</td>
+    <td class="tg-0lax">用于定义citadel相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">enable-mesh-mtls.yaml</td>
+    <td class="tg-0lax">MeshPolicy</td>
+    <td class="tg-0lax">default</td>
+    <td class="tg-0lax">在global values的mtls.enabled设置为true后，这些资源会写入configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">DestinationRule</td>
+    <td class="tg-0lax">default</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">DestinationRule</td>
+    <td class="tg-0lax">api-server</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">meshexpansion.yaml</td>
+    <td class="tg-0lax">VirtualService</td>
+    <td class="tg-0lax">meshexpansion-citadel</td>
+    <td class="tg-0lax">在global values的meshExpansion设置为true后，新建citadel相关virtualservice</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">VirtualService</td>
+    <td class="tg-0lax">meshexpansion-ilb-citadel</td>
+    <td class="tg-0lax">在global values的meshExpansionILB设置为true后，新建citadel相关virtualservice</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-citadel</td>
+    <td class="tg-0lax">用于定义citade相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-citadel-service-account</td>
+    <td class="tg-0lax">用于定义citade相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">4</td>
+    <td class="tg-0lax">galley默认开启</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义galley chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-galley-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义galley相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-galley-admin-role-binding-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义galley相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">istio-galley-configuration</td>
+    <td class="tg-0lax">用于定义galley相关configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-galley</td>
+    <td class="tg-0lax">用于定义galley相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-galley</td>
+    <td class="tg-0lax">用于定义galley相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-galley-service-account</td>
+    <td class="tg-0lax">用于定义galley相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">validatingwehookconfiguration.yaml.tpl</td>
+    <td class="tg-0lax">ValidatingWebhookConfiguration</td>
+    <td class="tg-0lax">istio-galley</td>
+    <td class="tg-0lax">用于定义对pilot和mixer的配置进行验证，与galley deployment关联</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">5</td>
+    <td class="tg-0lax">mixer默认开启</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义mixer chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">autoscale.yaml</td>
+    <td class="tg-0lax">HorizontalPodAutoscaler</td>
+    <td class="tg-0lax">istio-policy</td>
+    <td class="tg-0lax">用于定义mixer，包括policy和telemetry的horizontalpodautoscaler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">HorizontalPodAutoscaler</td>
+    <td class="tg-0lax">istio-telemetry</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-mixer-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义mixer相关clusterole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-mixer-admin-role-binding-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义mixer相关clusterolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">config.yaml</td>
+    <td class="tg-0lax">attributemanifest</td>
+    <td class="tg-0lax">istioproxy</td>
+    <td class="tg-0lax">用于定义从envoy到mixer的attributemanifest</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">attributemanifest</td>
+    <td class="tg-0lax">kubernetes</td>
+    <td class="tg-0lax">用于定义从k8s到mixer的attributemanifest</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">stdio</td>
+    <td class="tg-0lax">handler</td>
+    <td class="tg-0lax">用于定义stdio handler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">logentry</td>
+    <td class="tg-0lax">accesslog</td>
+    <td class="tg-0lax">用于定义http logentry instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">logentry</td>
+    <td class="tg-0lax">tcpaccesslog</td>
+    <td class="tg-0lax">用于定义tcp logentry instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">rule</td>
+    <td class="tg-0lax">stdio</td>
+    <td class="tg-0lax">用于定义从accesslog.logentry到handler.stdio的rule，将accesslog发送至stdio</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">rule</td>
+    <td class="tg-0lax">stdiotcp</td>
+    <td class="tg-0lax">用于定义从tcpaccesslog.logentry到handler.stdio的rule，将tcpaccesslog发送至stdio</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">metric</td>
+    <td class="tg-0lax">requestcount</td>
+    <td class="tg-0lax">用于定义requestcount metric instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">metric</td>
+    <td class="tg-0lax">requestduration</td>
+    <td class="tg-0lax">用于定义requestduration metric instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">metric</td>
+    <td class="tg-0lax">requestsize</td>
+    <td class="tg-0lax">用于定义requestsize metric instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">metric</td>
+    <td class="tg-0lax">responsesize</td>
+    <td class="tg-0lax">用于定义responsesize metric instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">metric</td>
+    <td class="tg-0lax">tcpbytesent</td>
+    <td class="tg-0lax">用于定义tcpbytesent metric instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">metric</td>
+    <td class="tg-0lax">tcpbytereceived</td>
+    <td class="tg-0lax">用于定义tcpbytereceived metric instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">prometheus</td>
+    <td class="tg-0lax">handler</td>
+    <td class="tg-0lax">用于定义prometheus handler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">rule</td>
+    <td class="tg-0lax">promhttp</td>
+    <td class="tg-0lax">用于定义从requestcount.metric，requestduration.metric，requestsize.metric和responsesize.metric到handler.prometheus的rule，将http metric发送至prometheus</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">rule</td>
+    <td class="tg-0lax">promtcp</td>
+    <td class="tg-0lax">用于定义从tcpbytesent.metric和tcpbytereceived.metric到handler.prometheus的rule，将tcp metric发送至prometheus</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">kubernetesenv</td>
+    <td class="tg-0lax">handler</td>
+    <td class="tg-0lax">用于定义kubernetesenv handler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">rule</td>
+    <td class="tg-0lax">kubeattrgenrulerule</td>
+    <td class="tg-0lax">用于定义从attributes.kubernetes到handler.kubernetesenv的rule，生成kubernetes相关attribute</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">rule</td>
+    <td class="tg-0lax">tcpkubeattrgenrulerule</td>
+    <td class="tg-0lax">用于定义从attributes.kubernetes到handler.kubernetesenv的rule，生成kubernetes tcp相关attribute</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">kubernetes</td>
+    <td class="tg-0lax">attributes</td>
+    <td class="tg-0lax">用于定义kubernetes相关attribute instance</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">DestinationRule</td>
+    <td class="tg-0lax">istio-policy</td>
+    <td class="tg-0lax">用于定义istio-policy相关destinationrule</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">DestinationRule</td>
+    <td class="tg-0lax">istio-telemetry</td>
+    <td class="tg-0lax">用于定义istio-telemetry相关destinationrule</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">istio-statsd-prom-bridge</td>
+    <td class="tg-0lax">用于定义istio-statsd-prom-bridge相关configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-policy</td>
+    <td class="tg-0lax">用于定义istio-policy相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-telemetry</td>
+    <td class="tg-0lax">用于定义istio-telemetry相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-policy</td>
+    <td class="tg-0lax">用于定义istio-policy相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-telemetry</td>
+    <td class="tg-0lax">用于定义istio-telemetry相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-mixer-service-account</td>
+    <td class="tg-0lax">用于定义mixer相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">statsdtoprom.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-statsd-prom-bridge</td>
+    <td class="tg-0lax">用于定义istio-statsd-prom-bridge相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-statsd-prom-bridge</td>
+    <td class="tg-0lax">用于定义istio-statsd-prom-bridge相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">6</td>
+    <td class="tg-0lax">pilot默认开启</td>
+    <td class="tg-0lax">autoscale.yaml</td>
+    <td class="tg-0lax">horizontalPodAutoscaler</td>
+    <td class="tg-0lax">istio-pilot</td>
+    <td class="tg-0lax">用于定义pilot相关horizontalpodautoscaler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-pilot</td>
+    <td class="tg-0lax">用于定义pilot相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-pilot</td>
+    <td class="tg-0lax">用于定义pilot相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-pilot</td>
+    <td class="tg-0lax">用于定义pilot相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">gateway.yaml</td>
+    <td class="tg-0lax">Gateway</td>
+    <td class="tg-0lax">istio-autogenerated-k8s-ingress</td>
+    <td class="tg-0lax">用于定义pilot相关gateway，缺省向前兼容，使用ingress</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Gateway</td>
+    <td class="tg-0lax">meshexpansion-gateway</td>
+    <td class="tg-0lax">用于定义pilot相关gateway，如果global.meshExpansion设置为true，则将pilot暴露在gateway</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Gateway</td>
+    <td class="tg-0lax">meshexpansion-ilb-gateway</td>
+    <td class="tg-0lax">用于定义pilot相关gateway，如果global.meshExpansionILB设置为true，则将pilot暴露在internal gateway</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">meshexpansion.yaml</td>
+    <td class="tg-0lax">VirtualService</td>
+    <td class="tg-0lax">meshexpansion-pilot</td>
+    <td class="tg-0lax">在global values的meshExpansion设置为true后，新建pilot相关virtualservice</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">VirtualService</td>
+    <td class="tg-0lax">ilb-meshexpansion-pilot</td>
+    <td class="tg-0lax">在global values的meshExpansionILB设置为true后，新建pilot相关virtualservice</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-pilot</td>
+    <td class="tg-0lax">用于定义pilot相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-pilot-service-account</td>
+    <td class="tg-0lax">用于定义pilot相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">7</td>
+    <td class="tg-0lax">gateways默认开启</td>
+    <td class="tg-0lax">autoscale.yaml</td>
+    <td class="tg-0lax">horizontalPodAutoscaler</td>
+    <td class="tg-0lax">istio-ingressgateway</td>
+    <td class="tg-0lax">用于定义ingressgateway相关horizontalpodautoscaler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">horizontalPodAutoscaler</td>
+    <td class="tg-0lax">istio-egressgateway</td>
+    <td class="tg-0lax">用于定义egressgateway相关horizontalpodautoscaler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">horizontalPodAutoscaler</td>
+    <td class="tg-0lax">istio-ilbgateway</td>
+    <td class="tg-0lax">用于定义ilbgateway相关horizontalpodautoscaler，默认关闭，只支持gcp</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-ingressgateway-{{ $.Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义ingressgateway相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-egressgateway-{{ $.Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义egressgateway相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-ilbgateway-{{ $.Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义ilbgateway相关clusterrole，默认关闭，只支持gcp</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-ingressgateway-{{ $.Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义ingressgateway相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-egressgateway-{{ $.Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义egressgateway相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-ilbgateway-{{ $.Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义ilbgateway相关clusterrolebindig，默认关闭，只支持gcp</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-ingressgateway</td>
+    <td class="tg-0lax">用于定义ingressgateway相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-egressgateway</td>
+    <td class="tg-0lax">用于定义egressgateway相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-ilbgateway</td>
+    <td class="tg-0lax">用于定义ilbgateway相关deployment，默认关闭，只支持gcp</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-ingressgateway</td>
+    <td class="tg-0lax">用于定义ingressgateway相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-egressgateway</td>
+    <td class="tg-0lax">用于定义egressgateway相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-ilbgateway</td>
+    <td class="tg-0lax">用于定义ilbgateway相关service，默认关闭，只支持gcp</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-ingressgateway-service-account</td>
+    <td class="tg-0lax">用于定义ingressgateway相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-egressgateway-service-account</td>
+    <td class="tg-0lax">用于定义egressgateway相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-ilbgateway-service-account</td>
+    <td class="tg-0lax">用于定义ilbgateway相关serviceaccount，默认关闭，只支持gcp</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">8</td>
+    <td class="tg-0lax">prometheus默认开启</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义prometheus chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">prometheus-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义prometheus相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">prometheus-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义prometheus相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">prometheus</td>
+    <td class="tg-0lax">用于定义prometheus相关configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">prometheus</td>
+    <td class="tg-0lax">用于定义prometheus相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">prometheus</td>
+    <td class="tg-0lax">用于定义prometheus相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">prometheus</td>
+    <td class="tg-0lax">用于定义prometheus相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">9</td>
+    <td class="tg-0lax">telemetry-gateway默认关闭</td>
+    <td class="tg-0lax">gateway.yaml</td>
+    <td class="tg-0lax">Gateway</td>
+    <td class="tg-0lax">istio-telemetry-gateway</td>
+    <td class="tg-0lax">用于定义prometheus和grafana的gateway，如果prometheusEnabled设置为true，则添加prometheus相关gateway配置，如果grafanaEnabled设置为true，则添加grafana相关gateway配置</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">DestinationRule</td>
+    <td class="tg-0lax">grafana</td>
+    <td class="tg-0lax">定义prometheus相关destinationrule</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">DestinationRule</td>
+    <td class="tg-0lax">prometheus</td>
+    <td class="tg-0lax">定义grafana相关destinationrule</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">VirtualService</td>
+    <td class="tg-0lax">telemetry-virtual-service</td>
+    <td class="tg-0lax">用于定义prometheus和grafana的virtualservice，如果prometheusEnabled设置为true，则添加prometheus相关virtualservice配置，如果grafanaEnabled设置为true，则添加grafana相关virtualservice配置</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">10</td>
+    <td class="tg-0lax">ingress默认关闭legacy ingress support</td>
+    <td class="tg-0lax">autoscale.yaml</td>
+    <td class="tg-0lax">HorizontalPodAutoscaler</td>
+    <td class="tg-0lax">istio-ingress</td>
+    <td class="tg-0lax">用于定义ingress相关horizontalpodautoscaler</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-ingress-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义ingress相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-ingress-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义ingress相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-ingress</td>
+    <td class="tg-0lax">用于定义ingress相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">istio-ingress</td>
+    <td class="tg-0lax">用于定义ingress相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-ingress-service-account</td>
+    <td class="tg-0lax">用于定义ingress相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">11</td>
+    <td class="tg-0lax">grafana默认关闭</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义grafana chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">istio-grafana-custom-resources</td>
+    <td class="tg-0lax">用于定义grafana相关configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">create-custom-resources-job.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">istio-grafana-post-install-account</td>
+    <td class="tg-0lax">用于定义grafana post install相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">istio-grafana-post-install-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义grafana post install相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-grafana-post-install-role-binding-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义grafana post install相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Job</td>
+    <td class="tg-0lax">istio-grafana-post-install</td>
+    <td class="tg-0lax">用于定义grafana post install相关job</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">grafana</td>
+    <td class="tg-0lax">用于定义grafana相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">grafana-ports-mtls.yaml</td>
+    <td class="tg-0lax">Policy</td>
+    <td class="tg-0lax">grafana-ports-mtls-disabled</td>
+    <td class="tg-0lax">对grafana访问开启mtls</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">pvc.yaml</td>
+    <td class="tg-0lax">PersistentVolumeClaim</td>
+    <td class="tg-0lax">istio-grafana-pvc</td>
+    <td class="tg-0lax">如果persist设置为true，则为grafana新建pvc和pv</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">secret.yaml</td>
+    <td class="tg-0lax">Secret</td>
+    <td class="tg-0lax">grafana</td>
+    <td class="tg-0lax">如果security.enabled设置为true，则为grafana启用authn</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">grafana</td>
+    <td class="tg-0lax">用于定义grafana相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">12</td>
+    <td class="tg-0lax">servicegraph默认关闭</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义servicegraph chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">servicegraph</td>
+    <td class="tg-0lax">用于定义servicegraph相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ingress.yaml</td>
+    <td class="tg-0lax">Ingress</td>
+    <td class="tg-0lax">servicegraph</td>
+    <td class="tg-0lax">用于定义servicegraph相关ingress</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">servicegraph</td>
+    <td class="tg-0lax">用于定义servicegraph相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">13</td>
+    <td class="tg-0lax">tracing默认关闭</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义tracing chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">istio-tracing</td>
+    <td class="tg-0lax">用于定义jaeger tracing相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ingress-jaeger.yaml</td>
+    <td class="tg-0lax">Ingress</td>
+    <td class="tg-0lax">jaeger-query</td>
+    <td class="tg-0lax">用于定义jaeger tracing相关ingress</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ingress.yaml</td>
+    <td class="tg-0lax">Ingress</td>
+    <td class="tg-0lax">tracing</td>
+    <td class="tg-0lax">用于定义zipkin tracing相关ingress</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service-jaeger.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">jaeger-query</td>
+    <td class="tg-0lax">用于定义jaeger tracing query相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">jaeger-collector</td>
+    <td class="tg-0lax">用于定义jaeger tracing collector相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">jaeger-agent</td>
+    <td class="tg-0lax">用于定义jaeger tracing agent相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">zipkin</td>
+    <td class="tg-0lax">用于定义zipkin tracing相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">tracing</td>
+    <td class="tg-0lax">用于定义jaeger tracing相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">14</td>
+    <td class="tg-0lax">kiali默认关闭</td>
+    <td class="tg-0lax">clusterrole.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">kiali</td>
+    <td class="tg-0lax">用于定义kiali相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">clusterrolebinding.yaml</td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">istio-kiali-admin-role-binding-{{ .Release.Namespace }}</td>
+    <td class="tg-0lax">用于定义kiali相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">configmap.yaml</td>
+    <td class="tg-0lax">ConfigMap</td>
+    <td class="tg-0lax">kiali</td>
+    <td class="tg-0lax">用于定义kiali相关configmap</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">kiali</td>
+    <td class="tg-0lax">用于定义kiali相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ingress.yaml</td>
+    <td class="tg-0lax">Ingress</td>
+    <td class="tg-0lax">kiali</td>
+    <td class="tg-0lax">用于定义kiali相关ingress</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">secrets.yaml</td>
+    <td class="tg-0lax">Secret</td>
+    <td class="tg-0lax">kiali</td>
+    <td class="tg-0lax">用于定义kiali相关secret</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">service.yaml</td>
+    <td class="tg-0lax">Service</td>
+    <td class="tg-0lax">kiali</td>
+    <td class="tg-0lax">用于定义kiali相关service</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">serviceaccount.yaml</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">kiali-service-account</td>
+    <td class="tg-0lax">用于定义kiali相关serviceaccount</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh">15</td>
+    <td class="tg-0lax">certmanager默认关闭</td>
+    <td class="tg-0lax">_helpers.tpl</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">无</td>
+    <td class="tg-0lax">用于定义certmanager chart中一些变量的默认值</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">crds.yaml</td>
+    <td class="tg-0lax">CustomResourceDefinition</td>
+    <td class="tg-0lax">clusterissuers.certmanager.k8s.io</td>
+    <td class="tg-0lax">用于定义certmanager相关crd</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">CustomResourceDefinition</td>
+    <td class="tg-0lax">issuers.certmanager.k8s.io</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">CustomResourceDefinition</td>
+    <td class="tg-0lax">certificates.certmanager.k8s.io</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">deployment.yaml</td>
+    <td class="tg-0lax">Deployment</td>
+    <td class="tg-0lax">certmanager</td>
+    <td class="tg-0lax">用于定义certmanager相关deployment</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">issuer.yaml</td>
+    <td class="tg-0lax">ClusterIssuer</td>
+    <td class="tg-0lax">letsencrypt-staging</td>
+    <td class="tg-0lax">用于定义certmanager相关clusterissuer</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterIssuer</td>
+    <td class="tg-0lax">letsencrypt</td>
+    <td class="tg-0lax"></td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">rbac.yaml</td>
+    <td class="tg-0lax">ClusterRole</td>
+    <td class="tg-0lax">certmanager</td>
+    <td class="tg-0lax">用于定义certmanager相关clusterrole</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">ClusterRoleBinding</td>
+    <td class="tg-0lax">certmanager</td>
+    <td class="tg-0lax">用于定义certmanager相关clusterrolebinding</td>
+  </tr>
+  <tr>
+    <td class="tg-baqh"></td>
+    <td class="tg-0lax"></td>
+    <td class="tg-0lax">certmanager</td>
+    <td class="tg-0lax">ServiceAccount</td>
+    <td class="tg-0lax">certmanager</td>
+    <td class="tg-0lax">用于定义certmanager相关serviceaccount</td>
+  </tr>
+</table></p>
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/expose-gateway-of-istio/" data-toggle="tooltip" data-placement="top" title="暴露 Istio Service Mesh 中的 Gateway">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/expose-gateway-of-istio/">暴露 Istio Service Mesh 中的 Gateway</a></li>
+                    
+                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
+                    
+                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
+                    
+                    <li><a href="/posts/where-is-the-request-1/">请求都去哪了？</a></li>
+                    
+                    <li><a href="/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/">Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Sep 18, 2018</h4>
+    </section>
+    <h5 id="wc">6900 Words|Read in about 14 Min</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+    </h5>
+</div>
+
+            
+            </div>
+            
+            
+                
+                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+</div>
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net/">Ryan Yang</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.42.2</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a66dcf22e59dc17"></script>
+
+
+
+
+
+  </body>
+</html>
+

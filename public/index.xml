@@ -805,6 +805,1731 @@ border-top-color: #9954bb;
     </item>
     
     <item>
+      <title>Istio CRD 汇总与 Helm Chart 配置解析</title>
+      <link>https://www.yangcs.net/posts/istio-helm-chart-and-crd/</link>
+      <pubDate>Tue, 18 Sep 2018 19:11:16 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-helm-chart-and-crd/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;istio-中包含的-crd-总共-50-个-及其分类和用途&#34;&gt;Istio 中包含的 &lt;code&gt;CRD&lt;/code&gt;(总共 &lt;code&gt;50&lt;/code&gt; 个) 及其分类和用途&lt;/h3&gt;
+
+&lt;p&gt;&lt;style type=&#34;text/css&#34;&gt;
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+&lt;/style&gt;
+&lt;table class=&#34;tg&#34; style=&#34;undefined;table-layout: fixed; width: 1003px&#34;&gt;
+&lt;colgroup&gt;
+&lt;col style=&#34;width: 67px&#34;&gt;
+&lt;col style=&#34;width: 227px&#34;&gt;
+&lt;col style=&#34;width: 367px&#34;&gt;
+&lt;col style=&#34;width: 279px&#34;&gt;
+&lt;col style=&#34;width: 63px&#34;&gt;
+&lt;/colgroup&gt;
+  &lt;tr&gt;
+    &lt;th class=&#34;tg-baqh&#34;&gt;﻿序号&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;名称&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;用途&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;分类&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;归属&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;1&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;virtualservices.networking.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于路由，定义virtual service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;networking&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;pilot&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;2&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;destinationrules.networking.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于路由，定义destination rule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;3&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceentries.networking.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于路由，定义service entry&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;4&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;gateways.networking.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于路由，定义gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;5&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;envoyfilters.networking.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;使用filter为特定envoy添加特定配置&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;6&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;policies.authentication.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于authn，作用域为namespace&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;authentication&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;citadel&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;7&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshpolicies.authentication.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于authn，作用域为global&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;8&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;httpapispecbindings.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;apim&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;mixer&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;9&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;httpapispecs.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;10&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;quotaspecbindings.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;11&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;quotaspecs.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;12&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rules.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;mixer rule，用于绑定handler和instance&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;mixer core&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;13&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;attributemanifests.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义envoy传递给mixer的用于policy和telemetry的attribute&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;14&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;bypasses.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;mixer adapter用于处理从envoy收集的数据&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;15&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;circonuses.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义circonus adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;16&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deniers.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义dinier adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;17&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;fluentds.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义fluentd adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;18&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kubernetesenvs.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义kubernetesenv adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;19&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;listcheckers.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义list adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;20&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;memquotas.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义memquota adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;21&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;noops.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;22&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;opas.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义opa adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;23&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheuses.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义prometheus adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;24&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rbacs.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义rbac adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;25&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;redisquotas.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义redisquota adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;26&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;servicecontrols.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义servicecontrol adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;27&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;signalfxs.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义signalfx adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;28&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;solarwindses.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义solarwinds adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;29&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;stackdrivers.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义stackdriver adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;30&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;statsds.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义statsd adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;31&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;stdios.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义stdio adapter&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;32&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;apikeys.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义apikey template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;mixer instance用于定义从envoy收集的数据&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;33&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;authorizations.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义authorization template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;34&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;checknothings.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义checknothing template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;35&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kuberneteses.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义kubernetes template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;36&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;listentries.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义listentry template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;37&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;logentries.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义logentry template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;38&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;edges.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;39&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;metrics.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义metric template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;40&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;quotas.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义quota template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;41&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;reportnothings.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义reportnothing template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;42&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;servicecontrolreports.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义servicecontrolreport template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;43&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tracespans.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义tracespan template&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;44&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rbacconfigs.rbac.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于authz，定义istio的rbac策略&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rbac&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;45&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceroles.rbac.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于authz，定义service role&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;46&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;servicerolebindings.rbac.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于authz，定义service role binding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;47&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;adapters.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;others&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;48&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;instances.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;49&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;templates.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;50&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;handlers.config.istio.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;istio-helm-chart-的安装配置解析&#34;&gt;Istio Helm Chart 的安装配置解析&lt;/h3&gt;
+
+&lt;p&gt;&lt;style type=&#34;text/css&#34;&gt;
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#bbb;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#594F4F;background-color:#E0FFEB;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#493F3F;background-color:#9DE0AD;}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+&lt;/style&gt;
+&lt;table class=&#34;tg&#34; style=&#34;undefined;table-layout: fixed; width: 1281px&#34;&gt;
+&lt;colgroup&gt;
+&lt;col style=&#34;width: 51px&#34;&gt;
+&lt;col style=&#34;width: 161px&#34;&gt;
+&lt;col style=&#34;width: 251px&#34;&gt;
+&lt;col style=&#34;width: 214px&#34;&gt;
+&lt;col style=&#34;width: 219px&#34;&gt;
+&lt;col style=&#34;width: 385px&#34;&gt;
+&lt;/colgroup&gt;
+  &lt;tr&gt;
+    &lt;th class=&#34;tg-baqh&#34;&gt;﻿序号&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;chart&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;文件&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;k8s组件类型&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;k8s组件名称&lt;/th&gt;
+    &lt;th class=&#34;tg-0lax&#34;&gt;用途&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;1&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;main&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_affinity.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义各个组件deployment chart中的nodeAffinity&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义各个组件chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio主配置configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;crds.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;CustomResourceDefinition&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;共50个&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio需要的所有的crd资源&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;install-custom-resources.sh.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana和security chart中configmap中所包含的脚本，验证istio-galley validatingwebhookconfiguration已经存在并且部署组件相关其他资源&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;sidecar-injector-configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-sidecar-injector&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecar injector的configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;2&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;sidecarInjectorWebhook默认开启&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecarInjectorWebhook chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-sidecar-injector-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecarInjectorWebhook使用的clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-sidecar-injector-admin-role-binding-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecarInjectorWebhook使用的clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-sidecar-injector&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecarInjectorWebhook使用的deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;mutatingwebhook.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;MutatingWebhookConfiguration&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-sidecar-injector&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecarInjectorWebhook使用的mutatingwebhookconfiguration&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-sidecar-injector&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecarInjectorWebhook使用的service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-sidecar-injector-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义sidecarInjectorWebhook使用的serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;3&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;security默认开启&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义security chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;cleanup-secrets.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-cleanup-secrets-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;在helm删除istio后对citadel中的secret进行清理&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-cleanup-secrets-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-cleanup-secrets-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Job&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-cleanup-secrets&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-citadel-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义citadel相关clusterole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-citadel-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义citdel相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-security-custom-resources&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义citidel相关configmap，与global values中的mtls.enabled相关，是否启用全局的mtls authn&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;create-custom-resources-job.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-security-post-install-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;在global values的mtls.enabled设置为true后才会生效，建立mtls相关serviceaccount，clusterrole，clusterrolebinding，以及comfigmap中定义的其他相关对象&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-security-post-install-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-security-post-install-role-binding-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Job&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-security-post-install&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-citadel&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义citadel相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;enable-mesh-mtls.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;MeshPolicy&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;default&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;在global values的mtls.enabled设置为true后，这些资源会写入configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;DestinationRule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;default&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;DestinationRule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;api-server&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshexpansion.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;VirtualService&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshexpansion-citadel&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;在global values的meshExpansion设置为true后，新建citadel相关virtualservice&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;VirtualService&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshexpansion-ilb-citadel&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;在global values的meshExpansionILB设置为true后，新建citadel相关virtualservice&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-citadel&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义citade相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-citadel-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义citade相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;4&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;galley默认开启&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义galley chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-galley-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义galley相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-galley-admin-role-binding-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义galley相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-galley-configuration&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义galley相关configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-galley&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义galley相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-galley&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义galley相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-galley-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义galley相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;validatingwehookconfiguration.yaml.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ValidatingWebhookConfiguration&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-galley&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义对pilot和mixer的配置进行验证，与galley deployment关联&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;5&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;mixer默认开启&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义mixer chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;autoscale.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;HorizontalPodAutoscaler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-policy&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义mixer，包括policy和telemetry的horizontalpodautoscaler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;HorizontalPodAutoscaler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-telemetry&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-mixer-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义mixer相关clusterole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-mixer-admin-role-binding-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义mixer相关clusterolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;config.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;attributemanifest&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istioproxy&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从envoy到mixer的attributemanifest&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;attributemanifest&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kubernetes&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从k8s到mixer的attributemanifest&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;stdio&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;handler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义stdio handler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;logentry&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;accesslog&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义http logentry instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;logentry&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tcpaccesslog&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义tcp logentry instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;stdio&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从accesslog.logentry到handler.stdio的rule，将accesslog发送至stdio&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;stdiotcp&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从tcpaccesslog.logentry到handler.stdio的rule，将tcpaccesslog发送至stdio&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;metric&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;requestcount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义requestcount metric instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;metric&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;requestduration&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义requestduration metric instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;metric&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;requestsize&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义requestsize metric instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;metric&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;responsesize&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义responsesize metric instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;metric&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tcpbytesent&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义tcpbytesent metric instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;metric&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tcpbytereceived&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义tcpbytereceived metric instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;handler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus handler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;promhttp&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从requestcount.metric，requestduration.metric，requestsize.metric和responsesize.metric到handler.prometheus的rule，将http metric发送至prometheus&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;promtcp&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从tcpbytesent.metric和tcpbytereceived.metric到handler.prometheus的rule，将tcp metric发送至prometheus&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kubernetesenv&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;handler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kubernetesenv handler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kubeattrgenrulerule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从attributes.kubernetes到handler.kubernetesenv的rule，生成kubernetes相关attribute&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tcpkubeattrgenrulerule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义从attributes.kubernetes到handler.kubernetesenv的rule，生成kubernetes tcp相关attribute&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kubernetes&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;attributes&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kubernetes相关attribute instance&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;DestinationRule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-policy&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-policy相关destinationrule&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;DestinationRule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-telemetry&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-telemetry相关destinationrule&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-statsd-prom-bridge&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-statsd-prom-bridge相关configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-policy&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-policy相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-telemetry&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-telemetry相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-policy&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-policy相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-telemetry&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-telemetry相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-mixer-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义mixer相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;statsdtoprom.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-statsd-prom-bridge&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-statsd-prom-bridge相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-statsd-prom-bridge&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义istio-statsd-prom-bridge相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;6&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;pilot默认开启&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;autoscale.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;horizontalPodAutoscaler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-pilot&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关horizontalpodautoscaler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-pilot&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-pilot&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-pilot&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;gateway.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-autogenerated-k8s-ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关gateway，缺省向前兼容，使用ingress&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshexpansion-gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关gateway，如果global.meshExpansion设置为true，则将pilot暴露在gateway&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshexpansion-ilb-gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关gateway，如果global.meshExpansionILB设置为true，则将pilot暴露在internal gateway&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshexpansion.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;VirtualService&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;meshexpansion-pilot&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;在global values的meshExpansion设置为true后，新建pilot相关virtualservice&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;VirtualService&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ilb-meshexpansion-pilot&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;在global values的meshExpansionILB设置为true后，新建pilot相关virtualservice&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-pilot&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-pilot-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义pilot相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;7&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;gateways默认开启&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;autoscale.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;horizontalPodAutoscaler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingressgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingressgateway相关horizontalpodautoscaler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;horizontalPodAutoscaler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-egressgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义egressgateway相关horizontalpodautoscaler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;horizontalPodAutoscaler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ilbgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ilbgateway相关horizontalpodautoscaler，默认关闭，只支持gcp&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingressgateway-{{ $.Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingressgateway相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-egressgateway-{{ $.Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义egressgateway相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ilbgateway-{{ $.Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ilbgateway相关clusterrole，默认关闭，只支持gcp&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingressgateway-{{ $.Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingressgateway相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-egressgateway-{{ $.Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义egressgateway相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ilbgateway-{{ $.Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ilbgateway相关clusterrolebindig，默认关闭，只支持gcp&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingressgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingressgateway相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-egressgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义egressgateway相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ilbgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ilbgateway相关deployment，默认关闭，只支持gcp&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingressgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingressgateway相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-egressgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义egressgateway相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ilbgateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ilbgateway相关service，默认关闭，只支持gcp&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingressgateway-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingressgateway相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-egressgateway-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义egressgateway相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ilbgateway-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ilbgateway相关serviceaccount，默认关闭，只支持gcp&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;8&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus默认开启&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus相关configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;9&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;telemetry-gateway默认关闭&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;gateway.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-telemetry-gateway&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus和grafana的gateway，如果prometheusEnabled设置为true，则添加prometheus相关gateway配置，如果grafanaEnabled设置为true，则添加grafana相关gateway配置&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;DestinationRule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;grafana&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义prometheus相关destinationrule&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;DestinationRule&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;prometheus&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;定义grafana相关destinationrule&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;VirtualService&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;telemetry-virtual-service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义prometheus和grafana的virtualservice，如果prometheusEnabled设置为true，则添加prometheus相关virtualservice配置，如果grafanaEnabled设置为true，则添加grafana相关virtualservice配置&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;10&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ingress默认关闭legacy ingress support&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;autoscale.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;HorizontalPodAutoscaler&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingress相关horizontalpodautoscaler&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingress-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingress相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingress-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingress相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingress相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingress相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-ingress-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义ingress相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;11&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;grafana默认关闭&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-grafana-custom-resources&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana相关configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;create-custom-resources-job.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-grafana-post-install-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana post install相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-grafana-post-install-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana post install相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-grafana-post-install-role-binding-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana post install相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Job&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-grafana-post-install&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana post install相关job&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;grafana&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;grafana-ports-mtls.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Policy&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;grafana-ports-mtls-disabled&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;对grafana访问开启mtls&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;pvc.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;PersistentVolumeClaim&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-grafana-pvc&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;如果persist设置为true，则为grafana新建pvc和pv&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;secret.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Secret&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;grafana&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;如果security.enabled设置为true，则为grafana启用authn&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;grafana&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义grafana相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;12&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;servicegraph默认关闭&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义servicegraph chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;servicegraph&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义servicegraph相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ingress.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;servicegraph&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义servicegraph相关ingress&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;servicegraph&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义servicegraph相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;13&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tracing默认关闭&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义tracing chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-tracing&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义jaeger tracing相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ingress-jaeger.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;jaeger-query&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义jaeger tracing相关ingress&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ingress.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tracing&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义zipkin tracing相关ingress&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service-jaeger.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;jaeger-query&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义jaeger tracing query相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;jaeger-collector&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义jaeger tracing collector相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;jaeger-agent&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义jaeger tracing agent相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;zipkin&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义zipkin tracing相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;tracing&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义jaeger tracing相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;14&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali默认关闭&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrole.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterrolebinding.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;istio-kiali-admin-role-binding-{{ .Release.Namespace }}&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;configmap.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ConfigMap&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关configmap&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ingress.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Ingress&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关ingress&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;secrets.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Secret&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关secret&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;service.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Service&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关service&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;serviceaccount.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;kiali-service-account&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义kiali相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;15&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;certmanager默认关闭&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;_helpers.tpl&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;无&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义certmanager chart中一些变量的默认值&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;crds.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;CustomResourceDefinition&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;clusterissuers.certmanager.k8s.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义certmanager相关crd&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;CustomResourceDefinition&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;issuers.certmanager.k8s.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;CustomResourceDefinition&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;certificates.certmanager.k8s.io&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;deployment.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;Deployment&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;certmanager&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义certmanager相关deployment&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;issuer.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterIssuer&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;letsencrypt-staging&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义certmanager相关clusterissuer&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterIssuer&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;letsencrypt&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;rbac.yaml&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRole&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;certmanager&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义certmanager相关clusterrole&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ClusterRoleBinding&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;certmanager&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义certmanager相关clusterrolebinding&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td class=&#34;tg-baqh&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;certmanager&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;ServiceAccount&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;certmanager&lt;/td&gt;
+    &lt;td class=&#34;tg-0lax&#34;&gt;用于定义certmanager相关serviceaccount&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>暴露 Istio Service Mesh 中的 Gateway</title>
       <link>https://www.yangcs.net/posts/expose-gateway-of-istio/</link>
       <pubDate>Mon, 17 Sep 2018 13:14:55 +0800</pubDate>
@@ -7740,507 +9465,6 @@ sum(rate(istio_request_bytes_count[1m])) by (source_app,destination_service,resp
 
 &lt;li&gt;&lt;p&gt;提交 Issue——如果遇到问题无法解决请提交 Issue：&lt;a href=&#34;https://github.com/nmnellis/vistio/issues&#34; target=&#34;_blank&#34;&gt;https://github.com/nmnellis/vistio/issues&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>Istio 服务网格中的网关</title>
-      <link>https://www.yangcs.net/posts/istio-ingress/</link>
-      <pubDate>Thu, 02 Aug 2018 13:29:08 +0800</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/istio-ingress/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;在一个典型的网格中，通常有一个或多个用于终结外部 TLS 链接，将流量引入网格的负载均衡器（我们称之为 gateway）。 然后流量通过边车网关（sidecar gateway）流经内部服务。 应用程序使用外部服务的情况也很常见（例如访问 Google Maps API），一些情况下，这些外部服务可能被直接调用；但在某些部署中，网格中所有访问外部服务的流量可能被要求强制通过专用的出口网关（Egress gateway）。 下图描绘了网关在网格中的使用情况。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://istio.io/blog/2018/v1alpha3-routing/gateways.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;em&gt;Istio服务网格中的网关&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;p&gt;其中 &lt;code&gt;Gateway&lt;/code&gt; 是一个独立于平台的抽象，用于对流入专用中间设备的流量进行建模。下图描述了跨多个配置资源的控制流程。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://istio.io/blog/2018/v1alpha3-routing/virtualservices-destrules.svg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;em&gt;不同v1alpha3元素之间的关系&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-1-gateway-介绍-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. Gateway 介绍&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#Gateway&#34; target=&#34;_blank&#34;&gt;Gateway&lt;/a&gt; 用于为 HTTP / TCP 流量配置负载均衡器，并不管该负载均衡器将在哪里运行。 网格中可以存在任意数量的 Gateway，并且多个不同的 Gateway 实现可以共存。 实际上，通过在配置中指定一组工作负载（Pod）标签，可以将 Gateway 配置绑定到特定的工作负载，从而允许用户通过编写简单的 Gateway Controller 来重用现成的网络设备。&lt;/p&gt;
-
-&lt;p&gt;对于入口流量管理，您可能会问： 为什么不直接使用 Kubernetes Ingress API ？ 原因是 Ingress API 无法表达 Istio 的路由需求。 Ingress 试图在不同的 HTTP 代理之间取一个公共的交集，因此只能支持最基本的 HTTP 路由，最终导致需要将代理的其他高级功能放入到注解（annotation）中，而注解的方式在多个代理之间是不兼容的，无法移植。&lt;/p&gt;
-
-&lt;p&gt;Istio &lt;code&gt;Gateway&lt;/code&gt; 通过将 L4-L6 配置与 L7 配置分离的方式克服了 &lt;code&gt;Ingress&lt;/code&gt; 的这些缺点。 &lt;code&gt;Gateway&lt;/code&gt; 只用于配置 L4-L6 功能（例如，对外公开的端口，TLS 配置），所有主流的L7代理均以统一的方式实现了这些功能。 然后，通过在 &lt;code&gt;Gateway&lt;/code&gt; 上绑定 &lt;code&gt;VirtualService&lt;/code&gt; 的方式，可以使用标准的 Istio 规则来控制进入 &lt;code&gt;Gateway&lt;/code&gt; 的 HTTP 和 TCP 流量。&lt;/p&gt;
-
-&lt;p&gt;例如，下面这个简单的 &lt;code&gt;Gateway&lt;/code&gt; 配置了一个 Load Balancer，以允许访问 host &lt;code&gt;bookinfo.com&lt;/code&gt; 的 https 外部流量进入网格中：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: networking.istio.io/v1alpha3
-kind: Gateway
-metadata:
-  name: bookinfo-gateway
-spec:
-  servers:
-  - port:
-      number: 80
-      name: http
-      protocol: HTTP
-    hosts:
-    - bookinfo.com
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;要为进入上面的 Gateway 的流量配置相应的路由，必须为同一个 host 定义一个 &lt;a href=&#34;https://www.yangcs.net/posts/istio-traffic-management/&#34; target=&#34;_blank&#34;&gt;VirtualService&lt;/a&gt;（参考上一篇博文），并使用配置中的 &lt;code&gt;gateways&lt;/code&gt; 字段绑定到前面定义的 &lt;code&gt;Gateway&lt;/code&gt; 上：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: bookinfo
-spec:
-  hosts:
-    - bookinfo.com
-  gateways:
-  - bookinfo-gateway # &amp;lt;---- bind to gateway
-    http:
-  - match:
-    - uri:
-        prefix: /reviews
-    route:
-    ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图所示。 无论在哪个位置，所有网关都可以用相同的方式进行配置和控制。&lt;/p&gt;
-
-&lt;p&gt;下面通过一个示例来演示如何配置 Istio 以使用 Istio  Gateway 在服务网格外部公开服务。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-2-使用-istio-网关配置-ingress-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 使用 Istio 网关配置 Ingress&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;让我们看看如何为 Gateway 在 HTTP 80 端口上配置流量。&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;创建一个 Istio Gateway&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  $ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
-  apiVersion: networking.istio.io/v1alpha3
-  kind: Gateway
-  metadata:
-    name: httpbin-gateway
-  spec:
-    selector:
-      istio: ingressgateway # use Istio default gateway implementation
-    servers:
-    - port:
-        number: 80
-        name: http
-        protocol: HTTP
-      hosts:
-      - &amp;quot;httpbin.example.com&amp;quot;
-  EOF    
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;为通过 Gateway 进入的流量配置路由&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;  $ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
-  apiVersion: networking.istio.io/v1alpha3
-  kind: VirtualService
-  metadata:
-    name: httpbin
-  spec:
-    hosts:
-    - &amp;quot;httpbin.example.com&amp;quot;
-    gateways:
-    - httpbin-gateway
-    http:
-    - match:
-      - uri:
-          prefix: /status
-      - uri:
-          prefix: /delay
-      route:
-      - destination:
-          port:
-            number: 8000
-          host: httpbin
-  EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;在这里，我们 为服务创建了一个 &lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService&#34; target=&#34;_blank&#34;&gt;VirtualService&lt;/a&gt; 配置 &lt;code&gt;httpbin&lt;/code&gt; ，其中包含两条路由规则，允许路径 &lt;code&gt;/status&lt;/code&gt; 和 路径的流量 &lt;code&gt;/delay&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;该&lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#VirtualService-gateways&#34; target=&#34;_blank&#34;&gt;网关&lt;/a&gt;列表指定，只有通过我们的要求 &lt;code&gt;httpbin-gateway&lt;/code&gt; 是允许的。所有其他外部请求将被拒绝，并返回 404 响应。&lt;/p&gt;
-
-&lt;p&gt;请注意，在此配置中，来自网格中其他服务的内部请求不受这些规则约束，而是简单地默认为循环路由。要将这些（或其他规则）应用于内部调用，我们可以&lt;strong&gt;将特殊值 &lt;code&gt;mesh&lt;/code&gt; 添加到 &lt;code&gt;gateways&lt;/code&gt; 的列表中&lt;/strong&gt;。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;使用 curl 访问 httpbin 服务。&lt;/p&gt;
-
-&lt;p&gt;首先获取 Ingress Gateway 的 IP 和 端口，参考上一篇文章：&lt;a href=&#34;https://www.yangcs.net/posts/istio-traffic-management/&#34; target=&#34;_blank&#34;&gt;Istio 流量管理&lt;/a&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl -I -HHost:httpbin.example.com http://$INGRESS_HOST:$INGRESS_PORT/status/200
-    
-HTTP/1.1 200 OK
-server: envoy
-date: Thu, 02 Aug 2018 04:18:41 GMT
-content-type: text/html; charset=utf-8
-access-control-allow-origin: *
-access-control-allow-credentials: true
-content-length: 0
-x-envoy-upstream-service-time: 9
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;请注意，我们使用该 &lt;code&gt;-H&lt;/code&gt; 标志将 Host &lt;code&gt;HTTP Header&lt;/code&gt; 设置为 “httpbin.example.com”。这是必需的，因为我们的 ingress &lt;code&gt;Gateway&lt;/code&gt; 被配置为处理 “httpbin.example.com”，但在我们的测试环境中，我们没有该主机的 DNS 绑定，并且只是将我们的请求发送到 ingress IP。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;访问任何未明确公开的其他 URL。您应该看到一个 HTTP 404 错误：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl -I -HHost:httpbin.example.com http://$INGRESS_HOST:$INGRESS_PORT/headers
-    
-HTTP/1.1 404 Not Found
-date: Thu, 02 Aug 2018 04:21:39 GMT
-server: envoy
-transfer-encoding: chunked
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-3-使用浏览器访问-ingress-服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 使用浏览器访问 Ingress 服务&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果你想在浏览器中输入 httpbin 服务的 URL 来访问是行不通的，因为我们没有办法像使用 curl 一样告诉浏览器假装访问 &lt;code&gt;httpbin.example.com&lt;/code&gt;，只能通过向 &lt;code&gt;/etc/hosts&lt;/code&gt; 文件中添加 hosts 来解决这个问题。&lt;/p&gt;
-
-&lt;p&gt;但是麻烦又来了，目前这种状况下即使你添加了 hosts，也仍然无法访问，因为 Istio Gateway 使用的是 NodePort 模式，暴露出来的不是 80 端口和 443 端口，而我们要想通过域名来访问服务，必须要求 Gateway 暴露出来的端口是 80 和 443。&lt;/p&gt;
-
-&lt;p&gt;所以我们只能曲线救国了，通过修改 Ingress Gateway 的 &lt;code&gt;Deployment&lt;/code&gt;，将 80 端口和 443 端口配置为 &lt;code&gt;hostPort&lt;/code&gt; 模式，然后再通过 Node 亲和性将 &lt;code&gt;Gateway&lt;/code&gt; 调度到某个固定的主机上。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl -n istio-system edit deployment istio-ingressgateway
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: istio-ingressgateway
-  namespace: istio-system
-  ...
-spec:
-  ...
-  template:
-    ...
-    spec:
-      affinity:
-        nodeAffinity:
-          ...
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - 192.168.123.248   # 比如你想调度到这台主机上
-      containers:
-        - name: ISTIO_META_POD_NAME
-        ...
-        - containerPort: 80
-          hostPort: 80
-          protocol: TCP
-        - containerPort: 443
-          hostPort: 443
-          protocol: TCP
-        ...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;修改完之后保存退出，等待 Gateway 的 Pod 重新调度，然后在你的浏览器所在的本地电脑上添加一条 hosts：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;192.168.123.248 httpbin.example.com
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重新配置 &lt;code&gt;VirtualService&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$  cat &amp;lt;&amp;lt;EOF | istioctl replace -f -
- apiVersion: networking.istio.io/v1alpha3
- kind: VirtualService
- metadata:
-   name: httpbin
- spec:
-   hosts:
-   - &amp;quot;httpbin.example.com&amp;quot;
-     gateways:
-   - httpbin-gateway
-     http:
-   - match:
-     - uri:
-         prefix: /status
-     - uri:
-         prefix: /delay
-     - uri:
-         prefix: /headers
-     route:
-     - destination:
-         port:
-           number: 8000
-         host: httpbin
- EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;接下来就可以在浏览器中输入 URL：&lt;code&gt;http://httpbin.example.com/headers&lt;/code&gt; 来访问服务啦！&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-4-清理-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 清理&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;删除 Gateway、VirtualService 和 httpbin 服务：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl delete gateway httpbin-gateway
-$ istioctl delete virtualservice httpbin
-$ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-5-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 参考&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://istio.io/zh/docs/tasks/traffic-management/ingress/&#34; target=&#34;_blank&#34;&gt;控制 Ingress 流量&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://istio.io/zh/docs/concepts/traffic-management/#gateway&#34; target=&#34;_blank&#34;&gt;Gateway&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 

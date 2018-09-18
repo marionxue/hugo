@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Istio CRD 汇总与 Helm Chart 配置解析</title>
+      <link>https://www.yangcs.net/posts/istio-helm-chart-and-crd/</link>
+      <pubDate>Tue, 18 Sep 2018 19:11:16 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-helm-chart-and-crd/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>暴露 Istio Service Mesh 中的 Gateway</title>
       <link>https://www.yangcs.net/posts/expose-gateway-of-istio/</link>
       <pubDate>Mon, 17 Sep 2018 13:14:55 +0800</pubDate>
