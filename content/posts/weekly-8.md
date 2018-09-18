@@ -30,6 +30,8 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 #### 1. [Google 为 Chrome 浏览器带来了全新 UI](http://bbs.chongbuluo.com/thread-5360-1-1.html)
 
+{{< figure src="http://o7z41ciog.bkt.clouddn.com/chromenewdesign.0.jpg" title="Steve Francia" >}}
+
 ![](http://o7z41ciog.bkt.clouddn.com/chromenewdesign.0.jpg)
 
 2018 年 9 月 5 日，谷歌浏览器首次推出 10 年后，Chrome 焕然一新。新设计包括圆形和标签，清新的调色板和更新的图标。 Google 正在更新整个 Chrome 以包含此新用户界面，并更改地址栏中的提示，菜单和网址以匹配新设计。这是一场大修。
