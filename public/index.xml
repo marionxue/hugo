@@ -1191,15 +1191,15 @@ border-top-color: #9954bb;
 &lt;h3 id=&#34;istio-helm-chart-的安装配置解析&#34;&gt;Istio Helm Chart 的安装配置解析&lt;/h3&gt;
 
 &lt;p&gt;&lt;style type=&#34;text/css&#34;&gt;
-.tg  {border-collapse:collapse;border-spacing:0;border-color:#bbb;}
-.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#594F4F;background-color:#E0FFEB;}
-.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#bbb;color:#493F3F;background-color:#9DE0AD;}
+.tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#669;background-color:#e8edff;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:#aabcfe;color:#039;background-color:#b9c9fe;}
 .tg .tg-baqh{text-align:center;vertical-align:top}
 .tg .tg-0lax{text-align:left;vertical-align:top}
 &lt;/style&gt;
-&lt;table class=&#34;tg&#34; style=&#34;undefined;table-layout: fixed; width: 1281px&#34;&gt;
+&lt;table class=&#34;tg&#34; style=&#34;undefined;table-layout: fixed; width: 1290px&#34;&gt;
 &lt;colgroup&gt;
-&lt;col style=&#34;width: 51px&#34;&gt;
+&lt;col style=&#34;width: 60px&#34;&gt;
 &lt;col style=&#34;width: 161px&#34;&gt;
 &lt;col style=&#34;width: 251px&#34;&gt;
 &lt;col style=&#34;width: 214px&#34;&gt;
