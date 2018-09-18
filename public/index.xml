@@ -17,6 +17,8 @@
       <guid>https://www.yangcs.net/posts/linux-circumvent/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
+&lt;p id=&#34;div-border-left-red&#34;&gt;Github 地址：&lt;a href=&#34;https://github.com/yangchuansheng/love-gfw&#34; target=&#34;_blank&#34;&gt;Linux 和 MacOS 设备智能分流方案&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;&lt;strong&gt;本来我是决定不再写这样的文章了的。但是呢，最近连续配置了两次 &lt;code&gt;ArchLinux&lt;/code&gt;，在配置这种东西的时候连续撞到了同样的坑，加上这段时间经常有人问我关于 &lt;code&gt;Linux&lt;/code&gt; 下的 &lt;code&gt;shadowsocks&lt;/code&gt; 的问题，所以我想了想还是写一篇记录一下吧，也免得自己以后再忘记了。&lt;/strong&gt;&lt;/p&gt;
 
 &lt;hr /&gt;
@@ -568,7 +570,238 @@ net.ipv4.tcp_synack_retries = 5
 &lt;p&gt;编辑完成后，执行以下命令使变动立即生效&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ sysctl -p
-&lt;/code&gt;&lt;/pre&gt;</description>
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#blue {
+color: #2780e3;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
     </item>
     
     <item>
