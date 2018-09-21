@@ -812,6 +812,8 @@ border-top-color: #9954bb;
       <guid>https://www.yangcs.net/posts/increasing-security-of-istio-deployments/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
+&lt;p id=&#34;div-border-left-red&#34;&gt;原文链接：&lt;a href=&#34;https://blog.openshift.com/increasing-security-of-istio-deployments-by-removing-the-need-for-privileged-containers/&#34; target=&#34;_blank&#34;&gt;Increasing Security of Istio Deployments by Removing the Need for Privileged Containers&lt;/a&gt;&lt;/p&gt;
+
 &lt;p&gt;随着 1.0 版本的发布，&lt;code&gt;Istio&lt;/code&gt; 正在为开发云原生应用并希望采用服务网格解决方案的公司准备黄金时间。但是，有一个潜在的问题可能会降低这些公司的采用率：服务网格内的 &lt;code&gt;Pod&lt;/code&gt; 需要提升权限才能正常运行。&lt;/p&gt;
 
 &lt;p&gt;为了从一定程度上缓解这个问题，本文将介绍一个新的工具：&lt;a href=&#34;https://github.com/sabre1041/istio-pod-network-controller&#34; target=&#34;_blank&#34;&gt;istio-pod-network-controller&lt;/a&gt;.&lt;/p&gt;

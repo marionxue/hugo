@@ -10,6 +10,8 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
+<p id="div-border-left-red">原文链接：<a href="https://blog.openshift.com/increasing-security-of-istio-deployments-by-removing-the-need-for-privileged-containers/" target="_blank">Increasing Security of Istio Deployments by Removing the Need for Privileged Containers</a></p>
+
 随着 1.0 版本的发布，`Istio` 正在为开发云原生应用并希望采用服务网格解决方案的公司准备黄金时间。但是，有一个潜在的问题可能会降低这些公司的采用率：服务网格内的 `Pod` 需要提升权限才能正常运行。
 
 为了从一定程度上缓解这个问题，本文将介绍一个新的工具：[istio-pod-network-controller](https://github.com/sabre1041/istio-pod-network-controller).
