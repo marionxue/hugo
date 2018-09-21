@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/increasing-security-of-istio-deployments/</loc>
+    <lastmod>2018-09-21T13:10:18+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/istio-helm-chart-and-crd/</loc>
     <lastmod>2018-09-18T19:11:16+08:00</lastmod>
   </url>
@@ -329,7 +334,7 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/istio/</loc>
-    <lastmod>2018-09-18T19:11:16+08:00</lastmod>
+    <lastmod>2018-09-21T13:10:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -389,13 +394,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/service-mesh/</loc>
-    <lastmod>2018-09-18T19:11:16+08:00</lastmod>
+    <lastmod>2018-09-21T13:10:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/service-mesh/</loc>
-    <lastmod>2018-09-18T19:11:16+08:00</lastmod>
+    <lastmod>2018-09-21T13:10:18+08:00</lastmod>
     <priority>0</priority>
   </url>
   

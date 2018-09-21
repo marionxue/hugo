@@ -6,10 +6,19 @@
     <description>Recent content in Service Mesh on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 18 Sep 2018 19:11:16 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 21 Sep 2018 13:10:18 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/categories/service-mesh/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>通过消除对特权容器的需求来提高 Istio Deployment 的安全性</title>
+      <link>https://www.yangcs.net/posts/increasing-security-of-istio-deployments/</link>
+      <pubDate>Fri, 21 Sep 2018 13:10:18 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/increasing-security-of-istio-deployments/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Istio CRD 汇总与 Helm Chart 配置解析</title>
