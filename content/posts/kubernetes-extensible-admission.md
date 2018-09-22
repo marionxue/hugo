@@ -92,6 +92,8 @@ Webhook Admission 插件允许对任何 API server 的任何资源进行修改�
 + **复杂的 CustomResource 验证：**因为整个对象是可见的，所以插件可以对字段间依赖（A 需要 B）甚至外部资源（对比 `LimitRanges`）进行复杂的验证。
 + **安全响应：**如果你把镜像 tag 改成了 `SHA`，你可以通过写一个插件来阻止对应某些 SHA 的镜像运行。
 
+<br />
+
 #### 注册
 
 这两种类型的 Webhook Admission 插件都需要在 API 中注册，所有 API servers（`kube-apiserver` 和所有扩展 API servers ）都共享一个通用配置。在注册过程中，一个 Webhook Admission 插件描述了以下信息：

@@ -904,6 +904,8 @@ border-top-color: #9954bb;
 &lt;li&gt;&lt;strong&gt;安全响应：&lt;/strong&gt;如果你把镜像 tag 改成了 &lt;code&gt;SHA&lt;/code&gt;，你可以通过写一个插件来阻止对应某些 SHA 的镜像运行。&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h4 id=&#34;注册&#34;&gt;注册&lt;/h4&gt;
 
 &lt;p&gt;这两种类型的 Webhook Admission 插件都需要在 API 中注册，所有 API servers（&lt;code&gt;kube-apiserver&lt;/code&gt; 和所有扩展 API servers ）都共享一个通用配置。在注册过程中，一个 Webhook Admission 插件描述了以下信息：&lt;/p&gt;
