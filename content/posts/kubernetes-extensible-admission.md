@@ -76,8 +76,8 @@ Kubernetes 1.10 之前的版本可以使用 `--admission-control` 打开准入�
 
 目前 Kubernetes 中已经有非常多的 Admission 插件， 但是并不能保证满足所有开发者的需求。 众所周知，Kbernetes 之所以受到推崇，它的可扩展能力功不可没。Admission 也提供了一种 webhook 的扩展机制。
 
-+ MutatingAdmissionWebhook：在对象持久化之前进行修改
-+ ValidatingAdmissionWebhook：在对象持久化之前进行校验
++ `MutatingAdmissionWebhook` ：在对象持久化之前进行修改
++ `ValidatingAdmissionWebhook` ：在对象持久化之前进行校验
 
 Admission Webhook 允许 Kubernetes 安装人员或集群管理员，不需要进行重新编译，就可以直接添加修改（Mutation）和验证（Validation）这两种插件到 `kube-apiserver` 和任何基于 k8s.io/apiserver 1.9 扩展的 apiserver (如 `metrics`, `service-catalog`, `kube-projects` 等) 准入链中。这两种 Admission Webhook 插件分别会在修改和验证链的最后执行，与编译的准入插件具有相同的功能。
 
@@ -101,6 +101,8 @@ Webhook Admission 插件允许对任何 API server 的任何资源进行修改�
 + 数据应该发送到 Server 的哪个 URL 路径
 + 它将处理哪些资源和哪些 HTTP 动词
 + API server 在连接失败后应该做什么（例如如果 Webhook Admission Server 停止服务了）
+
+<br />
 
 ```yaml
 apiVersion: admissionregistration.k8s.io/v1beta1
@@ -127,10 +129,16 @@ webhooks:
   failurePolicy: Fail  ④
 ```
 
+<br />
+
 + ① <span id="inline-blue">name</span> : Webhook 的名称。mutating Webhooks 会根据名称进行排序。
+
 + ② <span id="inline-blue">clientConfig</span> : 提供关于如何连接、信任以及发送数据给 Webhook Admission Server 的信息。
+
 + ③ <span id="inline-blue">rules</span> : 用来描述 API server 应该在什么时候调用 Admission 插件。在这个例子中，只有创建 `Namespace` 的时候才触发。你可以指定任何资源，例如 serviceinstances.servicecatalog.k8s.io 的 create 操作也是可行的。
+
 + ④ <span id="inline-blue">failurePolicy</span> : 如果 Webhook Admission Server 无法连接时如何处理。有两个选项分别是 “Ignore”（故障时开放） 和 “Fail”（故障时关闭）。“故障时开放”可能会导致无法预测的行为。
+
 + ⑤ <span id="inline-blue">caBundle</span> : 注意 API server 调用 Webhook 时一定是通过 TLS 认证的，所以 MutatingWebhookConfiguration 中一定要配置 caBundle。
 
 <div id="note">
@@ -214,6 +222,8 @@ Webhook Admission 属于同步调用，需要用户部署自己的 webhook serve
    return &reviewResponse
    }
 ```
+
+<br />
 
 #### 部署 Webhook Server
 
@@ -355,6 +365,8 @@ func mutatePods(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 }
 ```
 
+<br />
+
 #### 创建 Pod
 
 ```bash
@@ -372,6 +384,8 @@ spec:
   - image: k8s.gcr.io/pause:3.1
     name: example
 ```
+
+<br />
 
 #### 查询 Pod
 

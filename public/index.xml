@@ -885,8 +885,8 @@ border-top-color: #9954bb;
 &lt;p&gt;目前 Kubernetes 中已经有非常多的 Admission 插件， 但是并不能保证满足所有开发者的需求。 众所周知，Kbernetes 之所以受到推崇，它的可扩展能力功不可没。Admission 也提供了一种 webhook 的扩展机制。&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;MutatingAdmissionWebhook：在对象持久化之前进行修改&lt;/li&gt;
-&lt;li&gt;ValidatingAdmissionWebhook：在对象持久化之前进行校验&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;MutatingAdmissionWebhook&lt;/code&gt; ：在对象持久化之前进行修改&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ValidatingAdmissionWebhook&lt;/code&gt; ：在对象持久化之前进行校验&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Admission Webhook 允许 Kubernetes 安装人员或集群管理员，不需要进行重新编译，就可以直接添加修改（Mutation）和验证（Validation）这两种插件到 &lt;code&gt;kube-apiserver&lt;/code&gt; 和任何基于 k8s.io/apiserver 1.9 扩展的 apiserver (如 &lt;code&gt;metrics&lt;/code&gt;, &lt;code&gt;service-catalog&lt;/code&gt;, &lt;code&gt;kube-projects&lt;/code&gt; 等) 准入链中。这两种 Admission Webhook 插件分别会在修改和验证链的最后执行，与编译的准入插件具有相同的功能。&lt;/p&gt;
@@ -916,6 +916,8 @@ border-top-color: #9954bb;
 &lt;li&gt;API server 在连接失败后应该做什么（例如如果 Webhook Admission Server 停止服务了）&lt;/li&gt;
 &lt;/ul&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
@@ -940,12 +942,18 @@ webhooks:
   failurePolicy: Fail  ④
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;ul&gt;
-&lt;li&gt;① &lt;span id=&#34;inline-blue&#34;&gt;name&lt;/span&gt; : Webhook 的名称。mutating Webhooks 会根据名称进行排序。&lt;/li&gt;
-&lt;li&gt;② &lt;span id=&#34;inline-blue&#34;&gt;clientConfig&lt;/span&gt; : 提供关于如何连接、信任以及发送数据给 Webhook Admission Server 的信息。&lt;/li&gt;
-&lt;li&gt;③ &lt;span id=&#34;inline-blue&#34;&gt;rules&lt;/span&gt; : 用来描述 API server 应该在什么时候调用 Admission 插件。在这个例子中，只有创建 &lt;code&gt;Namespace&lt;/code&gt; 的时候才触发。你可以指定任何资源，例如 serviceinstances.servicecatalog.k8s.io 的 create 操作也是可行的。&lt;/li&gt;
-&lt;li&gt;④ &lt;span id=&#34;inline-blue&#34;&gt;failurePolicy&lt;/span&gt; : 如果 Webhook Admission Server 无法连接时如何处理。有两个选项分别是 “Ignore”（故障时开放） 和 “Fail”（故障时关闭）。“故障时开放”可能会导致无法预测的行为。&lt;/li&gt;
-&lt;li&gt;⑤ &lt;span id=&#34;inline-blue&#34;&gt;caBundle&lt;/span&gt; : 注意 API server 调用 Webhook 时一定是通过 TLS 认证的，所以 MutatingWebhookConfiguration 中一定要配置 caBundle。&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;① &lt;span id=&#34;inline-blue&#34;&gt;name&lt;/span&gt; : Webhook 的名称。mutating Webhooks 会根据名称进行排序。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;② &lt;span id=&#34;inline-blue&#34;&gt;clientConfig&lt;/span&gt; : 提供关于如何连接、信任以及发送数据给 Webhook Admission Server 的信息。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;③ &lt;span id=&#34;inline-blue&#34;&gt;rules&lt;/span&gt; : 用来描述 API server 应该在什么时候调用 Admission 插件。在这个例子中，只有创建 &lt;code&gt;Namespace&lt;/code&gt; 的时候才触发。你可以指定任何资源，例如 serviceinstances.servicecatalog.k8s.io 的 create 操作也是可行的。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;④ &lt;span id=&#34;inline-blue&#34;&gt;failurePolicy&lt;/span&gt; : 如果 Webhook Admission Server 无法连接时如何处理。有两个选项分别是 “Ignore”（故障时开放） 和 “Fail”（故障时关闭）。“故障时开放”可能会导致无法预测的行为。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;⑤ &lt;span id=&#34;inline-blue&#34;&gt;caBundle&lt;/span&gt; : 注意 API server 调用 Webhook 时一定是通过 TLS 认证的，所以 MutatingWebhookConfiguration 中一定要配置 caBundle。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div id=&#34;note&#34;&gt;
@@ -1034,6 +1042,8 @@ webhooks:
    return &amp;amp;reviewResponse
    }
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;部署-webhook-server&#34;&gt;部署 Webhook Server&lt;/h4&gt;
 
@@ -1170,6 +1180,8 @@ webhooks:
 }
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h4 id=&#34;创建-pod&#34;&gt;创建 Pod&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl create –f pod.yaml
@@ -1185,6 +1197,8 @@ spec:
   - image: k8s.gcr.io/pause:3.1
     name: example
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;查询-pod&#34;&gt;查询 Pod&lt;/h4&gt;
 
