@@ -6,10 +6,19 @@
     <description>Recent content in Kubernetes on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 27 Aug 2018 18:11:52 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 22 Sep 2018 11:17:11 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Kubernets 准入控制介绍</title>
+      <link>https://www.yangcs.net/posts/kubernetes-extensible-admission/</link>
+      <pubDate>Sat, 22 Sep 2018 11:17:11 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-extensible-admission/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Kubernetes DNS 高阶指南</title>

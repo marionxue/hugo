@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Kubernets 准入控制介绍</title>
+      <link>https://www.yangcs.net/posts/kubernetes-extensible-admission/</link>
+      <pubDate>Sat, 22 Sep 2018 11:17:11 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-extensible-admission/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>通过消除对特权容器的需求来提高 Istio Deployment 的安全性</title>
       <link>https://www.yangcs.net/posts/increasing-security-of-istio-deployments/</link>
       <pubDate>Fri, 21 Sep 2018 13:10:18 +0800</pubDate>
