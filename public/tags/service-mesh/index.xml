@@ -6,10 +6,19 @@
     <description>Recent content in Service Mesh on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 21 Sep 2018 13:10:18 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Sep 2018 17:43:00 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/service-mesh/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>为 Envoy 开启 TLS 验证实战</title>
+      <link>https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/</link>
+      <pubDate>Wed, 26 Sep 2018 17:43:00 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>通过消除对特权容器的需求来提高 Istio Deployment 的安全性</title>
