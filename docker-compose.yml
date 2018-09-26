@@ -1,0 +1,43 @@
+version: '2'
+services:
+
+  front-envoy:
+    image: envoyproxy/envoy
+    restart: always
+    volumes:
+      - ./front-envoy.yaml:/etc/envoy/envoy.yaml
+      - /etc/letsencrypt:/etc/letsencrypt
+    labels:
+      EnvironmentName: "proxy"
+      ServiceName: "envoy"
+      ProxyMode: "tcp"
+    networks:
+      - default
+    expose:
+      - "80"
+      - "443"
+    ports:
+      - "80:80"
+      - "443:443"
+
+  hugo:
+    image: nginx:alpine
+    restart: always
+    volumes:
+      - /home/hugo/public:/usr/share/nginx/html
+    networks:
+      - default
+    expose:
+      - "8080"
+
+  service-envoy:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    volumes:
+      - ./service-envoy.yaml:/etc/envoy/envoy.yaml
+    network_mode: "service:hugo"
+
+networks:
+  default:
+    external:
+      name: yang
