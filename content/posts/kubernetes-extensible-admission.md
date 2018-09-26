@@ -1,5 +1,5 @@
 ---
-title: "Kubernets 准入控制介绍"
+title: "Kubernetes 准入控制介绍"
 subtitle: "通过 Adminssion Webhook 扩展准入控制"
 date: 2018-09-22T11:17:11+08:00
 draft: false
