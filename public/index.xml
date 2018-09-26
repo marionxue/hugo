@@ -875,6 +875,8 @@ networks:
       name: yang ④
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;ul&gt;
 &lt;li&gt;① : 将博客的静态页面挂载到 nginx 的 &lt;code&gt;root&lt;/code&gt; 目录。&lt;/li&gt;
 &lt;li&gt;② : 将服务 Envoy 的配置文件挂载到 Envoy 容器中。&lt;/li&gt;
@@ -926,6 +928,8 @@ admin:
       address: 0.0.0.0
       port_value: 8081
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;① &lt;code&gt;8080&lt;/code&gt; : 服务 Envoy 的监听端口。&lt;/li&gt;
@@ -1041,6 +1045,8 @@ admin:
       address: 0.0.0.0
       port_value: 8001
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;① : 编码/解码方式。参考：&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#enum-config-filter-network-http-connection-manager-v2-httpconnectionmanager-codectype&#34; target=&#34;_blank&#34;&gt;HttpConnectionManager.CodecType&lt;/a&gt;&lt;/li&gt;

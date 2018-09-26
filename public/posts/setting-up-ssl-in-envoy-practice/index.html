@@ -469,6 +469,8 @@ networks:
       name: yang ④
 </code></pre>
 
+<p><br /></p>
+
 <ul>
 <li>① : 将博客的静态页面挂载到 nginx 的 <code>root</code> 目录。</li>
 <li>② : 将服务 Envoy 的配置文件挂载到 Envoy 容器中。</li>
@@ -520,6 +522,8 @@ admin:
       address: 0.0.0.0
       port_value: 8081
 </code></pre>
+
+<p><br /></p>
 
 <ul>
 <li>① <code>8080</code> : 服务 Envoy 的监听端口。</li>
@@ -635,6 +639,8 @@ admin:
       address: 0.0.0.0
       port_value: 8001
 </code></pre>
+
+<p><br /></p>
 
 <ul>
 <li>① : 编码/解码方式。参考：<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#enum-config-filter-network-http-connection-manager-v2-httpconnectionmanager-codectype" target="_blank">HttpConnectionManager.CodecType</a></li>

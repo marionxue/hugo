@@ -70,6 +70,8 @@ networks:
       name: yang ④
 ```
 
+<br />
+
 + ① : 将博客的静态页面挂载到 nginx 的 `root` 目录。
 + ② : 将服务 Envoy 的配置文件挂载到 Envoy 容器中。
 + ③ : 与 hugo 容器共享 `network namespace`。
@@ -120,6 +122,8 @@ admin:
       address: 0.0.0.0
       port_value: 8081
 ```
+
+<br />
 
 + ① `8080` : 服务 Envoy 的监听端口。
 + ② `80` : hugo 静态页面的监听端口。
@@ -235,6 +239,8 @@ admin:
       address: 0.0.0.0
       port_value: 8001
 ```
+
+<br />
 
 + ① : 编码/解码方式。参考：[HttpConnectionManager.CodecType](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#enum-config-filter-network-http-connection-manager-v2-httpconnectionmanager-codectype)
 + ② : 允许访问的域名（这里使用公网可以访问的域名）。
