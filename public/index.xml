@@ -805,6 +805,554 @@ border-top-color: #9954bb;
     </item>
     
     <item>
+      <title>初试 Kubernetes 集群中使用 Contour 反向代理</title>
+      <link>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</link>
+      <pubDate>Fri, 28 Sep 2018 16:38:15 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p&gt;在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 &lt;code&gt;L7&lt;/code&gt; 层实现高效流畅的入口流量管理。自从第一批 &lt;code&gt;Kubernetes Ingress Controller&lt;/code&gt; 开发完成以来，&lt;code&gt;Envoy&lt;/code&gt;（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。&lt;/p&gt;
+
+&lt;p&gt;容器公司 &lt;a href=&#34;https://heptio.com/&#34; target=&#34;_blank&#34;&gt;Heptio&lt;/a&gt; 开源的项目 &lt;a href=&#34;https://github.com/heptio/contour&#34; target=&#34;_blank&#34;&gt;Contour&lt;/a&gt; 使用 &lt;code&gt;Envoy&lt;/code&gt; 作为 Kubernetes 的 Ingress Controller 实现，为大家提供了一条新的 Kubernetes 外部负载均衡实现思路。&lt;/p&gt;
+
+&lt;p&gt;据&lt;a href=&#34;https://blog.heptio.com/making-it-easy-to-use-envoy-as-a-kubernetes-load-balancer-dde82959f171&#34; target=&#34;_blank&#34;&gt;官方博客&lt;/a&gt;介绍，&lt;code&gt;Heptio Contour&lt;/code&gt; 可以为用户提供以下好处：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;一种简单的安装机制来快速部署和集成 Envoy。&lt;/li&gt;
+&lt;li&gt;与 Kubernetes 对象模型的集成。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Ingress&lt;/code&gt; 配置的动态更新，而无需重启底层负载均衡器。&lt;/li&gt;
+&lt;li&gt;项目成熟后，将允许使用 Envoy 一些强大的功能，如熔断器、插件式的处理器链，以及可观测性和可调试性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;下面我们就来试用一下。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-1-安装步骤-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 安装步骤&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;首先克隆官方仓库，进入 manifest 清单目录：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/heptio/contour
+$ cd contour/deployment/deployment-grpc-v2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;修改 &lt;code&gt;Deployment&lt;/code&gt; YAML 文件：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: contour
+  name: contour
+  namespace: heptio-contour
+spec:
+  selector:
+    matchLabels:
+      app: contour
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: contour
+      annotations:
+        prometheus.io/scrape: &amp;quot;true&amp;quot;
+        prometheus.io/port: &amp;quot;9001&amp;quot;
+        prometheus.io/path: &amp;quot;/stats&amp;quot;
+        prometheus.io/format: &amp;quot;prometheus&amp;quot;
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - &amp;quot;192.168.123.249&amp;quot;
+      hostNetwork: true
+      containers:
+      - image: gcr.io/heptio-images/contour:master
+        imagePullPolicy: Always
+        name: contour
+        command: [&amp;quot;contour&amp;quot;]
+        args:
+        - serve
+        - --incluster
+        - --envoy-http-port=80
+        - --envoy-https-port=443
+      - image: docker.io/envoyproxy/envoy-alpine:v1.7.0
+        name: envoy
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
+        command: [&amp;quot;envoy&amp;quot;]
+        args:
+        - --config-path /config/contour.yaml
+        - --service-cluster cluster0
+        - --service-node node0
+        - --log-level info
+        - --v2-config-only
+        volumeMounts:
+        - name: contour-config
+          mountPath: /config
+      initContainers:
+      - image: gcr.io/heptio-images/contour:master
+        imagePullPolicy: Always
+        name: envoy-initconfig
+        command: [&amp;quot;contour&amp;quot;]
+        args: [&amp;quot;bootstrap&amp;quot;, &amp;quot;/config/contour.yaml&amp;quot;]
+        volumeMounts:
+        - name: contour-config
+          mountPath: /config
+      volumes:
+      - name: contour-config
+        emptyDir: {}
+      dnsPolicy: ClusterFirst
+      serviceAccountName: contour
+      terminationGracePeriodSeconds: 30
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;总共修改以下几处：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将实例数修改为 1。&lt;/li&gt;
+&lt;li&gt;将网络模式改为 &lt;code&gt;hostNetwork&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;删除 Pod 反亲和性配置，添加 Node 亲和性配置，调度到指定的节点。&lt;/li&gt;
+&lt;li&gt;修改 contour 启动参数，将 &lt;code&gt;Listener&lt;/code&gt; 端口改为 80 和 443。&lt;/li&gt;
+&lt;li&gt;将 Envoy 容器的暴露端口改为 80 和 443。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;部署：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f ./
+
+namespace &amp;quot;heptio-contour&amp;quot; created
+serviceaccount &amp;quot;contour&amp;quot; created
+customresourcedefinition.apiextensions.k8s.io &amp;quot;ingressroutes.contour.heptio.com&amp;quot; created
+deployment.extensions &amp;quot;contour&amp;quot; created
+clusterrolebinding.rbac.authorization.k8s.io &amp;quot;contour&amp;quot; created
+clusterrole.rbac.authorization.k8s.io &amp;quot;contour&amp;quot; created
+service &amp;quot;contour&amp;quot; created
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;p-id-h2-2-ingress-测试-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. Ingress 测试&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;安装结束后，我们就可以来测试 Ingress 了。在 &lt;code&gt;deployment&lt;/code&gt; 目录下包含一个示例应用，可以直接使用：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f ../example-workload/kuard.yaml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;查看创建好的资源：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl get po,svc,ing -l app=kuard
+
+NAME                       READY     STATUS    RESTARTS   AGE
+kuard-bcc7bf7df-6h55x      1/1       Running   0          4m
+kuard-bcc7bf7df-9sdnr      1/1       Running   0          4m
+kuard-bcc7bf7df-ws57j      1/1       Running   0          4m
+
+NAME        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+svc/kuard   10.254.85.181   &amp;lt;none&amp;gt;        80/TCP    4m
+
+NAME        HOSTS     ADDRESS           PORTS     AGE
+ing/kuard   *         192.168.123.249   80        4m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;现在在浏览器中输入 Contour 运行节点的 IP 地址或 DNS 域名来访问示例应用程序了。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/kuard.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-3-contour-工作原理-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. Contour 工作原理&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Contour 同时支持 &lt;code&gt;Ingress&lt;/code&gt; 资源对象和 &lt;code&gt;IngressRoute&lt;/code&gt; 资源对象（通过 CRD 创建），这些对象都是为进入集群的请求提供路由规则的集合。这两个对象的结构和实现方式有所不同，但它们的核心意图是相同的，都是为进入集群的请求提供路由规则。如不作特殊说明，后面当我们描述 “Ingress” 时，它将同时适用于 &lt;code&gt;Ingress&lt;/code&gt; 和 &lt;code&gt;IngressRoute&lt;/code&gt; 对象。&lt;/p&gt;
+
+&lt;p&gt;通常情况下，当 Envoy 配置了 &lt;code&gt;CDS&lt;/code&gt; 端点时，它会定期轮询端点，然后将返回的 JSON 片段合并到其运行配置中。如果返回到 Envoy 的集群配置代表当前的 Ingress 对象的集合，则可以将 Contour 视为从 &lt;code&gt;Ingress&lt;/code&gt; 对象到 &lt;code&gt;Envoy&lt;/code&gt; 集群配置的转换器。随着 Ingress 对象的添加和删除，Envoy 会动态添加并删除相关配置，而无需不断重新加载配置。&lt;/p&gt;
+
+&lt;p&gt;在实践中，将 Ingress 对象转换为 Envoy 配置更加微妙，需要将 Envoy 中的 xDS 配置（包括 &lt;code&gt;CDS&lt;/code&gt;，&lt;code&gt;SDS&lt;/code&gt; 和 &lt;code&gt;RDS&lt;/code&gt;）映射到 Kubernetes 中。Contour 至少需要观察 &lt;code&gt;Ingress&lt;/code&gt;、&lt;code&gt;Service&lt;/code&gt; 和 &lt;code&gt;Endpoint&lt;/code&gt; 这几个资源对象以构建这些服务的响应，它通过 &lt;code&gt;client-go&lt;/code&gt; 的 &lt;a href=&#34;https://www.kubernetes.org.cn/2693.html&#34; target=&#34;_blank&#34;&gt;cache/informer&lt;/a&gt; 机制免费获得这些 &lt;code&gt;watchers&lt;/code&gt;。这些机制提供添加，更新和删除对象的边缘触发通知，以及通过 &lt;code&gt;watch API&lt;/code&gt; 执行查询对象的本地缓存的列表机制。&lt;/p&gt;
+
+&lt;p&gt;Contour 将收集到的这些对象处理为虚拟主机及其路由规则的&lt;strong&gt;有向非循环图&lt;/strong&gt;（DAG），这表明 Contour 将有权构建路由规则的顶级视图，并将群集中的相应服务和TLS秘钥连接在一起。一旦构建了这个新的数据结构，我们就可以轻松实现 &lt;code&gt;IngressRoute&lt;/code&gt; 对象的验证，授权和分发。改数据结构导出的 &lt;code&gt;png&lt;/code&gt; 图片如下图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/dag.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;Envoy API 调用和 Kubernetes API 资源之间的映射关系如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;CDS&lt;/span&gt; : 集群发现服务。映射为 Kubernetes 中的 &lt;code&gt;Service&lt;/code&gt; 以及一部分 Ingress 对象的 &lt;code&gt;TLS&lt;/code&gt; 配置。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;SDS&lt;/span&gt; : 服务发现服务。映射为 Kubernetes 中的 &lt;code&gt;Endpoint&lt;/code&gt;。Envoy 使用 SDS 自动获取 &lt;code&gt;Cluster&lt;/code&gt; 成员，这与 Endpoint 对象中包含的信息非常匹配。Envoy 使用 Contour 在 &lt;code&gt;CDS&lt;/code&gt; 响应中返回的名称查询 &lt;code&gt;SDS&lt;/code&gt;。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;RDS&lt;/span&gt; : 路由发现服务。映射为 Kubernetes 中的 &lt;code&gt;Ingress&lt;/code&gt;。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&#34;p-id-h2-4-映射关系详情-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 映射关系详情&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id=&#34;cds&#34;&gt;CDS&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;CDS&lt;/code&gt; 更像是 Kubernetes 中的 &lt;code&gt;Service&lt;/code&gt; 资源，因为 Service 是具体 &lt;code&gt;Endpoint&lt;/code&gt;（Pods）的抽象，Envoy Cluster 是指 Envoy 连接到的一组逻辑上相似的上游主机（参考下文的 RDS）。其中 &lt;code&gt;TLS&lt;/code&gt; 配置也是 CDS 的一部分，而 Kubernetes 中的 TLS 信息由 Ingress 提供，所以这部分之间的映射关系会有些复杂。&lt;/p&gt;
+
+&lt;h4 id=&#34;sds&#34;&gt;SDS&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;SDS&lt;/code&gt; 更像是 Kubernetes 中的 &lt;code&gt;Endpoint&lt;/code&gt; 资源，这部分映射关系的实现最简单。Contour 将 Endpoint 的响应对象转换为 SDS 的 &lt;code&gt;{ hosts: [] }&lt;/code&gt; json 配置块。&lt;/p&gt;
+
+&lt;h4 id=&#34;rds&#34;&gt;RDS&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;RDS&lt;/code&gt; 更像是 Kubernetes 中的 &lt;code&gt;Ingress&lt;/code&gt; 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 &lt;code&gt;IngressSpec&lt;/code&gt; 的配置项中获取（比如：&lt;code&gt;namespace/serviceName_servicePort&lt;/code&gt;），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-5-contour-架构分析-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. Contour 架构分析&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Contour Ingress controller 由两个组件组成：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Envoy&lt;/code&gt; : 提供高性能反向代理。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Contour&lt;/code&gt; : 充当 Envoy 的控制平面，为 Envoy 的路由配置提供统一的来源。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;这些容器以 &lt;code&gt;Sidecar&lt;/code&gt; 的形式部署在同一个 &lt;code&gt;Pod&lt;/code&gt; 中，当然也包括了一些其他的配置。&lt;/p&gt;
+
+&lt;p&gt;在 Pod 初始化期间，Contour 作为 &lt;code&gt;Init&lt;/code&gt; 容器运行，并将引导程序配置写入一个 temporary volume。该 &lt;code&gt;Volume&lt;/code&gt; 被传递给 Envoy 容器并告诉 Envoy 将其 Sidecar Contour 容器视为控制平面。&lt;/p&gt;
+
+&lt;p&gt;初始化完成后，Envoy 容器启动，检索 Contour 写入的引导程序配置，并开始轮询 Contour 以热更新配置。如果控制平面无法访问，Envoy 将会进行优雅重试。&lt;/p&gt;
+
+&lt;p&gt;Contour 相当于 Kubernetes API 的客户端。它监视 &lt;code&gt;Ingress&lt;/code&gt;，&lt;code&gt;Service&lt;/code&gt; 和 &lt;code&gt;Endpoint&lt;/code&gt; 对象，并通过将其对象缓存转换为相关的 &lt;code&gt;JSON&lt;/code&gt; 字段来充当其 Envoy 的控制平面。&lt;/p&gt;
+
+&lt;p&gt;从 Kubernetes 到 Contour 的信息转换是通过 &lt;code&gt;SharedInformer&lt;/code&gt; 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-6-ingressroute-介绍-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;6. IngressRoute 介绍&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://kubernetes.io/docs/concepts/services-networking/ingress/&#34; target=&#34;_blank&#34;&gt;Ingress&lt;/a&gt; 对象从 Kubernetes 1.1 版本开始被引进，用来描述进入集群的请求的 HTTP 路由规则。但迄今为止 Ingress 对象还停留在 &lt;code&gt;beta&lt;/code&gt; 阶段，不同的 Ingress Controller 插件为了添加 HTTP 路由的额外属性，只能通过添加大量的 &lt;code&gt;annotation&lt;/code&gt; 来实现，而且每个插件的 annotation 都不一样，非常混乱。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;IngressRoute&lt;/code&gt; CRD 的目标就是扩展 Ingress API 的功能，以便提供更丰富的用户体验以及解决原始设计中的缺点。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;目前 Contour 是唯一支持 IngressRoute CRD 的 Kubernetes Ingress Controller。&lt;/strong&gt;下面就来看看它与 Ingress 相比的优点：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;安全地支持多团队 Kubernetes 集群，能够限制哪些命名空间可以配置虚拟主机和 TLS 凭据。&lt;/li&gt;
+&lt;li&gt;允许将路径或域名的路由配置分发给另一个命名空间。&lt;/li&gt;
+&lt;li&gt;接受单个路由中的多个服务，并对它们之间的流量进行负载均衡。&lt;/li&gt;
+&lt;li&gt;无需通过添加 &lt;code&gt;annotation&lt;/code&gt; 就可以定义服务权重和负载均衡策略。&lt;/li&gt;
+&lt;li&gt;在创建时验证 IngressRoute 对象，并为创建后报告验证是否有效。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&#34;从-ingress-到-ingressroute&#34;&gt;从 Ingress 到 IngressRoute&lt;/h4&gt;
+
+&lt;p&gt;一个基本的 &lt;code&gt;Ingress&lt;/code&gt; 对象如下所示：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: basic
+spec:
+  rules:
+  - host: foo-basic.bar.com
+    http:
+      paths:
+      - backend:
+          serviceName: s1
+          servicePort: 80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这个 Ingress 对象名为 &lt;code&gt;basic&lt;/code&gt;，它将传入的 HTTP 流量路由到头文件中 &lt;code&gt;Host:&lt;/code&gt; 字段值为 &lt;code&gt;foo-basic.bar.com&lt;/code&gt; 且端口为 80 的 &lt;code&gt;s1&lt;/code&gt; 服务。该路由规则通过 &lt;code&gt;IngressRoute&lt;/code&gt; 来实现如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# ingressroute.yaml
+apiVersion: contour.heptio.com/v1beta1
+kind: IngressRoute
+metadata:
+  name: basic
+spec:
+  virtualhost:
+    fqdn: foo-basic.bar.com
+  routes:
+    - match: /
+      services:
+        - name: s1
+          port: 80
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;对应关系很简单，我就不再详细介绍了，更多功能配置可以参考官方仓库的文档：&lt;a href=&#34;https://github.com/heptio/contour/blob/master/docs/ingressroute.md&#34; target=&#34;_blank&#34;&gt;IngressRoute&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;可视化-contour-的内部有向非循环图&#34;&gt;可视化 Contour 的内部有向非循环图&lt;/h4&gt;
+
+&lt;p&gt;Contour 使用 DAG 对其配置进行建模，可以通过以 &lt;a href=&#34;https://en.wikipedia.org/wiki/DOT_(graph_description_language)&#34; target=&#34;_blank&#34;&gt;DOT&lt;/a&gt; 格式输出 DAG 的调试端点对其进行可视化，当然需要先在系统中安装 &lt;code&gt;graphviz&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ yum install -y graphviz
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;下载图表并将其另存为 &lt;code&gt;PNG&lt;/code&gt;：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# Port forward into the contour pod
+$ CONTOUR_POD=$(kubectl -n heptio-contour get pod -l app=contour -o jsonpath=&#39;{.items[0].metadata.name}&#39;)
+# Do the port forward to that pod
+$ kubectl -n heptio-contour port-forward $CONTOUR_POD 6060
+# Download and store the DAG in png format
+$ curl localhost:6060/debug/dag | dot -T png &amp;gt; contour-dag.png
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;我自己保存的 PNG 图片如下所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/contour-dag.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;p-id-h2-7-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;7. 参考&lt;/p&gt;&lt;/h3&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/heptio/contour/blob/master/docs/about.md&#34; target=&#34;_blank&#34;&gt;About Contour and Envoy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/heptio/contour/blob/master/docs/architecture.md&#34; target=&#34;_blank&#34;&gt;Contour architecture&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://blog.heptio.com/making-it-easy-to-use-envoy-as-a-kubernetes-load-balancer-dde82959f171&#34; target=&#34;_blank&#34;&gt;Making it easy to use Envoy as a Kubernetes load balancer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
+&lt;center&gt;扫一扫关注微信公众号&lt;/center&gt;&lt;/p&gt;
+
+&lt;style&gt;
+#h2{
+    margin-bottom:2em;
+    margin-right: 5px;
+    padding: 8px 15px;
+    letter-spacing: 2px;
+    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
+    background-color: rgb(63, 81, 181);
+    color: rgb(255, 255, 255);
+    border-left: 10px solid rgb(51, 51, 51);
+    border-radius:5px;
+    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
+    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+}
+#red {
+color: red;
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>为 Envoy 开启 TLS 验证实战</title>
       <link>https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/</link>
       <pubDate>Wed, 26 Sep 2018 17:43:00 +0800</pubDate>
@@ -8767,460 +9315,6 @@ reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.10
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
 &lt;center&gt;扫一扫关注微信公众号&lt;/center&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>干货与湿货分享第4期</title>
-      <link>https://www.yangcs.net/posts/weekly-4/</link>
-      <pubDate>Sat, 11 Aug 2018 18:17:12 +0800</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/weekly-4/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p&gt;这是《干货与湿货分享》系列的第四期，主要记录过去一周我所见到的听到的值得分享的东西。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-新闻-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;新闻&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;h4 id=&#34;1-摩拜女员工举报领导性骚扰-https-3g-163-com-all-article-dope3qg700097u7r-html&#34;&gt;1. &lt;a href=&#34;https://3g.163.com/all/article/DOPE3QG700097U7R.html&#34; target=&#34;_blank&#34;&gt;摩拜女员工举报领导性骚扰&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://cms-bucket.nosdn.127.net/2018/08/09/6fb4d8a192d7460fb8b02442b1fe75fa.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://cms-bucket.nosdn.127.net/catchpic/8/83/836bd63860e69573562d0e06fd14ba24.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://cms-bucket.nosdn.127.net/catchpic/3/3d/3d99e230238e37c9804b923a0f272278.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;8月9日，网络上出现一张截图，截图内容为摩拜女员工举报领导性骚扰。针对此事，摩拜回复称被举报人已被停职并接受进一步调查。&lt;/strong&gt;网络截图显示，举报者为摩拜SPE前端组的一名普通员工，于2017年进入摩拜工作。据举报者描述，摩拜客户端&amp;amp;前端组负责人张耀春曾对多位下属性骚扰，受骚扰最严重的女同事被迫离职。&lt;/p&gt;
-
-&lt;h4 id=&#34;2-中关村程序员在车流中改代码-http-www-cocoachina-com-cms-wap-php-action-article-id-24506&#34;&gt;2. &lt;a href=&#34;http://www.cocoachina.com/cms/wap.php?action=article&amp;amp;id=24506&#34; target=&#34;_blank&#34;&gt;中关村程序员在车流中改代码&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://api.cocoachina.com/uploads//20180809/1533784496266270.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;事件发生在早高峰时期，地点为中关村软件园，因为堵车厉害，楼主恰巧看到了这一幕，一名略微有些秃顶，穿着蓝白条纹短袖的程序员蹲在信号灯下调试代码，疑似信号灯的算法程序出现了bug，该名程序员正在现场紧急处理。在其四周，车辆已经拥堵得水泄不通，但在这名程序员看来，此刻他眼里只有急需解决的代码问题，眼前的其它都被忽略。&lt;/p&gt;
-
-&lt;h4 id=&#34;3-特斯拉开出三倍工资抢上汽技术员工-http-tech-qq-com-a-20180807-002406-htm&#34;&gt;3. &lt;a href=&#34;http://tech.qq.com/a/20180807/002406.htm&#34; target=&#34;_blank&#34;&gt;特斯拉开出三倍工资抢上汽技术员工&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://inews.gtimg.com/newsapp_bt/0/3871231544/641&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;特斯拉在上海建设的、被称作“无敌舰”的工厂，目前正在大规模招募第一批“船员”。8月5日，特斯拉在其官方微信上首次发布热招职位，包括EPC工程总监、政府事务项目经理、施工经理、土木工程师、电气设计工程师、机械设计师以及法律顾问、高级财务经理、招聘人员等。&lt;/p&gt;
-
-&lt;p&gt;一位知情人士告诉21世纪经济报道记者：“特斯拉上海工厂已经在抢人了，直接开出三倍工资，上汽的技术人员走了一大批。”&lt;/p&gt;
-
-&lt;h4 id=&#34;4-李彦宏回应谷歌重返大陆-有信心再赢一次-https-tech-sina-com-cn-i-2018-08-07-doc-ihhkuskt0298624-shtml&#34;&gt;4. &lt;a href=&#34;https://tech.sina.com.cn/i/2018-08-07/doc-ihhkuskt0298624.shtml&#34; target=&#34;_blank&#34;&gt;李彦宏回应谷歌重返大陆：有信心再赢一次&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://n.sinaimg.cn/tech/transform/22/w550h1072/20180807/zMit-hhkuskt0328373.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;Google 又双叒叕要回归中国，这是谷歌今年以来第5次传出“返华”的传闻，而有人民日报发文欢迎 Google 回归的消息，似乎印证这次应该是来真的了！&lt;/p&gt;
-
-&lt;p&gt;人民日报近日在社交媒体平台 Twitter、Facebook 上刊登了一篇标题为 “Stability prerequisite for China’s internet opening up” 的文章，文章表示，“欢迎 Google 回到中国大陆，但前提是得遵守政府相关的法律政策。”作为主要的竞争对手，百度的李彦宏今天公开在朋友圈对传闻进行了回应“如果 Google 决定回到中国，我们非常有信心再PK一次，再赢一次”。&lt;/p&gt;
-
-&lt;p&gt;很快就有调皮的小编开始做测验了，测试结果啪啪啪打脸。。。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://resource01.ulifestyle.com.hk/res/v3/image/content/2130000/2132767/20180807_googlebaidu_04_600.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;5-腾讯云承认自身错误导致用户数据丢失-https-36kr-com-p-5146916-html&#34;&gt;5. &lt;a href=&#34;https://36kr.com/p/5146916.html&#34; target=&#34;_blank&#34;&gt;腾讯云承认自身错误导致用户数据丢失&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/WechatIMG1262.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;腾讯云服务最近发生了一起引发广泛关注的用户数据丢失事故。“前沿数控技术新媒体”8月5日晚间发微博称，在使用腾讯云8个月后，公司存储在腾讯云上的数据无可挽回地全部丢失。腾讯云公布的调查报告，承认是自己犯下的一系列错误导致用户数据丢失，并表示将尽力帮助客户解决问题，同时优化机制避免类似情况再度发生。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-工具-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;工具&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;h4 id=&#34;1-ice-https-github-com-alibaba-ice&#34;&gt;1. &lt;a href=&#34;https://github.com/alibaba/ice&#34; target=&#34;_blank&#34;&gt;ice&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;飞冰是一套阿里巴巴开源的基于 React 的中后台应用解决方案，在阿里巴巴内部，已经有 270 多个来自几乎所有 BU 的项目在使用。&lt;/p&gt;
-
-&lt;h4 id=&#34;2-feediary-不跟踪-纯文本-rss-阅读器-https-feediary-com&#34;&gt;2. &lt;a href=&#34;https://feediary.com/&#34; target=&#34;_blank&#34;&gt;Feediary – 不跟踪、纯文本 RSS 阅读器&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://apprcn.b0.upaiyun.com/Feediary-1.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;RSS 阅读器是有不少了，但可能每个阅读器都会标榜自己有多么多的功能，功能丰富到你 90% 都用不上。Feediary 这个 RSS 阅读器反而是相反，它功能不多，但够专注和够纯净。&lt;/p&gt;
-
-&lt;p&gt;Feediary 是一款网页 RSS 阅读器，简单注册后就可以使用了。有免费版和收费版区分，最大区别就是免费版最多只可以添加 50 个 RSS 源，收费版当然就没什么限制了。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://apprcn.b0.upaiyun.com/Feediary-2.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;3-licketylink-http-lickety-link&#34;&gt;3. &lt;a href=&#34;http://lickety.link/&#34; target=&#34;_blank&#34;&gt;LicketyLink&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://cdn.ilovefreesoftware.com/wp-content/uploads/2018/08/create-a-new-sharing-link-with-custom-name-and-add-files.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;这是一个可以在线共享文件的网站，并且对上传文件的大小没有任何限制，对下载速度也没有任何限制。我们都知道，百度云等其他国内网盘对上传文件大小有限制，而且在不买会员的情况下下载速度极慢！这个网站将会是你的救星。&lt;/p&gt;
-
-&lt;p&gt;值得一提的是，该网站用一种很特别的方法来共享文件，它会先生成一个共享链接，然后你可以随意往这个链接里面添加或删除文件，共享链接不变，是不是很爽？还有一个大招就是你不用等待文件上传成功就可以分享给其他人了，我只能说还有谁？！&lt;/p&gt;
-
-&lt;h4 id=&#34;4-sharefiles-https-sharefiles-app&#34;&gt;4. &lt;a href=&#34;https://sharefiles.app/&#34; target=&#34;_blank&#34;&gt;ShareFiles&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;另一个不限文件大小的在线共享网站。&lt;/p&gt;
-
-&lt;h4 id=&#34;5-onlim-https-onlim-com&#34;&gt;5. &lt;a href=&#34;https://onlim.com/&#34; target=&#34;_blank&#34;&gt;Onlim&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/onlim.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;Pnlim 是一个免费的在线社交媒体管理工具，你可以在这里面添加无限多的社交账户（支持 Facebook、Twitter 和 Slack 等）。同时还可以添加 RSS 源，所以你也可以把它当成一个 RSS 阅读器，颜值还是很高的。&lt;/p&gt;
-
-&lt;h4 id=&#34;6-zhuye-kim-https-github-com-wenguonideshou-zhuye-kim&#34;&gt;6. &lt;a href=&#34;https://github.com/wenguonideshou/zhuye_kim&#34; target=&#34;_blank&#34;&gt;zhuye_kim&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/zhuye_kim_google.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/zhuye_kim_baidu.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;仿 zhuye.kim 的简单个人主页/导航程序，带后台&lt;/p&gt;
-
-&lt;h4 id=&#34;7-cartoonify-https-www-kapwing-com-cartoonify&#34;&gt;7. &lt;a href=&#34;https://www.kapwing.com/cartoonify&#34; target=&#34;_blank&#34;&gt;Cartoonify&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://i.loli.net/2018/07/23/5b5548bc8df23.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能将你上传的相片转为涂鸦手绘风格，它以 Draw This 做为基础，非常有意思，如果你想知道将相片丢给机器辨识、它会智能返回什么样的结果呢？&lt;/p&gt;
-
-&lt;h4 id=&#34;8-my-free-mp3-https-my-free-mp3-net-cn&#34;&gt;8. &lt;a href=&#34;https://my-free-mp3.net/cn&#34; target=&#34;_blank&#34;&gt;my-free-mp3&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://wx1.sinaimg.cn/mw690/0060lm7Tly1ftwxawbt8aj30sm0ij75t.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;现在版权管理越来越严格，之前用百度音乐一个就行了，现在想下载一首歌要用到不同的 APP，不少大平台还只能试听不能下载。今天这个网页版的比较好用，输入歌曲名就可搜索了，同时输入歌曲名和歌手可提高精准度，点击后面的 Size-Kbps 可以查看码率，一般为 320K 音质，支持在线试听和下载，实在搜索不到换繁体字再搜。点后面下载会跳转到一个中间页面，点”ENTER”就可以下载了，个人测试多首音乐都可以下载。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://wx1.sinaimg.cn/mw690/0060lm7Tly1ftwxawt2r1j30xr0kmwhi.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-教程-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;教程&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;h4 id=&#34;1-系统设计入门-https-github-com-donnemartin-system-design-primer&#34;&gt;1. &lt;a href=&#34;https://github.com/donnemartin/system-design-primer&#34; target=&#34;_blank&#34;&gt;系统设计入门&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;系统设计是一个很宽泛的话题。在互联网上，&lt;strong&gt;关于系统设计原则的资源也是多如牛毛。&lt;/strong&gt;这个仓库就是这些资源的组织收集，它可以帮助你学习如何构建可扩展的系统。&lt;/p&gt;
-
-&lt;h4 id=&#34;2-命令行的艺术-https-github-com-jlevy-the-art-of-command-line-blob-master-readme-zh-md&#34;&gt;2. &lt;a href=&#34;https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md&#34; target=&#34;_blank&#34;&gt;命令行的艺术&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会提高你作为工程师的灵活性以及生产力。本文是一份作者在 Linux 上工作时，发现的一些命令行使用技巧的摘要。有些技巧非常基础，而另一些则相当复杂，甚至晦涩难懂。这篇文章并不长，但当你能够熟练掌握这里列出的所有技巧时，你就学会了很多关于命令行的东西了。&lt;/p&gt;
-
-&lt;h4 id=&#34;3-kubernetes-in-action-https-www-manning-com-books-kubernetes-in-action&#34;&gt;3. &lt;a href=&#34;https://www.manning.com/books/kubernetes-in-action&#34; target=&#34;_blank&#34;&gt;Kubernetes In Action&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://pic4.zhimg.com/v2-3d850923108ea1f17348d435fe098c23_1200x500.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;这本书深入浅出的讲解了 Kubernetes 的构架和设计理念，非常难能可贵。通过这本书你将会学到如何在 non-deterministic 的分布式环境中，为 scheduler 和 controller 这种需要“唯一决策者设计”的组件提供 high availability 的同时，使 cluster 的调度决策稳定可靠的方法。&lt;/p&gt;
-
-&lt;h4 id=&#34;4-理解-linux-进程-https-github-com-tobegit3hub-understand-linux-process&#34;&gt;4. &lt;a href=&#34;https://github.com/tobegit3hub/understand_linux_process&#34; target=&#34;_blank&#34;&gt;理解 Linux 进程&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;本书受 &lt;a href=&#34;http://www.duokan.com/book/41446&#34; target=&#34;_blank&#34;&gt;理解 Unix 进程&lt;/a&gt; 启发而作，用极简的篇幅深入学习进程知识。理解 Linux 进程用 Go 重写了所有示例程序，通过循序渐进的方法介绍 Linux 进程的工作原理和一切你所需要知道的概念。&lt;/p&gt;
-
-&lt;h4 id=&#34;5-go语言高级编程-https-github-com-chai2010-advanced-go-programming-book&#34;&gt;5. &lt;a href=&#34;https://github.com/chai2010/advanced-go-programming-book&#34; target=&#34;_blank&#34;&gt;Go语言高级编程&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://github.com/chai2010/advanced-go-programming-book/raw/master/cover.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;本书涵盖 CGO、Go 汇编语言、RPC 实现、Web 框架实现、分布式系统等高阶主题，针对 Go 语言有一定经验想深入了解 Go 语言各种高级用法的开发人员。对于刚学习 Go 语言的读者，建议先从 &lt;a href=&#34;https://github.com/golang-china/gopl-zh&#34; target=&#34;_blank&#34;&gt;《Go语言圣经》&lt;/a&gt; 开始系统学习 Go 语言的基础知识。&lt;/p&gt;
-
-&lt;h4 id=&#34;6-envoy为什么能战胜ngnix-线程模型分析篇-https-www-itcodemonkey-com-article-7042-html&#34;&gt;6. &lt;a href=&#34;https://www.itcodemonkey.com/article/7042.html&#34; target=&#34;_blank&#34;&gt;Envoy为什么能战胜Ngnix——线程模型分析篇&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;随着 Service Mesh 在最近一年的流行，Envoy 作为其中很关键的组件，也开始被广大技术人员熟悉。作者是 Envoy 的开发者之一，本文详细说明了 Envoy 的线程模型，对于理解 Envoy 如何工作非常有帮助。内容较为深入，建议细细品读。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-资源-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;资源&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;h4 id=&#34;1-programmer-job-blacklist-https-github-com-shengxinjing-programmer-job-blacklist&#34;&gt;1. &lt;a href=&#34;https://github.com/shengxinjing/programmer-job-blacklist&#34; target=&#34;_blank&#34;&gt;programmer-job-blacklist&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;这是一份程序员找工作黑名单，换工作和当技术合伙人需谨慎啊！每一个程序猿，每一个公司都有黑点，但是如果把黑点放大了，黑名单就没存在的意义了。&lt;/p&gt;
-
-&lt;h4 id=&#34;2-杭州房产知识扫盲-https-github-com-houshanren-hangzhou-house-knowledge&#34;&gt;2. &lt;a href=&#34;https://github.com/houshanren/hangzhou_house_knowledge&#34; target=&#34;_blank&#34;&gt;杭州房产知识扫盲&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/hangzhou_house.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;这是作者 2017 年买房经历总结出来的买房购房知识分享给大家，希望对大家有所帮助。买房不易，且买且珍惜。&lt;/p&gt;
-
-&lt;h4 id=&#34;3-wallhalla-https-wallhalla-com&#34;&gt;3. &lt;a href=&#34;https://wallhalla.com/&#34; target=&#34;_blank&#34;&gt;Wallhalla&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://7xpi4m.com1.z0.glb.clouddn.com/201807282251_92.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;一个设计感十足的壁纸网站。该网站特点：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;网站整体设计的非常简约大方；&lt;/li&gt;
-&lt;li&gt;可以按照关键字、色彩、图片、标签进行搜索；&lt;/li&gt;
-&lt;li&gt;Wallhalla 本身只是个图片搜索引擎，并不持有图片，但可以直接下载到原始图片；&lt;/li&gt;
-&lt;li&gt;通过放大镜查看图片细节；&lt;/li&gt;
-&lt;li&gt;展示图片的色彩组成和色系；&lt;/li&gt;
-&lt;li&gt;可以随机或者最热门浏览图片&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;4-mojo-weixin-https-github-com-sjdy521-mojo-weixin&#34;&gt;4. &lt;a href=&#34;https://github.com/sjdy521/Mojo-Weixin&#34; target=&#34;_blank&#34;&gt;Mojo-Weixin&lt;/a&gt;&lt;/h4&gt;
-
-&lt;p&gt;使用Perl语言编写的个人账号微信/weixin/wechat客户端框架（非GUI），可通过插件提供基于HTTP协议的api接口供其他语言或系统调用。可以利用微软小冰实现智能聊天回复、识别指定关键字发送美女图片、通过微信消息自定义问答知识库等各种功能应有尽有。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-奇闻-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;奇闻&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;h4 id=&#34;1-历史上第一个真正能转的电动机&#34;&gt;1. 历史上第一个真正能转的电动机&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/WechatIMG1264.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
-&lt;center&gt;&lt;em&gt;法拉第单极电机的现代仿品&lt;/em&gt;&lt;/center&gt;
-&lt;center&gt;&lt;em&gt;水银有毒，可用盐水代替&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;1821 年，法拉第搞出了一个真正能转的电动机，现在看来这个装置有点简陋。首先是一杯水银，水银是导电的，中间插进一根条形磁铁。上面挂钩上垂下来一根铜丝，另一头泡在水银里面，可以任意移动。顶上通电，电池另一头接到水银里边。这等于电流通过了水银和铁丝形成了一个回路。一通电，这个铁丝在围着水银里边的磁铁画圈圈。这是世界上第一个利用电磁力驱动的电动机，后来称为“单极电机”。&lt;/p&gt;
-
-&lt;h4 id=&#34;2-维苏威火山&#34;&gt;2. 维苏威火山&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/8416081431.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;维苏威火山是欧洲最危险的火山，11 公里以外就是那不勒斯。公元 79 年的一次大喷发，埋葬了庞贝古城和附近的赫库兰尼姆、斯塔比亚等等城市。一开始连续发生了 4 天的地震，但是震级都不大，当时古罗马的人都不在乎。哪知道维苏威火山突然喷发了，火山灰云柱直冲 33km 高空。&lt;/p&gt;
-
-&lt;p&gt;大量火山灰落到了附近的城市里面，房顶上累积了 3 厘米厚。夜里发生了 6 次火山碎屑流，火山喷发的时候，喷出的火山灰是滚烫的，加热了周围的空气，空气形成强大的上升气流，裹挟着火山灰往天上冒。但是温度下降了，热空气没那个力气把火山灰送入高空，火山灰很可能喷出来没多高就沿着山坡往下翻滚，于是热空气和火山灰裹挟着，形成了火山的碎屑流。到达赫库兰尼姆的时候，温度高达 500 度。因此城里的人瞬间碳化，定格在了那一刻。到达稍远的庞贝城的时候，温度降低到 300 度，因此庞贝城里面的遗骸留下了大量的遗体和衣服。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/WechatIMG1265.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
-&lt;center&gt;&lt;em&gt;庞贝城的悲惨景象&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;到了 1599 年的时候，因为挖掘地下引水工程，发现有雕塑和壁画，庞贝古城被发现。1738 年，命运悲惨的赫库兰尼姆被发现。1748 年，在那不勒斯王国国王夫妇的资助下，庞贝城也被挖出来了。如今这里都是世界文化遗产。&lt;/p&gt;
-
-&lt;h4 id=&#34;3-夜明珠到底值不值钱&#34;&gt;3. 夜明珠到底值不值钱？&lt;/h4&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/WechatIMG1267.jpeg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
-&lt;center&gt;&lt;em&gt;美丽的萤石&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;最早人们发现有一种东西叫做“萤石”，为什么起这个名字呢？因为在阳光照射过后，你迅速拿到黑暗中去看，会看到这种彩色的石头会发出荧光。有的石头荧光时间非常长，有的石头荧光时间非常短。今天市场上很多所谓的夜明珠，就是由发光时间比较长的萤石材料做成的。所以这些东西一点都不值钱。早在河姆渡时期就发现过用萤石来做装饰品。我们的老祖宗已经发现这东西是会发出荧光的。&lt;/p&gt;
-
-&lt;p&gt;但是大家请注意，萤石这种材料千万不能和酸性的东西放在一起，和酸性的东西放在一起，会产生氟化氢，溶解在水里就是氢氟酸。1670年，有个德国人就发现，用萤石和硫酸放在一起，会冒出一种气体，这种气体居然能腐蚀玻璃。如果在玻璃表面涂上一层蜡，然后在蜡上刻出花纹，然后再用这种蒸汽去熏。等到你把蜡去掉就会发现，花纹已经刻在了玻璃上。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-欢迎关注-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;欢迎关注&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;该系列每周六发布，同步更新在我的个人&lt;a href=&#34;https://www.yangcs.net/&#34; target=&#34;_blank&#34;&gt;博客&lt;/a&gt;和微信公众号上。&lt;/p&gt;
-
-&lt;p&gt;微信搜索 “云原生实验室” 或者扫描二维码即可关注。&lt;/p&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
 &lt;style&gt;
 #h2{

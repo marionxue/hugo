@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 为 Envoy 开启 TLS 验证实战 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
+  <title> 初试 Kubernetes 集群中使用 Contour 反向代理 - yangcs.net|杨传胜的博客|Kubernetes|Big Data</title>
   <meta name="description" content="yangcs.net|杨传胜的博客|Kubernetes|Big Data" />
-  <meta property="og:title" content="为 Envoy 开启 TLS 验证实战" />
-  <meta name="twitter:title" content="为 Envoy 开启 TLS 验证实战" />
-  <meta name="description" content="通过 Envoy 反向代理 hugo 静态页面">
-  <meta property="og:description" content="通过 Envoy 反向代理 hugo 静态页面">
-  <meta name="twitter:description" content="通过 Envoy 反向代理 hugo 静态页面">
+  <meta property="og:title" content="初试 Kubernetes 集群中使用 Contour 反向代理" />
+  <meta name="twitter:title" content="初试 Kubernetes 集群中使用 Contour 反向代理" />
+  <meta name="description" content="一种全新的 Ingress 实现方式——Envoy">
+  <meta property="og:description" content="一种全新的 Ingress 实现方式——Envoy">
+  <meta name="twitter:description" content="一种全新的 Ingress 实现方式——Envoy">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.42.2" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -330,7 +330,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>为 Envoy 开启 TLS 验证实战</h1>
+                     <h1>初试 Kubernetes 集群中使用 Contour 反向代理</h1>
                      
                      
                   
@@ -338,13 +338,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">通过 Envoy 反向代理 hugo 静态页面</span>
+                      <span class="post-subheading">一种全新的 Ingress 实现方式——Envoy</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on September 26, 2018
+  Posted on September 28, 2018
   
   
 </span>
@@ -365,10 +365,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">为 Envoy 开启 TLS 验证实战</h1>
+                <h1 align="center">初试 Kubernetes 集群中使用 Contour 反向代理</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">通过 Envoy 反向代理 hugo 静态页面</h2>
+                    <h2 align="center" class="posts-subheading">一种全新的 Ingress 实现方式——Envoy</h2>
                   
                 
                 
@@ -389,16 +389,14 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Wed Sep 26, 2018</h4>
+        <h4 id="date"> Fri Sep 28, 2018</h4>
     </section>
-    <h5 id="wc">2000 Words|Read in about 4 Min</h5>
+    <h5 id="wc">3400 Words|Read in about 7 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
         
-        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
-        
-        <a href="https://www.yangcs.net/tags/hugo/">hugo</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
     </h5>
 </div>
 
@@ -406,261 +404,313 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 <p></p>
 
-<p>我的博客之前是使用 <code>Nginx</code> 来反代的，由于 Nginx 性能优异，目前有很多国内网站采用 Nginx 作为 Web 服务器，而且参考文档比较丰富，无论是对于其部署，配置还是调优都更为有经验。但是还是会碰到几个绕不开的问题：</p>
+<p>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 <code>L7</code> 层实现高效流畅的入口流量管理。自从第一批 <code>Kubernetes Ingress Controller</code> 开发完成以来，<code>Envoy</code>（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。</p>
+
+<p>容器公司 <a href="https://heptio.com/" target="_blank">Heptio</a> 开源的项目 <a href="https://github.com/heptio/contour" target="_blank">Contour</a> 使用 <code>Envoy</code> 作为 Kubernetes 的 Ingress Controller 实现，为大家提供了一条新的 Kubernetes 外部负载均衡实现思路。</p>
+
+<p>据<a href="https://blog.heptio.com/making-it-easy-to-use-envoy-as-a-kubernetes-load-balancer-dde82959f171" target="_blank">官方博客</a>介绍，<code>Heptio Contour</code> 可以为用户提供以下好处：</p>
 
 <ul>
-<li>Nginx 的反向代理不支持 <code>http2/grpc</code> (好像今年 3 月份刚支持)</li>
-<li>不像 Envoy 几乎所有的网络配置都可以利用 <code>xDS API</code> 来实现动态变更，Nginx 缺乏有效的配置热变更机制(除非深入开发或者不断地 <code>reload</code>)。</li>
-<li>Nginx 的很多微服务功能都是要买 Nginx Plus 才有的。</li>
+<li>一种简单的安装机制来快速部署和集成 Envoy。</li>
+<li>与 Kubernetes 对象模型的集成。</li>
+<li><code>Ingress</code> 配置的动态更新，而无需重启底层负载均衡器。</li>
+<li>项目成熟后，将允许使用 Envoy 一些强大的功能，如熔断器、插件式的处理器链，以及可观测性和可调试性。</li>
 </ul>
 
-<p>而 <a href="https://www.envoyproxy.io/" target="_blank">Envoy</a> 是一款现代化的，高性能，小体积的边缘及服务代理，浑身散发出一股时尚潮流的气息。作为一名斜杠青年，在经过一定地了解后，我果断入了 Envoy 的坑。</p>
+<p>下面我们就来试用一下。</p>
 
-<p>关于如何为 Envoy 开启证书验证可以参考我之间的文章：<a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" target="_blank">为 Envoy 启用证书验证</a>。本文将直接进入实战部分，通过 Envoy 来反向代理我的博客静态页面，并且加密客户端和 Envoy 代理之间的所有流量。</p>
-
-<h3 id="p-id-h2-1-方案架构-p"><p id="h2">1. 方案架构</p></h3>
+<h3 id="p-id-h2-1-安装步骤-p"><p id="h2">1. 安装步骤</p></h3>
 
 <hr />
 
-<p>本方案涉及到两层 Envoy：</p>
+<p>首先克隆官方仓库，进入 manifest 清单目录：</p>
 
-<ul>
-<li><p>首先会有一个前端代理在某个地方单独运行。前端代理的工作是给其他地方提供一个入口。来自外部的传入连接请求到这里，前端代理将会决定他们在内部的转发路径。</p></li>
+<pre><code class="language-bash">$ git clone https://github.com/heptio/contour
+$ cd contour/deployment/deployment-grpc-v2
+</code></pre>
 
-<li><p>其次，博客静态页面由 nginx 提供，同时运行一个 “服务 Envoy”，它与 nginx 容器共享 <code>network nemspace</code>（相当于 Kubernetes 的 <code>Sidecar</code>）。</p></li>
+<p>修改 <code>Deployment</code> YAML 文件：</p>
 
-<li><p>所有的 Envoy 形成一个网格，然后在他们之间共享路由信息。</p></li>
-</ul>
+<pre><code class="language-yaml">apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    app: contour
+  name: contour
+  namespace: heptio-contour
+spec:
+  selector:
+    matchLabels:
+      app: contour
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: contour
+      annotations:
+        prometheus.io/scrape: &quot;true&quot;
+        prometheus.io/port: &quot;9001&quot;
+        prometheus.io/path: &quot;/stats&quot;
+        prometheus.io/format: &quot;prometheus&quot;
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - &quot;192.168.123.249&quot;
+      hostNetwork: true
+      containers:
+      - image: gcr.io/heptio-images/contour:master
+        imagePullPolicy: Always
+        name: contour
+        command: [&quot;contour&quot;]
+        args:
+        - serve
+        - --incluster
+        - --envoy-http-port=80
+        - --envoy-https-port=443
+      - image: docker.io/envoyproxy/envoy-alpine:v1.7.0
+        name: envoy
+        ports:
+        - containerPort: 80
+          name: http
+        - containerPort: 443
+          name: https
+        command: [&quot;envoy&quot;]
+        args:
+        - --config-path /config/contour.yaml
+        - --service-cluster cluster0
+        - --service-node node0
+        - --log-level info
+        - --v2-config-only
+        volumeMounts:
+        - name: contour-config
+          mountPath: /config
+      initContainers:
+      - image: gcr.io/heptio-images/contour:master
+        imagePullPolicy: Always
+        name: envoy-initconfig
+        command: [&quot;contour&quot;]
+        args: [&quot;bootstrap&quot;, &quot;/config/contour.yaml&quot;]
+        volumeMounts:
+        - name: contour-config
+          mountPath: /config
+      volumes:
+      - name: contour-config
+        emptyDir: {}
+      dnsPolicy: ClusterFirst
+      serviceAccountName: contour
+      terminationGracePeriodSeconds: 30
+</code></pre>
 
-<p>注意，通常情况下你也可以只使用前端代理，然后去掉服务 Envoy 这一层。但是，使用完整网格的话，服务 Envoy 可以对应用服务进行健康监控等，让网格知道尝试联系一个挂掉的服务是否是毫无意义的。此外，Envoy 的统计数据收集最适合用在全网格上。</p>
+<p>总共修改以下几处：</p>
 
-<p>但本文需要开启 TLS 验证，如果前端代理开启了 TLS 验证，那么必须配合服务 Envoy 使用，否则验证将无法通过。</p>
+<ol>
+<li>将实例数修改为 1。</li>
+<li>将网络模式改为 <code>hostNetwork</code>。</li>
+<li>删除 Pod 反亲和性配置，添加 Node 亲和性配置，调度到指定的节点。</li>
+<li>修改 contour 启动参数，将 <code>Listener</code> 端口改为 80 和 443。</li>
+<li>将 Envoy 容器的暴露端口改为 80 和 443。</li>
+</ol>
 
-<h3 id="p-id-h2-2-部署服务-envoy-p"><p id="h2">2. 部署服务 Envoy</p></h3>
+<p>部署：</p>
+
+<pre><code class="language-bash">$ kubectl apply -f ./
+
+namespace &quot;heptio-contour&quot; created
+serviceaccount &quot;contour&quot; created
+customresourcedefinition.apiextensions.k8s.io &quot;ingressroutes.contour.heptio.com&quot; created
+deployment.extensions &quot;contour&quot; created
+clusterrolebinding.rbac.authorization.k8s.io &quot;contour&quot; created
+clusterrole.rbac.authorization.k8s.io &quot;contour&quot; created
+service &quot;contour&quot; created
+</code></pre>
+
+<h3 id="p-id-h2-2-ingress-测试-p"><p id="h2">2. Ingress 测试</p></h3>
 
 <hr />
 
-<p>我的博客是通过 hugo 生成的，其他生成静态页面的软件类似，都可以采用我的方案。由于我的 hugo 根目录是 <code>/home/hugo</code>，首先进入该目录，然后创建容器编排的 <code>docker-compose.yml</code> 文件。</p>
+<p>安装结束后，我们就可以来测试 Ingress 了。在 <code>deployment</code> 目录下包含一个示例应用，可以直接使用：</p>
 
-<pre><code class="language-yaml">version: '2'
-services:
-
-  hugo:
-    image: nginx:alpine
-    restart: always
-    volumes:
-      - /home/hugo/public:/usr/share/nginx/html ①
-    networks:
-      - default 
-    expose:
-      - &quot;80&quot;
-      - &quot;8080&quot;
-
-  service-envoy:
-    image: envoyproxy/envoy-alpine:latest
-    restart: always
-    volumes:
-      - ./service-envoy.yaml:/etc/envoy/envoy.yaml ②
-    network_mode: &quot;service:hugo&quot; ③
-
-networks:
-  default:
-    external:
-      name: yang ④
+<pre><code class="language-bash">$ kubectl apply -f ../example-workload/kuard.yaml
 </code></pre>
 
-<p><br /></p>
+<p>查看创建好的资源：</p>
 
-<ul>
-<li>① : 将博客的静态页面挂载到 nginx 的 <code>root</code> 目录。</li>
-<li>② : 将服务 Envoy 的配置文件挂载到 Envoy 容器中。</li>
-<li>③ : 与 hugo 容器共享 <code>network namespace</code>。</li>
-<li>④ : 这是我自定义的网络，你可以换成你自己的。</li>
-</ul>
+<pre><code class="language-bash">$ kubectl get po,svc,ing -l app=kuard
 
-<p>接下来需要创建服务 Envoy 的配置文件 <code>service-envoy.yaml</code>：</p>
+NAME                       READY     STATUS    RESTARTS   AGE
+kuard-bcc7bf7df-6h55x      1/1       Running   0          4m
+kuard-bcc7bf7df-9sdnr      1/1       Running   0          4m
+kuard-bcc7bf7df-ws57j      1/1       Running   0          4m
 
-<pre><code class="language-yaml">static_resources:
-  listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 8080 ①
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: service
-              domains:
-              - &quot;*&quot;
-              routes:
-              - match:
-                  prefix: &quot;/&quot;
-                route:
-                  cluster: local_service
-          http_filters:
-          - name: envoy.router
-            config: {}
-  clusters:
-  - name: local_service
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    hosts:
-    - socket_address:
-        address: 127.0.0.1
-        port_value: 80 ②
-admin:
-  access_log_path: &quot;/dev/null&quot;
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 8081
+NAME        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
+svc/kuard   10.254.85.181   &lt;none&gt;        80/TCP    4m
+
+NAME        HOSTS     ADDRESS           PORTS     AGE
+ing/kuard   *         192.168.123.249   80        4m
 </code></pre>
 
-<p><br /></p>
+<p>现在在浏览器中输入 Contour 运行节点的 IP 地址或 DNS 域名来访问示例应用程序了。</p>
 
-<ul>
-<li>① <code>8080</code> : 服务 Envoy 的监听端口。</li>
-<li>② <code>80</code> : hugo 静态页面的监听端口。</li>
-</ul>
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/kuard.jpg" alt="" /></center></p>
 
-<h3 id="p-id-h2-3-部署前端代理-p"><p id="h2">3. 部署前端代理</p></h3>
+<h3 id="p-id-h2-3-contour-工作原理-p"><p id="h2">3. Contour 工作原理</p></h3>
 
 <hr />
 
-<p>在 <code>docker-compose.yml</code> 文件中添加前端代理部分：</p>
+<p>Contour 同时支持 <code>Ingress</code> 资源对象和 <code>IngressRoute</code> 资源对象（通过 CRD 创建），这些对象都是为进入集群的请求提供路由规则的集合。这两个对象的结构和实现方式有所不同，但它们的核心意图是相同的，都是为进入集群的请求提供路由规则。如不作特殊说明，后面当我们描述 “Ingress” 时，它将同时适用于 <code>Ingress</code> 和 <code>IngressRoute</code> 对象。</p>
 
-<pre><code class="language-yaml">version: '2'
-services:
+<p>通常情况下，当 Envoy 配置了 <code>CDS</code> 端点时，它会定期轮询端点，然后将返回的 JSON 片段合并到其运行配置中。如果返回到 Envoy 的集群配置代表当前的 Ingress 对象的集合，则可以将 Contour 视为从 <code>Ingress</code> 对象到 <code>Envoy</code> 集群配置的转换器。随着 Ingress 对象的添加和删除，Envoy 会动态添加并删除相关配置，而无需不断重新加载配置。</p>
 
-  ...
-  front-envoy:
-    image: envoyproxy/envoy
-    restart: always
-    volumes:
-      - ./front-envoy.yaml:/etc/envoy/envoy.yaml
-      - /etc/letsencrypt:/etc/letsencrypt
-    labels:
-      EnvironmentName: &quot;proxy&quot;
-      ServiceName: &quot;envoy&quot;
-      ProxyMode: &quot;tcp&quot;
-    networks:
-      - default
-    expose:
-      - &quot;80&quot;
-      - &quot;443&quot;
-    ports:
-      - &quot;80:80&quot;
-      - &quot;443:443&quot;
-</code></pre>
+<p>在实践中，将 Ingress 对象转换为 Envoy 配置更加微妙，需要将 Envoy 中的 xDS 配置（包括 <code>CDS</code>，<code>SDS</code> 和 <code>RDS</code>）映射到 Kubernetes 中。Contour 至少需要观察 <code>Ingress</code>、<code>Service</code> 和 <code>Endpoint</code> 这几个资源对象以构建这些服务的响应，它通过 <code>client-go</code> 的 <a href="https://www.kubernetes.org.cn/2693.html" target="_blank">cache/informer</a> 机制免费获得这些 <code>watchers</code>。这些机制提供添加，更新和删除对象的边缘触发通知，以及通过 <code>watch API</code> 执行查询对象的本地缓存的列表机制。</p>
 
-<p>创建前端代理需要的配置文件 <code>front-envoy.yaml</code>：</p>
+<p>Contour 将收集到的这些对象处理为虚拟主机及其路由规则的<strong>有向非循环图</strong>（DAG），这表明 Contour 将有权构建路由规则的顶级视图，并将群集中的相应服务和TLS秘钥连接在一起。一旦构建了这个新的数据结构，我们就可以轻松实现 <code>IngressRoute</code> 对象的验证，授权和分发。改数据结构导出的 <code>png</code> 图片如下图所示：</p>
 
-<pre><code class="language-yaml">static_resources:
-  listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 80
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto ①
-          stat_prefix: ingress_http
-          route_config:
-            virtual_hosts:
-            - name: backend
-              domains: ②
-              - &quot;yangcs.net&quot;
-              - &quot;www.yangcs.net&quot;
-              routes:
-              - match:
-                  prefix: &quot;/&quot;
-                redirect:
-                  path_redirect: &quot;/&quot;
-                  https_redirect: true
-          http_filters:
-          - name: envoy.router
-            config: {}
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 443
-    filter_chains:
-    - tls_context:
-        common_tls_context:
-          alpn_protocols: h2,http/1.1 ③
-          tls_certificates: ④
-            - certificate_chain:
-                filename: &quot;/etc/letsencrypt/live/www.yangcs.net/fullchain.pem&quot;
-              private_key:
-                filename: &quot;/etc/letsencrypt/live/www.yangcs.net/privkey.pem&quot;
-      filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: backend
-              domains:
-              - &quot;yangcs.net&quot;
-              - &quot;www.yangcs.net&quot;
-              routes:
-              - match:
-                  prefix: &quot;/&quot;
-                route:
-                  cluster: hugo
-          http_filters:
-          - name: envoy.router
-            config: {}
-  clusters:
-  - name: hugo
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
-    - socket_address:
-        address: hugo
-        port_value: 8080
-admin:
-  access_log_path: &quot;/dev/null&quot;
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 8001
-</code></pre>
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/dag.png" alt="" /></center></p>
 
-<p><br /></p>
+<p>Envoy API 调用和 Kubernetes API 资源之间的映射关系如下：</p>
 
 <ul>
-<li>① : 编码/解码方式。参考：<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#enum-config-filter-network-http-connection-manager-v2-httpconnectionmanager-codectype" target="_blank">HttpConnectionManager.CodecType</a></li>
-<li>② : 允许访问的域名（这里使用公网可以访问的域名）。</li>
-<li>③ : TLS 监听器支持 <code>ALPN</code>。HTTP 连接管理器使用这个信息（以及协议接口）来确定客户端使用的是 <code>HTTP/1.1</code> 还是 <code>HTTP/2</code>。</li>
-<li>④ : 网站使用的证书。可以通过 <a href="https://letsencrypt.org/" target="_blank">Let&rsquo;s Encrypt</a> 申请免费的证书。</li>
+<li><p><span id="inline-blue">CDS</span> : 集群发现服务。映射为 Kubernetes 中的 <code>Service</code> 以及一部分 Ingress 对象的 <code>TLS</code> 配置。</p></li>
+
+<li><p><span id="inline-blue">SDS</span> : 服务发现服务。映射为 Kubernetes 中的 <code>Endpoint</code>。Envoy 使用 SDS 自动获取 <code>Cluster</code> 成员，这与 Endpoint 对象中包含的信息非常匹配。Envoy 使用 Contour 在 <code>CDS</code> 响应中返回的名称查询 <code>SDS</code>。</p></li>
+
+<li><p><span id="inline-blue">RDS</span> : 路由发现服务。映射为 Kubernetes 中的 <code>Ingress</code>。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。</p></li>
 </ul>
 
-<p>其他配置详细说明请参考：<a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" target="_blank">为 Envoy 启用证书验证</a>。</p>
+<h3 id="p-id-h2-4-映射关系详情-p"><p id="h2">4. 映射关系详情</p></h3>
 
-<p>准备好所有配置以后，我们就可以通过以下命令来启动所有服务了：</p>
+<hr />
 
-<pre><code class="language-bash">$ docker-compose up -d
+<h4 id="cds">CDS</h4>
 
-Creating front-proxy_hugo_1        ... done
-Creating front-proxy_front-envoy_1 ... done
-Creating front-proxy_service-envoy_1 ... done
+<p><code>CDS</code> 更像是 Kubernetes 中的 <code>Service</code> 资源，因为 Service 是具体 <code>Endpoint</code>（Pods）的抽象，Envoy Cluster 是指 Envoy 连接到的一组逻辑上相似的上游主机（参考下文的 RDS）。其中 <code>TLS</code> 配置也是 CDS 的一部分，而 Kubernetes 中的 TLS 信息由 Ingress 提供，所以这部分之间的映射关系会有些复杂。</p>
+
+<h4 id="sds">SDS</h4>
+
+<p><code>SDS</code> 更像是 Kubernetes 中的 <code>Endpoint</code> 资源，这部分映射关系的实现最简单。Contour 将 Endpoint 的响应对象转换为 SDS 的 <code>{ hosts: [] }</code> json 配置块。</p>
+
+<h4 id="rds">RDS</h4>
+
+<p><code>RDS</code> 更像是 Kubernetes 中的 <code>Ingress</code> 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 <code>IngressSpec</code> 的配置项中获取（比如：<code>namespace/serviceName_servicePort</code>），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。</p>
+
+<h3 id="p-id-h2-5-contour-架构分析-p"><p id="h2">5. Contour 架构分析</p></h3>
+
+<hr />
+
+<p>Contour Ingress controller 由两个组件组成：</p>
+
+<ul>
+<li><code>Envoy</code> : 提供高性能反向代理。</li>
+<li><code>Contour</code> : 充当 Envoy 的控制平面，为 Envoy 的路由配置提供统一的来源。</li>
+</ul>
+
+<p>这些容器以 <code>Sidecar</code> 的形式部署在同一个 <code>Pod</code> 中，当然也包括了一些其他的配置。</p>
+
+<p>在 Pod 初始化期间，Contour 作为 <code>Init</code> 容器运行，并将引导程序配置写入一个 temporary volume。该 <code>Volume</code> 被传递给 Envoy 容器并告诉 Envoy 将其 Sidecar Contour 容器视为控制平面。</p>
+
+<p>初始化完成后，Envoy 容器启动，检索 Contour 写入的引导程序配置，并开始轮询 Contour 以热更新配置。如果控制平面无法访问，Envoy 将会进行优雅重试。</p>
+
+<p>Contour 相当于 Kubernetes API 的客户端。它监视 <code>Ingress</code>，<code>Service</code> 和 <code>Endpoint</code> 对象，并通过将其对象缓存转换为相关的 <code>JSON</code> 字段来充当其 Envoy 的控制平面。</p>
+
+<p>从 Kubernetes 到 Contour 的信息转换是通过 <code>SharedInformer</code> 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。</p>
+
+<h3 id="p-id-h2-6-ingressroute-介绍-p"><p id="h2">6. IngressRoute 介绍</p></h3>
+
+<hr />
+
+<p><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/" target="_blank">Ingress</a> 对象从 Kubernetes 1.1 版本开始被引进，用来描述进入集群的请求的 HTTP 路由规则。但迄今为止 Ingress 对象还停留在 <code>beta</code> 阶段，不同的 Ingress Controller 插件为了添加 HTTP 路由的额外属性，只能通过添加大量的 <code>annotation</code> 来实现，而且每个插件的 annotation 都不一样，非常混乱。</p>
+
+<p><code>IngressRoute</code> CRD 的目标就是扩展 Ingress API 的功能，以便提供更丰富的用户体验以及解决原始设计中的缺点。</p>
+
+<p><strong>目前 Contour 是唯一支持 IngressRoute CRD 的 Kubernetes Ingress Controller。</strong>下面就来看看它与 Ingress 相比的优点：</p>
+
+<ul>
+<li>安全地支持多团队 Kubernetes 集群，能够限制哪些命名空间可以配置虚拟主机和 TLS 凭据。</li>
+<li>允许将路径或域名的路由配置分发给另一个命名空间。</li>
+<li>接受单个路由中的多个服务，并对它们之间的流量进行负载均衡。</li>
+<li>无需通过添加 <code>annotation</code> 就可以定义服务权重和负载均衡策略。</li>
+<li>在创建时验证 IngressRoute 对象，并为创建后报告验证是否有效。</li>
+</ul>
+
+<h4 id="从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</h4>
+
+<p>一个基本的 <code>Ingress</code> 对象如下所示：</p>
+
+<pre><code class="language-yaml"># ingress.yaml
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: basic
+spec:
+  rules:
+  - host: foo-basic.bar.com
+    http:
+      paths:
+      - backend:
+          serviceName: s1
+          servicePort: 80
 </code></pre>
 
-<p>接下来就可以通过公网域名访问博客网站啦！没错，你现在浏览的我的博客就是通过 Envoy 反向代理的。</p>
+<p>这个 Ingress 对象名为 <code>basic</code>，它将传入的 HTTP 流量路由到头文件中 <code>Host:</code> 字段值为 <code>foo-basic.bar.com</code> 且端口为 80 的 <code>s1</code> 服务。该路由规则通过 <code>IngressRoute</code> 来实现如下：</p>
+
+<pre><code class="language-yaml"># ingressroute.yaml
+apiVersion: contour.heptio.com/v1beta1
+kind: IngressRoute
+metadata:
+  name: basic
+spec:
+  virtualhost:
+    fqdn: foo-basic.bar.com
+  routes:
+    - match: /
+      services:
+        - name: s1
+          port: 80
+</code></pre>
+
+<p>对应关系很简单，我就不再详细介绍了，更多功能配置可以参考官方仓库的文档：<a href="https://github.com/heptio/contour/blob/master/docs/ingressroute.md" target="_blank">IngressRoute</a>。</p>
+
+<h4 id="可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</h4>
+
+<p>Contour 使用 DAG 对其配置进行建模，可以通过以 <a href="https://en.wikipedia.org/wiki/DOT_(graph_description_language)" target="_blank">DOT</a> 格式输出 DAG 的调试端点对其进行可视化，当然需要先在系统中安装 <code>graphviz</code>：</p>
+
+<pre><code class="language-bash">$ yum install -y graphviz
+</code></pre>
+
+<p>下载图表并将其另存为 <code>PNG</code>：</p>
+
+<pre><code class="language-bash"># Port forward into the contour pod
+$ CONTOUR_POD=$(kubectl -n heptio-contour get pod -l app=contour -o jsonpath='{.items[0].metadata.name}')
+# Do the port forward to that pod
+$ kubectl -n heptio-contour port-forward $CONTOUR_POD 6060
+# Download and store the DAG in png format
+$ curl localhost:6060/debug/dag | dot -T png &gt; contour-dag.png
+</code></pre>
+
+<p>我自己保存的 PNG 图片如下所示：</p>
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/contour-dag.png" alt="" /></center></p>
+
+<h3 id="p-id-h2-7-参考-p"><p id="h2">7. 参考</p></h3>
+
+<hr />
+
+<ul>
+<li><a href="https://github.com/heptio/contour/blob/master/docs/about.md" target="_blank">About Contour and Envoy</a></li>
+<li><a href="https://github.com/heptio/contour/blob/master/docs/architecture.md" target="_blank">Contour architecture</a></li>
+<li><a href="https://blog.heptio.com/making-it-easy-to-use-envoy-as-a-kubernetes-load-balancer-dde82959f171" target="_blank">Making it easy to use Envoy as a Kubernetes load balancer</a></li>
+</ul>
+
+<hr />
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
+<center>扫一扫关注微信公众号</center></p>
 
 <style>
 #h2{
@@ -676,8 +726,8 @@ Creating front-proxy_service-envoy_1 ... done
     text-shadow: rgb(102, 102, 102) 1px 1px 1px;
     box-shadow: rgb(102, 102, 102) 1px 1px 2px;
 }
-#blue {
-color: #2780e3;
+#red {
+color: red;
 }
 #note {
     font-size: 1.5rem;
@@ -897,11 +947,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/kubernetes-extensible-admission/" data-toggle="tooltip" data-placement="top" title="Kubernetes 准入控制介绍">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/" data-toggle="tooltip" data-placement="top" title="为 Envoy 开启 TLS 验证实战">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" data-toggle="tooltip" data-placement="top" title="初试 Kubernetes 集群中使用 Contour 反向代理">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -911,15 +961,15 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/circuit-breaking/">Envoy 熔断器的原理和使用</a></li>
+                    <li><a href="/posts/setting-up-ssl-in-envoy-practice/">为 Envoy 开启 TLS 验证实战</a></li>
                     
-                    <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
+                    <li><a href="/posts/kubernetes-extensible-admission/">Kubernetes 准入控制介绍</a></li>
                     
-                    <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
+                    <li><a href="/posts/kubernetes-dns/">Kubernetes DNS 高阶指南</a></li>
                     
-                    <li><a href="/posts/setting-up-ssl-in-envoy/">为 Envoy 启用证书验证</a></li>
+                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
                     
-                    <li><a href="/posts/incremental-deploys/">通过 Envoy 实现增量部署</a></li>
+                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
                     
                 </ul>
                 
@@ -930,16 +980,14 @@ border-top-color: #9954bb;
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Wed Sep 26, 2018</h4>
+        <h4 id="date"> Fri Sep 28, 2018</h4>
     </section>
-    <h5 id="wc">2000 Words|Read in about 4 Min</h5>
+    <h5 id="wc">3400 Words|Read in about 7 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
         
-        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
-        
-        <a href="https://www.yangcs.net/tags/hugo/">hugo</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
     </h5>
 </div>
 

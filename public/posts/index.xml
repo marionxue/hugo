@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>初试 Kubernetes 集群中使用 Contour 反向代理</title>
+      <link>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</link>
+      <pubDate>Fri, 28 Sep 2018 16:38:15 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>为 Envoy 开启 TLS 验证实战</title>
       <link>https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/</link>
       <pubDate>Wed, 26 Sep 2018 17:43:00 +0800</pubDate>
