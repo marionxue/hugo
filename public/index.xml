@@ -829,6 +829,8 @@ border-top-color: #9954bb;
 
 &lt;h2 id=&#34;1-安装步骤&#34;&gt;1. 安装步骤&lt;/h2&gt;
 
+&lt;hr /&gt;
+
 &lt;p&gt;首先克隆官方仓库，进入 manifest 清单目录：&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ git clone https://github.com/heptio/contour
@@ -936,7 +938,7 @@ clusterrole.rbac.authorization.k8s.io &amp;quot;contour&amp;quot; created
 service &amp;quot;contour&amp;quot; created
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;p-id-h2-2-ingress-测试-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. Ingress 测试&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;2-ingress-测试&#34;&gt;2. Ingress 测试&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -965,7 +967,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/kuard.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-3-contour-工作原理-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. Contour 工作原理&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;3-contour-工作原理&#34;&gt;3. Contour 工作原理&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -989,23 +991,23 @@ ing/kuard   *         192.168.123.249   80        4m
 &lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;RDS&lt;/span&gt; : 路由发现服务。映射为 Kubernetes 中的 &lt;code&gt;Ingress&lt;/code&gt;。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;p-id-h2-4-映射关系详情-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 映射关系详情&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;4-映射关系详情&#34;&gt;4. 映射关系详情&lt;/h2&gt;
 
 &lt;hr /&gt;
 
-&lt;h4 id=&#34;cds&#34;&gt;CDS&lt;/h4&gt;
+&lt;h3 id=&#34;cds&#34;&gt;CDS&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;CDS&lt;/code&gt; 更像是 Kubernetes 中的 &lt;code&gt;Service&lt;/code&gt; 资源，因为 Service 是具体 &lt;code&gt;Endpoint&lt;/code&gt;（Pods）的抽象，Envoy Cluster 是指 Envoy 连接到的一组逻辑上相似的上游主机（参考下文的 RDS）。其中 &lt;code&gt;TLS&lt;/code&gt; 配置也是 CDS 的一部分，而 Kubernetes 中的 TLS 信息由 Ingress 提供，所以这部分之间的映射关系会有些复杂。&lt;/p&gt;
 
-&lt;h4 id=&#34;sds&#34;&gt;SDS&lt;/h4&gt;
+&lt;h3 id=&#34;sds&#34;&gt;SDS&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;SDS&lt;/code&gt; 更像是 Kubernetes 中的 &lt;code&gt;Endpoint&lt;/code&gt; 资源，这部分映射关系的实现最简单。Contour 将 Endpoint 的响应对象转换为 SDS 的 &lt;code&gt;{ hosts: [] }&lt;/code&gt; json 配置块。&lt;/p&gt;
 
-&lt;h4 id=&#34;rds&#34;&gt;RDS&lt;/h4&gt;
+&lt;h3 id=&#34;rds&#34;&gt;RDS&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;RDS&lt;/code&gt; 更像是 Kubernetes 中的 &lt;code&gt;Ingress&lt;/code&gt; 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 &lt;code&gt;IngressSpec&lt;/code&gt; 的配置项中获取（比如：&lt;code&gt;namespace/serviceName_servicePort&lt;/code&gt;），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-5-contour-架构分析-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. Contour 架构分析&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;5-contour-架构分析&#34;&gt;5. Contour 架构分析&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -1026,7 +1028,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 &lt;p&gt;从 Kubernetes 到 Contour 的信息转换是通过 &lt;code&gt;SharedInformer&lt;/code&gt; 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-6-ingressroute-介绍-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;6. IngressRoute 介绍&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;6-ingressroute-介绍&#34;&gt;6. IngressRoute 介绍&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -1044,7 +1046,7 @@ ing/kuard   *         192.168.123.249   80        4m
 &lt;li&gt;在创建时验证 IngressRoute 对象，并为创建后报告验证是否有效。&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h4 id=&#34;从-ingress-到-ingressroute&#34;&gt;从 Ingress 到 IngressRoute&lt;/h4&gt;
+&lt;h3 id=&#34;从-ingress-到-ingressroute&#34;&gt;从 Ingress 到 IngressRoute&lt;/h3&gt;
 
 &lt;p&gt;一个基本的 &lt;code&gt;Ingress&lt;/code&gt; 对象如下所示：&lt;/p&gt;
 
@@ -1082,7 +1084,7 @@ spec:
 
 &lt;p&gt;对应关系很简单，我就不再详细介绍了，更多功能配置可以参考官方仓库的文档：&lt;a href=&#34;https://github.com/heptio/contour/blob/master/docs/ingressroute.md&#34; target=&#34;_blank&#34;&gt;IngressRoute&lt;/a&gt;。&lt;/p&gt;
 
-&lt;h4 id=&#34;可视化-contour-的内部有向非循环图&#34;&gt;可视化 Contour 的内部有向非循环图&lt;/h4&gt;
+&lt;h3 id=&#34;可视化-contour-的内部有向非循环图&#34;&gt;可视化 Contour 的内部有向非循环图&lt;/h3&gt;
 
 &lt;p&gt;Contour 使用 DAG 对其配置进行建模，可以通过以 &lt;a href=&#34;https://en.wikipedia.org/wiki/DOT_(graph_description_language)&#34; target=&#34;_blank&#34;&gt;DOT&lt;/a&gt; 格式输出 DAG 的调试端点对其进行可视化，当然需要先在系统中安装 &lt;code&gt;graphviz&lt;/code&gt;：&lt;/p&gt;
 
@@ -1103,7 +1105,7 @@ $ curl localhost:6060/debug/dag | dot -T png &amp;gt; contour-dag.png
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/contour-dag.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-7-参考-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;7. 参考&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;7-参考&#34;&gt;7. 参考&lt;/h2&gt;
 
 &lt;hr /&gt;
 

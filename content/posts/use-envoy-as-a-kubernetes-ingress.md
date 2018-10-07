@@ -25,6 +25,8 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 ## 1. 安装步骤
 
+----
+
 首先克隆官方仓库，进入 manifest 清单目录：
 
 ```bash
@@ -133,7 +135,7 @@ clusterrole.rbac.authorization.k8s.io "contour" created
 service "contour" created
 ```
 
-### <p id="h2">2. Ingress 测试</p>
+## 2. Ingress 测试
 
 ----
 
@@ -164,7 +166,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/kuard.jpg)</center>
 
-### <p id="h2">3. Contour 工作原理</p>
+## 3. Contour 工作原理
 
 ----
 
@@ -186,23 +188,23 @@ Envoy API 调用和 Kubernetes API 资源之间的映射关系如下：
 
 + <span id="inline-blue">RDS</span> : 路由发现服务。映射为 Kubernetes 中的 `Ingress`。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。
 
-### <p id="h2">4. 映射关系详情</p>
+## 4. 映射关系详情
 
 ----
 
-#### CDS
+### CDS
 
 `CDS` 更像是 Kubernetes 中的 `Service` 资源，因为 Service 是具体 `Endpoint`（Pods）的抽象，Envoy Cluster 是指 Envoy 连接到的一组逻辑上相似的上游主机（参考下文的 RDS）。其中 `TLS` 配置也是 CDS 的一部分，而 Kubernetes 中的 TLS 信息由 Ingress 提供，所以这部分之间的映射关系会有些复杂。
 
-#### SDS
+### SDS
 
 `SDS` 更像是 Kubernetes 中的 `Endpoint` 资源，这部分映射关系的实现最简单。Contour 将 Endpoint 的响应对象转换为 SDS 的 `{ hosts: [] }` json 配置块。
 
-#### RDS
+### RDS
 
 `RDS` 更像是 Kubernetes 中的 `Ingress` 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 `IngressSpec` 的配置项中获取（比如：`namespace/serviceName_servicePort`），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。
 
-### <p id="h2">5. Contour 架构分析</p>
+## 5. Contour 架构分析
 
 ----
 
@@ -221,7 +223,7 @@ Contour 相当于 Kubernetes API 的客户端。它监视 `Ingress`，`Service` 
 
 从 Kubernetes 到 Contour 的信息转换是通过 `SharedInformer` 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。
 
-### <p id="h2">6. IngressRoute 介绍</p>
+## 6. IngressRoute 介绍
 
 ----
 
@@ -237,7 +239,7 @@ Contour 相当于 Kubernetes API 的客户端。它监视 `Ingress`，`Service` 
 + 无需通过添加 `annotation` 就可以定义服务权重和负载均衡策略。
 + 在创建时验证 IngressRoute 对象，并为创建后报告验证是否有效。
 
-#### 从 Ingress 到 IngressRoute
+### 从 Ingress 到 IngressRoute
 
 一个基本的 `Ingress` 对象如下所示：
 
@@ -277,7 +279,7 @@ spec:
 
 对应关系很简单，我就不再详细介绍了，更多功能配置可以参考官方仓库的文档：[IngressRoute](https://github.com/heptio/contour/blob/master/docs/ingressroute.md)。
 
-#### 可视化 Contour 的内部有向非循环图
+### 可视化 Contour 的内部有向非循环图
 
 Contour 使用 DAG 对其配置进行建模，可以通过以 <a href="https://en.wikipedia.org/wiki/DOT_(graph_description_language)" target="_blank">DOT</a> 格式输出 DAG 的调试端点对其进行可视化，当然需要先在系统中安装 `graphviz`：
 
@@ -300,7 +302,7 @@ $ curl localhost:6060/debug/dag | dot -T png > contour-dag.png
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/contour-dag.png)</center>
 
-### <p id="h2">7. 参考</p>
+## 7. 参考
 
 ----
 

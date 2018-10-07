@@ -421,6 +421,8 @@ autocomplete('#aa-search-input',
 
 <h2 id="1-安装步骤">1. 安装步骤</h2>
 
+<hr />
+
 <p>首先克隆官方仓库，进入 manifest 清单目录：</p>
 
 <pre><code class="language-bash">$ git clone https://github.com/heptio/contour
@@ -528,7 +530,7 @@ clusterrole.rbac.authorization.k8s.io &quot;contour&quot; created
 service &quot;contour&quot; created
 </code></pre>
 
-<h3 id="p-id-h2-2-ingress-测试-p"><p id="h2">2. Ingress 测试</p></h3>
+<h2 id="2-ingress-测试">2. Ingress 测试</h2>
 
 <hr />
 
@@ -557,7 +559,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/kuard.jpg" alt="" /></center></p>
 
-<h3 id="p-id-h2-3-contour-工作原理-p"><p id="h2">3. Contour 工作原理</p></h3>
+<h2 id="3-contour-工作原理">3. Contour 工作原理</h2>
 
 <hr />
 
@@ -581,23 +583,23 @@ ing/kuard   *         192.168.123.249   80        4m
 <li><p><span id="inline-blue">RDS</span> : 路由发现服务。映射为 Kubernetes 中的 <code>Ingress</code>。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。</p></li>
 </ul>
 
-<h3 id="p-id-h2-4-映射关系详情-p"><p id="h2">4. 映射关系详情</p></h3>
+<h2 id="4-映射关系详情">4. 映射关系详情</h2>
 
 <hr />
 
-<h4 id="cds">CDS</h4>
+<h3 id="cds">CDS</h3>
 
 <p><code>CDS</code> 更像是 Kubernetes 中的 <code>Service</code> 资源，因为 Service 是具体 <code>Endpoint</code>（Pods）的抽象，Envoy Cluster 是指 Envoy 连接到的一组逻辑上相似的上游主机（参考下文的 RDS）。其中 <code>TLS</code> 配置也是 CDS 的一部分，而 Kubernetes 中的 TLS 信息由 Ingress 提供，所以这部分之间的映射关系会有些复杂。</p>
 
-<h4 id="sds">SDS</h4>
+<h3 id="sds">SDS</h3>
 
 <p><code>SDS</code> 更像是 Kubernetes 中的 <code>Endpoint</code> 资源，这部分映射关系的实现最简单。Contour 将 Endpoint 的响应对象转换为 SDS 的 <code>{ hosts: [] }</code> json 配置块。</p>
 
-<h4 id="rds">RDS</h4>
+<h3 id="rds">RDS</h3>
 
 <p><code>RDS</code> 更像是 Kubernetes 中的 <code>Ingress</code> 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 <code>IngressSpec</code> 的配置项中获取（比如：<code>namespace/serviceName_servicePort</code>），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。</p>
 
-<h3 id="p-id-h2-5-contour-架构分析-p"><p id="h2">5. Contour 架构分析</p></h3>
+<h2 id="5-contour-架构分析">5. Contour 架构分析</h2>
 
 <hr />
 
@@ -618,7 +620,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 <p>从 Kubernetes 到 Contour 的信息转换是通过 <code>SharedInformer</code> 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。</p>
 
-<h3 id="p-id-h2-6-ingressroute-介绍-p"><p id="h2">6. IngressRoute 介绍</p></h3>
+<h2 id="6-ingressroute-介绍">6. IngressRoute 介绍</h2>
 
 <hr />
 
@@ -636,7 +638,7 @@ ing/kuard   *         192.168.123.249   80        4m
 <li>在创建时验证 IngressRoute 对象，并为创建后报告验证是否有效。</li>
 </ul>
 
-<h4 id="从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</h4>
+<h3 id="从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</h3>
 
 <p>一个基本的 <code>Ingress</code> 对象如下所示：</p>
 
@@ -674,7 +676,7 @@ spec:
 
 <p>对应关系很简单，我就不再详细介绍了，更多功能配置可以参考官方仓库的文档：<a href="https://github.com/heptio/contour/blob/master/docs/ingressroute.md" target="_blank">IngressRoute</a>。</p>
 
-<h4 id="可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</h4>
+<h3 id="可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</h3>
 
 <p>Contour 使用 DAG 对其配置进行建模，可以通过以 <a href="https://en.wikipedia.org/wiki/DOT_(graph_description_language)" target="_blank">DOT</a> 格式输出 DAG 的调试端点对其进行可视化，当然需要先在系统中安装 <code>graphviz</code>：</p>
 
@@ -695,7 +697,7 @@ $ curl localhost:6060/debug/dag | dot -T png &gt; contour-dag.png
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/contour-dag.png" alt="" /></center></p>
 
-<h3 id="p-id-h2-7-参考-p"><p id="h2">7. 参考</p></h3>
+<h2 id="7-参考">7. 参考</h2>
 
 <hr />
 
