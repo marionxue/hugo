@@ -404,6 +404,37 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#p-id-h2-1-pod-在服务网格之间如何通信-p"><p id="h2">1. Pod 在服务网格之间如何通信？</p></a></li>
+<li><a href="#p-id-h2-2-部署-bookinfo-应用的时候发生了什么-p"><p id="h2">2. 部署 bookinfo 应用的时候发生了什么？</p></a></li>
+<li><a href="#p-id-h2-3-virtualservice-和-destinationrule-配置解析-p"><p id="h2">3. VirtualService 和 DestinationRule 配置解析</p></a>
+<ul>
+<li><a href="#virtualservice">VirtualService</a></li>
+<li><a href="#destinationrule">DestinationRule</a></li>
+</ul></li>
+<li><a href="#p-id-h2-4-参考-p"><p id="h2">4. 参考</p></a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <p>书接前文，上文我们通过跟踪<strong>集群外通过 ingressgateway 发起的请求</strong>来探寻流量在 Istio 服务网格之间的流动方向，先部署 bookinfo 示例应用，然后创建一个监听在 <code>ingressgateway</code> 上的  GateWay 和 VirtualService，通过分析我们追踪到请求最后转交给了 <code>productpage</code>。</p>

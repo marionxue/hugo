@@ -402,6 +402,33 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#p-id-h2-1-cri-接口-p"><p id="h2">1. CRI 接口</p></a></li>
+<li><a href="#p-id-h2-2-如何开发新的-container-runtime-p"><p id="h2">2. 如何开发新的 Container Runtime</p></a></li>
+<li><a href="#p-id-h2-3-目前支持的-container-runtime-p"><p id="h2">3. 目前支持的 Container Runtime</p></a>
+<ul>
+<li><a href="#cri-containerd">cri-containerd</a></li>
+</ul></li>
+<li><a href="#p-id-h2-4-cri-tools-p"><p id="h2">4. CRI Tools</p></a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <p>容器运行时（Container Runtime）是 Kubernetes 最重要的组件之一，负责真正管理镜像和容器的生命周期。Kubelet 通过 <code>Container Runtime Interface (CRI)</code> 与容器运行时交互，以管理镜像和容器。</p>

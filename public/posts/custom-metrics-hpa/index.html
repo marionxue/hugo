@@ -400,6 +400,40 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#p-id-h2-1-resource-metrics-api-p"><p id="h2">1. Resource Metrics API</p></a></li>
+<li><a href="#p-id-h2-2-metrics-server-p"><p id="h2">2. Metrics Server</p></a></li>
+<li><a href="#p-id-h2-3-custom-metrics-api-p"><p id="h2">3. custom metrics api</p></a></li>
+<li><a href="#p-id-h2-4-hpa-p"><p id="h2">4. HPA</p></a></li>
+<li><a href="#p-id-h2-5-实战-p"><p id="h2">5. 实战</p></a>
+<ul>
+<li><a href="#前提">前提</a></li>
+<li><a href="#安装-metrics-server">安装 Metrics Server</a></li>
+<li><a href="#基于-cpu-和内存使用的自动缩放">基于 CPU 和内存使用的自动缩放</a></li>
+<li><a href="#安装-custom-metrics-server">安装 Custom Metrics Server</a></li>
+<li><a href="#基于自定义指标的自动扩容">基于自定义指标的自动扩容</a></li>
+</ul></li>
+<li><a href="#p-id-h2-6-总结-p"><p id="h2">6. 总结</p></a></li>
+<li><a href="#p-id-h2-7-参考-p"><p id="h2">7. 参考</p></a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <p>从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）可以通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制器使用(例如，Horizontal Pod Autoscale 可以使用这些指标作出决策)。</p>

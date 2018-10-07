@@ -402,6 +402,33 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#p-id-h2-1-熔断器配置-p"><p id="h2">1. 熔断器配置</p></a></li>
+<li><a href="#p-id-h2-2-基本的熔断策略-p"><p id="h2">2. 基本的熔断策略</p></a></li>
+<li><a href="#p-id-h2-3-高级熔断策略-p"><p id="h2">3. 高级熔断策略</p></a>
+<ul>
+<li><a href="#基于延迟设置熔断">基于延迟设置熔断</a></li>
+<li><a href="#基于长连接重试队列设置熔断">基于长连接重试队列设置熔断</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <p>在微服务领域，各个服务之间经常会相互调用。如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而造成整个系统不可用，通常把这种现象称为 <span id="inline-purple">服务雪崩效应</span>。为了应对这种情况，可以使用熔断器（circuit breaking）。</p>

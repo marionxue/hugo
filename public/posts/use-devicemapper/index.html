@@ -400,6 +400,66 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-准备条件-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. <strong>准备条件</strong></p></a></li>
+<li><a href="#p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-2-配置docker使用devicemapper-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. <strong>配置Docker使用devicemapper</strong></p></a>
+<ul>
+<li><a href="#2-1-生产环境配置direct-lvm模式"><strong>2.1 生产环境配置direct-lvm模式</strong></a>
+<ul>
+<li><a href="#自动配置-direct-lvm-模式"><strong>自动配置 direct-lvm 模式</strong></a></li>
+<li><a href="#手动配置-direct-lvm-模式"><strong>手动配置 direct-lvm 模式</strong></a></li>
+<li><a href="#检查主机上的-devicemapper-结构"><strong>检查主机上的 <code>devicemapper</code> 结构</strong></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-3-管理-devicemapper-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. <strong>管理 devicemapper</strong></p></a>
+<ul>
+<li><a href="#3-1-监控-thin-pool">3.1 <strong>监控 thin pool</strong></a></li>
+<li><a href="#3-2-为正在运行的设备增加容量">3.2 <strong>为正在运行的设备增加容量</strong></a>
+<ul>
+<li><a href="#调整-loop-lvm-精简池的大小"><strong>调整 <code>loop-lvm</code> 精简池的大小</strong></a>
+<ul>
+<li><a href="#a-使用-device-tool-工具">a. <strong>使用 <code>device_tool</code> 工具</strong></a></li>
+<li><a href="#b-使用操作系统工具">b. <strong>使用操作系统工具</strong></a></li>
+</ul></li>
+<li><a href="#调整-direct-lvm-精简池的大小"><strong>调整 <code>direct-lvm</code> 精简池的大小</strong></a></li>
+<li><a href="#重启操作系统后重新激活-devicemapper"><strong>重启操作系统后重新激活 devicemapper</strong></a></li>
+</ul></li>
+</ul></li>
+<li><a href="#p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-4-devicemapper-存储驱动的工作原理-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. <strong>devicemapper 存储驱动的工作原理</strong></p></a>
+<ul>
+<li><a href="#4-1-磁盘上的镜像和容器层">4.1 <strong>磁盘上的镜像和容器层</strong></a></li>
+<li><a href="#4-2-镜像分层与共享">4.2 <strong>镜像分层与共享</strong></a></li>
+</ul></li>
+<li><a href="#p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-5-devicemapper-读写数据的过程-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">5. <strong>devicemapper 读写数据的过程</strong></p></a>
+<ul>
+<li><a href="#5-1-读数据">5.1 <strong>读数据</strong></a></li>
+<li><a href="#5-2-写数据">5.2 <strong>写数据</strong></a></li>
+</ul></li>
+<li><a href="#p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-6-device-mapper-对-docker-性能的影响-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">6. <strong>Device Mapper 对 Docker 性能的影响</strong></p></a>
+<ul>
+<li><a href="#6-1-按需分配对性能的影响">6.1 <strong>按需分配对性能的影响</strong></a></li>
+<li><a href="#6-2-写时拷贝对性能的影响">6.2 <strong>写时拷贝对性能的影响</strong></a></li>
+<li><a href="#6-3-其他注意事项">6.3 <strong>其他注意事项</strong></a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-准备条件-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. <strong>准备条件</strong></p></h2>

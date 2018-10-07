@@ -400,6 +400,57 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#p-id-h2-1-kubectl-p"><p id="h2">1. kubectl</p></a>
+<ul>
+<li><a href="#验证和生成器">验证和生成器</a></li>
+<li><a href="#api-版本协商与-api-组">API 版本协商与 API 组</a></li>
+<li><a href="#客户端身份认证">客户端身份认证</a></li>
+</ul></li>
+<li><a href="#p-id-h2-2-kube-apiserver-p"><p id="h2">2. kube-apiserver</p></a>
+<ul>
+<li><a href="#认证-https-k8smeetup-github-io-docs-admin-authentication"><a href="https://k8smeetup.github.io/docs/admin/authentication/" target="_blank">认证</a></a></li>
+<li><a href="#授权-https-k8smeetup-github-io-docs-admin-authorization"><a href="https://k8smeetup.github.io/docs/admin/authorization/" target="_blank">授权</a></a></li>
+<li><a href="#准入控制-https-k8smeetup-github-io-docs-admin-admission-controllers"><a href="https://k8smeetup.github.io/docs/admin/admission-controllers/" target="_blank">准入控制</a></a></li>
+</ul></li>
+<li><a href="#p-id-h2-3-etcd-p"><p id="h2">3. etcd</p></a></li>
+<li><a href="#p-id-h2-4-初始化-p"><p id="h2">4. 初始化</p></a></li>
+<li><a href="#p-id-h2-5-控制循环-p"><p id="h2">5. 控制循环</p></a>
+<ul>
+<li><a href="#deployments-controller">Deployments controller</a></li>
+<li><a href="#replicasets-controller">ReplicaSets controller</a></li>
+<li><a href="#informers">Informers</a></li>
+<li><a href="#scheduler">Scheduler</a></li>
+</ul></li>
+<li><a href="#p-id-h2-6-kubelet-p"><p id="h2">6. Kubelet</p></a>
+<ul>
+<li><a href="#pod-同步">Pod 同步</a></li>
+<li><a href="#cri-与-pause-容器">CRI 与 pause 容器</a></li>
+<li><a href="#cni-和-pod-网络">CNI 和 Pod 网络</a></li>
+<li><a href="#跨主机容器网络">跨主机容器网络</a></li>
+<li><a href="#容器启动">容器启动</a></li>
+</ul></li>
+<li><a href="#p-id-h2-7-总结-p"><p id="h2">7. 总结</p></a></li>
+<li><a href="#p-id-h2-8-原文链接-p"><p id="h2">8. 原文链接</p></a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <p>想象一下，如果我想将 nginx 部署到 Kubernetes 集群，我可能会在终端中输入类似这样的命令：</p>

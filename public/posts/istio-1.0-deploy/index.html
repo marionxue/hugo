@@ -402,6 +402,31 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#p-id-h2-1-下载-istio-p"><p id="h2">1. 下载 Istio</p></a></li>
+<li><a href="#p-id-h2-2-使用-helm-部署-istio-服务-p"><p id="h2">2. 使用 Helm 部署 Istio 服务</p></a></li>
+<li><a href="#p-id-h2-3-prometheus-grafana-servicegraph-和-jaeger-p"><p id="h2">3. Prometheus、Grafana、Servicegraph 和 Jaeger</p></a></li>
+<li><a href="#p-id-h2-4-mesh-expansion-p"><p id="h2">4. Mesh Expansion</p></a></li>
+<li><a href="#p-id-h2-5-参考-p"><p id="h2">5. 参考</p></a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <p>北京时间 2018 年 8 月 1 日（建军节）凌晨 0 点，Istio 宣布推出 1.0 正式版本，并表示已可用于生产环境。这距离最初的 0.1 版本发布已过去一年多的时间。这个项目的组件相对比较复杂，原有的一些选项是靠 ConfigMap 以及 istioctl 分别调整的，现在通过重新设计的 <code>Helm Chart</code>，安装选项用 <code>values.yml</code> 或者 helm 命令行的方式来进行集中管理了。</p>

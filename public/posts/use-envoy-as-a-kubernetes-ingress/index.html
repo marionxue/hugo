@@ -402,6 +402,42 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+  
+  <aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-安装步骤">1. 安装步骤</a></li>
+<li><a href="#2-ingress-测试">2. Ingress 测试</a></li>
+<li><a href="#3-contour-工作原理">3. Contour 工作原理</a></li>
+<li><a href="#4-映射关系详情">4. 映射关系详情</a>
+<ul>
+<li><a href="#cds">CDS</a></li>
+<li><a href="#sds">SDS</a></li>
+<li><a href="#rds">RDS</a></li>
+</ul></li>
+<li><a href="#5-contour-架构分析">5. Contour 架构分析</a></li>
+<li><a href="#6-ingressroute-介绍">6. IngressRoute 介绍</a>
+<ul>
+<li><a href="#从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</a></li>
+<li><a href="#可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</a></li>
+</ul></li>
+<li><a href="#7-参考">7. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+  </aside>
+  
+
+
                 <p></p>
 
 <p>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 <code>L7</code> 层实现高效流畅的入口流量管理。自从第一批 <code>Kubernetes Ingress Controller</code> 开发完成以来，<code>Envoy</code>（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。</p>
