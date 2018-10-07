@@ -394,35 +394,35 @@ autocomplete('#aa-search-input',
 <ul>
 <li><a href="#1-通过-iptables-实现智能分流">1. 通过 iptables 实现智能分流</a>
 <ul>
-<li><a href="#1-1-安装相关软件">1.1 安装相关软件</a></li>
-<li><a href="#1-2-配置shadowsocks-libev-略过">1.2 配置shadowsocks-libev（略过）</a></li>
-<li><a href="#1-3-获取中国ip段">1.3 获取中国IP段</a></li>
-<li><a href="#1-4-创建启动和关闭脚本">1.4 创建启动和关闭脚本</a></li>
-<li><a href="#1-5-配置ss-redir服务">1.5 配置ss-redir服务</a></li>
-<li><a href="#1-6-配置智能-dns-服务">1.6 配置智能 DNS 服务</a></li>
-<li><a href="#1-7-配置系统-dns-服务器设置">1.7 配置系统 DNS 服务器设置</a></li>
-<li><a href="#1-8-打开流量转发">1.8 打开流量转发</a></li>
+<li><a href="#安装相关软件">安装相关软件</a></li>
+<li><a href="#配置shadowsocks-libev-略过">配置shadowsocks-libev（略过）</a></li>
+<li><a href="#获取中国ip段">获取中国IP段</a></li>
+<li><a href="#创建启动和关闭脚本">创建启动和关闭脚本</a></li>
+<li><a href="#配置ss-redir服务">配置ss-redir服务</a></li>
+<li><a href="#配置智能-dns-服务">配置智能 DNS 服务</a></li>
+<li><a href="#配置系统-dns-服务器设置">配置系统 DNS 服务器设置</a></li>
+<li><a href="#打开流量转发">打开流量转发</a></li>
 </ul></li>
 <li><a href="#2-通过-nftables-实现智能分流">2. 通过 nftables 实现智能分流</a>
 <ul>
-<li><a href="#2-1-安装相关软件">2.1 安装相关软件</a></li>
-<li><a href="#2-2-配置shadowsocks-libev-略过">2.2 配置shadowsocks-libev（略过）</a></li>
-<li><a href="#2-3-获取中国ip段">2.3 获取中国IP段</a></li>
-<li><a href="#2-4-创建启动和关闭脚本">2.4 创建启动和关闭脚本</a></li>
-<li><a href="#2-5-配置ss-redir服务">2.5 配置ss-redir服务</a></li>
-<li><a href="#2-6-配置智能-dns-服务">2.6 配置智能 DNS 服务</a></li>
-<li><a href="#2-7-配置系统-dns-服务器设置">2.7 配置系统 DNS 服务器设置</a></li>
-<li><a href="#2-8-打开流量转发">2.8 打开流量转发</a></li>
+<li><a href="#安装相关软件-1">安装相关软件</a></li>
+<li><a href="#配置shadowsocks-libev-略过-1">配置shadowsocks-libev（略过）</a></li>
+<li><a href="#获取中国ip段-1">获取中国IP段</a></li>
+<li><a href="#创建启动和关闭脚本-1">创建启动和关闭脚本</a></li>
+<li><a href="#配置ss-redir服务-1">配置ss-redir服务</a></li>
+<li><a href="#配置智能-dns-服务-1">配置智能 DNS 服务</a></li>
+<li><a href="#配置系统-dns-服务器设置-1">配置系统 DNS 服务器设置</a></li>
+<li><a href="#打开流量转发-1">打开流量转发</a></li>
 </ul></li>
 <li><a href="#3-通过策略路由实现智能分流">3. 通过策略路由实现智能分流</a>
 <ul>
-<li><a href="#3-1-安装相关软件">3.1 安装相关软件</a></li>
-<li><a href="#3-2-配置shadowsocks-略过">3.2 配置shadowsocks（略过）</a></li>
-<li><a href="#3-3-获取中国ip段">3.3 获取中国IP段</a></li>
-<li><a href="#3-4-配置智能-dns-服务">3.4 配置智能 DNS 服务</a></li>
-<li><a href="#3-5-配置系统-dns-服务器设置">3.5 配置系统 DNS 服务器设置</a></li>
-<li><a href="#3-6-写路由表启动和终止脚本">3.6 写路由表启动和终止脚本</a></li>
-<li><a href="#3-7-打开流量转发">3.7 打开流量转发</a></li>
+<li><a href="#安装相关软件-2">安装相关软件</a></li>
+<li><a href="#配置shadowsocks-略过">配置shadowsocks（略过）</a></li>
+<li><a href="#获取中国ip段-2">获取中国IP段</a></li>
+<li><a href="#配置智能-dns-服务-2">配置智能 DNS 服务</a></li>
+<li><a href="#配置系统-dns-服务器设置-2">配置系统 DNS 服务器设置</a></li>
+<li><a href="#编写路由表启动和终止脚本">编写路由表启动和终止脚本</a></li>
+<li><a href="#打开流量转发-2">打开流量转发</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -444,7 +444,9 @@ autocomplete('#aa-search-input',
 
 <h2 id="1-通过-iptables-实现智能分流">1. 通过 iptables 实现智能分流</h2>
 
-<h3 id="1-1-安装相关软件">1.1 安装相关软件</h3>
+<hr />
+
+<h3 id="安装相关软件">安装相关软件</h3>
 
 <ul>
 <li>shadowsocks-libev</li>
@@ -454,11 +456,13 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">$ pacman -S shadowsocks-libev ipset
 </code></pre>
 
-<h3 id="1-2-配置shadowsocks-libev-略过">1.2 配置shadowsocks-libev（略过）</h3>
+<p><br /></p>
+
+<h3 id="配置shadowsocks-libev-略过">配置shadowsocks-libev（略过）</h3>
 
 <p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
 
-<h3 id="1-3-获取中国ip段">1.3 获取中国IP段</h3>
+<h3 id="获取中国ip段">获取中国IP段</h3>
 
 <p>将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：</p>
 
@@ -467,7 +471,9 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
 </code></pre>
 
-<h3 id="1-4-创建启动和关闭脚本">1.4 创建启动和关闭脚本</h3>
+<p><br /></p>
+
+<h3 id="创建启动和关闭脚本">创建启动和关闭脚本</h3>
 
 <pre><code class="language-bash">$ vim /home/yang/bin/shadowsocks/ss-up.sh
 </code></pre>
@@ -541,7 +547,9 @@ ipset destroy chnroute
 $ chmod +x ss-down.sh
 </code></pre>
 
-<h3 id="1-5-配置ss-redir服务">1.5 配置ss-redir服务</h3>
+<p><br /></p>
+
+<h3 id="配置ss-redir服务">配置ss-redir服务</h3>
 
 <p>首先，默认的 <code>ss-local</code> 并不能用来作为 <code>iptables</code> 流量转发的目标，因为它是 <code>socks5</code> 代理而非透明代理。我们至少要把 <code>systemd</code> 执行的程序改成 <code>ss-redir</code>。其次，上述两个脚本还不能自动执行，必须让 <code>systemd</code> 分别在启动 <code>shadowsocks</code> 之前和关闭之后将脚本执行，这样才能自动配置好 <code>iptables</code> 规则。</p>
 
@@ -574,7 +582,9 @@ WantedBy=multi-user.target
 <pre><code class="language-bash">$ systemctl enable shadowsocks-libev@shadowsocks
 </code></pre>
 
-<h3 id="1-6-配置智能-dns-服务">1.6 配置智能 DNS 服务</h3>
+<p><br /></p>
+
+<h3 id="配置智能-dns-服务">配置智能 DNS 服务</h3>
 
 <p>完成了以上工作之后是不是就可以实现全局科学上网了呢？答案是否定的，我们还有最后一项工作需要完成，那就是解决 <code>DNS</code> 污染问题。如果你不知道什么是 <code>DNS</code> 污染，我可以简单地给你普及一下：</p>
 
@@ -647,7 +657,9 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 ...
 </code></pre>
 
-<h3 id="1-7-配置系统-dns-服务器设置">1.7 配置系统 DNS 服务器设置</h3>
+<p><br /></p>
+
+<h3 id="配置系统-dns-服务器设置">配置系统 DNS 服务器设置</h3>
 
 <ul>
 <li><p>可参见 <a href="https://developers.google.com/speed/public-dns/docs/using" target="_blank">https://developers.google.com/speed/public-dns/docs/using</a> 中 <code>Changing your DNS servers settings</code> 中 <code>Linux</code> 一节</p></li>
@@ -699,7 +711,7 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 <li><p>使用 <code>service network(/networking) restart</code> 或 <code>ifdown/ifup</code> 或 <code>ifconfig stop/start</code> 重启网络服务/网络端口</p></li>
 </ul>
 
-<h3 id="1-8-打开流量转发">1.8 打开流量转发</h3>
+<h3 id="打开流量转发">打开流量转发</h3>
 
 <pre><code class="language-bash">$ cat /etc/sysctl.d/30-ipforward.conf
 </code></pre>
@@ -720,9 +732,13 @@ net.ipv4.tcp_synack_retries = 5
 <pre><code class="language-bash">$ sysctl -p
 </code></pre>
 
+<p><br /></p>
+
 <h2 id="2-通过-nftables-实现智能分流">2. 通过 nftables 实现智能分流</h2>
 
-<h3 id="2-1-安装相关软件">2.1 安装相关软件</h3>
+<hr />
+
+<h3 id="安装相关软件-1">安装相关软件</h3>
 
 <ul>
 <li>shadowsocks-libev</li>
@@ -732,11 +748,13 @@ net.ipv4.tcp_synack_retries = 5
 <pre><code class="language-bash">$ pacman -S shadowsocks-libev nftables
 </code></pre>
 
-<h3 id="2-2-配置shadowsocks-libev-略过">2.2 配置shadowsocks-libev（略过）</h3>
+<p><br /></p>
+
+<h3 id="配置shadowsocks-libev-略过-1">配置shadowsocks-libev（略过）</h3>
 
 <p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
 
-<h3 id="2-3-获取中国ip段">2.3 获取中国IP段</h3>
+<h3 id="获取中国ip段-1">获取中国IP段</h3>
 
 <p>将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：</p>
 
@@ -746,7 +764,9 @@ cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&
 cat cn_rules.conf|sed ':label;N;s/\n/, /;b label'|sed 's/$/&amp; }/g'|sed 's/^/{ &amp;/g' &gt; /home/yang/bin/路由表/cn_rules1.conf
 </code></pre>
 
-<h3 id="2-4-创建启动和关闭脚本">2.4 创建启动和关闭脚本</h3>
+<p><br /></p>
+
+<h3 id="创建启动和关闭脚本-1">创建启动和关闭脚本</h3>
 
 <pre><code class="language-bash">$ vim /home/yang/bin/shadowsocks/nftables-up.sh
 </code></pre>
@@ -792,7 +812,9 @@ sudo nft flush table nat
 $ chmod +x nftables-down.sh
 </code></pre>
 
-<h3 id="2-5-配置ss-redir服务">2.5 配置ss-redir服务</h3>
+<p><br /></p>
+
+<h3 id="配置ss-redir服务-1">配置ss-redir服务</h3>
 
 <p>首先，默认的 <code>ss-local</code> 并不能用来作为 <code>nftables</code> 流量转发的目标，因为它是 <code>socks5</code> 代理而非透明代理。我们至少要把 <code>systemd</code> 执行的程序改成 <code>ss-redir</code>。其次，上述两个脚本还不能自动执行，必须让 <code>systemd</code> 分别在启动 <code>shadowsocks</code> 之前和关闭之后将脚本执行，这样才能自动配置好 <code>nftables</code> 规则。</p>
 
@@ -827,21 +849,25 @@ $ systemctl start shadowsocks-libev@shadowsocks
 $ systemctl enable shadowsocks-libev@shadowsocks
 </code></pre>
 
-<h3 id="2-6-配置智能-dns-服务">2.6 配置智能 DNS 服务</h3>
+<p><br /></p>
+
+<h3 id="配置智能-dns-服务-1">配置智能 DNS 服务</h3>
 
 <p>同上</p>
 
-<h3 id="2-7-配置系统-dns-服务器设置">2.7 配置系统 DNS 服务器设置</h3>
+<h3 id="配置系统-dns-服务器设置-1">配置系统 DNS 服务器设置</h3>
 
 <p>同上</p>
 
-<h3 id="2-8-打开流量转发">2.8 打开流量转发</h3>
+<h3 id="打开流量转发-1">打开流量转发</h3>
 
 <p>同上</p>
 
 <h2 id="3-通过策略路由实现智能分流">3. 通过策略路由实现智能分流</h2>
 
-<h3 id="3-1-安装相关软件">3.1 安装相关软件</h3>
+<hr />
+
+<h3 id="安装相关软件-2">安装相关软件</h3>
 
 <ul>
 <li>badvpn</li>
@@ -851,11 +877,13 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 <pre><code class="language-bash">$ pacman -S badvpn shadowsocks
 </code></pre>
 
-<h3 id="3-2-配置shadowsocks-略过">3.2 配置shadowsocks（略过）</h3>
+<p><br /></p>
+
+<h3 id="配置shadowsocks-略过">配置shadowsocks（略过）</h3>
 
 <p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
 
-<h3 id="3-3-获取中国ip段">3.3 获取中国IP段</h3>
+<h3 id="获取中国ip段-2">获取中国IP段</h3>
 
 <p>将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：</p>
 
@@ -864,15 +892,17 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
 </code></pre>
 
-<h3 id="3-4-配置智能-dns-服务">3.4 配置智能 DNS 服务</h3>
+<p><br /></p>
+
+<h3 id="配置智能-dns-服务-2">配置智能 DNS 服务</h3>
 
 <p>同上</p>
 
-<h3 id="3-5-配置系统-dns-服务器设置">3.5 配置系统 DNS 服务器设置</h3>
+<h3 id="配置系统-dns-服务器设置-2">配置系统 DNS 服务器设置</h3>
 
 <p>同上</p>
 
-<h3 id="3-6-写路由表启动和终止脚本">3.6 写路由表启动和终止脚本</h3>
+<h3 id="编写路由表启动和终止脚本">编写路由表启动和终止脚本</h3>
 
 <pre><code class="language-bash">$ vim /usr/local/bin/socksfwd
 </code></pre>
@@ -966,7 +996,9 @@ WantedBy=multi-user.target
 <pre><code class="language-bash">$ systemctl enable socksfwd
 </code></pre>
 
-<h3 id="3-7-打开流量转发">3.7 打开流量转发</h3>
+<p><br /></p>
+
+<h3 id="打开流量转发-2">打开流量转发</h3>
 
 <pre><code class="language-bash">$ cat /etc/sysctl.d/30-ipforward.conf
 </code></pre>

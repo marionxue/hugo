@@ -22,7 +22,9 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 ## 1. 通过 iptables 实现智能分流
 
-### 1.1 安装相关软件
+----
+
+### 安装相关软件
 
 * shadowsocks-libev
 * ipset
@@ -31,11 +33,13 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 $ pacman -S shadowsocks-libev ipset
 ```
 
-### 1.2 配置shadowsocks-libev（略过）
+<br />
+
+### 配置shadowsocks-libev（略过）
 
 假设shadowsocks配置文件为/etc/shadowsocks.json
  
-### 1.3 获取中国IP段
+### 获取中国IP段
 
 将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：
 
@@ -45,7 +49,9 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&&/ipv4/ {print $4 "/" 32-log($5)/log(2)}' | cat > /home/yang/bin/路由表/cn_rules.conf
 ```
 
-### 1.4 创建启动和关闭脚本
+<br />
+
+### 创建启动和关闭脚本
 
 ```bash
 $ vim /home/yang/bin/shadowsocks/ss-up.sh
@@ -122,7 +128,9 @@ $ chmod +x ss-up.sh
 $ chmod +x ss-down.sh
 ```
 
-### 1.5 配置ss-redir服务
+<br />
+
+### 配置ss-redir服务
 
 首先，默认的 `ss-local` 并不能用来作为 `iptables` 流量转发的目标，因为它是 `socks5` 代理而非透明代理。我们至少要把 `systemd` 执行的程序改成 `ss-redir`。其次，上述两个脚本还不能自动执行，必须让 `systemd` 分别在启动 `shadowsocks` 之前和关闭之后将脚本执行，这样才能自动配置好 `iptables` 规则。
 
@@ -159,7 +167,9 @@ $ systemctl start shadowsocks-libev@shadowsocks
 $ systemctl enable shadowsocks-libev@shadowsocks
 ```
 
-### 1.6 配置智能 DNS 服务
+<br />
+
+### 配置智能 DNS 服务
 
 完成了以上工作之后是不是就可以实现全局科学上网了呢？答案是否定的，我们还有最后一项工作需要完成，那就是解决 `DNS` 污染问题。如果你不知道什么是 `DNS` 污染，我可以简单地给你普及一下：
 
@@ -225,7 +235,9 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 ...
 ```
 
-### 1.7 配置系统 DNS 服务器设置
+<br />
+
+### 配置系统 DNS 服务器设置
 
 * 可参见 [https://developers.google.com/speed/public-dns/docs/using](https://developers.google.com/speed/public-dns/docs/using) 中 `Changing your DNS servers settings` 中 `Linux` 一节
 
@@ -275,7 +287,7 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 
 * 使用 `service network(/networking) restart` 或 `ifdown/ifup` 或 `ifconfig stop/start` 重启网络服务/网络端口
 
-### 1.8 打开流量转发
+### 打开流量转发
 
 ```bash
 $ cat /etc/sysctl.d/30-ipforward.conf
@@ -298,9 +310,13 @@ net.ipv4.tcp_synack_retries = 5
 $ sysctl -p
 ```
 
+<br />
+
 ## 2. 通过 nftables 实现智能分流
 
-### 2.1 安装相关软件
+----
+
+### 安装相关软件
 
 * shadowsocks-libev
 * nftables
@@ -309,11 +325,13 @@ $ sysctl -p
 $ pacman -S shadowsocks-libev nftables
 ```
 
-### 2.2 配置shadowsocks-libev（略过）
+<br />
+
+### 配置shadowsocks-libev（略过）
 
 假设shadowsocks配置文件为/etc/shadowsocks.json
  
-### 2.3 获取中国IP段
+### 获取中国IP段
 
 将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：
 
@@ -324,7 +342,9 @@ cat delegated-apnic-latest | awk -F '|' '/CN/&&/ipv4/ {print $4 "/" 32-log($5)/l
 cat cn_rules.conf|sed ':label;N;s/\n/, /;b label'|sed 's/$/& }/g'|sed 's/^/{ &/g' > /home/yang/bin/路由表/cn_rules1.conf
 ```
 
-### 2.4 创建启动和关闭脚本
+<br />
+
+### 创建启动和关闭脚本
 
 ```bash
 $ vim /home/yang/bin/shadowsocks/nftables-up.sh
@@ -374,7 +394,9 @@ $ chmod +x nftables-up.sh
 $ chmod +x nftables-down.sh
 ```
 
-### 2.5 配置ss-redir服务
+<br />
+
+### 配置ss-redir服务
 
 首先，默认的 `ss-local` 并不能用来作为 `nftables` 流量转发的目标，因为它是 `socks5` 代理而非透明代理。我们至少要把 `systemd` 执行的程序改成 `ss-redir`。其次，上述两个脚本还不能自动执行，必须让 `systemd` 分别在启动 `shadowsocks` 之前和关闭之后将脚本执行，这样才能自动配置好 `nftables` 规则。
 
@@ -413,21 +435,25 @@ $ systemctl enable nftables
 $ systemctl enable shadowsocks-libev@shadowsocks
 ```
 
-### 2.6 配置智能 DNS 服务
+<br />
+
+### 配置智能 DNS 服务
 
 同上
 
-### 2.7 配置系统 DNS 服务器设置
+### 配置系统 DNS 服务器设置
 
 同上
 
-### 2.8 打开流量转发
+### 打开流量转发
 
 同上
 
 ## 3. 通过策略路由实现智能分流
 
-### 3.1 安装相关软件
+----
+
+### 安装相关软件
 
 * badvpn
 * shadowsocks
@@ -436,10 +462,12 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 $ pacman -S badvpn shadowsocks
 ```
 
-### 3.2 配置shadowsocks（略过）
+<br />
+
+### 配置shadowsocks（略过）
 假设shadowsocks配置文件为/etc/shadowsocks.json
  
-### 3.3 获取中国IP段
+### 获取中国IP段
 
 将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：
 
@@ -449,15 +477,17 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&&/ipv4/ {print $4 "/" 32-log($5)/log(2)}' | cat > /home/yang/bin/路由表/cn_rules.conf
 ```
 
-### 3.4 配置智能 DNS 服务
+<br />
+
+### 配置智能 DNS 服务
 
 同上
 
-### 3.5 配置系统 DNS 服务器设置
+### 配置系统 DNS 服务器设置
 
 同上
 
-### 3.6 写路由表启动和终止脚本
+### 编写路由表启动和终止脚本
 
 ```bash
 $ vim /usr/local/bin/socksfwd
@@ -557,7 +587,9 @@ $ systemctl start socksfwd
 $ systemctl enable socksfwd
 ```
 
-### 3.7 打开流量转发
+<br />
+
+### 打开流量转发
 
 ```bash
 $ cat /etc/sysctl.d/30-ipforward.conf

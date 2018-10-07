@@ -29,7 +29,9 @@
 
 &lt;h2 id=&#34;1-通过-iptables-实现智能分流&#34;&gt;1. 通过 iptables 实现智能分流&lt;/h2&gt;
 
-&lt;h3 id=&#34;1-1-安装相关软件&#34;&gt;1.1 安装相关软件&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;安装相关软件&#34;&gt;安装相关软件&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;shadowsocks-libev&lt;/li&gt;
@@ -39,11 +41,13 @@
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ pacman -S shadowsocks-libev ipset
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;1-2-配置shadowsocks-libev-略过&#34;&gt;1.2 配置shadowsocks-libev（略过）&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置shadowsocks-libev-略过&#34;&gt;配置shadowsocks-libev（略过）&lt;/h3&gt;
 
 &lt;p&gt;假设shadowsocks配置文件为/etc/shadowsocks.json&lt;/p&gt;
 
-&lt;h3 id=&#34;1-3-获取中国ip段&#34;&gt;1.3 获取中国IP段&lt;/h3&gt;
+&lt;h3 id=&#34;获取中国ip段&#34;&gt;获取中国IP段&lt;/h3&gt;
 
 &lt;p&gt;将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：&lt;/p&gt;
 
@@ -52,7 +56,9 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F &#39;|&#39; &#39;/CN/&amp;amp;&amp;amp;/ipv4/ {print $4 &amp;quot;/&amp;quot; 32-log($5)/log(2)}&#39; | cat &amp;gt; /home/yang/bin/路由表/cn_rules.conf
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;1-4-创建启动和关闭脚本&#34;&gt;1.4 创建启动和关闭脚本&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;创建启动和关闭脚本&#34;&gt;创建启动和关闭脚本&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vim /home/yang/bin/shadowsocks/ss-up.sh
 &lt;/code&gt;&lt;/pre&gt;
@@ -126,7 +132,9 @@ ipset destroy chnroute
 $ chmod +x ss-down.sh
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;1-5-配置ss-redir服务&#34;&gt;1.5 配置ss-redir服务&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置ss-redir服务&#34;&gt;配置ss-redir服务&lt;/h3&gt;
 
 &lt;p&gt;首先，默认的 &lt;code&gt;ss-local&lt;/code&gt; 并不能用来作为 &lt;code&gt;iptables&lt;/code&gt; 流量转发的目标，因为它是 &lt;code&gt;socks5&lt;/code&gt; 代理而非透明代理。我们至少要把 &lt;code&gt;systemd&lt;/code&gt; 执行的程序改成 &lt;code&gt;ss-redir&lt;/code&gt;。其次，上述两个脚本还不能自动执行，必须让 &lt;code&gt;systemd&lt;/code&gt; 分别在启动 &lt;code&gt;shadowsocks&lt;/code&gt; 之前和关闭之后将脚本执行，这样才能自动配置好 &lt;code&gt;iptables&lt;/code&gt; 规则。&lt;/p&gt;
 
@@ -159,7 +167,9 @@ WantedBy=multi-user.target
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl enable shadowsocks-libev@shadowsocks
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;1-6-配置智能-dns-服务&#34;&gt;1.6 配置智能 DNS 服务&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置智能-dns-服务&#34;&gt;配置智能 DNS 服务&lt;/h3&gt;
 
 &lt;p&gt;完成了以上工作之后是不是就可以实现全局科学上网了呢？答案是否定的，我们还有最后一项工作需要完成，那就是解决 &lt;code&gt;DNS&lt;/code&gt; 污染问题。如果你不知道什么是 &lt;code&gt;DNS&lt;/code&gt; 污染，我可以简单地给你普及一下：&lt;/p&gt;
 
@@ -232,7 +242,9 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 ...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;1-7-配置系统-dns-服务器设置&#34;&gt;1.7 配置系统 DNS 服务器设置&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置系统-dns-服务器设置&#34;&gt;配置系统 DNS 服务器设置&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;p&gt;可参见 &lt;a href=&#34;https://developers.google.com/speed/public-dns/docs/using&#34; target=&#34;_blank&#34;&gt;https://developers.google.com/speed/public-dns/docs/using&lt;/a&gt; 中 &lt;code&gt;Changing your DNS servers settings&lt;/code&gt; 中 &lt;code&gt;Linux&lt;/code&gt; 一节&lt;/p&gt;&lt;/li&gt;
@@ -284,7 +296,7 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 &lt;li&gt;&lt;p&gt;使用 &lt;code&gt;service network(/networking) restart&lt;/code&gt; 或 &lt;code&gt;ifdown/ifup&lt;/code&gt; 或 &lt;code&gt;ifconfig stop/start&lt;/code&gt; 重启网络服务/网络端口&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;1-8-打开流量转发&#34;&gt;1.8 打开流量转发&lt;/h3&gt;
+&lt;h3 id=&#34;打开流量转发&#34;&gt;打开流量转发&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat /etc/sysctl.d/30-ipforward.conf
 &lt;/code&gt;&lt;/pre&gt;
@@ -305,9 +317,13 @@ net.ipv4.tcp_synack_retries = 5
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ sysctl -p
 &lt;/code&gt;&lt;/pre&gt;
 
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
 &lt;h2 id=&#34;2-通过-nftables-实现智能分流&#34;&gt;2. 通过 nftables 实现智能分流&lt;/h2&gt;
 
-&lt;h3 id=&#34;2-1-安装相关软件&#34;&gt;2.1 安装相关软件&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;安装相关软件-1&#34;&gt;安装相关软件&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;shadowsocks-libev&lt;/li&gt;
@@ -317,11 +333,13 @@ net.ipv4.tcp_synack_retries = 5
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ pacman -S shadowsocks-libev nftables
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;2-2-配置shadowsocks-libev-略过&#34;&gt;2.2 配置shadowsocks-libev（略过）&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置shadowsocks-libev-略过-1&#34;&gt;配置shadowsocks-libev（略过）&lt;/h3&gt;
 
 &lt;p&gt;假设shadowsocks配置文件为/etc/shadowsocks.json&lt;/p&gt;
 
-&lt;h3 id=&#34;2-3-获取中国ip段&#34;&gt;2.3 获取中国IP段&lt;/h3&gt;
+&lt;h3 id=&#34;获取中国ip段-1&#34;&gt;获取中国IP段&lt;/h3&gt;
 
 &lt;p&gt;将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：&lt;/p&gt;
 
@@ -331,7 +349,9 @@ cat delegated-apnic-latest | awk -F &#39;|&#39; &#39;/CN/&amp;amp;&amp;amp;/ipv4
 cat cn_rules.conf|sed &#39;:label;N;s/\n/, /;b label&#39;|sed &#39;s/$/&amp;amp; }/g&#39;|sed &#39;s/^/{ &amp;amp;/g&#39; &amp;gt; /home/yang/bin/路由表/cn_rules1.conf
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;2-4-创建启动和关闭脚本&#34;&gt;2.4 创建启动和关闭脚本&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;创建启动和关闭脚本-1&#34;&gt;创建启动和关闭脚本&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vim /home/yang/bin/shadowsocks/nftables-up.sh
 &lt;/code&gt;&lt;/pre&gt;
@@ -377,7 +397,9 @@ sudo nft flush table nat
 $ chmod +x nftables-down.sh
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;2-5-配置ss-redir服务&#34;&gt;2.5 配置ss-redir服务&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置ss-redir服务-1&#34;&gt;配置ss-redir服务&lt;/h3&gt;
 
 &lt;p&gt;首先，默认的 &lt;code&gt;ss-local&lt;/code&gt; 并不能用来作为 &lt;code&gt;nftables&lt;/code&gt; 流量转发的目标，因为它是 &lt;code&gt;socks5&lt;/code&gt; 代理而非透明代理。我们至少要把 &lt;code&gt;systemd&lt;/code&gt; 执行的程序改成 &lt;code&gt;ss-redir&lt;/code&gt;。其次，上述两个脚本还不能自动执行，必须让 &lt;code&gt;systemd&lt;/code&gt; 分别在启动 &lt;code&gt;shadowsocks&lt;/code&gt; 之前和关闭之后将脚本执行，这样才能自动配置好 &lt;code&gt;nftables&lt;/code&gt; 规则。&lt;/p&gt;
 
@@ -412,21 +434,25 @@ $ systemctl start shadowsocks-libev@shadowsocks
 $ systemctl enable shadowsocks-libev@shadowsocks
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;2-6-配置智能-dns-服务&#34;&gt;2.6 配置智能 DNS 服务&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置智能-dns-服务-1&#34;&gt;配置智能 DNS 服务&lt;/h3&gt;
 
 &lt;p&gt;同上&lt;/p&gt;
 
-&lt;h3 id=&#34;2-7-配置系统-dns-服务器设置&#34;&gt;2.7 配置系统 DNS 服务器设置&lt;/h3&gt;
+&lt;h3 id=&#34;配置系统-dns-服务器设置-1&#34;&gt;配置系统 DNS 服务器设置&lt;/h3&gt;
 
 &lt;p&gt;同上&lt;/p&gt;
 
-&lt;h3 id=&#34;2-8-打开流量转发&#34;&gt;2.8 打开流量转发&lt;/h3&gt;
+&lt;h3 id=&#34;打开流量转发-1&#34;&gt;打开流量转发&lt;/h3&gt;
 
 &lt;p&gt;同上&lt;/p&gt;
 
 &lt;h2 id=&#34;3-通过策略路由实现智能分流&#34;&gt;3. 通过策略路由实现智能分流&lt;/h2&gt;
 
-&lt;h3 id=&#34;3-1-安装相关软件&#34;&gt;3.1 安装相关软件&lt;/h3&gt;
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;安装相关软件-2&#34;&gt;安装相关软件&lt;/h3&gt;
 
 &lt;ul&gt;
 &lt;li&gt;badvpn&lt;/li&gt;
@@ -436,11 +462,13 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ pacman -S badvpn shadowsocks
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;3-2-配置shadowsocks-略过&#34;&gt;3.2 配置shadowsocks（略过）&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置shadowsocks-略过&#34;&gt;配置shadowsocks（略过）&lt;/h3&gt;
 
 &lt;p&gt;假设shadowsocks配置文件为/etc/shadowsocks.json&lt;/p&gt;
 
-&lt;h3 id=&#34;3-3-获取中国ip段&#34;&gt;3.3 获取中国IP段&lt;/h3&gt;
+&lt;h3 id=&#34;获取中国ip段-2&#34;&gt;获取中国IP段&lt;/h3&gt;
 
 &lt;p&gt;将以下命令写入脚本保存执行（假设保存在/home/yang/bin/路由表/目录下）：&lt;/p&gt;
 
@@ -449,15 +477,17 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F &#39;|&#39; &#39;/CN/&amp;amp;&amp;amp;/ipv4/ {print $4 &amp;quot;/&amp;quot; 32-log($5)/log(2)}&#39; | cat &amp;gt; /home/yang/bin/路由表/cn_rules.conf
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;3-4-配置智能-dns-服务&#34;&gt;3.4 配置智能 DNS 服务&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;配置智能-dns-服务-2&#34;&gt;配置智能 DNS 服务&lt;/h3&gt;
 
 &lt;p&gt;同上&lt;/p&gt;
 
-&lt;h3 id=&#34;3-5-配置系统-dns-服务器设置&#34;&gt;3.5 配置系统 DNS 服务器设置&lt;/h3&gt;
+&lt;h3 id=&#34;配置系统-dns-服务器设置-2&#34;&gt;配置系统 DNS 服务器设置&lt;/h3&gt;
 
 &lt;p&gt;同上&lt;/p&gt;
 
-&lt;h3 id=&#34;3-6-写路由表启动和终止脚本&#34;&gt;3.6 写路由表启动和终止脚本&lt;/h3&gt;
+&lt;h3 id=&#34;编写路由表启动和终止脚本&#34;&gt;编写路由表启动和终止脚本&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ vim /usr/local/bin/socksfwd
 &lt;/code&gt;&lt;/pre&gt;
@@ -551,7 +581,9 @@ WantedBy=multi-user.target
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ systemctl enable socksfwd
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;3-7-打开流量转发&#34;&gt;3.7 打开流量转发&lt;/h3&gt;
+&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;打开流量转发-2&#34;&gt;打开流量转发&lt;/h3&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ cat /etc/sysctl.d/30-ipforward.conf
 &lt;/code&gt;&lt;/pre&gt;
