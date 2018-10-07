@@ -2,7 +2,7 @@
 title: "为 Envoy 开启 TLS 验证实战"
 date: 2018-09-26T17:43:00+08:00
 subtitle: "通过 Envoy 反向代理 hugo 静态页面"
-draft: true
+draft: false
 categories: "service mesh"
 tags: ["envoy", "service mesh", "hugo"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
