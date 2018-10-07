@@ -387,6 +387,48 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+  <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-通过-iptables-实现智能分流">1. 通过 iptables 实现智能分流</a>
+<ul>
+<li><a href="#1-1-安装相关软件">1.1 安装相关软件</a></li>
+<li><a href="#1-2-配置shadowsocks-libev-略过">1.2 配置shadowsocks-libev（略过）</a></li>
+<li><a href="#1-3-获取中国ip段">1.3 获取中国IP段</a></li>
+<li><a href="#1-4-创建启动和关闭脚本">1.4 创建启动和关闭脚本</a></li>
+<li><a href="#1-5-配置ss-redir服务">1.5 配置ss-redir服务</a></li>
+<li><a href="#1-6-配置智能-dns-服务">1.6 配置智能 DNS 服务</a></li>
+<li><a href="#1-7-配置系统-dns-服务器设置">1.7 配置系统 DNS 服务器设置</a></li>
+<li><a href="#1-8-打开流量转发">1.8 打开流量转发</a></li>
+</ul></li>
+<li><a href="#2-通过-nftables-实现智能分流">2. 通过 nftables 实现智能分流</a>
+<ul>
+<li><a href="#2-1-安装相关软件">2.1 安装相关软件</a></li>
+<li><a href="#2-2-配置shadowsocks-libev-略过">2.2 配置shadowsocks-libev（略过）</a></li>
+<li><a href="#2-3-获取中国ip段">2.3 获取中国IP段</a></li>
+<li><a href="#2-4-创建启动和关闭脚本">2.4 创建启动和关闭脚本</a></li>
+<li><a href="#2-5-配置ss-redir服务">2.5 配置ss-redir服务</a></li>
+<li><a href="#2-6-配置智能-dns-服务">2.6 配置智能 DNS 服务</a></li>
+<li><a href="#2-7-配置系统-dns-服务器设置">2.7 配置系统 DNS 服务器设置</a></li>
+<li><a href="#2-8-打开流量转发">2.8 打开流量转发</a></li>
+</ul></li>
+<li><a href="#3-通过策略路由实现智能分流">3. 通过策略路由实现智能分流</a>
+<ul>
+<li><a href="#3-1-安装相关软件">3.1 安装相关软件</a></li>
+<li><a href="#3-2-配置shadowsocks-略过">3.2 配置shadowsocks（略过）</a></li>
+<li><a href="#3-3-获取中国ip段">3.3 获取中国IP段</a></li>
+<li><a href="#3-4-配置智能-dns-服务">3.4 配置智能 DNS 服务</a></li>
+<li><a href="#3-5-配置系统-dns-服务器设置">3.5 配置系统 DNS 服务器设置</a></li>
+<li><a href="#3-6-写路由表启动和终止脚本">3.6 写路由表启动和终止脚本</a></li>
+<li><a href="#3-7-打开流量转发">3.7 打开流量转发</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+
 
                 <p></p>
 
@@ -400,7 +442,7 @@ autocomplete('#aa-search-input',
 
 <p><strong><font color=Blue>本教程所用系统为 <code>Archlinux</code>，其他发型版类似，请自行参考相关资料。</font></strong></p>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-通过-iptables-实现智能分流-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. 通过 iptables 实现智能分流</p></h2>
+<h2 id="1-通过-iptables-实现智能分流">1. 通过 iptables 实现智能分流</h2>
 
 <h3 id="1-1-安装相关软件">1.1 安装相关软件</h3>
 
@@ -678,7 +720,7 @@ net.ipv4.tcp_synack_retries = 5
 <pre><code class="language-bash">$ sysctl -p
 </code></pre>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-2-通过-nftables-实现智能分流-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. 通过 nftables 实现智能分流</p></h2>
+<h2 id="2-通过-nftables-实现智能分流">2. 通过 nftables 实现智能分流</h2>
 
 <h3 id="2-1-安装相关软件">2.1 安装相关软件</h3>
 
@@ -797,7 +839,7 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 
 <p>同上</p>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-3-通过策略路由实现智能分流-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. 通过策略路由实现智能分流</p></h2>
+<h2 id="3-通过策略路由实现智能分流">3. 通过策略路由实现智能分流</h2>
 
 <h3 id="3-1-安装相关软件">3.1 安装相关软件</h3>
 
@@ -945,8 +987,28 @@ net.ipv4.tcp_synack_retries = 5
 <pre><code class="language-bash">$ sysctl -p
 </code></pre>
 
+<hr />
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
+<center>扫一扫关注微信公众号</center></p>
+
 <style>
-#h2{
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+
+#h2-another {
     margin-bottom:2em;
     margin-right: 5px;
     padding: 8px 15px;
