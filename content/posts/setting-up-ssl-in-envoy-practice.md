@@ -3,6 +3,7 @@ title: "为 Envoy 开启 TLS 验证实战"
 date: 2018-09-26T17:43:00+08:00
 subtitle: "通过 Envoy 反向代理 hugo 静态页面"
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["envoy", "service mesh", "hugo"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -20,7 +21,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 关于如何为 Envoy 开启证书验证可以参考我之间的文章：[为 Envoy 启用证书验证](https://www.yangcs.net/posts/setting-up-ssl-in-envoy/)。本文将直接进入实战部分，通过 Envoy 来反向代理我的博客静态页面，并且加密客户端和 Envoy 代理之间的所有流量。
 
-### <p id="h2">1. 方案架构</p>
+## 1. 方案架构
 
 ----
 
@@ -36,7 +37,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 但本文需要开启 TLS 验证，如果前端代理开启了 TLS 验证，那么必须配合服务 Envoy 使用，否则验证将无法通过。
 
-### <p id="h2">2. 部署服务 Envoy</p>
+## 2. 部署服务 Envoy
 
 ----
 
@@ -128,7 +129,7 @@ admin:
 + ① `8080` : 服务 Envoy 的监听端口。
 + ② `80` : hugo 静态页面的监听端口。
 
-### <p id="h2">3. 部署前端代理</p>
+## 3. 部署前端代理
 
 ----
 
@@ -262,18 +263,19 @@ Creating front-proxy_service-envoy_1 ... done
 接下来就可以通过公网域名访问博客网站啦！没错，你现在浏览的我的博客就是通过 Envoy 反向代理的。
 
 <style>
-#h2{
-    margin-bottom:2em;
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
 }
 #blue {
 color: #2780e3;
