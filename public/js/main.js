@@ -14,6 +14,7 @@ var main = {
             $(".navbar").removeClass("top-nav-short");
         }
     });
+
     
     // On mobile, hide the avatar when expanding the navbar menu
     $('#main-navbar').on('show.bs.collapse', function () {
@@ -62,8 +63,68 @@ var main = {
       fakeMenu.remove();
     }      
 
+
+    //处理目录
+    main.initNavigations();
     // show the big header image  
     main.initImgs();
+  },
+    
+  /* 递归解析ul结构 */
+  iterativeUL: function($dom) {
+      var li_list = []
+      $dom.children("li").each(function(i, item) {
+          var _li = {
+              url: $(item).children("a").attr("href"), 
+              name: $(item).children("a").text(),
+              children: []
+          }
+          $sub_ul = $(item).children("ul")
+          if ($sub_ul.length > 0) {
+              _li.children = main.iterativeUL($sub_ul)
+          }
+          li_list.push(_li)
+      })
+      return li_list
+  },
+  /* 递归合成模板 */
+  iterativeUI: function(root, template, prefix) {
+      template += "<ul>"
+      $.each(root, function(i, item) {
+          var next_prefix = prefix + String(i+1) + "."
+          template += '<li>'+
+                          '<i class="fa fa-hand-o-right" aria-hidden="true"></i>'+
+                          '<span class="title-icon "></span>'+
+                          '<a href="99991997"><b>99991998  </b>99991999</a>'
+                             .replace("99991997", item.url)
+                             .replace("99991999", item.name)
+                             .replace("99991998", next_prefix) +
+                      '</li>'
+          if (item.children.length > 0) {
+              template = main.iterativeUI(item.children, template, next_prefix)
+          }
+      })
+      template += "</ul>"
+      return template
+  },
+  /* 重新渲染Toc */
+  initNavigations: function() {
+      var $navigations = $("#TableOfContents");
+      /* 这是个大坑, 大于号>来限制只选择一级子元素，否则会有多组ul被匹配到 */
+      var root = main.iterativeUL($("#TableOfContents > ul"))
+      if (root.length <= 0) {
+          return;
+      }
+
+      //var html = '<div id="anchors-navbar"><i class="fa fa-anchor"></i>';
+      var html = main.iterativeUI(root, '', '')
+      $navigations.html(html)
+      // 调整目录锚点往上偏移导航栏高度的距离。
+      var fixSet = $("#main-navbar").height() + 10;
+      $('nav#TableOfContents a[href^="#"][href!="#"]').click(function(e) {
+          e.preventDefault();
+          $('html, body').animate({scrollTop: $(decodeURI(this.hash)).offset().top - fixSet}, 400);
+      });
   },
   
   initImgs : function() {
@@ -130,62 +191,6 @@ var main = {
   } else {
     $(".img-desc").hide();  
   }
-  }
-
-  iterativeUL: function($dom) {
-      var li_list = []
-      $dom.children("li").each(function(i, item) {
-          var _li = { 
-              url: $(item).children("a").attr("href"), 
-              name: $(item).children("a").text(),
-              children: []
-          }   
-          $sub_ul = $(item).children("ul")
-          if ($sub_ul.length > 0) {
-              _li.children = main.iterativeUL($sub_ul)
-          }   
-          li_list.push(_li)
-      })  
-      return li_list
-  }
-
-  iterativeUI: function(root, template, prefix) {
-      template += "<ul>"
-      $.each(root, function(i, item) {
-          var next_prefix = prefix + String(i+1) + "." 
-          template += '<li>'+
-                          '<i class="fa fa-hand-o-right" aria-hidden="true"></i>'+
-                          '<span class="title-icon "></span>'+
-                          '<a href="99991997"><b>99991998  </b>99991999</a>'
-                             .replace("99991997", item.url)
-                             .replace("99991999", item.name)
-                             .replace("99991998", next_prefix) +
-                      '</li>'
-          if (item.children.length > 0) {
-              template = main.iterativeUI(item.children, template, next_prefix)
-          }   
-      })  
-      template += "</ul>"
-      return template
-  }
-
-  initNavigations: function() {
-      var $navigations = $("#TableOfContents");
-      /* 这是个大坑, 需要大于号>来限制只选择一级子元素，否则会有多组ul被匹配到 */
-      var root = main.iterativeUL($("#TableOfContents > ul"))
-      if (root.length <= 0) {
-          return;
-      }
-
-      var html = main.iterativeUI(root, '', '')
-
-      $navigations.html(html)
-
-      var fixSet = $("#main-navbar").height() + 10; 
-      $('nav#TableOfContents a[href^="#"][href!="#"]').click(function(e) {
-          e.preventDefault();
-          $('html, body').animate({scrollTop: $(decodeURI(this.hash)).offset().top - fixSet}, 400);
-      }); 
   }
 };
 

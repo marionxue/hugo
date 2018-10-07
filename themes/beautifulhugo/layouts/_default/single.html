@@ -36,17 +36,20 @@
                 {{ end }}
             </div>
             {{ end }}
-            <!-- post metadata-->
+            <!-- post metadata 末尾不再显示统计 -->
             {{ if isset .Params "postmeta" }}
               {{ else }}
-            {{ partial "postmeta.html" . }}
+              <!-- {{ partial "postmeta.html" . }} -->
             {{ end }}
             </div>
-            <!-- gitments -->
+        </div>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <!-- gitments / livere-->
             {{ if isset .Site.Params "comments" }}
                 {{ if isset .Params "nocomment" }}
                 {{ else }}
-                 {{ partial "gitments.html" . }}
+                  <!--{{ partial "gitments.html" . }}-->
+                  {{ partial "livere.html" . }}
                 {{ end }}
             {{ end }}
         </div>
