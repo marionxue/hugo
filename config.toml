@@ -23,7 +23,7 @@ sharebutton = true
 toc = true
 algolia = "bb53f9d51f88373ba37e56a4730aca4c" # API key
 #gcse = "012737790962522169780:fd1izxsfgrs" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
-description = "yangcs.net|杨传胜的博客|Kubernetes|Big Data"
+description = "杨传胜的博客|Cloud Native|yangcs.net"
 errorpage = "https://res.cloudinary.com/jimmysong/image/upload/images/404-not-found-cat.png"
 
 [blackfriday]
