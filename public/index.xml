@@ -2582,7 +2582,7 @@ border-top-color: #9954bb;
 
 &lt;p&gt;为了从一定程度上缓解这个问题，本文将介绍一个新的工具：&lt;a href=&#34;https://github.com/sabre1041/istio-pod-network-controller&#34; target=&#34;_blank&#34;&gt;istio-pod-network-controller&lt;/a&gt;.&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-1-问题-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 问题&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;1-问题&#34;&gt;1. 问题&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -2599,7 +2599,7 @@ border-top-color: #9954bb;
 
 &lt;p&gt;虽然这个问题一直困扰着 Istio 社区，但迄今为止 Kubernetes 还没有提供一种机制来控制给予 Pod 的权限。从 &lt;a href=&#34;https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md&#34; target=&#34;_blank&#34;&gt;Kubernetes 1.11&lt;/a&gt; 开始，&lt;a href=&#34;https://kubernetes.io/docs/concepts/policy/pod-security-policy/&#34; target=&#34;_blank&#34;&gt;Pod 安全策略（PSP）&lt;/a&gt;功能已经作为 &lt;code&gt;beta feature&lt;/code&gt; 引入，PSP 与 SCC 的功能类似。一旦其他 Kubernetes 发行版开始支持开箱即用的 PSP，Istio 网格中的 Pod 就需要提升权限才能正常运行。&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-2-解决方案-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. 解决方案&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;2-解决方案&#34;&gt;2. 解决方案&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -2622,7 +2622,7 @@ border-top-color: #9954bb;
 
 &lt;p&gt;现在，我们通过给 &lt;code&gt;istio-pod-network-controller&lt;/code&gt; 提供 privileged 配置文件和 &lt;code&gt;NET_ADMIN&lt;/code&gt; capability 来允许它修改其他 Pod 的 iptables 规则，这通常是可以接受的方案，因为该组件将由集群管理员以与 Istio 控制平面类似的方式安装和管理。&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-3-安装指南-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 安装指南&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;3-安装指南&#34;&gt;3. 安装指南&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -2633,7 +2633,7 @@ border-top-color: #9954bb;
 
 &lt;p&gt;&lt;br /&gt;&lt;/p&gt;
 
-&lt;h4 id=&#34;测试自动注入功能&#34;&gt;测试自动注入功能&lt;/h4&gt;
+&lt;h3 id=&#34;测试自动注入功能&#34;&gt;测试自动注入功能&lt;/h3&gt;
 
 &lt;p&gt;执行以下命令测试自动注入功能：&lt;/p&gt;
 
@@ -2645,7 +2645,7 @@ $ kubectl apply -f examples/bookinfo.yaml -n bookinfo
 
 &lt;p&gt;其他部署方案请参考&lt;a href=&#34;https://github.com/sabre1041/istio-pod-network-controller&#34; target=&#34;_blank&#34;&gt;官方仓库的文档&lt;/a&gt;。&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-4-总结-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 总结&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;4-总结&#34;&gt;4. 总结&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -2657,18 +2657,19 @@ $ kubectl apply -f examples/bookinfo.yaml -n bookinfo
 &lt;center&gt;扫一扫关注微信公众号&lt;/center&gt;&lt;/p&gt;
 
 &lt;style&gt;
-#h2{
-    margin-bottom:2em;
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: &#34;#&#34;;
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
 }
 #blue {
 color: #2780e3;

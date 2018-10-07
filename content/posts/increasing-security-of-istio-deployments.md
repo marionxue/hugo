@@ -16,7 +16,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 为了从一定程度上缓解这个问题，本文将介绍一个新的工具：[istio-pod-network-controller](https://github.com/sabre1041/istio-pod-network-controller).
 
-### <p id="h2">1. 问题</p>
+## 1. 问题
 
 ----
 
@@ -34,7 +34,7 @@ $ oc adm policy add-scc-to-user privileged -z default -n <target-namespace>
 
 虽然这个问题一直困扰着 Istio 社区，但迄今为止 Kubernetes 还没有提供一种机制来控制给予 Pod 的权限。从 [Kubernetes 1.11](https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md) 开始，[Pod 安全策略（PSP）](https://kubernetes.io/docs/concepts/policy/pod-security-policy/)功能已经作为 `beta feature` 引入，PSP 与 SCC 的功能类似。一旦其他 Kubernetes 发行版开始支持开箱即用的 PSP，Istio 网格中的 Pod 就需要提升权限才能正常运行。
 
-### <p id="h2">2. 解决方案</p>
+## 2. 解决方案
 
 ----
 
@@ -55,7 +55,7 @@ $ oc adm policy add-scc-to-user privileged -z default -n <target-namespace>
 
 现在，我们通过给 `istio-pod-network-controller` 提供 privileged 配置文件和 `NET_ADMIN` capability 来允许它修改其他 Pod 的 iptables 规则，这通常是可以接受的方案，因为该组件将由集群管理员以与 Istio 控制平面类似的方式安装和管理。
 
-### <p id="h2">3. 安装指南</p>
+## 3. 安装指南
 
 ----
 
@@ -67,7 +67,7 @@ $ helm template -n istio-pod-network-controller ./chart/istio-pod-network-contro
 
 <br />
 
-#### 测试自动注入功能
+### 测试自动注入功能
 
 执行以下命令测试自动注入功能：
 
@@ -80,7 +80,7 @@ $ kubectl apply -f examples/bookinfo.yaml -n bookinfo
 
 其他部署方案请参考[官方仓库的文档](https://github.com/sabre1041/istio-pod-network-controller)。
 
-### <p id="h2">4. 总结</p>
+## 4. 总结
 
 ----
 
@@ -92,18 +92,19 @@ $ kubectl apply -f examples/bookinfo.yaml -n bookinfo
 <center>扫一扫关注微信公众号</center>
 
 <style>
-#h2{
-    margin-bottom:2em;
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
 }
 #blue {
 color: #2780e3;
