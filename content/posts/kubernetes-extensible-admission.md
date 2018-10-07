@@ -3,6 +3,7 @@ title: "Kubernetes 准入控制介绍"
 subtitle: "通过 Adminssion Webhook 扩展准入控制"
 date: 2018-09-22T11:17:11+08:00
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -10,7 +11,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
-### <p id="h2">1. 什么是准入控制</p>
+## 1. 什么是准入控制
 
 ----
 
@@ -34,13 +35,13 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 一个准入插件可以在这两个阶段应用，但是**所有的修改阶段都发生在验证阶段之前。**
 
-#### 修改 （Mutation）阶段 
+### 修改 （Mutation）阶段 
 
 Admission 的 Mutation 阶段允许在资源内容生成前进行修改。因为同一个字段在 Admission 链上可以被多次修改，因此 Admission 插件的执行顺序很重要。
 
 准入修改插件（Mutating Admission Plugin）中的一个例子就是 `PodNodeSelector`，它使用 Namespace 的一个 annotation：`namespace.annotations[“scheduler.alpha.kubernetes.io/node-selector”]` 来查找标签选择器并将其添加到 `pod.spec.nodeselector` 字段。这一功能正向限制了特定 Namespace 中的 pod 能够落在哪个节点上，这与提供反向限制的 `taints` 正相反（也是通过 Admission 插件来实现的）。
 
-#### 验证 （Validating）阶段
+### 验证 （Validating）阶段
 
 **我们可以在 Admisson 的验证阶段来检查特定 API 资源以保证其不变。验证阶段在所有的 mutators 完成之后运行，以确保资源在做完验证之后不会被再次改变。**
 
@@ -59,7 +60,7 @@ API Server 接收到客户端请求后首先进行认证鉴权，认证鉴权通
 + `Admission Controller validate`，可以自定义任何的对象校验规则。
 + internal object 转化为 versioned object，并且持久化存储到 etcd。
 
-### <p id="h2">2. 如何使用准入控制</p>
+## 2. 如何使用准入控制
 
 ----
 
@@ -70,7 +71,7 @@ Kubernetes 1.10 之前的版本可以使用 `--admission-control` 打开准入�
 
 值得一提的是，有些准入控制器可能会使用 `Alpha` 版本的 API，这时必须首先使能其使用的 API 版本。否则准入控制器不能工作，可能会影响系统功能。
 
-### <p id="h2">3. Admission Webhook</p>
+## 3. Admission Webhook
 
 ----
 
@@ -83,7 +84,7 @@ Admission Webhook 允许 Kubernetes 安装人员或集群管理员，不需要�
 
 可能有读者接触过另外一种动态可扩展的机制 `Initializers`，不过至今还是 Apha 特性，社区讨论有可能会把它移除。所以选择动态 Admission 首选 webhook。
 
-#### Webhook Admission 插件的优势
+### Webhook Admission 插件的优势
 
 Webhook Admission 插件允许对任何 API server 的任何资源进行修改和验证，所以应用场景非常广泛，比较常见的用例包括：
 
@@ -94,7 +95,7 @@ Webhook Admission 插件允许对任何 API server 的任何资源进行修改�
 
 <br />
 
-#### 注册
+### 注册
 
 这两种类型的 Webhook Admission 插件都需要在 API 中注册，所有 API servers（`kube-apiserver` 和所有扩展 API servers ）都共享一个通用配置。在注册过程中，一个 Webhook Admission 插件描述了以下信息：
 
@@ -149,7 +150,7 @@ webhooks:
 <p>对比 <code>initializerConfiguration</code>，ValidatingWebhookConfiguration 和 MutatingWebhookConfiguration 在 <code>rule</code> 的定义时，增加了 operations field，在 resources 定义时候可以指定 <code>subresource</code>，格式为 resource/subresource。</p>
 </div>
 
-#### 认证和信任
+### 认证和信任
 
 由于 Webhook Admission 插件具有强大的功能（他们可以查看 API 资源内容中任何发给他们的请求，并可以通过插件进行修改），所以在使用时需要考虑的重点是：
 
@@ -167,7 +168,7 @@ webhooks:
 
 对于在集群内运行的 Admission Webhook 来说，一个巧妙构建的 Webhook Admission Server 和拓扑结构，就是能够利用 Admission 插件中内置的安全默认值，并具有可从任何 API server 运行的安全、可移植和零配置的拓扑结构。
 
-### <p id="h2">4. 简单安全，可移植的拓扑结构</p>
+## 4. 简单安全，可移植的拓扑结构
 
 ----
 
@@ -185,13 +186,13 @@ webhooks:
 
 **简而言之：一个安全的拓扑结构可以使用 API server 聚合 (API server aggregation) 的所有安全机制，不需要额外的配置。**其他的拓扑结构也是可行的，但是需要额外的手动配置以及创建安全设置工作。尤其是像 `service catalog` 这种 extension API servers，上面的拓扑结构就是零配置，并且可移植到任何 Kubernetes 集群中。
 
-### <p id="h2">5. 如何使用 Admission Webhook</p>
+## 5. 如何使用 Admission Webhook
 
 ----
 
 Webhook Admission 属于同步调用，需要用户部署自己的 webhook server，创建自定义的配置资源对象： `ValidatingWebhookConfiguration` 或 `MutatingWebhookConfiguration`。
 
-#### 开发 Webhook Server
+### 开发 Webhook Server
 
 这里我推荐参考社区 `e2e` 测试用的 server，对细节源代码感兴趣的读者可以自行参考
 [github.com/kubernetes/…](https://github.com/kubernetes/kubernetes/blob/v1.10.0-beta.1/test/images/webhook/main.go)，这里面利用 golang 标准库实现的一个基本的 http server，并注册多个路由，同时服务于多种 resource 的准入控制。重点关注一下资源对象的 `decode` 过程，这是 `k8s apimachinery` 的高级功能。利用了 apimachinery 的 `scheme` 的能力，使用之前必须要将 api 注册到 scheme 中，代码详见：
@@ -227,7 +228,7 @@ Webhook Admission 属于同步调用，需要用户部署自己的 webhook serve
 
 <br />
 
-#### 部署 Webhook Server
+### 部署 Webhook Server
 
 ```bash
 $ kubectl create –f webhook-server.yaml
@@ -302,7 +303,7 @@ spec:
 
 创建 webhook server Deployment 以及 Service，供 API Server 调用。
 
-#### 创建 MutatingWebhookConfiguration
+### 创建 MutatingWebhookConfiguration
 
 ```bash
 $ kubectl create –f webhook-config.yaml
@@ -369,7 +370,7 @@ func mutatePods(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 
 <br />
 
-#### 创建 Pod
+### 创建 Pod
 
 ```bash
 $ kubectl create –f pod.yaml
@@ -389,7 +390,7 @@ spec:
 
 <br />
 
-#### 查询 Pod
+### 查询 Pod
 
 ```bash
 $ kubectl get pod webhook-to-be-mutated –n e2e-tests-webhook-gbgt6 -oyaml
@@ -453,7 +454,7 @@ spec:
 
 Istio 就是使用 `ValidatingAdmissionWebhooks` 验证 Istio 配置，使用 `MutatingAdmissionWebhooks` 自动将 sidecar 代理注入至用户 pod。可以参考：[动态准入 Webhooks 概述](https://istio.io/zh/help/ops/setup/webhook/)。
 
-### <p id="h2">6. 总结</p>
+## 6. 总结
 
 ----
 
@@ -462,7 +463,7 @@ Istio 就是使用 `ValidatingAdmissionWebhooks` 验证 Istio 配置，使用 `M
 + webhook 可动态扩展 Admission 能力，满足自定义客户的需求。
 + 不需要重启 API Server，可通过创建 webhook configuration **热加载** webhook admission。
 
-### <p id="h2">7. 参考</p>
+## 7. 参考
 
 ----
 
@@ -475,18 +476,19 @@ Istio 就是使用 `ValidatingAdmissionWebhooks` 验证 Istio 配置，使用 `M
 <center>扫一扫关注微信公众号</center>
 
 <style>
-#h2{
-    margin-bottom:2em;
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
 }
 #blue {
 color: #2780e3;

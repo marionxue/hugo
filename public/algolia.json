@@ -448,6 +448,7 @@
         "subtitle": "通过 Adminssion Webhook 扩展准入控制",
         "date": "2018-09-22T03:17:11.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"
