@@ -3,6 +3,7 @@ title: "初试 Kubernetes 集群中使用 Contour 反向代理"
 date: 2018-09-28T16:38:15+08:00
 subtitle: "一种全新的 Ingress 实现方式——Envoy"
 draft: true
+index: true
 toc: true
 categories: "kubernetes"
 tags: ["envoy", "kubernetes"]
