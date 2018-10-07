@@ -43,21 +43,6 @@ a {
     word-break: break-all;
 }
 
-.post-item h2 a:hover {
-    border-radius: 20px;
-    background: #6f9fc7;
-    color: #fff;
-    -webkit-animation: links .2s 2
-}
-@-webkit-keyframes links {
-    0% {
-        -webkit-transform: rotate(-2deg)
-    }
-    100% {
-        -webkit-transform: rotate(2deg)
-    }
-}
-
 a:hover,
 a:focus {
     color: #2a55f4;
