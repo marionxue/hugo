@@ -30,7 +30,9 @@ static_resources:
         address: 0.0.0.0
         port_value: 443
     filter_chains:
-    - tls_context:
+    - filter_chain_match:
+        server_names: ["yangcs.net", "www.yangcs.net"]
+      tls_context:
         common_tls_context:
           alpn_protocols: h2
           tls_certificates:
@@ -58,6 +60,35 @@ static_resources:
           http_filters:
           - name: envoy.router
             config: {}
+    - filter_chain_match:
+        server_names: "rss.yangcs.net"
+      tls_context:
+        common_tls_context:
+          alpn_protocols: h2
+          tls_certificates:
+            - certificate_chain:
+                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+              private_key:
+                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+      filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: backend
+              domains:
+              - "*"
+              routes:
+              - match:
+                  prefix: "/"
+                route:
+                  cluster: webhook
+          http_filters:
+          - name: envoy.router
+            config: {}
   clusters:
   - name: hugo
     connect_timeout: 0.25s
@@ -67,6 +98,15 @@ static_resources:
     hosts:
     - socket_address:
         address: hugo
+        port_value: 8080
+  - name: webhook
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: webhook-envoy
         port_value: 8080
 admin:
   access_log_path: "/dev/null"
