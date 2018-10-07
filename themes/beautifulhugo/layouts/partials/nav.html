@@ -57,14 +57,21 @@
             </li>
           {{ end }}
         {{ end }}
-        <!-- 
+
         {{ if isset .Site.Params "gcse" }}
-            {{ partial "search.html" . }}
-        {{ end }} 
-        -->
-        {{ if isset .Site.Params "algolia" }}
-            {{ partial "search.html" . }}
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">{{ i18n "gcseLabelShort" }}</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
         {{ end }}
+        {{ if isset .Site.Params "algolia" }}
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">{{ i18n "gcseLabelShort" }}</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          {{ end }}
       </ul>
     </div>
 
@@ -82,7 +89,6 @@
 </nav>
 
 <!-- Search Modal -->
-<!--
 {{ if isset .Site.Params "gcse" }}
   <div id="modalSearch" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -108,7 +114,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Search Blog</h4>
+          <h4 class="modal-title">Search jimmysong.io</h4>
         </div>
         <div class="modal-body">
             {{ partial "search.html" . }}
@@ -120,4 +126,3 @@
     </div>
   </div>
 {{ end }}
--->
