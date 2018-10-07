@@ -225,7 +225,6 @@ if (!doNotTrack) {
         
 
         
-
         
         
             
@@ -294,72 +293,6 @@ if (!doNotTrack) {
 </nav>
 
 
-
-
-
-  <div id="modalSearch" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Search www.yangcs.net</h4>
-        </div>
-        <div class="modal-body">
-            
-<li>
-     <div class="column">
-         <div id="sb-search" class="sb-search">
-             <form>
-                 <input class="sb-search-input" placeholder="Enter your search term..." type="text" value="" name="search" id="search" autocomplete="off">
-                 <input class="sb-search-submit" type="text" value="" autocomplete="off">
-                 <span  class="sb-icon-search "></span>
-             </form>
-             <ul class="sb-option">
-             </ul>
-         </div>
-     </div>
-</li>
-
-<script src="https://www.yangcs.net/js/algoliasearch.min.js"></script>
-
-<script src="https://www.yangcs.net/js/classie.js"></script>
-<script src="https://www.yangcs.net/js/uisearch.js"></script>
-
-
-<script>
-    var client = algoliasearch("MQX1EH3YCM", "bb53f9d51f88373ba37e56a4730aca4c");
-    var index = client.initIndex('hugo');
-
-    $(document).ready(function(){
-        new UISearch( document.getElementById( 'sb-search' ) );
-    })
-    .on('input propertychange', '.sb-search-input', function() {
-        var search_str = $(this).val()
-        if (search_str == "") {
-            $(".sb-option").empty()
-        } else {
-            index.search(search_str, function (err, contacts){
-                $(".sb-option").empty()
-                for (var i = 0; i < contacts.hits.length; i++) {
-                    var _li = '<li>' +
-                                  '<a href="/' + contacts.hits[i].uri  + '">'+
-                                      '<span>' + contacts.hits[i].title  + '</span>'+
-                                  '</a>'+
-                              '</li>'
-                    $(".sb-option").append(_li)
-                }
-            });
-        }
-    })
-</script>
-
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
 
     
