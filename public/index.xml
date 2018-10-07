@@ -4626,7 +4626,7 @@ border-top-color: #9954bb;
 
 &lt;p&gt;在之前的文章 &lt;a href=&#34;https://www.yangcs.net/posts/istio-ingress/&#34; target=&#34;_blank&#34;&gt;Istio 服务网格中的网关&lt;/a&gt; 中，我已经介绍了简单的暴露 &lt;code&gt;Ingress Gateway&lt;/code&gt; 的方案。当时的方案只是用于临时测试，不适合在大规模场景下使用，本文将探讨更加优化的暴露 Ingress Gateway 的方案。&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-hostnetwork-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;HostNetwork&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;hostnetwork&#34;&gt;HostNetwork&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -4669,7 +4669,7 @@ spec:
 
 &lt;p&gt;但是作为服务网格的流量接入层，Ingress Gateway 的高可靠性显得尤为重要，高可靠性首先要解决的就是单点故障问题，一般常用的是采用多副本部署的方式。而上述方案只适用于单实例（Deployment 的副本数为 1）的情况，为了适应多节点部署架构，需要寻求更好的暴露方案。&lt;/p&gt;
 
-&lt;h3 id=&#34;p-id-h2-使用-envoy-作为前端代理-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;使用 Envoy 作为前端代理&lt;/p&gt;&lt;/h3&gt;
+&lt;h2 id=&#34;使用-envoy-作为前端代理&#34;&gt;使用 Envoy 作为前端代理&lt;/h2&gt;
 
 &lt;hr /&gt;
 
@@ -4812,8 +4812,28 @@ spec:
 
 &lt;p&gt;更一般的场景，我们还可以配置前端代理的高可用。对于 Kubernetes 集群以外只暴露一个访问入口，可以使用 &lt;code&gt;keepalived&lt;/code&gt; 排除单节点问题。具体实现方式与 Ingress 的高可用类似，可以参考 Ingress 的高可用方案。&lt;/p&gt;
 
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
+&lt;center&gt;扫一扫关注微信公众号&lt;/center&gt;&lt;/p&gt;
+
 &lt;style&gt;
-#h2{
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: &#34;#&#34;;
+    margin-right: 5px;
+    color: #2d96bd;
+}
+
+#h2-another {
     margin-bottom:2em;
     margin-right: 5px;
     padding: 8px 15px;

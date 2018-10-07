@@ -12,7 +12,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 在之前的文章 [Istio 服务网格中的网关](https://www.yangcs.net/posts/istio-ingress/) 中，我已经介绍了简单的暴露 `Ingress Gateway` 的方案。当时的方案只是用于临时测试，不适合在大规模场景下使用，本文将探讨更加优化的暴露 Ingress Gateway 的方案。
 
-### <p id="h2">HostNetwork</p>
+## HostNetwork
 
 ----
 
@@ -56,7 +56,7 @@ spec:
 
 但是作为服务网格的流量接入层，Ingress Gateway 的高可靠性显得尤为重要，高可靠性首先要解决的就是单点故障问题，一般常用的是采用多副本部署的方式。而上述方案只适用于单实例（Deployment 的副本数为 1）的情况，为了适应多节点部署架构，需要寻求更好的暴露方案。
 
-### <p id="h2">使用 Envoy 作为前端代理</p>
+## 使用 Envoy 作为前端代理
 
 ----
 
@@ -203,8 +203,28 @@ $ kubectl -n istio-system create -f front-envoy-deploy.yaml
 
 更一般的场景，我们还可以配置前端代理的高可用。对于 Kubernetes 集群以外只暴露一个访问入口，可以使用 `keepalived` 排除单节点问题。具体实现方式与 Ingress 的高可用类似，可以参考 Ingress 的高可用方案。
 
+----
+
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>扫一扫关注微信公众号</center>
+
 <style>
-#h2{
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+
+#h2-another {
     margin-bottom:2em;
     margin-right: 5px;
     padding: 8px 15px;
