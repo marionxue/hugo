@@ -23,7 +23,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 下面我们就来试用一下。
 
-### <p id="h2">1. 安装步骤</p>
+## 1. 安装步骤
 
 ----
 
