@@ -870,15 +870,15 @@ border-top-color: #9954bb;
 
 &lt;hr /&gt;
 
-&lt;p&gt;Istio 作为一个 service mesh 开源项目,其中最重要的功能就是对网格中微服务之间的流量进行管理,包括服务发现,请求路由和服务间的可靠通信。Istio 实现了 service mesh 的控制平面，并整合 Envoy 开源项目作为数据面的 sidecar，一起对流量进行控制。&lt;/p&gt;
+&lt;p&gt;Istio 作为一个 service mesh 开源项目,其中最重要的功能就是对网格中微服务之间的流量进行管理,包括服务发现,请求路由和服务间的可靠通信。Istio 实现了 service mesh 的控制平面，并整合 Envoy 开源项目作为数据平面的 sidecar，一起对流量进行控制。&lt;/p&gt;
 
-&lt;p&gt;Istio 体系中流量管理配置下发以及流量规则如何在数据面生效的机制相对比较复杂，通过官方文档容易管中窥豹，难以了解其实现原理。本文尝试结合系统架构、配置文件和代码对 Istio 流量管理的架构和实现机制进行分析，以达到从整体上理解 Pilot 和 Envoy 的流量管理机制的目的。&lt;/p&gt;
+&lt;p&gt;Istio 体系中流量管理配置下发以及流量规则如何在数据平面生效的机制相对比较复杂，通过官方文档容易管中窥豹，难以了解其实现原理。本文尝试结合系统架构、配置文件和代码对 Istio 流量管理的架构和实现机制进行分析，以达到从整体上理解 Pilot 和 Envoy 的流量管理机制的目的。&lt;/p&gt;
 
 &lt;h2 id=&#34;pilot高层架构&#34;&gt;Pilot高层架构&lt;/h2&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;Istio 控制面中负责流量管理的组件为 &lt;code&gt;Pilot&lt;/code&gt;，Pilot 的高层架构如下图所示：&lt;/p&gt;
+&lt;p&gt;Istio 控制平面中负责流量管理的组件为 &lt;code&gt;Pilot&lt;/code&gt;，Pilot 的高层架构如下图所示：&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/pilot-architecture.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
 
@@ -892,21 +892,21 @@ border-top-color: #9954bb;
 
 &lt;p&gt;例如 Pilot 中的 Kubernetes 适配器通过 &lt;code&gt;Kubernetes API&lt;/code&gt; 服务器得到 kubernetes 中 service 和 pod 的相关信息，然后翻译为标准模型提供给 Pilot 使用。通过适配器模式，Pilot 还可以从 &lt;code&gt;Mesos&lt;/code&gt;, &lt;code&gt;Cloud Foundry&lt;/code&gt;, &lt;code&gt;Consul&lt;/code&gt; 等平台中获取服务信息，还可以开发适配器将其他提供服务发现的组件集成到 Pilot 中。&lt;/p&gt;
 
-&lt;h3 id=&#34;标准数据面-api&#34;&gt;标准数据面 API&lt;/h3&gt;
+&lt;h3 id=&#34;标准数据平面-api&#34;&gt;标准数据平面 API&lt;/h3&gt;
 
-&lt;p&gt;Pilo 使用了一套起源于 Envoy 项目的标准数据面 API 来将服务信息和流量规则下发到数据面的 &lt;code&gt;sidecar&lt;/code&gt; 中。&lt;/p&gt;
+&lt;p&gt;Pilo 使用了一套起源于 Envoy 项目的标准数据平面 API 来将服务信息和流量规则下发到数据平面的 &lt;code&gt;sidecar&lt;/code&gt; 中。&lt;/p&gt;
 
-&lt;p&gt;通过采用该标准 API，Istio 将控制面和数据面进行了解耦，为多种数据面 sidecar 实现提供了可能性。事实上基于该标准 API 已经实现了多种 Sidecar 代理和 Istio 的集成，除 Istio 目前集成的 Envoy 外，还可以和 &lt;code&gt;Linkerd&lt;/code&gt;, &lt;code&gt;Nginmesh&lt;/code&gt; 等第三方通信代理进行集成，也可以基于该 API 自己编写 Sidecar 实现。&lt;/p&gt;
+&lt;p&gt;通过采用该标准 API，Istio 将控制平面和数据平面进行了解耦，为多种数据平面 sidecar 实现提供了可能性。事实上基于该标准 API 已经实现了多种 Sidecar 代理和 Istio 的集成，除 Istio 目前集成的 Envoy 外，还可以和 &lt;code&gt;Linkerd&lt;/code&gt;, &lt;code&gt;Nginmesh&lt;/code&gt; 等第三方通信代理进行集成，也可以基于该 API 自己编写 Sidecar 实现。&lt;/p&gt;
 
-&lt;p&gt;控制面和数据面解耦是 Istio 后来居上，风头超过 Service mesh 鼻祖 &lt;code&gt;Linkerd&lt;/code&gt; 的一招妙棋。Istio 站在了控制面的高度上，而 Linkerd 则成为了可选的一种 sidecar 实现，可谓&lt;strong&gt;降维打击&lt;/strong&gt;的一个典型成功案例！&lt;/p&gt;
+&lt;p&gt;控制平面和数据平面解耦是 Istio 后来居上，风头超过 Service mesh 鼻祖 &lt;code&gt;Linkerd&lt;/code&gt; 的一招妙棋。Istio 站在了控制平面的高度上，而 Linkerd 则成为了可选的一种 sidecar 实现，可谓&lt;strong&gt;降维打击&lt;/strong&gt;的一个典型成功案例！&lt;/p&gt;
 
-&lt;p&gt;数据面标准 API 也有利于生态圈的建立，开源，商业的各种 sidecar 以后可能百花齐放，用户也可以根据自己的业务场景选择不同的 sidecar 和控制面集成，如高吞吐量的，低延迟的，高安全性的等等。有实力的大厂商可以根据该 API 定制自己的 sidecar，例如蚂蚁金服开源的 Golang 版本的 Sidecar &lt;code&gt;MOSN&lt;/code&gt;(Modular Observable Smart Netstub)（&lt;code&gt;SOFAMesh&lt;/code&gt; 中 Golang 版本的 Sidecar)；小厂商则可以考虑采用成熟的开源项目或者提供服务的商业 sidecar 实现。&lt;/p&gt;
+&lt;p&gt;数据平面标准 API 也有利于生态圈的建立，开源，商业的各种 sidecar 以后可能百花齐放，用户也可以根据自己的业务场景选择不同的 sidecar 和控制平面集成，如高吞吐量的，低延迟的，高安全性的等等。有实力的大厂商可以根据该 API 定制自己的 sidecar，例如蚂蚁金服开源的 Golang 版本的 Sidecar &lt;code&gt;MOSN&lt;/code&gt;(Modular Observable Smart Netstub)（&lt;code&gt;SOFAMesh&lt;/code&gt; 中 Golang 版本的 Sidecar)；小厂商则可以考虑采用成熟的开源项目或者提供服务的商业 sidecar 实现。&lt;/p&gt;
 
-&lt;p id=&#34;blockquote&#34;&gt;Istio 和 Envoy 项目联合制定了 &lt;code&gt;Envoy V2 API&lt;/code&gt;,并采用该 API 作为 Istio 控制面和数据面流量管理的标准接口。&lt;/p&gt;
+&lt;p id=&#34;blockquote&#34;&gt;Istio 和 Envoy 项目联合制定了 &lt;code&gt;Envoy V2 API&lt;/code&gt;,并采用该 API 作为 Istio 控制平面和数据平面流量管理的标准接口。&lt;/p&gt;
 
 &lt;h3 id=&#34;业务-dsl-语言&#34;&gt;业务 DSL 语言&lt;/h3&gt;
 
-&lt;p&gt;Pilot 还定义了一套 &lt;code&gt;DSL&lt;/code&gt;（Domain Specific Language）语言，DSL 语言提供了面向业务的高层抽象，可以被运维人员理解和使用。运维人员使用该 DSL 定义流量规则并下发到 Pilot，这些规则被 Pilot 翻译成数据面的配置，再通过标准 API 分发到 Envoy 实例，可以在运行期对微服务的流量进行控制和调整。&lt;/p&gt;
+&lt;p&gt;Pilot 还定义了一套 &lt;code&gt;DSL&lt;/code&gt;（Domain Specific Language）语言，DSL 语言提供了面向业务的高层抽象，可以被运维人员理解和使用。运维人员使用该 DSL 定义流量规则并下发到 Pilot，这些规则被 Pilot 翻译成数据平面的配置，再通过标准 API 分发到 Envoy 实例，可以在运行期对微服务的流量进行控制和调整。&lt;/p&gt;
 
 &lt;p&gt;Pilot 的规则 DSL 是采用 K8S API Server 中的 &lt;a href=&#34;https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/&#34; target=&#34;_blank&#34;&gt;Custom Resource (CRD)&lt;/a&gt; 实现的，因此和其他资源类型如 Service，Pod 和 Deployment 的创建和使用方法类似，都可以用 &lt;code&gt;Kubectl&lt;/code&gt; 进行创建。&lt;/p&gt;
 
@@ -926,7 +926,7 @@ border-top-color: #9954bb;
 
 &lt;p&gt;从上图可以看到，Istio 中和流量管理相关的有以下组件：&lt;/p&gt;
 
-&lt;h3 id=&#34;控制面组件&#34;&gt;控制面组件&lt;/h3&gt;
+&lt;h3 id=&#34;控制平面组件&#34;&gt;控制平面组件&lt;/h3&gt;
 
 &lt;h4 id=&#34;discovery-services&#34;&gt;Discovery Services&lt;/h4&gt;
 
@@ -935,7 +935,7 @@ border-top-color: #9954bb;
 &lt;ul&gt;
 &lt;li&gt;从 &lt;code&gt;Service provider&lt;/code&gt;（如kubernetes或者consul）中获取服务信息&lt;/li&gt;
 &lt;li&gt;从 K8S API Server 中获取流量规则（K8S CRD Resource）&lt;/li&gt;
-&lt;li&gt;将服务信息和流量规则转化为数据面可以理解的格式，通过标准的数据面 API 下发到网格中的各个 sidecar 中&lt;/li&gt;
+&lt;li&gt;将服务信息和流量规则转化为数据平面可以理解的格式，通过标准的数据平面 API 下发到网格中的各个 sidecar 中&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h4 id=&#34;k8s-api-server&#34;&gt;K8S API Server&lt;/h4&gt;
@@ -954,9 +954,9 @@ border-top-color: #9954bb;
 &lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;EnvoyFilter&lt;/span&gt; : 可以为 Envoy 配置过滤器。由于 Envoy 已经支持 &lt;code&gt;Lua&lt;/code&gt; 过滤器，因此可以通过 &lt;code&gt;EnvoyFilter&lt;/code&gt; 启用 Lua 过滤器，动态改变 Envoy 的过滤链行为。我之前一直在考虑如何才能动态扩展 Envoy 的能力，EnvoyFilter 提供了很灵活的扩展性。&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&#34;数据面组件&#34;&gt;数据面组件&lt;/h3&gt;
+&lt;h3 id=&#34;数据平面组件&#34;&gt;数据平面组件&lt;/h3&gt;
 
-&lt;p&gt;在数据面有两个进程 &lt;code&gt;Pilot-agent&lt;/code&gt; 和 &lt;code&gt;envoy&lt;/code&gt;，这两个进程被放在一个 docker 容器 &lt;code&gt;gcr.io/istio-release/proxyv2&lt;/code&gt; 中。&lt;/p&gt;
+&lt;p&gt;在数据平面有两个进程 &lt;code&gt;Pilot-agent&lt;/code&gt; 和 &lt;code&gt;envoy&lt;/code&gt;，这两个进程被放在一个 docker 容器 &lt;code&gt;gcr.io/istio-release/proxyv2&lt;/code&gt; 中。&lt;/p&gt;
 
 &lt;h4 id=&#34;pilot-agent&#34;&gt;Pilot-agent&lt;/h4&gt;
 
@@ -964,23 +964,23 @@ border-top-color: #9954bb;
 
 &lt;h4 id=&#34;envoy&#34;&gt;Envoy&lt;/h4&gt;
 
-&lt;p&gt;Envoy 由 &lt;code&gt;Pilot-agent&lt;/code&gt; 进程启动，启动后，Envoy 读取 Pilot-agent 为它生成的配置文件，然后根据该文件的配置获取到 Pilot 的地址，通过数据面标准 API 的 xDS 接口从 pilot 拉取动态配置信息，包括路由（route），监听器（listener），服务集群（cluster）和服务端点（endpoint）。Envoy 初始化完成后，就根据这些配置信息对微服务间的通信进行寻址和路由。&lt;/p&gt;
+&lt;p&gt;Envoy 由 &lt;code&gt;Pilot-agent&lt;/code&gt; 进程启动，启动后，Envoy 读取 Pilot-agent 为它生成的配置文件，然后根据该文件的配置获取到 Pilot 的地址，通过数据平面标准 API 的 xDS 接口从 pilot 拉取动态配置信息，包括路由（route），监听器（listener），服务集群（cluster）和服务端点（endpoint）。Envoy 初始化完成后，就根据这些配置信息对微服务间的通信进行寻址和路由。&lt;/p&gt;
 
 &lt;h3 id=&#34;命令行工具&#34;&gt;命令行工具&lt;/h3&gt;
 
 &lt;p&gt;&lt;code&gt;kubectl&lt;/code&gt; 和 &lt;code&gt;istioctl&lt;/code&gt;，由于 Istio 的配置是基于 K8S 的 &lt;code&gt;CRD&lt;/code&gt;，因此可以直接采用 kubectl 对这些资源进行操作。Istioctl 则针对 Istio 对 CRD 的操作进行了一些封装。Istioctl 支持的功能参见该 &lt;a href=&#34;https://istio.io/docs/reference/commands/istioctl&#34; target=&#34;_blank&#34;&gt;表格&lt;/a&gt;。&lt;/p&gt;
 
-&lt;h2 id=&#34;数据面标准-api&#34;&gt;数据面标准 API&lt;/h2&gt;
+&lt;h2 id=&#34;数据平面标准-api&#34;&gt;数据平面标准 API&lt;/h2&gt;
 
 &lt;hr /&gt;
 
-&lt;p&gt;前面讲到，Pilot 采用了一套标准的 API 来向数据面 Sidecar 提供服务发现，负载均衡池和路由表等流量管理的配置信息。该标准 API 的文档参见 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview&#34; target=&#34;_blank&#34;&gt;Envoy v2 API&lt;/a&gt;。&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/tree/master/envoy/api/v2&#34; target=&#34;_blank&#34;&gt;Data Plane API Protocol Buffer Definition&lt;/a&gt; 给出了 &lt;code&gt;v2 grpc&lt;/code&gt; 接口相关的数据结构和接口定义。&lt;/p&gt;
+&lt;p&gt;前面讲到，Pilot 采用了一套标准的 API 来向数据平面 Sidecar 提供服务发现，负载均衡池和路由表等流量管理的配置信息。该标准 API 的文档参见 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview&#34; target=&#34;_blank&#34;&gt;Envoy v2 API&lt;/a&gt;。&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/tree/master/envoy/api/v2&#34; target=&#34;_blank&#34;&gt;Data Plane API Protocol Buffer Definition&lt;/a&gt; 给出了 &lt;code&gt;v2 grpc&lt;/code&gt; 接口相关的数据结构和接口定义。&lt;/p&gt;
 
 &lt;p id=&#34;blockquote&#34;&gt;Istio 早期采用了 Envoy v1 API，目前的版本中则使用 V2 API，V1 已被废弃。&lt;/p&gt;
 
 &lt;h3 id=&#34;基本概念和术语&#34;&gt;基本概念和术语&lt;/h3&gt;
 
-&lt;p&gt;首先我们需要了解数据面 API 中涉及到的一些基本概念：&lt;/p&gt;
+&lt;p&gt;首先我们需要了解数据平面 API 中涉及到的一些基本概念：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;Host&lt;/code&gt; ：能够进行网络通信的实体（如移动设备、服务器上的应用程序）。在此文档中，主机是逻辑网络应用程序。一块物理硬件上可能运行有多个主机，只要它们是可以独立寻址的。在 EDS 接口中，也使用 &lt;code&gt;Endpoint&lt;/code&gt; 来表示一个应用实例，对应一个 IP+Port 的组合。&lt;/li&gt;
@@ -992,7 +992,7 @@ border-top-color: #9954bb;
 
 &lt;h3 id=&#34;xds-服务接口&#34;&gt;XDS 服务接口&lt;/h3&gt;
 
-&lt;p&gt;Istio 数据面 API 定义了 xDS 服务接口，Pilot 通过该接口向数据面 sidecar 下发动态配置信息，以对 Mesh 中的数据流量进行控制。xDS 中的 DS 表示 &lt;code&gt;discovery service&lt;/code&gt;，即发现服务，表示 &lt;code&gt;xDS&lt;/code&gt; 接口使用动态发现的方式提供数据面所需的配置数据。而 x 则是一个代词，表示有多种 discover service。这些发现服务及对应的数据结构如下：&lt;/p&gt;
+&lt;p&gt;Istio 数据平面 API 定义了 xDS 服务接口，Pilot 通过该接口向数据平面 sidecar 下发动态配置信息，以对 Mesh 中的数据流量进行控制。xDS 中的 DS 表示 &lt;code&gt;discovery service&lt;/code&gt;，即发现服务，表示 &lt;code&gt;xDS&lt;/code&gt; 接口使用动态发现的方式提供数据平面所需的配置数据。而 x 则是一个代词，表示有多种 discover service。这些发现服务及对应的数据结构如下：&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;LDS&lt;/code&gt; (Listener Discovery Service) : &lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/lds.proto&#34; target=&#34;_blank&#34;&gt;envoy.api.v2.Listener&lt;/a&gt;&lt;/li&gt;
@@ -1021,7 +1021,7 @@ border-top-color: #9954bb;
 
 &lt;h3 id=&#34;ads-聚合发现服务&#34;&gt;ADS 聚合发现服务&lt;/h3&gt;
 
-&lt;p&gt;保证控制面下发数据一致性，避免流量在配置更新过程中丢失的另一个方式是使用 ADS(Aggregated Discovery Services)，即聚合的发现服务。&lt;code&gt;ADS&lt;/code&gt; 通过一个 gRPC 流来发布所有的配置更新，以保证各个 xDS 接口的调用顺序，避免由于 xDS 接口更新顺序导致的配置数据不一致问题。&lt;/p&gt;
+&lt;p&gt;保证控制平面下发数据一致性，避免流量在配置更新过程中丢失的另一个方式是使用 ADS(Aggregated Discovery Services)，即聚合的发现服务。&lt;code&gt;ADS&lt;/code&gt; 通过一个 gRPC 流来发布所有的配置更新，以保证各个 xDS 接口的调用顺序，避免由于 xDS 接口更新顺序导致的配置数据不一致问题。&lt;/p&gt;
 
 &lt;p&gt;关于 XDS 接口的详细介绍可参考 &lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md&#34; target=&#34;_blank&#34;&gt;xDS REST and gRPC protocol&lt;/a&gt;&lt;/p&gt;
 
@@ -1029,7 +1029,7 @@ border-top-color: #9954bb;
 
 &lt;hr /&gt;
 
-&lt;p&gt;下面我们以 &lt;code&gt;Bookinfo&lt;/code&gt; 为例对 Istio 中的流量管理实现机制，以及控制面和数据面的交互进行进一步分析。&lt;/p&gt;
+&lt;p&gt;下面我们以 &lt;code&gt;Bookinfo&lt;/code&gt; 为例对 Istio 中的流量管理实现机制，以及控制平面和数据平面的交互进行进一步分析。&lt;/p&gt;
 
 &lt;h3 id=&#34;bookinfo-程序结构&#34;&gt;Bookinfo 程序结构&lt;/h3&gt;
 
@@ -1136,7 +1136,7 @@ Containers:
   productpage:
     Image:          istio/examples-bookinfo-productpage-v1:1.8.0
     Port:           9080/TCP
-    
+
   istio-proxy:
     Image:         gcr.io/istio-release/proxyv2:1.0.0
     Args:
@@ -1216,7 +1216,7 @@ istio-p+     1     0  0 Sep06 ?        00:00:00 /usr/local/bin/pilot-agent proxy
 istio-p+    13     1  0 Sep06 ?        00:47:37 /usr/local/bin/envoy -c /etc/istio/proxy/envoy-rev0.json --restart-epoch 0 --drain-time-s 45 --parent-shutdown-time-s 60 --service-cluster productpage --service-node sidecar~192.168.206.23~productpage-v1-54b8b9f55-bx2dq.default~default.svc.cluster.local --max-obj-name-len 189 -l warn --v2-config-only
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Envoy 的大部分配置都是 &lt;code&gt;dynamic resource&lt;/code&gt;，包括网格中服务相关的 service cluster, listener, route 规则等。这些 dynamic resource 是通过 xDS 接口从 Istio 控制面中动态获取的。但 Envoy 如何知道 xDS server 的地址呢？这是在 Envoy 初始化配置文件中以 &lt;code&gt;static resource&lt;/code&gt; 的方式配置的。&lt;/p&gt;
+&lt;p&gt;Envoy 的大部分配置都是 &lt;code&gt;dynamic resource&lt;/code&gt;，包括网格中服务相关的 service cluster, listener, route 规则等。这些 dynamic resource 是通过 xDS 接口从 Istio 控制平面中动态获取的。但 Envoy 如何知道 xDS server 的地址呢？这是在 Envoy 初始化配置文件中以 &lt;code&gt;static resource&lt;/code&gt; 的方式配置的。&lt;/p&gt;
 
 &lt;h4 id=&#34;envoy-初始配置文件&#34;&gt;Envoy 初始配置文件&lt;/h4&gt;
 
@@ -1438,14 +1438,14 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 &lt;h4 id=&#34;通过管理接口获取完整配置&#34;&gt;通过管理接口获取完整配置&lt;/h4&gt;
 
-&lt;p&gt;从 Envoy 初始化配置文件中，我们可以大致看到 Istio 通过 Envoy 来实现服务发现和流量管理的基本原理。即控制面将 xDS server 信息通过 &lt;code&gt;static resource&lt;/code&gt; 的方式配置到 Envoy 的初始化配置文件中，Envoy 启动后通过 xDS server 获取到 &lt;code&gt;dynamic resource&lt;/code&gt;，包括网格中的 service 信息及路由规则。&lt;/p&gt;
+&lt;p&gt;从 Envoy 初始化配置文件中，我们可以大致看到 Istio 通过 Envoy 来实现服务发现和流量管理的基本原理。即控制平面将 xDS server 信息通过 &lt;code&gt;static resource&lt;/code&gt; 的方式配置到 Envoy 的初始化配置文件中，Envoy 启动后通过 xDS server 获取到 &lt;code&gt;dynamic resource&lt;/code&gt;，包括网格中的 service 信息及路由规则。&lt;/p&gt;
 
 &lt;p&gt;Envoy 配置初始化流程：&lt;/p&gt;
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-init.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
 &lt;ol&gt;
-&lt;li&gt;Pilot-agent 根据启动参数和 K8S API Server 中的配置信息生成 Envoy 的初始配置文件 &lt;code&gt;envoy-rev0.json&lt;/code&gt;，该文件告诉 Envoy 从 &lt;code&gt;xDS server&lt;/code&gt; 中获取动态配置信息，并配置了 xDS server 的地址信息，即控制面的 &lt;code&gt;Pilot&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;Pilot-agent 根据启动参数和 K8S API Server 中的配置信息生成 Envoy 的初始配置文件 &lt;code&gt;envoy-rev0.json&lt;/code&gt;，该文件告诉 Envoy 从 &lt;code&gt;xDS server&lt;/code&gt; 中获取动态配置信息，并配置了 xDS server 的地址信息，即控制平面的 &lt;code&gt;Pilot&lt;/code&gt;。&lt;/li&gt;
 &lt;li&gt;Pilot-agent 使用 envoy-rev0.json 启动 Envoy 进程。&lt;/li&gt;
 &lt;li&gt;Envoy 根据初始配置获得 Pilot 地址，采用 xDS 接口从 Pilot 获取到 &lt;code&gt;Listener&lt;/code&gt;，&lt;code&gt;Cluster&lt;/code&gt;，&lt;code&gt;Route&lt;/code&gt; 等动态配置信息。&lt;/li&gt;
 &lt;li&gt;Envoy 根据获取到的动态配置启动 Listener，并根据 Listener 的配置，结合 Route 和 Cluster 对拦截到的流量进行处理。&lt;/li&gt;
@@ -1474,7 +1474,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 &lt;p&gt;在 Envoy 中，Cluster 是一个服务集群，Cluster 中包含一个到多个 endpoint，每个 endpoint 都可以提供服务，Envoy 根据负载均衡算法将请求发送到这些 endpoint 中。&lt;/p&gt;
 
-&lt;p&gt;在 Productpage 的 clusters 配置中包含 &lt;code&gt;static_clusters&lt;/code&gt; 和 &lt;code&gt;dynamic_active_clusters&lt;/code&gt; 两部分，其中 static_clusters 是来自于 envoy-rev0.json 的 xDS server 和 zipkin server 信息。dynamic_active_clusters 是通过 xDS 接口从 Istio 控制面获取的动态服务信息。&lt;/p&gt;
+&lt;p&gt;在 Productpage 的 clusters 配置中包含 &lt;code&gt;static_clusters&lt;/code&gt; 和 &lt;code&gt;dynamic_active_clusters&lt;/code&gt; 两部分，其中 static_clusters 是来自于 envoy-rev0.json 的 xDS server 和 zipkin server 信息。dynamic_active_clusters 是通过 xDS 接口从 Istio 控制平面获取的动态服务信息。&lt;/p&gt;
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-clusters.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
@@ -1730,7 +1730,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 &lt;li&gt;&amp;hellip;&amp;hellip;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;除了 9080 这个 Listener 用于处理应用的业务之外，其他 listener 都是 Istio 用于处理自身组件之间通信使用的，有的控制面组件如 Pilot，Mixer 对应多个 listener，是因为该组件有多个端口提供服务。&lt;/p&gt;
+&lt;p&gt;除了 9080 这个 Listener 用于处理应用的业务之外，其他 listener 都是 Istio 用于处理自身组件之间通信使用的，有的控制平面组件如 Pilot，Mixer 对应多个 listener，是因为该组件有多个端口提供服务。&lt;/p&gt;
 
 &lt;p&gt;我们这里主要分析一下 &lt;code&gt;9080&lt;/code&gt; 这个业务端口的 Listenrer。和 Outbound Listener 一样，该 Listener 同样配置了 &lt;code&gt;”bind_to_port”: false&lt;/code&gt; 属性，因此该 listener 也没有被绑定到 tcp 端口上，其接收到的所有请求都转发自 15001 端口的 Virtual listener。&lt;/p&gt;
 
@@ -1780,7 +1780,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
             {
              &amp;quot;name&amp;quot;: &amp;quot;mixer&amp;quot;,
              &amp;quot;config&amp;quot;: {
-			  
+
 			  ......
 
              }
@@ -1973,228 +1973,217 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 &lt;h3 id=&#34;bookinfo-端到端调用分析&#34;&gt;Bookinfo 端到端调用分析&lt;/h3&gt;
 
-&lt;p&gt;通过前面章节对 Envoy 配置文件的分析，我们了解到 Istio 控制面如何将服务和路由信息通过 xDS 接口下发到数据面中；并介绍了 Envoy 上生成的各种配置数据的结构，包括 listener，cluster，route 和 endpoint。&lt;/p&gt;
+&lt;p&gt;通过前面章节对 Envoy 配置文件的分析，我们了解到 Istio 控制平面如何将服务和路由信息通过 xDS 接口下发到数据平面中；并介绍了 Envoy 上生成的各种配置数据的结构，包括 listener，cluster，route 和 endpoint。&lt;/p&gt;
 
-&lt;p&gt;下面我们来分析一个端到端的调用请求，通过调用请求的流程把这些配置串连起来，以从全局上理解 Istio 控制面的流量控制是如何在数据面的 Envoy 上实现的。&lt;/p&gt;
+&lt;p&gt;下面我们来分析一个端到端的调用请求，通过调用请求的流程把这些配置串连起来，以从全局上理解 Istio 控制平面的流量控制是如何在数据平面的 Envoy 上实现的。&lt;/p&gt;
 
 &lt;p&gt;下图描述了一个 &lt;code&gt;Productpage&lt;/code&gt; 服务调用 &lt;code&gt;Details&lt;/code&gt; 服务的请求流程：&lt;/p&gt;
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-traffic-route.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;ol&gt;
-&lt;li&gt;Productpage 发起对 Details 的调用：&lt;code&gt;http://details:9080/details/0&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;请求被 Pod 的 iptables 规则拦截，转发到 15001 端口。&lt;/li&gt;
-&lt;li&gt;Envoy 的 Virtual Listener 在 &lt;code&gt;15001&lt;/code&gt; 端口上监听，收到了该请求。&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;请求被 Virtual Listener 根据原目标 IP（通配）和端口（9080）转发到 &lt;code&gt;0.0.0.0_9080&lt;/code&gt; 这个 listener。&lt;/p&gt;
+&lt;p&gt;1、Productpage 发起对 Details 的调用：&lt;code&gt;http://details:9080/details/0&lt;/code&gt;。
+2、请求被 Pod 的 iptables 规则拦截，转发到 15001 端口。
+3、Envoy 的 Virtual Listener 在 &lt;code&gt;15001&lt;/code&gt; 端口上监听，收到了该请求。
+4、请求被 Virtual Listener 根据原目标 IP（通配）和端口（9080）转发到 &lt;code&gt;0.0.0.0_9080&lt;/code&gt; 这个 listener。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
-&amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:19Z&amp;quot;,
-&amp;quot;listener&amp;quot;: {
- &amp;quot;name&amp;quot;: &amp;quot;virtual&amp;quot;,
- &amp;quot;address&amp;quot;: {
-  &amp;quot;socket_address&amp;quot;: {
-   &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
-   &amp;quot;port_value&amp;quot;: 15001
+ &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:19Z&amp;quot;,
+ &amp;quot;listener&amp;quot;: {
+  &amp;quot;name&amp;quot;: &amp;quot;virtual&amp;quot;,
+  &amp;quot;address&amp;quot;: {
+   &amp;quot;socket_address&amp;quot;: {
+    &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+    &amp;quot;port_value&amp;quot;: 15001
+   }
   }
- }
- ......
+  ......
 
- &amp;quot;use_original_dst&amp;quot;: true //请求转发给和原始目的IP:Port匹配的listener
-},
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;根据 0.0.0.0_9080 listener 的 &lt;code&gt;http_connection_manager filter&lt;/code&gt; 配置,该请求采用 “9080” route 进行分发。&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;    {
-     &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:19Z&amp;quot;,
-     &amp;quot;listener&amp;quot;: {
-      &amp;quot;name&amp;quot;: &amp;quot;0.0.0.0_9080&amp;quot;,
-      &amp;quot;address&amp;quot;: {
-       &amp;quot;socket_address&amp;quot;: {
-        &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
-        &amp;quot;port_value&amp;quot;: 9080
-       }
-      },
-      &amp;quot;filter_chains&amp;quot;: [
-       {
-        &amp;quot;filters&amp;quot;: [
-         {
-          &amp;quot;name&amp;quot;: &amp;quot;envoy.http_connection_manager&amp;quot;,
-          &amp;quot;config&amp;quot;: {
-          ......
-
-           &amp;quot;rds&amp;quot;: {
-            &amp;quot;route_config_name&amp;quot;: &amp;quot;9080&amp;quot;,
-            &amp;quot;config_source&amp;quot;: {
-             &amp;quot;ads&amp;quot;: {}
-            }
-           },
-
-         }
-        ]
-       }
-      ],
-      &amp;quot;deprecated_v1&amp;quot;: {
-       &amp;quot;bind_to_port&amp;quot;: false
-      }
-     },
-     &amp;quot;last_updated&amp;quot;: &amp;quot;2018-09-06T09:34:26.172Z&amp;quot;
-    },
-
-    {
-     },
+  &amp;quot;use_original_dst&amp;quot;: true //请求转发给和原始目的IP:Port匹配的listener
+ },
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;9080&lt;/code&gt; 这个 route 的配置中，host name 为 &lt;code&gt;details:9080&lt;/code&gt; 的请求对应的 cluster 为 &lt;code&gt;outbound|9080||details.default.svc.cluster.local&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;5、根据 0.0.0.0_9080 listener 的 &lt;code&gt;http_connection_manager filter&lt;/code&gt; 配置,该请求采用 “9080” route 进行分发。&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;    {
-     &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-14T01:38:20Z&amp;quot;,
-     &amp;quot;route_config&amp;quot;: {
-      &amp;quot;name&amp;quot;: &amp;quot;9080&amp;quot;,
-      &amp;quot;virtual_hosts&amp;quot;: [
-       {
-        &amp;quot;name&amp;quot;: &amp;quot;details.default.svc.cluster.local:9080&amp;quot;,
-        &amp;quot;domains&amp;quot;: [
-         &amp;quot;details.default.svc.cluster.local&amp;quot;,
-         &amp;quot;details.default.svc.cluster.local:9080&amp;quot;,
-         &amp;quot;details&amp;quot;,
-         &amp;quot;details:9080&amp;quot;,
-         &amp;quot;details.default.svc.cluster&amp;quot;,
-         &amp;quot;details.default.svc.cluster:9080&amp;quot;,
-         &amp;quot;details.default.svc&amp;quot;,
-         &amp;quot;details.default.svc:9080&amp;quot;,
-         &amp;quot;details.default&amp;quot;,
-         &amp;quot;details.default:9080&amp;quot;,
-         &amp;quot;10.101.163.201&amp;quot;,
-         &amp;quot;10.101.163.201:9080&amp;quot;
-        ],
-        &amp;quot;routes&amp;quot;: [
-         {
-          &amp;quot;match&amp;quot;: {
-           &amp;quot;prefix&amp;quot;: &amp;quot;/&amp;quot;
-          },
-          &amp;quot;route&amp;quot;: {
-           &amp;quot;cluster&amp;quot;: &amp;quot;outbound|9080||details.default.svc.cluster.local&amp;quot;,
-           &amp;quot;timeout&amp;quot;: &amp;quot;0s&amp;quot;,
-           &amp;quot;max_grpc_timeout&amp;quot;: &amp;quot;0s&amp;quot;
-          },
-            ......
-
-           }
-          }
-         }
-        ]
-       },
-    	   ......
-
-    {
-     },   
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;outbound|9080||details.default.svc.cluster.local&lt;/code&gt; cluster 为动态资源，通过 eds 查询得到其 endpoint 为 192.168.206.21:9080。&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;    {
-    &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080||details.default.svc.cluster.local&amp;quot;,
-    &amp;quot;endpoints&amp;quot;: [
-    {
-      &amp;quot;locality&amp;quot;: {
-
-      },
-      &amp;quot;lbEndpoints&amp;quot;: [
-        {
-          &amp;quot;endpoint&amp;quot;: {
-            &amp;quot;address&amp;quot;: {
-              &amp;quot;socketAddress&amp;quot;: {
-                &amp;quot;address&amp;quot;: &amp;quot;192.168.206.21&amp;quot;,
-                &amp;quot;portValue&amp;quot;: 9080
-              }
-            }
-          },
-         ......  
-        }
-      ]
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt; {
+  &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:19Z&amp;quot;,
+  &amp;quot;listener&amp;quot;: {
+   &amp;quot;name&amp;quot;: &amp;quot;0.0.0.0_9080&amp;quot;,
+   &amp;quot;address&amp;quot;: {
+    &amp;quot;socket_address&amp;quot;: {
+     &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+     &amp;quot;port_value&amp;quot;: 9080
     }
-    ]
-    }   
+   },
+   &amp;quot;filter_chains&amp;quot;: [
+    {
+     &amp;quot;filters&amp;quot;: [
+      {
+       &amp;quot;name&amp;quot;: &amp;quot;envoy.http_connection_manager&amp;quot;,
+       &amp;quot;config&amp;quot;: {
+       ......
+
+        &amp;quot;rds&amp;quot;: {
+         &amp;quot;route_config_name&amp;quot;: &amp;quot;9080&amp;quot;,
+         &amp;quot;config_source&amp;quot;: {
+          &amp;quot;ads&amp;quot;: {}
+         }
+        },
+
+      }
+     ]
+    }
+   ],
+   &amp;quot;deprecated_v1&amp;quot;: {
+    &amp;quot;bind_to_port&amp;quot;: false
+   }
+  },
+  &amp;quot;last_updated&amp;quot;: &amp;quot;2018-09-06T09:34:26.172Z&amp;quot;
+ },
+
+ {
+  },
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;ol&gt;
-&lt;li&gt;请求被转发到 192.168.206.21，即 Details 服务所在的 Pod，被 iptables 规则拦截，转发到 15001 端口。&lt;/li&gt;
-&lt;li&gt;Envoy 的 &lt;code&gt;Virtual Listener&lt;/code&gt; 在 15001 端口上监听，收到了该请求。&lt;/li&gt;
-&lt;li&gt;请求被 Virtual Listener 根据请求原目标地址 IP（192.168.206.21）和端口（9080）转发到 &lt;code&gt;192.168.206.21_9080&lt;/code&gt; 这个 listener。&lt;/li&gt;
-&lt;li&gt;根据 92.168.206.21_9080 listener 的 &lt;code&gt;http_connection_manager filter&lt;/code&gt; 配置，该请求对应的 cluster 为 &lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt;。&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;6、&lt;code&gt;9080&lt;/code&gt; 这个 route 的配置中，host name 为 &lt;code&gt;details:9080&lt;/code&gt; 的请求对应的 cluster 为 &lt;code&gt;outbound|9080||details.default.svc.cluster.local&lt;/code&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;    {
-     &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:16Z&amp;quot;,
-     &amp;quot;listener&amp;quot;: {
-      &amp;quot;name&amp;quot;: &amp;quot;192.168.206.21_9080&amp;quot;,
-      &amp;quot;address&amp;quot;: {
-       &amp;quot;socket_address&amp;quot;: {
-        &amp;quot;address&amp;quot;: &amp;quot;192.168.206.21&amp;quot;,
-        &amp;quot;port_value&amp;quot;: 9080
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt; {
+  &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-14T01:38:20Z&amp;quot;,
+  &amp;quot;route_config&amp;quot;: {
+   &amp;quot;name&amp;quot;: &amp;quot;9080&amp;quot;,
+   &amp;quot;virtual_hosts&amp;quot;: [
+    {
+     &amp;quot;name&amp;quot;: &amp;quot;details.default.svc.cluster.local:9080&amp;quot;,
+     &amp;quot;domains&amp;quot;: [
+      &amp;quot;details.default.svc.cluster.local&amp;quot;,
+      &amp;quot;details.default.svc.cluster.local:9080&amp;quot;,
+      &amp;quot;details&amp;quot;,
+      &amp;quot;details:9080&amp;quot;,
+      &amp;quot;details.default.svc.cluster&amp;quot;,
+      &amp;quot;details.default.svc.cluster:9080&amp;quot;,
+      &amp;quot;details.default.svc&amp;quot;,
+      &amp;quot;details.default.svc:9080&amp;quot;,
+      &amp;quot;details.default&amp;quot;,
+      &amp;quot;details.default:9080&amp;quot;,
+      &amp;quot;10.101.163.201&amp;quot;,
+      &amp;quot;10.101.163.201:9080&amp;quot;
+     ],
+     &amp;quot;routes&amp;quot;: [
+      {
+       &amp;quot;match&amp;quot;: {
+        &amp;quot;prefix&amp;quot;: &amp;quot;/&amp;quot;
+       },
+       &amp;quot;route&amp;quot;: {
+        &amp;quot;cluster&amp;quot;: &amp;quot;outbound|9080||details.default.svc.cluster.local&amp;quot;,
+        &amp;quot;timeout&amp;quot;: &amp;quot;0s&amp;quot;,
+        &amp;quot;max_grpc_timeout&amp;quot;: &amp;quot;0s&amp;quot;
+       },
+         ......
+
+        }
        }
-      },
-      &amp;quot;filter_chains&amp;quot;: [
-       {
-        &amp;quot;filters&amp;quot;: [
-         {
-          &amp;quot;name&amp;quot;: &amp;quot;envoy.http_connection_manager&amp;quot;,
-          ......
-              
-          &amp;quot;route_config&amp;quot;: {
-            &amp;quot;name&amp;quot;: &amp;quot;inbound|9080||details.default.svc.cluster.local&amp;quot;,
-            &amp;quot;validate_clusters&amp;quot;: false,
-            &amp;quot;virtual_hosts&amp;quot;: [
-             {
-              &amp;quot;name&amp;quot;: &amp;quot;inbound|http|9080&amp;quot;,
-              &amp;quot;routes&amp;quot;: [
-                ......
-                    
-                &amp;quot;route&amp;quot;: {
-                 &amp;quot;max_grpc_timeout&amp;quot;: &amp;quot;0.000s&amp;quot;,
-                 &amp;quot;cluster&amp;quot;: &amp;quot;inbound|9080||details.default.svc.cluster.local&amp;quot;,
-                 &amp;quot;timeout&amp;quot;: &amp;quot;0.000s&amp;quot;
-                },
-                ......
-                    
-                &amp;quot;match&amp;quot;: {
-                 &amp;quot;prefix&amp;quot;: &amp;quot;/&amp;quot;
-                }
-               }
-              ],
-              &amp;quot;domains&amp;quot;: [
-               &amp;quot;*&amp;quot;
-              ]
+      }
+     ]
+    },
+      ......
+
+ {
+  },   
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;7、&lt;code&gt;outbound|9080||details.default.svc.cluster.local&lt;/code&gt; cluster 为动态资源，通过 eds 查询得到其 endpoint 为 192.168.206.21:9080。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt; {
+ &amp;quot;clusterName&amp;quot;: &amp;quot;outbound|9080||details.default.svc.cluster.local&amp;quot;,
+ &amp;quot;endpoints&amp;quot;: [
+ {
+   &amp;quot;locality&amp;quot;: {
+
+   },
+   &amp;quot;lbEndpoints&amp;quot;: [
+     {
+       &amp;quot;endpoint&amp;quot;: {
+         &amp;quot;address&amp;quot;: {
+           &amp;quot;socketAddress&amp;quot;: {
+             &amp;quot;address&amp;quot;: &amp;quot;192.168.206.21&amp;quot;,
+             &amp;quot;portValue&amp;quot;: 9080
+           }
+         }
+       },
+      ......  
+     }
+   ]
+ }
+ ]
+ }   
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;8、请求被转发到 192.168.206.21，即 Details 服务所在的 Pod，被 iptables 规则拦截，转发到 15001 端口。
+9、Envoy 的 &lt;code&gt;Virtual Listener&lt;/code&gt; 在 15001 端口上监听，收到了该请求。
+10、请求被 Virtual Listener 根据请求原目标地址 IP（192.168.206.21）和端口（9080）转发到 &lt;code&gt;192.168.206.21_9080&lt;/code&gt; 这个 listener。
+11、根据 92.168.206.21_9080 listener 的 &lt;code&gt;http_connection_manager filter&lt;/code&gt; 配置，该请求对应的 cluster 为 &lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt; {
+  &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:16Z&amp;quot;,
+  &amp;quot;listener&amp;quot;: {
+   &amp;quot;name&amp;quot;: &amp;quot;192.168.206.21_9080&amp;quot;,
+   &amp;quot;address&amp;quot;: {
+    &amp;quot;socket_address&amp;quot;: {
+     &amp;quot;address&amp;quot;: &amp;quot;192.168.206.21&amp;quot;,
+     &amp;quot;port_value&amp;quot;: 9080
+    }
+   },
+   &amp;quot;filter_chains&amp;quot;: [
+    {
+     &amp;quot;filters&amp;quot;: [
+      {
+       &amp;quot;name&amp;quot;: &amp;quot;envoy.http_connection_manager&amp;quot;,
+       ......
+
+       &amp;quot;route_config&amp;quot;: {
+         &amp;quot;name&amp;quot;: &amp;quot;inbound|9080||details.default.svc.cluster.local&amp;quot;,
+         &amp;quot;validate_clusters&amp;quot;: false,
+         &amp;quot;virtual_hosts&amp;quot;: [
+          {
+           &amp;quot;name&amp;quot;: &amp;quot;inbound|http|9080&amp;quot;,
+           &amp;quot;routes&amp;quot;: [
+             ......
+
+             &amp;quot;route&amp;quot;: {
+              &amp;quot;max_grpc_timeout&amp;quot;: &amp;quot;0.000s&amp;quot;,
+              &amp;quot;cluster&amp;quot;: &amp;quot;inbound|9080||details.default.svc.cluster.local&amp;quot;,
+              &amp;quot;timeout&amp;quot;: &amp;quot;0.000s&amp;quot;
+             },
+             ......
+
+             &amp;quot;match&amp;quot;: {
+              &amp;quot;prefix&amp;quot;: &amp;quot;/&amp;quot;
              }
-            ]
-           },
-            ......
-                
+            }
+           ],
+           &amp;quot;domains&amp;quot;: [
+            &amp;quot;*&amp;quot;
            ]
           }
-         }
+         ]
+        },
+         ......
+
         ]
        }
-      ],
-      &amp;quot;deprecated_v1&amp;quot;: {
-       &amp;quot;bind_to_port&amp;quot;: false
       }
-     },
-     &amp;quot;last_updated&amp;quot;: &amp;quot;2018-09-06T09:34:22.184Z&amp;quot;
-    }   
+     ]
+    }
+   ],
+   &amp;quot;deprecated_v1&amp;quot;: {
+    &amp;quot;bind_to_port&amp;quot;: false
+   }
+  },
+  &amp;quot;last_updated&amp;quot;: &amp;quot;2018-09-06T09:34:22.184Z&amp;quot;
+ }   
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;ol&gt;
-&lt;li&gt;&lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt; cluster 配置的 host 为&lt;code&gt;127.0.0.1:9080&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;请求被转发到 127.0.0.1:9080，即 Details 服务进行处理。&lt;/li&gt;
-&lt;/ol&gt;
+&lt;p&gt;12、&lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt; cluster 配置的 host 为&lt;code&gt;127.0.0.1:9080&lt;/code&gt;。
+13、请求被转发到 127.0.0.1:9080，即 Details 服务进行处理。&lt;/p&gt;
 
 &lt;p&gt;上述调用流程涉及的完整 Envoy 配置文件参见：&lt;/p&gt;
 
@@ -2207,7 +2196,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 &lt;hr /&gt;
 
-&lt;p&gt;本文介绍了 Istio 流量管理相关组件，Istio 控制面和数据面之间的标准接口，以及 Istio 下发到 Envoy 的完整配置数据的结构和内容。然后通过 Bookinfo 示例程序的一个端到端调用分析了 Envoy 是如何实现服务网格中服务发现和路由转发的，希望能帮助大家透过概念更进一步深入理解 Istio 流量管理的实现机制。&lt;/p&gt;
+&lt;p&gt;本文介绍了 Istio 流量管理相关组件，Istio 控制平面和数据平面之间的标准接口，以及 Istio 下发到 Envoy 的完整配置数据的结构和内容。然后通过 Bookinfo 示例程序的一个端到端调用分析了 Envoy 是如何实现服务网格中服务发现和路由转发的，希望能帮助大家透过概念更进一步深入理解 Istio 流量管理的实现机制。&lt;/p&gt;
 
 &lt;h2 id=&#34;参考资料&#34;&gt;参考资料&lt;/h2&gt;
 
