@@ -2,7 +2,7 @@
 title: "Istio 流量管理"
 subtitle: "使用 Istio 实现应用的金丝雀部署"
 date: 2018-08-01T20:59:11+08:00
-draft: true
+draft: false
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]

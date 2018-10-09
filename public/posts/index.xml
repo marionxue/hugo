@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Istio 流量管理实现机制深度解析</title>
+      <link>https://www.yangcs.net/posts/istio-traffic-management-impl-intro/</link>
+      <pubDate>Tue, 09 Oct 2018 20:00:17 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/istio-traffic-management-impl-intro/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>初试 Kubernetes 集群中使用 Contour 反向代理</title>
       <link>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</link>
       <pubDate>Fri, 28 Sep 2018 16:38:15 +0800</pubDate>
