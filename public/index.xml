@@ -864,6 +864,10 @@ border-top-color: #9954bb;
       <guid>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</guid>
       <description>&lt;p&gt;&lt;/p&gt;
 
+&lt;blockquote&gt;
+&lt;p&gt;呵呵&lt;/p&gt;
+&lt;/blockquote&gt;
+
 &lt;p&gt;在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 &lt;code&gt;L7&lt;/code&gt; 层实现高效流畅的入口流量管理。自从第一批 &lt;code&gt;Kubernetes Ingress Controller&lt;/code&gt; 开发完成以来，&lt;code&gt;Envoy&lt;/code&gt;（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。&lt;/p&gt;
 
 &lt;p&gt;容器公司 &lt;a href=&#34;https://heptio.com/&#34; target=&#34;_blank&#34;&gt;Heptio&lt;/a&gt; 开源的项目 &lt;a href=&#34;https://github.com/heptio/contour&#34; target=&#34;_blank&#34;&gt;Contour&lt;/a&gt; 使用 &lt;code&gt;Envoy&lt;/code&gt; 作为 Kubernetes 的 Ingress Controller 实现，为大家提供了一条新的 Kubernetes 外部负载均衡实现思路。&lt;/p&gt;

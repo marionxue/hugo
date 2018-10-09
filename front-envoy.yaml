@@ -16,6 +16,7 @@ static_resources:
               domains:
               - "yangcs.net"
               - "www.yangcs.net"
+              - "youtube.yangcs.net"
               routes:
               - match:
                   prefix: "/"
@@ -85,7 +86,36 @@ static_resources:
               - match:
                   prefix: "/"
                 route:
-                  cluster: webhook
+                  cluster: oneindex
+          http_filters:
+          - name: envoy.router
+            config: {}
+    - filter_chain_match:
+        server_names: "youtube.yangcs.net"
+      tls_context:
+        common_tls_context:
+          alpn_protocols: h2
+          tls_certificates:
+            - certificate_chain:
+                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+              private_key:
+                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+      filters:
+      - name: envoy.http_connection_manager
+        config:
+          codec_type: auto
+          stat_prefix: ingress_http
+          route_config:
+            name: local_route
+            virtual_hosts:
+            - name: backend
+              domains:
+              - "*"
+              routes:
+              - match:
+                  prefix: "/"
+                route:
+                  cluster: you2php
           http_filters:
           - name: envoy.router
             config: {}
@@ -99,14 +129,23 @@ static_resources:
     - socket_address:
         address: hugo
         port_value: 8080
-  - name: webhook
+  - name: oneindex
     connect_timeout: 0.25s
     type: strict_dns
     lb_policy: round_robin
     http2_protocol_options: {}
     hosts:
     - socket_address:
-        address: webhook-envoy
+        address: oneindex
+        port_value: 8080
+  - name: you2php
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: you2php
         port_value: 8080
 admin:
   access_log_path: "/dev/null"

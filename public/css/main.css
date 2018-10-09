@@ -48,9 +48,17 @@ a:focus {
     color: #2a55f4;
 }
 
+/*
 blockquote {
     color: #808080;
     font-style: italic;
+}
+*/
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #986dbd;
 }
 
 blockquote p:first-child {

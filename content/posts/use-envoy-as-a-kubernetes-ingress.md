@@ -11,6 +11,8 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
+> 呵呵
+
 在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 `L7` 层实现高效流畅的入口流量管理。自从第一批 `Kubernetes Ingress Controller` 开发完成以来，`Envoy`（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。
 
 容器公司 [Heptio](https://heptio.com/) 开源的项目 [Contour](https://github.com/heptio/contour) 使用 `Envoy` 作为 Kubernetes 的 Ingress Controller 实现，为大家提供了一条新的 Kubernetes 外部负载均衡实现思路。

@@ -1,0 +1,24 @@
+version: '2'
+services:
+
+  you2php:
+    image: onisuly/you2php
+    restart: always
+    volumes:
+      - /data/you2php:/var/www/html
+    networks:
+      - default
+    expose:
+      - "8080"
+
+  you2php-envoy:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    volumes:
+      - ./service-envoy.yaml:/etc/envoy/envoy.yaml
+    network_mode: "service:you2php"
+
+networks:
+  default:
+    external:
+      name: yang
