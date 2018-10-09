@@ -1589,10 +1589,13 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 <p><center><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-traffic-route.png" alt="" /></center></p>
 
-<p>1、Productpage 发起对 Details 的调用：<code>http://details:9080/details/0</code>。
-2、请求被 Pod 的 iptables 规则拦截，转发到 15001 端口。
-3、Envoy 的 Virtual Listener 在 <code>15001</code> 端口上监听，收到了该请求。
-4、请求被 Virtual Listener 根据原目标 IP（通配）和端口（9080）转发到 <code>0.0.0.0_9080</code> 这个 listener。</p>
+<p>1、Productpage 发起对 Details 的调用：<code>http://details:9080/details/0</code>。</p>
+
+<p>2、请求被 Pod 的 iptables 规则拦截，转发到 15001 端口。</p>
+
+<p>3、Envoy 的 Virtual Listener 在 <code>15001</code> 端口上监听，收到了该请求。</p>
+
+<p>4、请求被 Virtual Listener 根据原目标 IP（通配）和端口（9080）转发到 <code>0.0.0.0_9080</code> 这个 listener。</p>
 
 <pre><code class="language-json">{
  &quot;version_info&quot;: &quot;2018-09-06T09:34:19Z&quot;,
@@ -1725,10 +1728,13 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
  }   
 </code></pre>
 
-<p>8、请求被转发到 192.168.206.21，即 Details 服务所在的 Pod，被 iptables 规则拦截，转发到 15001 端口。
-9、Envoy 的 <code>Virtual Listener</code> 在 15001 端口上监听，收到了该请求。
-10、请求被 Virtual Listener 根据请求原目标地址 IP（192.168.206.21）和端口（9080）转发到 <code>192.168.206.21_9080</code> 这个 listener。
-11、根据 92.168.206.21_9080 listener 的 <code>http_connection_manager filter</code> 配置，该请求对应的 cluster 为 <code>inbound|9080||details.default.svc.cluster.local</code>。</p>
+<p>8、请求被转发到 192.168.206.21，即 Details 服务所在的 Pod，被 iptables 规则拦截，转发到 15001 端口。</p>
+
+<p>9、Envoy 的 <code>Virtual Listener</code> 在 15001 端口上监听，收到了该请求。</p>
+
+<p>10、请求被 Virtual Listener 根据请求原目标地址 IP（192.168.206.21）和端口（9080）转发到 <code>192.168.206.21_9080</code> 这个 listener。</p>
+
+<p>11、根据 92.168.206.21_9080 listener 的 <code>http_connection_manager filter</code> 配置，该请求对应的 cluster 为 <code>inbound|9080||details.default.svc.cluster.local</code>。</p>
 
 <pre><code class="language-json"> {
   &quot;version_info&quot;: &quot;2018-09-06T09:34:16Z&quot;,
@@ -1790,8 +1796,9 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
  }   
 </code></pre>
 
-<p>12、<code>inbound|9080||details.default.svc.cluster.local</code> cluster 配置的 host 为<code>127.0.0.1:9080</code>。
-13、请求被转发到 127.0.0.1:9080，即 Details 服务进行处理。</p>
+<p>12、<code>inbound|9080||details.default.svc.cluster.local</code> cluster 配置的 host 为<code>127.0.0.1:9080</code>。</p>
+
+<p>13、请求被转发到 127.0.0.1:9080，即 Details 服务进行处理。</p>
 
 <p>上述调用流程涉及的完整 Envoy 配置文件参见：</p>
 

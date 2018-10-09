@@ -1135,8 +1135,11 @@ Productpage Pod 中的 Envoy 创建了多个 Outbound Listener：
 <center>![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-traffic-route.png)</center>
 
 1、Productpage 发起对 Details 的调用：`http://details:9080/details/0`。
+
 2、请求被 Pod 的 iptables 规则拦截，转发到 15001 端口。
+
 3、Envoy 的 Virtual Listener 在 `15001` 端口上监听，收到了该请求。
+
 4、请求被 Virtual Listener 根据原目标 IP（通配）和端口（9080）转发到 `0.0.0.0_9080` 这个 listener。
 
 ```json
@@ -1275,8 +1278,11 @@ Productpage Pod 中的 Envoy 创建了多个 Outbound Listener：
 ```
 
 8、请求被转发到 192.168.206.21，即 Details 服务所在的 Pod，被 iptables 规则拦截，转发到 15001 端口。
+
 9、Envoy 的 `Virtual Listener` 在 15001 端口上监听，收到了该请求。
+
 10、请求被 Virtual Listener 根据请求原目标地址 IP（192.168.206.21）和端口（9080）转发到 `192.168.206.21_9080` 这个 listener。
+
 11、根据 92.168.206.21_9080 listener 的 `http_connection_manager filter` 配置，该请求对应的 cluster 为 `inbound|9080||details.default.svc.cluster.local`。
 
 ```json
@@ -1341,6 +1347,7 @@ Productpage Pod 中的 Envoy 创建了多个 Outbound Listener：
 ```
 
 12、`inbound|9080||details.default.svc.cluster.local` cluster 配置的 host 为`127.0.0.1:9080`。
+
 13、请求被转发到 127.0.0.1:9080，即 Details 服务进行处理。
 
 上述调用流程涉及的完整 Envoy 配置文件参见：

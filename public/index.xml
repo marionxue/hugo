@@ -1981,10 +1981,13 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 &lt;p&gt;&lt;center&gt;&lt;img src=&#34;https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-traffic-route.png&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
 
-&lt;p&gt;1、Productpage 发起对 Details 的调用：&lt;code&gt;http://details:9080/details/0&lt;/code&gt;。
-2、请求被 Pod 的 iptables 规则拦截，转发到 15001 端口。
-3、Envoy 的 Virtual Listener 在 &lt;code&gt;15001&lt;/code&gt; 端口上监听，收到了该请求。
-4、请求被 Virtual Listener 根据原目标 IP（通配）和端口（9080）转发到 &lt;code&gt;0.0.0.0_9080&lt;/code&gt; 这个 listener。&lt;/p&gt;
+&lt;p&gt;1、Productpage 发起对 Details 的调用：&lt;code&gt;http://details:9080/details/0&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;2、请求被 Pod 的 iptables 规则拦截，转发到 15001 端口。&lt;/p&gt;
+
+&lt;p&gt;3、Envoy 的 Virtual Listener 在 &lt;code&gt;15001&lt;/code&gt; 端口上监听，收到了该请求。&lt;/p&gt;
+
+&lt;p&gt;4、请求被 Virtual Listener 根据原目标 IP（通配）和端口（9080）转发到 &lt;code&gt;0.0.0.0_9080&lt;/code&gt; 这个 listener。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
  &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:19Z&amp;quot;,
@@ -2117,10 +2120,13 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
  }   
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;8、请求被转发到 192.168.206.21，即 Details 服务所在的 Pod，被 iptables 规则拦截，转发到 15001 端口。
-9、Envoy 的 &lt;code&gt;Virtual Listener&lt;/code&gt; 在 15001 端口上监听，收到了该请求。
-10、请求被 Virtual Listener 根据请求原目标地址 IP（192.168.206.21）和端口（9080）转发到 &lt;code&gt;192.168.206.21_9080&lt;/code&gt; 这个 listener。
-11、根据 92.168.206.21_9080 listener 的 &lt;code&gt;http_connection_manager filter&lt;/code&gt; 配置，该请求对应的 cluster 为 &lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;8、请求被转发到 192.168.206.21，即 Details 服务所在的 Pod，被 iptables 规则拦截，转发到 15001 端口。&lt;/p&gt;
+
+&lt;p&gt;9、Envoy 的 &lt;code&gt;Virtual Listener&lt;/code&gt; 在 15001 端口上监听，收到了该请求。&lt;/p&gt;
+
+&lt;p&gt;10、请求被 Virtual Listener 根据请求原目标地址 IP（192.168.206.21）和端口（9080）转发到 &lt;code&gt;192.168.206.21_9080&lt;/code&gt; 这个 listener。&lt;/p&gt;
+
+&lt;p&gt;11、根据 92.168.206.21_9080 listener 的 &lt;code&gt;http_connection_manager filter&lt;/code&gt; 配置，该请求对应的 cluster 为 &lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt;。&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt; {
   &amp;quot;version_info&amp;quot;: &amp;quot;2018-09-06T09:34:16Z&amp;quot;,
@@ -2182,8 +2188,9 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
  }   
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;12、&lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt; cluster 配置的 host 为&lt;code&gt;127.0.0.1:9080&lt;/code&gt;。
-13、请求被转发到 127.0.0.1:9080，即 Details 服务进行处理。&lt;/p&gt;
+&lt;p&gt;12、&lt;code&gt;inbound|9080||details.default.svc.cluster.local&lt;/code&gt; cluster 配置的 host 为&lt;code&gt;127.0.0.1:9080&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;13、请求被转发到 127.0.0.1:9080，即 Details 服务进行处理。&lt;/p&gt;
 
 &lt;p&gt;上述调用流程涉及的完整 Envoy 配置文件参见：&lt;/p&gt;
 
