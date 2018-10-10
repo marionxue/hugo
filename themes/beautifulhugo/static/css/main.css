@@ -43,6 +43,10 @@ a {
     word-break: break-all;
 }
 
+li {
+    line-height: 2;
+}
+
 a:hover,
 a:focus {
     color: #2a55f4;
@@ -769,11 +773,10 @@ table tr {
 }
 
 /*隔行改变行的背景色，如需要请打开*/
-/*
- * table tr:nth-child(2n) {
- *   background-color: #F8F8F8;
- *   }
- *   */
+
+table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+  }
 
 table tr th, table tr td {
   font-size: 1em;
