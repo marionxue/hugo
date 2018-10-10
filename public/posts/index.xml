@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Envoy 中的 xDS REST 和 gRPC 协议详解</title>
+      <link>https://www.yangcs.net/posts/envoy-xds-protocol/</link>
+      <pubDate>Wed, 10 Oct 2018 22:23:51 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/envoy-xds-protocol/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Istio 流量管理实现机制深度解析</title>
       <link>https://www.yangcs.net/posts/istio-traffic-management-impl-intro/</link>
       <pubDate>Tue, 09 Oct 2018 20:00:17 +0800</pubDate>

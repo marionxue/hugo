@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/envoy-xds-protocol/</loc>
+    <lastmod>2018-10-10T22:23:51+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/istio-traffic-management-impl-intro/</loc>
     <lastmod>2018-10-09T20:00:17+08:00</lastmod>
   </url>
@@ -336,7 +341,7 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/envoy/</loc>
-    <lastmod>2018-09-28T16:38:15+08:00</lastmod>
+    <lastmod>2018-10-10T22:23:51+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -420,13 +425,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/service-mesh/</loc>
-    <lastmod>2018-10-09T20:00:17+08:00</lastmod>
+    <lastmod>2018-10-10T22:23:51+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/service-mesh/</loc>
-    <lastmod>2018-10-09T20:00:17+08:00</lastmod>
+    <lastmod>2018-10-10T22:23:51+08:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -857,6 +857,515 @@ border-top-color: #9954bb;
     </item>
     
     <item>
+      <title>Envoy 中的 xDS REST 和 gRPC 协议详解</title>
+      <link>https://www.yangcs.net/posts/envoy-xds-protocol/</link>
+      <pubDate>Wed, 10 Oct 2018 22:23:51 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/envoy-xds-protocol/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;
+
+&lt;p id=&#34;div-border-left-red&#34;&gt;
+&lt;strong&gt;转载自：&lt;/strong&gt;&lt;a href=&#34;http://www.servicemesher.com/blog/envoy-xds-protocol/&#34; target=&#34;_blank&#34;&gt;Envoy 中的 xDS REST 和 gRPC 协议详解&lt;/a&gt;
+&lt;br /&gt;
+&lt;strong&gt;原文地址：&lt;/strong&gt;https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md
+&lt;br /&gt;
+&lt;strong&gt;作者：&lt;/strong&gt;狄卫华
+&lt;br /&gt;
+&lt;strong&gt;修订：&lt;/strong&gt;杨传胜
+&lt;/p&gt;
+
+&lt;p&gt;Envoy 通过查询文件或管理服务器来动态发现资源。这些发现服务及其相应的 API 被统称为 &lt;code&gt;xDS&lt;/code&gt;。Envoy 通过订阅（&lt;code&gt;subscription&lt;/code&gt;）方式来获取资源，如监控指定路径下的文件、启动 gRPC 流（streaming）或轮询 REST-JSON URL。后两种方式会发送 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryrequest&#34; target=&#34;_blank&#34;&gt;DiscoveryRequest&lt;/a&gt; 请求消息，发现的对应资源则包含在响应消息 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryrequest&#34; target=&#34;_blank&#34;&gt;DiscoveryResponse&lt;/a&gt; 中。下面，我们将具体讨论每种订阅类型。&lt;/p&gt;
+
+&lt;h2 id=&#34;1-文件订阅&#34;&gt;1. 文件订阅&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;发现动态资源的最简单方式就是将其保存于文件，并将路径配置在 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/config_source.proto#core-configsource&#34; target=&#34;_blank&#34;&gt;ConfigSource&lt;/a&gt; 中的 &lt;code&gt;path&lt;/code&gt; 参数中。Envoy 使用 &lt;code&gt;inotify&lt;/code&gt;（Mac OS X 上为 &lt;code&gt;kqueue&lt;/code&gt;）来监控文件的变化，在文件被更新时，Envoy 读取保存的 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 数据进行解析，数据格式可以为二进制 protobuf、JSON、YAML 和协议文本等。&lt;/p&gt;
+
+&lt;p id=blockquote&gt;译者注：core.ConfigSource 配置格式如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;path&amp;quot;: &amp;quot;...&amp;quot;,
+  &amp;quot;api_config_source&amp;quot;: &amp;quot;{...}&amp;quot;,
+  &amp;quot;ads&amp;quot;: &amp;quot;{...}&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;文件订阅方式可提供统计数据和日志信息，但是缺少 ACK/NACK 更新的机制。如果更新的配置被拒绝，xDS API 则继续使用最后一个有效配置。&lt;/p&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;
+&lt;li&gt;&lt;code&gt;ACK&lt;/code&gt; 在 TCP 连接中是数据包确认消息，在 TCP 连接中，数据接收端在接收到一个数据包的时候会立即发送一个 ACK 消息给发送端，通知已经接收到此数据包，然后发送端再继续发送下一个数据包。&lt;/li&gt;
+&lt;li&gt;NACK 与 ACK 刚好相反，在 UDP 通信中，数据接收端接收到数据包后是不需要通知发送端的，发送端始终不断的发送数据包而不关心对方是否正确收到，亦不关心所发生的数据包是否有序到达。只有在接收端意识到有某个或某几个数据包没有接收到的情况下才会构造一个 &lt;code&gt;NACK&lt;/code&gt; 消息包发送给发送端。请求发送端重发丢失包。 &lt;/li&gt;
+比如接收端收到数据包 100， 101， 103，105，然后发现 102， 104 丢了，会构造一个 NACK 包发送给发送端。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&#34;2-grpc-流式订阅&#34;&gt;2. gRPC 流式订阅&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&#34;单例资源类型发现&#34;&gt;单例资源类型发现&lt;/h3&gt;
+
+&lt;p&gt;每个 xDS API 可以单独配置 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/core/config_source.proto#core-apiconfigsource&#34; target=&#34;_blank&#34;&gt;ApiConfigSource&lt;/a&gt;，指向对应的上游管理服务器的集群地址。每个 xDS 资源类型会启动一个独立的双向 gRPC 流（每个 xDS 资源类型对应的管理服务器可能不同）。API 交付方式采用最终一致性。可以参考后续聚合服务发现（ADS） 章节来了解必要的显式控制序列。&lt;/p&gt;
+
+&lt;p id=blockquote&gt;译者注：core.ApiConfigSource 配置格式如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+  &amp;quot;api_type&amp;quot;: &amp;quot;...&amp;quot;,
+  &amp;quot;cluster_names&amp;quot;: [],
+  &amp;quot;grpc_services&amp;quot;: [],
+  &amp;quot;refresh_delay&amp;quot;: &amp;quot;{...}&amp;quot;,
+  &amp;quot;request_timeout&amp;quot;: &amp;quot;{...}&amp;quot;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h4 id=&#34;类型-url&#34;&gt;类型 URL&lt;/h4&gt;
+
+&lt;p&gt;每个 xDS API 都与给定的资源类型一一对应。关系如下：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/lds.proto&#34; target=&#34;_blank&#34;&gt;LDS&lt;/a&gt; ： &lt;code&gt;envoy.api.v2.Listener&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/rds.proto&#34; target=&#34;_blank&#34;&gt;RDS&lt;/a&gt; : &lt;code&gt;envoy.api.v2.RouteConfiguration&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/cds.proto&#34; target=&#34;_blank&#34;&gt;CDS&lt;/a&gt; : &lt;code&gt;envoy.api.v2.Cluster&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/eds.proto&#34; target=&#34;_blank&#34;&gt;EDS&lt;/a&gt; ： &lt;code&gt;envoy.api.v2.ClusterLoadAssignment&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/envoy/api/v2/auth/cert.proto&#34; target=&#34;_blank&#34;&gt;SDS&lt;/a&gt; ：&lt;code&gt;envoy.api.v2.Auth.Secret&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://developers.google.com/protocol-buffers/docs/proto3#any&#34; target=&#34;_blank&#34;&gt;类型 URL&lt;/a&gt; 的概念如下所示，其采用 &lt;code&gt;type.googleapis.com/&amp;lt;resource type&amp;gt;&lt;/code&gt; 的形式，例如 CDS 对应于 &lt;code&gt;type.googleapis.com/envoy.api.v2.Cluster&lt;/code&gt;。在 Envoy 发起的发现请求和管理服务器返回的发现响应中，都包括了资源类型 URL。&lt;/p&gt;
+
+&lt;h4 id=&#34;ack-nack-和版本&#34;&gt;ACK/NACK 和版本&lt;/h4&gt;
+
+&lt;p&gt;每个 Envoy 流以发送一个 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 开始，包括了列表订阅的资源、订阅资源对应的类型 URL、节点标识符和空的 &lt;code&gt;version_info&lt;/code&gt;。EDS 请求示例如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;version_info:
+node: { id: envoy }
+resource_names:
+- foo
+- bar
+type_url: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+response_nonce:
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;管理服务器可立刻或等待资源就绪时发送 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 作为响应，示例如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;version_info: X
+resources:
+- foo ClusterLoadAssignment proto encoding
+- bar ClusterLoadAssignment proto encoding
+type_url: type.googleapis.com/envoy.api.v2.ClusterLoadAssignment
+nonce: A
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Envoy 在处理 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 响应后，将通过流发送一个新的请求，请求包含应用成功的最后一个版本号和管理服务器提供的 &lt;code&gt;nonce&lt;/code&gt;。如果本次更新已成功应用，则 &lt;code&gt;version_info&lt;/code&gt;的值设置为 X，如下序列图所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/simple-ack.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;em&gt;ack 更新&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;在此序列图及后续章节中，将统一使用以下缩写格式：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;DiscoveryRequest&lt;/code&gt; ：(V=&lt;code&gt;version_info&lt;/code&gt;，R=&lt;code&gt;resource_names&lt;/code&gt;，N=&lt;code&gt;response_nonce&lt;/code&gt;，T=&lt;code&gt;type_url&lt;/code&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;DiscoveryResponse&lt;/code&gt; ： (V=&lt;code&gt;version_info&lt;/code&gt;，R=&lt;code&gt;resources&lt;/code&gt;，N=&lt;code&gt;nonce&lt;/code&gt;，T=&lt;code&gt;type_url&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div id=&#34;note&#34;&gt;
+&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
+&lt;br /&gt;
+&lt;p&gt;
+在&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8&#34;&gt;信息安全&lt;/a&gt;中，&lt;strong&gt;Nonce&lt;/strong&gt; 是一个在加密通信只能使用一次的数字。在认证协议中，它往往是一个&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E9%9A%8F%E6%9C%BA&#34;&gt;随机&lt;/a&gt;或&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E4%BC%AA%E9%9A%8F%E6%9C%BA&#34;&gt;伪随机&lt;/a&gt;数，以避免&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB&#34;&gt;重放攻击&lt;/a&gt;。Nonce 也用于&lt;a href=&#34;https://zh.wikipedia.org/wiki/%E6%B5%81%E5%AF%86%E7%A0%81&#34;&gt;流密码&lt;/a&gt;以确保安全。如果需要使用相同的密钥加密一个以上的消息，就需要 Nonce 来确保不同的消息与该密钥加密的密钥流不同。（引用自&lt;a href=&#34;https://zh.wikipedia.org/wiki/Nonce&#34;&gt;维基百科&lt;/a&gt;）在本文中 &lt;code&gt;nonce&lt;/code&gt; 是每次更新的数据包的唯一标识。
+&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;p&gt;有了版本（&lt;code&gt;version_info&lt;/code&gt;）这个概念，就可以为 Envoy 和管理服务器共享当前应用配置，以及提供了通过 ACK/NACK 来进行配置更新的机制。如果 Envoy 拒绝了配置更新 X，则回复 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#envoy-api-field-discoveryrequest-error-detail&#34; target=&#34;_blank&#34;&gt;error_detail&lt;/a&gt; 及前一个版本号，在本例中为空的初始版本号，&lt;code&gt;error_detail&lt;/code&gt; 包含了有关错误的更加详细的信息：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/simple-nack.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
+&lt;center&gt;&lt;em&gt;nack 更新&lt;/em&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;重新发送 DiscoveryRequest 后，API 更新可能会在新版本 Y 上成功应用：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/later-ack.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;每个流都有自己的版本概念，但不同的资源类型不能共享资源版本。在不使用 ADS 的情况下，每个资源类型可能具有不同的版本，因为 Envoy API 允许不同的 EDS/RDS 资源配置指向不同的 &lt;code&gt;ConfigSources&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h4 id=&#34;何时发送更新&#34;&gt;何时发送更新&lt;/h4&gt;
+
+&lt;p&gt;管理服务器应该只向 Envoy 客户端发送上次 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 后更新过的资源。Envoy 则会根据接受或拒绝 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 的情况，立即回复包含 ACK/NACK 的 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 请求。如果管理服务器不等待更新完成，每次返回相同的资源结果集合，则会导致 Envoy 和管理服务器通讯效率大打折扣。&lt;/p&gt;
+
+&lt;p&gt;在同一个流中，新的 &lt;code&gt;DiscoveryRequests&lt;/code&gt; 将取代此前具有相同资源类型的 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 请求。&lt;strong&gt;这意味着管理服务器只需要响应给定资源类型最新的 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 请求即可。&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;资源提示&#34;&gt;资源提示&lt;/h4&gt;
+
+&lt;p&gt;&lt;code&gt;DiscoveryRequest&lt;/code&gt; 中的 &lt;code&gt;resource_names&lt;/code&gt; 信息作为资源提示出现。一些资源类型，例如 &lt;code&gt;Cluster&lt;/code&gt; 和 &lt;code&gt;Listener&lt;/code&gt; 将使用一个空的 &lt;code&gt;resource_names&lt;/code&gt;，因为 Envoy 需要获取对应节点标识的管理服务器的所有 &lt;code&gt;Cluster&lt;/code&gt;（CDS）和 &lt;code&gt;Listener&lt;/code&gt;（LDS）。对于其他资源类型，如 &lt;code&gt;RouteConfigurations&lt;/code&gt;（RDS）和 &lt;code&gt;ClusterLoadAssignments&lt;/code&gt;（EDS），则遵循此前的 CDS/LDS 更新，Envoy 能够通过枚举这些资源找到明确的资源。&lt;/p&gt;
+
+&lt;p&gt;LDS/CDS 资源提示信息将始终为空，并且期望管理服务器的每个响应都提供 &lt;code&gt;LDS/CDS&lt;/code&gt; 资源的完整状态。不存在的 &lt;code&gt;Listener&lt;/code&gt; 或 &lt;code&gt;Cluster&lt;/code&gt; 将被删除。如果 RDS 或 EDS 更新中缺少请求的资源，Envoy 将保留此资源的最后已知值。管理服务器能够从 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 中的节点标识（&lt;code&gt;node.id&lt;/code&gt;）推断出所有所需的 EDS/RDS 资源，在这种情况下，该提示信息可能被丢弃。从 Envoy 的资源角度来看，空的 EDS/RDS &lt;code&gt;DiscoveryResponse&lt;/code&gt; 响应实际上表示一个空的资源。&lt;/p&gt;
+
+&lt;p&gt;当 &lt;code&gt;Listener&lt;/code&gt; 或 &lt;code&gt;Cluster&lt;/code&gt; 被删除时，其对应的 EDS 和 RDS 资源也会在 Envoy 实例中被删除。为使 EDS 资源能被 Envoy 获取或跟踪，就必须存在已经应用过的 &lt;code&gt;Cluster&lt;/code&gt; 定义（如通过 CDS 获取）。RDS 和 &lt;code&gt;Listeners&lt;/code&gt; 之间存在类似的关系（如通过 LDS 获取）。&lt;/p&gt;
+
+&lt;p&gt;对于 EDS/RDS ，Envoy 可以为每个给定类型的资源生成不同的流（如每个 &lt;code&gt;ConfigSource&lt;/code&gt; 都有自己的上游管理服务器集群）或当指定资源类型的请求发送到同一个管理服务器的时候，允许将多个资源请求组合在一起发送。虽然可以单个实现，但管理服务器应具备为每个请求中的给定资源类型处理一个或多个 &lt;code&gt;resource_names&lt;/code&gt; 的能力。下面的两个序列图都可用于获取两个 EDS 资源 &lt;code&gt;{foo，bar}&lt;/code&gt;：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/eds-same-stream.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/eds-distinct-stream.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h4 id=&#34;资源更新&#34;&gt;资源更新&lt;/h4&gt;
+
+&lt;p&gt;如上所述，Envoy 可能会更新 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 中出现的 &lt;code&gt;resource_names&lt;/code&gt; 列表，其中 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 是用来 ACK/NACK 管理服务器的特定的 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 。此外，Envoy 后续可能会在给定的 &lt;code&gt;version_info&lt;/code&gt; 上发送额外的 &lt;code&gt;DiscoveryRequests&lt;/code&gt; ，以使用新的资源提示来更新管理服务器。&lt;/p&gt;
+
+&lt;p&gt;例如，如果 Envoy 在 EDS 版本 &lt;strong&gt;X&lt;/strong&gt; 时仅知道集群 &lt;code&gt;foo&lt;/code&gt;，但在随后收到的 CDS 更新时额外获取了集群 &lt;code&gt;bar&lt;/code&gt; ，它可能会为版本 &lt;strong&gt;X&lt;/strong&gt; 发出额外的 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 请求，并将 &lt;code&gt;{foo，bar}&lt;/code&gt; 作为请求的 &lt;code&gt;resource_names&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/cds-eds-resources.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;这里可能会出现竞争状况；如果 Envoy 在版本 &lt;strong&gt;X&lt;/strong&gt; 上发布了资源提示更新请求，但在管理服务器处理该请求之前发送了新的版本号为 &lt;strong&gt;Y&lt;/strong&gt; 的响应，针对 &lt;code&gt;version_info&lt;/code&gt; 为 &lt;strong&gt;X&lt;/strong&gt; 的版本，资源提示更新可能会被解释为拒绝 &lt;strong&gt;Y&lt;/strong&gt; 。为避免这种情况，通过使用管理服务器提供的 &lt;code&gt;nonce&lt;/code&gt;，Envoy 可用来保证每个 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 对应到相应的 &lt;code&gt;DiscoveryResponse&lt;/code&gt;：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/update-race.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;管理服务器不应该为含有过期 &lt;code&gt;nonce&lt;/code&gt; 的 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 发送 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 响应。如果向 Envoy 发送的 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 中包含了的新 &lt;code&gt;nonce&lt;/code&gt;，则此前的 &lt;code&gt;nonce&lt;/code&gt; 将过期。在确定新版本可用之前，管理服务器不需要向 Envoy 发送更新。同版本的早期请求将会过期。在新版本就绪时，管理服务器可能会处理同一个版本号的多个 &lt;code&gt;DiscoveryRequests&lt;/code&gt; 请求。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/stale-requests.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;上述资源更新序列表明 Envoy 并不能期待其发出的每个 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 都得到 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 响应。&lt;/p&gt;
+
+&lt;h4 id=&#34;最终一致性考虑&#34;&gt;最终一致性考虑&lt;/h4&gt;
+
+&lt;p&gt;由于 Envoy 的 xDS API 采用最终一致性，因此在更新期间可能导致流量被丢弃。例如，如果通过 CDS/EDS 仅获取到了集群 &lt;strong&gt;X&lt;/strong&gt;，而且 &lt;code&gt;RouteConfiguration&lt;/code&gt; 引用了集群 &lt;strong&gt;X&lt;/strong&gt;；在 CDS/EDS 更新集群 &lt;strong&gt;Y&lt;/strong&gt; 配置之前，如果将 &lt;code&gt;RouteConfiguration&lt;/code&gt; 将引用的集群调整为 &lt;strong&gt;Y&lt;/strong&gt; ，那么流量将被吸入黑洞而丢弃，直至集群 &lt;strong&gt;Y&lt;/strong&gt; 被 Envoy 实例获取。&lt;/p&gt;
+
+&lt;p&gt;对某些应用程序，可接受临时的流量丢弃，客户端或其他 Envoy sidecar 的重试可以解决该问题，并不影响业务逻辑。那些对流量丢弃不能容忍的场景，可以通过以下方式避免流量丢失，CDS/EDS 更新同时携带 &lt;strong&gt;X&lt;/strong&gt; 和 &lt;strong&gt;Y&lt;/strong&gt; ，然后发送 RDS 更新从 &lt;strong&gt;X&lt;/strong&gt; 切换到 &lt;strong&gt;Y&lt;/strong&gt; ，此后发送丢弃 &lt;strong&gt;X&lt;/strong&gt; 的 CDS/EDS 更新。&lt;/p&gt;
+
+&lt;p&gt;一般来说，为避免流量丢弃，更新的顺序应该遵循 &lt;code&gt;make before break&lt;/code&gt; 模型，其中：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;CDS&lt;/code&gt; 首先更新 &lt;code&gt;Cluster&lt;/code&gt; 数据（如果有变化）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;EDS&lt;/code&gt; 更新相应 Cluster 的 &lt;code&gt;Endpoint&lt;/code&gt; 信息（如果有变化）&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;LDS&lt;/code&gt; 更新 CDS/EDS 相应的 &lt;code&gt;Listener&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;RDS&lt;/code&gt; 最后更新新增 Listener 相关的 &lt;code&gt;Route&lt;/code&gt; 配置&lt;/li&gt;
+&lt;li&gt;删除不再使用的 CDS cluster 和 EDS endpoints（不再被引用的 endpoint）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;如果没有添加新的集群/路由/监听器，或者在更新期间暂时丢弃流量，则可以独立推送 xDS 更新。请注意，在 LDS 更新的情况下，监听器须在接收流量之前被预热，例如如其配置了依赖的路由，则需要先从 RDS 中获取。添加/删除/更新集群信息时，集群也需要进行预热。另一方面，如果管理平面确保路由更新时所引用的集群已经准备就绪，则路由可以不用预热。&lt;/p&gt;
+
+&lt;h3 id=&#34;聚合服务发现-ads&#34;&gt;聚合服务发现（ADS）&lt;/h3&gt;
+
+&lt;p&gt;当管理服务器进行资源分发时，通过上述保证交互顺序的方式来避免流量被丢弃是一项很有挑战的工作。ADS 允许单一管理服务器通过单个 gRPC 流来提供所有的 API 更新。配合仔细规划的更新顺序，ADS 可规避更新过程中的流量丢失。使用 ADS，在单个流上可通过类型 URL 来进行复用多个独立的 &lt;code&gt;DiscoveryRequest&lt;/code&gt;/&lt;code&gt;DiscoveryResponse&lt;/code&gt; 序列。对于任何给定类型的 URL，以上 &lt;code&gt;DiscoveryRequest&lt;/code&gt; 和 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 消息序列都适用。 更新序列可能如下所示：&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/ads.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;每个 Envoy 实例可使用单独的 ADS 流。&lt;/p&gt;
+
+&lt;p&gt;最小化 ADS 配置的 &lt;code&gt;bootstrap.yaml&lt;/code&gt; 片段示例如下：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;node:
+  id: &amp;lt;node identifier&amp;gt;
+dynamic_resources:
+  cds_config: {ads: {}}
+  lds_config: {ads: {}}
+  ads_config:
+    api_type: GRPC
+    grpc_services:
+      envoy_grpc:
+        cluster_name: ads_cluster
+static_resources:
+  clusters:
+  - name: ads_cluster
+    connect_timeout: { seconds: 5 }
+    type: STATIC
+    hosts:
+    - socket_address:
+        address: &amp;lt;ADS management server IP address&amp;gt;
+        port_value: &amp;lt;ADS management server port&amp;gt;
+    lb_policy: ROUND_ROBIN
+    http2_protocol_options: {}
+admin:
+  ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;增量-xds&#34;&gt;增量 xDS&lt;/h3&gt;
+
+&lt;p&gt;增量 xDS 是可用于 ADS、CDS 和 RDS 的单独 xDS 端点，允许以下操作：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;xDS 客户端对跟踪资源列表进行增量更新。这支持 Envoy 按需/惰性地请求额外资源（例如，当与未知集群相对应的请求到达时）。&lt;/li&gt;
+&lt;li&gt;xDS 服务器可以增量更新客户端上的资源。这可以实现 xDS 资源可伸缩性的目标。管理服务器只需交付更改的单个集群，而不是在修改单个集群时交付所有上万个集群。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;xDS 增量 &lt;code&gt;session&lt;/code&gt; 始终位于 gRPC 双向流的上下文中。这允许 xDS 服务器能够跟踪到连接的 xDS 客户端的状态。xDS REST 版本（v1）不支持增量。在增量 xDS 中，nonce 字段是必需的，用于将 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#incrementaldiscoveryresponse&#34; target=&#34;_blank&#34;&gt;IncrementalDiscoveryResponse&lt;/a&gt; 与关联的 ACK 或 NACK &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#incrementaldiscoveryrequest&#34; target=&#34;_blank&#34;&gt;IncrementalDiscoveryRequest&lt;/a&gt; 进行匹配。IncrementalDiscoveryResponse 中的响应消息级别（system_version_info）仅用于调试目的。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;IncrementalDiscoveryRequest&lt;/code&gt; 可在以下 3 种情况下发送：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;xDS 双向 gRPC 流的初始消息。&lt;/li&gt;
+&lt;li&gt;作为对先前的 &lt;code&gt;IncrementalDiscoveryResponse&lt;/code&gt; 的 ACK 或 NACK 响应。在这种情况下，&lt;code&gt;response_nonce&lt;/code&gt; 被设置为响应中的 nonce 值。到底是 ACK 还是 NACK 可由 &lt;code&gt;error_detail&lt;/code&gt; 字段是否出现来区分。&lt;/li&gt;
+&lt;li&gt;客户端自发的 &lt;code&gt;IncrementalDiscoveryRequest&lt;/code&gt;。此场景下可以从跟踪的 resource_names 集合中动态添加或删除元素。此时必须忽略 &lt;code&gt;response_nonce&lt;/code&gt;。&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;在下面的示例中，客户端连接并接收它的第一个更新并 ACK。第二次更新失败，客户端发送 NACK 拒绝更新。xDS客户端后续会自发地请求 &lt;code&gt;wc&lt;/code&gt; 相关资源。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/incremental.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;p&gt;在下面的示例中，当 xDS 客户端断开重新连接时，支持增量的 xDS 客户端可能会告诉服务器其已经获取的资源从而避免服务端通过网络重新发送它们。&lt;/p&gt;
+
+&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/incremental-reconnect.svg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;3-rest-json-轮询订阅&#34;&gt;3. REST-JSON 轮询订阅&lt;/h2&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;单个 xDS API 可以通过 REST 端点进行同步（长）轮询。除了无持久流与管理服务器交互外，消息交互顺序与上述两个订阅方式相似。在任何时间点，只存在一个未完成的请求，因此响应消息中的 &lt;code&gt;nonce&lt;/code&gt; 在 REST-JSON 中是可选的。&lt;code&gt;DiscoveryRequest&lt;/code&gt; 和 &lt;code&gt;DiscoveryResponse&lt;/code&gt; 的消息编码遵循 &lt;a href=&#34;https://developers.google.com/protocol-buffers/docs/proto3#json&#34; target=&#34;_blank&#34;&gt;JSON 变换 proto3&lt;/a&gt; 规范。ADS 不支持 REST-JSON 轮询订阅。&lt;/p&gt;
+
+&lt;p&gt;当轮询周期设置为较小的值时，为了进行长轮询，这时要求避免发送 &lt;code&gt;DiscoveryResponse&lt;/code&gt;，&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md#when-to-send-an-update&#34; target=&#34;_blank&#34;&gt;除非发生了对请求的资源的更改&lt;/a&gt;。&lt;/p&gt;
+
+&lt;style&gt;
+h1,h2,h3,h4,h5,h6 {
+    font-family: &#39;Open Sans&#39;, &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: &#34;#&#34;;
+    margin-right: 5px;
+    color: #2d96bd;
+}
+li {
+    line-height: 2;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 14px;
+    border-left: 5px solid #986dbd;
+}
+#blue {
+color: #2780e3;
+font-size: 17px
+}
+#note {
+    font-size: 1.5rem;
+    font-style: italic;
+    padding: 0 1rem;
+    margin: 2.5rem 0;
+    position: relative;
+    background-color: #fafeff;
+    border-top: 1px dotted #9954bb;
+    border-bottom: 1px dotted #9954bb;
+}
+#note-title {
+    padding: 0.2rem 0.5rem;
+    background: #9954bb;
+    color: #FFF;
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    border-radius: 4px;
+    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
+}
+#inline-yellow {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #f0ad4e;
+}
+#inline-green {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #5cb85c;
+}
+#inline-blue {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #2780e3;
+}
+#inline-purple {
+display:inline;
+padding:.2em .6em .3em;
+font-size:80%;
+font-weight:bold;
+line-height:1;
+color:#fff;
+text-align:center;
+white-space:nowrap;
+vertical-align:baseline;
+border-radius:0;
+background-color: #9954bb;
+}
+#div-border-left-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #df3e3e;
+}
+#div-border-left-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #f0ad4e;
+}
+#div-border-left-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #5cb85c;
+}
+#div-border-left-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #2780e3;
+}
+#div-border-left-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-left-width: 5px;
+border-radius: 3px;
+border-left-color: #9954bb;
+}
+#div-border-right-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #df3e3e;
+}
+#div-border-right-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #f0ad4e;
+}
+#div-border-right-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #5cb85c;
+}
+#div-border-right-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #2780e3;
+}
+#div-border-right-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-right-width: 5px;
+border-radius: 3px;
+border-right-color: #9954bb;
+}
+#div-border-top-red {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #df3e3e;
+}
+#div-border-top-yellow {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #f0ad4e;
+}
+#div-border-top-green {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #5cb85c;
+}
+#div-border-top-blue {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #2780e3;
+}
+#div-border-top-purple {
+display: block;
+padding: 10px;
+margin: 10px 0;
+border: 1px solid #ccc;
+border-top-width: 5px;
+border-radius: 3px;
+border-top-color: #9954bb;
+}
+&lt;/style&gt;</description>
+    </item>
+    
+    <item>
       <title>Istio 流量管理实现机制深度解析</title>
       <link>https://www.yangcs.net/posts/istio-traffic-management-impl-intro/</link>
       <pubDate>Tue, 09 Oct 2018 20:00:17 +0800</pubDate>
@@ -9630,705 +10139,6 @@ border-top-color: #9954bb;
     border-radius:5px;
     text-shadow: rgb(102, 102, 102) 1px 1px 1px;
     box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#note {
-    font-size: 1.5rem;
-    font-style: italic;
-    padding: 0 1rem;
-    margin: 2.5rem 0;
-    position: relative;
-    background-color: #fafeff;
-    border-top: 1px dotted #9954bb;
-    border-bottom: 1px dotted #9954bb;
-}
-#note-title {
-    padding: 0.2rem 0.5rem;
-    background: #9954bb;
-    color: #FFF;
-    position: absolute;
-    left: 0;
-    top: 0.25rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    border-radius: 4px;
-    -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -moz-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -ms-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-    transform: rotate(-5deg) translateX(-10px) translateY(-25px);
-}
-#inline-yellow {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #f0ad4e;
-}
-#inline-green {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #5cb85c;
-}
-#inline-blue {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #2780e3;
-}
-#inline-purple {
-display:inline;
-padding:.2em .6em .3em;
-font-size:80%;
-font-weight:bold;
-line-height:1;
-color:#fff;
-text-align:center;
-white-space:nowrap;
-vertical-align:baseline;
-border-radius:0;
-background-color: #9954bb;
-}
-#div-border-left-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #df3e3e;
-}
-#div-border-left-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #f0ad4e;
-}
-#div-border-left-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #5cb85c;
-}
-#div-border-left-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #2780e3;
-}
-#div-border-left-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-left-width: 5px;
-border-radius: 3px;
-border-left-color: #9954bb;
-}
-#div-border-right-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #df3e3e;
-}
-#div-border-right-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #f0ad4e;
-}
-#div-border-right-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #5cb85c;
-}
-#div-border-right-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #2780e3;
-}
-#div-border-right-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-right-width: 5px;
-border-radius: 3px;
-border-right-color: #9954bb;
-}
-#div-border-top-red {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #df3e3e;
-}
-#div-border-top-yellow {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #f0ad4e;
-}
-#div-border-top-green {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #5cb85c;
-}
-#div-border-top-blue {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #2780e3;
-}
-#div-border-top-purple {
-display: block;
-padding: 10px;
-margin: 10px 0;
-border: 1px solid #ccc;
-border-top-width: 5px;
-border-radius: 3px;
-border-top-color: #9954bb;
-}
-&lt;/style&gt;</description>
-    </item>
-    
-    <item>
-      <title>控制 Egress 流量</title>
-      <link>https://www.yangcs.net/posts/control-egress-traffic/</link>
-      <pubDate>Thu, 16 Aug 2018 13:40:27 +0800</pubDate>
-      
-      <guid>https://www.yangcs.net/posts/control-egress-traffic/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;
-
-&lt;p id=&#34;div-border-left-red&#34;&gt;本文主要内容来自 &lt;a href=&#34;https://istio.io/zh/docs/tasks/traffic-management/egress/&#34; target=&#34;_blank&#34;&gt;Istio 官方文档&lt;/a&gt;，并对其进行了大量扩展和补充。&lt;/p&gt;
-
-&lt;p&gt;缺省情况下，Istio 服务网格内的 Pod，由于其 iptables 将所有外发流量都透明的转发给了 &lt;code&gt;Sidecar&lt;/code&gt;，所以这些集群内的服务无法访问集群之外的 URL，而只能处理集群内部的目标。&lt;/p&gt;
-
-&lt;p&gt;本文的任务描述了如何将外部服务暴露给 Istio 集群中的客户端。你将会学到如何通过定义 &lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry&#34; target=&#34;_blank&#34;&gt;ServiceEntry&lt;/a&gt; 来调用外部服务；或者简单的对 Istio 进行配置，要求其直接放行对特定 IP 范围的访问。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-1-开始之前-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;1. 开始之前&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;ul&gt;
-&lt;li&gt;根据&lt;a href=&#34;https://www.yangcs.net/posts/istio-1.0-deploy/&#34; target=&#34;_blank&#34;&gt;安装指南&lt;/a&gt;的内容，部署 Istio。&lt;/li&gt;
-&lt;li&gt;启动 &lt;a href=&#34;https://github.com/istio/istio/tree/release-1.0/samples/sleep&#34; target=&#34;_blank&#34;&gt;sleep&lt;/a&gt; 示例应用，我们将会使用这一应用来完成对外部服务的调用过程。 如果启用了 &lt;a href=&#34;https://istio.io/zh/docs/setup/kubernetes/sidecar-injection/#sidecar-%E7%9A%84%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5&#34; target=&#34;_blank&#34;&gt;Sidecar 的自动注入功能&lt;/a&gt;，运行：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f samples/sleep/sleep.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;否则在部署 &lt;code&gt;sleep&lt;/code&gt; 应用之前，就需要手工注入 Sidecar：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl apply -f &amp;lt;(istioctl kube-inject -f samples/sleep/sleep.yaml)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;实际上任何可以 &lt;code&gt;exec&lt;/code&gt; 和 &lt;code&gt;curl&lt;/code&gt; 的 Pod 都可以用来完成这一任务。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-2-istio-中配置外部服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;2. Istio 中配置外部服务&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;通过配置 Istio &lt;code&gt;ServiceEntry&lt;/code&gt;，可以从 Istio 集群中访问外部任意的可用服务。这里我们会使用 &lt;a href=&#34;http://httpbin.org/&#34; target=&#34;_blank&#34;&gt;httpbin.org&lt;/a&gt; 以及 &lt;a href=&#34;https://www.baidu.com/&#34; target=&#34;_blank&#34;&gt;www.baidu.com&lt;/a&gt; 进行试验。&lt;/p&gt;
-
-&lt;h4 id=&#34;配置外部服务&#34;&gt;配置外部服务&lt;/h4&gt;
-
-&lt;p id=&#34;blue&#34;&gt;1. 创建一个 &lt;code&gt;ServiceEntry&lt;/code&gt; 对象，放行对一个外部 HTTP 服务的访问：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: httpbin-ext
-spec:
-  hosts:
-  - httpbin.org
-  ports:
-  - number: 80
-    name: http
-    protocol: HTTP
-EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p id=&#34;blue&#34;&gt;2. 另外创建一个 &lt;code&gt;ServiceEntry&lt;/code&gt; 对象和一个 &lt;code&gt;VirtualService&lt;/code&gt;，放行对一个外部 HTTPS 服务的访问：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;$ cat &amp;lt;&amp;lt;EOF | istioctl create -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: baidu
-spec:
-  hosts:
-  - www.baidu.com
-  ports:
-  - number: 443
-    name: https
-    protocol: HTTPS
-  resolution: DNS
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: baidu
-spec:
-  hosts:
-  - www.baidu.com
-  tls:
-  - match:
-    - port: 443
-      sniHosts:
-      - www.baidu.com
-    route:
-    - destination:
-        host: www.baidu.com
-        port:
-          number: 443
-      weight: 100
-EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;发起对外部服务的访问&#34;&gt;发起对外部服务的访问&lt;/h4&gt;
-
-&lt;p&gt;使用 &lt;code&gt;kubectl exec&lt;/code&gt; 命令进入测试 Pod。假设使用的是 sleep 服务，运行如下命令：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ export SOURCE_POD=$(kubectl get pod -l app=sleep -o go-template=&#39;{{range .items}}{{.metadata.name}}{{end}}&#39;)
-$ kubectl exec -it $SOURCE_POD -c sleep bash
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;发起一个对外部 HTTP 服务的请求：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl http://httpbin.org/headers
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;发起一个对外部 HTTPS 服务的请求：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl https://www.baidu.com
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;http-serviceentry-配置深度解析&#34;&gt;HTTP ServiceEntry 配置深度解析&lt;/h4&gt;
-
-&lt;p&gt;按照之前的惯例，还是先来解读一下 HTTP 协议的 &lt;code&gt;ServiceEntry&lt;/code&gt; 映射到 Envoy 配置层面具体是哪些内容，这样才能对 ServiceEntry 有更加深刻的认识。&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;创建一个 &lt;code&gt;HTTP&lt;/code&gt; 协议的 ServiceEntry（不指定 &lt;code&gt;GateWay&lt;/code&gt;） 本质上是在服务网格内的&lt;strong&gt;所有应用的所有 Pod&lt;/strong&gt;上创建相应的路由规则和与之对应的 Cluster。指定 GateWay 的 ServiceEntry 遵循的是另一套法则，后面我们再说。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可以通过 istioctl 来验证一下（以 &lt;code&gt;httpbin-ext&lt;/code&gt; 为例）：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# 查看 sleep 的 Pod Name：
-$ kubectl get pod -l app=sleep
-
-NAME                     READY     STATUS    RESTARTS   AGE
-sleep-5bc866558c-89shb   2/2       Running   0          49m
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看路由&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl pc routes sleep-5bc866558c-89shb --name 80 -o json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
-    {
-        &amp;quot;name&amp;quot;: &amp;quot;80&amp;quot;,
-        &amp;quot;virtualHosts&amp;quot;: [
-            {
-                &amp;quot;name&amp;quot;: &amp;quot;httpbin.org:80&amp;quot;,
-                &amp;quot;domains&amp;quot;: [
-                    &amp;quot;httpbin.org&amp;quot;,
-                    &amp;quot;httpbin.org:80&amp;quot;
-                ],
-                &amp;quot;routes&amp;quot;: [
-                    {
-                        &amp;quot;match&amp;quot;: {
-                            &amp;quot;prefix&amp;quot;: &amp;quot;/&amp;quot;
-                        },
-                        &amp;quot;route&amp;quot;: {
-                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|80||httpbin.org&amp;quot;,
-                            &amp;quot;timeout&amp;quot;: &amp;quot;0.000s&amp;quot;,
-                            &amp;quot;maxGrpcTimeout&amp;quot;: &amp;quot;0.000s&amp;quot;
-                        },
-                        &amp;quot;decorator&amp;quot;: {
-                            &amp;quot;operation&amp;quot;: &amp;quot;httpbin.org:80/*&amp;quot;
-                        },
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;可以看到从 Pod sleep-5bc866558c-89shb 内部对域名 &lt;code&gt;httpbin.org&lt;/code&gt; 发起的请求通过 HTTP 路由被定向到集群 &lt;code&gt;outbound|80||httpbin.org&lt;/code&gt;。&lt;code&gt;outbound&lt;/code&gt; 表示这是出站流量&lt;/p&gt;
-
-&lt;p&gt;查看 &lt;code&gt;Cluster&lt;/code&gt;：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl pc clusters sleep-5bc866558c-89shb --fqdn httpbin.org -o json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
-    {
-        &amp;quot;name&amp;quot;: &amp;quot;outbound|80||httpbin.org&amp;quot;,
-        &amp;quot;type&amp;quot;: &amp;quot;ORIGINAL_DST&amp;quot;,
-        &amp;quot;connectTimeout&amp;quot;: &amp;quot;1.000s&amp;quot;,
-        &amp;quot;lbPolicy&amp;quot;: &amp;quot;ORIGINAL_DST_LB&amp;quot;,
-        &amp;quot;circuitBreakers&amp;quot;: {
-            &amp;quot;thresholds&amp;quot;: [
-                {}
-            ]
-        }
-    }
-]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;type&lt;/span&gt; : 服务发现类型。&lt;code&gt;ORIGINAL_DST&lt;/code&gt; 表示原始目的地类型，大概意思就是：连接进入之前已经被解析为一个特定的目标 IP 地址。这种连接通常是由代理使用 IP table REDIRECT 或者 eBPF 之类的机制转发而来的。完成路由相关的转换之后，代理服务器会将连接转发到该 IP 地址。&lt;code&gt;httpbin.org&lt;/code&gt; 是外网域名，当然可以解析，所以连接进入之前可以被解析为一个特定的目标 IP 地址。Envoy 服务发现类型的详细解析可以参考：&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#arch-overview-service-discovery-types-original-destination&#34; target=&#34;_blank&#34;&gt;Service discovery&lt;/a&gt;。&lt;code&gt;ServiceEntry.Resolution&lt;/code&gt; 字段的解析可以参考：&lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry-Resolution&#34; target=&#34;_blank&#34;&gt;ServiceEntry.Resolution&lt;/a&gt;。&lt;/p&gt;
-
-&lt;p&gt;这里我简要说明一下，ServiceEntry 的 &lt;code&gt;resolution&lt;/code&gt; 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;code&gt;NONE&lt;/code&gt; : 对应于 Envoy 中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination&#34; target=&#34;_blank&#34;&gt;ORIGINAL_DST&lt;/a&gt;。如果不指定 resolution 字段，默认使用这个策略。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;STATIC&lt;/code&gt; : 对应于 Envoy 中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static&#34; target=&#34;_blank&#34;&gt;STATIC&lt;/a&gt;。表示使用 &lt;code&gt;endpoints&lt;/code&gt; 中指定的静态 IP 地址作为服务后端。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;code&gt;DNS&lt;/code&gt; : 对应于 Envoy 中的 &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns&#34; target=&#34;_blank&#34;&gt;STRICT_DNS&lt;/a&gt;。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 &lt;code&gt;endpoints&lt;/code&gt;，并且没有使用通配符，代理服务器会使用 DNS 解析 &lt;code&gt;hosts&lt;/code&gt; 字段中的地址。如果指定了 &lt;code&gt;endpoints&lt;/code&gt;，那么指定的地址就会作为目标 IP 地址。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;lbPolicy&lt;/span&gt; : 负载均衡策略。&lt;code&gt;ORIGINAL_DST_LB&lt;/code&gt; 表示使用原始目的地的负载均衡策略。具体参考: &lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/load_balancing&#34; target=&#34;_blank&#34;&gt;Load balancing&lt;/a&gt;。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;如果你还部署了 &lt;code&gt;bookinfo&lt;/code&gt; 示例应用，可以通过执行 &lt;code&gt;istioctl pc routes &amp;lt;productpage_pod_name&amp;gt; --name 80 -o json&lt;/code&gt; 和 &lt;code&gt;istioctl pc clusters &amp;lt;productpage_pod_name&amp;gt; --fqdn httpbin.org -o json&lt;/code&gt; 来验证一下，你会发现输出的结果和上面一模一样。如果还不放心，可以查看 bookinfo 应用内的所有 Pod，你会得到相同的答案。至此你应该可以理解&lt;strong&gt;在服务网格内的所有应用的所有 Pod上创建相应的路由规则和与之对应的 Cluster&lt;/strong&gt;这句话的含义了。&lt;/p&gt;
-
-&lt;h4 id=&#34;https-serviceentry-配置深度解析&#34;&gt;HTTPS ServiceEntry 配置深度解析&lt;/h4&gt;
-
-&lt;p&gt;&lt;code&gt;HTTPS&lt;/code&gt; 协议的 ServiceEntry 与 Envoy 配置文件的映射关系与 HTTP 协议有所不同。&lt;/p&gt;
-
-&lt;div id=&#34;note&#34;&gt;
-&lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
-&lt;br /&gt;
-&lt;p&gt;创建一个 &lt;code&gt;HTTPS&lt;/code&gt; 协议的 ServiceEntry（不指定 &lt;code&gt;GateWay&lt;/code&gt;） 本质上是在服务网格内的&lt;strong&gt;所有应用的所有 Pod&lt;/strong&gt;上创建相应的&lt;strong&gt;监听器&lt;/strong&gt;和与之对应的 Cluster。指定 GateWay 的 ServiceEntry 我会另行发文详说。&lt;/p&gt;
-&lt;/div&gt;
-
-&lt;p&gt;可以通过 istioctl 来验证（以 &lt;code&gt;baidu&lt;/code&gt; 为例）。为了更精确地分析该 ServiceEntry，可以先把 &lt;code&gt;VirtualService&lt;/code&gt; 删除：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl delete virtualservice baidu
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;查看监听器：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl pc listeners sleep-5bc866558c-89shb --address 0.0.0.0 --port 443 -o json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
-    {
-        &amp;quot;name&amp;quot;: &amp;quot;0.0.0.0_443&amp;quot;,
-        &amp;quot;address&amp;quot;: {
-            &amp;quot;socketAddress&amp;quot;: {
-                &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
-                &amp;quot;portValue&amp;quot;: 443
-            }
-        },
-        &amp;quot;filterChains&amp;quot;: [
-            {
-                &amp;quot;filters&amp;quot;: [
-                    ...
-                    {
-                        &amp;quot;name&amp;quot;: &amp;quot;envoy.tcp_proxy&amp;quot;,
-                        &amp;quot;config&amp;quot;: {
-                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|443||www.baidu.com&amp;quot;,
-                            &amp;quot;stat_prefix&amp;quot;: &amp;quot;outbound|443||www.baidu.com&amp;quot;
-                        }
-                    }
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;name&lt;/span&gt; : 监听器过滤器的名称。该字段的值必须与 Envoy 所支持的过滤器匹配，不可随意填写，具体参考：&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#listener-filter&#34; target=&#34;_blank&#34;&gt;listener.Filter&lt;/a&gt;。此处 &lt;code&gt;envoy.tcp_proxy&lt;/code&gt; 表示使用 TCP 代理，而 TCP 代理是无法基于路由过滤的，所以这里不会创建路由规则，而是直接将请求转到 &lt;code&gt;Cluster&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;查看 Cluster：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl pc clusters sleep-5bc866558c-89shb --fqdn www.baidu.com -o json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
-    {
-        &amp;quot;name&amp;quot;: &amp;quot;outbound|443||www.baidu.com&amp;quot;,
-        &amp;quot;type&amp;quot;: &amp;quot;STRICT_DNS&amp;quot;,
-        &amp;quot;connectTimeout&amp;quot;: &amp;quot;1.000s&amp;quot;,
-        &amp;quot;hosts&amp;quot;: [
-            {
-                &amp;quot;socketAddress&amp;quot;: {
-                    &amp;quot;address&amp;quot;: &amp;quot;www.baidu.com&amp;quot;,
-                    &amp;quot;portValue&amp;quot;: 443
-                }
-            }
-        ],
-        &amp;quot;circuitBreakers&amp;quot;: {
-            &amp;quot;thresholds&amp;quot;: [
-                {}
-            ]
-        },
-        &amp;quot;dnsLookupFamily&amp;quot;: &amp;quot;V4_ONLY&amp;quot;
-    }
-]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;从监听器的配置来看，由于绑定的是 &lt;code&gt;0.0.0.0&lt;/code&gt;，而且也没有指定域名，看起来应该可以访问集群外任何 443 端口的服务。实际上这是行不通的，因为当请求通过监听器转到 Cluster 之后，由于 Cluster 采用的是严格的 DNS 服务发现策略，只要域名不是 &lt;code&gt;www.baidu.com&lt;/code&gt;，都不会解析。你可以使用 kubectl exec 命令进入 sleep Pod 来测试一下：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec -it $SOURCE_POD -c sleep bash
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;发起对外部 HTTPS 服务的请求：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ curl https://www.163.com
-curl: (51) SSL: no alternative certificate subject name matches target host name &#39;www.163.com&#39;
-
-$ curl https://www.taobao.com
-curl: (51) SSL: no alternative certificate subject name matches target host name &#39;www.taobao.com&#39;
-
-$ curl https://192.192.192.192
-curl: (51) SSL: certificate subject name &#39;baidu.com&#39; does not match target host name &#39;192.192.192.192&#39;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;而如果你将服务发现策略改为 &lt;code&gt;NONE&lt;/code&gt;，就会发现除了可以访问 &lt;code&gt;www.baidu.com&lt;/code&gt;，还可以访问 &lt;code&gt;www.163.com&lt;/code&gt; 和 &lt;code&gt;www.taobao.com&lt;/code&gt; 等其他 https 协议的网站，至于为什么会这样，前面介绍服务发现策略的时候我已经详细解释过了。&lt;/p&gt;
-
-&lt;h4 id=&#34;tls-virtualservice-配置深度解析&#34;&gt;TLS VirtualService 配置深度解析&lt;/h4&gt;
-
-&lt;p&gt;关于 VirtualService 的解析之前的文章已有相关说明，不过这里的 VirtualService 与之前遇到的不同，涉及到了 &lt;code&gt;TLSRoute&lt;/code&gt;。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;tls&lt;/span&gt; : 透传 TLS 和 HTTPS 流量。TLS 路由通常应用在 &lt;code&gt;https-&lt;/code&gt;、&lt;code&gt;tls-&lt;/code&gt; 前缀的平台服务端口，或者经 &lt;code&gt;Gateway&lt;/code&gt; 透传的 HTTPS、TLS 协议 端口，以及使用 HTTPS 或者 TLS 协议的 &lt;code&gt;ServiceEntry&lt;/code&gt; 端口上。具体参考：&lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#TLSRoute&#34; target=&#34;_blank&#34;&gt;TLSRoute&lt;/a&gt;。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;sniHosts&lt;/span&gt; : 必要字段。要匹配的 SNI（服务器名称指示）。可以在 SNI 匹配值中使用通配符。比如 &lt;code&gt;*.com&lt;/code&gt; 可以同时匹配 &lt;code&gt;foo.example.com&lt;/code&gt; 和 &lt;code&gt;example.com&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;route&lt;/span&gt; : 流量的转发目标。目前 TLS 服务只允许一个转发目标(所以权重必须设置为 100)。当 Envoy 支持 TCP 权重路由之后，这里就可以使用多个目标了。&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;查看映射到 Envoy 中的配置：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl pc listeners sleep-5bc866558c-89shb --address 0.0.0.0 --port 443 -o json
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;[
-    {
-        &amp;quot;name&amp;quot;: &amp;quot;0.0.0.0_443&amp;quot;,
-        &amp;quot;address&amp;quot;: {
-            &amp;quot;socketAddress&amp;quot;: {
-                &amp;quot;address&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
-                &amp;quot;portValue&amp;quot;: 443
-            }
-        },
-        &amp;quot;filterChains&amp;quot;: [
-            {
-                &amp;quot;filterChainMatch&amp;quot;: {
-                    &amp;quot;serverNames&amp;quot;: [
-                        &amp;quot;www.baidu.com&amp;quot;
-                    ]
-                },
-                &amp;quot;filters&amp;quot;: [
-                    ...
-                    {
-                        &amp;quot;name&amp;quot;: &amp;quot;envoy.tcp_proxy&amp;quot;,
-                        &amp;quot;config&amp;quot;: {
-                            &amp;quot;cluster&amp;quot;: &amp;quot;outbound|443||www.baidu.com&amp;quot;,
-                            &amp;quot;stat_prefix&amp;quot;: &amp;quot;outbound|443||www.baidu.com&amp;quot;
-                        }
-                    }
-...
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;filterChainMatch&lt;/span&gt; : 用于为&lt;strong&gt;监听器过滤器链&lt;/strong&gt;指定匹配条件，具体参考：&lt;a href=&#34;https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/listener/listener.proto#listener-filterchainmatch&#34; target=&#34;_blank&#34;&gt;listener.FilterChainMatch&lt;/a&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-&lt;p&gt;最后我们来思考一下：既然不创建 TLS VirtualService 也可以访问 &lt;code&gt;www.baidu.com&lt;/code&gt;，那么创建 TLS VirtualService 和不创建 TLS VirtualService 有什么区别呢？正确答案是：没有关联 &lt;code&gt;VirtualService&lt;/code&gt; 的 &lt;code&gt;https-&lt;/code&gt; 或者 &lt;code&gt;tls-&lt;/code&gt; 端口流量会被视为透传 &lt;code&gt;TCP&lt;/code&gt; 流量，而不是透传 TLS 和 HTTPS 流量。&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h4 id=&#34;为外部服务设置路由规则&#34;&gt;为外部服务设置路由规则&lt;/h4&gt;
-
-&lt;p&gt;通过 &lt;code&gt;ServiceEntry&lt;/code&gt; 访问外部服务的流量，和网格内流量类似，都可以进行 Istio &lt;a href=&#34;https://istio.io/zh/docs/concepts/traffic-management/#%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE&#34; target=&#34;_blank&#34;&gt;路由规则&lt;/a&gt; 的配置。下面我们使用 istioctl 为 httpbin.org 服务设置一个超时规则。&lt;/p&gt;
-
-&lt;p id=&#34;blue&#34;&gt;1. 在测试 Pod 内部，调用 httpbin.org 这一外部服务的 &lt;code&gt;/delay&lt;/code&gt; 端点：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec -it $SOURCE_POD -c sleep bash
-$ time curl -o /dev/null -s -w &amp;quot;%{http_code}\n&amp;quot; http://httpbin.org/delay/5
-
-200
-
-real    0m5.024s
-user    0m0.003s
-sys     0m0.003s
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这个请求会在大概五秒钟左右返回一个内容为 &lt;code&gt;200 (OK)&lt;/code&gt; 的响应。&lt;/p&gt;
-
-&lt;p id=&#34;blue&#34;&gt;2. 退出测试 Pod，使用 &lt;code&gt;istioctl&lt;/code&gt; 为 httpbin.org 外部服务的访问设置一个 3 秒钟的超时：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;cat &amp;lt;&amp;lt;EOF | istioctl create -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: httpbin-ext
-spec:
-  hosts:
-    - httpbin.org
-  http:
-  - timeout: 3s
-    route:
-      - destination:
-          host: httpbin.org
-        weight: 100
-EOF
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p id=&#34;blue&#34;&gt;3. 等待几秒钟之后，再次发起 `curl` 请求：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl exec -it $SOURCE_POD -c sleep bash
-$ time curl -o /dev/null -s -w &amp;quot;%{http_code}\n&amp;quot; http://httpbin.org/delay/5
-
-504
-
-real    0m3.149s
-user    0m0.004s
-sys     0m0.004s
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;这一次会在 3 秒钟之后收到一个内容为 &lt;code&gt;504 (Gateway Timeout)&lt;/code&gt; 的响应。虽然 httpbin.org 还在等待他的 5 秒钟，Istio 却在 3 秒钟的时候切断了请求。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-3-直接调用外部服务-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;3. 直接调用外部服务&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;如果想要跳过 Istio，直接访问某个 IP 范围内的外部服务，就需要对 Envoy sidecar 进行配置，阻止 Envoy 对外部请求的&lt;a href=&#34;https://istio.io/zh/docs/concepts/traffic-management/#%E6%9C%8D%E5%8A%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E9%80%9A%E8%AE%AF&#34; target=&#34;_blank&#34;&gt;劫持&lt;/a&gt;。可以在 &lt;a href=&#34;https://istio.io/docs/reference/config/installation-options/&#34; target=&#34;_blank&#34;&gt;Helm&lt;/a&gt; 中设置 &lt;code&gt;global.proxy.includeIPRanges&lt;/code&gt; 变量，然后使用 kubectl apply 命令来更新名为 &lt;code&gt;istio-sidecar-injector&lt;/code&gt; 的 &lt;code&gt;Configmap&lt;/code&gt;。在 istio-sidecar-injector 更新之后，global.proxy.includeIPRanges 会在所有未来部署的 Pod 中生效。&lt;/p&gt;
-
-&lt;p&gt;使用 &lt;code&gt;global.proxy.includeIPRanges&lt;/code&gt; 变量的最简单方式就是把内部服务的 IP 地址范围传递给它，这样就在 Sidecar proxy 的重定向列表中排除掉了外部服务的地址了。&lt;/p&gt;
-
-&lt;p&gt;内部服务的 IP 范围取决于集群的部署情况。例如你的集群中这一范围是 &lt;code&gt;10.0.0.1/24&lt;/code&gt;，这个配置中，就应该这样更新 istio-sidecar-injector：&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ helm template install/kubernetes/helm/istio &amp;lt;安装 Istio 时所使用的参数&amp;gt; --set global.proxy.includeIPRanges=&amp;quot;10.0.0.1/24&amp;quot; -x templates/sidecar-injector-configmap.yaml | kubectl apply -f -
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;注意这里应该使用和之前部署 Istio 的时候同样的 Helm 命令，尤其是 &amp;ndash;namespace 参数。在安装 Istio 原有命令的基础之上，加入 &lt;code&gt;--set global.proxy.includeIPRanges=&amp;quot;10.0.0.1/24&amp;quot; -x templates/sidecar-injector-configmap.yaml&lt;/code&gt; 即可。&lt;/p&gt;
-
-&lt;p&gt;然后和前面一样，重新部署 sleep 应用。更新了 &lt;code&gt;ConfigMap istio-sidecar-injector&lt;/code&gt; 并且重新部署了 sleep 应用之后，Istio sidecar 就应该只劫持和管理集群内部的请求了。任意的外部请求都会简单的绕过 Sidecar，直接访问目的地址。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ export SOURCE_POD=$(kubectl get pod -l app=sleep -o go-template=&#39;{{range .items}}{{.metadata.name}}{{end}}&#39;)
-$ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;br /&gt;&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-4-总结-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;4. 总结&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;这个任务中，我们使用两种方式从 Istio 服务网格内部来完成对外部服务的调用：&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;使用 &lt;code&gt;ServiceEntry&lt;/code&gt; (推荐方式)&lt;/li&gt;
-&lt;li&gt;配置 Istio sidecar，从它的重定向 IP 表中排除外部服务的 IP 范围&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;第一种方式（&lt;code&gt;ServiceEntry&lt;/code&gt;）中，网格内部的服务不论是访问内部还是外部的服务，都可以使用同样的 Istio 服务网格的特性。我们通过为外部服务访问设置超时规则的例子，来证实了这一优势。&lt;/p&gt;
-
-&lt;p&gt;第二种方式越过了 Istio sidecar proxy，让服务直接访问到对应的外部地址。然而要进行这种配置，需要了解云供应商特定的知识和配置。&lt;/p&gt;
-
-&lt;h3 id=&#34;p-id-h2-5-清理-p&#34;&gt;&lt;p id=&#34;h2&#34;&gt;5. 清理&lt;/p&gt;&lt;/h3&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;span id=&#34;blue&#34;&gt;1. 删除规则：&lt;/span&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ istioctl delete serviceentry httpbin-ext baidu
-$ istioctl delete virtualservice httpbin-ext baidu
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;span id=&#34;blue&#34;&gt;2. 停止 sleep 服务：&lt;/span&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ kubectl delete -f samples/sleep/sleep.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;center&gt;&lt;img src=&#34;http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg&#34; alt=&#34;&#34; /&gt;&lt;/center&gt;
-&lt;center&gt;扫一扫关注微信公众号&lt;/center&gt;&lt;/p&gt;
-
-&lt;style&gt;
-#h2{
-    margin-bottom:2em;
-    margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
-}
-#blue {
-color: #2780e3;
 }
 #note {
     font-size: 1.5rem;
