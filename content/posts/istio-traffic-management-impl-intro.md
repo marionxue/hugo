@@ -88,13 +88,9 @@ Pilot 的规则 DSL 是采用 K8S API Server 中的 [Custom Resource (CRD)](http
 提供 Pilot 相关的 CRD Resource 的增、删、改、查。和 Pilot 相关的 `CRD` 有以下几种：
 
 + <span id="inline-blue">Virtualservice</span> : 用于定义路由规则，如根据来源或 Header 制定规则，或在不同服务版本之间分拆流量。
-
 + <span id="inline-blue">DestinationRule</span> : 定义目的服务的配置策略以及可路由子集。策略包括断路器、负载均衡以及 TLS 等。
-
 + <span id="inline-blue">ServiceEntry</span> : 用 [ServiceEntry](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry) 可以向 Istio 中加入附加的服务条目，以使网格内可以向 Istio 服务网格之外的服务发出请求。
-
 + <span id="inline-blue">Gateway</span> : 为网格配置网关，以允许一个服务可以被网格外部访问。
-
 + <span id="inline-blue">EnvoyFilter</span> : 可以为 Envoy 配置过滤器。由于 Envoy 已经支持 `Lua` 过滤器，因此可以通过 `EnvoyFilter` 启用 Lua 过滤器，动态改变 Envoy 的过滤链行为。我之前一直在考虑如何才能动态扩展 Envoy 的能力，EnvoyFilter 提供了很灵活的扩展性。
 
 ### 数据平面组件
@@ -1376,6 +1372,11 @@ Productpage Pod 中的 Envoy 创建了多个 Outbound Listener：
 9. [Istio Sidecar自动注入原理](https://zhaohuabing.com/2018/05/23/istio-auto-injection-with-webhook/)
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
 h2 {
     display: block;
     font-size: 1.5em;

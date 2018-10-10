@@ -943,15 +943,11 @@ border-top-color: #9954bb;
 &lt;p&gt;提供 Pilot 相关的 CRD Resource 的增、删、改、查。和 Pilot 相关的 &lt;code&gt;CRD&lt;/code&gt; 有以下几种：&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Virtualservice&lt;/span&gt; : 用于定义路由规则，如根据来源或 Header 制定规则，或在不同服务版本之间分拆流量。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;DestinationRule&lt;/span&gt; : 定义目的服务的配置策略以及可路由子集。策略包括断路器、负载均衡以及 TLS 等。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;ServiceEntry&lt;/span&gt; : 用 &lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry&#34; target=&#34;_blank&#34;&gt;ServiceEntry&lt;/a&gt; 可以向 Istio 中加入附加的服务条目，以使网格内可以向 Istio 服务网格之外的服务发出请求。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;Gateway&lt;/span&gt; : 为网格配置网关，以允许一个服务可以被网格外部访问。&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;&lt;span id=&#34;inline-blue&#34;&gt;EnvoyFilter&lt;/span&gt; : 可以为 Envoy 配置过滤器。由于 Envoy 已经支持 &lt;code&gt;Lua&lt;/code&gt; 过滤器，因此可以通过 &lt;code&gt;EnvoyFilter&lt;/code&gt; 启用 Lua 过滤器，动态改变 Envoy 的过滤链行为。我之前一直在考虑如何才能动态扩展 Envoy 的能力，EnvoyFilter 提供了很灵活的扩展性。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Virtualservice&lt;/span&gt; : 用于定义路由规则，如根据来源或 Header 制定规则，或在不同服务版本之间分拆流量。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;DestinationRule&lt;/span&gt; : 定义目的服务的配置策略以及可路由子集。策略包括断路器、负载均衡以及 TLS 等。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;ServiceEntry&lt;/span&gt; : 用 &lt;a href=&#34;https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry&#34; target=&#34;_blank&#34;&gt;ServiceEntry&lt;/a&gt; 可以向 Istio 中加入附加的服务条目，以使网格内可以向 Istio 服务网格之外的服务发出请求。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;Gateway&lt;/span&gt; : 为网格配置网关，以允许一个服务可以被网格外部访问。&lt;/li&gt;
+&lt;li&gt;&lt;span id=&#34;inline-blue&#34;&gt;EnvoyFilter&lt;/span&gt; : 可以为 Envoy 配置过滤器。由于 Envoy 已经支持 &lt;code&gt;Lua&lt;/code&gt; 过滤器，因此可以通过 &lt;code&gt;EnvoyFilter&lt;/code&gt; 启用 Lua 过滤器，动态改变 Envoy 的过滤链行为。我之前一直在考虑如何才能动态扩展 Envoy 的能力，EnvoyFilter 提供了很灵活的扩展性。&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h3 id=&#34;数据平面组件&#34;&gt;数据平面组件&lt;/h3&gt;
@@ -2222,6 +2218,11 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 &lt;/ol&gt;
 
 &lt;style&gt;
+h1,h2,h3,h4,h5,h6 {
+    font-family: &#39;Open Sans&#39;, &#39;Helvetica Neue&#39;, Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
 h2 {
     display: block;
     font-size: 1.5em;
