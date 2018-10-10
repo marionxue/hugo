@@ -2,6 +2,7 @@
 title: "Envoy 中的 xDS REST 和 gRPC 协议详解"
 subtitle: "通过示例详解 Envoy 的 xDS REST 和 gRPC 协议"
 date: 2018-10-10T22:23:51+08:00
+toc: true
 draft: false
 categories: "service mesh"
 tags: ["envoy", "service mesh"]
