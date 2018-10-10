@@ -43,10 +43,6 @@ a {
     word-break: break-all;
 }
 
-li {
-    line-height: 2;
-}
-
 a:hover,
 a:focus {
     color: #2a55f4;
