@@ -13,7 +13,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 <p id="div-border-left-red">
 <strong>转载自：</strong><a href="http://www.servicemesher.com/blog/envoy-xds-protocol/" target="_blank">Envoy 中的 xDS REST 和 gRPC 协议详解</a>
 <br />
-<strong>原文地址：</strong>https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md
+<strong>原文地址：</strong><a href="https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md" target="_blank">https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md</a>
 <br />
 <strong>作者：</strong>狄卫华
 <br />

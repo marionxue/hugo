@@ -867,7 +867,7 @@ border-top-color: #9954bb;
 &lt;p id=&#34;div-border-left-red&#34;&gt;
 &lt;strong&gt;转载自：&lt;/strong&gt;&lt;a href=&#34;http://www.servicemesher.com/blog/envoy-xds-protocol/&#34; target=&#34;_blank&#34;&gt;Envoy 中的 xDS REST 和 gRPC 协议详解&lt;/a&gt;
 &lt;br /&gt;
-&lt;strong&gt;原文地址：&lt;/strong&gt;https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md
+&lt;strong&gt;原文地址：&lt;/strong&gt;&lt;a href=&#34;https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md&#34; target=&#34;_blank&#34;&gt;https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md&lt;/a&gt;
 &lt;br /&gt;
 &lt;strong&gt;作者：&lt;/strong&gt;狄卫华
 &lt;br /&gt;
