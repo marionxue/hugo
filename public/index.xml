@@ -992,8 +992,8 @@ cluster.outbound|8000||httpbin.foo.svc.cluster.local.upstream_rq_pending_total: 
 &lt;p id=&#34;note-title&#34;&gt;Note&lt;/p&gt;
 &lt;br /&gt;
 &lt;p&gt;
-Istio sidecar（名为 `istio-proxy` 的 Envoy 容器）暴露出 15000 端口以提供一些实用的功能，可以通过 HTTP 访问这个端口，例如打印相关服务的一些统计信息。
-&lt;br /&gt;
+Istio sidecar（名为 &lt;code&gt;istio-proxy&lt;/code&gt; 的 Envoy 容器）暴露出 15000 端口以提供一些实用的功能，可以通过 HTTP 访问这个端口，例如打印相关服务的一些统计信息。
+&lt;br /&gt;&lt;br /&gt;
 因此，在上面的的命令中，我们在客户端 Pod（sleep-5b597748b4-77kj5）的 sidecar 容器（-c istio-proxy）中执行 curl（curl localhost:15000/stats），过滤出我们要检查的服务的统计信息（| grep httpbin），然后过滤出熔断器挂起状态（| grep pending）。
 &lt;/p&gt;
 &lt;/div&gt;
