@@ -41,7 +41,7 @@ ZanShang.prototype._init = function(){
       //var src = 'http://caibaojian.com/wp-content/themes/blue/images/pay/'+type+'-'+num+'.png';
       var text = $(this).html();
       var payType=$('#pay-type'), payImage = $('#pay-image'),payText = $('#pay-text');
-      var src = '/img/'+payType+'-'+num+'.png';
+      var src = '/img/'+'wechat'+'-'+num+'.png';
       if(type=='alipay'){
         payType.html('支付宝');
       }else{
