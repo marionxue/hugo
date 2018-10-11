@@ -34,6 +34,7 @@
   
   <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
   <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/reward.css" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
   
@@ -839,6 +840,39 @@ border-radius: 3px;
 border-top-color: #9954bb;
 }
 </style>
+                
+                <div class="entry-shang text-center">
+	<p>「真诚赞赏，手留余香」</p>
+	<button class="zs show-zs btn btn-bred">赞赏</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><img src="/img/avatar-icon.jpg"/>杨传胜</span>
+		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+ 	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/wechat-2.png" id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type"><span class="zs-wechat"><img src="/img/wechat-btn.png"/></span></label>
+	</div>
+</div>
+
+                
             </article>
 
             <ul class="pager blog-pager">
@@ -994,6 +1028,7 @@ border-top-color: #9954bb;
 <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/main.js"></script>
 <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/prism.js"></script>
 <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script src="https://www.yangcs.net/js/reward.js"></script>
 <script> renderMathInElement(document.body); </script>
 
 

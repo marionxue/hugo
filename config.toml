@@ -20,6 +20,7 @@ commit = true
 rss = true
 comments = true
 sharebutton = true
+reward = true
 notoc = true
 algolia = "62fd06bd949abb4211bfab0aa288f67b" # API key
 #gcse = "012737790962522169780:fd1izxsfgrs" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
