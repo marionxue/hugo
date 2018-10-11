@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/</loc>
+    <lastmod>2018-10-11T15:59:54+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/envoy-xds-protocol/</loc>
     <lastmod>2018-10-10T22:23:51+08:00</lastmod>
   </url>
@@ -365,7 +370,7 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/istio/</loc>
-    <lastmod>2018-10-09T20:00:17+08:00</lastmod>
+    <lastmod>2018-10-11T15:59:54+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -425,13 +430,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/service-mesh/</loc>
-    <lastmod>2018-10-10T22:23:51+08:00</lastmod>
+    <lastmod>2018-10-11T15:59:54+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/service-mesh/</loc>
-    <lastmod>2018-10-10T22:23:51+08:00</lastmod>
+    <lastmod>2018-10-11T15:59:54+08:00</lastmod>
     <priority>0</priority>
   </url>
   
