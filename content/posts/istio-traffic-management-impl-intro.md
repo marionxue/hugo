@@ -1394,6 +1394,9 @@ h2::before {
 h3 {
     color: #0099CC;
 }
+h4 {
+    color: #F77A0B;
+}
 li {
     line-height: 2;
 }
