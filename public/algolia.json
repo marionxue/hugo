@@ -491,6 +491,7 @@
         "subtitle": "为你的 Pod 自定义 DNS",
         "date": "2018-08-27T10:11:52.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"

@@ -3,6 +3,7 @@ title: "Kubernetes DNS 高阶指南"
 subtitle: "为你的 Pod 自定义 DNS"
 date: 2018-08-27T18:11:52+08:00
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -18,7 +19,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/DcFCnLw.png)</center>
 
-### <p id="h2">1. 为什么需要自定义 DNS</p>
+## 1. 为什么需要自定义 DNS
 
 ----
 
@@ -30,7 +31,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 存在于独立出来的网络架构中的这些特殊的 Pod 基本上没法跟 Kubernetes 集群内的 DNS 互连，而且这些应用还有可能在外部有自己的 `DNS Server`，所以在这种场景下，我们希望这些应用（Pod1/Pod2）能够使用自定义的 `DNS Server`。
 
-### <p id="h2">2. 如何自定义 DNS</p>
+## 2. 如何自定义 DNS
 
 ----
 
@@ -38,7 +39,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 其中 `dnsConfig` 用来自定义 DNS 参数，而 `dnsPolicy` 用来给 Pod 选取预设的 DNS。接下来就看看可以通过哪些手段自定义 DNS。
 
-#### dnsConfig
+### dnsConfig
 
 dnsConfig 可以让操作者延伸到 Pod 内部关于 DNS 的配置，这边需要特别注意的是，我使用的字眼是 **延伸** 而不是 **配置**，这是因为通过下一节的 dnsPolicy，每个 Pod 都会有一组预设的 DNS 配置。通过 dnsConfig 我们可以继续往上叠加相关的 DNS 参数到 Pod 之中。
 
@@ -96,7 +97,7 @@ options ndots:2 edns0
 
 dnsConfig 非常简单直观，如果你需要自定义 DNS 参数，就可以通过这个字段来指定。
 
-#### dnsPolicy
+### dnsPolicy
 
 前面提过，`dnsConfig` 提供的是延伸 Pod 内预设的 DNS 配置，而 `dnsPolicy` 就是决定 Pod 内预设的 DNS 配置有哪些。
 
@@ -278,11 +279,8 @@ nameserver 10.0.2.3
 这边稍微来解释一下这个设计上的原理以及流程：
 
 1. 因为设置了 `HostNetwork=true`, 会让该 Pod 与该节点共用相同的网路空间(网卡/路由等功能)。
-
 2. 预设的 k8s DNS 是使用 `ClusterIP` 的 kubernetes serivce. 这种情况下，只有属于 Cluster 內的 `Pod` 可以获取该 ClusterIP。
-
 3. 所以设置了 `HostNetwork=true` 的 Pod 就没有办法获取该 ClusterIP。
-
 4. 于是预设就会将对应的 DNS 配置改回 `Default` 的形式，从节点继承其 DNS 配置信息。
 
 这种情况下，就会有人想要问，如果我刻意想要这样设置不行吗？
@@ -382,6 +380,41 @@ options ndots:5
 
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
