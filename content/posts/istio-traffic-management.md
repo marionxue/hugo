@@ -3,6 +3,7 @@ title: "Istio 流量管理"
 subtitle: "使用 Istio 实现应用的金丝雀部署"
 date: 2018-08-01T20:59:11+08:00
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -20,7 +21,7 @@ Istio 从 0.8 版本开始出现了一个新的 API 组：[networking.istio.io/v
 <p>正常情况下 istioctl 和 kubectl 都可以用来操作这些对象，但是 kubectl 缺乏验证功能，因此调试阶段使用 <code>istioctl</code> 会更方便一些。</p>
 </div>
 
-### <p id="h2">1. Bookinfo 应用介绍</p>
+## 1. Bookinfo 应用介绍
 
 ----
 
@@ -45,11 +46,9 @@ Bookinfo 应用分为四个单独的微服务：
 
 <center>*Istio 注入之前的 Bookinfo 应用*</center>
 
-<br />
-
 Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的。这些服务对 Istio 并无依赖，但是构成了一个有代表性的服务网格的例子：它由多个服务、多个语言构成，并且 `reviews` 服务具有多个版本。
 
-### <p id="h2">2. 部署 Bookinfo 应用</p>
+## 2. 部署 Bookinfo 应用
 
 ----
 
@@ -58,8 +57,6 @@ Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的�
 ![](https://istio.io/docs/examples/bookinfo/withistio.svg)
 
 <center>*Bookinfo 应用*</center>
-
-<br />
 
 所有的微服务都和 Envoy sidecar 集成在一起，被集成服务所有的出入流量都被 sidecar 所劫持，这样就为外部控制准备了所需的 Hook，然后就可以利用 Istio 控制平面为应用提供服务路由、遥测数据收集以及策略实施等功能。
 
@@ -153,7 +150,7 @@ $ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 
 还可以用浏览器打开网址 `http://$GATEWAY_URL/productpage`，来浏览应用的 Web 页面。如果刷新几次应用的页面，就会看到页面中会随机展示 `reviews` 服务的不同版本的效果（红色、黑色的星形或者没有显示）。`reviews` 服务出现这种情况是因为我们还没有使用 Istio 来控制版本的路由。
 
-### <p id="h2">3. 金丝雀部署</p>
+## 3. 金丝雀部署
 
 ----
 
@@ -249,7 +246,7 @@ spec:
 
 由于新的 API 引入了一些新的配置资源，而且不向后兼容，所以很有必要来解释一下上面两个 yaml 文件提到的两个新概念：`VirtualService` 和 `DestinationRule`。
 
-#### VirtualService
+### VirtualService
 
 过去的路由分配比较简单，使用标签即可。新的版本中，提出了 VirtualService 的概念。<span id="inline-blue">VirtualService</span> 由一组路由规则构成，用于对服务实体（在 K8S 中对应为 Pod）进行寻址。一旦有流量符合其中规则的选择条件，就会发送流量给对应的服务（或者服务的一个版本/子集）。
 
@@ -312,7 +309,7 @@ spec:
 
 可以看到，`match` 中不再包含 `source`，这里使用标签来过滤。写完应用之后，我们再次访问 Bookinfo 应用程序的 URL (`http://$GATEWAY_URL/productpage`)，会发现并没有生效。这是因为，**在 v3 版本的 API 中，目标规则不再是透明了**，路由定义必须以目标策略为基础。
 
-#### DestinationRule
+### DestinationRule
 
 因此这里需要定义一个 <span id="inline-blue">DestinationRule</span> 对象，来满足上面的目标需求：
 
@@ -388,7 +385,7 @@ DestinationRule 用于配置在将流量转发到服务时应用的策略集。�
 
 现在再次访问 Bookinfo 应用程序的 URL (`http://$GATEWAY_URL/productpage`)，会发现规则已经生效了。
 
-#### 示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本<br />
+### 示例一：将 10% 请求发送到 v2 版本而其余 90% 发送到 v1 版本
 
 ```yaml
 $ cat <<EOF | istioctl replace -f -
@@ -416,7 +413,7 @@ EOF
 
 **注意：**因为使用Envoy sidecar的实现，你需要刷新页面很多次才能看到接近规则配置的概率分布。
 
-#### 示例二：将 jason 用户的请求全部发到 v2 版本
+### 示例二：将 jason 用户的请求全部发到 v2 版本
 
 ```yaml
 cat <<EOF | istioctl replace -f -
@@ -445,7 +442,7 @@ EOF
 
 使用 `jason` 用户登陆 productpage 页面，你可以看到每个刷新页面时，页面上都有一个1到5颗星的评级。如果你使用其他用户登陆的话，将因继续使用 `reviews:v1` 而看不到星标评分。
 
-#### 示例三：全部切换到 v3 版本
+### 示例三：全部切换到 v3 版本
 
 ```yaml
 cat <<EOF | istioctl replace -f -
@@ -466,9 +463,7 @@ EOF
 
 现在不论你使用什么用户登陆 productpage 页面，你都可以看到带红色星标评分的评论了。
 
-<br />
-
-### <p id="h2">4. 参考</p>
+## 4. 参考
 
 ----
 
@@ -477,22 +472,42 @@ EOF
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
 
-<br />
-
 
 <style>
-#h2{
-    margin-bottom:2em;
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #note {
     font-size: 1.5rem;

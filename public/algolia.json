@@ -436,6 +436,7 @@
         "subtitle": "使用 Istio 实现应用的金丝雀部署",
         "date": "2018-08-01T12:59:11.000Z",
         "draft": false,
+        "toc": true,
         "categories": "service mesh",
         "tags": [
             "istio",
