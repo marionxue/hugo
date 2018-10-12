@@ -62,8 +62,10 @@ circuit_breakers:
 
 由于重试有可能将请求流量增加到两倍以上甚至更多，因此通过 `max_retries` 参数可以防止服务因为过多的重试而过载。建议将此参数的值设置为服务通常在 10 秒窗口中处理的请求总数的一小部分，最好不要将重试次数设置为与服务在 10 秒窗口中处理的请求总数差不多。
 
+----
 
-
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>扫一扫关注微信公众号</center>
 
 <style>
 h1,h2,h3,h4,h5,h6 {
