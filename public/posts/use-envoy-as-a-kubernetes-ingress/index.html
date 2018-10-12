@@ -404,37 +404,341 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                 
+
+
+
+
+
+
+<div class="table-of-contents toc bd-callout">
+    
+    <h4 class="text-muted">Table of Contents</h4>
+    
+        
+        
+            
                 
-<aside class="toc">
-    <header>
-    <h2>初试 Kubernetes 集群中使用 Contour 反向代理</h2>
-    </header>
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#1-安装步骤">1. 安装步骤</a></li>
-<li><a href="#2-ingress-测试">2. Ingress 测试</a></li>
-<li><a href="#3-contour-工作原理">3. Contour 工作原理</a></li>
-<li><a href="#4-映射关系详情">4. 映射关系详情</a>
-<ul>
-<li><a href="#cds">CDS</a></li>
-<li><a href="#sds">SDS</a></li>
-<li><a href="#rds">RDS</a></li>
-</ul></li>
-<li><a href="#5-contour-架构分析">5. Contour 架构分析</a></li>
-<li><a href="#6-ingressroute-介绍">6. IngressRoute 介绍</a>
-<ul>
-<li><a href="#从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</a></li>
-<li><a href="#可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</a></li>
-</ul></li>
-<li><a href="#7-参考">7. 参考</a></li>
-</ul></li>
-</ul>
-</nav>
-</aside>
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#1.-%e5%ae%89%e8%a3%85%e6%ad%a5%e9%aa%a4">
+                    <li>1. 安装步骤</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#2.-ingress-%e6%b5%8b%e8%af%95">
+                    <li>2. Ingress 测试</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#3.-contour-%e5%b7%a5%e4%bd%9c%e5%8e%9f%e7%90%86">
+                    <li>3. Contour 工作原理</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#4.-%e6%98%a0%e5%b0%84%e5%85%b3%e7%b3%bb%e8%af%a6%e6%83%85">
+                    <li>4. 映射关系详情</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#cds">
+                    <li>CDS</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#sds">
+                    <li>SDS</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#rds">
+                    <li>RDS</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#5.-contour-%e6%9e%b6%e6%9e%84%e5%88%86%e6%9e%90">
+                    <li>5. Contour 架构分析</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#6.-ingressroute-%e4%bb%8b%e7%bb%8d">
+                    <li>6. IngressRoute 介绍</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#%e4%bb%8e-ingress-%e5%88%b0-ingressroute">
+                    <li>从 Ingress 到 IngressRoute</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#%e5%8f%af%e8%a7%86%e5%8c%96-contour-%e7%9a%84%e5%86%85%e9%83%a8%e6%9c%89%e5%90%91%e9%9d%9e%e5%be%aa%e7%8e%af%e5%9b%be">
+                    <li>可视化 Contour 的内部有向非循环图</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/use-envoy-as-a-kubernetes-ingress/#7.-%e5%8f%82%e8%80%83">
+                    <li>7. 参考</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+</div>
 
 
+              
                 <p></p>
 
 <p>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 <code>L7</code> 层实现高效流畅的入口流量管理。自从第一批 <code>Kubernetes Ingress Controller</code> 开发完成以来，<code>Envoy</code>（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。</p>

@@ -404,37 +404,381 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                 
+
+
+
+
+
+
+<div class="table-of-contents toc bd-callout">
+    
+    <h4 class="text-muted">Table of Contents</h4>
+    
+        
+        
+            
                 
-<aside class="toc">
-    <header>
-    <h2>Envoy 中的 xDS REST 和 gRPC 协议详解</h2>
-    </header>
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#1-文件订阅">1. 文件订阅</a></li>
-<li><a href="#2-grpc-流式订阅">2. gRPC 流式订阅</a>
-<ul>
-<li><a href="#单例资源类型发现">单例资源类型发现</a>
-<ul>
-<li><a href="#类型-url">类型 URL</a></li>
-<li><a href="#ack-nack-和版本">ACK/NACK 和版本</a></li>
-<li><a href="#何时发送更新">何时发送更新</a></li>
-<li><a href="#资源提示">资源提示</a></li>
-<li><a href="#资源更新">资源更新</a></li>
-<li><a href="#最终一致性考虑">最终一致性考虑</a></li>
-</ul></li>
-<li><a href="#聚合服务发现-ads">聚合服务发现（ADS）</a></li>
-<li><a href="#增量-xds">增量 xDS</a></li>
-</ul></li>
-<li><a href="#3-rest-json-轮询订阅">3. REST-JSON 轮询订阅</a></li>
-</ul></li>
-</ul>
-</nav>
-</aside>
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#1.-%e6%96%87%e4%bb%b6%e8%ae%a2%e9%98%85">
+                    <li>1. 文件订阅</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#2.-grpc-%e6%b5%81%e5%bc%8f%e8%ae%a2%e9%98%85">
+                    <li>2. gRPC 流式订阅</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e5%8d%95%e4%be%8b%e8%b5%84%e6%ba%90%e7%b1%bb%e5%9e%8b%e5%8f%91%e7%8e%b0">
+                    <li>单例资源类型发现</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                    <ul class="toc-h4">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e7%b1%bb%e5%9e%8b-url">
+                    <li>类型 URL</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                    <ul class="toc-h4">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#ack/nack-%e5%92%8c%e7%89%88%e6%9c%ac">
+                    <li>ACK/NACK 和版本</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                    <ul class="toc-h4">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e4%bd%95%e6%97%b6%e5%8f%91%e9%80%81%e6%9b%b4%e6%96%b0">
+                    <li>何时发送更新</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                    <ul class="toc-h4">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e8%b5%84%e6%ba%90%e6%8f%90%e7%a4%ba">
+                    <li>资源提示</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                    <ul class="toc-h4">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e8%b5%84%e6%ba%90%e6%9b%b4%e6%96%b0">
+                    <li>资源更新</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                    <ul class="toc-h4">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e6%9c%80%e7%bb%88%e4%b8%80%e8%87%b4%e6%80%a7%e8%80%83%e8%99%91">
+                    <li>最终一致性考虑</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e8%81%9a%e5%90%88%e6%9c%8d%e5%8a%a1%e5%8f%91%e7%8e%b0ads">
+                    <li>聚合服务发现（ADS）</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#%e5%a2%9e%e9%87%8f-xds">
+                    <li>增量 xDS</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/envoy-xds-protocol/#3.-rest-json-%e8%bd%ae%e8%af%a2%e8%ae%a2%e9%98%85">
+                    <li>3. REST-JSON 轮询订阅</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+</div>
 
 
+              
                 <p></p>
 
 <p id="div-border-left-red">

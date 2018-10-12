@@ -389,53 +389,763 @@ autocomplete('#aa-search-input',
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                 
+
+
+
+
+
+
+<div class="table-of-contents toc bd-callout">
+    
+    <h4 class="text-muted">Table of Contents</h4>
+    
+        
+        
+            
                 
-<aside class="toc">
-    <header>
-    <h2>Linux全局智能分流方案</h2>
-    </header>
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#1-通过-iptables-实现智能分流">1. 通过 iptables 实现智能分流</a>
-<ul>
-<li><a href="#安装相关软件">安装相关软件</a></li>
-<li><a href="#配置shadowsocks-libev-略过">配置shadowsocks-libev（略过）</a></li>
-<li><a href="#获取中国ip段">获取中国IP段</a></li>
-<li><a href="#创建启动和关闭脚本">创建启动和关闭脚本</a></li>
-<li><a href="#配置ss-redir服务">配置ss-redir服务</a></li>
-<li><a href="#配置智能-dns-服务">配置智能 DNS 服务</a></li>
-<li><a href="#配置系统-dns-服务器设置">配置系统 DNS 服务器设置</a></li>
-<li><a href="#打开流量转发">打开流量转发</a></li>
-</ul></li>
-<li><a href="#2-通过-nftables-实现智能分流">2. 通过 nftables 实现智能分流</a>
-<ul>
-<li><a href="#安装相关软件-1">安装相关软件</a></li>
-<li><a href="#配置shadowsocks-libev-略过-1">配置shadowsocks-libev（略过）</a></li>
-<li><a href="#获取中国ip段-1">获取中国IP段</a></li>
-<li><a href="#创建启动和关闭脚本-1">创建启动和关闭脚本</a></li>
-<li><a href="#配置ss-redir服务-1">配置ss-redir服务</a></li>
-<li><a href="#配置智能-dns-服务-1">配置智能 DNS 服务</a></li>
-<li><a href="#配置系统-dns-服务器设置-1">配置系统 DNS 服务器设置</a></li>
-<li><a href="#打开流量转发-1">打开流量转发</a></li>
-</ul></li>
-<li><a href="#3-通过策略路由实现智能分流">3. 通过策略路由实现智能分流</a>
-<ul>
-<li><a href="#安装相关软件-2">安装相关软件</a></li>
-<li><a href="#配置shadowsocks-略过">配置shadowsocks（略过）</a></li>
-<li><a href="#获取中国ip段-2">获取中国IP段</a></li>
-<li><a href="#配置智能-dns-服务-2">配置智能 DNS 服务</a></li>
-<li><a href="#配置系统-dns-服务器设置-2">配置系统 DNS 服务器设置</a></li>
-<li><a href="#编写路由表启动和终止脚本">编写路由表启动和终止脚本</a></li>
-<li><a href="#打开流量转发-2">打开流量转发</a></li>
-</ul></li>
-</ul></li>
-</ul>
-</nav>
-</aside>
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#1.-%e9%80%9a%e8%bf%87-iptables-%e5%ae%9e%e7%8e%b0%e6%99%ba%e8%83%bd%e5%88%86%e6%b5%81">
+                    <li>1. 通过 iptables 实现智能分流</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e5%ae%89%e8%a3%85%e7%9b%b8%e5%85%b3%e8%bd%af%e4%bb%b6">
+                    <li>安装相关软件</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%aeshadowsocks-libev%e7%95%a5%e8%bf%87">
+                    <li>配置shadowsocks-libev（略过）</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e8%8e%b7%e5%8f%96%e4%b8%ad%e5%9b%bdip%e6%ae%b5">
+                    <li>获取中国IP段</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e5%88%9b%e5%bb%ba%e5%90%af%e5%8a%a8%e5%92%8c%e5%85%b3%e9%97%ad%e8%84%9a%e6%9c%ac">
+                    <li>创建启动和关闭脚本</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%aess-redir%e6%9c%8d%e5%8a%a1">
+                    <li>配置ss-redir服务</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%ae%e6%99%ba%e8%83%bd-dns-%e6%9c%8d%e5%8a%a1">
+                    <li>配置智能 DNS 服务</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%ae%e7%b3%bb%e7%bb%9f-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8%e8%ae%be%e7%bd%ae">
+                    <li>配置系统 DNS 服务器设置</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e6%89%93%e5%bc%80%e6%b5%81%e9%87%8f%e8%bd%ac%e5%8f%91">
+                    <li>打开流量转发</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#2.-%e9%80%9a%e8%bf%87-nftables-%e5%ae%9e%e7%8e%b0%e6%99%ba%e8%83%bd%e5%88%86%e6%b5%81">
+                    <li>2. 通过 nftables 实现智能分流</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e5%ae%89%e8%a3%85%e7%9b%b8%e5%85%b3%e8%bd%af%e4%bb%b6">
+                    <li>安装相关软件</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%aeshadowsocks-libev%e7%95%a5%e8%bf%87">
+                    <li>配置shadowsocks-libev（略过）</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e8%8e%b7%e5%8f%96%e4%b8%ad%e5%9b%bdip%e6%ae%b5">
+                    <li>获取中国IP段</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e5%88%9b%e5%bb%ba%e5%90%af%e5%8a%a8%e5%92%8c%e5%85%b3%e9%97%ad%e8%84%9a%e6%9c%ac">
+                    <li>创建启动和关闭脚本</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%aess-redir%e6%9c%8d%e5%8a%a1">
+                    <li>配置ss-redir服务</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%ae%e6%99%ba%e8%83%bd-dns-%e6%9c%8d%e5%8a%a1">
+                    <li>配置智能 DNS 服务</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%ae%e7%b3%bb%e7%bb%9f-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8%e8%ae%be%e7%bd%ae">
+                    <li>配置系统 DNS 服务器设置</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e6%89%93%e5%bc%80%e6%b5%81%e9%87%8f%e8%bd%ac%e5%8f%91">
+                    <li>打开流量转发</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#3.-%e9%80%9a%e8%bf%87%e7%ad%96%e7%95%a5%e8%b7%af%e7%94%b1%e5%ae%9e%e7%8e%b0%e6%99%ba%e8%83%bd%e5%88%86%e6%b5%81">
+                    <li>3. 通过策略路由实现智能分流</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e5%ae%89%e8%a3%85%e7%9b%b8%e5%85%b3%e8%bd%af%e4%bb%b6">
+                    <li>安装相关软件</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%aeshadowsocks%e7%95%a5%e8%bf%87">
+                    <li>配置shadowsocks（略过）</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e8%8e%b7%e5%8f%96%e4%b8%ad%e5%9b%bdip%e6%ae%b5">
+                    <li>获取中国IP段</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%ae%e6%99%ba%e8%83%bd-dns-%e6%9c%8d%e5%8a%a1">
+                    <li>配置智能 DNS 服务</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e9%85%8d%e7%bd%ae%e7%b3%bb%e7%bb%9f-dns-%e6%9c%8d%e5%8a%a1%e5%99%a8%e8%ae%be%e7%bd%ae">
+                    <li>配置系统 DNS 服务器设置</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e7%bc%96%e5%86%99%e8%b7%af%e7%94%b1%e8%a1%a8%e5%90%af%e5%8a%a8%e5%92%8c%e7%bb%88%e6%ad%a2%e8%84%9a%e6%9c%ac">
+                    <li>编写路由表启动和终止脚本</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+        
+        
+            
+                
+                
+                
+                    <ul class="toc-h1">
+                
+                    <ul class="toc-h2">
+                
+                    <ul class="toc-h3">
+                
+                
+                
+                
+                <a href="/posts/linux-circumvent/#%e6%89%93%e5%bc%80%e6%b5%81%e9%87%8f%e8%bd%ac%e5%8f%91">
+                    <li>打开流量转发</li>
+                </a>
+                
+                
+                    </ul>
+                
+                    </ul>
+                
+                    </ul>
+                
+            
+        
+    
+</div>
 
 
+              
                 <p></p>
 
 <p id="div-border-left-red">Github 地址：<a href="https://github.com/yangchuansheng/love-gfw" target="_blank">Linux 和 MacOS 设备智能分流方案</a></p>
