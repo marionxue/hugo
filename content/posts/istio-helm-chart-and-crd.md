@@ -3,6 +3,7 @@ title: "Istio CRD 汇总与 Helm Chart 配置解析"
 subtitle: "两个神奇的表格"
 date: 2018-09-18T19:11:16+08:00
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -12,7 +13,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <p markdown="1" style="display: block; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-left-width: 5px; border-radius: 3px; border-left-color: #df3e3e;">表格来源：<a href="https://mp.weixin.qq.com/s/olgEdxxrAmKhewWaERk_lw" target="_blank">Kube：使用Helm安装Istio</a></p>
 
-### <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">Istio 中包含的 CRD(总共 50 个) 及其分类和用途</p>
+## Istio 中包含的 CRD(总共 50 个) 及其分类和用途
 
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
@@ -388,7 +389,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
   </tr>
 </table>
 
-### <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">Istio Helm Chart 的安装配置解析</p>
+## Istio Helm Chart 的安装配置解析
 
 <style type="text/css">
 .tg  {border-collapse:collapse;border-spacing:0;border-color:#aabcfe;}
@@ -1727,3 +1728,41 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
     <td class="tg-0lax">用于定义certmanager相关serviceaccount</td>
   </tr>
 </table>
+
+<style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
+</style>

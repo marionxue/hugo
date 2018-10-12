@@ -66,8 +66,6 @@ $ oc adm policy add-scc-to-user privileged -z default -n <target-namespace>
 $ helm template -n istio-pod-network-controller ./chart/istio-pod-network-controller | kubectl apply -f -
 ```
 
-<br />
-
 ### 测试自动注入功能
 
 执行以下命令测试自动注入功能：
