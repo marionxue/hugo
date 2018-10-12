@@ -980,6 +980,7 @@
         "subtitle": "Istio 网关中的 Gateway 和 VirtualService 配置深度解析",
         "date": "2018-08-08T08:56:31.000Z",
         "draft": false,
+        "toc": true,
         "categories": "service mesh",
         "tags": [
             "istio",

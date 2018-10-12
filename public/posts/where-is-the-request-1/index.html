@@ -408,6 +408,31 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-pilot总体架构">1. pilot总体架构</a></li>
+<li><a href="#2-pilot-discovery-为-envoy-提供的-xds-服务">2. pilot-discovery 为 Envoy 提供的 xds 服务</a>
+<ul>
+<li><a href="#所谓-xds">所谓 xds</a></li>
+<li><a href="#如何查看-xds">如何查看 xds</a></li>
+</ul></li>
+<li><a href="#3-envoy-基本术语回顾">3. Envoy 基本术语回顾</a></li>
+<li><a href="#4-gateway-和-virtualservice-配置解析">4. Gateway 和 VirtualService 配置解析</a></li>
+<li><a href="#5-参考">5. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -415,7 +440,7 @@ autocomplete('#aa-search-input',
 
 <p>在开始之前，需要先搞清楚我们创建的这些对象资源最后都交给谁来处理了，负责处理这些资源的就是 pilot。</p>
 
-<h3 id="p-id-h2-1-pilot总体架构-p"><p id="h2">1. pilot总体架构</p></h3>
+<h2 id="1-pilot总体架构">1. pilot总体架构</h2>
 
 <hr />
 
@@ -424,40 +449,35 @@ autocomplete('#aa-search-input',
 <p>首先我们回顾一下 pilot 总体架构，上面是<a href="https://github.com/istio/old_pilot_repo/blob/master/doc/design.md" target="_blank">官方关于pilot的架构图</a>，因为是 old_pilot_repo 目录下，可能与最新架构有出入，仅供参考。所谓的 pilot 包含两个组件：<code>pilot-agent</code> 和 <code>pilot-discovery</code>。图里的 <code>agent</code> 对应 pilot-agent 二进制，<code>proxy</code> 对应 Envoy 二进制，它们两个在同一个容器中，<code>discovery service</code> 对应 pilot-discovery 二进制，在另外一个跟应用分开部署的单独的 Deployment 中。</p>
 
 <ul>
-<li><p><span id="inline-blue">discovery service</span> : 从 Kubernetes apiserver list/watch <code>service</code>、<code>endpoint</code>、<code>pod</code>、<code>node</code> 等资源信息，监听 istio 控制平面配置信息（如VirtualService、DestinationRule等）， 翻译为 Envoy 可以直接理解的配置格式。</p></li>
-
-<li><p><span id="inline-blue">proxy</span> : 也就是 Envoy，直接连接 discovery service，间接地从 Kubernetes 等服务注册中心获取集群中微服务的注册情况。</p></li>
-
-<li><p><span id="inline-blue">agent</span> : 生成 Envoy 配置文件，管理 Envoy 生命周期。</p></li>
-
-<li><p><span id="inline-blue">service A/B</span> : 使用了 Istio 的应用，如 Service A/B，的进出网络流量会被 proxy 接管。</p></li>
+<li><span id="inline-blue">discovery service</span> : 从 Kubernetes apiserver list/watch <code>service</code>、<code>endpoint</code>、<code>pod</code>、<code>node</code> 等资源信息，监听 istio 控制平面配置信息（如VirtualService、DestinationRule等）， 翻译为 Envoy 可以直接理解的配置格式。</li>
+<li><span id="inline-blue">proxy</span> : 也就是 Envoy，直接连接 discovery service，间接地从 Kubernetes 等服务注册中心获取集群中微服务的注册情况。</li>
+<li><span id="inline-blue">agent</span> : 生成 Envoy 配置文件，管理 Envoy 生命周期。</li>
+<li><span id="inline-blue">service A/B</span> : 使用了 Istio 的应用，如 Service A/B，的进出网络流量会被 proxy 接管。</li>
 </ul>
 
 <p>简单来说 Istio 做为管理面，集合了配置中心和服务中心两个功能，并把配置发现和服务发现以一组统一的 <code>xDS</code> 接口提供出来，数据面的 Envoy 通过 xDS 获取需要的信息来做服务间通信和服务治理。</p>
 
-<h3 id="p-id-h2-2-pilot-discovery-为-envoy-提供的-xds-服务-p"><p id="h2">2. pilot-discovery 为 Envoy 提供的 xds 服务</p></h3>
+<h2 id="2-pilot-discovery-为-envoy-提供的-xds-服务">2. pilot-discovery 为 Envoy 提供的 xds 服务</h2>
 
 <hr />
 
-<h4 id="所谓-xds">所谓 xds</h4>
+<h3 id="所谓-xds">所谓 xds</h3>
 
 <p>pilot-discovery 为数据面（运行在 sidecar 中的 Envoy 等 proxy 组件）提供控制信息服务，也就是所谓的 discovery service 或者 xds 服务。这里的 <code>x</code> 是一个代词，类似云计算里的 XaaS 可以指代 IaaS、PaaS、SaaS 等。在 Istio 中，xds 包括 <code>cds</code>(cluster discovery service)、<code>lds</code>(listener discovery service)、<code>rds</code>(route discovery service)、<code>eds</code>(endpoint discovery service)，而 <code>ads</code>(aggregated discovery service) 是对这些服务的一个统一封装。</p>
 
 <p>以上 cluster、endpoint、route 等概念的详细介绍和实现细节可以参考 Envoy 在社区推广的 data plane api（<a href="https://github.com/envoyproxy/data-plane-api" target="_blank">github.com/envoyproxy/data-plane-api</a>），这里只做简单介绍：</p>
 
 <ul>
-<li><p><span id="inline-blue">endpoint</span> : 一个具体的“应用实例”，对应 ip 和端口号，类似 Kubernetes 中的一个 Pod。</p></li>
-
-<li><p><span id="inline-blue">cluster</span> : 一个 <code>cluster</code> 是一个“应用集群”，它对应提供相同服务的一个或多个 <code>endpoint</code>。cluster 类似 Kubernetes 中 <code>Service</code> 的概念，即一个 Kubernetes Service 对应一个或多个用同一镜像启动，提供相同服务的 Pod。</p></li>
-
-<li><p><span id="inline-blue">route</span> : 当我们做灰度发布、金丝雀发布时，同一个服务会同时运行多个版本，每个版本对应一个 cluster。这时需要通过 <code>route</code> 规则规定请求如何路由到其中的某个版本的 cluster 上。</p></li>
+<li><span id="inline-blue">endpoint</span> : 一个具体的“应用实例”，对应 ip 和端口号，类似 Kubernetes 中的一个 Pod。</li>
+<li><span id="inline-blue">cluster</span> : 一个 <code>cluster</code> 是一个“应用集群”，它对应提供相同服务的一个或多个 <code>endpoint</code>。cluster 类似 Kubernetes 中 <code>Service</code> 的概念，即一个 Kubernetes Service 对应一个或多个用同一镜像启动，提供相同服务的 Pod。</li>
+<li><span id="inline-blue">route</span> : 当我们做灰度发布、金丝雀发布时，同一个服务会同时运行多个版本，每个版本对应一个 cluster。这时需要通过 <code>route</code> 规则规定请求如何路由到其中的某个版本的 cluster 上。</li>
 </ul>
 
 <p>以上这些内容实际上都是对 Envoy 等 proxy 的配置信息，而所谓的 cluster discovery service、route discovery service 等 xxx discovery service 就是 Envoy 等从 <code>pilot-discovery</code> 动态获取 endpoint、cluster 等配置信息的协议和实现。为什么要做动态配置加载，自然是为了使用 <code>istioctl</code> 等工具统一、灵活地配置 service mesh。至于如何通过 istioctl 来查看 xds 信息，下文将会详细介绍。</p>
 
 <p>而为什么要用 <code>ads</code> 来“聚合”一系列 <code>xds</code>，并非仅为了在同一个 gRPC 连接上实现多种 xds 来省下几个网络连接，ads 还有一个非常重要的作用是解决 <code>cds</code>、<code>rds</code> 信息更新顺序依赖的问题，从而保证以一定的顺序同步各类配置信息，这方面的讨论可以详见 <a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview#aggregated-discovery-service" target="_blank">Envoy官网</a>。</p>
 
-<h4 id="如何查看-xds">如何查看 xds</h4>
+<h3 id="如何查看-xds">如何查看 xds</h3>
 
 <p><code>pilot-discovery</code> 在初始化阶段依次 init 了各种模块，其中 <code>discovery service</code> 就是 xDS 相关实现。<a href="https://www.envoyproxy.io/docs/envoy/latest/" target="_blank">envoy API reference</a> 可以查到 v1 和 v2 两个版本的 API 文档。<a href="https://github.com/envoyproxy/go-control-plane" target="_blank">envoy control plane</a> 给了 v2 grpc 接口相关的数据结构和接口。</p>
 
@@ -582,27 +602,22 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">$ curl http://$PILOT_SVC_IP:8080/debug/adsz
 </code></pre>
 
-<p><br /></p>
-
-<h3 id="p-id-h2-3-envoy-基本术语回顾-p"><p id="h2">3. Envoy 基本术语回顾</p></h3>
+<h2 id="3-envoy-基本术语回顾">3. Envoy 基本术语回顾</h2>
 
 <hr />
 
 <p>为了让大家更容易理解后面所讲的内容，先来回顾一下 Envoy 的基本术语。</p>
 
 <ul>
-<li><p><span id="inline-blue">Listener</span> : 监听器（listener）是服务(程序)监听者，就是真正干活的。 它是可以由下游客户端连接的命名网络位置（例如，端口、unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。一般是每台主机运行一个 Envoy，使用单进程运行，但是每个进程中可以启动任意数量的 Listener（监听器），目前只监听 TCP，每个监听器都独立配置一定数量的（L3/L4）网络过滤器。Listenter 也可以通过 Listener Discovery Service（LDS）动态获取。</p></li>
-
-<li><p><span id="inline-blue">Listener filter</span> : Listener 使用 listener filter（监听器过滤器）来操作链接的元数据。它的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。Listener filter 的 API 相对简单，因为这些过滤器最终是在新接受的套接字上运行。在链中可以互相衔接以支持更复杂的场景，例如调用速率限制。Envoy 已经包含了多个监听器过滤器。</p></li>
-
-<li><p><span id="inline-blue">Http Route Table</span> : HTTP 的路由规则，例如请求的域名，Path 符合什么规则，转发给哪个 Cluster。</p></li>
-
-<li><p><span id="inline-blue">Cluster</span> : 集群（cluster）是 Envoy 连接到的一组逻辑上相似的上游主机。Envoy 通过服务发现发现集群中的成员。Envoy 可以通过主动运行状况检查来确定集群成员的健康状况。Envoy 如何将请求路由到集群成员由负载均衡策略确定。</p></li>
+<li><span id="inline-blue">Listener</span> : 监听器（listener）是服务(程序)监听者，就是真正干活的。 它是可以由下游客户端连接的命名网络位置（例如，端口、unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。一般是每台主机运行一个 Envoy，使用单进程运行，但是每个进程中可以启动任意数量的 Listener（监听器），目前只监听 TCP，每个监听器都独立配置一定数量的（L3/L4）网络过滤器。Listenter 也可以通过 Listener Discovery Service（LDS）动态获取。</li>
+<li><span id="inline-blue">Listener filter</span> : Listener 使用 listener filter（监听器过滤器）来操作链接的元数据。它的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。Listener filter 的 API 相对简单，因为这些过滤器最终是在新接受的套接字上运行。在链中可以互相衔接以支持更复杂的场景，例如调用速率限制。Envoy 已经包含了多个监听器过滤器。</li>
+<li><span id="inline-blue">Http Route Table</span> : HTTP 的路由规则，例如请求的域名，Path 符合什么规则，转发给哪个 Cluster。</li>
+<li><span id="inline-blue">Cluster</span> : 集群（cluster）是 Envoy 连接到的一组逻辑上相似的上游主机。Envoy 通过服务发现发现集群中的成员。Envoy 可以通过主动运行状况检查来确定集群成员的健康状况。Envoy 如何将请求路由到集群成员由负载均衡策略确定。</li>
 </ul>
 
 <p>更多详细信息可以参考 <a href="https://jimmysong.io/posts/envoy-archiecture-and-terminology/" target="_blank">Envoy 的架构与基本术语</a>，本文重点突出 <code>Listener</code>、<code>Route</code> 和 <code>Cluster</code> 这三个基本术语，同时需要注意流量经过这些术语的先后顺序，请求首先到达 <code>Listener</code>，然后通过 <code>Http Route Table</code> 转到具体的 <code>Cluster</code>，最后由具体的 Cluster 对请求做出响应。</p>
 
-<h3 id="p-id-h2-4-gateway-和-virtualservice-配置解析-p"><p id="h2">4. Gateway 和 VirtualService 配置解析</p></h3>
+<h2 id="4-gateway-和-virtualservice-配置解析">4. Gateway 和 VirtualService 配置解析</h2>
 
 <hr />
 
@@ -749,13 +764,10 @@ spec:
 </code></pre>
 
 <ul>
-<li><p>VirtualService 中的 <code>hosts</code> 字段对应 Http Route Table 中 <code>virtualHosts</code> 配置项的 <code>domains</code> 字段。这里表示可以使用任何域名来通过 ingressgateway 访问服务（也可以直接通过 IP 来访问）。</p></li>
-
-<li><p>VirtualService 中的 <code>exact</code> 字段对应 Http Route Table 中 <code>routes.match</code> 配置项的 <code>path</code> 字段。</p></li>
-
-<li><p>VirtualService 中的 <code>prefix</code> 字段对应 Http Route Table 中 <code>routes.match</code> 配置项的 <code>prefix</code> 字段。</p></li>
-
-<li><p>VirtualService 中的 <code>route.destination</code> 配置项对应 Http Route Table 中 <code>routes.route</code> 配置项的 <code>cluster</code> 字段。</p></li>
+<li>VirtualService 中的 <code>hosts</code> 字段对应 Http Route Table 中 <code>virtualHosts</code> 配置项的 <code>domains</code> 字段。这里表示可以使用任何域名来通过 ingressgateway 访问服务（也可以直接通过 IP 来访问）。</li>
+<li>VirtualService 中的 <code>exact</code> 字段对应 Http Route Table 中 <code>routes.match</code> 配置项的 <code>path</code> 字段。</li>
+<li>VirtualService 中的 <code>prefix</code> 字段对应 Http Route Table 中 <code>routes.match</code> 配置项的 <code>prefix</code> 字段。</li>
+<li>VirtualService 中的 <code>route.destination</code> 配置项对应 Http Route Table 中 <code>routes.route</code> 配置项的 <code>cluster</code> 字段。</li>
 </ul>
 
 <p>关于 Envoy 中的 HTTP 路由解析可以参考我之前的文章：<a href="https://www.yangcs.net/posts/routing-basics/" target="_blank">HTTP 路由解析</a>。</p>
@@ -795,7 +807,7 @@ spec:
 
 <p>好了，现在请求已经转交给 productpage 了，那么接下来这个请求将会如何走完整个旅程呢？请听下回分解！</p>
 
-<h3 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h3>
+<h2 id="5-参考">5. 参考</h2>
 
 <hr />
 
@@ -809,9 +821,42 @@ spec:
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center></p>
 
-<p><br /></p>
-
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
