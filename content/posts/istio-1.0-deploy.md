@@ -3,6 +3,7 @@ title: "Istio 1.0 部署"
 subtitle: "使用 Helm 部署 Istio 服务"
 date: 2018-08-01T15:33:46+08:00
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -14,7 +15,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 在安装 Istio 之前要确保 Kubernetes 集群（仅支持 `v1.9` 及以后版本）已部署并配置好本地的 kubectl 客户端。
 
-## <p id="h2">1. 下载 Istio</p>
+## 1. 下载 Istio
 
 ----
 
@@ -24,9 +25,7 @@ $ tar zxf istio-1.0.0-linux.tar.gz
 $ cp istio-1.0.0/bin/istioctl /usr/local/bin/
 ```
 
-<br />
-
-## <p id="h2">2. 使用 Helm 部署 Istio 服务</p>
+## 2. 使用 Helm 部署 Istio 服务
 
 ----
 
@@ -77,7 +76,7 @@ servicegraph-5b8d7b4d5-lzhth
 2. `istio-cleanup-secrets` 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。
 3. `egressgateway`、`ingress` 以及 `ingressgateway`，可以看出边缘部分的变动很大，以后会另行发文。
 
-## <p id="h2">3. Prometheus、Grafana、Servicegraph 和 Jaeger</p>
+## 3. Prometheus、Grafana、Servicegraph 和 Jaeger
 
 ----
 
@@ -199,9 +198,7 @@ $Ingree_host tracing.istio.io
 <p>如果你已经部署了 <code>Prometheus-operator</code>，可以不必部署 Grafana，直接将 <code>addons/grafana/dashboards</code> 目录下的 Dashboard 模板复制出来放到 Prometheus-operator 的 Grafana 上，然后添加 istio-system 命名空间中的 Prometheus 数据源就可以监控 Istio 了。</p>
 </div>
 
-<br />
-
-## <p id="h2">4. Mesh Expansion</p>
+## 4. Mesh Expansion
 
 ----
 
@@ -215,30 +212,48 @@ $ istioctl -n onprem register mysql 1.2.3.4 3306
 $ istioctl -n onprem register svc1 1.2.3.4 http:7000
 ```
 
-<br />
-
-## <p id="h2">5. 参考</p>
+## 5. 参考
 
 ----
 
 + [Istio 0.8 的 Helm Chart 解析](https://blog.fleeto.us/post/istio-0.8.0-helm/)
 
-<br />
-
 
 <style>
-#h2{
-    margin-bottom:2em;
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #note {
     font-size: 1.5rem;
