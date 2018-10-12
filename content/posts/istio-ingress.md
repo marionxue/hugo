@@ -3,6 +3,7 @@ title: "Istio 服务网格中的网关"
 subtitle: "使用 Istio 控制 Ingress 流量"
 date: 2018-08-02T13:29:08+08:00
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -16,17 +17,13 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <center>*Istio服务网格中的网关*</center>
 
-<br />
-
 其中 `Gateway` 是一个独立于平台的抽象，用于对流入专用中间设备的流量进行建模。下图描述了跨多个配置资源的控制流程。
 
 ![](https://istio.io/blog/2018/v1alpha3-routing/virtualservices-destrules.svg)
 
 <center>*不同v1alpha3元素之间的关系*</center>
 
-<br />
-
-### <p id="h2">1. Gateway 介绍</p>
+## 1. Gateway 介绍
 
 ----
 
@@ -77,7 +74,7 @@ Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图
 
 下面通过一个示例来演示如何配置 Istio 以使用 Istio  Gateway 在服务网格外部公开服务。
 
-### <p id="h2">2. 使用 Istio 网关配置 Ingress</p>
+## 2. 使用 Istio 网关配置 Ingress
 
 ----
 
@@ -166,10 +163,8 @@ Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图
     server: envoy
     transfer-encoding: chunked
     ```
-    
-<br />
 
-### <p id="h2">3. 使用浏览器访问 Ingress 服务</p>
+## 3. 使用浏览器访问 Ingress 服务
 
 ----
 
@@ -255,7 +250,7 @@ $  cat <<EOF | istioctl replace -f -
 
 ![](http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg)
 
-### <p id="h2">4. 清理</p>
+## 4. 清理
 
 ----
 
@@ -267,9 +262,7 @@ $ istioctl delete virtualservice httpbin
 $ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
 ```
 
-<br />
-
-### <p id="h2">5. 参考</p>
+## 5. 参考
 
 ----
 
@@ -278,10 +271,43 @@ $ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
 
-<br />
-
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

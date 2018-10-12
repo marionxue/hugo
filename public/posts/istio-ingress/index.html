@@ -394,7 +394,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Thu Aug 2, 2018</h4>
     </section>
-    <h5 id="wc">2600 Words|Read in about 6 Min</h5>
+    <h5 id="wc">2700 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -406,6 +406,27 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-gateway-介绍">1. Gateway 介绍</a></li>
+<li><a href="#2-使用-istio-网关配置-ingress">2. 使用 Istio 网关配置 Ingress</a></li>
+<li><a href="#3-使用浏览器访问-ingress-服务">3. 使用浏览器访问 Ingress 服务</a></li>
+<li><a href="#4-清理">4. 清理</a></li>
+<li><a href="#5-参考">5. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -415,17 +436,13 @@ autocomplete('#aa-search-input',
 
 <p><center><em>Istio服务网格中的网关</em></center></p>
 
-<p><br /></p>
-
 <p>其中 <code>Gateway</code> 是一个独立于平台的抽象，用于对流入专用中间设备的流量进行建模。下图描述了跨多个配置资源的控制流程。</p>
 
 <p><img src="https://istio.io/blog/2018/v1alpha3-routing/virtualservices-destrules.svg" alt="" /></p>
 
 <p><center><em>不同v1alpha3元素之间的关系</em></center></p>
 
-<p><br /></p>
-
-<h3 id="p-id-h2-1-gateway-介绍-p"><p id="h2">1. Gateway 介绍</p></h3>
+<h2 id="1-gateway-介绍">1. Gateway 介绍</h2>
 
 <hr />
 
@@ -474,7 +491,7 @@ spec:
 
 <p>下面通过一个示例来演示如何配置 Istio 以使用 Istio  Gateway 在服务网格外部公开服务。</p>
 
-<h3 id="p-id-h2-2-使用-istio-网关配置-ingress-p"><p id="h2">2. 使用 Istio 网关配置 Ingress</p></h3>
+<h2 id="2-使用-istio-网关配置-ingress">2. 使用 Istio 网关配置 Ingress</h2>
 
 <hr />
 
@@ -562,9 +579,7 @@ transfer-encoding: chunked
 </code></pre></li>
 </ol>
 
-<p><br /></p>
-
-<h3 id="p-id-h2-3-使用浏览器访问-ingress-服务-p"><p id="h2">3. 使用浏览器访问 Ingress 服务</p></h3>
+<h2 id="3-使用浏览器访问-ingress-服务">3. 使用浏览器访问 Ingress 服务</h2>
 
 <hr />
 
@@ -647,7 +662,7 @@ spec:
 
 <p><img src="http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg" alt="" /></p>
 
-<h3 id="p-id-h2-4-清理-p"><p id="h2">4. 清理</p></h3>
+<h2 id="4-清理">4. 清理</h2>
 
 <hr />
 
@@ -658,9 +673,7 @@ $ istioctl delete virtualservice httpbin
 $ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
 </code></pre>
 
-<p><br /></p>
-
-<h3 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h3>
+<h2 id="5-参考">5. 参考</h2>
 
 <hr />
 
@@ -671,9 +684,42 @@ $ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center></p>
 
-<p><br /></p>
-
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
