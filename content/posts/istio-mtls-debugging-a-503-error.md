@@ -349,6 +349,9 @@ h2::before {
     margin-right: 5px;
     color: #2d96bd;
 }
+h3 {
+    color: #0099CC;
+}
 #blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;
