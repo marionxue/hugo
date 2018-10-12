@@ -1,5 +1,5 @@
-/* PrismJS 1.14.0
-https://prismjs.com/download.html#themes=prism-coy&languages=markup+css+clike+javascript+abap+actionscript+ada+apacheconf+apl+applescript+c+arff+asciidoc+asm6502+csharp+autohotkey+autoit+bash+basic+batch+bison+brainfuck+bro+cpp+aspnet+arduino+coffeescript+clojure+ruby+csp+css-extras+d+dart+diff+django+docker+eiffel+elixir+elm+markup-templating+erlang+fsharp+flow+fortran+gedcom+gherkin+git+glsl+go+graphql+groovy+haml+handlebars+haskell+haxe+http+hpkp+hsts+ichigojam+icon+inform7+ini+io+j+java+jolie+json+julia+keyman+kotlin+latex+less+liquid+lisp+livescript+lolcode+lua+makefile+markdown+erb+matlab+mel+mizar+monkey+n4js+nasm+nginx+nim+nix+nsis+objectivec+ocaml+opencl+oz+parigp+parser+pascal+perl+php+php-extras+sql+powershell+processing+prolog+properties+protobuf+pug+puppet+pure+python+q+qore+r+jsx+typescript+renpy+reason+rest+rip+roboconf+crystal+rust+sas+sass+scss+scala+scheme+smalltalk+smarty+plsql+soy+stylus+swift+tcl+textile+tt2+twig+tsx+vbnet+velocity+verilog+vhdl+vim+visual-basic+wasm+wiki+xeora+xojo+xquery+yaml */
+/* PrismJS 1.9.0
+http://prismjs.com/download.html?themes=prism-coy&languages=markup+css+clike+javascript+c+bash+batch+coffeescript+django+docker+git+go+graphql+http+ini+java+json+makefile+markdown+properties+protobuf+python+scala+sql+vim+yaml */
 /**
  * prism.js Coy theme for JavaScript, CoffeeScript, CSS and HTML
  * Based on https://github.com/tshedor/workshop-wp-theme (Example: http://workshop.kansan.com/category/sessions/basics or http://workshop.timshedor.com/category/sessions/basics);
@@ -37,8 +37,8 @@ pre[class*="language-"] {
 }
 pre[class*="language-"]>code {
 	position: relative;
-	border-left: 10px solid #358ccb;
-	box-shadow: -1px 0px 0px 0px #358ccb, 0px 0px 0px 1px #dfdfdf;
+	border-left: 10px solid #2196f3;
+	box-shadow: -1px 0px 0px 0px #2196f3, 0px 0px 0px 1px #dfdfdf;
 	background-color: #fdfdfd;
 	background-image: linear-gradient(transparent 50%, rgba(69, 142, 209, 0.04) 50%);
 	background-size: 3em 3em;
@@ -48,8 +48,7 @@ pre[class*="language-"]>code {
 
 code[class*="language"] {
 	max-height: inherit;
-	height: inherit;
-	padding: 0 1em;
+	padding: 1em;
 	display: block;
 	overflow: auto;
 }
@@ -200,15 +199,15 @@ pre[class*="language-"]:after {
 }
 
 /* Plugin styles: Line Numbers */
-pre[class*="language-"].line-numbers.line-numbers {
+pre[class*="language-"].line-numbers {
 	padding-left: 0;
 }
 
-pre[class*="language-"].line-numbers.line-numbers code {
+pre[class*="language-"].line-numbers code {
 	padding-left: 3.8em;
 }
 
-pre[class*="language-"].line-numbers.line-numbers .line-numbers-rows {
+pre[class*="language-"].line-numbers .line-numbers-rows {
 	left: 0;
 }
 
@@ -225,3 +224,4 @@ pre[data-line] code {
 pre .line-highlight {
 	margin-top: 0;
 }
+
