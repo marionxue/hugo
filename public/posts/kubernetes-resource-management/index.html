@@ -394,7 +394,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Fri Aug 3, 2018</h4>
     </section>
-    <h5 id="wc">11100 Words|Read in about 23 Min</h5>
+    <h5 id="wc">11200 Words|Read in about 23 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -773,13 +773,10 @@ description: &quot;This priority class should be used for XYZ service pods only.
 <p>Kubernetes 的调度器在为 pod 选择运行节点的时候，只会考虑到调度那个时间点集群的状态，经过一系列的算法选择一个<strong>当时最合适</strong>的节点。但是集群的状态是不断变化的，用户创建的 pod 也是动态的，随着时间变化，原来调度到某个节点上的 pod 现在看来可能有更好的节点可以选择。比如考虑到下面这些情况：</p>
 
 <ul>
-<li><p>调度 pod 的条件已经不再满足，比如节点的 taints 和 labels 发生了变化</p></li>
-
-<li><p>新节点加入了集群。如果默认配置了把 pod 打散，那么应该有一些 pod 最好运行在新节点上</p></li>
-
-<li><p>节点的使用率不均匀。调度后，有些节点的分配率和使用率比较高，另外一些比较低</p></li>
-
-<li><p>节点上有资源碎片。有些节点调度之后还剩余部分资源，但是又低于任何 pod 的请求资源；或者 memory 资源已经用完，但是 CPU 还有挺多没有使用</p></li>
+<li>调度 pod 的条件已经不再满足，比如节点的 taints 和 labels 发生了变化</li>
+<li>新节点加入了集群。如果默认配置了把 pod 打散，那么应该有一些 pod 最好运行在新节点上</li>
+<li>节点的使用率不均匀。调度后，有些节点的分配率和使用率比较高，另外一些比较低</li>
+<li>节点上有资源碎片。有些节点调度之后还剩余部分资源，但是又低于任何 pod 的请求资源；或者 memory 资源已经用完，但是 CPU 还有挺多没有使用</li>
 </ul>
 
 <p>想要解决上述的这些问题，都需要把 pod 重新进行调度（把 pod 从当前节点移动到另外一个节点）。但是默认情况下，一旦 pod 被调度到节点上，除非给杀死否则不会移动到另外一个节点的。</p>
@@ -852,6 +849,11 @@ description: &quot;This priority class should be used for XYZ service pods only.
 <p>集群的资源使用并不是静态的，而是随着时间不断变化的，目前 kubernetes 的调度决策都是基于调度时集群的一个静态资源切片进行的，动态地资源调整是通过 kubelet 的驱逐程序进行的，HPA 和 VPA 等方案也不断提出，相信后面会不断完善这方面的功能，让 kubernetes 更加智能。</p>
 
 <p>资源管理和调度、应用优先级、监控、镜像中心等很多东西相关，是个非常复杂的领域。在具体的实施和操作的过程中，常常要考虑到企业内部的具体情况和需求，做出针对性的调整，并且需要开发者、系统管理员、SRE、监控团队等不同小组一起合作。但是这种付出从整体来看是值得的，提升资源的利用率能有效地节约企业的成本，也能让应用更好地发挥出作用。</p>
+
+<hr />
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
+<center>扫一扫关注微信公众号</center></p>
 
 <style>
 h1,h2,h3,h4,h5,h6 {
