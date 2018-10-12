@@ -1391,6 +1391,9 @@ h2::before {
     margin-right: 5px;
     color: #2d96bd;
 }
+h3 {
+    color: #0099CC;
+}
 li {
     line-height: 2;
 }
