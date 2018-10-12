@@ -3,6 +3,7 @@ title: "暴露 Istio Service Mesh 中的 Gateway"
 subtitle: "使用 Envoy 作为 Ingress Gateway 的前端代理"
 date: 2018-09-17T13:14:55+08:00
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -223,7 +224,22 @@ h2::before {
     margin-right: 5px;
     color: #2d96bd;
 }
-
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2-another {
     margin-bottom:2em;
     margin-right: 5px;
