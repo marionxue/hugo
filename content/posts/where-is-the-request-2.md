@@ -3,6 +3,7 @@ title: "请求都去哪了？（续）"
 subtitle: "服务网格内部的 VirtualService 和 DestinationRule 配置深度解析"
 date: 2018-08-13T16:30:30+08:00
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh", "kubernetes"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -14,7 +15,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 在继续追踪请求之前，先对之前的内容做一个补充说明。
 
-### <p id="h2">1. Pod 在服务网格之间如何通信？</p>
+## 1. Pod 在服务网格之间如何通信？
 
 ----
 
@@ -60,7 +61,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080||productpage.def
 
 从这里可以看出，各个微服务之间是直接通过 `PodIP + Port` 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。
 
-### <p id="h2">2. 部署 bookinfo 应用的时候发生了什么？</p>
+##2. 部署 bookinfo 应用的时候发生了什么？
 
 ----
 
@@ -293,11 +294,11 @@ $ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.
 
 上面的整个过程就是在不创建任何规则的情况下请求从 `productpage` 到 `reviews` 的过程，从 reviews 到网格内其他应用的流量与上面类似，就不展开讨论了。接下来分析创建规则之后的请求转发过程。
 
-### <p id="h2">3. VirtualService 和 DestinationRule 配置解析</p>
+## 3. VirtualService 和 DestinationRule 配置解析
 
 ----
 
-#### VirtualService
+### VirtualService
 
 首先创建一个 `VirtualService`。
 
@@ -368,7 +369,7 @@ $ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o js
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160823.jpg)</center>
 
-#### DestinationRule
+### DestinationRule
 
 为了使上面创建的路由可达，我们需要创建一个 `DestinationRule`：
 
@@ -457,7 +458,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080|v1|reviews.defau
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180813-162629.jpg)</center>
 
-### <p id="h2">4. 参考</p>
+## 4. 参考
 
 ----
 
@@ -471,6 +472,41 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080|v1|reviews.defau
 
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
