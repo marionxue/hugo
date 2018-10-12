@@ -430,11 +430,9 @@ autocomplete('#aa-search-input',
 <p>本方案涉及到两层 Envoy：</p>
 
 <ul>
-<li><p>首先会有一个前端代理在某个地方单独运行。前端代理的工作是给其他地方提供一个入口。来自外部的传入连接请求到这里，前端代理将会决定他们在内部的转发路径。</p></li>
-
-<li><p>其次，博客静态页面由 nginx 提供，同时运行一个 “服务 Envoy”，它与 nginx 容器共享 <code>network nemspace</code>（相当于 Kubernetes 的 <code>Sidecar</code>）。</p></li>
-
-<li><p>所有的 Envoy 形成一个网格，然后在他们之间共享路由信息。</p></li>
+<li>首先会有一个前端代理在某个地方单独运行。前端代理的工作是给其他地方提供一个入口。来自外部的传入连接请求到这里，前端代理将会决定他们在内部的转发路径。</li>
+<li>其次，博客静态页面由 nginx 提供，同时运行一个 “服务 Envoy”，它与 nginx 容器共享 <code>network nemspace</code>（相当于 Kubernetes 的 <code>Sidecar</code>）。</li>
+<li>所有的 Envoy 形成一个网格，然后在他们之间共享路由信息。</li>
 </ul>
 
 <p>注意，通常情况下你也可以只使用前端代理，然后去掉服务 Envoy 这一层。但是，使用完整网格的话，服务 Envoy 可以对应用服务进行健康监控等，让网格知道尝试联系一个挂掉的服务是否是毫无意义的。此外，Envoy 的统计数据收集最适合用在全网格上。</p>
