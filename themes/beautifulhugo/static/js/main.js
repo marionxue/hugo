@@ -14,7 +14,6 @@ var main = {
             $(".navbar").removeClass("top-nav-short");
         }
     });
-
     
     // On mobile, hide the avatar when expanding the navbar menu
     $('#main-navbar').on('show.bs.collapse', function () {
@@ -63,13 +62,10 @@ var main = {
       fakeMenu.remove();
     }      
 
-
-    //处理目录
-    main.initNavigations();
     // show the big header image  
     main.initImgs();
   },
-    
+  
   initImgs : function() {
     // If the page was large images to randomly select from, choose an image
     if ($("#header-big-imgs").length > 0) {
