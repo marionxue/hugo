@@ -919,3 +919,7 @@ label {
 code {
     word-break: break-all;
 }
+
+article li {
+    margin-top: 4px;
+}
