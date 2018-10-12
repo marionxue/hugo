@@ -416,6 +416,7 @@ autocomplete('#aa-search-input',
 <li>
 <ul>
 <li><a href="#1-pod-在服务网格之间如何通信">1. Pod 在服务网格之间如何通信？</a></li>
+<li><a href="#2-部署-bookinfo-应用的时候发生了什么">2. 部署 bookinfo 应用的时候发生了什么？</a></li>
 <li><a href="#3-virtualservice-和-destinationrule-配置解析">3. VirtualService 和 DestinationRule 配置解析</a>
 <ul>
 <li><a href="#virtualservice">VirtualService</a></li>
@@ -483,7 +484,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|9080||productpag
 
 <p>从这里可以看出，各个微服务之间是直接通过 <code>PodIP + Port</code> 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。</p>
 
-<p>##2. 部署 bookinfo 应用的时候发生了什么？</p>
+<h2 id="2-部署-bookinfo-应用的时候发生了什么">2. 部署 bookinfo 应用的时候发生了什么？</h2>
 
 <hr />
 

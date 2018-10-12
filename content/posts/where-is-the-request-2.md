@@ -61,7 +61,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080||productpage.def
 
 从这里可以看出，各个微服务之间是直接通过 `PodIP + Port` 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。
 
-##2. 部署 bookinfo 应用的时候发生了什么？
+## 2. 部署 bookinfo 应用的时候发生了什么？
 
 ----
 
