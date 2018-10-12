@@ -436,8 +436,14 @@ autocomplete('#aa-search-input',
     border-left-width: .25rem;
     border-radius: .25rem;
 }
-ul {
+ul, menu, dir {
+    display: block;
     list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
 }
 ul, ol {
     margin: 15px 0;
