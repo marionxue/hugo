@@ -112,7 +112,7 @@ var main = {
 
       var html = main.iterativeUI(root, '', '')
       $navigations.html(html)
-      var fixSet = $("#main-navbar").height() + 10;
+      var fixSet = $("#main-navbar").height();
       $('nav#TableOfContents a[href^="#"][href!="#"]').click(function(e) {
           e.preventDefault();
           $('html, body').animate({scrollTop: $(decodeURI(this.hash)).offset().top - fixSet}, 400);
