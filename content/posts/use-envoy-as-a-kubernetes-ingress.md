@@ -331,6 +331,22 @@ h2::before {
     margin-right: 5px;
     color: #2d96bd;
 }
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #red {
 color: red;
 }
