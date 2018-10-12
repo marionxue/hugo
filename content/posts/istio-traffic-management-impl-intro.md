@@ -1399,7 +1399,7 @@ h4 {
 }
 li {
     line-height: 2;
-    font-size: 1.0em;
+    font-size: 0.9em;
 }
 #blockquote {
     padding: 10px 20px;
