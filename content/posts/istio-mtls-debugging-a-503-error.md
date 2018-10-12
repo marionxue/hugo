@@ -27,7 +27,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 首先安装 httpbin 服务和客户端：
 
-```bash
+```shell
 $ kubectl create ns foo
 $ kubectl apply -f <(istioctl kube-inject -f samples/httpbin/httpbin.yaml) -n foo
 $ kubectl apply -f <(istioctl kube-inject -f samples/sleep/sleep.yaml) -n foo
