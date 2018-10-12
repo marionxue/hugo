@@ -8,8 +8,11 @@
             {{ partial "postmeta.html" . }}
             {{ end }}
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
-                {{ partial "toc.html" . }}
-                {{ .Content }}
+            <div class="content">
+              {{ partial "table-of-contents.html" . }}
+              <!-- supports emoji -->
+              {{ .Content | emojify }}
+            </div>
                 {{ if isset .Site.Params "reward" }}
                 {{ partial "reward.html" }}
                 {{ end }}
