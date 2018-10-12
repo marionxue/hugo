@@ -883,6 +883,21 @@ border-top-color: #9954bb;
 
 &lt;p&gt;首先安装 httpbin 服务和客户端：&lt;/p&gt;
 
+&lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ helm repo remove stable
+&amp;quot;stable&amp;quot; has been removed from your repositories
+$ helm repo add stable https://cnych.github.io/kube-charts-mirror/
+&amp;quot;stable&amp;quot; has been added to your repositories
+$ helm repo list
+NAME    URL
+stable  https://cnych.github.io/kube-charts-mirror/
+local   http://127.0.0.1:8879/charts
+$ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Skip local chart repository
+...Successfully got an update from the &amp;quot;stable&amp;quot; chart repository
+Update Complete. ⎈ Happy Helming!⎈
+&lt;/code&gt;&lt;/pre&gt;
+
 &lt;pre&gt;&lt;code class=&#34;language-shell&#34;&gt;$ kubectl create ns foo
 $ kubectl apply -f &amp;lt;(istioctl kube-inject -f samples/httpbin/httpbin.yaml) -n foo
 $ kubectl apply -f &amp;lt;(istioctl kube-inject -f samples/sleep/sleep.yaml) -n foo
