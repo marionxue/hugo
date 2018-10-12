@@ -349,9 +349,6 @@ h2::before {
     margin-right: 5px;
     color: #2d96bd;
 }
-li {
-    line-height: 2;
-}
 #blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;
