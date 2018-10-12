@@ -3,7 +3,7 @@ title: "Istio 流量管理实现机制深度解析"
 subtitle: "从整体上理解 Pilot 和 Envoy 的流量管理机制"
 date: 2018-10-09T20:00:17+08:00
 draft: false
-toc: true
+toc: false
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
