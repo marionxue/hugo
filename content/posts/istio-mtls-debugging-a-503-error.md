@@ -27,23 +27,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 首先安装 httpbin 服务和客户端：
 
-```shell
-$ helm repo remove stable
-"stable" has been removed from your repositories
-$ helm repo add stable https://cnych.github.io/kube-charts-mirror/
-"stable" has been added to your repositories
-$ helm repo list
-NAME    URL
-stable  https://cnych.github.io/kube-charts-mirror/
-local   http://127.0.0.1:8879/charts
-$ helm repo update
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete. ⎈ Happy Helming!⎈
-```
-
-```shell
+```bash
 $ kubectl create ns foo
 $ kubectl apply -f <(istioctl kube-inject -f samples/httpbin/httpbin.yaml) -n foo
 $ kubectl apply -f <(istioctl kube-inject -f samples/sleep/sleep.yaml) -n foo
