@@ -28,6 +28,30 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 首先安装 httpbin 服务和客户端：
 
 ```bash
+$ kubectl describe pod mydb-mysql-6ffc84bbf6-lcn4d
+Name:           mydb-mysql-6ffc84bbf6-lcn4d
+Namespace:      default
+Node:           node02/10.151.30.63
+Start Time:     Wed, 05 Sep 2018 00:38:33 +0800
+Labels:         app=mydb-mysql
+                pod-template-hash=2997406692
+Annotations:    <none>
+Status:         Pending
+...
+Events:
+  Type    Reason                 Age   From               Message
+  ----    ------                 ----  ----               -------
+  Normal  SuccessfulMountVolume  58s   kubelet, node02    MountVolume.SetUp succeeded for volume "data"
+  Normal  SuccessfulMountVolume  58s   kubelet, node02    MountVolume.SetUp succeeded for volume "default-token-n9w2d"
+  Normal  Scheduled              57s   default-scheduler  Successfully assigned mydb-mysql-6ffc84bbf6-lcn4d to node02
+  Normal  Pulling                57s   kubelet, node02    pulling image "busybox:1.25.0"
+  Normal  Pulled                 45s   kubelet, node02    Successfully pulled image "busybox:1.25.0"
+  Normal  Created                44s   kubelet, node02    Created container
+  Normal  Started                44s   kubelet, node02    Started container
+  Normal  Pulling                41s   kubelet, node02    pulling image "mysql:5.7.14"
+```
+
+```bash
 $ kubectl create ns foo
 $ kubectl apply -f <(istioctl kube-inject -f samples/httpbin/httpbin.yaml) -n foo
 $ kubectl apply -f <(istioctl kube-inject -f samples/sleep/sleep.yaml) -n foo

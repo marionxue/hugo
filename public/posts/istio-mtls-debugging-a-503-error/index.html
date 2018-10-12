@@ -393,7 +393,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Thu Oct 11, 2018</h4>
     </section>
-    <h5 id="wc">3100 Words|Read in about 7 Min</h5>
+    <h5 id="wc">3200 Words|Read in about 7 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -426,6 +426,29 @@ autocomplete('#aa-search-input',
 <p>是不是非常简单？让我们开始吧！</p>
 
 <p>首先安装 httpbin 服务和客户端：</p>
+
+<pre><code class="language-bash">$ kubectl describe pod mydb-mysql-6ffc84bbf6-lcn4d
+Name:           mydb-mysql-6ffc84bbf6-lcn4d
+Namespace:      default
+Node:           node02/10.151.30.63
+Start Time:     Wed, 05 Sep 2018 00:38:33 +0800
+Labels:         app=mydb-mysql
+                pod-template-hash=2997406692
+Annotations:    &lt;none&gt;
+Status:         Pending
+...
+Events:
+  Type    Reason                 Age   From               Message
+  ----    ------                 ----  ----               -------
+  Normal  SuccessfulMountVolume  58s   kubelet, node02    MountVolume.SetUp succeeded for volume &quot;data&quot;
+  Normal  SuccessfulMountVolume  58s   kubelet, node02    MountVolume.SetUp succeeded for volume &quot;default-token-n9w2d&quot;
+  Normal  Scheduled              57s   default-scheduler  Successfully assigned mydb-mysql-6ffc84bbf6-lcn4d to node02
+  Normal  Pulling                57s   kubelet, node02    pulling image &quot;busybox:1.25.0&quot;
+  Normal  Pulled                 45s   kubelet, node02    Successfully pulled image &quot;busybox:1.25.0&quot;
+  Normal  Created                44s   kubelet, node02    Created container
+  Normal  Started                44s   kubelet, node02    Started container
+  Normal  Pulling                41s   kubelet, node02    pulling image &quot;mysql:5.7.14&quot;
+</code></pre>
 
 <pre><code class="language-bash">$ kubectl create ns foo
 $ kubectl apply -f &lt;(istioctl kube-inject -f samples/httpbin/httpbin.yaml) -n foo
