@@ -3,6 +3,7 @@ title: "Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh"
 subtitle: "Vistio 部署使用教程"
 date: 2018-08-03T15:29:37+08:00
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -22,16 +23,16 @@ Vizceral 有两个可视化级别，全局可视化和集群级别可视化。�
 
 ![](http://o7z41ciog.bkt.clouddn.com/vistio-mesh1.jpg)
 
-### <p id="h2">1. 在 Istio 服务网格中安装 Vistio</p>
+## 1. 在 Istio 服务网格中安装 Vistio
 
 ----
 
-#### 依赖
+### 依赖
 
 + Prometheus
 + Istio 1.0
 
-#### 假设
+### 假设
 
 以下 Demo 使得这些假设更容易部署。如果您的环境设置不同，则可能需要将代码下载到本地并编辑一些文件。
 
@@ -42,13 +43,13 @@ Vizceral 有两个可视化级别，全局可视化和集群级别可视化。�
 
 **由于测试环境大多数都没有外部网络存储，无法创建 StorageClass，待会儿我们可以将这部分的配置修改为 `hostPath`。**
 
-#### 前言
+### 前言
 
 如果您还尚未部署服务网格，可以按照此 [Istio Bookinfo Demo](https://istio.io/docs/guides/bookinfo/) 中的说明部署 Istio 及其示例应用程序。您需要能够在应用程序之间生成流量。要测试指标是否从 Mixer 正确发送到 Prometheus，您可以打开 Prometheus 查询 `istio_request_bytes_count`，应该会看到多个条目。
 
 ![](http://o7z41ciog.bkt.clouddn.com/vistio-prometheus.jpg)
 
-### <p id="h2">2. 部署 Vistio</p>
+## 2. 部署 Vistio
 
 ----
 
@@ -60,9 +61,7 @@ Vizceral 有两个可视化级别，全局可视化和集群级别可视化。�
 $ git clone https://github.com/nmnellis/vistio.git
 ```
 
-<br />
-
-#### 使用 Helm 部署
+### 使用 Helm 部署
 
 由于我们使用的是 Istio 1.0 版本，而 Vistio 已经有相当一段时间没有更新了，很多配置项已经不适用了，需要改动很多地方。
 
@@ -168,13 +167,11 @@ vistio-api-0                      1/1       Running   0          2m
 vistio-web-5c44b7f76d-hmjdc       1/1       Running   0          2m
 ```
 
-<br />
-
-### <p id="h2">3. 验证和暴露 Vistio Web/API</p>
+## 3. 验证和暴露 Vistio Web/API
 
 ----
 
-#### 暴露 Vistio Web/API
+### 暴露 Vistio Web/API
 
 为 Service vistio-api 和 vistio-web 创建 `Ingress`：
 
@@ -225,19 +222,19 @@ $Ingree_host vistio-api.istio.io
 
 将 `$Ingree_host` 替换为 Ingress Controller 运行节点的 IP。
 
-#### 验证 visito-api
+### 验证 visito-api
 
 vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.istio.io/graph` 您应该会看到类似下列的输出。
 
 ![](http://o7z41ciog.bkt.clouddn.com/LkvzHsN0VzZSOD_wy7sCgQ.png)
 
-#### 访问 Vistio
+### 访问 Vistio
 
 如果一切都已经启动并准备就绪，您就可以访问 Vistio UI，开始探索服务网格网络，访问`http://vistio-web.istio.io` 您将会看到类似下图的输出。
 
 ![](http://o7z41ciog.bkt.clouddn.com/vistio-web.jpg)
 
-### <p id="h2">4. 探索</p>
+## 4. 探索
 
 ----
 
@@ -251,7 +248,7 @@ vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.i
 
 使用屏幕右上方的过滤器可以快速过滤出错误率较高的应用程序。通过高级配置，当错误率超过特定值时，也可以触发警报。警报将显示给定应用程序的当前错误率趋势。
 
-### <p id="h2">5. 问题排查</p>
+## 5. 问题排查
 
 ----
 
@@ -278,21 +275,41 @@ vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.i
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
 
-<br />
-
 <style>
-#h2{
-    margin-bottom:2em;
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #note {
     font-size: 1.5rem;
