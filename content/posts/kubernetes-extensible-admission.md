@@ -93,8 +93,6 @@ Webhook Admission 插件允许对任何 API server 的任何资源进行修改�
 + **复杂的 CustomResource 验证：**因为整个对象是可见的，所以插件可以对字段间依赖（A 需要 B）甚至外部资源（对比 `LimitRanges`）进行复杂的验证。
 + **安全响应：**如果你把镜像 tag 改成了 `SHA`，你可以通过写一个插件来阻止对应某些 SHA 的镜像运行。
 
-<br />
-
 ### 注册
 
 这两种类型的 Webhook Admission 插件都需要在 API 中注册，所有 API servers（`kube-apiserver` 和所有扩展 API servers ）都共享一个通用配置。在注册过程中，一个 Webhook Admission 插件描述了以下信息：
@@ -104,8 +102,6 @@ Webhook Admission 插件允许对任何 API server 的任何资源进行修改�
 + 数据应该发送到 Server 的哪个 URL 路径
 + 它将处理哪些资源和哪些 HTTP 动词
 + API server 在连接失败后应该做什么（例如如果 Webhook Admission Server 停止服务了）
-
-<br />
 
 ```yaml
 apiVersion: admissionregistration.k8s.io/v1beta1
@@ -131,8 +127,6 @@ webhooks:
     - namespaces
   failurePolicy: Fail  ④
 ```
-
-<br />
 
 + ① <span id="inline-blue">name</span> : Webhook 的名称。mutating Webhooks 会根据名称进行排序。
 
@@ -225,8 +219,6 @@ Webhook Admission 属于同步调用，需要用户部署自己的 webhook serve
    return &reviewResponse
    }
 ```
-
-<br />
 
 ### 部署 Webhook Server
 
@@ -368,8 +360,6 @@ func mutatePods(ar v1beta1.AdmissionReview) *v1beta1.AdmissionResponse {
 }
 ```
 
-<br />
-
 ### 创建 Pod
 
 ```bash
@@ -387,8 +377,6 @@ spec:
   - image: k8s.gcr.io/pause:3.1
     name: example
 ```
-
-<br />
 
 ### 查询 Pod
 
@@ -489,6 +477,22 @@ h2::before {
     content: "#";
     margin-right: 5px;
     color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #blue {
 color: #2780e3;

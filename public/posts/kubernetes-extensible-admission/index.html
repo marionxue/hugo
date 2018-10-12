@@ -538,8 +538,6 @@ autocomplete('#aa-search-input',
 <li><strong>安全响应：</strong>如果你把镜像 tag 改成了 <code>SHA</code>，你可以通过写一个插件来阻止对应某些 SHA 的镜像运行。</li>
 </ul>
 
-<p><br /></p>
-
 <h3 id="注册">注册</h3>
 
 <p>这两种类型的 Webhook Admission 插件都需要在 API 中注册，所有 API servers（<code>kube-apiserver</code> 和所有扩展 API servers ）都共享一个通用配置。在注册过程中，一个 Webhook Admission 插件描述了以下信息：</p>
@@ -551,8 +549,6 @@ autocomplete('#aa-search-input',
 <li>它将处理哪些资源和哪些 HTTP 动词</li>
 <li>API server 在连接失败后应该做什么（例如如果 Webhook Admission Server 停止服务了）</li>
 </ul>
-
-<p><br /></p>
 
 <pre><code class="language-yaml">apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
@@ -577,8 +573,6 @@ webhooks:
     - namespaces
   failurePolicy: Fail  ④
 </code></pre>
-
-<p><br /></p>
 
 <ul>
 <li><p>① <span id="inline-blue">name</span> : Webhook 的名称。mutating Webhooks 会根据名称进行排序。</p></li>
@@ -678,8 +672,6 @@ webhooks:
    return &amp;reviewResponse
    }
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="部署-webhook-server">部署 Webhook Server</h3>
 
@@ -816,8 +808,6 @@ webhooks:
 }
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="创建-pod">创建 Pod</h3>
 
 <pre><code class="language-bash">$ kubectl create –f pod.yaml
@@ -833,8 +823,6 @@ spec:
   - image: k8s.gcr.io/pause:3.1
     name: example
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="查询-pod">查询 Pod</h3>
 
@@ -937,6 +925,22 @@ h2::before {
     content: "#";
     margin-right: 5px;
     color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #blue {
 color: #2780e3;
