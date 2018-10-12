@@ -566,6 +566,7 @@
         "subtitle": "聊聊 Kubernetes 的计算资源模型以及如何调度管理资源",
         "date": "2018-08-03T09:34:19.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"

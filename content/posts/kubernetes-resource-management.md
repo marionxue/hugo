@@ -3,6 +3,7 @@ title: "Kubernetes 资源管理概述"
 subtitle: "聊聊 Kubernetes 的计算资源模型以及如何调度管理资源"
 date: 2018-08-03T17:34:19+08:00
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -12,7 +13,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <p id="div-border-left-red">本文转载自 <a href="http://cizixs.com/2018/06/25/kubernetes-resource-management" target="_blank">Cizixs 的博客</a>。</p>
 
-### <p id="h2">1. 什么是资源？</p>
+## 1. 什么是资源？
 
 ----
 
@@ -30,7 +31,7 @@ CPU 的使用时间是可压缩的，换句话说它本身无状态，申请资�
 
 资源除了和调度相关之外，还和很多事情紧密相连，这正是这篇文章要解释的。
 
-### <p id="h2">2. kubernetes 资源的表示</p>
+## 2. kubernetes 资源的表示
 
 ----
 
@@ -44,7 +45,7 @@ CPU 的使用时间是可压缩的，换句话说它本身无状态，申请资�
 
 内存比较容易理解，是通过字节大小指定的。如果直接一个数字，后面没有任何单位，表示这么多字节的内存；数字后面还可以跟着单位， 支持的单位有 `E`、`P`、`T`、`G`、`M`、`K`，前者分别是后者的 `1000` 倍大小的关系，此外还支持 `Ei`、`Pi`、`Ti`、`Gi`、`Mi`、`Ki`，其对应的倍数关系是 `2^10 = 1024`。比如要使用 100M 内存的话，直接写成 `100Mi` 即可。
 
-### <p id="h2">3. 节点可用资源</p>
+## 3. 节点可用资源
 
 ----
 
@@ -81,15 +82,13 @@ status:
     pods: "110"
 ```
 
-<br />
-
-### <p id="h2">4. kubernetes 资源对象</p>
+## 4. kubernetes 资源对象
 
 ----
 
 在这部分，我们来介绍 kubernetes 中提供的让我们管理 pod 资源的原生对象。
 
-#### 请求（requests）和上限（limits）
+### 请求（requests）和上限（limits）
 
 前面说过用户在创建 pod 的时候，可以指定每个容器的 Requests 和 Limits 两个字段，下面是一个实例：
 
@@ -111,13 +110,13 @@ resources:
 
 <div id="note">
 <p id="note-title">Note</p>
-<br />
+
 <p>如果 limit 没有配置，则表明没有资源的上限，只要节点上有对应的资源，pod 就可以使用。</p>
 </div>
 
 使用 requests 和 limits 概念，我们能分配更多的 pod，提升整体的资源使用率。但是这个体系有个非常重要的问题需要考虑，那就是**怎么去准确地评估 pod 的资源 requests？**如果评估地过低，会导致应用不稳定；如果过高，则会导致使用率降低。这个问题需要开发者和系统管理员共同讨论和定义。
 
-#### limit range（默认资源配置)
+### limit range（默认资源配置)
 
 为每个 pod 都手动配置这些参数是挺麻烦的事情，kubernetes 提供了 `LimitRange` 资源，可以让我们配置某个 namespace 默认的 request 和 limit 值，比如下面的实例：
 
@@ -150,7 +149,7 @@ spec:
 
 当然，如果 pod 自己配置了对应的参数，kubernetes 会使用 pod 中的配置。使用 LimitRange 能够让 namespace 中的 pod 资源规范化，便于统一的资源管理。
 
-#### 资源配额（resource quota）
+### 资源配额（resource quota）
 
 前面讲到的资源管理和调度可以认为 kubernetes 把这个集群的资源整合起来，组成一个资源池，每个应用（pod）会自动从整个池中分配资源来使用。默认情况下只要集群还有可用的资源，应用就能使用，并没有限制。kubernetes 本身考虑到了多用户和多租户的场景，提出了 namespace 的概念来对集群做一个简单的隔离。
 
@@ -177,11 +176,11 @@ resource quota 能够配置的选项还很多，比如 GPU、存储、configmaps
 
 Resource quota 要解决的问题和使用都相对独立和简单，但是它也有一个限制：那就是它不能根据集群资源动态伸缩。一旦配置之后，resource quota 就不会改变，即使集群增加了节点，整体资源增多也没有用。kubernetes 现在没有解决这个问题，但是用户可以通过编写一个 controller 的方式来自己实现。
 
-### <p id="h2">5. 应用优先级</p>
+## 5. 应用优先级
 
 ----
 
-#### QoS（服务质量）
+### QoS（服务质量）
 
 Requests 和 limits 的配置除了表明资源情况和限制资源使用之外，还有一个隐藏的作用：它决定了 pod 的 QoS 等级。
 
@@ -221,7 +220,7 @@ oomScoreAdjust := 1000 - (1000*memoryRequest)/memoryCapacity
 
 QoS 的作用会在后面介绍 eviction 的时候详细讲解。
 
-#### Pod 优先级（priority）
+### Pod 优先级（priority）
 
 除了 QoS，kubernetes 还允许我们自定义 pod 的优先级，比如：
 
@@ -241,7 +240,7 @@ Pod 的优先级在调度的时候会使用到。首先，待调度的 pod 都�
 
 另外，如果在调度的时候，发现某个 pod 因为资源不足无法找到合适的节点，调度器会尝试 preempt 的逻辑。 简单来说，调度器会试图找到这样一个节点：找到它上面优先级低于当前要调度 pod 的所有 pod，如果杀死它们，能腾足够的资源，调度器会执行删除操作，把 pod 调度到节点上。
 
-### <p id="h2">6. 驱逐（Eviction）</p>
+## 6. 驱逐（Eviction）
 
 ----
 
@@ -251,7 +250,7 @@ Pod 的优先级在调度的时候会使用到。首先，待调度的 pod 都�
 
 Pod 的驱逐是在 kubelet 中实现的，因为 kubelet 能动态地感知到节点上资源使用率实时的变化情况。其核心的逻辑是：kubelet 实时监控节点上各种资源的使用情况，一旦发现某个不可压缩资源出现要耗尽的情况，就会主动终止节点上的 pod，让节点能够正常运行。被终止的 pod 所有容器会停止，状态会被设置为 failed。
 
-#### 驱逐触发条件
+### 驱逐触发条件
 
 那么哪些资源不足会导致 kubelet 执行驱逐程序呢？目前主要有三种情况：实际内存不足、节点文件系统的可用空间（文件系统剩余大小和 inode 数量）不足、以及镜像文件系统的可用空间（包括文件系统剩余大小和 inode 数量）不足。
 
@@ -267,7 +266,7 @@ Pod 的驱逐是在 kubelet 中实现的，因为 kubelet 能动态地感知到�
 <p>默认情况下，kubelet 的驱逐规则是 <code>memory.available<100Mi</code>，对于生产环境这个配置是不可接受的，所以一定要根据实际情况进行修改。</p>
 </div>
 
-#### 软驱逐（soft eviction）和硬驱逐（hard eviction）
+### 软驱逐（soft eviction）和硬驱逐（hard eviction）
 
 因为驱逐 pod 是具有毁坏性的行为，因此必须要谨慎。有时候内存使用率增高只是暂时性的，有可能 20s 内就能恢复，这时候启动驱逐程序意义不大，而且可能会导致应用的不稳定，我们要考虑到这种情况应该如何处理；另外需要注意的是，如果内存使用率过高，比如高于 95%（或者 90%，取决于主机内存大小和应用对稳定性的要求），那么我们不应该再多做评估和考虑，而是赶紧启动驱逐程序，因为这种情况再花费时间去判断可能会导致内存继续增长，系统完全崩溃。
 
@@ -287,7 +286,7 @@ Pod 的驱逐是在 kubelet 中实现的，因为 kubelet 能动态地感知到�
 
 软驱逐和硬驱逐可以单独配置，不过还是推荐两者都进行配置，一起使用。
 
-#### 驱逐哪些 pods？
+### 驱逐哪些 pods？
 
 上面我们已经整体介绍了 kubelet 驱逐 pod 的逻辑和过程，那这里就牵涉到一个具体的问题：**要驱逐哪些 pod？**驱逐的重要原则是尽量减少对应用程序的影响。
 
@@ -304,7 +303,7 @@ Pod 也是不平等的，有些 pod 要比其他 pod 更重要。只管来说，
 + 使用的紧张资源超过请求数量的 `BestEffort` 和 `Burstable pod`，这些 pod 内部又会按照优先级和使用比例进行排序
 + 紧张资源使用量低于 requests 的 `Burstable` 和 `Guaranteed` 的 pod 后面才会驱逐，只有当系统组件（kubelet、docker、journald 等）内存不够，并且没有上面 QoS 比较低的 pod 时才会做。执行的时候还会根据 priority 排序，优先选择优先级低的 pod
 
-#### 防止波动
+### 防止波动
 
 这里的波动有两种情况，我们先说说第一种。驱逐条件出发后，如果 kubelet 驱逐一部分 pod，让资源使用率低于阈值就停止，那么很可能过一段时间资源使用率又会达到阈值，从而再次出发驱逐，如此循环往复……为了处理这种问题，我们可以使用 `--eviction-minimum-reclaim` 解决，这个参数配置每次驱逐至少清理出来多少资源才会停止。
 
@@ -323,9 +322,7 @@ Pod 也是不平等的，有些 pod 要比其他 pod 更重要。只管来说，
 --eviction-minimum-reclaim="memory.available=0Mi,nodefs.available=500Mi,imagefs.available=2Gi"
 ```
 
-<br />
-
-### <p id="h2">7. 碎片整理和重调度</p>
+## 7. 碎片整理和重调度
 
 ----
 
@@ -358,7 +355,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 总的来说，descheduler 是对原生调度器的补充，用来解决原生调度器的调度决策随着时间会变得失效，或者不够优化的缺陷。
 
-### <p id="h2">8. 资源动态调整</p>
+## 8. 资源动态调整
 
 ----
 
@@ -366,7 +363,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 运算能力的增减有两种方式：改变单个 pod 的资源，已经增减 pod 的数量。这两种方式对应了 kubernetes 的 HPA 和 VPA。
 
-#### Horizontal Pod AutoScaling（横向 Pod 自动扩展）
+### Horizontal Pod AutoScaling（横向 Pod 自动扩展）
 
 ![](https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/02/autoscaler_kubernetes.jpg)
 
@@ -376,7 +373,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 目前官方的监控数据来源是 metrics server 项目，可以配置的资源只有 CPU，但是用户可以使用自定义的监控数据（比如 prometheus），其他资源（比如 memory）的 HPA 支持也已经在路上了。
 
-#### Vertical Pod AutoScaling
+### Vertical Pod AutoScaling
 
 和 HPA 的思路相似，只不过 VPA 调整的是单个 pod 的 request 值（包括 CPU 和 memory）。VPA 包括三个组件：
 
@@ -386,7 +383,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 可以看到，这三个组件的功能是互相补充的，共同实现了动态修改 pod 请求资源的功能。相对于 HPA，目前 VPA 还处于 alpha，并且还没有合并到官方的 kubernetes release 中，后续的接口和功能很可能会发生变化。
 
-#### Cluster Auto Scaler
+### Cluster Auto Scaler
 
 随着业务的发展，应用会逐渐增多，每个应用使用的资源也会增加，总会出现集群资源不足的情况。为了动态地应对这一状况，我们还需要 CLuster Auto Scaler，能够根据整个集群的资源使用情况来增减节点。
 
@@ -396,7 +393,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 理论上 HPA 和 VPA 是可以共同工作的，HPA 负责瓶颈资源，VPA 负责其他资源。比如对于 CPU 密集型的应用，使用 HPA 监听 CPU 使用率来调整 pods 个数，然后用 VPA 监听其他资源（memory、IO）来动态扩展这些资源的 request 大小即可。当然这只是理想情况。
 
-### <p id="h2">9. 总结</p>
+## 9. 总结
 
 ----
 
@@ -408,18 +405,40 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 
 <style>
-#h2{
-    margin-bottom:2em;
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
     margin-right: 5px;
-    padding: 8px 15px;
-    letter-spacing: 2px;
-    background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181));
-    background-color: rgb(63, 81, 181);
-    color: rgb(255, 255, 255);
-    border-left: 10px solid rgb(51, 51, 51);
-    border-radius:5px;
-    text-shadow: rgb(102, 102, 102) 1px 1px 1px;
-    box-shadow: rgb(102, 102, 102) 1px 1px 2px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #note {
     font-size: 1.5rem;
