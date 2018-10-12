@@ -10,6 +10,7 @@ body {
     flex-flow: column;
     height: 100vh;
     word-break: break-word;
+    webkit-font-smoothing: antialiased;
 }
 
 .container[role=main] {
