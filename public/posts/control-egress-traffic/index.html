@@ -408,6 +408,35 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-开始之前">1. 开始之前</a></li>
+<li><a href="#2-istio-中配置外部服务">2. Istio 中配置外部服务</a>
+<ul>
+<li><a href="#配置外部服务">配置外部服务</a></li>
+<li><a href="#发起对外部服务的访问">发起对外部服务的访问</a></li>
+<li><a href="#http-serviceentry-配置深度解析">HTTP ServiceEntry 配置深度解析</a></li>
+<li><a href="#https-serviceentry-配置深度解析">HTTPS ServiceEntry 配置深度解析</a></li>
+<li><a href="#tls-virtualservice-配置深度解析">TLS VirtualService 配置深度解析</a></li>
+<li><a href="#为外部服务设置路由规则">为外部服务设置路由规则</a></li>
+</ul></li>
+<li><a href="#3-直接调用外部服务">3. 直接调用外部服务</a></li>
+<li><a href="#4-总结">4. 总结</a></li>
+<li><a href="#5-清理">5. 清理</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -417,7 +446,7 @@ autocomplete('#aa-search-input',
 
 <p>本文的任务描述了如何将外部服务暴露给 Istio 集群中的客户端。你将会学到如何通过定义 <a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry" target="_blank">ServiceEntry</a> 来调用外部服务；或者简单的对 Istio 进行配置，要求其直接放行对特定 IP 范围的访问。</p>
 
-<h3 id="p-id-h2-1-开始之前-p"><p id="h2">1. 开始之前</p></h3>
+<h2 id="1-开始之前">1. 开始之前</h2>
 
 <hr />
 
@@ -436,13 +465,13 @@ autocomplete('#aa-search-input',
 
 <p>实际上任何可以 <code>exec</code> 和 <code>curl</code> 的 Pod 都可以用来完成这一任务。</p>
 
-<h3 id="p-id-h2-2-istio-中配置外部服务-p"><p id="h2">2. Istio 中配置外部服务</p></h3>
+<h2 id="2-istio-中配置外部服务">2. Istio 中配置外部服务</h2>
 
 <hr />
 
 <p>通过配置 Istio <code>ServiceEntry</code>，可以从 Istio 集群中访问外部任意的可用服务。这里我们会使用 <a href="http://httpbin.org/" target="_blank">httpbin.org</a> 以及 <a href="https://www.baidu.com/" target="_blank">www.baidu.com</a> 进行试验。</p>
 
-<h4 id="配置外部服务">配置外部服务</h4>
+<h3 id="配置外部服务">配置外部服务</h3>
 
 <p id="blue">1. 创建一个 <code>ServiceEntry</code> 对象，放行对一个外部 HTTP 服务的访问：</p>
 
@@ -498,9 +527,7 @@ spec:
 EOF
 </code></pre>
 
-<p><br /></p>
-
-<h4 id="发起对外部服务的访问">发起对外部服务的访问</h4>
+<h3 id="发起对外部服务的访问">发起对外部服务的访问</h3>
 
 <p>使用 <code>kubectl exec</code> 命令进入测试 Pod。假设使用的是 sleep 服务，运行如下命令：</p>
 
@@ -518,9 +545,7 @@ $ kubectl exec -it $SOURCE_POD -c sleep bash
 <pre><code class="language-bash">$ curl https://www.baidu.com
 </code></pre>
 
-<p><br /></p>
-
-<h4 id="http-serviceentry-配置深度解析">HTTP ServiceEntry 配置深度解析</h4>
+<h3 id="http-serviceentry-配置深度解析">HTTP ServiceEntry 配置深度解析</h3>
 
 <p>按照之前的惯例，还是先来解读一下 HTTP 协议的 <code>ServiceEntry</code> 映射到 Envoy 配置层面具体是哪些内容，这样才能对 ServiceEntry 有更加深刻的认识。</p>
 
@@ -598,11 +623,9 @@ sleep-5bc866558c-89shb   2/2       Running   0          49m
 <p>这里我简要说明一下，ServiceEntry 的 <code>resolution</code> 字段可以取三个不同的值，分别对应 Envoy 中的三种服务发现策略：</p>
 
 <ul>
-<li><p><code>NONE</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination" target="_blank">ORIGINAL_DST</a>。如果不指定 resolution 字段，默认使用这个策略。</p></li>
-
-<li><p><code>STATIC</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static" target="_blank">STATIC</a>。表示使用 <code>endpoints</code> 中指定的静态 IP 地址作为服务后端。</p></li>
-
-<li><p><code>DNS</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns" target="_blank">STRICT_DNS</a>。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 <code>endpoints</code>，并且没有使用通配符，代理服务器会使用 DNS 解析 <code>hosts</code> 字段中的地址。如果指定了 <code>endpoints</code>，那么指定的地址就会作为目标 IP 地址。</p></li>
+<li><code>NONE</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#original-destination" target="_blank">ORIGINAL_DST</a>。如果不指定 resolution 字段，默认使用这个策略。</li>
+<li><code>STATIC</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#static" target="_blank">STATIC</a>。表示使用 <code>endpoints</code> 中指定的静态 IP 地址作为服务后端。</li>
+<li><code>DNS</code> : 对应于 Envoy 中的 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/service_discovery#strict-dns" target="_blank">STRICT_DNS</a>。表示处理请求时尝试向 DNS 查询 IP 地址。如果没有指定 <code>endpoints</code>，并且没有使用通配符，代理服务器会使用 DNS 解析 <code>hosts</code> 字段中的地址。如果指定了 <code>endpoints</code>，那么指定的地址就会作为目标 IP 地址。</li>
 </ul></li>
 
 <li><p><span id="inline-blue">lbPolicy</span> : 负载均衡策略。<code>ORIGINAL_DST_LB</code> 表示使用原始目的地的负载均衡策略。具体参考: <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/load_balancing" target="_blank">Load balancing</a>。</p></li>
@@ -610,7 +633,7 @@ sleep-5bc866558c-89shb   2/2       Running   0          49m
 
 <p>如果你还部署了 <code>bookinfo</code> 示例应用，可以通过执行 <code>istioctl pc routes &lt;productpage_pod_name&gt; --name 80 -o json</code> 和 <code>istioctl pc clusters &lt;productpage_pod_name&gt; --fqdn httpbin.org -o json</code> 来验证一下，你会发现输出的结果和上面一模一样。如果还不放心，可以查看 bookinfo 应用内的所有 Pod，你会得到相同的答案。至此你应该可以理解<strong>在服务网格内的所有应用的所有 Pod上创建相应的路由规则和与之对应的 Cluster</strong>这句话的含义了。</p>
 
-<h4 id="https-serviceentry-配置深度解析">HTTPS ServiceEntry 配置深度解析</h4>
+<h3 id="https-serviceentry-配置深度解析">HTTPS ServiceEntry 配置深度解析</h3>
 
 <p><code>HTTPS</code> 协议的 ServiceEntry 与 Envoy 配置文件的映射关系与 HTTP 协议有所不同。</p>
 
@@ -704,18 +727,17 @@ curl: (51) SSL: certificate subject name 'baidu.com' does not match target host 
 
 <p>而如果你将服务发现策略改为 <code>NONE</code>，就会发现除了可以访问 <code>www.baidu.com</code>，还可以访问 <code>www.163.com</code> 和 <code>www.taobao.com</code> 等其他 https 协议的网站，至于为什么会这样，前面介绍服务发现策略的时候我已经详细解释过了。</p>
 
-<h4 id="tls-virtualservice-配置深度解析">TLS VirtualService 配置深度解析</h4>
+<h3 id="tls-virtualservice-配置深度解析">TLS VirtualService 配置深度解析</h3>
 
 <p>关于 VirtualService 的解析之前的文章已有相关说明，不过这里的 VirtualService 与之前遇到的不同，涉及到了 <code>TLSRoute</code>。</p>
 
 <ul>
-<li><p><span id="inline-blue">tls</span> : 透传 TLS 和 HTTPS 流量。TLS 路由通常应用在 <code>https-</code>、<code>tls-</code> 前缀的平台服务端口，或者经 <code>Gateway</code> 透传的 HTTPS、TLS 协议 端口，以及使用 HTTPS 或者 TLS 协议的 <code>ServiceEntry</code> 端口上。具体参考：<a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#TLSRoute" target="_blank">TLSRoute</a>。</p>
+<li><span id="inline-blue">tls</span> : 透传 TLS 和 HTTPS 流量。TLS 路由通常应用在 <code>https-</code>、<code>tls-</code> 前缀的平台服务端口，或者经 <code>Gateway</code> 透传的 HTTPS、TLS 协议 端口，以及使用 HTTPS 或者 TLS 协议的 <code>ServiceEntry</code> 端口上。具体参考：<a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#TLSRoute" target="_blank">TLSRoute</a>。
 
 <ul>
 <li><span id="inline-blue">sniHosts</span> : 必要字段。要匹配的 SNI（服务器名称指示）。可以在 SNI 匹配值中使用通配符。比如 <code>*.com</code> 可以同时匹配 <code>foo.example.com</code> 和 <code>example.com</code>。</li>
 </ul></li>
-
-<li><p><span id="inline-blue">route</span> : 流量的转发目标。目前 TLS 服务只允许一个转发目标(所以权重必须设置为 100)。当 Envoy 支持 TCP 权重路由之后，这里就可以使用多个目标了。</p></li>
+<li><span id="inline-blue">route</span> : 流量的转发目标。目前 TLS 服务只允许一个转发目标(所以权重必须设置为 100)。当 Envoy 支持 TCP 权重路由之后，这里就可以使用多个目标了。</li>
 </ul>
 
 <p>查看映射到 Envoy 中的配置：</p>
@@ -759,9 +781,7 @@ curl: (51) SSL: certificate subject name 'baidu.com' does not match target host 
 <p>最后我们来思考一下：既然不创建 TLS VirtualService 也可以访问 <code>www.baidu.com</code>，那么创建 TLS VirtualService 和不创建 TLS VirtualService 有什么区别呢？正确答案是：没有关联 <code>VirtualService</code> 的 <code>https-</code> 或者 <code>tls-</code> 端口流量会被视为透传 <code>TCP</code> 流量，而不是透传 TLS 和 HTTPS 流量。</p>
 </blockquote>
 
-<p><br /></p>
-
-<h4 id="为外部服务设置路由规则">为外部服务设置路由规则</h4>
+<h3 id="为外部服务设置路由规则">为外部服务设置路由规则</h3>
 
 <p>通过 <code>ServiceEntry</code> 访问外部服务的流量，和网格内流量类似，都可以进行 Istio <a href="https://istio.io/zh/docs/concepts/traffic-management/#%E8%A7%84%E5%88%99%E9%85%8D%E7%BD%AE" target="_blank">路由规则</a> 的配置。下面我们使用 istioctl 为 httpbin.org 服务设置一个超时规则。</p>
 
@@ -812,7 +832,7 @@ sys     0m0.004s
 
 <p>这一次会在 3 秒钟之后收到一个内容为 <code>504 (Gateway Timeout)</code> 的响应。虽然 httpbin.org 还在等待他的 5 秒钟，Istio 却在 3 秒钟的时候切断了请求。</p>
 
-<h3 id="p-id-h2-3-直接调用外部服务-p"><p id="h2">3. 直接调用外部服务</p></h3>
+<h2 id="3-直接调用外部服务">3. 直接调用外部服务</h2>
 
 <hr />
 
@@ -833,9 +853,7 @@ sys     0m0.004s
 $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 </code></pre>
 
-<p><br /></p>
-
-<h3 id="p-id-h2-4-总结-p"><p id="h2">4. 总结</p></h3>
+<h2 id="4-总结">4. 总结</h2>
 
 <hr />
 
@@ -850,7 +868,7 @@ $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 
 <p>第二种方式越过了 Istio sidecar proxy，让服务直接访问到对应的外部地址。然而要进行这种配置，需要了解云供应商特定的知识和配置。</p>
 
-<h3 id="p-id-h2-5-清理-p"><p id="h2">5. 清理</p></h3>
+<h2 id="5-清理">5. 清理</h2>
 
 <hr />
 
@@ -871,6 +889,41 @@ $ istioctl delete virtualservice httpbin-ext baidu
 <center>扫一扫关注微信公众号</center></p>
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+#blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
