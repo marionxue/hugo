@@ -1404,7 +1404,7 @@ li {
 #blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;
-    font-size: 15px;
+    font-size: 16px;
     border-left: 5px solid #986dbd;
 }
 #blue {
