@@ -431,7 +431,7 @@
         "subtitle": "从整体上理解 Pilot 和 Envoy 的流量管理机制",
         "date": "2018-10-09T12:00:17.000Z",
         "draft": false,
-        "toc": false,
+        "toc": true,
         "categories": "service mesh",
         "tags": [
             "istio",

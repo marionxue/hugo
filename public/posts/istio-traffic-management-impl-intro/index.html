@@ -405,6 +405,73 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#前言">前言</a></li>
+<li><a href="#pilot高层架构">Pilot高层架构</a>
+<ul>
+<li><a href="#统一的服务模型">统一的服务模型</a></li>
+<li><a href="#标准数据平面-api">标准数据平面 API</a></li>
+<li><a href="#业务-dsl-语言">业务 DSL 语言</a></li>
+</ul></li>
+<li><a href="#istio-流量管理相关组件">Istio 流量管理相关组件</a>
+<ul>
+<li><a href="#控制平面组件">控制平面组件</a>
+<ul>
+<li><a href="#discovery-services">Discovery Services</a></li>
+<li><a href="#k8s-api-server">K8S API Server</a></li>
+</ul></li>
+<li><a href="#数据平面组件">数据平面组件</a>
+<ul>
+<li><a href="#pilot-agent">Pilot-agent</a></li>
+<li><a href="#envoy">Envoy</a></li>
+</ul></li>
+<li><a href="#命令行工具">命令行工具</a></li>
+</ul></li>
+<li><a href="#数据平面标准-api">数据平面标准 API</a>
+<ul>
+<li><a href="#基本概念和术语">基本概念和术语</a></li>
+<li><a href="#xds-服务接口">XDS 服务接口</a></li>
+<li><a href="#xds-服务接口的最终一致性考虑">XDS 服务接口的最终一致性考虑</a></li>
+<li><a href="#ads-聚合发现服务">ADS 聚合发现服务</a></li>
+</ul></li>
+<li><a href="#bookinfo-示例程序分析">Bookinfo 示例程序分析</a>
+<ul>
+<li><a href="#bookinfo-程序结构">Bookinfo 程序结构</a></li>
+<li><a href="#xds-接口调试方法">xDS 接口调试方法</a>
+<ul>
+<li><a href="#pilot-调试方法">Pilot 调试方法</a></li>
+<li><a href="#envoy-调试方法">Envoy 调试方法</a></li>
+</ul></li>
+<li><a href="#envoy-启动过程分析">Envoy 启动过程分析</a>
+<ul>
+<li><a href="#proxy-init">Proxy_init</a></li>
+<li><a href="#proxyv2">Proxyv2</a></li>
+<li><a href="#envoy-初始配置文件">Envoy 初始配置文件</a></li>
+</ul></li>
+<li><a href="#envoy-配置分析">Envoy 配置分析</a>
+<ul>
+<li><a href="#通过管理接口获取完整配置">通过管理接口获取完整配置</a></li>
+<li><a href="#envoy-配置文件结构">Envoy 配置文件结构</a>
+<ul>
+<li><a href="#bootstrap">Bootstrap</a></li>
+<li><a href="#clusters">Clusters</a></li>
+<li><a href="#listeners">Listeners</a></li>
+<li><a href="#routes">Routes</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#bookinfo-端到端调用分析">Bookinfo 端到端调用分析</a></li>
+</ul></li>
+<li><a href="#小结">小结</a></li>
+<li><a href="#参考资料">参考资料</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+
 
                 <p></p>
 
