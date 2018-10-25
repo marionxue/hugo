@@ -10,6 +10,12 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <!--more-->
 
+<p id="div-border-left-red">
+<strong>原文地址：</strong><a href="https://medium.com/@mitchfriedman5/extending-the-envoy-admin-interface-6ce2ad220842" target="_blank">Extending the Envoy Admin Interface</a>
+<br />
+<strong>译者：</strong>杨传胜
+</p>
+
 [Envoy](https://www.envoyproxy.io/) 是一个动态可配置的高性能现代化代理工具，现在几乎所有的 IT 潮男都用它来构建服务网格。Envoy 有许多吸引人的功能，其中包括对网络流量的高级可观察性。Envoy 可以通过好几种方式来暴露数据，其中最主要的是 `stats` 和 `tracing`：stats 由内置的 [statsd ](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto#config-metrics-v2-statsdsink) 模块提供，方便集成诸如 prometheus 等监控方案。开启了 [tracing](https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/tracing) 可以方便集成 Open Tracing 系统，追踪请求。然而 Envoy 管理界面本身却很少被提及到。
 
 最近，我看到某些公司在讨论将由 `Haproxy` 驱动的数据平面替换为 Envoy。如果你以前使用过 Haproxy，应该熟悉 Haproxy 的管理界面 UI（稍微有点过时了），它会暴露出后端服务列表、健康状态、活动状态和每个服务的统计信息。
