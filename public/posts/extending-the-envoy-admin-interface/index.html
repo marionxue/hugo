@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 在 Istio 中调试 503 错误 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> 扩展 Envoy 的管理界面 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="在 Istio 中调试 503 错误" />
-  <meta name="twitter:title" content="在 Istio 中调试 503 错误" />
-  <meta name="description" content="记一次 mTLS 趟坑经历">
-  <meta property="og:description" content="记一次 mTLS 趟坑经历">
-  <meta name="twitter:description" content="记一次 mTLS 趟坑经历">
+  <meta property="og:title" content="扩展 Envoy 的管理界面" />
+  <meta name="twitter:title" content="扩展 Envoy 的管理界面" />
+  <meta name="description" content="提高 Envoy 管理界面的安全性">
+  <meta property="og:description" content="提高 Envoy 管理界面的安全性">
+  <meta name="twitter:description" content="提高 Envoy 管理界面的安全性">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -341,7 +341,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>在 Istio 中调试 503 错误</h1>
+                     <h1>扩展 Envoy 的管理界面</h1>
                      
                      
                   
@@ -349,13 +349,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">记一次 mTLS 趟坑经历</span>
+                      <span class="post-subheading">提高 Envoy 管理界面的安全性</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on October 11, 2018
+  Posted on October 25, 2018
   
   
 </span>
@@ -376,10 +376,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">在 Istio 中调试 503 错误</h1>
+                <h1 align="center">扩展 Envoy 的管理界面</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">记一次 mTLS 趟坑经历</h2>
+                    <h2 align="center" class="posts-subheading">提高 Envoy 管理界面的安全性</h2>
                   
                 
                 
@@ -400,12 +400,12 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Thu Oct 11, 2018</h4>
+        <h4 id="date"> Thu Oct 25, 2018</h4>
     </section>
-    <h5 id="wc">3100 Words|Read in about 7 Min</h5>
+    <h5 id="wc">2600 Words|Read in about 6 Min</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
         
         <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
     </h5>
@@ -417,312 +417,106 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<p id="div-border-left-red">
-<strong>原文链接：</strong><a href="https://bani.com.br/2018/08/istio-mtls-debugging-a-503-error/" target="_blank">Istio, mTLS, debugging a 503 error</a>
-<br />
-<strong>译者：</strong>杨传胜
-</p>
+<p><a href="https://www.envoyproxy.io/" target="_blank">Envoy</a> 是一个动态可配置的高性能现代化代理工具，现在几乎所有的 IT 潮男都用它来构建服务网格。Envoy 有许多吸引人的功能，其中包括对网络流量的高级可观察性。Envoy 可以通过好几种方式来暴露数据，其中最主要的是 <code>stats</code> 和 <code>tracing</code>：stats 由内置的 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto#config-metrics-v2-statsdsink" target="_blank">statsd </a> 模块提供，方便集成诸如 prometheus 等监控方案。开启了 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/tracing" target="_blank">tracing</a> 可以方便集成 Open Tracing 系统，追踪请求。然而 Envoy 管理界面本身却很少被提及到。</p>
 
-<p>大家好，本文我将与你们分享我在 Istio 官方文档中尝试<a href="https://istio.io/zh/docs/tasks/traffic-management/circuit-breaking/" target="_blank">熔断</a>教程时遇到的问题。我会记录下解决此问题的所有步骤，希望对你们有所帮助。至少对我自己来说，在整个排错过程中学到了很多关于 Istio 的知识。</p>
+<p>最近，我看到某些公司在讨论将由 <code>Haproxy</code> 驱动的数据平面替换为 Envoy。如果你以前使用过 Haproxy，应该熟悉 Haproxy 的管理界面 UI（稍微有点过时了），它会暴露出后端服务列表、健康状态、活动状态和每个服务的统计信息。</p>
 
-<p>我的实践步骤非常简单，总共分为两步：</p>
+<p><img src="http://oqk3alhse.bkt.clouddn.com/haproxy-admin.png" alt="" /></p>
 
-<ol>
-<li>部署两个应用（一个 httpbin 示例应用 + 一个带有命令行工具 <code>curl</code> 的客户端）</li>
-<li>创建一个 <a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#DestinationRule" target="_blank">目标规则</a>以限制对 httpbin 服务的调用（熔断）</li>
-</ol>
+<p>每当添加新的后端服务或修改 <a href="https://www.haproxy.com/documentation/aloha/10-0/traffic-management/lb-layer7/acls/" target="_blank">ACL</a> 时，如果出现了故障，我就会用此管理界面 UI 来调试网络。例如，在任何给定时间，很容易确定集群中的单个故障后端，以及哪些后端服务运行状况不佳。</p>
 
-<p>是不是非常简单？让我们开始吧！</p>
+<p>Envoy 管理界面也提供了很多功能，其中 <code>/clusters</code> 和 <code>/config_dump</code> 端点提供了大量有用的信息（例如，<code>/clusters</code> 端点中的所有动态配置的 Cluster 和 Endpoint，以及 <code>/config_dump</code> 端点中的所有其他当前状态的配置，稍后我会详细介绍）。</p>
 
-<p>首先安装 httpbin 服务和客户端：</p>
+<p>不幸的是，在我看来，由于某些原因，Envoy 的管理界面做得并不是很友好，但我们可以做一些改进来使管理 Envoy 更容易，对用户更加友好。</p>
 
-<pre><code class="language-bash">$ kubectl create ns foo
-$ kubectl apply -f &lt;(istioctl kube-inject -f samples/httpbin/httpbin.yaml) -n foo
-$ kubectl apply -f &lt;(istioctl kube-inject -f samples/sleep/sleep.yaml) -n foo
- 
-$ kubectl -n foo get pod,svc
+<p>首先，它并不像 <code>Haproxy</code> 的管理界面那样直观，特别是当你想在某些事件中快速找到一些有用信息时（比如回答我上面提到的各种问题）。</p>
 
-NAME                           READY     STATUS    RESTARTS   AGE
-pod/httpbin-6bbb775889-wcp45   2/2       Running   0          35s
-pod/sleep-5b597748b4-77kj5     2/2       Running   0          35s
- 
-NAME              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
-service/httpbin   ClusterIP   10.105.25.98           8000/TCP   36s
-service/sleep     ClusterIP   10.111.0.72            80/TCP     35s
+<p>其次，通过此 UI 可以执行某些潜在的危险操作（例如，停止正在运行的 Envoy 进程）。对于管理员或者某些团队而言，这可能不是什么大问题，但对服务使用者而言，需要以更安全的只读模式来使用此 UI（该模式仅公开一部分功能），而 Envoy 目前是不支持的。理想情况是：我想让服务所有者能够看到 <code>/clusters</code> 和 <code>/config_dump</code> 的输出，但没有任何潜在的危险行为。这个问题已经作为一个 <a href="https://github.com/envoyproxy/envoy/issues/2763" target="_blank">open issue</a> 在 Github 中进行讨论，同时 <a href="https://www.envoyproxy.io/docs/envoy/latest/operations/admin" target="_blank">官方文档</a> 中也提到了这一点。我们将遵循 <a href="https://twitter.com/mattklein123" target="_blank">Matt Klein</a> 在此 <a href="https://github.com/envoyproxy/data-plane-api/pull/523#issuecomment-371550679" target="_blank">comment</a> 中提出的有关使用真正的 Listener 来增强管理界面的建议。</p>
+
+<p>最后，我们希望将 <code>Listener</code> 的配置嵌入到 Envoy 的配置文件中，以便工程师可以通过一致的工作流程来处理与 Envoy 相关的配置。</p>
+
+<p>还好我们是软件工程师，这些都不是问题！我们拥有所需的所有原始数据，可以自己构建一个简单的 UI！</p>
+
+<p>你需要做的第一件事就是开启 Envoy 的管理界面。你只需要将这部分配置放在 Envoy 配置文件中以设置管理员访问日志路径和运行管理服务的端口：</p>
+
+<pre><code class="language-yaml">admin:
+  access_log_path: /var/log/envoy/envoy_admin_access.log
+  address:
+    socket_address: { address: 0.0.0.0, port_value: 5000 }
 </code></pre>
 
-<p>接下来就登入客户端 Pod 并使用 curl 来调用 <code>httpbin</code>：</p>
+<p>启动 Envoy 进程后，你就可以在浏览器中通过 URL <code>&lt;public_ip&gt;:5000</code> 访问 Envoy 的管理界面了。</p>
 
-<pre><code class="language-bash">$ kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl http://httpbin:8000/get
+<p><center><img src="http://oqk3alhse.bkt.clouddn.com/envoy-admin.png" alt="" /></center></p>
+
+<p>现在有一个小问题——你会注意到，如果你尝试构建一个从远程 Envoy 实例（<code>&lt;public_ip&gt;:5000</code>）中提取数据的网站，你将看到浏览器（不禁用任何安全设置）不会允许我们获取数据，因为远程 Envoy 实例的端点不包含正确的 <code>CORS</code>（跨域资源共享） 响应头（如文档中所述，以防止 <code>CSRF</code> 攻击）。</p>
+
+<p>正如 Matt Klein 在上面的 Github <a href="https://github.com/envoyproxy/data-plane-api/pull/523#issuecomment-371550679" target="_blank">comment</a> 中所建议的一样，我们可以设置一个包含正确 <code>CORS</code> 响应头的代理，并让我们的网站从该代理获取数据。</p>
+
+<p>这个很简单，只需要使用单个 <code>VirtualHost</code> 配置一个 <code>Listener</code> 和 <code>Cluster</code>，该 <code>VirtualHost</code> 代理本地 <code>5000</code> 端口或运行管理服务的任何其他端口。我们只需要确保该代理包含正确的 CORS 响应头——对于我上面提到的情况，只需要配置响应头 <code>Access-Control-Allow-Origin</code>。</p>
+
+<p>由于我们一直在使用 <a href="https://github.com/envoyproxy/java-control-plane" target="_blank">java 控制平面库</a> 编写一个控制平面，我们决定动态生成这些对象以防以后想要更改或更新它们，但通过静态配置文件也很容易配置。请参考以下需要包含在引导程序文件中以实现此代理的静态资源配置示例：</p>
+
+<pre><code class="language-yaml">static_resources:
+  clusters:
+  - name: local_admin_cluster
+    connect_timeout: 30s
+    type: STATIC
+    lb_policy: ROUND_ROBIN
+    hosts: [{ socket_address: { address: 0.0.0.0, port_value: 5000 }}]
+
+  listeners:
+  - name: local_admin_listener
+    address:
+      socket_address: { address: 0.0.0.0, port_value: 5001 }
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          stat_prefix: ingress_http
+          codec_type: AUTO
+          route_config:
+            name: local_admin_route
+            virtual_hosts:
+            - name: local_service
+              domains: [&quot;*&quot;]
+              response_headers_to_add:
+              - header:
+                  key: &quot;Access-Control-Allow-Origin&quot;
+                  value: &quot;*&quot;
+
+              routes:
+              - match: { path: &quot;/clusters&quot; }
+                route: { cluster: local_admin }
+              - match: { path: &quot;/config_dump&quot; }
+                route: { cluster: local_admin }
+          http_filters:
+          - name: envoy.router
 </code></pre>
 
-<pre><code class="language-json">{
-  &quot;args&quot;: {}, 
-  &quot;headers&quot;: {
-    &quot;Accept&quot;: &quot;*/*&quot;, 
-    &quot;Content-Length&quot;: &quot;0&quot;, 
-    &quot;Host&quot;: &quot;httpbin:8000&quot;, 
-    &quot;User-Agent&quot;: &quot;curl/7.35.0&quot;, 
-    &quot;X-B3-Sampled&quot;: &quot;1&quot;, 
-    &quot;X-B3-Spanid&quot;: &quot;b5d006d3d9bf1f4d&quot;, 
-    &quot;X-B3-Traceid&quot;: &quot;b5d006d3d9bf1f4d&quot;, 
-    &quot;X-Request-Id&quot;: &quot;970b84b2-999b-990c-91b4-b6c8d2534e77&quot;
-  }, 
-  &quot;origin&quot;: &quot;127.0.0.1&quot;, 
-  &quot;url&quot;: &quot;http://httpbin:8000/get&quot;
-}
-</code></pre>
-
-<p>到目前为止一切正常。下面创建一个目标规则针对 <code>httpbin</code> 服务设置断路器：</p>
-
-<pre><code class="language-yaml">$ cat &lt;&lt;EOF | kubectl -n foo apply -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: httpbin
-spec:
-  host: httpbin
-  trafficPolicy:
-    connectionPool:
-      tcp:
-        maxConnections: 1
-      http:
-        http1MaxPendingRequests: 1
-        maxRequestsPerConnection: 1
-    outlierDetection:
-      consecutiveErrors: 1
-      interval: 1s
-      baseEjectionTime: 3m
-      maxEjectionPercent: 100
-EOF
-</code></pre>
-
-<p>现在尝试再次调用 httpbin 服务：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl http://httpbin:8000/get
-
-upstream connect error or disconnect/reset before headers
-</code></pre>
-
-<p>哎呀出事了！我们可以让 curl 输出更加详细的信息：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbin:8000/get
-
-* Hostname was NOT found in DNS cache
-*   Trying 10.105.235.142...
-* Connected to httpbin (10.105.235.142) port 8000 (#0)
-&gt; GET /get HTTP/1.1
-&gt; User-Agent: curl/7.35.0
-&gt; Host: httpbin:8000
-&gt; Accept: */*
-&gt; 
-&lt; HTTP/1.1 503 Service Unavailable
-&lt; content-length: 57
-&lt; content-type: text/plain
-&lt; date: Tue, 28 Aug 2018 12:26:54 GMT
-* Server envoy is not blacklisted
-&lt; server: envoy
-&lt; 
-* Connection #0 to host httpbin left intact
-upstream connect error or disconnect/reset before headers
-</code></pre>
-
-<p>发现了 503 错误。。。为什么呢？根据刚刚创建的 <code>DestinationRule</code>，应该可以成功调用 httpbin 服务的。因为我们将 TCP 连接的最大数量设置为 1，而 curl 命令只生成了一个连接。那么到底哪里出问题了呢？</p>
-
-<p>我能想到的第一件事就是通过查询 istio-proxy 的状态来验证熔断策略是否生效：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo exec -it -c istio-proxy sleep-5b597748b4-77kj5 -- curl localhost:15000/stats | grep httpbin | grep pending
-
-cluster.outbound|8000||httpbin.foo.svc.cluster.local.upstream_rq_pending_active: 0
-cluster.outbound|8000||httpbin.foo.svc.cluster.local.upstream_rq_pending_failure_eject: 0
-cluster.outbound|8000||httpbin.foo.svc.cluster.local.upstream_rq_pending_overflow: 0
-cluster.outbound|8000||httpbin.foo.svc.cluster.local.upstream_rq_pending_total: 5
-</code></pre>
-
-<p><code>upstream_rq_pending_overflow</code> 的值是 <code>0</code>，说明没有任何调用被标记为熔断。</p>
+<p>如你所见，我已经确保路由仅匹配 <code>/clusters</code> 和 <code>/config_dump</code>，这样就不会造成潜在的危险。此外，由于我们已经将其作为我们的控制平面驱动的动态配置文件实现，因此我们可以根据是开发环境还是生产环境来更改这些路径的匹配方式（比如在开发环境中可以公开管理界面的所有端点，但在生产环境中不能这么做）。</p>
 
 <div id="note">
 <p id="note-title">Note</p>
 <br />
 <p>
-Istio sidecar（名为 <code>istio-proxy</code> 的 Envoy 容器）暴露出 15000 端口以提供一些实用的功能，可以通过 HTTP 访问这个端口，例如打印相关服务的一些统计信息。
-<br /><br />
-因此，在上面的的命令中，我们在客户端 Pod（sleep-5b597748b4-77kj5）的 sidecar 容器（-c istio-proxy）中执行 curl（curl localhost:15000/stats），过滤出我们要检查的服务的统计信息（| grep httpbin），然后过滤出熔断器挂起状态（| grep pending）。
+注意，因为我们使用的是 <code>Listener</code>，所以我们应该使用 <code>HTTPs</code>，我会将其作为读者的练习。
 </p>
 </div>
 
-<p>为了确认 <code>DestinationRule</code> 才是罪魁祸首，我决定将它删除然后再尝试调用：</p>
+<p>前面我没有提到如何使用 <code>/config_dump</code> 端点导的数据（Haproxy 的 UI 可以通过 <code>/clusters</code> 端点的信息来构建等效的数据），因为我不太清楚我想要构建什么。由于 Envoy 的配置实在是太复杂了（即使不使用动态控制平面，只使用静态配置文件），以至于其他使用者很难确定每个 Envoy 实例的配置。<code>/config_dump</code> 的输出可能非常冗长，特别是如果有非常多复杂的 Cluster、Listener 和 Route。我认为这将是一个很好的用例，可以用来演示一些展示当前流量分割、流量镜像、Cluster 子集和权重的可视化。</p>
 
-<pre><code class="language-bash">$ kubectl -n foo delete DestinationRule httpbin
+<p>此外，当我们在控制平面中开发更多功能时，为手动测试提供一些视觉反馈并向团队的其他人展示新功能将会起到很棒的效果。</p>
 
-destinationrule.networking.istio.io &quot;httpbin&quot; deleted
+<p>我认为我们真的只是在获得对网络的深入见解时找到了冰山一角，我很高兴看到我们通过扩展 Envoy 管理界面等强大工具使我们的网络更加健壮和易懂。</p>
 
-
-$ kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbin:8000/get
-
-...
-&lt; HTTP/1.1 200 OK
-...
-</code></pre>
-
-<p>再将该 <code>DestinationRule</code> 加回来，然后再次尝试调用：</p>
-
-<pre><code class="language-bash">...
-&lt; HTTP/1.1 503 Service Unavailable
-...
-</code></pre>
-
-<p>看来问题确实出在 DestinationRule 这里，但是还是不知道为什么，我们需要进一步研究。我灵机一动，要不先来看看 Envoy（istio-proxy sidecar）的日志吧：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo logs -f sleep-5b597748b4-77kj5 -c istio-proxy
-
-# 在另一个终端执行以下命令 (kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbin:8000/get)
-# 然后会输出下面的日志：
-
-[2018-08-28T13:06:56.454Z] &quot;GET /get HTTP/1.1&quot; 503 UC 0 57 0 - &quot;-&quot; &quot;curl/7.35.0&quot; &quot;19095d07-320a-9be0-8ba5-e0d08cf58f52&quot; &quot;httpbin:8000&quot; &quot;172.17.0.14:8000&quot;
-</code></pre>
-
-<p>并没有看到什么有用的信息。日志告诉我们 Envoy 从服务器收到了 503 错误，OK，那我们就来检查一下服务器端（httpbin）的日志：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo logs -f httpbin-94fdb8c79-h9zrq -c istio-proxy
-# 在另一个终端执行以下命令 (kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbin:8000/get)
-# 日志输出为空
-</code></pre>
-
-<p>什么？日志输出中竟然没有任何内容，就好像请求根本没有到达服务器一样。那么现在该怎么办呢，可不可以增加日志输出等级？也许请求已经收到了，只是没有被输出而已。</p>
-
-<p>还记得我上面讲过的 Envoy 暴露了 15000 端口作为管理接口吗？我们可以用它来获取统计数据。看看它都提供了哪些功能：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo exec -it -c istio-proxy httpbin-94fdb8c79-h9zrq -- curl http://localhost:15000/help
-
-admin commands are:
-  /: Admin home page
-  /certs: print certs on machine
-...
-  /logging: query/change logging levels
-...
-</code></pre>
-
-<p>嘿嘿，似乎找到了我们需要的东西：<code>/logging</code>，试试吧：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo exec -it -c istio-proxy httpbin-94fdb8c79-h9zrq -- curl http://localhost:15000/logging?level=trace
-
-active loggers:
-  admin: trace
-...
-</code></pre>
-
-<p>上面的命令将服务器 Envoy 的日志等级设为 <code>trace</code>，该日志等级输出的日志信息最详细。关于管理接口的更多信息，请查看 <a href="https://www.envoyproxy.io/docs/envoy/latest/operations/admin" target="_blank">Envoy 官方文档</a>。现在我们再来重新查看服务器 Envoy 的日志，希望能够得到一些有用的信息：</p>
-
-<pre><code class="language-bash">$ kubectl -n foo logs -f httpbin-94fdb8c79-h9zrq -c istio-proxy
-
-# 在另一个终端执行以下命令 (kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbin:8000/get)
-# 然后会输出下面的日志：（我过滤了一些不相关的内容）
-
-[debug][filter] external/envoy/source/extensions/filters/listener/original_dst/original_dst.cc:18] original_dst: New connection accepted
-[debug][main] external/envoy/source/server/connection_handler_impl.cc:217] [C31] new connection
-[trace][connection] external/envoy/source/common/network/connection_impl.cc:389] [C31] socket event: 2
-[trace][connection] external/envoy/source/common/network/connection_impl.cc:457] [C31] write ready
-[debug][connection] external/envoy/source/common/ssl/ssl_socket.cc:111] [C31] handshake error: 2
-[trace][connection] external/envoy/source/common/network/connection_impl.cc:389] [C31] socket event: 3
-[trace][connection] external/envoy/source/common/network/connection_impl.cc:457] [C31] write ready
-[debug][connection] external/envoy/source/common/ssl/ssl_socket.cc:111] [C31] handshake error: 1
-[debug][connection] external/envoy/source/common/ssl/ssl_socket.cc:139] [C31] SSL error: 268435612:SSL routines:OPENSSL_internal:HTTP_REQUEST
-[debug][connection] external/envoy/source/common/network/connection_impl.cc:133] [C31] closing socket: 0
-</code></pre>
-
-<p>现在我们可以看到请求确实已经到达服务器了，但由于握手错误导致了请求失败，并且 Envoy 正在关闭连接。现在的问题是：<strong>为什么会发生握手错误？为什么会涉及到 SSL？</strong></p>
-
-<p>当在 Istio 中谈到 SSL 时，一般指的是双向 TLS。然后我就去查看 Istio 官方文档，视图找到与我的问题相关的内容，最后终于在 <a href="https://istio.io/zh/docs/tasks/security/authn-policy/" target="_blank">基础认证策略</a> 这篇文档中找到了我想要的东西。</p>
-
-<p><font color=red>我发现我在部署 Istio 时启用了 Sidecar 之间的双向 TLS 认证！</font></p>
-
-<p>检查一下：</p>
-
-<pre><code class="language-yaml">$ kubectl get MeshPolicy default -o yaml
-
-apiVersion: authentication.istio.io/v1alpha1
-kind: MeshPolicy
-metadata: ...
-spec:
-  peers:
-  - mtls: {}
-
- 
-$ kubectl -n istio-system get DestinationRule default -o yaml
-
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata: ...
-spec:
-  host: '*.local'
-  trafficPolicy:
-    tls:
-      mode: ISTIO_MUTUAL
-</code></pre>
-
-<p>上面这些输出表明集群中开启了双向 TLS 认证，因为这些全局身份验证策略和目标规则只有在开启双向 TLS 认证时才会存在。</p>
-
-<p>再回到最初的问题：为什么调用 httpbin 服务会失败？现在我们已经知道了网格中开启了双向 TLS 认证，通过阅读文档可以推断出服务器端仅接受使用 TLS 的加密请求，而客户端仍在使用明文请求。现在来重新修改一个问题：<strong>为什么客户端（sleep pod）会使用明文来请求服务器端（httpbin pod）？</strong></p>
-
-<p>再次仔细阅读官方文档可以找到答案。双向 TLS 认证（<code>mTLS</code>）在 Istio 中的工作方式很简单：它会创建一个默认的 <code>DestinationRule</code> 对象（名称为 <code>default</code>），它表示网格中的所有客户端都使用双向 TLS。但是当我们为了实现熔断策略创建自己的 <code>DestinationRule</code> 时，用自己的配置（根本就没有设置 TLS！）覆盖了默认配置。</p>
-
-<p>这是 <a href="https://istio.io/zh/docs/tasks/security/authn-policy/" target="_blank">基础认证策略</a> 文档中的原文：</p>
-
-<p id="blockquote">
-除了认证场合之外，目标规则还有其它方面的应用，例如金丝雀部署。但是所有的目标规则都适用相同的优先顺序。因此，如果一个服务需要配置其它目标规则（例如配置负载均衡），那么新规则定义中必须包含类似的 TLS 块来定义 <code>ISTIO_MUTUAL</code> 模式，否则它将覆盖网格或命名空间范围的 TLS 设置并禁用 TLS。
-</p>
-
-<p>现在知道问题出在哪了，解决办法就是：修改 <code>DestinationRule</code> 以包含 TLS 配置项：</p>
-
-<pre><code class="language-yaml">cat &lt;&lt;EOF | kubectl -n foo apply -f -
-apiVersion: networking.istio.io/v1alpha3
-kind: DestinationRule
-metadata:
-  name: httpbin
-spec:
-  host: httpbin
-  trafficPolicy:
-    connectionPool:
-      tcp:
-        maxConnections: 1
-      http:
-        http1MaxPendingRequests: 1
-        maxRequestsPerConnection: 1
-    outlierDetection:
-      consecutiveErrors: 1
-      interval: 1s
-      baseEjectionTime: 3m
-      maxEjectionPercent: 100
-    tls:
-      mode: ISTIO_MUTUAL
-EOF
-</code></pre>
-
-<p>再次尝试调用 httpbin 服务：</p>
-
-<pre><code class="language-bash">kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbin:8000/get
-
-...
-&lt; HTTP/1.1 200 OK
-...
-</code></pre>
-
-<p>现在我可以继续实验熔断教程了！</p>
-
-<p><strong>总结：</strong></p>
+<p>如果您对此有任何想法，请随时通过 <code>Twitter</code> 或通过电子邮件与我联系：</p>
 
 <ul>
-<li>确认是否启用了 mTLS，如果启用了可能会遇到很多错误。😊</li>
-<li>所有的目标规则都适用相同的优先顺序，具体的规则会覆盖全局的规则。</li>
-<li>有时候可以充分利用 Sidecar 的管理接口（本地端口 15000）。</li>
-<li>仔细阅读官方文档。😊</li>
+<li><p>Twitter: <a href="https://twitter.com/mitchfriedman5" target="_blank">@mitchfriedman5</a></p></li>
+
+<li><p>Email: <code>mitchfriedman5@gmail.com</code></p></li>
 </ul>
-
-<hr />
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
-<center>扫一扫关注微信公众号</center></p>
 
 <style>
 h1,h2,h3,h4,h5,h6 {
@@ -744,10 +538,10 @@ h2::before {
     margin-right: 5px;
     color: #2d96bd;
 }
-h3 {
-    color: #0099CC;
+li {
+    line-height: 2;
 }
-#blockquote {
+blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;
     font-size: 14px;
@@ -1008,11 +802,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/envoy-xds-protocol/" data-toggle="tooltip" data-placement="top" title="Envoy 中的 xDS REST 和 gRPC 协议详解">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/" data-toggle="tooltip" data-placement="top" title="在 Istio 中调试 503 错误">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/" data-toggle="tooltip" data-placement="top" title="扩展 Envoy 的管理界面">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -1022,15 +816,15 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/istio-traffic-management-impl-intro/">Istio 流量管理实现机制深度解析</a></li>
+                    <li><a href="/posts/envoy-xds-protocol/">Envoy 中的 xDS REST 和 gRPC 协议详解</a></li>
                     
-                    <li><a href="/posts/increasing-security-of-istio-deployments/">通过消除对特权容器的需求来提高 Istio Deployment 的安全性</a></li>
+                    <li><a href="/posts/setting-up-ssl-in-envoy-practice/">为 Envoy 开启 TLS 验证实战</a></li>
                     
-                    <li><a href="/posts/expose-gateway-of-istio/">暴露 Istio Service Mesh 中的 Gateway</a></li>
+                    <li><a href="/posts/circuit-breaking/">Envoy 熔断器的原理和使用</a></li>
                     
-                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
+                    <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
                     
-                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
+                    <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
                     
                 </ul>
                 

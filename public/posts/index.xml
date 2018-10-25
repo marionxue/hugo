@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>扩展 Envoy 的管理界面</title>
+      <link>https://www.yangcs.net/posts/extending-the-envoy-admin-interface/</link>
+      <pubDate>Thu, 25 Oct 2018 16:34:20 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/extending-the-envoy-admin-interface/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>在 Istio 中调试 503 错误</title>
       <link>https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/</link>
       <pubDate>Thu, 11 Oct 2018 15:59:54 +0800</pubDate>
