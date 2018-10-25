@@ -117,6 +117,11 @@ static_resources:
 
 + Email: `mitchfriedman5@gmail.com`
 
+----
+
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>扫一扫关注微信公众号</center>
+
 <style>
 h1,h2,h3,h4,h5,h6 {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
