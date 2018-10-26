@@ -414,6 +414,29 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-通过-rds-提供路由">1. 通过 RDS 提供路由</a></li>
+<li><a href="#2-路由定义的最佳实践">2. 路由定义的最佳实践</a>
+<ul>
+<li><a href="#将路由视为数据">将路由视为数据</a></li>
+<li><a href="#将控制权分配给具有-acl-权限的团队">将控制权分配给具有 <code>ACL</code> 权限的团队</a></li>
+<li><a href="#管理路由的更改">管理路由的更改</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -421,7 +444,7 @@ autocomplete('#aa-search-input',
 
 <p>单独创建控制平面的最大优势之一是可以为路由配置提供统一的来源。传统架构的路由定义分散存储在 Web 服务器的配置文件、负载均衡器配置文件和特定应用程序的配置中（如 <code>routes.rb</code>），使用单独的控制平面可以集中所有的路由配置，使它们更易于更改和管理，同时也为应用的迁移和发布提供了更高的灵活性。</p>
 
-<h2 id="p-id-h2-1-通过-rds-提供路由-p"><p id="h2">1. 通过 RDS 提供路由</p></h2>
+<h2 id="1-通过-rds-提供路由">1. 通过 RDS 提供路由</h2>
 
 <hr />
 
@@ -443,7 +466,7 @@ resources:
 
 <p>开源项目 <a href="https://github.com/envoyproxy/go-control-plane" target="_blank">go-control-plane</a>，<a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Istio Pilot</a> 和 商业项目 <a href="http://turbinelabs.io/product" target="_blank">Houston</a> 都提供了 RDS 的 API，Envoy 官方文档也定义了一个<a href="https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#v2-grpc-streaming-endpoints" target="_blank">完整的 RDS 规范</a>。RDS 规范只是一种流量传输机制，如何对路由进行管理还是要取决于你。</p>
 
-<h2 id="p-id-h2-2-路由定义的最佳实践-p"><p id="h2">2. 路由定义的最佳实践</p></h2>
+<h2 id="2-路由定义的最佳实践">2. 路由定义的最佳实践</h2>
 
 <hr />
 

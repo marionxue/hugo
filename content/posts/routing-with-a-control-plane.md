@@ -3,6 +3,7 @@ title: "通过控制平面提供路由"
 subtitle: "路由定义的最佳实践"
 date: 2018-07-06T06:16:02Z
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["envoy", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -14,7 +15,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 单独创建控制平面的最大优势之一是可以为路由配置提供统一的来源。传统架构的路由定义分散存储在 Web 服务器的配置文件、负载均衡器配置文件和特定应用程序的配置中（如 `routes.rb`），使用单独的控制平面可以集中所有的路由配置，使它们更易于更改和管理，同时也为应用的迁移和发布提供了更高的灵活性。
 
-## <p id="h2">1. 通过 RDS 提供路由</p>
+## 1. 通过 RDS 提供路由
 
 ----
 
@@ -37,7 +38,7 @@ resources:
 
 开源项目 [go-control-plane](https://github.com/envoyproxy/go-control-plane)，[Istio Pilot](https://istio.io/docs/concepts/traffic-management/pilot.html) 和 商业项目 [Houston](http://turbinelabs.io/product) 都提供了 RDS 的 API，Envoy 官方文档也定义了一个[完整的 RDS 规范](https://www.envoyproxy.io/docs/envoy/latest/configuration/overview/v2_overview.html#v2-grpc-streaming-endpoints)。RDS 规范只是一种流量传输机制，如何对路由进行管理还是要取决于你。
 
-## <p id="h2">2. 路由定义的最佳实践</p>
+## 2. 路由定义的最佳实践
 
 ----
 
