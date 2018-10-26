@@ -460,11 +460,9 @@ autocomplete('#aa-search-input',
 <p>控制平面必须要满足 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api" target="_blank">Envoy v2 xDS APIs</a>，同时为了更好地使用服务发现能力，你的控制平面最好能够实现集群发现服务（CDS）和端点发现服务（EDS）。为了避免重复造轮子，你可以选择社区已经实现好的控制平面：</p>
 
 <ul>
-<li><p><span id="inline-blue">Rotor</span> : <a href="https://github.com/turbinelabs/rotor" target="_blank">Rotor</a> 是一种快速、轻量级的 xDS 实现，它可以和 <code>Kubernetes</code>、<code>Consul</code> 和 <code>AWS</code> 等服务集成，并且提供了一组默认的路由发现服务（RDS）和监听器发现服务（LDS）。它也是 Turbine Labs 的商业解决方案 <a href="https://www.turbinelabs.io/" target="_blank">Houston</a> 的组件之一，Houston 在 Rotor 的基础上增加了更多的路由、指标和弹性方面的配置。</p></li>
-
-<li><p><span id="inline-blue">go-control-plane</span> : Envoy 官方仓库提供了一个开源版本的控制平面：<a href="https://github.com/envoyproxy/go-control-plane" target="_blank">go-control-plane</a>。如果你想弄清楚如何从服务发现服务中获取所有内容，可以好好研究一下这个项目。</p></li>
-
-<li><p><span id="inline-blue">Pilot</span> :  如果想将 Envoy 和 Kubernetes 集成，你可以选择 <a href="https://istio.io/" target="_blank">Istio</a> 项目。Istio 中的控制平面是由 <a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Pilot</a> 组件来实现的，它会将 <code>YAMl</code> 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 <code>Mixer</code>）来单独和 Envoy 集成。</p></li>
+<li><span id="inline-blue">Rotor</span> : <a href="https://github.com/turbinelabs/rotor" target="_blank">Rotor</a> 是一种快速、轻量级的 xDS 实现，它可以和 <code>Kubernetes</code>、<code>Consul</code> 和 <code>AWS</code> 等服务集成，并且提供了一组默认的路由发现服务（RDS）和监听器发现服务（LDS）。它也是 Turbine Labs 的商业解决方案 <a href="https://www.turbinelabs.io/" target="_blank">Houston</a> 的组件之一，Houston 在 Rotor 的基础上增加了更多的路由、指标和弹性方面的配置。</li>
+<li><span id="inline-blue">go-control-plane</span> : Envoy 官方仓库提供了一个开源版本的控制平面：<a href="https://github.com/envoyproxy/go-control-plane" target="_blank">go-control-plane</a>。如果你想弄清楚如何从服务发现服务中获取所有内容，可以好好研究一下这个项目。</li>
+<li><span id="inline-blue">Pilot</span> :  如果想将 Envoy 和 Kubernetes 集成，你可以选择 <a href="https://istio.io/" target="_blank">Istio</a> 项目。Istio 中的控制平面是由 <a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Pilot</a> 组件来实现的，它会将 <code>YAMl</code> 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 <code>Mixer</code>）来单独和 Envoy 集成。</li>
 </ul>
 
 <h2 id="2-将服务发布到-cds">2. 将服务发布到 CDS</h2>
