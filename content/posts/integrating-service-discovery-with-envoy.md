@@ -3,6 +3,7 @@ title: "将服务发现与 Envoy 集成"
 subtitle: "为 Envoy 配置 CDS 和 EDS"
 date: 2018-07-04T10:12:43Z
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["envoy", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -21,7 +22,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 2. 将控制平面中定义的服务发布到 Envoy 的 `clusters` 中
 3. 将 主机/容器/实例 发布到 Envoy 的 `endpoints` 中
 
-## <p id="h2">1. 实现一个控制平面</p>
+## 1. 实现一个控制平面
 
 ----
 
@@ -33,7 +34,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 + <span id="inline-blue">Pilot</span> :  如果想将 Envoy 和 Kubernetes 集成，你可以选择 [Istio](https://istio.io/) 项目。Istio 中的控制平面是由 [Pilot](https://istio.io/docs/concepts/traffic-management/pilot.html) 组件来实现的，它会将 `YAMl` 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 `Mixer`）来单独和 Envoy 集成。
 
-## <p id="h2">2. 将服务发布到 CDS</p>
+## 2. 将服务发布到 CDS
 
 ----
 
@@ -67,7 +68,7 @@ resources:
 
 设置好 CDS 之后，就可以为此集群设置端点发现服务（EDS）了。
 
-## <p id="h2">3. 将实例发布到 EDS</p>
+## 3. 将实例发布到 EDS
 
 ----
 
@@ -91,7 +92,7 @@ resources:
 
 Envoy 将 CDS 和 EDS 视为一份份的报告并保持服务发现的最终一致性。如果到该端点的请求经常失败，就会从负载均衡中删除该端点，直到再次恢复正常访问。
 
-## <p id="h2">4. 最佳实践：对配置进行分区</p>
+## 4. 最佳实践：对配置进行分区
 
 ----
 
@@ -102,15 +103,53 @@ Envoy 将 CDS 和 EDS 视为一份份的报告并保持服务发现的最终一�
 
 对配置进行分区可以降低对不同服务的运营和管理的难度，但它的代价是使控制平面变得更加复杂，但客户往往是不关心控制平面的，所以牺牲控制平面的复杂度还是很值得的。
 
-## <p id="h2">5. 下一步</p>
+## 5. 下一步
 
 ----
 
 一旦控制平面发现了所有可用服务，就可以在这些服务上配置路由了。下一节将会介绍如何配置路由发现服务（RDS）。
 
-![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)
+----
+
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>扫一扫关注微信公众号</center>
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

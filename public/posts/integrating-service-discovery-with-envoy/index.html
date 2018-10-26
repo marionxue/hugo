@@ -402,7 +402,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Wed Jul 4, 2018</h4>
     </section>
-    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="wc">2400 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
@@ -414,6 +414,27 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-实现一个控制平面">1. 实现一个控制平面</a></li>
+<li><a href="#2-将服务发布到-cds">2. 将服务发布到 CDS</a></li>
+<li><a href="#3-将实例发布到-eds">3. 将实例发布到 EDS</a></li>
+<li><a href="#4-最佳实践-对配置进行分区">4. 最佳实践：对配置进行分区</a></li>
+<li><a href="#5-下一步">5. 下一步</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -432,7 +453,7 @@ autocomplete('#aa-search-input',
 <li>将 主机/容器/实例 发布到 Envoy 的 <code>endpoints</code> 中</li>
 </ol>
 
-<h2 id="p-id-h2-1-实现一个控制平面-p"><p id="h2">1. 实现一个控制平面</p></h2>
+<h2 id="1-实现一个控制平面">1. 实现一个控制平面</h2>
 
 <hr />
 
@@ -446,7 +467,7 @@ autocomplete('#aa-search-input',
 <li><p><span id="inline-blue">Pilot</span> :  如果想将 Envoy 和 Kubernetes 集成，你可以选择 <a href="https://istio.io/" target="_blank">Istio</a> 项目。Istio 中的控制平面是由 <a href="https://istio.io/docs/concepts/traffic-management/pilot.html" target="_blank">Pilot</a> 组件来实现的，它会将 <code>YAMl</code> 文件的内容转换为相应的 xDS 响应。如果你不想使用 Istio，也不用担心，因为 Pilot 完全可以脱离 Istio 的其他组件（如 <code>Mixer</code>）来单独和 Envoy 集成。</p></li>
 </ul>
 
-<h2 id="p-id-h2-2-将服务发布到-cds-p"><p id="h2">2. 将服务发布到 CDS</p></h2>
+<h2 id="2-将服务发布到-cds">2. 将服务发布到 CDS</h2>
 
 <hr />
 
@@ -484,7 +505,7 @@ resources:
 
 <p>设置好 CDS 之后，就可以为此集群设置端点发现服务（EDS）了。</p>
 
-<h2 id="p-id-h2-3-将实例发布到-eds-p"><p id="h2">3. 将实例发布到 EDS</p></h2>
+<h2 id="3-将实例发布到-eds">3. 将实例发布到 EDS</h2>
 
 <hr />
 
@@ -507,7 +528,7 @@ resources:
 
 <p>Envoy 将 CDS 和 EDS 视为一份份的报告并保持服务发现的最终一致性。如果到该端点的请求经常失败，就会从负载均衡中删除该端点，直到再次恢复正常访问。</p>
 
-<h2 id="p-id-h2-4-最佳实践-对配置进行分区-p"><p id="h2">4. 最佳实践：对配置进行分区</p></h2>
+<h2 id="4-最佳实践-对配置进行分区">4. 最佳实践：对配置进行分区</h2>
 
 <hr />
 
@@ -520,15 +541,53 @@ resources:
 
 <p>对配置进行分区可以降低对不同服务的运营和管理的难度，但它的代价是使控制平面变得更加复杂，但客户往往是不关心控制平面的，所以牺牲控制平面的复杂度还是很值得的。</p>
 
-<h2 id="p-id-h2-5-下一步-p"><p id="h2">5. 下一步</p></h2>
+<h2 id="5-下一步">5. 下一步</h2>
 
 <hr />
 
 <p>一旦控制平面发现了所有可用服务，就可以在这些服务上配置路由了。下一节将会介绍如何配置路由发现服务（RDS）。</p>
 
-<p><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></p>
+<hr />
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
+<center>扫一扫关注微信公众号</center></p>
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
