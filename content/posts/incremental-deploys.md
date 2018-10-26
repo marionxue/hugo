@@ -3,6 +3,7 @@ title: "通过 Envoy 实现增量部署"
 subtitle: "基于请求头的路由和加权负载均衡"
 date: 2018-07-02T05:37:37Z
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["envoy", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -14,7 +15,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 本文将继续沿用前文使用的示例，在原有配置文件的基础上新增了个别服务的新版本来演示流量是如何切换的（包括基于请求头的路由和加权负载均衡）。
 
-## <p id="h2">1. 基于请求头的路由</p>
+## 1. 基于请求头的路由
 
 ----
 
@@ -97,7 +98,7 @@ Hello from behind Envoy (service 1a)! hostname: 569ee89eebc8 resolvedhostname: 1
 
 Envoy 基于头文件的路由功能解锁了[在生产环境中测试开发代码](https://opensource.com/article/17/8/testing-production)的能力。
 
-## <p id="h2">2. 加权负载均衡</p>
+## 2. 加权负载均衡
 
 ----
 
@@ -126,7 +127,7 @@ $ docker-compose up --build -d
 
 增量部署是个非常强大的功能，它还可以和监控配合使用，以确保服务的版本差异（或者后端服务的架构差异）不会对该服务的版本更新产生不良影响。如果想模拟新版本的成功发布，可以将 service1a 的权重设置为 `100`，然后所有的流量都会被转发到 service 1a。同样，如果新发布的版本有缺陷，你可以通过将 service1a 的权重设置为 `0` 来回滚到之前的版本。
 
-## <p id="h2">3. 最佳实践</p>
+## 3. 最佳实践
 
 ----
 
@@ -136,6 +137,41 @@ $ docker-compose up --build -d
 
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
