@@ -474,8 +474,6 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">$ pacman -S shadowsocks-libev ipset
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="配置shadowsocks-libev-略过">配置shadowsocks-libev（略过）</h3>
 
 <p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
@@ -488,8 +486,6 @@ autocomplete('#aa-search-input',
 wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="创建启动和关闭脚本">创建启动和关闭脚本</h3>
 
@@ -565,8 +561,6 @@ ipset destroy chnroute
 $ chmod +x ss-down.sh
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="配置ss-redir服务">配置ss-redir服务</h3>
 
 <p>首先，默认的 <code>ss-local</code> 并不能用来作为 <code>iptables</code> 流量转发的目标，因为它是 <code>socks5</code> 代理而非透明代理。我们至少要把 <code>systemd</code> 执行的程序改成 <code>ss-redir</code>。其次，上述两个脚本还不能自动执行，必须让 <code>systemd</code> 分别在启动 <code>shadowsocks</code> 之前和关闭之后将脚本执行，这样才能自动配置好 <code>iptables</code> 规则。</p>
@@ -599,8 +593,6 @@ WantedBy=multi-user.target
 
 <pre><code class="language-bash">$ systemctl enable shadowsocks-libev@shadowsocks
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="配置智能-dns-服务">配置智能 DNS 服务</h3>
 
@@ -675,8 +667,6 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 ...
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="配置系统-dns-服务器设置">配置系统 DNS 服务器设置</h3>
 
 <ul>
@@ -750,8 +740,6 @@ net.ipv4.tcp_synack_retries = 5
 <pre><code class="language-bash">$ sysctl -p
 </code></pre>
 
-<p><br /></p>
-
 <h2 id="2-通过-nftables-实现智能分流">2. 通过 nftables 实现智能分流</h2>
 
 <hr />
@@ -766,8 +754,6 @@ net.ipv4.tcp_synack_retries = 5
 <pre><code class="language-bash">$ pacman -S shadowsocks-libev nftables
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="配置shadowsocks-libev-略过-1">配置shadowsocks-libev（略过）</h3>
 
 <p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
@@ -781,8 +767,6 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
 cat cn_rules.conf|sed ':label;N;s/\n/, /;b label'|sed 's/$/&amp; }/g'|sed 's/^/{ &amp;/g' &gt; /home/yang/bin/路由表/cn_rules1.conf
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="创建启动和关闭脚本-1">创建启动和关闭脚本</h3>
 
@@ -830,8 +814,6 @@ sudo nft flush table nat
 $ chmod +x nftables-down.sh
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="配置ss-redir服务-1">配置ss-redir服务</h3>
 
 <p>首先，默认的 <code>ss-local</code> 并不能用来作为 <code>nftables</code> 流量转发的目标，因为它是 <code>socks5</code> 代理而非透明代理。我们至少要把 <code>systemd</code> 执行的程序改成 <code>ss-redir</code>。其次，上述两个脚本还不能自动执行，必须让 <code>systemd</code> 分别在启动 <code>shadowsocks</code> 之前和关闭之后将脚本执行，这样才能自动配置好 <code>nftables</code> 规则。</p>
@@ -867,8 +849,6 @@ $ systemctl start shadowsocks-libev@shadowsocks
 $ systemctl enable shadowsocks-libev@shadowsocks
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="配置智能-dns-服务-1">配置智能 DNS 服务</h3>
 
 <p>同上</p>
@@ -895,8 +875,6 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 <pre><code class="language-bash">$ pacman -S badvpn shadowsocks
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="配置shadowsocks-略过">配置shadowsocks（略过）</h3>
 
 <p>假设shadowsocks配置文件为/etc/shadowsocks.json</p>
@@ -909,8 +887,6 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&amp;&amp;/ipv4/ {print $4 &quot;/&quot; 32-log($5)/log(2)}' | cat &gt; /home/yang/bin/路由表/cn_rules.conf
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="配置智能-dns-服务-2">配置智能 DNS 服务</h3>
 
@@ -1013,8 +989,6 @@ WantedBy=multi-user.target
 
 <pre><code class="language-bash">$ systemctl enable socksfwd
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="打开流量转发-2">打开流量转发</h3>
 

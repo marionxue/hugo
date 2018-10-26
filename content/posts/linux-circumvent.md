@@ -33,8 +33,6 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 $ pacman -S shadowsocks-libev ipset
 ```
 
-<br />
-
 ### 配置shadowsocks-libev（略过）
 
 假设shadowsocks配置文件为/etc/shadowsocks.json
@@ -48,8 +46,6 @@ $ pacman -S shadowsocks-libev ipset
 wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&&/ipv4/ {print $4 "/" 32-log($5)/log(2)}' | cat > /home/yang/bin/路由表/cn_rules.conf
 ```
-
-<br />
 
 ### 创建启动和关闭脚本
 
@@ -128,8 +124,6 @@ $ chmod +x ss-up.sh
 $ chmod +x ss-down.sh
 ```
 
-<br />
-
 ### 配置ss-redir服务
 
 首先，默认的 `ss-local` 并不能用来作为 `iptables` 流量转发的目标，因为它是 `socks5` 代理而非透明代理。我们至少要把 `systemd` 执行的程序改成 `ss-redir`。其次，上述两个脚本还不能自动执行，必须让 `systemd` 分别在启动 `shadowsocks` 之前和关闭之后将脚本执行，这样才能自动配置好 `iptables` 规则。
@@ -166,8 +160,6 @@ $ systemctl start shadowsocks-libev@shadowsocks
 ```bash
 $ systemctl enable shadowsocks-libev@shadowsocks
 ```
-
-<br />
 
 ### 配置智能 DNS 服务
 
@@ -234,8 +226,6 @@ IPv4 Local Alternate DNS Address = 114.215.126.16:53
 ...
 ...
 ```
-
-<br />
 
 ### 配置系统 DNS 服务器设置
 
@@ -310,8 +300,6 @@ net.ipv4.tcp_synack_retries = 5
 $ sysctl -p
 ```
 
-<br />
-
 ## 2. 通过 nftables 实现智能分流
 
 ----
@@ -324,8 +312,6 @@ $ sysctl -p
 ```bash
 $ pacman -S shadowsocks-libev nftables
 ```
-
-<br />
 
 ### 配置shadowsocks-libev（略过）
 
@@ -341,8 +327,6 @@ wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&&/ipv4/ {print $4 "/" 32-log($5)/log(2)}' | cat > /home/yang/bin/路由表/cn_rules.conf
 cat cn_rules.conf|sed ':label;N;s/\n/, /;b label'|sed 's/$/& }/g'|sed 's/^/{ &/g' > /home/yang/bin/路由表/cn_rules1.conf
 ```
-
-<br />
 
 ### 创建启动和关闭脚本
 
@@ -394,8 +378,6 @@ $ chmod +x nftables-up.sh
 $ chmod +x nftables-down.sh
 ```
 
-<br />
-
 ### 配置ss-redir服务
 
 首先，默认的 `ss-local` 并不能用来作为 `nftables` 流量转发的目标，因为它是 `socks5` 代理而非透明代理。我们至少要把 `systemd` 执行的程序改成 `ss-redir`。其次，上述两个脚本还不能自动执行，必须让 `systemd` 分别在启动 `shadowsocks` 之前和关闭之后将脚本执行，这样才能自动配置好 `nftables` 规则。
@@ -435,8 +417,6 @@ $ systemctl enable nftables
 $ systemctl enable shadowsocks-libev@shadowsocks
 ```
 
-<br />
-
 ### 配置智能 DNS 服务
 
 同上
@@ -462,8 +442,6 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 $ pacman -S badvpn shadowsocks
 ```
 
-<br />
-
 ### 配置shadowsocks（略过）
 假设shadowsocks配置文件为/etc/shadowsocks.json
  
@@ -476,8 +454,6 @@ $ pacman -S badvpn shadowsocks
 wget -c http://ftp.apnic.net/stats/apnic/delegated-apnic-latest
 cat delegated-apnic-latest | awk -F '|' '/CN/&&/ipv4/ {print $4 "/" 32-log($5)/log(2)}' | cat > /home/yang/bin/路由表/cn_rules.conf
 ```
-
-<br />
 
 ### 配置智能 DNS 服务
 
@@ -586,8 +562,6 @@ $ systemctl start socksfwd
 ```bash
 $ systemctl enable socksfwd
 ```
-
-<br />
 
 ### 打开流量转发
 
