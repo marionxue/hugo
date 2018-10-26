@@ -3,6 +3,7 @@ title: "使用 envoy-docker-shim 替代 docker-proxy"
 subtitle: "Docker 端口映射的新姿势"
 date: 2018-06-22T08:22:07Z
 draft: false
+toc: true
 categories: "docker"
 tags: ["docker"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -19,7 +20,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 要想真正掌握 Envoy，只有通过实践融入该语境才能真正理解这门技术，而目前能够找到的最佳实践项目就是 [Envoy Docker Shim](https://github.com/Nitro/envoy-docker-shim)。在实践该项目之前，你需要了解 Envoy 中的基本术语和概念，可以参考 Jimmy Song 的文章：[Envoy 的架构与基本术语](https://jimmysong.io/posts/envoy-archiecture-and-terminology/)。下面我就为大家简单地介绍下这个项目。
 
-## <p id="h2">1. Envoy Docker Shim</p>
+## 1. Envoy Docker Shim
 
 ----
 
@@ -32,7 +33,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 通过将这些组件结合在一起，就形成了一个通过 Envoy 来代理 HTTP 和 TCP 流量的系统，对 `UDP` 流量的处理继续使用 docker-proxy 的代码逻辑，目前暂不支持 `SCTP` 协议。
 
-## <p id="h2">2. 安装步骤</p>
+## 2. 安装步骤
 
 ----
 
@@ -49,8 +50,6 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 $ systemctl daemon-reload
 $ systemctl restart docker
 ```
-
-<br />
 
 ### 下载二进制文件和脚本
 
@@ -78,8 +77,6 @@ $ git clone https://github.com/Nitro/envoy-docker-shim
 $ cd envoy-docker-shim
 $ cp scripts/resync /usr/local/bin
 ```
-
-<br />
 
 ### 配置 envoy-docker-server 和 resync
 
@@ -111,8 +108,6 @@ $ cp examples/envoy-docker-server.service /etc/systemd/system/
 $ systemctl start envoy-docker-server
 ```
 
-<br />
-
 ### 启动 Envoy 实例
 
 在 examples 目录中包含了一个 `envoy.yaml` 文件，你可以通过该配置文件启动 Envoy 实例（在 1.6 和 1.7 版本上测试通过）。你也可以选择通过 Docker 容器来运行 Envoy 实例，这里我们通过容器的方式来启动 Envoy：
@@ -127,7 +122,7 @@ $ docker run -d --name envoyproxy --restart always --net host --cap-add NET_ADMI
 
 至此，Envoy Docker Shim 已经完美地完成了替代 docker-proxy 的工作，接下来就可以不通过 iptables 而使用 Envoy 来实现 Docker 容器的端口映射啦！
 
-## <p id="h2">3. 容器配置</p>
+## 3. 容器配置
 
 ----
 
@@ -150,6 +145,41 @@ $ docker run -d -p 80:80 -p 443:443 -l EnvironmentName=proxy -l ServiceName=ngin
 可以看到 nginx 的服务名为 `nginx-proxy`。
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
