@@ -402,7 +402,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Tue Jun 19, 2018</h4>
     </section>
-    <h5 id="wc">3200 Words|Read in about 7 Min</h5>
+    <h5 id="wc">3300 Words|Read in about 7 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -412,6 +412,36 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-resource-metrics-api">1. Resource Metrics API</a></li>
+<li><a href="#2-metrics-server">2. Metrics Server</a></li>
+<li><a href="#3-custom-metrics-api">3. custom metrics api</a></li>
+<li><a href="#4-hpa">4. HPA</a></li>
+<li><a href="#5-实战">5. 实战</a>
+<ul>
+<li><a href="#前提">前提</a></li>
+<li><a href="#安装-metrics-server">安装 Metrics Server</a></li>
+<li><a href="#基于-cpu-和内存使用的自动缩放">基于 CPU 和内存使用的自动缩放</a></li>
+<li><a href="#安装-custom-metrics-server">安装 Custom Metrics Server</a></li>
+<li><a href="#基于自定义指标的自动扩容">基于自定义指标的自动扩容</a></li>
+</ul></li>
+<li><a href="#6-总结">6. 总结</a></li>
+<li><a href="#7-参考">7. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -437,7 +467,7 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 
 <p><br /></p>
 
-<h2 id="p-id-h2-1-resource-metrics-api-p"><p id="h2">1. Resource Metrics API</p></h2>
+<h2 id="1-resource-metrics-api">1. Resource Metrics API</h2>
 
 <hr />
 
@@ -447,7 +477,7 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 
 <p><strong>注意：</strong> Metrics API 需要在集群中部署 Metrics Server。否则它将不可用。</p>
 
-<h2 id="p-id-h2-2-metrics-server-p"><p id="h2">2. Metrics Server</p></h2>
+<h2 id="2-metrics-server">2. Metrics Server</h2>
 
 <hr />
 
@@ -459,13 +489,13 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 
 <p>通过在主 API server 中注册的 Metrics Server <a href="https://kubernetes.io/docs/concepts/api-extension/apiserver-aggregation/" target="_blank">Kubernetes 聚合器</a> 来采集指标信息， 这是在 Kubernetes 1.7 中引入的。在 <a href="https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md" target="_blank">设计文档</a> 中可以了解到有关 Metrics Server 的更多信息。</p>
 
-<h2 id="p-id-h2-3-custom-metrics-api-p"><p id="h2">3. custom metrics api</p></h2>
+<h2 id="3-custom-metrics-api">3. custom metrics api</h2>
 
 <hr />
 
 <p>该 API 允许消费者访问通过任意指标描述的 Kubernetes 资源。如果你想实现这个 API Service，请参阅 <a href="https://github.com/kubernetes-incubator/custom-metrics-apiserver" target="_blank">kubernetes-incubator/custom-metrics-apiserver</a>，这是一个用来实现 Kubernetes 自定义指标的框架。</p>
 
-<h2 id="p-id-h2-4-hpa-p"><p id="h2">4. HPA</p></h2>
+<h2 id="4-hpa">4. HPA</h2>
 
 <hr />
 
@@ -488,7 +518,7 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/hpa.png" alt="" /></center></p>
 
-<h2 id="p-id-h2-5-实战-p"><p id="h2">5. 实战</p></h2>
+<h2 id="5-实战">5. 实战</h2>
 
 <hr />
 
@@ -535,8 +565,6 @@ $ git clone https://github.com/stefanprodan/k8s-prom-hpa
 
 <pre><code class="language-bash">$ kubectl get --raw &quot;/apis/metrics.k8s.io/v1beta1/pods&quot; | jq .
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="基于-cpu-和内存使用的自动缩放">基于 CPU 和内存使用的自动缩放</h3>
 
@@ -611,8 +639,6 @@ Events:
 <pre><code class="language-bash">$ kubectl delete -f ./podinfo/podinfo-hpa.yaml,./podinfo/podinfo-dep.yaml,./podinfo/podinfo-svc.yaml
 </code></pre>
 
-<p><br /></p>
-
 <h3 id="安装-custom-metrics-server">安装 Custom Metrics Server</h3>
 
 <p>为了让 HPA 可以根据 custom metrics 进行扩展，你需要有两个组件：</p>
@@ -653,8 +679,6 @@ Events:
 
 <pre><code class="language-bash">$ kubectl get --raw &quot;/apis/custom.metrics.k8s.io/v1beta1/namespaces/monitoring/pods/*/fs_usage_bytes&quot; | jq .
 </code></pre>
-
-<p><br /></p>
 
 <h3 id="基于自定义指标的自动扩容">基于自定义指标的自动扩容</h3>
 
@@ -776,15 +800,13 @@ Events:
   Normal  SuccessfulRescale  21s   horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
 </code></pre>
 
-<p><br /></p>
-
-<h2 id="p-id-h2-6-总结-p"><p id="h2">6. 总结</p></h2>
+<h2 id="6-总结">6. 总结</h2>
 
 <hr />
 
 <p>并非所有的系统都可以仅依靠 CPU 和内存指标来满足 SLA，大多数 Web 应用的后端都需要基于每秒的请求数量进行弹性伸缩来处理突发流量。对于 ETL 应用程序，可以通过设置 Job 队列长度超过某个阈值来触发弹性伸缩。通过 Prometheus 来监控应用程序并暴露出用于弹性伸缩的指标，可以微调应用程序以更好地处理突发事件，从而确保其高可用性。</p>
 
-<h2 id="p-id-h2-7-参考-p"><p id="h2">7. 参考</p></h2>
+<h2 id="7-参考">7. 参考</h2>
 
 <hr />
 
@@ -793,9 +815,47 @@ Events:
 <li><a href="https://github.com/DirectXMan12/k8s-prometheus-adapter" target="_blank">k8s-prometheus-adapter</a></li>
 </ul>
 
-<p><br /></p>
+<hr />
+
+<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
+<center>扫一扫关注微信公众号</center></p>
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

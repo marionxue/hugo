@@ -153,6 +153,7 @@
         "subtitle": "通过 Prometheus adaptor 来自定义监控指标",
         "date": "2018-06-19T09:02:52.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"

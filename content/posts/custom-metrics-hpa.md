@@ -3,6 +3,7 @@ title: "使用自定义指标进行弹性伸缩"
 subtitle: "通过 Prometheus adaptor 来自定义监控指标"
 date: 2018-06-19T09:02:52Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -33,7 +34,7 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 
 <br />
 
-## <p id="h2">1. Resource Metrics API</p>
+## 1. Resource Metrics API
 
 ----
 
@@ -43,7 +44,7 @@ Metrics API 和其他的 API 没有什么不同，它可以通过与 `/apis/metr
 
 **注意：** Metrics API 需要在集群中部署 Metrics Server。否则它将不可用。
 
-## <p id="h2">2. Metrics Server</p>
+## 2. Metrics Server
 
 ----
 
@@ -55,13 +56,13 @@ Metrics Server 从每个节点上的 `Kubelet` 公开的 Summary API 中采集�
 
 通过在主 API server 中注册的 Metrics Server [Kubernetes 聚合器](https://kubernetes.io/docs/concepts/api-extension/apiserver-aggregation/) 来采集指标信息， 这是在 Kubernetes 1.7 中引入的。在 [设计文档](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md) 中可以了解到有关 Metrics Server 的更多信息。
 
-## <p id="h2">3. custom metrics api</p>
+## 3. custom metrics api
 
 ---- 
 
 该 API 允许消费者访问通过任意指标描述的 Kubernetes 资源。如果你想实现这个 API Service，请参阅 [kubernetes-incubator/custom-metrics-apiserver](https://github.com/kubernetes-incubator/custom-metrics-apiserver)，这是一个用来实现 Kubernetes 自定义指标的框架。
 
-## <p id="h2">4. HPA</p>
+## 4. HPA
 
 ---- 
 
@@ -82,7 +83,7 @@ hpa 实现了一个控制环，可以周期性的从 Resource Metrics API 查询
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/hpa.png)</center>
 
-## <p id="h2">5. 实战</p>
+## 5. 实战
 
 ---- 
 
@@ -129,8 +130,6 @@ $ kubectl get --raw "/apis/metrics.k8s.io/v1beta1/nodes" | jq .
 ```bash
 $ kubectl get --raw "/apis/metrics.k8s.io/v1beta1/pods" | jq .
 ```
-
-<br />
 
 ### 基于 CPU 和内存使用的自动缩放
 
@@ -212,8 +211,6 @@ Events:
 $ kubectl delete -f ./podinfo/podinfo-hpa.yaml,./podinfo/podinfo-dep.yaml,./podinfo/podinfo-svc.yaml
 ```
 
-<br />
-
 ### 安装 Custom Metrics Server
 
 为了让 HPA 可以根据 custom metrics 进行扩展，你需要有两个组件：
@@ -258,8 +255,6 @@ $ kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1" | jq .
 ```bash
 $ kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1/namespaces/monitoring/pods/*/fs_usage_bytes" | jq .
 ```
-
-<br />
 
 ### 基于自定义指标的自动扩容
 
@@ -389,24 +384,60 @@ Events:
   Normal  SuccessfulRescale  21s   horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
 ```
 
-<br />
-
-## <p id="h2">6. 总结</p>
+## 6. 总结
 
 ----
 
 并非所有的系统都可以仅依靠 CPU 和内存指标来满足 SLA，大多数 Web 应用的后端都需要基于每秒的请求数量进行弹性伸缩来处理突发流量。对于 ETL 应用程序，可以通过设置 Job 队列长度超过某个阈值来触发弹性伸缩。通过 Prometheus 来监控应用程序并暴露出用于弹性伸缩的指标，可以微调应用程序以更好地处理突发事件，从而确保其高可用性。
 
-## <p id="h2">7. 参考</p>
+## 7. 参考
 
 ----
 
 + [Kubernetes Horizontal Pod Autoscaler with Prometheus custom metrics](https://github.com/stefanprodan/k8s-prom-hpa)
 + [k8s-prometheus-adapter](https://github.com/DirectXMan12/k8s-prometheus-adapter)
 
-<br />
+----
+
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>扫一扫关注微信公众号</center>
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
