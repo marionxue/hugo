@@ -3,6 +3,7 @@ title: "HTTP 路由解析"
 subtitle: "通过 HTTP 路由规则来切换流量"
 date: 2018-06-29T09:57:33Z
 draft: false
+toc: true
 categories: "servicemesh"
 tags: ["envoy"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -12,7 +13,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：[在你的笔记本上运行 Envoy](https://www.yangcs.net/posts/run-envoy-on-your-laptop/)，现在就可以更深入地了解如何在静态文件中配置路由（Route）、集群（Cluster）和监听器（Listener）了。
 
-## <p id="h2">1. 相关组件</p>
+## 1. 相关组件
 
 ----
 
@@ -28,7 +29,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 <span id="inline-blue">监听器</span> 是可以接受来自下游客户端的连接的命名网络位置（例如，端口，unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。同样，监听器可以通过静态定义，也可以通过监听器发现服务（LDS）动态获取。
 
-## <p id="h2">2. 配置路由</p>
+## 2. 配置路由
 
 ----
 
@@ -74,9 +75,7 @@ clusters:
           port_value: 80
 ```
 
-<br />
-
-## <p id="h2">3. 配置监听器</p>
+## 3. 配置监听器
 
 ----
 
@@ -114,9 +113,7 @@ listeners:
             config: {}
 ```
 
-<br />
-
-## <p id="h2">4. 动态发现路由、集群和监听器</p>
+## 4. 动态发现路由、集群和监听器
 
 ----
 
@@ -124,16 +121,49 @@ listeners:
 
 现在你已经了解了如何配置基本的路由、集群和监听器，下一节我们将学习如何在增量部署中设置更复杂的流量切换和过滤规则。
 
-## <p id="h2">5. 参考</p>
+## 5. 参考
 
 ----
 
 + [Envoy 官方文档中文版](https://servicemesher.github.io/envoy/)
 
-<br />
-
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
