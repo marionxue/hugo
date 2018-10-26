@@ -3,6 +3,7 @@ title: "为 Envoy 启用证书验证"
 subtitle: "加密客户端和 Envoy 代理之间的所有流量"
 date: 2018-07-03T06:43:33Z
 draft: false
+toc: true
 categories: "service mesh"
 tags: ["envoy", "service mesh"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
@@ -20,7 +21,7 @@ Envoy 同时支持监听器中的 [TLS 终止](https://www.envoyproxy.io/docs/en
 2. 为 Envoy 启用证书验证
 3. 配置 Envoy 将 80 端口重定向到 443 端口
 
-## <p id="h2">1. 创建证书</p>
+## 1. 创建证书
 
 ----
 
@@ -66,9 +67,7 @@ An optional company name []:
 $ openssl x509 -req -days 365 -in example-com.csr -signkey example-com.key -out example-com.crt
 ```
 
-<br />
-
-## <p id="h2">2. 为 Envoy 启用证书验证</p>
+## 2. 为 Envoy 启用证书验证
 
 ----
 
@@ -148,9 +147,7 @@ Hello from behind Envoy (service 1)! hostname: 56e8a5bff6bd resolvedhostname: 17
 $ curl --cacert example-com.crt https://example.com/service/1
 ```
 
-<br />
-
-## <p id="h2">3. 将 80 端口重定向到 443 端口</p>
+## 3. 将 80 端口重定向到 443 端口
 
 ----
 
@@ -293,10 +290,47 @@ admin:
       port_value: 8001
 ```
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+----
 
+<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>扫一扫关注微信公众号</center>
 
 <style>
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;
