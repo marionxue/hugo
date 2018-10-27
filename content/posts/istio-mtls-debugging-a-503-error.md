@@ -330,6 +330,9 @@ kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbi
 <center>扫一扫关注微信公众号</center>
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 h1,h2,h3,h4,h5,h6 {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     font-weight: 800;
