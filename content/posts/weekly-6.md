@@ -295,6 +295,9 @@ Git 迅速成为最流行的分布式版本控制系统，尤其是 2008 年，G
 
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

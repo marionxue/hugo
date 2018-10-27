@@ -505,6 +505,9 @@ done
 + [bad routing from host to service IP on same host](https://github.com/cloudnativelabs/kube-router/issues/376)
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

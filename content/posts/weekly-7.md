@@ -336,6 +336,9 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

@@ -789,6 +789,9 @@ $ route ADD -p 172.28.0.0 MASK 255.255.0.0 192.168.2.173
 [k8s-dns-gateway 网关网络扩展实战](http://blog.csdn.net/idea77/article/details/73863822)
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 #h2{
     margin-bottom:2em; 
     margin-right: 5px; 

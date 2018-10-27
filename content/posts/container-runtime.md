@@ -85,6 +85,9 @@ $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/ru
 如果想构建 oci 格式的镜像，可以使用工具：[buildah](https://github.com/projectatomic/buildah)
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 #h2{
     margin-bottom:2em; 
     margin-right: 5px; 

@@ -679,6 +679,9 @@ Awesome Bookmarks 是 [Github Awesome](https://github.com/topics/awesome) 主题
 ![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

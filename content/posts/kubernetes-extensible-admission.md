@@ -464,6 +464,9 @@ Istio 就是使用 `ValidatingAdmissionWebhooks` 验证 Istio 配置，使用 `M
 <center>扫一扫关注微信公众号</center>
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 h2 {
     display: block;
     font-size: 1.5em;

@@ -57,6 +57,9 @@ Endpoint Controller 内部运行了一组 `workers` 来处理这些事件并更�
 <br />
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 #h2{
     margin-bottom:2em;
     margin-right: 5px;

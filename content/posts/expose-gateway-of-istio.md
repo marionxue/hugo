@@ -210,6 +210,9 @@ $ kubectl -n istio-system create -f front-envoy-deploy.yaml
 <center>扫一扫关注微信公众号</center>
 
 <style>
+body {
+    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+}
 h2 {
     display: block;
     font-size: 1.5em;
