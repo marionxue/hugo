@@ -113,6 +113,7 @@ Envoy 将 CDS 和 EDS 视为一份份的报告并保持服务发现的最终一�
 <center>扫一扫关注微信公众号</center>
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

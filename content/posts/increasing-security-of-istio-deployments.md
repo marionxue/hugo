@@ -91,6 +91,7 @@ $ kubectl apply -f examples/bookinfo.yaml -n bookinfo
 <center>扫一扫关注微信公众号</center>
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

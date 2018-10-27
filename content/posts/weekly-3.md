@@ -210,6 +210,7 @@ Go 夜读，该项目每周四晚上更新 Go 源码阅读以及线下技术讨�
 
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

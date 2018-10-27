@@ -273,6 +273,7 @@ $ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
 
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

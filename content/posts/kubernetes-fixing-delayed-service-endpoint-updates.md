@@ -57,6 +57,7 @@ Endpoint Controller 内部运行了一组 `workers` 来处理这些事件并更�
 <br />
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

@@ -222,6 +222,7 @@ Kubernetes 的默认调度器已经做的很好，但由于集群处于不断变
 <br />
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

@@ -263,6 +263,7 @@ spring cloud + vue 全家桶实战，模拟商城，完整的购物流程、后�
 
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

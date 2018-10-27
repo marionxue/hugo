@@ -330,6 +330,7 @@ kubectl -n foo exec -it -c sleep sleep-5b597748b4-77kj5 -- curl -v http://httpbi
 <center>扫一扫关注微信公众号</center>
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

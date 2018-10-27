@@ -82,6 +82,7 @@ CRI-O 在 `Openshift 3.7` 中作为 beta 版提供，Patel 考虑在 `Openshift 
 <br />
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

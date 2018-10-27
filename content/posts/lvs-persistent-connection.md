@@ -215,6 +215,7 @@ $ ipvsadm -a -f 8 -r 172.16.100.11 -g -w 1
 如何设置 `lvs` 持久性连接需要根据业务场景来选择，比如电商平台，对应的持久性连接应该是 `PNMPP`，另外还需要根据连接类型，比如长连接和短连接，来设置相关超时时间，总之,根据应用场景来选择！
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

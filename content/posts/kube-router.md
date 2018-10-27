@@ -505,6 +505,7 @@ done
 + [bad routing from host to service IP on same host](https://github.com/cloudnativelabs/kube-router/issues/376)
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

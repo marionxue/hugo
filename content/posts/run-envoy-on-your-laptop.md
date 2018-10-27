@@ -276,6 +276,7 @@ Envoy 的一大特色是内置的 Admin 服务，如果你在浏览器中访问 
 <center>扫一扫关注微信公众号</center>
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

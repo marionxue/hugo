@@ -220,6 +220,7 @@ $ istioctl -n onprem register svc1 1.2.3.4 http:7000
 
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

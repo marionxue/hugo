@@ -407,6 +407,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }

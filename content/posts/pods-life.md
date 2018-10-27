@@ -192,6 +192,7 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
 <br />
 
 <style>
+a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
 body {
     cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
 }
