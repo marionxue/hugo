@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/</loc>
+    <lastmod>2018-11-01T17:55:47+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/extending-the-envoy-admin-interface/</loc>
     <lastmod>2018-10-25T16:34:20+08:00</lastmod>
   </url>
@@ -346,7 +351,7 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/envoy/</loc>
-    <lastmod>2018-10-25T16:34:20+08:00</lastmod>
+    <lastmod>2018-11-01T17:55:47+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -430,13 +435,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/service-mesh/</loc>
-    <lastmod>2018-10-25T16:34:20+08:00</lastmod>
+    <lastmod>2018-11-01T17:55:47+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/service-mesh/</loc>
-    <lastmod>2018-10-25T16:34:20+08:00</lastmod>
+    <lastmod>2018-11-01T17:55:47+08:00</lastmod>
     <priority>0</priority>
   </url>
   

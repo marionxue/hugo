@@ -6,10 +6,19 @@
     <description>Recent content in Envoy on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 25 Oct 2018 16:34:20 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 01 Nov 2018 17:55:47 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/envoy/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SRE 弹性能力：使用 Envoy 对应用进行速率限制</title>
+      <link>https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/</link>
+      <pubDate>Thu, 01 Nov 2018 17:55:47 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>扩展 Envoy 的管理界面</title>

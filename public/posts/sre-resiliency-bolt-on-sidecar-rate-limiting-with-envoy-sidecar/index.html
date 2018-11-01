@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 扩展 Envoy 的管理界面 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> SRE 弹性能力：使用 Envoy 对应用进行速率限制 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="扩展 Envoy 的管理界面" />
-  <meta name="twitter:title" content="扩展 Envoy 的管理界面" />
-  <meta name="description" content="提高 Envoy 管理界面的安全性">
-  <meta property="og:description" content="提高 Envoy 管理界面的安全性">
-  <meta name="twitter:description" content="提高 Envoy 管理界面的安全性">
+  <meta property="og:title" content="SRE 弹性能力：使用 Envoy 对应用进行速率限制" />
+  <meta name="twitter:title" content="SRE 弹性能力：使用 Envoy 对应用进行速率限制" />
+  <meta name="description" content="使用速率限制服务来减轻客户端对 API 资源的消耗">
+  <meta property="og:description" content="使用速率限制服务来减轻客户端对 API 资源的消耗">
+  <meta name="twitter:description" content="使用速率限制服务来减轻客户端对 API 资源的消耗">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://www.learnenvoy.io/assets/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -341,7 +341,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>扩展 Envoy 的管理界面</h1>
+                     <h1>SRE 弹性能力：使用 Envoy 对应用进行速率限制</h1>
                      
                      
                   
@@ -349,13 +349,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">提高 Envoy 管理界面的安全性</span>
+                      <span class="post-subheading">使用速率限制服务来减轻客户端对 API 资源的消耗</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on October 25, 2018
+  Posted on November 1, 2018
   
   
 </span>
@@ -376,10 +376,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">扩展 Envoy 的管理界面</h1>
+                <h1 align="center">SRE 弹性能力：使用 Envoy 对应用进行速率限制</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">提高 Envoy 管理界面的安全性</h2>
+                    <h2 align="center" class="posts-subheading">使用速率限制服务来减轻客户端对 API 资源的消耗</h2>
                   
                 
                 
@@ -400,9 +400,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Thu Oct 25, 2018</h4>
+        <h4 id="date"> Thu Nov 1, 2018</h4>
     </section>
-    <h5 id="wc">2700 Words|Read in about 6 Min</h5>
+    <h5 id="wc">4000 Words|Read in about 8 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
@@ -414,67 +414,160 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#问题">问题</a></li>
+<li><a href="#envoy-是什么">Envoy 是什么？</a></li>
+<li><a href="#解决方案">解决方案</a>
+<ul>
+<li><a href="#将-envoy-配置为-api-负载均衡器的前端代理">将 Envoy 配置为 API 负载均衡器的前端代理</a>
+<ul>
+<li><a href="#cluster-https-www-envoyproxy-io-docs-envoy-latest-intro-arch-overview-cluster-manager"><a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/cluster_manager" target="_blank">cluster</a></a></li>
+<li><a href="#virtual-host-https-www-envoyproxy-io-docs-envoy-latest-api-v1-route-config-vhost"><a href="https://www.envoyproxy.io/docs/envoy/latest/api-v1/route_config/vhost" target="_blank">virtual_host</a></a></li>
+</ul></li>
+<li><a href="#配置并运行全局速率限制服务">配置并运行全局速率限制服务</a></li>
+<li><a href="#配置-envoy-使用全局速率限制服务">配置 Envoy 使用全局速率限制服务</a></li>
+</ul></li>
+<li><a href="#总结">总结</a></li>
+<li><a href="#参考资料">参考资料</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
 <p id="div-border-left-red">
-<strong>原文地址：</strong><a href="https://medium.com/@mitchfriedman5/extending-the-envoy-admin-interface-6ce2ad220842" target="_blank">Extending the Envoy Admin Interface</a>
+<strong>原文地址：</strong><a href="https://medium.com/dm03514-tech-blog/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar-5381bd4a1137" target="_blank">https://medium.com/dm03514-tech-blog/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar-5381bd4a1137</a>
+<br />
+<strong>作者：</strong>dm03514
 <br />
 <strong>译者：</strong>杨传胜
 </p>
 
-<p><a href="https://www.envoyproxy.io/" target="_blank">Envoy</a> 是一个动态可配置的高性能现代化代理工具，现在几乎所有的 IT 潮男都用它来构建服务网格。Envoy 有许多吸引人的功能，其中包括对网络流量的高级可观察性。Envoy 可以通过好几种方式来暴露数据，其中最主要的是 <code>stats</code> 和 <code>tracing</code>：stats 由内置的 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto#config-metrics-v2-statsdsink" target="_blank">statsd </a> 模块提供，方便集成诸如 prometheus 等监控方案。开启了 <a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/tracing" target="_blank">tracing</a> 可以方便集成 Open Tracing 系统，追踪请求。然而 Envoy 管理界面本身却很少被提及到。</p>
+<p>速率限制是缓解级联故障和防止耗尽共享资源的一种简单有效的方法。<code>Envoy</code> 是一个功能丰富的代理，可以为任何服务轻松添加速率限制的功能。本文将介绍在不更改应用程序本身配置的前提下如何配置 <code>Envoy</code> 来强制对应用进行速率限制。</p>
 
-<p>最近，我看到某些公司在讨论将由 <code>Haproxy</code> 驱动的数据平面替换为 Envoy。如果你以前使用过 Haproxy，应该熟悉 Haproxy 的管理界面 UI（稍微有点过时了），它会暴露出后端服务列表、健康状态、活动状态和每个服务的统计信息。</p>
+<h2 id="问题">问题</h2>
 
-<p><img src="http://oqk3alhse.bkt.clouddn.com/haproxy-admin.png" alt="" /></p>
+<hr />
 
-<p>每当添加新的后端服务或修改 <a href="https://www.haproxy.com/documentation/aloha/10-0/traffic-management/lb-layer7/acls/" target="_blank">ACL</a> 时，如果出现了故障，我就会用此管理界面 UI 来调试网络。例如，在任何给定时间，很容易确定集群中的单个故障后端，以及哪些后端服务运行状况不佳。</p>
+<p>你是否遇到过资源被大量的请求淹没或耗尽的情况？你的客户端是否具有回退重试或速率限制的逻辑？在微服务架构中，不对其使用量进行限制的资源很容易被客户端发出的大量请求所淹没。当然可能存在一定数量的客户端，这些客户端本身就已经实现了各种重试/回退和速率限制的策略。贪婪的客户端可以通过使服务饱和来轻松地让其他客户端只能使用少量的资源，更糟糕的客户端可以一直发起请求，知道使服务完全不可用。</p>
 
-<p>Envoy 管理界面也提供了很多功能，其中 <code>/clusters</code> 和 <code>/config_dump</code> 端点提供了大量有用的信息（例如，<code>/clusters</code> 端点中的所有动态配置的 Cluster 和 Endpoint，以及 <code>/config_dump</code> 端点中的所有其他当前状态的配置，稍后我会详细介绍）。</p>
+<p>对 <code>API</code> 的使用进行约束的常用方法是启用速率限制。与基于 IP 的速率限制或者 web 框架提供的应用级别速率限制不同，Envoy 允许在 <code>HTTP</code> 层实现快速，高性能和可靠的全局速率限制。</p>
 
-<p>不幸的是，在我看来，由于某些原因，Envoy 的管理界面做得并不是很友好，但我们可以做一些改进来使管理 Envoy 更容易，对用户更加友好。</p>
+<p><center><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwrjjnhj5rj30am0b1aa7.jpg" alt="" /></center></p>
 
-<p>首先，它并不像 <code>Haproxy</code> 的管理界面那样直观，特别是当你想在某些事件中快速找到一些有用信息时（比如回答我上面提到的各种问题）。</p>
+<p>上图中左侧的 <code>Service Client</code> 代表使用率特别高的客户端。在运行期间，它可以使负载均衡后端的所有服务实例流量饱和，并使其他更高优先级的客户端丢弃其请求。</p>
 
-<p>其次，通过此 UI 可以执行某些潜在的危险操作（例如，停止正在运行的 Envoy 进程）。对于管理员或者某些团队而言，这可能不是什么大问题，但对服务使用者而言，需要以更安全的只读模式来使用此 UI（该模式仅公开一部分功能），而 Envoy 目前是不支持的。理想情况是：我想让服务所有者能够看到 <code>/clusters</code> 和 <code>/config_dump</code> 的输出，但没有任何潜在的危险行为。这个问题已经作为一个 <a href="https://github.com/envoyproxy/envoy/issues/2763" target="_blank">open issue</a> 在 Github 中进行讨论，同时 <a href="https://www.envoyproxy.io/docs/envoy/latest/operations/admin" target="_blank">官方文档</a> 中也提到了这一点。我们将遵循 <a href="https://twitter.com/mattklein123" target="_blank">Matt Klein</a> 在此 <a href="https://github.com/envoyproxy/data-plane-api/pull/523#issuecomment-371550679" target="_blank">comment</a> 中提出的有关使用真正的 Listener 来增强管理界面的建议。</p>
+<p>Envoy 能够对网络级别的任何服务进行速率限制，而无需对应用程序进行任何修改。此外，由于 Envoy 工作在 7 层，也就是应用程序级别，所以它可以检查 HTTP 速率信息并对其进行速率限制。</p>
 
-<p>最后，我们希望将 <code>Listener</code> 的配置嵌入到 Envoy 的配置文件中，以便工程师可以通过一致的工作流程来处理与 Envoy 相关的配置。</p>
+<p>在本教程中，<a href="https://github.com/tsenart/vegeta" target="_blank">vegata</a> 负载测试工具用于模拟上述示例中的批处理作业。下图显示了请求速率大约为 <code>500次/秒</code> 的稳定状态。</p>
 
-<p>还好我们是软件工程师，这些都不是问题！我们拥有所需的所有原始数据，可以自己构建一个简单的 UI！</p>
+<blockquote>
+<p>译者注：首先克隆 <a href="https://github.com/dm03514/grokking-go" target="_blank">grokking-go</a> 项目。</p>
+</blockquote>
 
-<p>你需要做的第一件事就是开启 Envoy 的管理界面。你只需要将这部分配置放在 Envoy 配置文件中以设置管理员访问日志路径和运行管理服务的端口：</p>
+<pre><code class="language-bash">$ make load-test
 
-<pre><code class="language-yaml">admin:
-  access_log_path: /var/log/envoy/envoy_admin_access.log
-  address:
-    socket_address: { address: 0.0.0.0, port_value: 5000 }
+echo &quot;GET http://localhost:8080/slow&quot; | vegeta attack -rate=500 -duration=0 | tee results.bin | vegeta report
 </code></pre>
 
-<p>启动 Envoy 进程后，你就可以在浏览器中通过 URL <code>&lt;public_ip&gt;:5000</code> 访问 Envoy 的管理界面了。</p>
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwrjy191ohj30lr07jq34.jpg" alt="" /></center></p>
 
-<p><center><img src="http://oqk3alhse.bkt.clouddn.com/envoy-admin.png" alt="" /></center></p>
+<p>在模拟后台作业期间，API 资源 <code>/slow</code> 的访问速率达到了每秒 <code>3500</code> 个请求，影响到了其他端点和客户端。</p>
 
-<p>现在有一个小问题——你会注意到，如果你尝试构建一个从远程 Envoy 实例（<code>&lt;public_ip&gt;:5000</code>）中提取数据的网站，你将看到浏览器（不禁用任何安全设置）不会允许我们获取数据，因为远程 Envoy 实例的端点不包含正确的 <code>CORS</code>（跨域资源共享） 响应头（如文档中所述，以防止 <code>CSRF</code> 攻击）。</p>
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwrk228etaj30nd07m74v.jpg" alt="" /></center></p>
 
-<p>正如 Matt Klein 在上面的 Github <a href="https://github.com/envoyproxy/data-plane-api/pull/523#issuecomment-371550679" target="_blank">comment</a> 中所建议的一样，我们可以设置一个包含正确 <code>CORS</code> 响应头的代理，并让我们的网站从该代理获取数据。</p>
+<p>为了解决这个问题，下面的解决方案使用 Envoy 强制限制请求速率为 <code>500个请求/秒</code>。但首先&hellip;</p>
 
-<p>这个很简单，只需要使用单个 <code>VirtualHost</code> 配置一个 <code>Listener</code> 和 <code>Cluster</code>，该 <code>VirtualHost</code> 代理本地 <code>5000</code> 端口或运行管理服务的任何其他端口。我们只需要确保该代理包含正确的 CORS 响应头——对于我上面提到的情况，只需要配置响应头 <code>Access-Control-Allow-Origin</code>。</p>
+<h2 id="envoy-是什么">Envoy 是什么？</h2>
 
-<p>由于我们一直在使用 <a href="https://github.com/envoyproxy/java-control-plane" target="_blank">java 控制平面库</a> 编写一个控制平面，我们决定动态生成这些对象以防以后想要更改或更新它们，但通过静态配置文件也很容易配置。请参考以下需要包含在引导程序文件中以实现此代理的静态资源配置示例：</p>
+<hr />
+
+<p>Envoy 是一个轻量级代理服务器，能够处理任何 <code>TCP/IP/HTTP/GRPC/HTTP2</code> 等协议的连接。它具有高度可配置性，并支持许多不同的插件。它还使可观察性成为一等公民。</p>
+
+<p>在 Envoy 横空出世之前，应用程序级别的重试、延迟注入、速率限制和熔断都都要通过应用程序本身的代码逻辑来实现。Envoy 将这些功能从应用程序中剥离出来，并让运维管理人员能够配置和启用这些功能，无需对应用程序本身作任何修改。</p>
+
+<p>Envoy 的 <a href="https://www.envoyproxy.io/" target="_blank">官方文档</a> 和 <code>Matt Klein</code> 的文章提供了一个比我更好的对 Envoy 的介绍：</p>
+
+<blockquote>
+<p>Envoy 是一款由 <code>Lyft</code> 开源的，使用 C++ 编写的高性能分布式代理，专为单体服务和应用而设计。它也被作为大型微服务框架 <a href="https://istio.io/" target="_blank">Istio</a> service mesh 的通信总线和通用数据平面。通过借鉴 NGINX、HAProxy、硬件负载均衡器和云负载均衡器等解决方案，Envoy 作为一个独立的进程与应用程序一起运行，并通过与平台无关的方式提供一些高级特性，从而形成一个对应用透明的通信网格。当基础设施中的所有服务流量通过 Envoy 网格流动时，通过一致的可观察性，调整整体性能和添加更多底层特性，一旦发生网络和应用程序故障，能够很容易定位出问题的根源。</p>
+</blockquote>
+
+<h2 id="解决方案">解决方案</h2>
+
+<hr />
+
+<p>所有代码和示例都可以在 <a href="https://github.com/dm03514/grokking-go/tree/master/bolt-on-out-of-process-rate-limits" target="_blank">GitHub</a> 上找到。</p>
+
+<p>下面给出具体的解决方案：</p>
+
+<ul>
+<li>将 Envoy 配置为 API 负载均衡器的前端代理；仍然允许所有流量通过。</li>
+<li>配置并运行全局速率限制服务。</li>
+<li>配置 Envoy 使用全局速率限制服务。</li>
+</ul>
+
+<p>我们需要一种方法来限制同一时间发出的请求数量，以便将 API 负载均衡器与请求达到高峰的客户端隔离，并确保其他客户端在执行这些批处理作业（通过 <code>vegeta</code> 来模拟）期间可以继续访问 API。为了达到这个目的，我们将 Envoy 代理和批处理客户端 <code>vegeta</code> 部署在同一台机器上。</p>
+
+<p>通过将 Envoy 作为 <code>Sidecar</code> 与批处理客户端一起运行，在请求达到负载均衡之前就可以对请求进行速率限制。使用 Envoy 是一个很明智的选择，因为它具有高度可配置性，高性能，并且可以很好地处理 HTTP 请求之间的平衡。</p>
+
+<h3 id="将-envoy-配置为-api-负载均衡器的前端代理">将 Envoy 配置为 API 负载均衡器的前端代理</h3>
+
+<p>第一步是将 Envoy 配置为处于批处理作业客户端和 API 负载均衡器之间，客户端向 API 发起的所有请求都会首先经过 Envoy 的处理。首先需要让 Envoy 知道如何连接 API，然后再更新批处理作业的配置，使该客户端向 Envoy 发出请起，而不是直接向 API 发出请求。配置完之后的最终状态如下图所示：</p>
+
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwskywz0cqj30ct0dywf6.jpg" alt="" /></center></p>
+
+<p>此步骤仅通过 Envoy 来对 API 流量进行路由，尚未对应用进行速率限制。为了达到限速的目的，我们还需要做一些额外的配置：</p>
+
+<h4 id="cluster-https-www-envoyproxy-io-docs-envoy-latest-intro-arch-overview-cluster-manager"><a href="https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/cluster_manager" target="_blank">cluster</a></h4>
+
+<p><code>Cluster</code> 表示 Envoy 连接到的一组逻辑上相似的上游主机（在本示例中表示 API 负载均衡器）。Cluster 的配置非常简单：</p>
+
+<pre><code class="language-yaml">clusters:
+  - name: api
+    connect_timeout: 1s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: localhost
+        port_value: 8080
+</code></pre>
+
+<p>在本示例中，我们运行了一个监听在 <code>localhost:8080</code> 上的 fakapi 来模拟上图中的负载均衡器。通过 Envoy 向 API 发出的任何请求都会被发送到 <code>localhost:8080</code>。</p>
+
+<h4 id="virtual-host-https-www-envoyproxy-io-docs-envoy-latest-api-v1-route-config-vhost"><a href="https://www.envoyproxy.io/docs/envoy/latest/api-v1/route_config/vhost" target="_blank">virtual_host</a></h4>
+
+<p><code>virtual_host</code> 部分的配置用来确保所有请求都会路由到上面定义的 API 集群。</p>
+
+<pre><code class="language-yaml">- name: api
+  domains:
+  - &quot;*&quot;
+  routes:
+  - match:
+      prefix: &quot;/&quot;
+    route:
+      cluster: api
+</code></pre>
+
+<p>其余的配置文件用来确定 Envoy 本身监听在哪个地址以及 Envoy 与其他服务之间的连接规则。</p>
 
 <pre><code class="language-yaml">static_resources:
-  clusters:
-  - name: local_admin_cluster
-    connect_timeout: 30s
-    type: STATIC
-    lb_policy: ROUND_ROBIN
-    hosts: [{ socket_address: { address: 0.0.0.0, port_value: 5000 }}]
-
   listeners:
-  - name: local_admin_listener
+  - name: listener_0
     address:
-      socket_address: { address: 0.0.0.0, port_value: 5001 }
+      socket_address: { address: 0.0.0.0, port_value: 10000}
     filter_chains:
     - filters:
       - name: envoy.http_connection_manager
@@ -482,52 +575,232 @@ autocomplete('#aa-search-input',
           stat_prefix: ingress_http
           codec_type: AUTO
           route_config:
-            name: local_admin_route
+            name: remote_api
             virtual_hosts:
-            - name: local_service
-              domains: [&quot;*&quot;]
-              response_headers_to_add:
-              - header:
-                  key: &quot;Access-Control-Allow-Origin&quot;
-                  value: &quot;*&quot;
-
+            - name: api
+              domains:
+              - &quot;*&quot;
               routes:
-              - match: { path: &quot;/clusters&quot; }
-                route: { cluster: local_admin }
-              - match: { path: &quot;/config_dump&quot; }
-                route: { cluster: local_admin }
+              - match:
+                  prefix: &quot;/&quot;
+                route:
+                  cluster: api
+
           http_filters:
           - name: envoy.router
+
+  clusters:
+  - name: api
+    connect_timeout: 1s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: localhost
+        port_value: 8080
+
+admin:
+  access_log_path: &quot;/dev/null&quot;
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
 </code></pre>
 
-<p>如你所见，我已经确保路由仅匹配 <code>/clusters</code> 和 <code>/config_dump</code>，这样就不会造成潜在的危险。此外，由于我们已经将其作为我们的控制平面驱动的动态配置文件实现，因此我们可以根据是开发环境还是生产环境来更改这些路径的匹配方式（比如在开发环境中可以公开管理界面的所有端点，但在生产环境中不能这么做）。</p>
+<p>更新负载测试工具的参数，直接访问本地的 Envoy 代理，通过仪表板可以观察到 Envoy 正在接收流量。下图的 Envoy 仪表板来自 <a href="https://grafana.com/dashboards/7250" target="_blank">Grafana 官方仪表板仓库</a>（<a href="https://blog.envoyproxy.io/lyfts-envoy-dashboards-5c91738816b1" target="_blank">Lyft 也提供了一份 Envoy 仪表板</a>）。</p>
 
-<div id="note">
-<p id="note-title">Note</p>
-<br />
-<p>
-注意，因为我们使用的是 <code>Listener</code>，所以我们应该使用 <code>HTTPs</code>，我会将其作为读者的练习。
-</p>
-</div>
+<pre><code class="language-bash">$ make load-test LOAD_TEST_TARGET=http://localhost:10000 LOAD_TEST_RATE=500
 
-<p>前面我没有提到如何使用 <code>/config_dump</code> 端点导的数据（Haproxy 的 UI 可以通过 <code>/clusters</code> 端点的信息来构建等效的数据），因为我不太清楚我想要构建什么。由于 Envoy 的配置实在是太复杂了（即使不使用动态控制平面，只使用静态配置文件），以至于其他使用者很难确定每个 Envoy 实例的配置。<code>/config_dump</code> 的输出可能非常冗长，特别是如果有非常多复杂的 Cluster、Listener 和 Route。我认为这将是一个很好的用例，可以用来演示一些展示当前流量分割、流量镜像、Cluster 子集和权重的可视化。</p>
+echo &quot;GET http://localhost:10000/slow&quot; | vegeta attack -rate=500 -duration=0 | tee results.bin | vegeta report
+</code></pre>
 
-<p>此外，当我们在控制平面中开发更多功能时，为手动测试提供一些视觉反馈并向团队的其他人展示新功能将会起到很棒的效果。</p>
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwsmozv3daj30nr07lgm9.jpg" alt="" /></center></p>
 
-<p>我认为我们真的只是在获得对网络的深入见解时找到了冰山一角，我很高兴看到我们通过扩展 Envoy 管理界面等强大工具使我们的网络更加健壮和易懂。</p>
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwsmprdwh2j30br07hq3b.jpg" alt="" /></center></p>
 
-<p>如果您对此有任何想法，请随时通过 <code>Twitter</code> 或通过电子邮件与我联系：</p>
+<p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwsmq2wanfj30nr07kgm6.jpg" alt="" /></center></p>
 
-<ul>
-<li><p>Twitter: <a href="https://twitter.com/mitchfriedman5" target="_blank">@mitchfriedman5</a></p></li>
+<p>上图显示 Envoy 现在正在接收客户端发送给 API 的所有请求，并将它们发送到上游的负载均衡器！</p>
 
-<li><p>Email: <code>mitchfriedman5@gmail.com</code></p></li>
-</ul>
+<h3 id="配置并运行全局速率限制服务">配置并运行全局速率限制服务</h3>
+
+<p>此步骤将配置运行 Lyft 开源的全局 <a href="https://github.com/lyft/ratelimit" target="_blank">速率限制</a> 服务。运行该服务非常简单，只需要克隆它的代码仓库，修改一部分配置文件，然后通过 <code>docker-compose</code> 启动就行了。</p>
+
+<p><center><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwsmxzrlsmj30hk0dyaav.jpg" alt="" /></center></p>
+
+<p>首先克隆 <a href="https://github.com/lyft/ratelimit" target="_blank">Ratelimit 代码仓库</a>并修改配置文件，更新 <code>domain</code> 字段以及 <code>descriptor</code> 字段的 <code>key</code> 和 <code>value</code>：</p>
+
+<pre><code class="language-bash">$ cat examples/ratelimit/config/config.yaml
+</code></pre>
+
+<pre><code class="language-yaml">---
+domain: apis
+descriptors:
+  - key: generic_key
+    value: default
+    rate_limit:
+      unit: second
+      requests_per_unit: 500
+</code></pre>
+
+<p>接下来使用docker-compose 的配置文件（<code>docker-compose.yml</code>）来启动全局速率限制服务（详细步骤请参考 <a href="https://github.com/lyft/ratelimit" target="_blank">README</a>）：</p>
+
+<pre><code class="language-bash">$ docker-compose down &amp;&amp; docker-compose up
+</code></pre>
+
+<h3 id="配置-envoy-使用全局速率限制服务">配置 Envoy 使用全局速率限制服务</h3>
+
+<p>最后一步是配置 Envoy 使用全局速率限制服务，以强制执行速率限制并降低对 API 的请求速率。配置生效后，Envoy 将会检查每个传入连接的速率限制，并根据上面的配置过滤掉一部分请求（限制最多 500 个请求/秒）。</p>
+
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwsnt0oi5gj30hk0de3zb.jpg" alt="" /></center></p>
+
+<p>开启了速率限制的 Envoy 配置文件如下所示：</p>
+
+<pre><code class="language-yaml">static_resources:
+  listeners:
+  - name: listener_0
+    address:
+      socket_address: { address: 0.0.0.0, port_value: 10000}
+    filter_chains:
+    - filters:
+      - name: envoy.http_connection_manager
+        config:
+          use_remote_address: true
+          stat_prefix: ingress_http
+          codec_type: AUTO
+          route_config:
+            name: remote_api
+            virtual_hosts:
+            - name: api
+              domains:
+              - &quot;*&quot;
+              routes:
+              - match:
+                  prefix: &quot;/&quot;
+                route:
+                  cluster: api
+              rate_limits:
+                - stage: 0
+                  actions:
+                    - {generic_key: {descriptor_value: &quot;default&quot;}}
+
+          http_filters:
+          - name: envoy.rate_limit
+            config:
+              domain: apis
+              stage: 0
+
+          - name: envoy.router
+
+  clusters:
+  - name: api
+    connect_timeout: 1s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+    - socket_address:
+        address: localhost
+        port_value: 8080
+
+  - name: rate_limit_cluster
+    type: strict_dns
+    connect_timeout: 0.25s
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: localhost
+        port_value: 8081
+
+rate_limit_service:
+    grpc_service:
+        envoy_grpc:
+            cluster_name: rate_limit_cluster
+        timeout: 0.25s
+
+admin:
+  access_log_path: &quot;/dev/null&quot;
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9901
+</code></pre>
+
+<p>然后，我们以 <code>1000个请求/秒</code> 的速率（速率限制的2倍）运行负载测试工具：</p>
+
+<pre><code class="language-bash">$ make load-test LOAD_TEST_TARGET=http://localhost:10000 LOAD_TEST_RATE=1000
+
+echo &quot;GET http://localhost:10000/slow&quot; | vegeta attack -rate=1000 -duration=0 | tee results.bin | vegeta report
+</code></pre>
+
+<p>可以查看一下 ratelimiter 服务的日志，日志中显示了它接收的请求和它进行速率限制检查的过程：</p>
+
+<pre><code class="language-bash">msg=&quot;cache key: apis_generic_key_default_1540829538 current: 35&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;cache key: apis_generic_key_default_1540829538 current: 34&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;cache key: apis_generic_key_default_1540829538 current: 33&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;cache key: apis_generic_key_default_1540829538 current: 31&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;cache key: apis_generic_key_default_1540829538 current: 32&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;cache key: apis_generic_key_default_1540829538 current: 42&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;starting get limit lookup&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;cache key: apis_generic_key_default_1540829538 current: 46&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;looking up key: generic_key_default&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;looking up key: generic_key_default&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;looking up key: generic_key_default&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;looking up key: generic_key_default&quot;
+ratelimit_1        | time=&quot;2018-10-29T16:12:18Z&quot; level=debug msg=&quot;looking up key: generic_key_default&quot;
+</code></pre>
+
+<blockquote>
+<p>如果速率限制功能无法生效，可以参考该 <a href="https://github.com/envoyproxy/envoy/issues/3388" target="_blank">issue</a> 中的讨论。</p>
+</blockquote>
+
+<p>运行一段时间后，停止负载测试打印出测试报告，可以看到其中 <code>1/2</code> 的请求被 Envoy 限制了，被限制的请求的状态码为 <code>429</code> ！！！</p>
+
+<pre><code class="language-bash">$ make load-test LOAD_TEST_TARGET=http://localhost:10000 LOAD_TEST_RATE=1000
+
+echo &quot;GET http://localhost:10000/slow&quot; | vegeta attack -rate=1000 -duration=0 | tee results.bin | vegeta report
+Requests      [total, rate]            128093, 1000.02
+Duration      [total, attack, wait]    2m8.102168403s, 2m8.090470728s, 11.697675ms
+Latencies     [mean, 50, 95, 99, max]  10.294365ms, 11.553135ms, 33.428287ms, 52.678127ms, 177.709494ms
+Bytes In      [total, mean]            1207354, 9.43
+Bytes Out     [total, mean]            0, 0.00
+Success       [ratio]                  52.69%
+Status Codes  [code:count]             200:67494  429:60599
+Error Set:
+429 Too Many Requests
+</code></pre>
+
+<p>通过 Envoy 暴露的速率限制指标（<code>envoy_cluster_ratelimit_over_limit</code>）或（<code>4xx</code> 响应）的速率来绘制仪表板，可以看到相应的可视化图表：</p>
+
+<p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwsohfxmscj30m107iq3k.jpg" alt="" /></center></p>
+
+<p>通过可视化 API 服务实际看到的请求数量，可以证明请求速率在 <code>500个请求/秒</code> 上下波动，这正是我们所期望的！</p>
+
+<p><center><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwsongr2zhj30jw07ejrr.jpg" alt="" /></center></p>
+
+<p>再查看一下 Envoy 传出的 API 连接，可以看到传出请求速率也在 <code>500个请求/秒</code> 上下波动！</p>
+
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwsopzl2uhj30l707ijry.jpg" alt="" /></center></p>
+
+<p>实验成功！</p>
+
+<h2 id="总结">总结</h2>
 
 <hr />
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
-<center>扫一扫关注微信公众号</center></p>
+<p>希望通过本文的讲解能让你明白配置 Envoy 以减轻贪婪客户端对 API 资源的消耗是多么简单。我发现这种模式非常有用，因为弹性能力是为应用开发更多功能的基础。在 Envoy 横空出世之前，应用程序级别的重试、延迟注入、速率限制和熔断都都要通过应用程序本身的代码逻辑来实现。Envoy 将这些功能从应用程序中剥离出来，并让运维管理人员能够配置和启用这些功能，无需对应用程序本身作任何修改。Envoy 完全颠覆了我们对服务弹性能力的认知，希望你读这篇文章时能和我写这篇文章时一样兴奋！</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<ul>
+<li><a href="https://www.datawire.io/envoyproxy/getting-started-lyft-envoy-microservices-resilience/" target="_blank">https://www.datawire.io/envoyproxy/getting-started-lyft-envoy-microservices-resilience/</a></li>
+<li><a href="https://www.envoyproxy.io/docs/envoy/latest/" target="_blank">https://www.envoyproxy.io/docs/envoy/latest/</a></li>
+<li><a href="https://blog.turbinelabs.io/deploying-envoy-as-a-front-proxy-5b7e0a453f65" target="_blank">https://blog.turbinelabs.io/deploying-envoy-as-a-front-proxy-5b7e0a453f65</a></li>
+<li><a href="http://blog.christianposta.com/microservices/00-microservices-patterns-with-envoy-proxy-series/" target="_blank">http://blog.christianposta.com/microservices/00-microservices-patterns-with-envoy-proxy-series/</a></li>
+<li><a href="https://blog.envoyproxy.io/introduction-to-modern-network-load-balancing-and-proxying-a57f6ff80236" target="_blank">https://blog.envoyproxy.io/introduction-to-modern-network-load-balancing-and-proxying-a57f6ff80236</a></li>
+<li><a href="https://eng.lyft.com/announcing-ratelimit-c2e8f3182555" target="_blank">https://eng.lyft.com/announcing-ratelimit-c2e8f3182555</a></li>
+<li><a href="https://github.com/dm03514/grokking-go/compare/blog/bolt-on-rate-limits?expand=1" target="_blank">https://github.com/dm03514/grokking-go/compare/blog/bolt-on-rate-limits?expand=1</a></li>
+</ul>
 
 <style>
 a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
@@ -553,18 +826,21 @@ h2::before {
     margin-right: 5px;
     color: #2d96bd;
 }
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
 li {
     line-height: 2;
+    font-size: 0.9em;
 }
 blockquote {
     padding: 10px 20px;
     margin: 0 0 20px;
     font-size: 14px;
     border-left: 5px solid #986dbd;
-}
-#blue {
-color: #2780e3;
-font-size: 17px
 }
 #note {
     font-size: 1.5rem;
@@ -817,11 +1093,11 @@ border-top-color: #9954bb;
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/" data-toggle="tooltip" data-placement="top" title="在 Istio 中调试 503 错误">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/" data-toggle="tooltip" data-placement="top" title="扩展 Envoy 的管理界面">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/" data-toggle="tooltip" data-placement="top" title="SRE 弹性能力：使用 Envoy 对应用进行速率限制">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -831,6 +1107,8 @@ border-top-color: #9954bb;
                 <h2>See Also</h2>
                 <ul>
                     
+                    <li><a href="/posts/extending-the-envoy-admin-interface/">扩展 Envoy 的管理界面</a></li>
+                    
                     <li><a href="/posts/envoy-xds-protocol/">Envoy 中的 xDS REST 和 gRPC 协议详解</a></li>
                     
                     <li><a href="/posts/setting-up-ssl-in-envoy-practice/">为 Envoy 开启 TLS 验证实战</a></li>
@@ -838,8 +1116,6 @@ border-top-color: #9954bb;
                     <li><a href="/posts/circuit-breaking/">Envoy 熔断器的原理和使用</a></li>
                     
                     <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
-                    
-                    <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
                     
                 </ul>
                 
