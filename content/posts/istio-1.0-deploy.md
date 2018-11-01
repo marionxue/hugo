@@ -180,7 +180,7 @@ $Ingree_host tracing.istio.io
 
 ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwsvs5dpbfj31kw0zk4bq.jpg)
 
-+ `http://servicegraph.istio.io/dotgraph` : provides a <a href="https://www.wikiwand.com/en/DOT_(graph_description_language" target="_blank">DOT</a> serialization.
++ `http://servicegraph.istio.io/dotgraph` : provides a <a href="https://www.wikiwand.com/en/DOT_(graph_description_language)" target="_blank">DOT</a> serialization.
 + `http://servicegraph.istio.io/d3graph` : provides a JSON serialization for D3 visualization.
 + `http://servicegraph.istio.io/graph` : provides a generic JSON serialization.
 
