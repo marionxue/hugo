@@ -166,31 +166,31 @@ $Ingree_host tracing.istio.io
 
 通过 `http://grafana.istio.io` 访问 Grafana 服务：
 
-![](http://o7z41ciog.bkt.clouddn.com/istio-mesh.jpeg)
+![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwsvh766nij31kw0zkwpd.jpg)
 
-![](http://o7z41ciog.bkt.clouddn.com/istio-service.jpeg)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwsvr4c76gj31kw0zkali.jpg)
 
 通过 `http://servicegraph.istio.io` 访问 ServiceGraph 服务，展示服务之间调用关系图。
 
 + `http://servicegraph.istio.io/force/forcegraph.html` : As explored above, this is an interactive [D3.js](https://d3js.org/) visualization.
 
-![](http://o7z41ciog.bkt.clouddn.com/istio-servicegraph.jpeg)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwsvrngukyj31kw0zktgs.jpg)
 
 + `http://servicegraph.istio.io/dotviz` : is a static [Graphviz](https://www.graphviz.org/) visualization.
 
-![](http://o7z41ciog.bkt.clouddn.com/servicegraph-dotviz1.jpg)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwsvs5dpbfj31kw0zk4bq.jpg)
 
-+ `http://servicegraph.istio.io/dotgraph` : provides a [DOT](https://www.wikiwand.com/en/DOT_(graph_description_language) serialization.
++ `http://servicegraph.istio.io/dotgraph` : provides a <a href="https://www.wikiwand.com/en/DOT_(graph_description_language" target="_blank">DOT</a> serialization.
 + `http://servicegraph.istio.io/d3graph` : provides a JSON serialization for D3 visualization.
 + `http://servicegraph.istio.io/graph` : provides a generic JSON serialization.
 
 通过 `http://tracing.istio.io/` 访问 Jaeger 跟踪页面：
 
-![](http://o7z41ciog.bkt.clouddn.com/zipkin-jaeger.jpg)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwsvsxlx6sj31kw0zk48m.jpg)
 
 通过 `http://prometheus.istio.io/` 访问 Prometheus 页面：
 
-![](http://o7z41ciog.bkt.clouddn.com/istio-prometheus.jpg)
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwsvtkb9ncj31kw0zkao6.jpg)
 
 <div id="note">
 <p id="note-title">Note</p>
