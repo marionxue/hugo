@@ -21,7 +21,7 @@ bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 
 速率限制是缓解级联故障和防止耗尽共享资源的一种简单有效的方法。`Envoy` 是一个功能丰富的代理，可以为任何服务轻松添加速率限制的功能。本文将介绍在不更改应用程序本身配置的前提下如何配置 `Envoy` 来强制对应用进行速率限制。
 
-## 问题
+## 1. 问题
 
 ----
 
@@ -47,13 +47,13 @@ echo "GET http://localhost:8080/slow" | vegeta attack -rate=500 -duration=0 | te
 
 <center>![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwrjy191ohj30lr07jq34.jpg)</center>
 
-在模拟后台作业期间，API 资源 `/slow` 的访问速率达到了每秒 `3500` 个请求，影响到了其他端点和客户端。
+在模拟后台作业期间，对 API 资源 `/slow` 的访问速率达到了每秒 `3500` 个请求，影响到了其他端点和客户端。
 
 <center>![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwrk228etaj30nd07m74v.jpg)</center>
 
-为了解决这个问题，下面的解决方案使用 Envoy 强制限制请求速率为 `500个请求/秒`。但首先...
+为了解决这个问题，下面的解决方案将使用 Envoy 强制限制请求速率为 `500个请求/秒`。但首先...
 
-## Envoy 是什么？
+## 2. Envoy 是什么？
 
 ----
 
@@ -65,7 +65,7 @@ Envoy 的 [官方文档](https://www.envoyproxy.io/) 和 ` Matt Klein` 的文章
 
 > Envoy 是一款由 ` Lyft` 开源的，使用 C++ 编写的高性能分布式代理，专为单体服务和应用而设计。它也被作为大型微服务框架 [Istio](https://istio.io/) service mesh 的通信总线和通用数据平面。通过借鉴 NGINX、HAProxy、硬件负载均衡器和云负载均衡器等解决方案，Envoy 作为一个独立的进程与应用程序一起运行，并通过与平台无关的方式提供一些高级特性，从而形成一个对应用透明的通信网格。当基础设施中的所有服务流量通过 Envoy 网格流动时，通过一致的可观察性，调整整体性能和添加更多底层特性，一旦发生网络和应用程序故障，能够很容易定位出问题的根源。
 
-## 解决方案
+## 3. 解决方案
 
 ----
 
@@ -352,13 +352,13 @@ Error Set:
 
 实验成功！
 
-## 总结
+## 4. 总结
 
 ----
 
 希望通过本文的讲解能让你明白配置 Envoy 以减轻贪婪客户端对 API 资源的消耗是多么简单。我发现这种模式非常有用，因为弹性能力是为应用开发更多功能的基础。在 Envoy 横空出世之前，应用程序级别的重试、延迟注入、速率限制和熔断都都要通过应用程序本身的代码逻辑来实现。Envoy 将这些功能从应用程序中剥离出来，并让运维管理人员能够配置和启用这些功能，无需对应用程序本身作任何修改。Envoy 完全颠覆了我们对服务弹性能力的认知，希望你读这篇文章时能和我写这篇文章时一样兴奋！
 
-## 参考资料
+## 5. 参考资料
 
 + [https://www.datawire.io/envoyproxy/getting-started-lyft-envoy-microservices-resilience/](https://www.datawire.io/envoyproxy/getting-started-lyft-envoy-microservices-resilience/)
 + [https://www.envoyproxy.io/docs/envoy/latest/](https://www.envoyproxy.io/docs/envoy/latest/)
