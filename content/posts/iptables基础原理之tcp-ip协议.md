@@ -3,7 +3,7 @@ title: "Iptables基础原理之tcp/ip协议"
 subtitle: "TCP 协议通信流程"
 date: 2016-12-26T09:17:42Z
 draft: true
-bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
+bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->

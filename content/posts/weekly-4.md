@@ -4,7 +4,7 @@ date: 2018-08-11T18:17:12+08:00
 draft: false
 categories: "分享"
 tags: ["share"]
-bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
+bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->

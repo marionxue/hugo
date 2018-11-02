@@ -2,7 +2,7 @@
 title: "2017 年的小目标"
 date: 2017-07-26T19:09:28Z
 draft: false
-bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
+bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->
