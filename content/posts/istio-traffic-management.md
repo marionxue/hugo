@@ -6,7 +6,7 @@ draft: false
 toc: true
 categories: "service mesh"
 tags: ["istio", "service mesh"]
-bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
+bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/picHD_12.png"}]
 ---
 
 <!--more-->
@@ -470,13 +470,13 @@ EOF
 + [摸索：Istio 路由规则 Alpha v3](https://blog.fleeto.us/post/istio-route-alpha1v3/)
 + [配置请求路由](https://istio.io/zh/docs/tasks/traffic-management/request-routing/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwsxbnxsx5j309k09kdfw.jpg)</center>
 
 
 <style>
-a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
+a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
-    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+    cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
 }
 h1,h2,h3,h4,h5,h6 {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;

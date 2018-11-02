@@ -222,9 +222,9 @@ Kubernetes 的默认调度器已经做的很好，但由于集群处于不断变
 <br />
 
 <style>
-a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
+a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
-    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+    cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
 }
 #h2{
     margin-bottom:2em;

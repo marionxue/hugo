@@ -228,9 +228,9 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 
 <style>
-a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
+a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
-    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+    cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
 }
 #h2{
     margin-bottom:2em;

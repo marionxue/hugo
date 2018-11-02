@@ -145,9 +145,9 @@ $ docker run -d -p 80:80 -p 443:443 -l EnvironmentName=proxy -l ServiceName=ngin
 可以看到 nginx 的服务名为 `nginx-proxy`。
 
 <style>
-a:hover{cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;}
+a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
-    cursor: url(http://oqk3alhse.bkt.clouddn.com/cursor_1.png), default;
+    cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
 }
 h1,h2,h3,h4,h5,h6 {
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
