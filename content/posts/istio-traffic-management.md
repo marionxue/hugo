@@ -42,7 +42,7 @@ Bookinfo 应用分为四个单独的微服务：
 
 下图展示了这个应用的端到端架构。
 
-![](https://istio.io/docs/examples/bookinfo/noistio.svg)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/noistio.svg)
 
 <center>*Istio 注入之前的 Bookinfo 应用*</center>
 
@@ -54,7 +54,7 @@ Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的�
 
 要在 Istio 中运行这一应用，无需对应用自身做出任何改变。我们只要简单的在 Istio 环境中对服务进行配置和运行，具体一点说就是把 Envoy sidecar 注入到每个服务之中。这个过程所需的具体命令和配置方法由运行时环境决定，而部署结果较为一致，如下图所示：
 
-![](https://istio.io/docs/examples/bookinfo/withistio.svg)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/withistio.svg)
 
 <center>*Bookinfo 应用*</center>
 
@@ -156,7 +156,7 @@ $ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 
 由于 Bookinfo 示例部署了三个版本的 reviews 微服务，因此我们需要设置默认路由。 否则，如果您当多次访问应用程序，您会注意到有时输出包含星级评分，有时又没有。 这是因为没有为应用明确指定缺省路由时，Istio 会将请求随机路由到该服务的所有可用版本上。
 
-![](https://istio.io/docs/concepts/traffic-management/ServiceModel_Versions.svg)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/ServiceModel_Versions.svg)
 
 <div id="note">
 <p id="note-title">Note</p>

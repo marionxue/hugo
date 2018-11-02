@@ -479,7 +479,7 @@ autocomplete('#aa-search-input',
 
 <p>下图展示了这个应用的端到端架构。</p>
 
-<p><img src="https://istio.io/docs/examples/bookinfo/noistio.svg" alt="" /></p>
+<p><img src="http://hugo-picture.oss-cn-beijing.aliyuncs.com/noistio.svg" alt="" /></p>
 
 <p><center><em>Istio 注入之前的 Bookinfo 应用</em></center></p>
 
@@ -491,7 +491,7 @@ autocomplete('#aa-search-input',
 
 <p>要在 Istio 中运行这一应用，无需对应用自身做出任何改变。我们只要简单的在 Istio 环境中对服务进行配置和运行，具体一点说就是把 Envoy sidecar 注入到每个服务之中。这个过程所需的具体命令和配置方法由运行时环境决定，而部署结果较为一致，如下图所示：</p>
 
-<p><img src="https://istio.io/docs/examples/bookinfo/withistio.svg" alt="" /></p>
+<p><img src="http://hugo-picture.oss-cn-beijing.aliyuncs.com/withistio.svg" alt="" /></p>
 
 <p><center><em>Bookinfo 应用</em></center></p>
 
@@ -592,7 +592,7 @@ istio-ingressgateway   NodePort   10.254.160.93   &lt;none&gt;        80:31380/T
 
 <p>由于 Bookinfo 示例部署了三个版本的 reviews 微服务，因此我们需要设置默认路由。 否则，如果您当多次访问应用程序，您会注意到有时输出包含星级评分，有时又没有。 这是因为没有为应用明确指定缺省路由时，Istio 会将请求随机路由到该服务的所有可用版本上。</p>
 
-<p><img src="https://istio.io/docs/concepts/traffic-management/ServiceModel_Versions.svg" alt="" /></p>
+<p><img src="http://hugo-picture.oss-cn-beijing.aliyuncs.com/ServiceModel_Versions.svg" alt="" /></p>
 
 <div id="note">
 <p id="note-title">Note</p>
