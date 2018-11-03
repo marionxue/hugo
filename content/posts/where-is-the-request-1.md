@@ -19,7 +19,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-![](https://ws1.sinaimg.cn/large/006tKfTcgy1ftppxdcmwvj31kw0vvtdl.jpg)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/pilot.svg)
 
 首先我们回顾一下 pilot 总体架构，上面是[官方关于pilot的架构图](https://github.com/istio/old_pilot_repo/blob/master/doc/design.md)，因为是 old_pilot_repo 目录下，可能与最新架构有出入，仅供参考。所谓的 pilot 包含两个组件：`pilot-agent` 和 `pilot-discovery`。图里的 `agent` 对应 pilot-agent 二进制，`proxy` 对应 Envoy 二进制，它们两个在同一个容器中，`discovery service` 对应 pilot-discovery 二进制，在另外一个跟应用分开部署的单独的 Deployment 中。
 
@@ -392,7 +392,7 @@ $ istioctl -n istio-system pc clusters istio-ingressgateway-b6db8c46f-qcfks --fq
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg)</center>
 
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
