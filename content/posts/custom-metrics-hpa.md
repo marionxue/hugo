@@ -79,9 +79,9 @@ Kubernetes 自 1.2 版本引入 `HPA` 机制，到 1.6 版本之前一直是通�
 
 hpa 实现了一个控制环，可以周期性的从 Resource Metrics API 查询特定应用的 CPU 和内存信息。
 
-<center>![](https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa.png)</center>
+<center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuze9gzzcj30fv0bxdgn.jpg)</center>
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/hpa.png)</center>
+<center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuzei58fkj31kw0piwkd.jpg)</center>
 
 ## 5. 实战
 
@@ -106,7 +106,7 @@ $ git clone https://github.com/stefanprodan/k8s-prom-hpa
 
 Kubernetes Metrics Server 是一个集群范围内的资源使用量的聚合器，它是 Heapster 的继承者。Metrics Server 通过汇集来自 `kubernetes.summary_api` 的数据来收集 node 和 pod 的 CPU 和内存使用情况。`summary API` 是用于将数据从 Kubelet/cAdvisor 传递到 Metrics Server 的高效内存 API。
 
-<center>![](https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa-ms.png)</center>
+<center>![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuzesdvxtj309l0anmxg.jpg)</center>
 
 在安装 Metrics Server 之前需要先进行如下配置：
 
@@ -218,7 +218,7 @@ $ kubectl delete -f ./podinfo/podinfo-hpa.yaml,./podinfo/podinfo-dep.yaml,./podi
 + <span id="inline-blue">Prometheus</span> : 从应用程序中收集指标并将其存储为 Prometheus 时间序列数据库。
 + <span id="inline-blue">custom-metrics-apiserver</span> : 使用 [k8s-prometheus-adapter](https://github.com/DirectXMan12/k8s-prometheus-adapter) 提供的 metrics 来扩展 Kubernetes 自定义指标 API。
 
-<center>![](https://github.com/stefanprodan/k8s-prom-hpa/raw/master/diagrams/k8s-hpa-prom.png)</center>
+<center>![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuzf4qyi4j30bj0anjro.jpg)</center>
 
 创建 `monitoring` 命名空间：
 
@@ -399,7 +399,7 @@ Events:
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg)</center>
 <center>扫一扫关注微信公众号</center>
 
 <style>
