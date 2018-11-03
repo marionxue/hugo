@@ -16,7 +16,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 通常，通过在集群中的一个 Pod 中运行一个 `extension-apiserver` 来实现 APIService。如果已添加的资源需要主动管理，这个 extension-apiserver 通常需要和一个或多个控制器配对。
 
-## <p id="h2">1. 创建聚合层 API 证书</p>
+## 1. 创建聚合层 API 证书
 
 ----
 
@@ -133,8 +133,6 @@ $ ls aggregator-ca*
 aggregator-ca-config.json  aggregator-ca.csr  aggregator-ca-csr.json  aggregator-ca-key.pem  aggregator-ca.pem
 ```
 
-<br />
-
 ### 创建 kubernetes 证书
 
 创建 aggregator 证书签名请求文件 `aggregator-csr.json` ：
@@ -181,8 +179,6 @@ $ ls aggregator*
 aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 ```
 
-<br />
-
 ### 分发证书
 
 将生成的证书和秘钥文件（后缀名为.pem）拷贝到 Master 节点的 `/etc/kubernetes/ssl` 目录下备用。
@@ -191,9 +187,7 @@ aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 $ cp *.pem /etc/kubernetes/ssl
 ```
 
-<br />
-
-## <p id="h2">2. 开启聚合层 API</p>
+## 2. 开启聚合层 API
 
 ----
 
@@ -228,9 +222,7 @@ $ systemctl restart kube-apiserver
 --enable-aggregator-routing=true
 ```
 
-<br />
-
-## <p id="h2">3. 参考</p>
+## 3. 参考
 
 ----
 
@@ -238,12 +230,45 @@ $ systemctl restart kube-apiserver
 + [Configure the aggregation layer](https://kubernetes.io/docs/tasks/access-kubernetes-api/configure-aggregation-layer/)
 + [创建TLS证书和秘钥](https://jimmysong.io/kubernetes-handbook/practice/create-tls-and-secret-key.html)
 
-<br />
-
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;
