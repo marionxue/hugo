@@ -575,6 +575,7 @@
         "subtitle": "打造高效的命令行终端",
         "date": "2018-06-11T04:35:48.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"
