@@ -3,6 +3,7 @@ title: "LVS负载均衡之持久性连接介绍"
 subtitle: "如何根据业务场景来设置 lvs 持久性"
 date: 2018-04-18T11:18:06Z
 draft: false
+toc: true
 categories: "loadbalance"
 tags: ["lvs"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -10,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-## <p id="h2">1. 前言</p>
+## 1. 前言
 
 ----
 
@@ -64,7 +65,7 @@ LVS 的八种轮询算法中有（Source Hashing）源地址 hash，它和持久
 
 这并不与 SH 算法冲突，lvs 持久连接会在新请求达到时，检查后端 RS 的负载状况，这就是比较精细的调度和会话保持方法。
 
-## <p id="h2">2. lvs 的持久性连接有两方面</p>
+## 2. lvs 的持久性连接有两方面
 
 ----
 
@@ -78,7 +79,7 @@ LVS 的八种轮询算法中有（Source Hashing）源地址 hash，它和持久
 + **tcpfin:** lvs收到客户端tcp fin的超时时间
 + **udp:** udp的超时时间
 
-## <p id="h2">3. lvs 相关超时时间查看</p>
+## 3. lvs 相关超时时间查看
 
 ----
 
@@ -104,7 +105,7 @@ $ ipvsadm -Ln --timeout
 Timeout (tcp tcpfin udp): 900 120 300
 ```
 
-## <p id="h2">4. lvs 如何控制这些超时时间工作</p>
+## 4. lvs 如何控制这些超时时间工作
 
 ----
 
@@ -121,7 +122,7 @@ TCP 180:03 NONE        192.168.123.248:0  10.254.66.97:8080  172.20.135.6:8080
 
 + `TIME_WAIT` 的值就是 tcp tcpfin udp 中的 `tcpfin` 的超时时间，当 `NONE` 的值为0时，如果 TIME_WAIT 还存在，那么 NONE 的值会从新变成 `persistence_timeout` 的值，再减少，直到 TIME_WAIT 消失以后，NONE 才会消失，只要 NONE 存在，同一 client 的访问，都会分配到统一 real server。
 
-## <p id="h2">5. lvs 关于相关超时时间的设置</p>
+## 5. lvs 关于相关超时时间的设置
 
 ----
 
@@ -146,7 +147,7 @@ $ ipvsadm --set tcp tcpfin udp
 <p><code>tcpfin</code> 的值最好小于 <code>persistence_timeout</code> 的值，这样比较方便计算，也有利于 <code>tcpfin</code> 回收</p>
 </div>
 
-## <p id="h2">6. 持久连接定义与原理</p>
+## 6. 持久连接定义与原理
 
 ----
 
@@ -208,7 +209,7 @@ $ ipvsadm -a -f 8 -r 172.16.100.10 -g -w 2
 $ ipvsadm -a -f 8 -r 172.16.100.11 -g -w 1
 ```
 
-## <p id="h2">7. 总结</p>
+## 7. 总结
 
 ----
 
@@ -218,6 +219,41 @@ $ ipvsadm -a -f 8 -r 172.16.100.11 -g -w 1
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;

@@ -402,7 +402,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Wed Apr 18, 2018</h4>
     </section>
-    <h5 id="wc">3800 Words|Read in about 8 Min</h5>
+    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/lvs/">lvs</a> &nbsp;
@@ -412,10 +412,46 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-前言">1. 前言</a>
+<ul>
+<li><a href="#为什么用到持久连接">为什么用到持久连接？</a></li>
+<li><a href="#hash算法与持久连接">hash算法与持久连接</a>
+<ul>
+<li><a href="#source-hashing-算法">Source Hashing 算法</a></li>
+<li><a href="#持久连接">持久连接</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#2-lvs-的持久性连接有两方面">2. lvs 的持久性连接有两方面</a></li>
+<li><a href="#3-lvs-相关超时时间查看">3. lvs 相关超时时间查看</a></li>
+<li><a href="#4-lvs-如何控制这些超时时间工作">4. lvs 如何控制这些超时时间工作</a></li>
+<li><a href="#5-lvs-关于相关超时时间的设置">5. lvs 关于相关超时时间的设置</a></li>
+<li><a href="#6-持久连接定义与原理">6. 持久连接定义与原理</a>
+<ul>
+<li><a href="#定义">定义</a></li>
+<li><a href="#原理">原理</a></li>
+<li><a href="#持久连接分类">持久连接分类</a></li>
+</ul></li>
+<li><a href="#7-总结">7. 总结</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
-<h2 id="p-id-h2-1-前言-p"><p id="h2">1. 前言</p></h2>
+<h2 id="1-前言">1. 前言</h2>
 
 <hr />
 
@@ -471,7 +507,7 @@ autocomplete('#aa-search-input',
 
 <p>这并不与 SH 算法冲突，lvs 持久连接会在新请求达到时，检查后端 RS 的负载状况，这就是比较精细的调度和会话保持方法。</p>
 
-<h2 id="p-id-h2-2-lvs-的持久性连接有两方面-p"><p id="h2">2. lvs 的持久性连接有两方面</p></h2>
+<h2 id="2-lvs-的持久性连接有两方面">2. lvs 的持久性连接有两方面</h2>
 
 <hr />
 
@@ -487,7 +523,7 @@ autocomplete('#aa-search-input',
 <li><strong>udp:</strong> udp的超时时间</li>
 </ul>
 
-<h2 id="p-id-h2-3-lvs-相关超时时间查看-p"><p id="h2">3. lvs 相关超时时间查看</p></h2>
+<h2 id="3-lvs-相关超时时间查看">3. lvs 相关超时时间查看</h2>
 
 <hr />
 
@@ -511,7 +547,7 @@ TCP  10.254.66.97:8080 rr persistent 10800
 Timeout (tcp tcpfin udp): 900 120 300
 </code></pre>
 
-<h2 id="p-id-h2-4-lvs-如何控制这些超时时间工作-p"><p id="h2">4. lvs 如何控制这些超时时间工作</p></h2>
+<h2 id="4-lvs-如何控制这些超时时间工作">4. lvs 如何控制这些超时时间工作</h2>
 
 <hr />
 
@@ -529,7 +565,7 @@ TCP 180:03 NONE        192.168.123.248:0  10.254.66.97:8080  172.20.135.6:8080
 <li><p><code>TIME_WAIT</code> 的值就是 tcp tcpfin udp 中的 <code>tcpfin</code> 的超时时间，当 <code>NONE</code> 的值为0时，如果 TIME_WAIT 还存在，那么 NONE 的值会从新变成 <code>persistence_timeout</code> 的值，再减少，直到 TIME_WAIT 消失以后，NONE 才会消失，只要 NONE 存在，同一 client 的访问，都会分配到统一 real server。</p></li>
 </ul>
 
-<h2 id="p-id-h2-5-lvs-关于相关超时时间的设置-p"><p id="h2">5. lvs 关于相关超时时间的设置</p></h2>
+<h2 id="5-lvs-关于相关超时时间的设置">5. lvs 关于相关超时时间的设置</h2>
 
 <hr />
 
@@ -551,7 +587,7 @@ TCP 180:03 NONE        192.168.123.248:0  10.254.66.97:8080  172.20.135.6:8080
 <p><code>tcpfin</code> 的值最好小于 <code>persistence_timeout</code> 的值，这样比较方便计算，也有利于 <code>tcpfin</code> 回收</p>
 </div>
 
-<h2 id="p-id-h2-6-持久连接定义与原理-p"><p id="h2">6. 持久连接定义与原理</p></h2>
+<h2 id="6-持久连接定义与原理">6. 持久连接定义与原理</h2>
 
 <hr />
 
@@ -612,7 +648,7 @@ $ ipvsadm -a -f 8 -r 172.16.100.10 -g -w 2
 $ ipvsadm -a -f 8 -r 172.16.100.11 -g -w 1
 </code></pre>
 
-<h2 id="p-id-h2-7-总结-p"><p id="h2">7. 总结</p></h2>
+<h2 id="7-总结">7. 总结</h2>
 
 <hr />
 
@@ -622,6 +658,41 @@ $ ipvsadm -a -f 8 -r 172.16.100.11 -g -w 1
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;
