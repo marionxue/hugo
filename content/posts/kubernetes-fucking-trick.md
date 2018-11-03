@@ -16,7 +16,7 @@ Kubernetes 作为云原生时代的“操作系统”，熟悉和使用它是每
 
 这里我们将介绍一些提高操作效率的技巧，同时列举几个比较有用的开源 Kubernetes 工具，这些工具以各种方式简化 Kubernetes，包括简化命令行交互，简化应用程序部署语法等。
 
-## <p id="h2">kubectl 自动补全</p>
+## kubectl 自动补全
 
 `kubectl` 这个命令行工具非常重要，与之相关的命令也很多，我们也记不住那么多的命令，而且也会经常写错，所以命令自动补全是很有必要的，kubectl 工具本身就支持自动补全，只需简单设置一下即可。
 
@@ -39,9 +39,7 @@ $ echo "source <(kubectl completion zsh)" >> ~/.zshrc
 $ source ~/.zshrc
 ```
 
-<br />
-
-## <p id="h2">自定义 kubectl get 输出</p>
+## 自定义 kubectl get 输出
 
 `kubectl get` 相关资源，默认输出为 kubectl 内置，一般我们也可以使用 `-o json` 或者 `-o yaml` 查看其完整的资源信息。但是很多时候，我们需要关心的信息并不全面，因此我们需要自定义输出的列，那么可以使用 `go-template` 来进行实现。
 
@@ -161,21 +159,17 @@ NAME                       HOSTIP
 coredns-64b597b598-7547d   192.168.123.250
 ```
 
-<br />
-
-## <p id="h2">[Kube-prompt](https://github.com/c-bata/kube-prompt)：交互式 Kubernetes 客户端</p>
+## [Kube-prompt](https://github.com/c-bata/kube-prompt)：交互式 Kubernetes 客户端
 
 `Kube-prompt` 可以让你在 Kubernetes 客户端输入相当于交互式命令会话的东西，并为每个命令提供自动填充的背景信息，你不必键入 kubectl 来为每个命令添加前缀。
 
-![](http://o7z41ciog.bkt.clouddn.com/kube-prompt.gif)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/kube-prompt.gif)
 
-<br />
-
-## <p id="h2">[Kubectl Aliases](https://github.com/ahmetb/kubectl-aliases)：生成 kubectl 别名</p>
+## [Kubectl Aliases](https://github.com/ahmetb/kubectl-aliases)：生成 kubectl 别名
 
 如果你需要频繁地使用 kubectl 和 kubernetes api 进行交互，使用别名将会为你节省大量的时间，开源项目 [kubectl-aliases](https://github.com/ahmetb/kubectl-aliases) 可以通过编程的方式生成 kubectl 别名，别名生成规则如下：
 
-![](http://o7z41ciog.bkt.clouddn.com/kubectl-alias.jpeg)
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwuzuby7krj30zo0iqtaw.jpg)
 
 + 简单别名示例
 
@@ -185,9 +179,7 @@ coredns-64b597b598-7547d   192.168.123.250
 
 > <font color=red>kgdepallw</font> → <font color=red>k</font>ubectl <font color=red>g</font>et <font color=red>dep</font>loyment --<font color=red>all</font>-namespaces --<font color=red>w</font>atch
 
-<br />
-
-## <p id="h2">[Kubeval](https://github.com/garethr/kubeval)：校验配置文件</p>
+## [Kubeval](https://github.com/garethr/kubeval)：校验配置文件
 
 如果你手动写 Kubernetes manifest 文件，检查 manifest 文件的语法是很困难的，特别是当你有多个不同版本的 Kubernetes 集群时，确认配置文件语法是否正确更是难上加难。
 
@@ -202,9 +194,7 @@ The document nginx.yaml contains an invalid Deployment
 ---> spec.replicas: Invalid type. Expected: integer, given: string
 ```
 
-<br />
-
-## <p id="h2">[Kedge](http://kedgeproject.org/)：简化 Kubernetes 部署定义</p>
+## [Kedge](http://kedgeproject.org/)：简化 Kubernetes 部署定义
 
 很多人都抱怨 Kubernetes manifest 文件的定义太复杂和冗长。它们很难写，而且很难维护，如果能够简化部署定义就会极大地降低维护难度。
 
@@ -270,21 +260,52 @@ spec:
 status: {}
 ```
 
-<br />
-
-## <p id="h2">参考</p>
+## 参考
 
 ----
 
 + [为高效 Ops 和 SRE 团队准备的 10 个开源 k8s 工具](https://segmentfault.com/a/1190000014526263?utm_source=tag-newest)
 + [打造高效的Kubernetes命令行终端](https://jimmysong.io/posts/configuring-efficient-kubernetes-cli-terminal/)
 
-<br />
-
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;
