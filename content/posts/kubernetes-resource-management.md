@@ -27,7 +27,7 @@ CPU 的使用时间是可压缩的，换句话说它本身无状态，申请资�
 
 在 kubernetes 集群管理中，有一个非常核心的功能：就是为 pod 选择一个主机运行。调度必须满足一定的条件，其中最基本的是主机上要有足够的资源给 pod 使用。
 
-<center>![](https://cdn-images-1.medium.com/max/800/1*PfGIiTw68JLIUyo0FQY2dA.png)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuz1uf27zj30d20fwjsi.jpg)</center>
 
 资源除了和调度相关之外，还和很多事情紧密相连，这正是这篇文章要解释的。
 
@@ -56,7 +56,7 @@ CPU 的使用时间是可压缩的，换句话说它本身无状态，申请资�
 
 这两块预留之后的资源才是 pod 真正能使用的，不过考虑到 eviction 机制（下面的章节会提到），kubelet 会保证节点上的资源使用率不会真正到 100%，因此 pod 的实际可使用资源会稍微再少一点。主机上的资源逻辑分配图如下所示：
 
-<center>![](https://i.loli.net/2018/06/25/5b3106f947190.png)</center>
+<center>![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwuz26vpuuj31b10qo76a.jpg)</center>
 
 <div id="note">
 <p id="note-title">Note</p>
@@ -196,7 +196,7 @@ kubernetes 把 pod 分成了三个 QoS 等级：
 
 Pod 的 requests 和 limits 是如何对应到这三个 QoS 等级上的，可以用下面一张表格概括：
 
-<center>![](https://i.loli.net/2018/06/25/5b307f4bc7d42.png)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuz2j3v9gj30p40d0tak.jpg)</center>
 
 看到这里，你也许看出来一个问题了：**如果不配置 requests 和 limits，pod 的 QoS 竟然是最低的**。没错，所以推荐大家理解 QoS 的概念，并且按照需求**一定要给 pod 配置 requests 和 limits 参数**，不仅可以让调度更准确，也能让系统更加稳定。
 
@@ -208,7 +208,7 @@ Pod 的 requests 和 limits 是如何对应到这三个 QoS 等级上的，可�
 
 Pod 的 QoS 还决定了容器的 OOM（out-of-memory）值，它们对应的关系如下：
 
-![](https://i.loli.net/2018/06/25/5b307a5b3557c.png)
+![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuz2tmpdrj30pa0433yx.jpg)
 
 可以看到，QoS 越高的 pod oom 值越低，也就越不容易被系统杀死。对于 Bustable pod，它的值是根据 request 和节点内存总量共同决定的:
 
@@ -256,7 +256,7 @@ Pod 的驱逐是在 kubelet 中实现的，因为 kubelet 能动态地感知到�
 
 下面这图是具体的触发条件：
 
-![](https://i.loli.net/2018/06/24/5b2f1a966a703.png)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuz34modyj310m06agn1.jpg)
 
 有了数据的来源，另外一个问题是触发的时机，也就是到什么程度需要触发驱逐程序？kubernetes 运行用户自己配置，并且支持两种模式：按照百分比和按照绝对数量。比如对于一个 32G 内存的节点当可用内存少于 10% 时启动驱逐程序，可以配置 `memory.available<10%` 或者 `memory.available<3.2Gi`。
 
@@ -362,7 +362,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 ### Horizontal Pod AutoScaling（横向 Pod 自动扩展）
 
-![](https://478h5m1yrfsa3bbe262u7muv-wpengine.netdna-ssl.com/wp-content/uploads/2018/02/autoscaler_kubernetes.jpg)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuz3i2pwcj30n20kgab4.jpg)
 
 横向 pod 自动扩展的思路是这样的：kubernetes 会运行一个 controller，周期性地监听 pod 的资源使用情况，当高于设定的阈值时，会自动增加 pod 的数量；当低于某个阈值时，会自动减少 pod 的数量。自然，这里的阈值以及 pod 的上限和下限的数量都是需要用户配置的。
 
@@ -402,7 +402,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg)</center>
 <center>扫一扫关注微信公众号</center>
 
 
