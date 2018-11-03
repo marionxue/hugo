@@ -37,6 +37,7 @@
         "subtitle": "使用聚合层扩展 Kubernetes API",
         "date": "2018-06-19T06:15:06.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"

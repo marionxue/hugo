@@ -3,6 +3,7 @@ title: "Kubernetes API 扩展"
 subtitle: "使用聚合层扩展 Kubernetes API"
 date: 2018-06-19T06:15:06Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
