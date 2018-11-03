@@ -506,7 +506,7 @@ autocomplete('#aa-search-input',
 
 <p>Istio 控制平面中负责流量管理的组件为 <code>Pilot</code>，Pilot 的高层架构如下图所示：</p>
 
-<p><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/pilot-architecture.png" alt="" /></p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwuwuwrvr5j30jx0c5t9t.jpg" alt="" /></p>
 
 <p><center>Pilot Architecture（来自 <a href="https://istio.io/docs/concepts/traffic-management/" target="_blank">Isio官网文档</a>)</center></p>
 
@@ -520,13 +520,13 @@ autocomplete('#aa-search-input',
 
 <h3 id="标准数据平面-api">标准数据平面 API</h3>
 
-<p>Pilo 使用了一套起源于 Envoy 项目的标准数据平面 API 来将服务信息和流量规则下发到数据平面的 <code>sidecar</code> 中。</p>
+<p>Pilot 使用了一套起源于 Envoy 项目的标准数据平面 API 来将服务信息和流量规则下发到数据平面的 <code>sidecar</code> 中。</p>
 
 <p>通过采用该标准 API，Istio 将控制平面和数据平面进行了解耦，为多种数据平面 sidecar 实现提供了可能性。事实上基于该标准 API 已经实现了多种 Sidecar 代理和 Istio 的集成，除 Istio 目前集成的 Envoy 外，还可以和 <code>Linkerd</code>, <code>Nginmesh</code> 等第三方通信代理进行集成，也可以基于该 API 自己编写 Sidecar 实现。</p>
 
 <p>控制平面和数据平面解耦是 Istio 后来居上，风头超过 Service mesh 鼻祖 <code>Linkerd</code> 的一招妙棋。Istio 站在了控制平面的高度上，而 Linkerd 则成为了可选的一种 sidecar 实现，可谓<strong>降维打击</strong>的一个典型成功案例！</p>
 
-<p>数据平面标准 API 也有利于生态圈的建立，开源，商业的各种 sidecar 以后可能百花齐放，用户也可以根据自己的业务场景选择不同的 sidecar 和控制平面集成，如高吞吐量的，低延迟的，高安全性的等等。有实力的大厂商可以根据该 API 定制自己的 sidecar，例如蚂蚁金服开源的 Golang 版本的 Sidecar <code>MOSN</code>(Modular Observable Smart Netstub)（<code>SOFAMesh</code> 中 Golang 版本的 Sidecar)；小厂商则可以考虑采用成熟的开源项目或者提供服务的商业 sidecar 实现。</p>
+<p>数据平面标准 API 也有利于生态圈的建立，开源、商业的各种 sidecar 以后可能百花齐放，用户也可以根据自己的业务场景选择不同的 sidecar 和控制平面集成，如高吞吐量的，低延迟的，高安全性的等等。有实力的大厂商可以根据该 API 定制自己的 sidecar，例如蚂蚁金服开源的 Golang 版本的 Sidecar <code>MOSN</code>(Modular Observable Smart Netstub)（<code>SOFAMesh</code> 中 Golang 版本的 Sidecar)；小厂商则可以考虑采用成熟的开源项目或者提供服务的商业 sidecar 实现。</p>
 
 <p id="blockquote">Istio 和 Envoy 项目联合制定了 <code>Envoy V2 API</code>,并采用该 API 作为 Istio 控制平面和数据平面流量管理的标准接口。</p>
 
@@ -657,7 +657,7 @@ autocomplete('#aa-search-input',
 
 <p>下图显示了 Bookinfo 示例程序中各个组件的 IP 地址，端口和调用关系，以用于后续的分析。</p>
 
-<p><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/bookinfo.png" alt="" /></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwvmvcwtj30hl0cc759.jpg" alt="" /></p>
 
 <h3 id="xds-接口调试方法">xDS 接口调试方法</h3>
 
@@ -792,7 +792,7 @@ Containers:
 
 <h4 id="proxy-init">Proxy_init</h4>
 
-<p>Productpage 的 Pod 中有一个 InitContainer <code>proxy_init</code>，<code>InitContrainer</code> 是 K8S 提供的机制，用于在 Pod 中执行一些初始化任务.在 Initialcontainer 执行完毕并退出后，才会启动 Pod 中的其它 container。</p>
+<p>Productpage 的 Pod 中有一个 InitContainer <code>proxy_init</code>，<code>InitContrainer</code> 是 K8S 提供的机制，用于在 Pod 中执行一些初始化任务。在 Initialcontainer 执行完毕并退出后，才会启动 Pod 中的其它 container。</p>
 
 <p>我们看一下 proxy_init 容器中的内容：</p>
 
@@ -893,7 +893,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 <p>配置文件的结构如图所示：</p>
 
-<p><center><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-rev0.png" alt="" /></center></p>
+<p><center><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuww4uo4tj30630760sz.jpg" alt="" /></center></p>
 
 <p>其中各个配置节点的内容如下：</p>
 
@@ -1064,7 +1064,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 <p>Envoy 配置初始化流程：</p>
 
-<p><center><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-init.png" alt="" /></center></p>
+<p><center><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwwkccecj30b905sq3b.jpg" alt="" /></center></p>
 
 <ol>
 <li>Pilot-agent 根据启动参数和 K8S API Server 中的配置信息生成 Envoy 的初始配置文件 <code>envoy-rev0.json</code>，该文件告诉 Envoy 从 <code>xDS server</code> 中获取动态配置信息，并配置了 xDS server 的地址信息，即控制平面的 <code>Pilot</code>。</li>
@@ -1082,7 +1082,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 <h4 id="envoy-配置文件结构">Envoy 配置文件结构</h4>
 
-<p><center><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config.png" alt="" /></center></p>
+<p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuwwwdzd9j305705cdfx.jpg" alt="" /></center></p>
 
 <p>文件中的配置节点包括：</p>
 
@@ -1090,7 +1090,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 <p>从名字可以大致猜出这是 Envoy 的初始化配置，打开该节点，可以看到文件中的内容和前一章节中介绍的 envoy-rev0.json 是一致的，这里不再赘述。</p>
 
-<p><center><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-bootstrap.png" alt="" /></center></p>
+<p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuwx6zp3sj30jl0dlgmn.jpg" alt="" /></center></p>
 
 <h5 id="clusters">Clusters</h5>
 
@@ -1098,7 +1098,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 <p>在 Productpage 的 clusters 配置中包含 <code>static_clusters</code> 和 <code>dynamic_active_clusters</code> 两部分，其中 static_clusters 是来自于 envoy-rev0.json 的 xDS server 和 zipkin server 信息。dynamic_active_clusters 是通过 xDS 接口从 Istio 控制平面获取的动态服务信息。</p>
 
-<p><center><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-clusters.png" alt="" /></center></p>
+<p><center><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwuwxnbtdij30jj0d6dgn.jpg" alt="" /></center></p>
 
 <p>Dynamic Cluster 中有以下几类 Cluster：</p>
 
@@ -1370,7 +1370,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 <br />
 2. 根据业务逻辑，实际上 productpage 并不会调用 ratings 服务，但 Istio 并不知道各个业务之间会如何调用，因此将所有的服务信息都下发到了 Envoy 中。这样做对效率和性能理论上有一定影响，存在一定的优化空间。</p>
 
-<p>由于对应到 reviews、details 和 Ratings 三个服务，当 0.0.0.0_9080 接收到出向请求后，并不能直接发送到一个 downstream cluster 中，而是需要根据请求目的地进行不同的路由。</p>
+<p>由于对应到 reviews、details 和 ratings 三个服务，当 0.0.0.0_9080 接收到出向请求后，并不能直接发送到一个 downstream cluster 中，而是需要根据请求目的地进行不同的路由。</p>
 
 <p>在该 listener 的配置中，我们可以看到并没有像 inbound listener 那样通过 envoy.tcp_proxy 直接指定一个 downstream 的 cluster，而是通过 <code>rds</code> 配置了一个路由规则 <code>9080</code>，在路由规则中再根据不同的请求目的地对请求进行处理。</p>
 
@@ -1601,7 +1601,7 @@ func WriteBootstrap(config *meshconfig.ProxyConfig, node string, epoch int, pilo
 
 <p>下图描述了一个 <code>Productpage</code> 服务调用 <code>Details</code> 服务的请求流程：</p>
 
-<p><center><img src="https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-traffic-route.png" alt="" /></center></p>
+<p><center><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwy8faa3j30gy0e8wgb.jpg" alt="" /></center></p>
 
 <p>1、Productpage 发起对 Details 的调用：<code>http://details:9080/details/0</code>。</p>
 

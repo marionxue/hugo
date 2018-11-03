@@ -27,7 +27,7 @@ Istio 体系中流量管理配置下发以及流量规则如何在数据平面�
 
 Istio 控制平面中负责流量管理的组件为 `Pilot`，Pilot 的高层架构如下图所示：
 
-![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/pilot-architecture.png)
+![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuwuwrvr5j30jx0c5t9t.jpg)
 
 <center>Pilot Architecture（来自 [Isio官网文档](https://istio.io/docs/concepts/traffic-management/))</center>
 
@@ -41,13 +41,13 @@ Pilot 定义了网格中服务的标准模型，这个标准模型独立于各�
 
 ### 标准数据平面 API
 
-Pilo 使用了一套起源于 Envoy 项目的标准数据平面 API 来将服务信息和流量规则下发到数据平面的 `sidecar` 中。
+Pilot 使用了一套起源于 Envoy 项目的标准数据平面 API 来将服务信息和流量规则下发到数据平面的 `sidecar` 中。
 
 通过采用该标准 API，Istio 将控制平面和数据平面进行了解耦，为多种数据平面 sidecar 实现提供了可能性。事实上基于该标准 API 已经实现了多种 Sidecar 代理和 Istio 的集成，除 Istio 目前集成的 Envoy 外，还可以和 `Linkerd`, `Nginmesh` 等第三方通信代理进行集成，也可以基于该 API 自己编写 Sidecar 实现。
 
 控制平面和数据平面解耦是 Istio 后来居上，风头超过 Service mesh 鼻祖 `Linkerd` 的一招妙棋。Istio 站在了控制平面的高度上，而 Linkerd 则成为了可选的一种 sidecar 实现，可谓**降维打击**的一个典型成功案例！
 
-数据平面标准 API 也有利于生态圈的建立，开源，商业的各种 sidecar 以后可能百花齐放，用户也可以根据自己的业务场景选择不同的 sidecar 和控制平面集成，如高吞吐量的，低延迟的，高安全性的等等。有实力的大厂商可以根据该 API 定制自己的 sidecar，例如蚂蚁金服开源的 Golang 版本的 Sidecar `MOSN`(Modular Observable Smart Netstub)（`SOFAMesh` 中 Golang 版本的 Sidecar)；小厂商则可以考虑采用成熟的开源项目或者提供服务的商业 sidecar 实现。
+数据平面标准 API 也有利于生态圈的建立，开源、商业的各种 sidecar 以后可能百花齐放，用户也可以根据自己的业务场景选择不同的 sidecar 和控制平面集成，如高吞吐量的，低延迟的，高安全性的等等。有实力的大厂商可以根据该 API 定制自己的 sidecar，例如蚂蚁金服开源的 Golang 版本的 Sidecar `MOSN`(Modular Observable Smart Netstub)（`SOFAMesh` 中 Golang 版本的 Sidecar)；小厂商则可以考虑采用成熟的开源项目或者提供服务的商业 sidecar 实现。
 
 <p id="blockquote">Istio 和 Envoy 项目联合制定了 <code>Envoy V2 API</code>,并采用该 API 作为 Istio 控制平面和数据平面流量管理的标准接口。</p>
 
@@ -168,7 +168,7 @@ xDS 的几个接口是相互独立的，接口下发的配置数据是最终一�
 
 下图显示了 Bookinfo 示例程序中各个组件的 IP 地址，端口和调用关系，以用于后续的分析。
 
-![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/bookinfo.png)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwvmvcwtj30hl0cc759.jpg)
 
 ### xDS 接口调试方法
 
@@ -305,7 +305,7 @@ Containers:
 
 #### Proxy_init
 
-Productpage 的 Pod 中有一个 InitContainer `proxy_init`，`InitContrainer` 是 K8S 提供的机制，用于在 Pod 中执行一些初始化任务.在 Initialcontainer 执行完毕并退出后，才会启动 Pod 中的其它 container。
+Productpage 的 Pod 中有一个 InitContainer `proxy_init`，`InitContrainer` 是 K8S 提供的机制，用于在 Pod 中执行一些初始化任务。在 Initialcontainer 执行完毕并退出后，才会启动 Pod 中的其它 container。
 
 我们看一下 proxy_init 容器中的内容：
 
@@ -410,7 +410,7 @@ $ kubectl exec productpage-v1-54b8b9f55-bx2dq -c istio-proxy -- cat /etc/istio/p
 
 配置文件的结构如图所示：
 
-<center>![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-rev0.png)</center>
+<center>![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuww4uo4tj30630760sz.jpg)</center>
 
 其中各个配置节点的内容如下：
 
@@ -587,7 +587,7 @@ $ kubectl exec productpage-v1-54b8b9f55-bx2dq -c istio-proxy -- cat /etc/istio/p
 
 Envoy 配置初始化流程：
 
-<center>![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-init.png)</center>
+<center>![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwwkccecj30b905sq3b.jpg)</center>
 
 1. Pilot-agent 根据启动参数和 K8S API Server 中的配置信息生成 Envoy 的初始配置文件 `envoy-rev0.json`，该文件告诉 Envoy 从 `xDS server` 中获取动态配置信息，并配置了 xDS server 的地址信息，即控制平面的 `Pilot`。
 2. Pilot-agent 使用 envoy-rev0.json 启动 Envoy 进程。
@@ -604,7 +604,7 @@ $ kubectl exec -it productpage-v1-54b8b9f55-bx2dq -c istio-proxy curl http://127
 
 #### Envoy 配置文件结构
 
-<center>![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config.png)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuwwwdzd9j305705cdfx.jpg)</center>
 
 文件中的配置节点包括：
 
@@ -612,7 +612,7 @@ $ kubectl exec -it productpage-v1-54b8b9f55-bx2dq -c istio-proxy curl http://127
 
 从名字可以大致猜出这是 Envoy 的初始化配置，打开该节点，可以看到文件中的内容和前一章节中介绍的 envoy-rev0.json 是一致的，这里不再赘述。
 
-<center>![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-bootstrap.png)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuwx6zp3sj30jl0dlgmn.jpg)</center>
 
 ##### Clusters
 
@@ -620,7 +620,7 @@ $ kubectl exec -it productpage-v1-54b8b9f55-bx2dq -c istio-proxy curl http://127
 
 在 Productpage 的 clusters 配置中包含 `static_clusters` 和 `dynamic_active_clusters` 两部分，其中 static_clusters 是来自于 envoy-rev0.json 的 xDS server 和 zipkin server 信息。dynamic_active_clusters 是通过 xDS 接口从 Istio 控制平面获取的动态服务信息。
 
-<center>![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-config-clusters.png)</center>
+<center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuwxnbtdij30jj0d6dgn.jpg)</center>
 
 Dynamic Cluster 中有以下几类 Cluster：
 
@@ -895,7 +895,7 @@ Productpage Pod 中的 Envoy 创建了多个 Outbound Listener：
 <br />
 2. 根据业务逻辑，实际上 productpage 并不会调用 ratings 服务，但 Istio 并不知道各个业务之间会如何调用，因此将所有的服务信息都下发到了 Envoy 中。这样做对效率和性能理论上有一定影响，存在一定的优化空间。</p>
 
-由于对应到 reviews、details 和 Ratings 三个服务，当 0.0.0.0_9080 接收到出向请求后，并不能直接发送到一个 downstream cluster 中，而是需要根据请求目的地进行不同的路由。
+由于对应到 reviews、details 和 ratings 三个服务，当 0.0.0.0_9080 接收到出向请求后，并不能直接发送到一个 downstream cluster 中，而是需要根据请求目的地进行不同的路由。
 
 在该 listener 的配置中，我们可以看到并没有像 inbound listener 那样通过 envoy.tcp_proxy 直接指定一个 downstream 的 cluster，而是通过 `rds` 配置了一个路由规则 `9080`，在路由规则中再根据不同的请求目的地对请求进行处理。
 
@@ -1128,7 +1128,7 @@ Productpage Pod 中的 Envoy 创建了多个 Outbound Listener：
 
 下图描述了一个 `Productpage` 服务调用 `Details` 服务的请求流程：
 
-<center>![](https://zhaohuabing.com/img/2018-09-25-istio-traffic-management-impl-intro/envoy-traffic-route.png)</center>
+<center>![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuwy8faa3j30gy0e8wgb.jpg)</center>
 
 1、Productpage 发起对 Details 的调用：`http://details:9080/details/0`。
 
