@@ -17,7 +17,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 接下来使用下面这张架构图来说明可能的使用场景：
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/DcFCnLw.png)</center>
+<center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuyyezwn3j31kw10gdt5.jpg)</center>
 
 ## 1. 为什么需要自定义 DNS
 
@@ -375,7 +375,7 @@ options ndots:5
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg)</center>
 <center>扫一扫关注微信公众号</center>
 
 
