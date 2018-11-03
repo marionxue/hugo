@@ -165,7 +165,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 现在在浏览器中输入 Contour 运行节点的 IP 地址或 DNS 域名来访问示例应用程序了。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/kuard.jpg)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuylptv43j31kw0zkdot.jpg)</center>
 
 ## 3. Contour 工作原理
 
@@ -179,7 +179,7 @@ Contour 同时支持 `Ingress` 资源对象和 `IngressRoute` 资源对象（通
 
 Contour 将收集到的这些对象处理为虚拟主机及其路由规则的**有向非循环图**（DAG），这表明 Contour 将有权构建路由规则的顶级视图，并将群集中的相应服务和TLS秘钥连接在一起。一旦构建了这个新的数据结构，我们就可以轻松实现 `IngressRoute` 对象的验证，授权和分发。改数据结构导出的 `png` 图片如下图所示：
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/dag.png)</center>
+<center>![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwuym39aaej30nf07s0tp.jpg)</center>
 
 Envoy API 调用和 Kubernetes API 资源之间的映射关系如下：
 
@@ -301,7 +301,7 @@ $ curl localhost:6060/debug/dag | dot -T png > contour-dag.png
 
 我自己保存的 PNG 图片如下所示：
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/contour-dag.png)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuymirnk4j30mt0jzq67.jpg)</center>
 
 ## 7. 参考
 
@@ -313,7 +313,7 @@ $ curl localhost:6060/debug/dag | dot -T png > contour-dag.png
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg)</center>
 <center>扫一扫关注微信公众号</center>
 
 <style>
