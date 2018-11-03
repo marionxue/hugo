@@ -27,6 +27,8 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ## 2. 部署方法
 
+----
+
 你可以通过 `Job` 或 `CronJob` 来运行 descheduler。我已经创建了一个镜像 `komljen/descheduler:v0.5.0-4-ga7ceb671`（包含在下面的 yaml 文件中），但由于这个项目的更新速度很快，你可以通过以下的命令创建你自己的镜像：
 
 ```bash
@@ -214,9 +216,13 @@ I0505 11:55:08.160964       1 node_affinity.go:72] Evicted 0 pods
 
 ## 3. 总结
 
+----
+
 Kubernetes 的默认调度器已经做的很好，但由于集群处于不断变化的状态中，某些 Pod 可能运行在错误的节点上，或者你想要均衡集群资源的分配，这时候就需要 descheduler 来帮助你将某些节点上的 Pod 驱逐到正确的节点上去。我很期待正式版的发布！
 
 ## 4. 原文链接
+
+----
 
 + [Meet a Kubernetes Descheduler](https://akomljen.com/meet-a-kubernetes-descheduler/)
 
