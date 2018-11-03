@@ -3,6 +3,7 @@ title: "Kube-router 实战"
 subtitle: "使用 Kube-router 作为 Kubernetes 负载均衡器"
 date: 2018-04-20T04:36:40Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes","lvs"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -12,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 [Kube-router](https://github.com/cloudnativelabs/kube-router) 是一个挺有想法的项目，兼备了 `calico` 和 `kube-proxy` 的功能，是基于 Kubernetes 网络设计的一个集负载均衡器、防火墙和容器网络的综合方案。
 
-## <p id="h2">1. 体系架构</p>
+## 1. 体系架构
 
 ----
 
@@ -24,7 +25,7 @@ Kube-router 是围绕 <span id="inline-blue">观察者</span> 和 <span id="inli
 
 `Kube-router` 由3个核心控制器和多个观察者组成，如下图所示。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/kube-router-arch.png)</center>
+<center>![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwv0qbtrj9j30qc0gzjt6.jpg)</center>
 
 ### 流程分析
 
@@ -96,7 +97,7 @@ Cleanup() {
 }
 ```
 
-## <p id="h2">2. 主要功能</p>
+## 2. 主要功能
 
 ----
 
@@ -143,7 +144,7 @@ Kube-router 支持 `networking.k8s.io/NetworkPolicy` 接口或网络策略 V1/GA
 
 + [Enforcing Kubernetes network policies with iptables](https://link.jianshu.com/?t=https://cloudnativelabs.github.io/post/2017-05-1-kube-network-policies/)
 
-## <p id="h2">3. 使用 kube-router 替代 kube-proxy</p>
+## 3. 使用 kube-router 替代 kube-proxy
 
 ----
 
@@ -363,7 +364,7 @@ $ kubectl annotate service my-service "kube-router.io/service.scheduler=sh"
 $ kubectl annotate service my-service "kube-router.io/service.scheduler=dh"
 ```
 
-## <p id="h2">4. 问题解决</p>
+## 4. 问题解决
 
 ----
 
@@ -496,7 +497,7 @@ done
 
 如果想要在创建 `service` 时自动修改路由表，最好还是将该 fix 整合进 kube-router 的源码中。
 
-## <p id="h2">5. 参考</p>
+## 5. 参考
 
 ----
 
@@ -508,6 +509,41 @@ done
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;

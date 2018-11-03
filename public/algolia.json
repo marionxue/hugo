@@ -503,6 +503,7 @@
         "subtitle": "使用 Kube-router 作为 Kubernetes 负载均衡器",
         "date": "2018-04-20T04:36:40.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes",

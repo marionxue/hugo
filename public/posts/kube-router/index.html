@@ -402,7 +402,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Fri Apr 20, 2018</h4>
     </section>
-    <h5 id="wc">3800 Words|Read in about 8 Min</h5>
+    <h5 id="wc">3900 Words|Read in about 8 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -414,12 +414,53 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-体系架构">1. 体系架构</a>
+<ul>
+<li><a href="#流程分析">流程分析</a></li>
+</ul></li>
+<li><a href="#2-主要功能">2. 主要功能</a>
+<ul>
+<li><a href="#基于-ipvs-lvs-的负载均衡器-run-service-proxy">基于 IPVS/LVS 的负载均衡器 | <code>--run-service-proxy</code></a></li>
+<li><a href="#容器网络-run-router">容器网络 | <code>--run-router</code></a></li>
+<li><a href="#网络策略管理-run-firewall">网络策略管理 | <code>--run-firewall</code></a></li>
+</ul></li>
+<li><a href="#3-使用-kube-router-替代-kube-proxy">3. 使用 kube-router 替代 kube-proxy</a>
+<ul>
+<li><a href="#前提">前提</a></li>
+<li><a href="#集群环境">集群环境</a></li>
+<li><a href="#安装步骤">安装步骤</a></li>
+<li><a href="#创建一个应用测试-kube-router">创建一个应用测试 kube-router</a></li>
+<li><a href="#session-affinity">session affinity</a></li>
+<li><a href="#nodeport">NodePort</a></li>
+<li><a href="#更改算法">更改算法</a></li>
+</ul></li>
+<li><a href="#4-问题解决">4. 问题解决</a>
+<ul>
+<li><a href="#总结">总结</a></li>
+</ul></li>
+<li><a href="#5-参考">5. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
 <p><a href="https://github.com/cloudnativelabs/kube-router" target="_blank">Kube-router</a> 是一个挺有想法的项目，兼备了 <code>calico</code> 和 <code>kube-proxy</code> 的功能，是基于 Kubernetes 网络设计的一个集负载均衡器、防火墙和容器网络的综合方案。</p>
 
-<h2 id="p-id-h2-1-体系架构-p"><p id="h2">1. 体系架构</p></h2>
+<h2 id="1-体系架构">1. 体系架构</h2>
 
 <hr />
 
@@ -431,7 +472,7 @@ autocomplete('#aa-search-input',
 
 <p><code>Kube-router</code> 由3个核心控制器和多个观察者组成，如下图所示。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/kube-router-arch.png" alt="" /></center></p>
+<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwv0qbtrj9j30qc0gzjt6.jpg" alt="" /></center></p>
 
 <h3 id="流程分析">流程分析</h3>
 
@@ -499,7 +540,7 @@ Cleanup() {
 }
 </code></pre>
 
-<h2 id="p-id-h2-2-主要功能-p"><p id="h2">2. 主要功能</p></h2>
+<h2 id="2-主要功能">2. 主要功能</h2>
 
 <hr />
 
@@ -554,7 +595,7 @@ Cleanup() {
 <li><a href="https://link.jianshu.com/?t=https://cloudnativelabs.github.io/post/2017-05-1-kube-network-policies/" target="_blank">Enforcing Kubernetes network policies with iptables</a></li>
 </ul>
 
-<h2 id="p-id-h2-3-使用-kube-router-替代-kube-proxy-p"><p id="h2">3. 使用 kube-router 替代 kube-proxy</p></h2>
+<h2 id="3-使用-kube-router-替代-kube-proxy">3. 使用 kube-router 替代 kube-proxy</h2>
 
 <hr />
 
@@ -795,7 +836,7 @@ TCP  10.254.175.147:8080 rr
 <pre><code class="language-bash">$ kubectl annotate service my-service &quot;kube-router.io/service.scheduler=dh&quot;
 </code></pre>
 
-<h2 id="p-id-h2-4-问题解决-p"><p id="h2">4. 问题解决</p></h2>
+<h2 id="4-问题解决">4. 问题解决</h2>
 
 <hr />
 
@@ -920,7 +961,7 @@ done
 
 <p>如果想要在创建 <code>service</code> 时自动修改路由表，最好还是将该 fix 整合进 kube-router 的源码中。</p>
 
-<h2 id="p-id-h2-5-参考-p"><p id="h2">5. 参考</p></h2>
+<h2 id="5-参考">5. 参考</h2>
 
 <hr />
 
@@ -934,6 +975,41 @@ done
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;
