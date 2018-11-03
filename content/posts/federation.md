@@ -3,6 +3,7 @@ title: "Kubernetes 使用集群联邦实现多集群管理"
 subtitle: "使用联邦服务进行跨集群服务发现"
 date: 2018-03-22T09:36:27Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -24,14 +25,14 @@ K8s 的设计定位是单一集群在同一个地域内，因为同一个地区�
 
 集群联邦（Federation）可以一定程度上解决这些问题。`Federation` 是可以将分布在多个 Region 或者多个云厂商的 Kubernetes 集群整合成一个大的集群，统一管理与调度。
 
-## <p id="h2">1. Kubernetes集群联邦介绍</p>
+## 1. Kubernetes集群联邦介绍
 ------
 
 ### 管理多个 kuberntes 集群
 
 **集群联邦**在架构上同 kubernetes 集群很相似。有一个**集群联邦**的 API server 提供一个标准的 Kubernetes API，并且通过 etcd 来存储状态。不同的是，一个通常的Kubernetes 只是管理节点计算，而**集群联邦**管理所有的 kubernetes 集群。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/federation-api-4x.png)</center>
+<center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwv02hj3x5j31kw14y16z.jpg)</center>
 
 Federation主要包括三个组件：
 
@@ -53,7 +54,7 @@ Kubernetes 服务是由一组 kubernetes POD 组成的，这些 POD 是一些已
 
 假如我们有一个 kubernetes 集群，这个集群里面有一个服务叫做 mysql，这个服务是由一组 mysql POD 组成的。在这个 kubernetes 集群中，其他应用可以通过 DNS 来访问这个 mysql 服务。
 
-![](http://o7z41ciog.bkt.clouddn.com/federation-dns.jpg)
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwv04ohxb4j30fe09a74z.jpg)
 
 ### 跨集群调度
 
@@ -69,7 +70,7 @@ Kubernetes 服务是由一组 kubernetes POD 组成的，这些 POD 是一些已
 
 集群联邦可以跨集群冗馀部署，当某个集群所在区域出现故障时，并不影响整个服务。集群联邦还可以检测集群是否为不可用状态，如果发现某个集群为不可用状态时，可以将失败的任务重新分配给集群联邦中其他可用状态的集群上。
 
-## <p id="h2">2. 使用集群联邦实现多集群管理</p>
+## 2. 使用集群联邦实现多集群管理
 ------
 
 ### 系统环境
@@ -235,7 +236,6 @@ $ helm version
 Client: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920a8e346f6de844", GitTreeState:"clean"}
 Server: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920a8e346f6de844", GitTreeState:"clean"}
 ```
-<br />
 
 #### 4. 部署 etcd
 
@@ -357,8 +357,6 @@ $ kubectl get svc -l app=coredns-coredns
 NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)                                    AGE
 coredns-coredns   NodePort   10.254.198.211   <none>        53:27165/UDP,53:27165/TCP,9153:26492/TCP   1d
 ```
-
-<br />
 
 #### 6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation
 
@@ -567,7 +565,7 @@ No resources found.
 $ kubectl delete ns federation-system
 ```
 
-## <p id="h2">3. Federation 支持的服务</p>
+## 3. Federation 支持的服务
 ------
 
 集群联邦支持以下联邦资源，这些资源会自动在所有注册的 `kubernetes` 集群中创建。
@@ -690,18 +688,51 @@ $ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/yangpu/
 /skydns/com/example/yangpu/svc
 ```
 
-## <p id="h2">4. 参考文档</p>
+## 4. 参考文档
 ------
 
 + [Kubernetes federation](https://kubernetes.io/docs/concepts/cluster-administration/federation/)
 + [Set up CoreDNS as DNS provider for Cluster Federation](https://kubernetes.io/docs/tasks/federation/set-up-coredns-provider-federation/)
 
-<br />
-
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2 {
     margin-bottom:2em;

@@ -269,6 +269,7 @@
         "subtitle": "使用联邦服务进行跨集群服务发现",
         "date": "2018-03-22T09:36:27.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"
