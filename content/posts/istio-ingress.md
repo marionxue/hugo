@@ -13,13 +13,13 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 在一个典型的网格中，通常有一个或多个用于终结外部 TLS 链接，将流量引入网格的负载均衡器（我们称之为 gateway）。 然后流量通过边车网关（sidecar gateway）流经内部服务。 应用程序使用外部服务的情况也很常见（例如访问 Google Maps API），一些情况下，这些外部服务可能被直接调用；但在某些部署中，网格中所有访问外部服务的流量可能被要求强制通过专用的出口网关（Egress gateway）。 下图描绘了网关在网格中的使用情况。
 
-![](https://istio.io/blog/2018/v1alpha3-routing/gateways.svg)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/gateways.svg)
 
 <center>*Istio服务网格中的网关*</center>
 
 其中 `Gateway` 是一个独立于平台的抽象，用于对流入专用中间设备的流量进行建模。下图描述了跨多个配置资源的控制流程。
 
-![](https://istio.io/blog/2018/v1alpha3-routing/virtualservices-destrules.svg)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/virtualservices-destrules.svg)
 
 <center>*不同v1alpha3元素之间的关系*</center>
 
@@ -248,7 +248,7 @@ $  cat <<EOF | istioctl replace -f -
 
 接下来就可以在浏览器中输入 URL：`http://httpbin.example.com/headers` 来访问服务啦！
 
-![](http://o7z41ciog.bkt.clouddn.com/Jietu20180802-130152.jpg)
+![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuxjbe2cgj31kw0zkqa5.jpg)
 
 ## 4. 清理
 
@@ -269,7 +269,9 @@ $ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
 + [控制 Ingress 流量](https://istio.io/zh/docs/tasks/traffic-management/ingress/)
 + [Gateway](https://istio.io/zh/docs/concepts/traffic-management/#gateway)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+----
+
+<center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg)</center>
 
 
 <style>
