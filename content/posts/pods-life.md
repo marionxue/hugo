@@ -3,6 +3,7 @@ title: "Pod 的生命周期管理"
 subtitle: "探究 Pod 的启动关闭流程以及快速 DEBUG"
 date: 2018-05-03T12:08:01Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -12,11 +13,9 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 本文我们将从实践者的角度仔细研究整个pod生命周期，包括如何影响启动和关闭行为，并通过实践来理解对应用程序健康状况的检查。
 
-## <p id="h2">1. Pod 的生命周期</p>
+## 1. Pod 的生命周期
 
 ----
-
-<br />
 ### Pod phase
 
 Pod 的 status 在信息保存在 [PodStatus](https://github.com/kubernetes/kubernetes/blob/3ae0b84e0b114692dc666d9486fb032d8a33bb58/pkg/api/types.go#L2471) 中定义，其中有一个 phase 字段。
@@ -35,7 +34,7 @@ Pod 相位的数量和含义是严格指定的。除了本文档中列举的状�
 
 下图是 Pod 的生命周期示意图，从图中可以看到 Pod 状态的变化。
 
-<center>![](https://jimmysong.io/kubernetes-handbook/images/kubernetes-pod-life-cycle.jpg)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwv0kcdt3hj31ge0hqwg9.jpg)</center>
 <center>图片 - Pod的生命周期示意图</center>
 
 ### Pod 状态
@@ -46,9 +45,7 @@ Pod 有一个 PodStatus 对象，其中包含一个 [PodCondition](https://githu
 
 如果想知道究竟发生了什么，可以通过命令 `kubectl describe pod/$PODNAME` 查看输出信息的 `Events` 条目。通过 Events 条目可以看到一些具体的信息，比如正在拉取容器镜像，Pod 已经被调度，或者某个 container 处于 unhealthy 状态。
 
-<br />
-
-## <p id="h2">2. Pod 的启动关闭流程</p>
+## 2. Pod 的启动关闭流程
 
 ----
 
@@ -122,10 +119,8 @@ $ cat /tmp/loap/timing
 
 `/tmp/loap/timing` 文件的内容很好地体现了 Pod 的启动和关闭流程，具体过程如下：
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/loap.png)</center>
+<center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwv0l9hcjfj31kw1d9jxr.jpg)</center>
 <center>图片 - Pod 的启动和关闭流程</center>
-
-<br />
 
 1. 首先启动一个 Infra 容器（又叫 Pause 容器），用来和 Pod 中的其他容器共享 linux 命名空间，并开启 init 进程。（上图中忽略了这一步）
 2. 然后启动 Init 容器，它是一种专用的容器，在应用程序容器启动之前运行，用来对 Pod 进行一些初始化操作，并包括一些应用镜像中不存在的实用工具和安装脚本。
@@ -139,9 +134,7 @@ $ cat /tmp/loap/timing
 <p>必须主动杀掉 Pod 才会触发 <code>pre-stop hook</code>，如果是 Pod 自己 Down 掉，则不会执行 <code>pre-stop hook</code>。</p>
 </div>
 
-<br />
-
-## <p id="h2">3. 如何快速 DEBUG</p>
+## 3. 如何快速 DEBUG
 
 ----
 
@@ -179,9 +172,7 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
 0
 ```
 
-<br />
-
-## <p id="h2">4. 参考</p>
+## 4. 参考
 
 ----
 
@@ -189,12 +180,45 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
 + [Kubernetes: A Pod’s Life](https://blog.openshift.com/kubernetes-pods-life/)
 + [确定 Pod 失败的原因](https://k8smeetup.github.io/docs/tasks/debug-application-cluster/determine-reason-pod-failure/)
 
-<br />
-
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;

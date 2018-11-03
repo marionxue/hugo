@@ -402,7 +402,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Thu May 3, 2018</h4>
     </section>
-    <h5 id="wc">2300 Words|Read in about 5 Min</h5>
+    <h5 id="wc">2400 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -412,16 +412,38 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-pod-的生命周期">1. Pod 的生命周期</a>
+<ul>
+<li><a href="#pod-phase">Pod phase</a></li>
+<li><a href="#pod-状态">Pod 状态</a></li>
+</ul></li>
+<li><a href="#2-pod-的启动关闭流程">2. Pod 的启动关闭流程</a></li>
+<li><a href="#3-如何快速-debug">3. 如何快速 DEBUG</a></li>
+<li><a href="#4-参考">4. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
 <p>本文我们将从实践者的角度仔细研究整个pod生命周期，包括如何影响启动和关闭行为，并通过实践来理解对应用程序健康状况的检查。</p>
 
-<h2 id="p-id-h2-1-pod-的生命周期-p"><p id="h2">1. Pod 的生命周期</p></h2>
+<h2 id="1-pod-的生命周期">1. Pod 的生命周期</h2>
 
 <hr />
-
-<p><br /></p>
 
 <h3 id="pod-phase">Pod phase</h3>
 
@@ -443,7 +465,7 @@ autocomplete('#aa-search-input',
 
 <p>下图是 Pod 的生命周期示意图，从图中可以看到 Pod 状态的变化。</p>
 
-<p><center><img src="https://jimmysong.io/kubernetes-handbook/images/kubernetes-pod-life-cycle.jpg" alt="" /></center>
+<p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwv0kcdt3hj31ge0hqwg9.jpg" alt="" /></center>
 <center>图片 - Pod的生命周期示意图</center></p>
 
 <h3 id="pod-状态">Pod 状态</h3>
@@ -454,9 +476,7 @@ autocomplete('#aa-search-input',
 
 <p>如果想知道究竟发生了什么，可以通过命令 <code>kubectl describe pod/$PODNAME</code> 查看输出信息的 <code>Events</code> 条目。通过 Events 条目可以看到一些具体的信息，比如正在拉取容器镜像，Pod 已经被调度，或者某个 container 处于 unhealthy 状态。</p>
 
-<p><br /></p>
-
-<h2 id="p-id-h2-2-pod-的启动关闭流程-p"><p id="h2">2. Pod 的启动关闭流程</p></h2>
+<h2 id="2-pod-的启动关闭流程">2. Pod 的启动关闭流程</h2>
 
 <hr />
 
@@ -527,10 +547,8 @@ sleep 10; echo $(date +%s): END &gt;&gt; /loap/timing;']
 
 <p><code>/tmp/loap/timing</code> 文件的内容很好地体现了 Pod 的启动和关闭流程，具体过程如下：</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/loap.png" alt="" /></center>
+<p><center><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwv0l9hcjfj31kw1d9jxr.jpg" alt="" /></center>
 <center>图片 - Pod 的启动和关闭流程</center></p>
-
-<p><br /></p>
 
 <ol>
 <li>首先启动一个 Infra 容器（又叫 Pause 容器），用来和 Pod 中的其他容器共享 linux 命名空间，并开启 init 进程。（上图中忽略了这一步）</li>
@@ -546,9 +564,7 @@ sleep 10; echo $(date +%s): END &gt;&gt; /loap/timing;']
 <p>必须主动杀掉 Pod 才会触发 <code>pre-stop hook</code>，如果是 Pod 自己 Down 掉，则不会执行 <code>pre-stop hook</code>。</p>
 </div>
 
-<p><br /></p>
-
-<h2 id="p-id-h2-3-如何快速-debug-p"><p id="h2">3. 如何快速 DEBUG</p></h2>
+<h2 id="3-如何快速-debug">3. 如何快速 DEBUG</h2>
 
 <hr />
 
@@ -584,9 +600,7 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
 0
 </code></pre>
 
-<p><br /></p>
-
-<h2 id="p-id-h2-4-参考-p"><p id="h2">4. 参考</p></h2>
+<h2 id="4-参考">4. 参考</h2>
 
 <hr />
 
@@ -596,12 +610,45 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
 <li><a href="https://k8smeetup.github.io/docs/tasks/debug-application-cluster/determine-reason-pod-failure/" target="_blank">确定 Pod 失败的原因</a></li>
 </ul>
 
-<p><br /></p>
-
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;
