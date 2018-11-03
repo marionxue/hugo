@@ -363,11 +363,11 @@ $ istioctl proxy-config routes productpage-v1-76474f6fb7-pmglr --name 9080 -o js
 
 你可以尝试搜索一下有没有 `outbound|9080|v1|reviews.default.svc.cluster.local` 这个集群，如果不出意外，你将找不到 `SUBSET=v1` 的集群。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160027.jpg)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuy4qa98aj31kw159k8x.jpg)</center>
 
 由于找不到这个集群，所以该路由不可达，这就是为什么你打开 productpage 的页面会出现如下的报错：
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180813-160823.jpg)</center>
+<center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuy523h5sj31kw0zkgt1.jpg)</center>
 
 ### DestinationRule
 
@@ -456,7 +456,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080|v1|reviews.defau
 
 现在再次用浏览器访问 productpage，你会发现报错已经消失了。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180813-162629.jpg)</center>
+<center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuy5isxp4j31kw0zkgtq.jpg)</center>
 
 ## 4. 参考
 
@@ -466,7 +466,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080|v1|reviews.defau
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg)</center>
 <center>扫一扫关注微信公众号</center>
 
 
