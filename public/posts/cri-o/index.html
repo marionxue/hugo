@@ -458,11 +458,11 @@ autocomplete('#aa-search-input',
 
 <p>当 Kubernetes 需要运行容器时，它会与 CRI-O 进行通信，CRI-O 守护程序与 <code>runc</code>（或另一个符合 OCI 标准的运行时）一起启动容器。当 Kubernetes 需要停止容器时，CRI-O 会来处理，它只是在幕后管理 Linux 容器，以便用户不需要担心这个关键的容器编排。</p>
 
-<p><img src="https://dn-linuxcn.qbox.me/data/attachment/album/201710/31/234945ee5euzn7hu0cnu4u.png" alt="" /></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fww2681xwmj30y00yjn26.jpg" alt="" /></p>
 
 <p>CRI-O 有一个有趣的架构（见下图），它重用了很多基础组件，下面我们来看一下各个组件的功能及工作流程。</p>
 
-<p><img src="http://o7z41ciog.bkt.clouddn.com/crio-architecture.png" alt="" /></p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fww25xq0wtj31kw0y613c.jpg" alt="" /></p>
 
 <ul>
 <li><p>Kubernetes 通知 <code>kubelet</code> 启动一个 pod。</p></li>
