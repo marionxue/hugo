@@ -1,7 +1,7 @@
 ---
-title: "CRI-O 简介"
-subtitle: "轻量级容器运行时 CRI-O 解析"
-date: 2018-04-03T08:11:38Z
+title: "Kubernetes 中的容器运行时"
+subtitle: "容器运行时接口解析"
+date: 2018-04-03T06:50:43Z
 draft: false
 toc: true
 categories: "kubernetes"
@@ -11,74 +11,74 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-上一篇 [https://www.yangcs.net/posts/container-runtime/](https://www.yangcs.net/posts/container-runtime) 介绍了什么是容器运行时，并列出了不同的容器运行时。本篇重点介绍其中的一种容器运行时 `CRI-O`。
+容器运行时（Container Runtime）是 Kubernetes 最重要的组件之一，负责真正管理镜像和容器的生命周期。Kubelet 通过 `Container Runtime Interface (CRI)` 与容器运行时交互，以管理镜像和容器。
 
-## 1. CRI-O 的诞生
+容器运行时接口(`Container Runtime Interface (CRI)`) 是 Kubelet 1.5 和 kubelet 1.6 中主要负责的一块项目，它重新定义了 Kubelet Container Runtime API，将原来完全面向 Pod 级别的 API 拆分成面向 `Sandbox` 和 `Container` 的 API，并分离镜像管理和容器引擎到不同的服务。
 
-----
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fww2d87cokj30fw03sq38.jpg)
 
-当容器运行时（Container Runtime）的标准被提出以后，Red Hat 的一些人开始想他们可以构建一个更简单的运行时，而且这个运行时仅仅为 Kubernetes 所用。这样就有了 `skunkworks`项目，最后定名为 `CRI-O`， 它实现了一个最小的 CRI 接口。在 2017 Kubecon Austin 的一个演讲中， Walsh 解释说， ”CRI-O 被设计为比其他的方案都要小，遵从 Unix 只做一件事并把它做好的设计哲学，实现组件重用“。
+CRI 最早从从 1.4 版就开始设计讨论和开发，在 v1.5 中发布第一个测试版。在 v1.6 时已经有了很多外部容器运行时，如 frakti、cri-o 的 alpha 支持。v1.7 版本新增了 `cri-containerd` 的 alpha 支持，而 `frakti` 和 `cri-o` 则升级到 beta 支持。
 
-根据 Red Hat 的 CRI-O 开发者 Mrunal Patel 在研究里面说的， 最开始 Red Hat 在 2016 年底为它的 OpenShift 平台启动了这个项目，同时项目也得到了 `Intel` 和 `SUSE` 的支持。CRI-O 与 `CRI` 规范兼容，并且与 `OCI` 和 Docker 镜像的格式也兼容。它也支持校验镜像的 GPG 签名。 它使用容器网络接口 Container Network Interface（CNI）处理网络，以便任何兼容 CNI 的网络插件可与该项目一起使用，OpenShift 也用它来做软件定义存储层。 它支持多个 CoW 文件系统，比如常见的 overlay，aufs，也支持不太常见的 Btrfs。
-
-## 2. CRI-O 的原理及架构
+## 1. CRI 接口
 
 ----
 
-CRI-O 最出名的特点是它支持“受信容器”和“非受信容器”的混合工作负载。比如，CRI-O 可以使用 [Clear Containers](https://clearlinux.org/containers) 做强隔离，这样在多租户配置或者运行非信任代码时很有用。这个功能如何集成进 Kubernetes 现在还不太清楚，Kubernetes 现在认为所有的后端都是一样的。
+CRI 基于 `gRPC` 定义了 `RuntimeService` 和 `ImageService`，分别用于容器运行时和镜像的管理。其定义在
 
-当 Kubernetes 需要运行容器时，它会与 CRI-O 进行通信，CRI-O 守护程序与 `runc`（或另一个符合 OCI 标准的运行时）一起启动容器。当 Kubernetes 需要停止容器时，CRI-O 会来处理，它只是在幕后管理 Linux 容器，以便用户不需要担心这个关键的容器编排。
++ **v1.10+:** [pkg/kubelet/apis/cri/v1alpha2/runtime](https://github.com/kubernetes/kubernetes/blob/release-1.10/pkg/kubelet/apis/cri/runtime/v1alpha2)
++ **v1.7~v1.9:** [pkg/kubelet/apis/cri/v1alpha1/runtime](https://github.com/kubernetes/kubernetes/tree/release-1.9/pkg/kubelet/apis/cri/v1alpha1/runtime)
++ **v1.6:** [pkg/kubelet/api/v1alpha1/runtime](https://github.com/kubernetes/kubernetes/tree/release-1.6/pkg/kubelet/api/v1alpha1/runtime)
 
-![](https://ws3.sinaimg.cn/large/006tNbRwgy1fww2681xwmj30y00yjn26.jpg)
+Kubelet 作为 CRI 的客户端，而 Runtime 维护者则需要实现 CRI 服务端，并在启动 kubelet 时将其传入：
 
-CRI-O 有一个有趣的架构（见下图），它重用了很多基础组件，下面我们来看一下各个组件的功能及工作流程。
+```bash
+$ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock ..
+```
 
-![](https://ws1.sinaimg.cn/large/006tNbRwgy1fww25xq0wtj31kw0y613c.jpg)
-
-+ Kubernetes 通知 `kubelet` 启动一个 pod。
-
-+ kubelet 通过 `CRI`(Container runtime interface) 将请求转发给 `CRI-O daemon`。
-
-+ CRI-O 利用 `containers/image` 库从镜像仓库拉取镜像。
-
-+ 下载好的镜像被解压到容器的根文件系统中，并通过 `containers/storage` 库存储到 COW 文件系统中。
-
-+ 在为容器创建 `rootfs` 之后，CRI-O 通过 [oci-runtime-tool](https://github.com/opencontainers/runtime-tools) 生成一个 OCI 运行时规范 json 文件，描述如何使用 OCI Generate tools 运行容器。
-
-+ 然后 CRI-O 使用规范启动一个兼容 CRI 的运行时来运行容器进程。默认的运行时是 `runc`。
-
-+ 每个容器都由一个独立的 `conmon` 进程监控，conmon 为容器中 pid 为 1 的进程提供一个 `pty`。同时它还负责处理容器的日志记录并记录容器进程的退出代码。
-
-+ 网络是通过 CNI 接口设置的，所以任何 CNI 插件都可以与 CRI-O 一起使用。
-
-### 隆重介绍一下 conmon
-
-根据 Patel 所说，conmon 程序是“纯C编写的，用来提高稳定性和性能”，conmon 负责监控，日志，TTY 分配，以及类似 `out-of-memory` 情况的杂事。
-
-conmon 需要去做所有 `systemd` 不做或者不想做的事情。即使 CRI-O 不直接使用 systemd 来管理容器，它也将容器分配到 sytemd 兼容的 `cgroup` 中，这样常规的 systemd 工具比如 `systemctl` 就可以看见容器资源使用情况了。
-
-因为 conmon（不是CRI daemon）是容器的父进程，它允许 CRI-O 的部分组件重启而不会影响容器，这样可以保证更加平滑的升级。**现在 Docker 部署的问题就是 Docker 升级需要重起所有的容器**。 通常这对于 Kubernetes 集群来说不是问题，但因为它可以将容器迁移来滚动升级。
-
-## 3. 下一步
+## 2. 如何开发新的 Container Runtime
 
 ----
 
-`CRI-O 1.0` 在2017年10月发布，支持 Kubernetes 1.7，后来 CRI-O 1.8，1.9 相继发布，支持 Kubernetes 的 1.8， 1.9（此时版本命名规则改为与Kubernetes一致）。
+开发新的 Container Runtime 只需要实现 `CRI gRPC Server`，包括 `RuntimeService` 和 `ImageService`。该 gRPC Server 需要监听在本地的 `unix socket`（Linux 支持 unix socket 格式，Windows 支持 tcp 格式）。
 
-CRI-O 在 `Openshift 3.7` 中作为 beta 版提供，Patel 考虑在 `Openshift 3.9` 中让它进步一步稳定，在 3.10 中成为缺省的运行时，同时让 Docker 作为候选的运行时。
+具体的实现方法可以参考下面已经支持的 Container Runtime 列表。
 
-下一步的工作包括集成新的 `Kata Containers` 的这个基于 VM 的运行时，增加 `kube-spawn` 的支持，支持更多类似 NFS， GlusterFS 的存储后端等。 团队也在讨论如何通过支持 `casync` 或者 `libtorrent` 来优化多节点间的镜像同步。
-
-如果你想贡献或者关注开发，就去 [CRI-O 项目的 GitHub 仓库](https://github.com/kubernetes-incubator/cri-o)，然后关注 [CRI-O 博客](https://medium.com/cri-o)。
-
-## 4. 参考
+## 3. 目前支持的 Container Runtime
 
 ----
 
-+ [CRI-O and Alternative Runtimes in Kubernetes](https://www.projectatomic.io/blog/2017/02/crio-runtimes/)
-+ [Lightweight Container Runtime for Kubernetes](http://cri-o.io/)
-+ [CRI-O Support for Kubernetes](https://medium.com/cri-o/cri-o-support-for-kubernetes-4934830eb98e)
-+ [CRI-O 1.0 简介](https://linux.cn/article-9015-1.html)
+目前，有多家厂商都在基于 CRI 集成自己的容器引擎，其中包括:
+
++ **Docker:** 核心代码依然保留在 kubelet 内部（`pkg/kubelet/dockershim`），依然是最稳定和特性支持最好的 Runtime
++ **[HyperContainer](https://github.com/kubernetes/frakti):** 支持 Kubernetes v1.6+，提供基于 `hypervisor` 和 docker 的混合运行时，适用于运行非可信应用，如多租户和 `NFV` 等场景
++ **Runc** 有两个实现，cri-o 和 cri-containerd
+    + [cri-containerd](https://github.com/kubernetes-incubator/cri-containerd): 支持 kubernetes v1.7+
+    + [cri-o](https://github.com/kubernetes-incubator/cri-o): 支持 Kubernetes v1.6+，底层运行时支持 runc 和 intel clear container
++ **[Rkt](https://github.com/kubernetes-incubator/rktlet):** 开发中
++ **[Mirantis](https://github.com/Mirantis/virtlet):** 直接管理 `libvirt` 虚拟机，镜像须是 `qcow2` 格式
++ **[Infranetes](https://github.com/apporbit/infranetes):** 直接管理 IaaS 平台虚拟机，如 GCE、AWS 等
+
+### cri-containerd
+
+以 Containerd 为例，在 1.0 及以前版本将 `dockershim` 和 `docker daemon` 替换为 `cri-containerd + containerd`，而在 1.1 版本直接将 cri-containerd 内置在 Containerd 中，简化为一个 CRI 插件。
+
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fww2gk0mywj318g0dgdi5.jpg)
+
+Containerd 内置的 CRI 插件实现了 Kubelet CRI 接口中的 `Image Service` 和 `Runtime Service`，通过内部接口管理容器和镜像，并通过 CNI 插件给 Pod 配置网络。
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fww2gsvgesj31a00j6n15.jpg)
+
+## 4. CRI Tools
+
+----
+
+为了方便开发、调试和验证新的 Container Runtime，社区还维护了一个 [cri-tools](https://github.com/kubernetes-incubator/cri-tools) 工具，它提供两个组件
+
++ `crictl:` 类似于 docker 的命令行工具，不需要通过 Kubelet 就可以跟 Container Runtime 通信，可用来调试或排查问题
++ `critest:` CRI 的验证测试工具，用来验证新的 Container Runtime 是否实现了 CRI 需要的功能
+
+另外一个工具是 [libpod](https://github.com/projectatomic/libpod)，它也提供了一个组件：[podman](https://github.com/projectatomic/libpod/blob/master/cmd/podman)，功能和 `crictl` 类似。
+
+如果想构建 oci 格式的镜像，可以使用工具：[buildah](https://github.com/projectatomic/buildah)
 
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
