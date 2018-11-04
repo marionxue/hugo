@@ -19,7 +19,6 @@ dateFormat = "January 2, 2006"
 commit = true
 rss = true
 comments = true
-busuanzi = true
 sharebutton = true
 reward = true
 notoc = true
@@ -27,6 +26,10 @@ algolia = "62fd06bd949abb4211bfab0aa288f67b" # API key
 #gcse = "012737790962522169780:fd1izxsfgrs" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 description = "杨传胜的博客|Cloud Native|yangcs.net"
 errorpage = "https://res.cloudinary.com/jimmysong/image/upload/images/404-not-found-cat.png"
+
+# busuanzi
+busuanzi = true
+busuanzi_site_offset = 100000
 
 [blackfriday]
 hrefTargetBlank = true

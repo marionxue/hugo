@@ -55,7 +55,7 @@ MathJax.Hub.Config({
 <script>
     $(document).ready(function() {
         var int = setInterval(fixCount, 100);
-        var busuanziSiteOffset = 100000 
+        var busuanziSiteOffset = {{ .Site.Params.busuanzi_site_offset }} 
         function fixCount() {
             if ($("#busuanzi_container_site_pv").css("display") != "none") {
                 clearInterval(int);
