@@ -519,23 +519,15 @@ autocomplete('#aa-search-input',
 <p>取 image 的大概过程如下：</p>
 
 <ul>
-<li><p>docker 发送 <code>image</code> 的名称+tag（或者 digest）给 <code>registry</code> 服务器，服务器根据收到的 image 的名称+tag（或者 digest），找到相应 image 的 <code>manifest</code>，然后将 manifest 返回给 docker</p></li>
-
-<li><p>docker 得到 <code>manifest</code> 后，读取里面 image 配置文件的 <code>digest</code>(sha256)，这个 sha256 码就是 image 的 <code>ID</code></p></li>
-
-<li><p>根据 <code>ID</code> 在本地找有没有存在同样 <code>ID</code> 的 image，有的话就不用继续下载了</p></li>
-
-<li><p>如果没有，那么会给 registry 服务器发请求（里面包含配置文件的 <code>sha256</code> 和 <code>media type</code>），拿到 image 的配置文件（<code>Image Config</code>）</p></li>
-
-<li><p>根据配置文件中的 <code>diff_ids</code>（每个 diffid 对应一个 layer tar 包的 sha256，tar 包相当于 layer 的原始格式），在本地找对应的 layer 是否存在</p></li>
-
-<li><p>如果 layer 不存在，则根据 <code>manifest</code> 里面 layer 的 <code>sha256</code> 和 <code>media type</code> 去服务器拿相应的 layer（相当去拿压缩格式的包）。</p></li>
-
-<li><p>拿到后进行解压，并检查解压后 tar 包的 sha256 能否和配置文件（<code>Image Config</code>）中的 <code>diff_id</code> 对的上，对不上说明有问题，下载失败</p></li>
-
-<li><p>根据 docker 所用的后台文件系统类型，解压 tar 包并放到指定的目录</p></li>
-
-<li><p>等所有的 layer 都下载完成后，整个 image 下载完成，就可以使用了</p></li>
+<li>docker 发送 <code>image</code> 的名称+tag（或者 digest）给 <code>registry</code> 服务器，服务器根据收到的 image 的名称+tag（或者 digest），找到相应 image 的 <code>manifest</code>，然后将 manifest 返回给 docker</li>
+<li>docker 得到 <code>manifest</code> 后，读取里面 image 配置文件的 <code>digest</code>(sha256)，这个 sha256 码就是 image 的 <code>ID</code></li>
+<li>根据 <code>ID</code> 在本地找有没有存在同样 <code>ID</code> 的 image，有的话就不用继续下载了</li>
+<li>如果没有，那么会给 registry 服务器发请求（里面包含配置文件的 <code>sha256</code> 和 <code>media type</code>），拿到 image 的配置文件（<code>Image Config</code>）</li>
+<li>根据配置文件中的 <code>diff_ids</code>（每个 diffid 对应一个 layer tar 包的 sha256，tar 包相当于 layer 的原始格式），在本地找对应的 layer 是否存在</li>
+<li>如果 layer 不存在，则根据 <code>manifest</code> 里面 layer 的 <code>sha256</code> 和 <code>media type</code> 去服务器拿相应的 layer（相当去拿压缩格式的包）。</li>
+<li>拿到后进行解压，并检查解压后 tar 包的 sha256 能否和配置文件（<code>Image Config</code>）中的 <code>diff_id</code> 对的上，对不上说明有问题，下载失败</li>
+<li>根据 docker 所用的后台文件系统类型，解压 tar 包并放到指定的目录</li>
+<li>等所有的 layer 都下载完成后，整个 image 下载完成，就可以使用了</li>
 </ul>
 
 <div id="note">

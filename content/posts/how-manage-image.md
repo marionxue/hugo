@@ -74,21 +74,13 @@ docker 里面和 image 有关的目录为 `/var/lib/docker`，里面存放着 im
 取 image 的大概过程如下：
 
 + docker 发送 `image` 的名称+tag（或者 digest）给 `registry` 服务器，服务器根据收到的 image 的名称+tag（或者 digest），找到相应 image 的 `manifest`，然后将 manifest 返回给 docker
-
 + docker 得到 `manifest` 后，读取里面 image 配置文件的 `digest`(sha256)，这个 sha256 码就是 image 的 `ID`
-
 + 根据 `ID` 在本地找有没有存在同样 `ID` 的 image，有的话就不用继续下载了
-
 + 如果没有，那么会给 registry 服务器发请求（里面包含配置文件的 `sha256` 和 `media type`），拿到 image 的配置文件（`Image Config`）
-
 + 根据配置文件中的 `diff_ids`（每个 diffid 对应一个 layer tar 包的 sha256，tar 包相当于 layer 的原始格式），在本地找对应的 layer 是否存在
-
 + 如果 layer 不存在，则根据 `manifest` 里面 layer 的 `sha256` 和 `media type` 去服务器拿相应的 layer（相当去拿压缩格式的包）。
-
 + 拿到后进行解压，并检查解压后 tar 包的 sha256 能否和配置文件（`Image Config`）中的 `diff_id` 对的上，对不上说明有问题，下载失败
-
 + 根据 docker 所用的后台文件系统类型，解压 tar 包并放到指定的目录
-
 + 等所有的 layer 都下载完成后，整个 image 下载完成，就可以使用了
 
 <div id="note">
