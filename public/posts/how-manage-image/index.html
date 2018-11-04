@@ -402,7 +402,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Mon Apr 2, 2018</h4>
     </section>
-    <h5 id="wc">4600 Words|Read in about 10 Min</h5>
+    <h5 id="wc">4700 Words|Read in about 10 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/docker/">docker</a> &nbsp;
@@ -412,12 +412,48 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-镜像相关的配置">1. 镜像相关的配置</a></li>
+<li><a href="#2-镜像的引用方式">2. 镜像的引用方式</a>
+<ul>
+<li><a href="#docker-hub-上的官方镜像">docker hub 上的官方镜像</a></li>
+<li><a href="#docker-hub-上的非官方-个人-镜像">docker hub 上的非官方（个人）镜像</a></li>
+<li><a href="#自己搭建的-registry-里的镜像">自己搭建的 registry 里的镜像</a></li>
+<li><a href="#为什么需要镜像的-digest">为什么需要镜像的 digest？</a></li>
+</ul></li>
+<li><a href="#3-docker-pull的大概过程">3. docker pull的大概过程</a></li>
+<li><a href="#4-image-本地存放位置">4. image 本地存放位置</a>
+<ul>
+<li><a href="#repositories-json">repositories.json</a></li>
+<li><a href="#配置文件-image-config">配置文件（image config）</a></li>
+<li><a href="#layer-的-diff-id-和-digest-的对应关系">layer 的 diff_id 和 digest 的对应关系</a></li>
+<li><a href="#layer-的元数据">layer 的元数据</a></li>
+</ul></li>
+<li><a href="#5-layer数据">5. layer数据</a></li>
+<li><a href="#6-manifest文件去哪了">6. manifest文件去哪了？</a></li>
+<li><a href="#7-结束语">7. 结束语</a></li>
+<li><a href="#8-参考">8. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
 <p>docker 里面可以通过 <code>docker pull</code>、<code>docker build</code>、<code>docker commit</code>、<code>docker load</code>、<code>docker import</code> 等方式得到一个 image，得到 image 之后 docker 在本地是怎么存储的呢？本篇将以 <code>docker pull</code> 为例，简述 image 的获取和存储方式。</p>
 
-<h2 id="p-id-h2-1-镜像相关的配置-p"><p id="h2">1. 镜像相关的配置</p></h2>
+<h2 id="1-镜像相关的配置">1. 镜像相关的配置</h2>
 
 <hr />
 
@@ -426,7 +462,7 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">--graph, -g /var/lib/docker Root of the Docker runtime
 </code></pre>
 
-<h2 id="p-id-h2-2-镜像的引用方式-p"><p id="h2">2. 镜像的引用方式</p></h2>
+<h2 id="2-镜像的引用方式">2. 镜像的引用方式</h2>
 
 <hr />
 
@@ -474,7 +510,7 @@ autocomplete('#aa-search-input',
 
 <p>对于某些 <code>image</code> 来说，可能在发布之后还会做一些更新，比如安全方面的，这时虽然镜像的内容变了，但镜像的名称和 <code>tag</code> 没有变，所以会造成前后两次通过同样的名称和 <code>tag</code> 从服务器得到不同的两个镜像的问题，于是 docker 引入了镜像的 <code>digest</code> 的概念，一个镜像的 <code>digest</code> 就是镜像的 <code>manifes</code> 文件的 <code>sha256</code> 码，当镜像的内容发生变化的时候，即镜像的 <code>layer</code> 发生变化，从而 <code>layer</code> 的 <code>sha256</code> 发生变化，而 <code>manifest</code> 里面包含了每一个 <code>layer</code> 的 <code>sha256</code>，所以 <code>manifest</code> 的 <code>sha256</code> 也会发生变化，即镜像的 <code>digest</code> 发生变化，这样就保证了 <code>digest</code> 能唯一的对应一个镜像。</p>
 
-<h2 id="p-id-h2-3-docker-pull的大概过程-p"><p id="h2">3. docker pull的大概过程</p></h2>
+<h2 id="3-docker-pull的大概过程">3. docker pull的大概过程</h2>
 
 <hr />
 
@@ -512,7 +548,7 @@ autocomplete('#aa-search-input',
 <p>dockerd 和 registry 服务器之间的协议为 <a href="https://docs.docker.com/registry/spec/api/" target="_blank">Registry HTTP API V2</a>。</p>
 </blockquote>
 
-<h2 id="p-id-h2-4-image-本地存放位置-p"><p id="h2">4. image 本地存放位置</p></h2>
+<h2 id="4-image-本地存放位置">4. image 本地存放位置</h2>
 
 <hr />
 
@@ -681,7 +717,7 @@ $ ll /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3
 -rw-r--r-- 1 root root 1.5K Apr  1 22:16 /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/tar-split.json.gz
 </code></pre>
 
-<h2 id="p-id-h2-5-layer数据-p"><p id="h2">5. layer数据</p></h2>
+<h2 id="5-layer数据">5. layer数据</h2>
 
 <hr />
 
@@ -787,7 +823,7 @@ drwxr-xr-x 3 root root 18 Feb 28 14:13 usr/
 drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
 </code></pre>
 
-<h2 id="p-id-h2-6-manifest文件去哪了-p"><p id="h2">6. manifest文件去哪了？</p></h2>
+<h2 id="6-manifest文件去哪了">6. manifest文件去哪了？</h2>
 
 <hr />
 
@@ -797,7 +833,7 @@ drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
 
 <p>manifest 里面包含的内容就是对 config 和 layer 的 <code>sha256 + media type</code> 描述，目的就是为了下载 config 和 layer，等 image 下载完成后，manifest 的使命就完成了，里面的信息对于 image 的本地管理来说没什么用，所以 docker 在本地没有单独的存储一份 manifest 文件与之对应。</p>
 
-<h2 id="p-id-h2-7-结束语-p"><p id="h2">7. 结束语</p></h2>
+<h2 id="7-结束语">7. 结束语</h2>
 
 <hr />
 
@@ -809,7 +845,7 @@ drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
 <li><p><code>/var/lib/docker/image/overlay2/layerdb/mounts</code>: 创建 container 时，docker 会为每个 container 在 image 的基础上创建一层新的 layer，里面主要包含 /etc/hosts、/etc/hostname、/etc/resolv.conf 等文件，创建的这一层 layer 信息就放在这里，后续在介绍容器的时候，会专门介绍这个目录的内容。</p></li>
 </ul>
 
-<h2 id="p-id-h2-8-参考-p"><p id="h2">8. 参考</p></h2>
+<h2 id="8-参考">8. 参考</h2>
 
 <hr />
 
@@ -817,12 +853,45 @@ drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
 <li><a href="https://github.com/moby/moby" target="_blank">docker源代码</a></li>
 </ul>
 
-<p><br /></p>
-
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em;
