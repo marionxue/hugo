@@ -19,6 +19,7 @@ dateFormat = "January 2, 2006"
 commit = true
 rss = true
 comments = true
+busuanzi = true
 sharebutton = true
 reward = true
 notoc = true

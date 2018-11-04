@@ -47,6 +47,7 @@ MathJax.Hub.Config({
   });
 </script>
 
+{{ if isset .Site.Params "busuanzi" }}
 <!-- 不蒜子 -->
 <script async src="//cdn.busuanzi.ibruce.info/cdn/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 <!-- 不蒜子计数初始值纠正 -->
@@ -63,3 +64,4 @@ MathJax.Hub.Config({
         }
     });
 </script>
+{{ end }}
