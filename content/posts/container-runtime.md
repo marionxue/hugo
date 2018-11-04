@@ -3,6 +3,7 @@ title: "Kubernetes 中的容器运行时"
 subtitle: "容器运行时接口解析"
 date: 2018-04-03T06:50:43Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes", "docker"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -14,11 +15,11 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 容器运行时接口(`Container Runtime Interface (CRI)`) 是 Kubelet 1.5 和 kubelet 1.6 中主要负责的一块项目，它重新定义了 Kubelet Container Runtime API，将原来完全面向 Pod 级别的 API 拆分成面向 `Sandbox` 和 `Container` 的 API，并分离镜像管理和容器引擎到不同的服务。
 
-![](https://kubernetes.feisky.xyz/zh/plugins/images/cri.png)
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fww2d87cokj30fw03sq38.jpg)
 
 CRI 最早从从 1.4 版就开始设计讨论和开发，在 v1.5 中发布第一个测试版。在 v1.6 时已经有了很多外部容器运行时，如 frakti、cri-o 的 alpha 支持。v1.7 版本新增了 `cri-containerd` 的 alpha 支持，而 `frakti` 和 `cri-o` 则升级到 beta 支持。
 
-## <p id="h2">1. CRI 接口</p>
+## 1. CRI 接口
 
 ----
 
@@ -34,7 +35,7 @@ Kubelet 作为 CRI 的客户端，而 Runtime 维护者则需要实现 CRI 服�
 $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock ..
 ```
 
-## <p id="h2">2. 如何开发新的 Container Runtime</p>
+## 2. 如何开发新的 Container Runtime
 
 ----
 
@@ -42,7 +43,7 @@ $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/ru
 
 具体的实现方法可以参考下面已经支持的 Container Runtime 列表。
 
-## <p id="h2">3. 目前支持的 Container Runtime</p>
+## 3. 目前支持的 Container Runtime
 
 ----
 
@@ -64,14 +65,14 @@ $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/ru
 
 ### cri-containerd
 
-以 containerd 为例，它将 `dockershim` 和 `docker daemon` 替换为 `cri-containerd` 服务。
+以 Containerd 为例，在 1.0 及以前版本将 `dockershim` 和 `docker daemon` 替换为 `cri-containerd + containerd`，而在 1.1 版本直接将 cri-containerd 内置在 Containerd 中，简化为一个 CRI 插件。
 
-![](https://kubernetes.feisky.xyz/zh/plugins/images/cri-containerd.png)
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fww2gk0mywj318g0dgdi5.jpg)
 
-而 cri-containerd 则实现了 Kubelet CRI 接口，对 Kubelet 暴露 Image Service 和 Runtime Service。在内部，它通过 containerd 的 gRPC 接口管理容器和镜像，并通过 CNI 插件给 Pod 配置网络。
-![](https://kubernetes.feisky.xyz/zh/plugins/images/containerd.png)
+Containerd 内置的 CRI 插件实现了 Kubelet CRI 接口中的 `Image Service` 和 `Runtime Service`，通过内部接口管理容器和镜像，并通过 CNI 插件给 Pod 配置网络。
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fww2gsvgesj31a00j6n15.jpg)
 
-## <p id="h2">4. CRI Tools</p>
+## 4. CRI Tools
 
 ----
 
@@ -88,6 +89,41 @@ $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/ru
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em; 
