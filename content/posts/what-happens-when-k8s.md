@@ -411,9 +411,9 @@ CNI 插件还会通过 `CNI_ARGS` 环境变量为 Pod 指定其他的元数据�
 <br />
 
 <style>
-a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
+a:hover{cursor:url(http://hugo-picture.oss-cn-beijing.aliyuncs.com/cursor_5.png), pointer;}
 body {
-    cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+    cursor: url(http://hugo-picture.oss-cn-beijing.aliyuncs.com/cursor_1.png), default;
 }
 #h2{
     margin-bottom:2em;

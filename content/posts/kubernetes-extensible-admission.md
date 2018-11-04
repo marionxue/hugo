@@ -464,9 +464,9 @@ Istio 就是使用 `ValidatingAdmissionWebhooks` 验证 Istio 配置，使用 `M
 <center>扫一扫关注微信公众号</center>
 
 <style>
-a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
+a:hover{cursor:url(http://hugo-picture.oss-cn-beijing.aliyuncs.com/cursor_5.png), pointer;}
 body {
-    cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+    cursor: url(http://hugo-picture.oss-cn-beijing.aliyuncs.com/cursor_1.png), default;
 }
 h2 {
     display: block;

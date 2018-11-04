@@ -254,9 +254,9 @@ Creating front-proxy_service-envoy_1 ... done
 接下来就可以通过公网域名访问博客网站啦！没错，你现在浏览的我的博客就是通过 Envoy 反向代理的。
 
 <style>
-a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
+a:hover{cursor:url(http://hugo-picture.oss-cn-beijing.aliyuncs.com/cursor_5.png), pointer;}
 body {
-    cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+    cursor: url(http://hugo-picture.oss-cn-beijing.aliyuncs.com/cursor_1.png), default;
 }
 h2 {
     display: block;
