@@ -17,6 +17,8 @@ logo = "http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg"
 favicon = "https://www.learnenvoy.io/assets/favicon-32x32.png"
 dateFormat = "January 2, 2006"
 commit = true
+# ad section, comment this to disable it
+ad = true
 rss = true
 comments = true
 sharebutton = true
