@@ -402,7 +402,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Tue Apr 3, 2018</h4>
     </section>
-    <h5 id="wc">2000 Words|Read in about 4 Min</h5>
+    <h5 id="wc">2100 Words|Read in about 5 Min</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -414,12 +414,35 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-cri-o-的诞生">1. CRI-O 的诞生</a></li>
+<li><a href="#2-cri-o-的原理及架构">2. CRI-O 的原理及架构</a>
+<ul>
+<li><a href="#隆重介绍一下-conmon">隆重介绍一下 conmon</a></li>
+</ul></li>
+<li><a href="#3-下一步">3. 下一步</a></li>
+<li><a href="#4-参考">4. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
 <p>上一篇 <a href="https://www.yangcs.net/posts/container-runtime" target="_blank">https://www.yangcs.net/posts/container-runtime/</a> 介绍了什么是容器运行时，并列出了不同的容器运行时。本篇重点介绍其中的一种容器运行时 <code>CRI-O</code>。</p>
 
-<h2 id="p-id-h2-1-cri-o-的诞生-p"><p id="h2">1. CRI-O 的诞生</p></h2>
+<h2 id="1-cri-o-的诞生">1. CRI-O 的诞生</h2>
 
 <hr />
 
@@ -427,7 +450,7 @@ autocomplete('#aa-search-input',
 
 <p>根据 Red Hat 的 CRI-O 开发者 Mrunal Patel 在研究里面说的， 最开始 Red Hat 在 2016 年底为它的 OpenShift 平台启动了这个项目，同时项目也得到了 <code>Intel</code> 和 <code>SUSE</code> 的支持。CRI-O 与 <code>CRI</code> 规范兼容，并且与 <code>OCI</code> 和 Docker 镜像的格式也兼容。它也支持校验镜像的 GPG 签名。 它使用容器网络接口 Container Network Interface（CNI）处理网络，以便任何兼容 CNI 的网络插件可与该项目一起使用，OpenShift 也用它来做软件定义存储层。 它支持多个 CoW 文件系统，比如常见的 overlay，aufs，也支持不太常见的 Btrfs。</p>
 
-<h2 id="p-id-h2-2-cri-o-的原理及架构-p"><p id="h2">2. CRI-O 的原理及架构</p></h2>
+<h2 id="2-cri-o-的原理及架构">2. CRI-O 的原理及架构</h2>
 
 <hr />
 
@@ -467,7 +490,7 @@ autocomplete('#aa-search-input',
 
 <p>因为 conmon（不是CRI daemon）是容器的父进程，它允许 CRI-O 的部分组件重启而不会影响容器，这样可以保证更加平滑的升级。<strong>现在 Docker 部署的问题就是 Docker 升级需要重起所有的容器</strong>。 通常这对于 Kubernetes 集群来说不是问题，但因为它可以将容器迁移来滚动升级。</p>
 
-<h2 id="p-id-h2-3-下一步-p"><p id="h2">3. 下一步</p></h2>
+<h2 id="3-下一步">3. 下一步</h2>
 
 <hr />
 
@@ -479,7 +502,7 @@ autocomplete('#aa-search-input',
 
 <p>如果你想贡献或者关注开发，就去 <a href="https://github.com/kubernetes-incubator/cri-o" target="_blank">CRI-O 项目的 GitHub 仓库</a>，然后关注 <a href="https://medium.com/cri-o" target="_blank">CRI-O 博客</a>。</p>
 
-<h2 id="p-id-h2-4-参考-p"><p id="h2">4. 参考</p></h2>
+<h2 id="4-参考">4. 参考</h2>
 
 <hr />
 
@@ -490,12 +513,45 @@ autocomplete('#aa-search-input',
 <li><a href="https://linux.cn/article-9015-1.html" target="_blank">CRI-O 1.0 简介</a></li>
 </ul>
 
-<p><br /></p>
-
 <style>
 a:hover{cursor:url(https://ws1.sinaimg.cn/large/006tNbRwgy1fwtq1w7x67j3018016a9x.jpg), pointer;}
 body {
     cursor: url(https://ws3.sinaimg.cn/large/006tNbRwgy1fwtq36ft35j301y01ljra.jpg), default;
+}
+h1,h2,h3,h4,h5,h6 {
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 800;
+    margin-top: 35px;
+}
+h2 {
+    display: block;
+    font-size: 1.5em;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+}
+h2::before {
+    content: "#";
+    margin-right: 5px;
+    color: #2d96bd;
+}
+h3 {
+    color: #0099CC;
+}
+h4 {
+    color: #F77A0B;
+}
+li {
+    line-height: 2;
+    font-size: 0.9em;
+}
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 16px;
+    border-left: 5px solid #986dbd;
 }
 #h2{
     margin-bottom:2em; 
