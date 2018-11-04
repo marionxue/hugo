@@ -38,9 +38,7 @@ docker 里面和 image 有关的目录为 `/var/lib/docker`，里面存放着 im
 ### docker hub 上的官方镜像
 
 + **alpine:** 官方提供的最新 alpine 镜像，对应的完整名称为 `docker.io/library/alpine:latest`
-
 + **alpine:3.7:** 官方提供的 alpine 3.7 镜像，对应的完整名称为 `docker.io/library/alpine:3.7`
-
 + **alpine:@sha256:abcdef...:** 官方提供的 digest 码为 sha256:abcdef... 的 alpine 镜像，对应的完整名称为 `docker.io/library/alpine@sha256:abcdef...`
 
 ### docker hub 上的非官方（个人）镜像
@@ -56,7 +54,6 @@ docker 里面和 image 有关的目录为 `/var/lib/docker`，里面存放着 im
 引用方式和 `docker hub` 一样，唯一不同的是需要在镜像名称最前面带上地址，如：
 
 + **localhost:5000/alpine:** 本地自己搭建的 registry（localhost:5000）里面的官方 alpine 的最新镜像，对应的完整名称为 `localhost:5000/library/alpine:latest`
-
 + **localhost:5000/user1/alpine@sha256:a123def...:** 本地自己搭建的 registry（localhost:5000）里面由用户 user1 提供的 digest 为 sha256:a123def 的 alpine 镜像
 
 其它的几种情况和上面的类似。

@@ -477,11 +477,9 @@ autocomplete('#aa-search-input',
 <h3 id="docker-hub-上的官方镜像">docker hub 上的官方镜像</h3>
 
 <ul>
-<li><p><strong>alpine:</strong> 官方提供的最新 alpine 镜像，对应的完整名称为 <code>docker.io/library/alpine:latest</code></p></li>
-
-<li><p><strong>alpine:3.7:</strong> 官方提供的 alpine 3.7 镜像，对应的完整名称为 <code>docker.io/library/alpine:3.7</code></p></li>
-
-<li><p><strong>alpine:@sha256:abcdef&hellip;:</strong> 官方提供的 digest 码为 sha256:abcdef&hellip; 的 alpine 镜像，对应的完整名称为 <code>docker.io/library/alpine@sha256:abcdef...</code></p></li>
+<li><strong>alpine:</strong> 官方提供的最新 alpine 镜像，对应的完整名称为 <code>docker.io/library/alpine:latest</code></li>
+<li><strong>alpine:3.7:</strong> 官方提供的 alpine 3.7 镜像，对应的完整名称为 <code>docker.io/library/alpine:3.7</code></li>
+<li><strong>alpine:@sha256:abcdef&hellip;:</strong> 官方提供的 digest 码为 sha256:abcdef&hellip; 的 alpine 镜像，对应的完整名称为 <code>docker.io/library/alpine@sha256:abcdef...</code></li>
 </ul>
 
 <h3 id="docker-hub-上的非官方-个人-镜像">docker hub 上的非官方（个人）镜像</h3>
@@ -499,9 +497,8 @@ autocomplete('#aa-search-input',
 <p>引用方式和 <code>docker hub</code> 一样，唯一不同的是需要在镜像名称最前面带上地址，如：</p>
 
 <ul>
-<li><p><strong>localhost:5000/alpine:</strong> 本地自己搭建的 registry（localhost:5000）里面的官方 alpine 的最新镜像，对应的完整名称为 <code>localhost:5000/library/alpine:latest</code></p></li>
-
-<li><p><strong>localhost:5000/user1/alpine@sha256:a123def&hellip;:</strong> 本地自己搭建的 registry（localhost:5000）里面由用户 user1 提供的 digest 为 sha256:a123def 的 alpine 镜像</p></li>
+<li><strong>localhost:5000/alpine:</strong> 本地自己搭建的 registry（localhost:5000）里面的官方 alpine 的最新镜像，对应的完整名称为 <code>localhost:5000/library/alpine:latest</code></li>
+<li><strong>localhost:5000/user1/alpine@sha256:a123def&hellip;:</strong> 本地自己搭建的 registry（localhost:5000）里面由用户 user1 提供的 digest 为 sha256:a123def 的 alpine 镜像</li>
 </ul>
 
 <p>其它的几种情况和上面的类似。</p>
