@@ -705,6 +705,7 @@
         "subtitle": "通过 Python3 读写文件",
         "date": "2017-01-03T08:51:06.000Z",
         "draft": false,
+        "toc": true,
         "categories": "python",
         "tags": [
             "python"

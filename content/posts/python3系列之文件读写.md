@@ -3,15 +3,15 @@ title: "Python3 系列之文件读写"
 subtitle: "通过 Python3 读写文件"
 date: 2017-01-03T08:51:06Z
 draft: false
+toc: true
 categories: python
 tags: ["python"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://other.web.rh01.sycdn.kuwo.cn/resource/n2/2/46/1567406567.mp3"></iframe>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **文件与文件路径**</p>
+## 1. 文件与文件路径
 ------
 
 用到的模块：`os`
@@ -146,7 +146,7 @@ False
 True
 ```
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **文件读写过程**</p>
+## 2. 文件读写过程
 ------
 
 在 Python 中，读写文件有3个步骤：
@@ -273,7 +273,7 @@ shelf值不必使用读模式或写模式打开，因为它们在打开后，既
 
 <p id="div-border-left-red">创建文件时，如果你需要在文本编辑器中读取它们，纯文本就非常有用。但是，如果想要保存 `Python` 程序中的数据，那就使用 `shelve` 模块</p>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. **项目：多重剪切板**</p>
+## 3. 项目：多重剪切板
 ------
 
 该程序被命名为 `mcb.py`，该程序将利用一个关键字保存每段剪切板文本。例如，当运行`python mcb.py spam`，这段文本稍后将重新加载到剪切板中。如果用户忘了有哪些关键字，他们可以运行 `python mcb.py list`，将所有关键字的列表复制到剪切板中。
