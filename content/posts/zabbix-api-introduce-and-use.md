@@ -3,6 +3,7 @@ title: "Zabbix Api 简介和使用"
 subtitle: "Python 调用 Zabbix 的 Api"
 date: 2017-01-05T10:19:18Z
 draft: false
+toc: true
 categories: "python"
 tags: ["python"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -11,7 +12,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 <!--more-->
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=22712173&auto=1&height=66"></iframe>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **API简介**</p>
+## 1. API简介
 ------
 
 `Zabbix API` 开始扮演着越来越重要的角色，尤其是在集成第三方软件和自动化日常任务时。很难想象管理数千台服务器而没有自动化是多么的困难。
@@ -29,7 +30,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 > API 采用JSON-RPC实现。这意味着调用任何函数，都需要发送POST请求，输入输出数据都是以JSON格式。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **Zabbix API的使用流程**</p>
+## 2. Zabbix API的使用流程
 ------
 
 ### 使用 `API` 的基本步骤
@@ -120,7 +121,6 @@ yum-metadata-parser (1.1.2)
 zabbix-api (0.4)
 ```
 
-<br />
 #### 查询某主机获取hostid
 
 写一个 `python` 脚本，内容如下：
@@ -156,7 +156,6 @@ $ python get_hostid.py
 '10084'
 ```
 
-<br />
 #### 获取目标主机对应的监控项和监控项具体名称
 
 写一个 `python` 脚本，内容如下：
@@ -198,7 +197,6 @@ $ python get_items.py
  {'itemid': '23277', 'key_': 'zabbix[wcache,values]'}]
 ```
 
-<br />
 #### 获取对应监控项的历史数据
 
 写一个 `python` 脚本，内容如下：
@@ -243,7 +241,6 @@ $ python get_items.py
 --snip--
 ```
 
-<br />
 #### 获取对应监控项一段时间内的历史数据并格式化输出
 
 写一个 `python` 脚本，内容如下：
