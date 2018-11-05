@@ -11,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 <div align=life> 
-<iframe frameborder="no" marginwidth="0" marginheight="0" width=400 height=140 src="https://music.163.com/outchain/player?type=2&id=34341360&auto=0&height=66"></iframe>
+<iframe frameborder="no" marginwidth="0" marginheight="0" width=400 height=140 src="https://rss.yangcs.net/?/star-sky.mp3"></iframe>
 </div>
 
 ## 1. 迭代器
