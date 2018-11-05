@@ -487,14 +487,18 @@ autocomplete('#aa-search-input',
 
 <h3 id="使用-api-的基本步骤">使用 <code>API</code> 的基本步骤</h3>
 
-<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
-1. 准备JSON对象，它描述了你想要做什么（创建主机，获取图像，更新监控项等）。<br />
-2. 采用POST方法向 <code>http://example.com/zabbix/api_jsonrpc.php</code> 发送此JSON对象，提供用户名和密码，<code>HTTP Header Content-Type</code> 必须为【application/jsonrequest，application/json-rpc，application/json】其中之一。
-<code>http://example.com/zabbix/</code> 是Zabbix前端地址。<code>api_jsonrpc.php</code> 是调用API的PHP脚本。可在安装可视化前端的目录下找到。<br />
-3. 获取 SESSIONID。<br />
-4. 通过 SESSIONID 建立后续的连接。<br />
-5. 提交 POST 数据，格式为 JSON，其中放对应的方法，获取需要的数据。
-</p>
+<ol>
+<li><p>准备JSON对象，它描述了你想要做什么（创建主机，获取图像，更新监控项等）。</p></li>
+
+<li><p>采用POST方法向 <code><a href="http://example.com/zabbix/api_jsonrpc.php" target="_blank">http://example.com/zabbix/api_jsonrpc.php</a></code> 发送此JSON对象，提供用户名和密码，<code>HTTP Header Content-Type</code> 必须为【application/jsonrequest，application/json-rpc，application/json】其中之一。
+<code><a href="http://example.com/zabbix/" target="_blank">http://example.com/zabbix/</a></code> 是Zabbix前端地址。<code>api_jsonrpc.php</code> 是调用API的PHP脚本。可在安装可视化前端的目录下找到。</p></li>
+
+<li><p>获取 SESSIONID。</p></li>
+
+<li><p>通过 SESSIONID 建立后续的连接。</p></li>
+
+<li><p>提交 POST 数据，格式为 JSON，其中放对应的方法，获取需要的数据。</p></li>
+</ol>
 
 <h3 id="使用-curl-模拟-api-的使用">使用 <code>curl</code> 模拟 API 的使用</h3>
 

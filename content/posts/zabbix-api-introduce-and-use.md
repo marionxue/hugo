@@ -35,14 +35,16 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ### 使用 `API` 的基本步骤
 
-<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
-1. 准备JSON对象，它描述了你想要做什么（创建主机，获取图像，更新监控项等）。<br />
+1. 准备JSON对象，它描述了你想要做什么（创建主机，获取图像，更新监控项等）。
+
 2. 采用POST方法向 <code>http://example.com/zabbix/api_jsonrpc.php</code> 发送此JSON对象，提供用户名和密码，<code>HTTP Header Content-Type</code> 必须为【application/jsonrequest，application/json-rpc，application/json】其中之一。
-<code>http://example.com/zabbix/</code> 是Zabbix前端地址。<code>api_jsonrpc.php</code> 是调用API的PHP脚本。可在安装可视化前端的目录下找到。<br />
-3. 获取 SESSIONID。<br />
-4. 通过 SESSIONID 建立后续的连接。<br />
+<code>http://example.com/zabbix/</code> 是Zabbix前端地址。<code>api_jsonrpc.php</code> 是调用API的PHP脚本。可在安装可视化前端的目录下找到。
+
+3. 获取 SESSIONID。
+
+4. 通过 SESSIONID 建立后续的连接。
+
 5. 提交 POST 数据，格式为 JSON，其中放对应的方法，获取需要的数据。
-</p>
 
 ### 使用 `curl` 模拟 API 的使用
 
