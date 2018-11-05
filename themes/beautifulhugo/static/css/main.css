@@ -46,7 +46,6 @@ a {
     word-break: break-all;
 }
 
-a:hover {cursor:url(http://oqk3alhse.bkt.clouddn.com/cursor_5.png), pointer;},
 a:focus {
     color: #2a55f4;
 }
