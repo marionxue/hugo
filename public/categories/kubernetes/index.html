@@ -763,37 +763,44 @@ autocomplete('#aa-search-input',
 
 <style>
 table {
- display:table;
- width: 100% ;
- text-align: left;
-}
-tbody {
-  border: 0;
+    padding: 0;
 }
 
 table tr {
-  border: 0;
-  border-top: 1px solid #CCC;
-  background-color: white;
-
+    border-top: 1px solid #cccccc;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
 }
-
- 
 
 table tr:nth-child(2n) {
-  background-color: #F8F8F8;
-  }
-
-table tr th, table tr td {
-  font-size: 1em;
-  border: 1px solid #CCC;
-  padding: 0.5em 1em;
-  text-align: left;
+    background-color: #f8f8f8;
 }
- 
+
 table tr th {
- font-weight: bold;
-  background-color: #F0F0F0;
+    font-weight: bold;
+    border: 1px solid #cccccc;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+}
+
+table tr td {
+    border: 1px solid #cccccc;
+    text-align: left;
+    margin: 0;
+    padding: 6px 13px;
+    word-break: break-all;
+}
+
+table tr th :first-child,
+table tr td :first-child {
+    margin-top: 0;
+}
+
+table tr th :last-child,
+table tr td :last-child {
+    margin-bottom: 0;
 }
 .gallery-text {
  text-align: center;
