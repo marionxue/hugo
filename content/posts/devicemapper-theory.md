@@ -3,29 +3,29 @@ title: "Device Mapper系列 (1)：Device Mapper 技术"
 subtitle: "Device Mapper 原理剖析"
 date: 2018-01-21T09:28:41Z
 draft: false
+toc: true
 categories: "docker"
 tags: ["docker"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **Device Mapper 简介**</p>
+## 1. Device Mapper 简介
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
-&emsp;&emsp; <code>Device Mapper</code> 是 linux 的内核用来将块设备映射到虚拟块设备的 framework，它支持许多高级卷管理技术。docker 的 devicemapper 存储驱动程序利用此框架的<code>自动精简配置</code>(thin provisioning) 和快照功能来管理 docker 镜像和容器。本文将 Device Mapper 存储驱动称为 <code>devicemapper</code>，将它的内核框架称为 <code>Device Mapper</code>。
+<code>Device Mapper</code> 是 linux 的内核用来将块设备映射到虚拟块设备的 framework，它支持许多高级卷管理技术。docker 的 devicemapper 存储驱动程序利用此框架的<code>自动精简配置</code>(thin provisioning) 和快照功能来管理 docker 镜像和容器。本文将 Device Mapper 存储驱动称为 <code>devicemapper</code>，将它的内核框架称为 <code>Device Mapper</code>。
 </p>
 
-<br />
-&emsp;&emsp;`Device Mapper` 不同于 AUFS、ext4、NFS 等，因为它并不是一个文件系统（File System），而是 Linux 内核映射块设备的一种技术框架。提供的一种从逻辑设备（虚拟设备）到物理设备的映射框架机制，在该机制下，用户可以很方便的根据自己的需要制定实现存储资源的管理策略。
+`Device Mapper` 不同于 AUFS、ext4、NFS 等，因为它并不是一个文件系统（File System），而是 Linux 内核映射块设备的一种技术框架。提供的一种从逻辑设备（虚拟设备）到物理设备的映射框架机制，在该机制下，用户可以很方便的根据自己的需要制定实现存储资源的管理策略。
 
-&emsp;&emsp;当前比较流行的 Linux 下的逻辑卷管理器如 `LVM2`（Linux Volume Manager 2 version)、`EVMS`(Enterprise Volume Management System)、`dmraid`(Device Mapper Raid Tool)等都是基于该机制实现的。
+当前比较流行的 Linux 下的逻辑卷管理器如 `LVM2`（Linux Volume Manager 2 version)、`EVMS`(Enterprise Volume Management System)、`dmraid`(Device Mapper Raid Tool)等都是基于该机制实现的。
 
-&emsp;&emsp;值得一提的是 `Device Mapper` 工作在块级别（block），并不工作在文件级别（file）。`Device Mapper` 自 Linux 2.6.9 后编入 Linux 内核，所有基于 Linux 内核 2.6.9 以后的发行版都内置 `Device Mapper`，但你需要进行一些额外的配置才能在 `docker` 中使用它。比如在 `RHEL` 和 `CentOS` 系统中，`docker` 默认使用的存储驱动是 `overlay`。
+值得一提的是 `Device Mapper` 工作在块级别（block），并不工作在文件级别（file）。`Device Mapper` 自 Linux 2.6.9 后编入 Linux 内核，所有基于 Linux 内核 2.6.9 以后的发行版都内置 `Device Mapper`，但你需要进行一些额外的配置才能在 `docker` 中使用它。比如在 `RHEL` 和 `CentOS` 系统中，`docker` 默认使用的存储驱动是 `overlay`。
 
-&emsp;&emsp;`devicemapper` 存储驱动使用专用于 `docker` 的块设备，它运行在块级别上而不是文件级别。使用块设备比直接使用文件系统性能更好，通过向 `Docker` 的宿主机添加物理存储可以扩展块设备的存储空间。
+`devicemapper` 存储驱动使用专用于 `docker` 的块设备，它运行在块级别上而不是文件级别。使用块设备比直接使用文件系统性能更好，通过向 `Docker` 的宿主机添加物理存储可以扩展块设备的存储空间。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **用户空间和内核空间**</p>
+## 2. 用户空间和内核空间
 ------
 
 **Device Mapper主要分为用户空间部分和内核空间部分**
@@ -36,15 +36,13 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/device.mapper.2.gif)</center>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. **Device Mapper 技术分析**</p>
+## 3. Device Mapper 技术分析
 ------
 
 **`Device Mapper`** 作为 Linux 块设备映射技术框架，向外部提供逻辑设备。包含三个重要概念，映射设备（mapped device），映射表（map table），目标设备（target device）。
 
 + 映射设备即对外提供的逻辑设备，映射设备向下寻找必须找到支撑的目标设备。
-
 + 映射表存储映射设备和目标设备的映射关系。
-
 + 目标设备可以是映射设备或者物理设备，如果目标设备是一块映射设备，则属于嵌套，理论上可以无限迭代下去。
 
 简而言之，`Device Mapper` 对外提供一个虚拟设备供使用，而这块虚拟设备可以通过映射表找到相应的地址，该地址可以指向一块物理设备，也可以指向一个虚拟设备。
@@ -57,7 +55,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 `Device Mapper` 中的 IO 流处理，从虚拟设备（逻辑设备）根据映射表并指定特定的映射驱动转发到目标设备上。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. **Docker 中的 Device Mapper 核心技术**</p>
+## 4. Docker 中的 Device Mapper 核心技术
 ------
 
 Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复制）`，`thin-provisioning（精简配置）`。`snapshot（快照）`，首先简单介绍一下这三种技术。
@@ -81,7 +79,6 @@ Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复�
   `devicemapper` 支持在块级别（block）写复制。
   
 + **`Snapshot（快照技术）`**：关于指定数据集合的一个完全可用拷贝，该拷贝包括相应数据在某个时间点（拷贝开始的时间点）的映像。快照可以是其所表示的数据的一个副本，也可以是数据的一个复制品。而从具体的技术细节来讲，快照是指向保存在存储设备中的数据的引用标记或指针。
-
 + **`Thin-provisioning（精简配置）`**，直译为精简配置。`Thin-provisioning` 是动态分配，需要多少分配多少，区别于传统分配固定空间从而造成的资源浪费。
 
   它是什么意思呢？你可以联想一下我们计算机中的内存管理中用到的——“虚拟内存技术”——操作系统给每个进程 N 多 N 多用不完的内址地址（32 位下，每个进程可以有最多 2GB 的内存空间），但是呢，我们知道，物理内存是没有那么多的，如果按照进程内存和物理内存一一映射来玩的话，那么，我们得要多少的物理内存啊。所以，操作系统引入了虚拟内存的设计，意思是，我逻辑上给你无限多的内存，但是实际上是实报实销，因为我知道你一定用不了那么多，于是，达到了内存使用率提高的效果。（今天云计算中很多所谓的虚拟化其实完全都是在用和“虚拟内存”相似的 `Thin Provisioning` 的技术，所谓的超配，或是超卖）。
@@ -95,11 +92,3 @@ Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复�
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
 那么，Docker 是怎么使用 <code>Thin Provisioning</code> 这个技术做到像 UnionFS 那样的分层镜像的呢？答案是，Docker 使用了 <code>Thin Provisioning</code> 的 <code>Snapshot</code> 的技术。下面一篇我们来介绍一下 <code>Thin Provisioning</code> 的 <code>Snapshot</code>。
 </p>
-
-<br />
-
-<center>[Device Mapper系列 (1)：Device Mapper 技术](https://www.yangcs.net/posts/devicemapper-theory/)</center>
-
-<center>[Device Mapper系列 (2)：Thin Provisioning 实践](https://www.yangcs.net/posts/thin-provisioning/)</center>
-
-<center>[Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动](https://www.yangcs.net/posts/calico-rr/)</center>
