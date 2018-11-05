@@ -15,7 +15,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-在实际生产环境中，往往需要根据业务应用场景来设置 <code>lvs</code> 的会话超时时间以及防 <code>session</code> 连接丢失的问题提，如在业务支付环节，如若 <code>session</code> 丢失会导致重复扣款问题，严重影响到安全性，本小节解将会讲到关于 <code>lvs</code> 持久性连接问题。
+在实际生产环境中，往往需要根据业务应用场景来设置 <code>lvs</code> 的会话超时时间以及防止 <code>session</code> 连接丢失的问题，如在业务支付环节，如若 <code>session</code> 丢失会导致重复扣款问题，严重影响到安全性，本小节解将会讲到关于 <code>lvs</code> 持久性连接问题。
 
 ### 为什么用到持久连接？
 
