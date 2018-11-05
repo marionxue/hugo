@@ -3,6 +3,7 @@ title: "Device Mapper系列 (2)：Thin Provisioning 实践"
 subtitle: "Thin Provisioning Snapshot 演练"
 date: 2018-01-22T16:00:22+08:00
 draft: false
+toc: true
 categories: "docker"
 tags: ["docker"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -10,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **Thin Provisioning Snapshot 演示**</p>
+## 1. Thin Provisioning Snapshot 演示
 ------
 
 上一篇我们介绍了 `Device Mapper` 框架的技术原理及其核心概念，下面，我们用一系列的命令来演示一下 Device Mapper 的 `Thin Provisioning Snapshot` 是怎么玩的。
@@ -212,7 +213,7 @@ hello world, I am a base
 
 好了，我相信你看到了分层镜像的样子了。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **Docker 的 devicemapper**</p>
+## 2. Docker 的 devicemapper
 ------
 
 > 上面基本上就是 Docker 的玩法了，我们可以看一下 docker 的 loopback 设备：
@@ -283,11 +284,3 @@ TARGET                SOURCE
 /etc/hostname     /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hostname]
 /etc/hosts        /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hosts]
 ```
-
-<br />
-
-<center>[Device Mapper系列 (1)：Device Mapper 技术](https://www.yangcs.net/posts/devicemapper-theory/)</center>
-
-<center>[Device Mapper系列 (2)：Thin Provisioning 实践](https://www.yangcs.net/posts/thin-provisioning/)</center>
-
-<center>[Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动](https://www.yangcs.net/posts/calico-rr/)</center>

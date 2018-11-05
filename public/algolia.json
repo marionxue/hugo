@@ -824,6 +824,7 @@
         "subtitle": "Thin Provisioning Snapshot 演练",
         "date": "2018-01-22T08:00:22.000Z",
         "draft": false,
+        "toc": true,
         "categories": "docker",
         "tags": [
             "docker"

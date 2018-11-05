@@ -414,7 +414,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Mon Jan 22, 2018</h4>
     </section>
-    <h5 id="wc">1800 Words|Read in about 4 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">1700 Words|Read in about 4 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/docker/">docker</a> &nbsp;
@@ -424,10 +424,28 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-thin-provisioning-snapshot-演示">1. Thin Provisioning Snapshot 演示</a></li>
+<li><a href="#2-docker-的-devicemapper">2. Docker 的 devicemapper</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-thin-provisioning-snapshot-演示-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. <strong>Thin Provisioning Snapshot 演示</strong></p></h2>
+<h2 id="1-thin-provisioning-snapshot-演示">1. Thin Provisioning Snapshot 演示</h2>
 
 <hr />
 
@@ -651,7 +669,7 @@ hello world, I am a base
 
 <p>好了，我相信你看到了分层镜像的样子了。</p>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-2-docker-的-devicemapper-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. <strong>Docker 的 devicemapper</strong></p></h2>
+<h2 id="2-docker-的-devicemapper">2. Docker 的 devicemapper</h2>
 
 <hr />
 
@@ -729,14 +747,6 @@ TARGET                SOURCE
 /etc/hostname     /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hostname]
 /etc/hosts        /dev/mapper/centos-root[/var/lib/docker/containers/deefcd630a60/hosts]
 </code></pre>
-
-<p><br /></p>
-
-<p><center><a href="https://www.yangcs.net/posts/devicemapper-theory/" target="_blank">Device Mapper系列 (1)：Device Mapper 技术</a></center></p>
-
-<p><center><a href="https://www.yangcs.net/posts/thin-provisioning/" target="_blank">Device Mapper系列 (2)：Thin Provisioning 实践</a></center></p>
-
-<p><center><a href="https://www.yangcs.net/posts/calico-rr/" target="_blank">Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动</a></center></p>
                 
                 <div class="entry-shang text-center">
 	<p>「真诚赞赏，手留余香」</p>
