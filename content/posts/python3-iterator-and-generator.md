@@ -3,15 +3,17 @@ title: "Python3 系列之迭代器 & 生成器"
 subtitle: "使用迭代器和生成器实现单线程异步并发"
 date: 2017-07-27T18:38:59Z
 draft: false
+toc: true
 categories: "python"
 tags: ["python"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=27876900&auto=1&height=66"></iframe>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **迭代器**</p>
+<video><source src="https://rss.yangcs.net/?/%E5%B4%94%E6%B0%B8%E5%85%83%E7%9B%B4%E6%92%AD%E3%80%90%E6%97%A0%E5%88%A0%E5%87%8F%E5%AE%8C%E6%95%B4%E7%89%88%E3%80%9110%E6%9C%881%E6%97%A5%E5%B4%94%E6%B0%B8%E5%85%83%E8%80%81%E5%B8%88%E6%9C%80%E6%96%B0%E7%9B%B4%E6%92%AD%E8%A7%86%E9%A2%91%EF%BC%81.mp4" type="video/mp4"></video>
+
+## 1. 迭代器
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
@@ -55,7 +57,7 @@ Traceback (most recent call last):
 StopIteration
 ```
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **生成器**</p>
+## 2. 生成器
 ------
 
 一个函数调用时返回一个迭代器，那这个函数就叫做生成器（generator），如果函数中包含 `yield` 语法，那这个函数就会变成生成器。
