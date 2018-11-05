@@ -711,7 +711,6 @@ footer .theme-by {
 
 /* --- Tables --- */
 
-/*
 table {
     padding: 0;
 }
@@ -752,9 +751,9 @@ table tr th :last-child,
 table tr td :last-child {
     margin-bottom: 0;
 }
-*/
 
 /*================表格开始================*/
+/*
 table {
  display:table;
  width: 100% ;
@@ -770,9 +769,10 @@ table tr {
   background-color: white;
  
 }
+*/
 
 /*隔行改变行的背景色，如需要请打开*/
-
+/*
 table tr:nth-child(2n) {
   background-color: #F8F8F8;
   }
@@ -783,11 +783,14 @@ table tr th, table tr td {
   padding: 0.5em 1em;
   text-align: left;
 }
+*/
 /*表头的属性*/
+/*
 table tr th {
  font-weight: bold;
   background-color: #F0F0F0;
 }
+*/
 /*================表格结束================*/
 
 /*================任务列表开始================*/
