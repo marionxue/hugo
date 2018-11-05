@@ -755,8 +755,7 @@ table tr td :last-child {
 */
 
 /*================表格开始================*/
-table
-{
+table {
  display:table;
  width: 100% ;
  text-align: left;
