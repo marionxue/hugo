@@ -11,15 +11,9 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<div style="max-width:640px; margin:0 auto 10px;" >
-<div 
-style="position: relative; 
-width:100%;
-padding-bottom:56.25%; 
-height:0;">
-<iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"  src="https://rss.yangcs.net/?/35.%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0.mp4" frameborder="0" allowfullscreen></iframe>
-</div>
-</div>
+<video class="mdui-video-fluid mdui-center" preload="" controls="" poster="https://japaneast1-mediap.svc.ms/transform/thumbnail?provider=spo&amp;inputFormat=mp4&amp;cs=OWMwZTE0MzQtZmVlZC00ZTJlLTg1ZmEtYTZmNmU0YzU0MmZifFNQTw&amp;correlationId=670a9cc0-82a2-426a-a58b-f56847300902&amp;docid=https%3A%2F%2Fyoungqfbr%2Dmy%2Esharepoint%2Ecom%2F%5Fapi%2Fv2%2E0%2Fdrives%2Fb%21Xm4ge4zRn0SPKWqpOq2Qva6LYKvEXSJIsp9KZkg1AYJ5P4CeGCpsQ7qkm4Ml2scy%2Fitems%2F01YZ4QQCLGYLCRXA27YRCJHJ2TKA3DHR5G%3Ftempauth%3DeyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0%2EeyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAveW91bmdxZmJyLW15LnNoYXJlcG9pbnQuY29tQDhhNzU0YzRkLWU4YTktNGVkZC1iYzQ2LWRkNDFmODc5MGYyYiIsImlzcyI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMCIsIm5iZiI6IjE1NDE0NDAxMTciLCJleHAiOiIxNTQxNDYxNzE3IiwiZW5kcG9pbnR1cmwiOiJhWmNsZ1lLWjRlVjFCYm5EMEpaTThjdnZRTWxtTzgzcnY0Qk85SjZ4dHRnPSIsImVuZHBvaW50dXJsTGVuZ3RoIjoiMTYwIiwiaXNsb29wYmFjayI6IlRydWUiLCJjaWQiOiJOamN3WVRsall6QXRPREpoTWkwME1qWmhMV0UxT0dJdFpqVTJPRFEzTXpBd09UQXkiLCJ2ZXIiOiJoYXNoZWRwcm9vZnRva2VuIiwic2l0ZWlkIjoiTjJJeU1EWmxOV1V0WkRFNFl5MDBORGxtTFRobU1qa3RObUZoT1ROaFlXUTVNR0prIiwiYXBwX2Rpc3BsYXluYW1lIjoib25laW5kZXgiLCJhcHBpZCI6IjljMGUxNDM0LWZlZWQtNGUyZS04NWZhLWE2ZjZlNGM1NDJmYiIsInRpZCI6IjhhNzU0YzRkLWU4YTktNGVkZC1iYzQ2LWRkNDFmODc5MGYyYiIsInVwbiI6Inlhbmdjc0B4MS50biIsInB1aWQiOiIxMDAzMDAwMEFFNzE4QTgwIiwic2NwIjoiYWxsZmlsZXMud3JpdGUiLCJ0dCI6IjIiLCJ1c2VQZXJzaXN0ZW50Q29va2llIjpudWxsfQ%2ESzVGYlMxV1U2N0U1V255OXRIdk8wV253NUdQZFBvUHpxMzJ1UithajFOaz0%26version%3DPublished&amp;width=800&amp;height=800">
+	  <source src="https://rss.yangcs.net/?/35.%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0.mp4" type="video/mp4">
+	</video>
 
 ## 1. 迭代器
 ------
