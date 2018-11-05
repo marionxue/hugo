@@ -654,9 +654,16 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
 </div>
 
                 
-                <div class="social-share">
+                <div class="social-share" data-initialized="true">
     <center>
     <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
     </center>
 </div>
 
@@ -684,9 +691,9 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
                     
                     <li><a href="/posts/kube-router/">Kube-router 实战</a></li>
                     
-                    <li><a href="/posts/container-runtime/">Kubernetes 中的容器运行时</a></li>
-                    
                     <li><a href="/posts/cri-o/">Kubernetes 中的容器运行时</a></li>
+                    
+                    <li><a href="/posts/container-runtime/">Kubernetes 中的容器运行时</a></li>
                     
                     <li><a href="/posts/federation/">Kubernetes 使用集群联邦实现多集群管理</a></li>
                     
