@@ -936,16 +936,16 @@ aside.toc{
   margin: 0;
 }
 
-.gallery-text {
+#gallery-text {
  text-align: center;
  margin : 0px 1em 0px 1em;
 }
 
-.gallery-text a{
+#gallery-text a{
  font-size: 15px;
 }
 
-.gallery-text table tr td{
+#gallery-text table tr td{
     border: 0;
 }
 
