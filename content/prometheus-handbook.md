@@ -25,7 +25,7 @@ nocomment: true
 
 扫码关注微信公众号，后续部分章节会在微信公众号中同步更新。
 
-![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)
+![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/qcode-wechat.png)
 
 ## 贡献者
 
