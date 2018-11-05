@@ -10,7 +10,16 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 ---
 
 <!--more-->
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/star-sky.mp3?rel=0&amp;autoplay=1"></iframe>
+
+<div style="max-width:640px; margin:0 auto 10px;" >
+<div 
+style="position: relative; 
+width:100%;
+padding-bottom:56.25%; 
+height:0;">
+<iframe style="position: absolute;top: 0;left: 0;width: 100%;height: 100%;"  src="https://rss.yangcs.net/?/35.%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0.mp4" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
 
 ## 1. 迭代器
 ------
