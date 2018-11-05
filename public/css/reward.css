@@ -177,7 +177,7 @@ img{vertical-align: middle;}
     border-radius: .25rem;
 }
 
-#rewardButton {
+.rewardButton {
     display: block;
     margin: 0 auto;
     padding: 0;
