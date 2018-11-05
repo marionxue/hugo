@@ -10,10 +10,10 @@
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 {{ partial "toc1.html" . }}
                 {{ .Content }}
-                {{ partial "share.html" }}
                 {{ if isset .Site.Params "reward" }}
                 {{ partial "reward.html" }}
                 {{ end }}
+                {{ partial "share.html" }}
             </article>
 
             <ul class="pager blog-pager">
