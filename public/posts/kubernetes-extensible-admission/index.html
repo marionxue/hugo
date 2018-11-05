@@ -60,14 +60,6 @@ var _hmt = _hmt || [];
 
 
 
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-3925981084585036",
-    enable_page_level_ads: true
-  });
-</script>
-
 
 
 <script async src="//cdn.busuanzi.ibruce.info/cdn/busuanzi/2.3/busuanzi.pure.mini.js"></script>
@@ -946,7 +938,7 @@ spec:
                 
                 <div class="entry-shang text-center">
 	<p>「真诚赞赏，手留余香」</p>
-	<button class="zs show-zs btn btn-bred">赞赏</button>
+        <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
 </div>
 <div class="zs-modal-bg"></div>
 <div class="zs-modal-box">
