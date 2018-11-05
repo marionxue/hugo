@@ -1035,6 +1035,7 @@
         "subtitle": "探寻 Kubectl 创建 Pod 背后的原理",
         "date": "2018-06-01T11:36:45.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes"

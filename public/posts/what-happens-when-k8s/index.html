@@ -424,6 +424,53 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-kubectl">1. kubectl</a>
+<ul>
+<li><a href="#验证和生成器">验证和生成器</a></li>
+<li><a href="#api-版本协商与-api-组">API 版本协商与 API 组</a></li>
+<li><a href="#客户端身份认证">客户端身份认证</a></li>
+</ul></li>
+<li><a href="#2-kube-apiserver">2. kube-apiserver</a>
+<ul>
+<li><a href="#认证-https-k8smeetup-github-io-docs-admin-authentication"><a href="https://k8smeetup.github.io/docs/admin/authentication/" target="_blank">认证</a></a></li>
+<li><a href="#授权-https-k8smeetup-github-io-docs-admin-authorization"><a href="https://k8smeetup.github.io/docs/admin/authorization/" target="_blank">授权</a></a></li>
+<li><a href="#准入控制-https-k8smeetup-github-io-docs-admin-admission-controllers"><a href="https://k8smeetup.github.io/docs/admin/admission-controllers/" target="_blank">准入控制</a></a></li>
+</ul></li>
+<li><a href="#3-etcd">3. etcd</a></li>
+<li><a href="#4-初始化">4. 初始化</a></li>
+<li><a href="#5-控制循环">5. 控制循环</a>
+<ul>
+<li><a href="#deployments-controller">Deployments controller</a></li>
+<li><a href="#replicasets-controller">ReplicaSets controller</a></li>
+<li><a href="#informers">Informers</a></li>
+<li><a href="#scheduler">Scheduler</a></li>
+</ul></li>
+<li><a href="#6-kubelet">6. Kubelet</a>
+<ul>
+<li><a href="#pod-同步">Pod 同步</a></li>
+<li><a href="#cri-与-pause-容器">CRI 与 pause 容器</a></li>
+<li><a href="#cni-和-pod-网络">CNI 和 Pod 网络</a></li>
+<li><a href="#跨主机容器网络">跨主机容器网络</a></li>
+<li><a href="#容器启动">容器启动</a></li>
+</ul></li>
+<li><a href="#7-总结">7. 总结</a></li>
+<li><a href="#8-原文链接">8. 原文链接</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -440,11 +487,9 @@ autocomplete('#aa-search-input',
 
 <p>这是一份可以在线修改的文档，如果你发现有什么可以改进或重写的，欢迎提供帮助！</p>
 
-<h2 id="p-id-h2-1-kubectl-p"><p id="h2">1. kubectl</p></h2>
+<h2 id="1-kubectl">1. kubectl</h2>
 
 <hr />
-
-<p><br /></p>
 
 <h3 id="验证和生成器">验证和生成器</h3>
 
@@ -491,11 +536,9 @@ autocomplete('#aa-search-input',
 <li><code>OpenID</code> 认证过程是由用户事先手动处理的，产生一个像 bearer token 一样被发送的 token。<br /></li>
 </ul>
 
-<h2 id="p-id-h2-2-kube-apiserver-p"><p id="h2">2. kube-apiserver</p></h2>
+<h2 id="2-kube-apiserver">2. kube-apiserver</h2>
 
 <hr />
-
-<p><br /></p>
 
 <h3 id="认证-https-k8smeetup-github-io-docs-admin-authentication"><a href="https://k8smeetup.github.io/docs/admin/authentication/" target="_blank">认证</a></h3>
 
@@ -551,14 +594,12 @@ autocomplete('#aa-search-input',
 <p>大部分准入控制器都比较容易理解，接下来着重介绍 <code>SecurityContextDeny</code>、<code>ResourceQuota</code> 及 <code>LimitRanger</code> 这三个准入控制器。</p>
 
 <ul>
-<li><p><span id="inline-blue">SecurityContextDeny</span> 该插件将禁止创建设置了 Security Context 的 Pod。<br /></p></li>
-
-<li><p><span id="inline-blue">ResourceQuota</span> 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 <code>ResourceQuota</code> 一起实现了资源配额管理。<br /></p></li>
-
-<li><p><span id="inline-blue">LimitRanger</span> 作用类似于上面的 ResourceQuota 控制器，针对 Namespace 资源的每个个体（Pod 与 Container 等）的资源配额。该插件和资源对象 <code>LimitRange</code> 一起实现资源配额管理。</p></li>
+<li><span id="inline-blue">SecurityContextDeny</span> 该插件将禁止创建设置了 Security Context 的 Pod。</li>
+<li><span id="inline-blue">ResourceQuota</span> 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 <code>ResourceQuota</code> 一起实现了资源配额管理。</li>
+<li><span id="inline-blue">LimitRanger</span> 作用类似于上面的 ResourceQuota 控制器，针对 Namespace 资源的每个个体（Pod 与 Container 等）的资源配额。该插件和资源对象 <code>LimitRange</code> 一起实现资源配额管理。</li>
 </ul>
 
-<h2 id="p-id-h2-3-etcd-p"><p id="h2">3. etcd</p></h2>
+<h2 id="3-etcd">3. etcd</h2>
 
 <hr />
 
@@ -588,7 +629,7 @@ autocomplete('#aa-search-input',
 
 <p>原来 apiserver 做了这么多的工作，以前竟然没有发现呢！到目前为止，我们创建的 <code>Deployment</code> 资源已经保存到了 etcd 中，但 apiserver 仍然看不到它。</p>
 
-<h2 id="p-id-h2-4-初始化-p"><p id="h2">4. 初始化</p></h2>
+<h2 id="4-初始化">4. 初始化</h2>
 
 <hr />
 
@@ -627,7 +668,7 @@ initializers:
 
 <p>为了解决这个问题，kube-apiserver 暴露了一个 <code>?includeUninitialized</code> 查询参数，它会返回所有的资源对象（包括未初始化的）。</p>
 
-<h2 id="p-id-h2-5-控制循环-p"><p id="h2">5. 控制循环</p></h2>
+<h2 id="5-控制循环">5. 控制循环</h2>
 
 <hr />
 
@@ -721,7 +762,7 @@ initializers:
 <p>预选策略和优选策略都可以通过 <code>--policy-config-file</code> 参数来扩展，如果默认的调度器不满足要求，还可以部署自定义的调度器。如果  <code>podSpec.schedulerName</code> 的值设置为其他的调度器，则 Kubernetes 会将该 Pod 的调度转交给那个调度器。</p>
 </div>
 
-<h2 id="p-id-h2-6-kubelet-p"><p id="h2">6. Kubelet</p></h2>
+<h2 id="6-kubelet">6. Kubelet</h2>
 
 <hr />
 
@@ -849,19 +890,17 @@ initializers:
 <li>如果 Pod 中配置了容器生命周期钩子（Hook），容器启动之后就会运行这些 <code>Hook</code>。Hook 的类型包括两种：<code>Exec</code>（执行一段命令） 和 <code>HTTP</code>（发送HTTP请求）。如果 PostStart Hook 启动的时间过长、挂起或者失败，容器将永远不会变成 <code>running</code> 状态。</li>
 </ol>
 
-<h2 id="p-id-h2-7-总结-p"><p id="h2">7. 总结</p></h2>
+<h2 id="7-总结">7. 总结</h2>
 
 <hr />
 
 <p>如果上面一切顺利，现在你的集群上应该会运行三个容器，所有的网络，数据卷和秘钥都被通过 CRI 接口添加到容器中并配置成功。</p>
 
-<h2 id="p-id-h2-8-原文链接-p"><p id="h2">8. 原文链接</p></h2>
+<h2 id="8-原文链接">8. 原文链接</h2>
 
 <ul>
 <li><a href="https://github.com/jamiehannaford/what-happens-when-k8s" target="_blank">What happens when &hellip; Kubernetes edition!</a></li>
 </ul>
-
-<p><br /></p>
                 
                 <div class="entry-shang text-center">
 	<p>「真诚赞赏，手留余香」</p>
@@ -936,9 +975,9 @@ initializers:
                     
                     <li><a href="/posts/kube-router/">Kube-router 实战</a></li>
                     
-                    <li><a href="/posts/cri-o/">Kubernetes 中的容器运行时</a></li>
-                    
                     <li><a href="/posts/container-runtime/">Kubernetes 中的容器运行时</a></li>
+                    
+                    <li><a href="/posts/cri-o/">Kubernetes 中的容器运行时</a></li>
                     
                 </ul>
                 

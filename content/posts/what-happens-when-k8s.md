@@ -3,6 +3,7 @@ title: "kubectl run 背后到底发生了什么？"
 subtitle: "探寻 Kubectl 创建 Pod 背后的原理"
 date: 2018-06-01T11:36:45Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
 bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/kubernetes4.png"}]
@@ -24,11 +25,9 @@ Kubernetes 的神奇之处在于：它可以通过用户友好的 API 来处理�
 
 这是一份可以在线修改的文档，如果你发现有什么可以改进或重写的，欢迎提供帮助！
 
-## <p id="h2">1. kubectl</p>
+## 1. kubectl
 
 ----
-
-<br />
 
 ### 验证和生成器
 
@@ -71,11 +70,9 @@ kubectl 在生成运行时对象后，开始为它[找到适当的 API 组和 AP
 + 用户名和密码通过 HTTP 基本认证[发送](https://github.com/kubernetes/client-go/blob/c6f8cf2c47d21d55fa0df928291b2580544886c8/transport/round_trippers.go#L223)。<br />
 + `OpenID` 认证过程是由用户事先手动处理的，产生一个像 bearer token 一样被发送的 token。<br />
 
-## <p id="h2">2. kube-apiserver</p>
+## 2. kube-apiserver
 
 ----
-
-<br />
 
 ### [认证](https://k8smeetup.github.io/docs/admin/authentication/)
 
@@ -126,13 +123,11 @@ kube-apiserver 目前支持以下几种授权方法：
 
 大部分准入控制器都比较容易理解，接下来着重介绍 `SecurityContextDeny`、`ResourceQuota` 及 `LimitRanger` 这三个准入控制器。
 
-+ <span id="inline-blue">SecurityContextDeny</span> 该插件将禁止创建设置了 Security Context 的 Pod。<br />
-
-+ <span id="inline-blue">ResourceQuota</span> 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 `ResourceQuota` 一起实现了资源配额管理。<br />
-
++ <span id="inline-blue">SecurityContextDeny</span> 该插件将禁止创建设置了 Security Context 的 Pod。
++ <span id="inline-blue">ResourceQuota</span> 不仅能限制某个 Namespace 中创建资源的数量，而且能限制某个 Namespace 中被 Pod 所请求的资源总量。该准入控制器和资源对象 `ResourceQuota` 一起实现了资源配额管理。
 + <span id="inline-blue">LimitRanger</span> 作用类似于上面的 ResourceQuota 控制器，针对 Namespace 资源的每个个体（Pod 与 Container 等）的资源配额。该插件和资源对象 `LimitRange` 一起实现资源配额管理。
 
-## <p id="h2">3. etcd</p>
+## 3. etcd
 
 ----
 
@@ -158,7 +153,7 @@ kube-apiserver 目前支持以下几种授权方法：
 
 原来 apiserver 做了这么多的工作，以前竟然没有发现呢！到目前为止，我们创建的 `Deployment` 资源已经保存到了 etcd 中，但 apiserver 仍然看不到它。
 
-## <p id="h2">4. 初始化</p>
+## 4. 初始化
 
 ----
 
@@ -196,7 +191,7 @@ initializers:
 
 为了解决这个问题，kube-apiserver 暴露了一个 `?includeUninitialized` 查询参数，它会返回所有的资源对象（包括未初始化的）。
 
-## <p id="h2">5. 控制循环</p>
+## 5. 控制循环
 
 ----
 
@@ -281,7 +276,7 @@ $ kubectl get <PODNAME> -o go-template='{{range .status.conditions}}{{if eq .typ
 <p>预选策略和优选策略都可以通过 <code>--policy-config-file</code> 参数来扩展，如果默认的调度器不满足要求，还可以部署自定义的调度器。如果  <code>podSpec.schedulerName</code> 的值设置为其他的调度器，则 Kubernetes 会将该 Pod 的调度转交给那个调度器。</p>
 </div>
 
-## <p id="h2">6. Kubelet</p>
+## 6. Kubelet
 
 ----
 
@@ -398,15 +393,12 @@ CNI 插件还会通过 `CNI_ARGS` 环境变量为 Pod 指定其他的元数据�
 4. 最后容器开始真正[启动](https://github.com/kubernetes/kubernetes/blob/5f9f4a1c5939436fa320e9bc5973a55d6446e59f/pkg/kubelet/kuberuntime/kuberuntime_container.go#L135)。<br />
 5. 如果 Pod 中配置了容器生命周期钩子（Hook），容器启动之后就会运行这些 `Hook`。Hook 的类型包括两种：`Exec`（执行一段命令） 和 `HTTP`（发送HTTP请求）。如果 PostStart Hook 启动的时间过长、挂起或者失败，容器将永远不会变成 `running` 状态。
 
-## <p id="h2">7. 总结</p>
+## 7. 总结
 
 ----
 
 如果上面一切顺利，现在你的集群上应该会运行三个容器，所有的网络，数据卷和秘钥都被通过 CRI 接口添加到容器中并配置成功。
 
-## <p id="h2">8. 原文链接</p>
+## 8. 原文链接
 
 + [What happens when ... Kubernetes edition!](https://github.com/jamiehannaford/what-happens-when-k8s)
-
-<br />
-
