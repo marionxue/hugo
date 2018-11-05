@@ -948,3 +948,10 @@ aside.toc{
 .gallery-text table tr td{
     border: 0;
 }
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
