@@ -2,14 +2,15 @@
 title: "Linux 下 gns3 网络模拟器配置"
 subtitle: "配置使用思科网络模拟器"
 date: 2017-01-23T11:42:11Z
-draft: true
+draft: false
+toc: true
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=32507038&auto=1&height=66"></iframe>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **GNS3 简介**</p>
+## 1. GNS3 简介
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
@@ -20,7 +21,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 `Windows` 平台下的安装配置非常简单，下载一体化的安装包安装就可以了。但是考虑系统的资源和兼容性，`linux` 平台是最好的选择，以下的安装配置基于 `Archlinux` 的 64 位系统和`GNS1.5.2`版本。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **GNS3 安装**</p>
+## 2. GNS3 安装
 ------
 
 ### 安装Python3
@@ -128,7 +129,7 @@ $ systemctl start gns3-server
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/%E5%B7%A5%E4%BD%9C%E5%8C%BA%201_432.png)</center>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **GNS3 配置**</p>
+## 3. GNS3 配置
 ------
 
 ### GNS3 基本配置
