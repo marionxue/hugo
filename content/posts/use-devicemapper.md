@@ -3,13 +3,14 @@ title: "Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动"
 subtitle: "配置 Docker 使用 devicemapper"
 date: 2018-01-22T16:17:11+08:00
 draft: false
+toc: true
 categories: "docker"
 tags: ["docker"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. **准备条件**</p>
+## 1. 准备条件
 ------
 
 + `devicemapper` 存储驱动是 `RHEL`, `CentOS` 和 `Oracle Linux` 系统上唯一一个支持 `Docker EE` 和 `Commercially Supported Docker Engine` (CS-Engine) 的存储驱动，具体参考 [Product compatibility matrix](https://success.docker.com/Policies/Compatibility_Matrix).
@@ -18,16 +19,16 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 + 如果你更改了 `Docker` 的存储驱动，那么你之前在本地创建的所有容器都将无法访问。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. **配置Docker使用devicemapper**</p>
+## 2. 配置Docker使用devicemapper
 ------
 
 Docker 主机运行 `devicemapper` 存储驱动时，默认的配置模式为 `loop-lvm`。此模式使用空闲的文件来构建用于镜像和容器快照的精简存储池。该模式设计为无需额外配置开箱即用(out-of-the-box)。不过生产部署不应该以 `loop-lvm` 模式运行。
 
-### **2.1 生产环境配置direct-lvm模式**
+### 2.1 生产环境配置direct-lvm模式
 
 CentOS7 从 `Docker 17.06` 开始支持通过 Docker 自动配置  `direct-lvm`，所以推荐使用该工具配置。当然也可以手动配置 `lvm`，添加相关配置选项，不过过程较为繁琐一点。
 
-#### **自动配置 direct-lvm 模式**
+#### 自动配置 direct-lvm 模式
 
 该方法只适用于一个块设备，如果你有多个块设备，请通过手动配置 `direct-lvm` 模式。
 
@@ -64,7 +65,7 @@ CentOS7 从 `Docker 17.06` 开始支持通过 Docker 自动配置  `direct-lvm`�
 
 + [Edge](https://docs.docker.com/edge/engine/reference/commandline/dockerd/#storage-driver-options)
 
-#### **手动配置 direct-lvm 模式**
+#### 手动配置 direct-lvm 模式
 
 下面的步骤创建一个逻辑卷，配置用作存储池的后端。我们假设你有在 `/dev/xvdf` 的充足空闲空间的块设备。也假设你的 Docker daemon 已停止。
 
@@ -188,13 +189,13 @@ $ cat /etc/docker/daemon.json
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
 <strong>【注意事项】</strong>
-
+<br />
 Note: Always set both dm.use_deferred_removal=true and dm.use_deferred_deletion=true to prevent unintentionally leaking mount points.
 <br />
 启用上述2个参数来阻止可能意外产生的挂载点泄漏问题
 </p>
 
-#### **检查主机上的 `devicemapper` 结构**
+#### 检查主机上的 `devicemapper` 结构
 
 你可以使用 `lsblk` 命令来查看以上创建的设备文件和存储池。
 
@@ -218,10 +219,10 @@ xvdf               202:80   0   10G  0 disk
 
 > Docker-主设备号:二级设备号-inode号-pool
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. **管理 devicemapper**</p>
+## 3. 管理 devicemapper
 ------
 
-### 3.1 **监控 thin pool**
+### 3.1 监控 thin pool
 
 不要过于依赖 `lvm` 的自动扩展，通常情况下 `Volume Group` 会自动扩展，但有时候 `volume` 还是会被塞满，你可以通过命令 `lvs` 或 `lvs -a` 来监控 volume 剩余的空间。也可以考虑使用 `nagios` 等监控工具来进行监控。
 
@@ -235,15 +236,15 @@ $ journalctl -fu dm-event.service
 如果你在使用精简池（thin pool）的过程中频繁遇到问题，你可以在 <code>/etc/docker.daemon.json</code> 中设置参数 <code>dm.min_free_space</code> 的值（表示百分比）。例如将其设置为 10，以确保当可用空间达到或接近 10％ 时操作失败，并发出警告。参考 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/#storage-driver-options">storage driver options in the Engine daemon reference</a>.
 </p>
 
-### 3.2 **为正在运行的设备增加容量**
+### 3.2 为正在运行的设备增加容量
 
 如果 lv 的存储空间已满，并且 vg 处于满负荷状态，你可以为正在运行的 `thin-pool` 设备增加存储卷的容量，具体过程取决于您是使用 `loop-lvm` 精简池还是使用 `direct-lvm` 精简池。
 
-#### **调整 `loop-lvm` 精简池的大小**
+#### 调整 `loop-lvm` 精简池的大小
 
 调整 `loop-lvm` 精简池的最简单方法是使用 `device_tool` 工具，你也可以使用操作系统自带的工具。
 
-##### a. **使用 `device_tool` 工具**
+##### a. 使用 `device_tool` 工具
 
 在 `docker` 官方 `github` 仓库的 `contrib/` 目录中有一个社区贡献的脚本 [device_tool.go](https://raw.githubusercontent.com/docker/docker-ce/master/components/engine/contrib/docker-device-tool/device_tool.go)，你可以通过此工具免去繁琐的步骤来调整 `loop-lvm` 精简池的大小。这个工具不能保证 100% 有效，最好不要在生产环境中使用 `loop-lvm` 模式。
 
@@ -255,7 +256,7 @@ $ journalctl -fu dm-event.service
 $ ./device_tool resize 200GB
 ```
   
-##### b. **使用操作系统工具**
+##### b. 使用操作系统工具
   
 如果你不想使用 `device_tool` 工具，可以通过操作系统工具手动调整 `loop-lvm` 精简池的大小。
 
@@ -364,7 +365,7 @@ $ docker info |grep 'loop file'
     $ dmsetup resume docker-8:1-123141-pool
     ```
   
-#### **调整 `direct-lvm` 精简池的大小**
+#### 调整 `direct-lvm` 精简池的大小
 
 要调整 `direct-lvm` 精简池的大小，需要添加一块新的块设备到 Docker 的宿主机。并记下内核分配给它的设备名称。例如新的块设备名称为 `/dev/xvdg`。
 
@@ -425,7 +426,7 @@ $ docker info |grep 'loop file'
     
     通过 `Data Space Available` 字段的值查看 `thin pool` 的大小。
     
-#### **重启操作系统后重新激活 devicemapper**
+#### 重启操作系统后重新激活 devicemapper
 
 如果重启系统后发现 docker 服务启动失败，你会看到像 “Non existing device” 这样的报错信息。这时需要重新激活逻辑卷。
 
@@ -433,7 +434,7 @@ $ docker info |grep 'loop file'
 $ lvchange -ay docker/thinpool
 ```
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. **devicemapper 存储驱动的工作原理**</p>
+## 4. devicemapper 存储驱动的工作原理
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
@@ -464,13 +465,13 @@ $ mount |grep devicemapper
 
 使用 `devicemapper` 后，Docker 将镜像和层级内容存储在 thin pool 中，并将它们挂载到 `/var/lib/docker/devicemapper/` 目录中暴露给容器使用。
 
-### 4.1 **磁盘上的镜像和容器层**
+### 4.1 磁盘上的镜像和容器层
 
 `/var/lib/docker/devicemapper/metadata/` 目录中包含了有关 devicemapper 配置本身的元数据，以及卷、快照和每个卷的块或者快照同存储池中块的映射信息。`devicemapper` 使用了快照技术，元数据中也包含了这些快照的信息，以 json 格式保存在文本中。
 
 `/var/lib/devicemapper/mnt/` 目录包含了所有镜像和容器层的挂载点。镜像层的挂载点表现为空目录，容器层的挂载点显示的是容器内部的文件系统。
 
-### 4.2 **镜像分层与共享**
+### 4.2 镜像分层与共享
 
 `devicemapper` 存储驱动使用专用块设备而不是格式化的文件系统，通过在块级别上对文件进行操作，能够在写时复制（CoW）期间实现最佳性能。
 
@@ -496,10 +497,10 @@ $ mount |grep devicemapper
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic2.jpg)</center>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">5. **devicemapper 读写数据的过程**</p>
+## 5. devicemapper 读写数据的过程
 ------
 
-### 5.1 **读数据**
+### 5.1 读数据
 
 我们来看下使用 `devicemapper` 存储驱动如何进行读文件。下图显示在示例容器中读取一个单独的块 [0x44f] 的过程。
 
@@ -513,7 +514,7 @@ $ mount |grep devicemapper
 
   4. 存储驱动最后将数据返回给请求的应用。
 
-### 5.2 **写数据**
+### 5.2 写数据
 
 + **写入新数据：**使用 `devicemapper` 驱动，通过按需分配（allocate-on-demand）操作来实现写入新数据到容器，所有的新数据都被写入容器的可写层中。
 
@@ -533,24 +534,24 @@ $ mount |grep devicemapper
 
 + **写入新数据并删除旧数据：**当你向容器中写入新数据并删除旧数据时，所有这些操作都发生在容器的可写层。如果你使用的是 `direct-lvm` 模式，删除的数据块将会被释放；如果你使用的是 `loop-lvm` 模式，那么这些数据块就不会被释放。因此不建议在生产环境中使用 `loop-lvm` 模式。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">6. **Device Mapper 对 Docker 性能的影响**</p>
+## 6. Device Mapper 对 Docker 性能的影响
 ------
 
 了解按需分配和写时拷贝操作对整体容器性能的影响很重要。
 
-### 6.1 **按需分配对性能的影响**
+### 6.1 按需分配对性能的影响
 
 `devicemapper` 存储驱动通过按需分配操作给容器分配新的数据块。这意味着每次应用程序写入容器内的某处时，一个或多个空数据块从存储池中分配并映射到容器中。
 
 所有数据块为 `64KB`。 写小于 `64KB` 的数据仍然分配一个 `64KB` 数据块。写入超过 `64KB` 的数据分配多个 `64KB` 数据块。所以，特别是当发生很多小的写操作时，就会比较影响容器的性能。不过一旦数据块分配给容器，后续的读和写可以直接在该数据块上操作。
 
-### 6.2 **写时拷贝对性能的影响**
+### 6.2 写时拷贝对性能的影响
 
 每当容器首次更新现有数据时，`devicemapper` 存储驱动必须执行写时拷贝操作。这会从镜像快照复制数据到容器快照。此过程对容器性能产生显着影响。因此，更新一个 `1GB` 文件的 `32KB` 数据只复制一个 `64KB` 数据块到容器快照。这比在文件级别操作需要复制整个 `1GB` 文件到容器数据层有明显的性能优势。
 
 不过在实践中，当容器执行很多小于 `64KB` 的写操作时，`devicemapper` 的性能会比 `AUFS` 要差。
 
-### 6.3 **其他注意事项**
+### 6.3 其他注意事项
 
 还有其他一些影响 `devicemapper` 存储驱动性能的因素。
 
@@ -567,11 +568,3 @@ Docker 使用的 devicemapper 存储驱动的默认模式是 `loop-lvm`。这个
 `devicemapper` 并不是一个有效使用内存的存储驱动。当一个容器运行 n 个时，它的文件也会被拷贝 n 份到内存中，这对 `docker` 宿主机的内存使用会造成明显影响。因此，不建议在 `PaaS` 或者资源密集场合使用。
 
 **对于写操作较大的，可以采用挂载 `data volumes`。使用 `data volumes` 可以绕过存储驱动，从而避免 `thin provisioning` 和 `copy-on-write` 引入的额外开销。**
-
-<br />
-
-<center>[Device Mapper系列 (1)：Device Mapper 技术](https://www.yangcs.net/posts/devicemapper-theory/)</center>
-
-<center>[Device Mapper系列 (2)：Thin Provisioning 实践](https://www.yangcs.net/posts/thin-provisioning/)</center>
-
-<center>[Device Mapper系列 (3)：Docker 中使用 devicemapper 存储驱动](https://www.yangcs.net/posts/calico-rr/)</center>

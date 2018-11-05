@@ -842,6 +842,7 @@
         "subtitle": "配置 Docker 使用 devicemapper",
         "date": "2018-01-22T08:17:11.000Z",
         "draft": false,
+        "toc": true,
         "categories": "docker",
         "tags": [
             "docker"
