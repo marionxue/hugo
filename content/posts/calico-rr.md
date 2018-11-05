@@ -3,6 +3,7 @@ title: "calico Router reflection(RR) 模式介绍及部署"
 subtitle: "通过 calico RR 模式来使 K8S 支撑容纳更多的 node"
 date: 2018-02-01T11:03:49Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes", "docker"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
@@ -12,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://o7z41ciog.bkt.clouddn.com/Two%20Steps%20From%20Hell%20-%20Star%20Sky.mp3"></iframe>
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. 名词解释</p>
+## 1. 名词解释
 ------
 
 - `endpoint`：接入到网络中的设备称为 endpoint :heart:
@@ -23,7 +24,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 - `workloadEndpoint`：Calico 网络中的分配虚拟机、容器使用的 endpoint
 - `hostEndpoints`：Calico 网络中的物理机(node)的地址
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. 组网原理</p>
+## 2. 组网原理
 ------
 
 `Calico` 组网的核心原理就是IP路由，每个容器或者虚拟机会分配一个 `workload-endpoint`(wl)。
@@ -68,7 +69,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 通过这种方式每个 node 知晓了每个 `workload-endpoint` 的下一跳地址。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. BGP 与 AS</p>
+## 3. BGP 与 AS
 ------
 
 `BGP` 是路由器之间的通信协议，主要用于 `AS`（Autonomous System,自治系统）之间的互联。
@@ -99,7 +100,7 @@ AS 内部的 `BGP Speaker` 之间有两种互联方式:
 - 全互联模式模式
 - Router reflection(RR) 模式
 
-### 3.1 BGP Speaker全互联模式
+### BGP Speaker全互联模式
 
 全互联模式，就是一个 `BGP Speaker` 需要与其它所有的 `BGP Speaker` 建立 bgp 连接（形成一个bgp mesh）。
 
@@ -112,7 +113,7 @@ $ calicoctl config set nodeTonodeMesh off
 $ calicoctl config set nodeTonodeMesh on
 ```
 
-### 3.2 BGP Speaker RR 模式 
+### BGP Speaker RR 模式 
 
 RR模式，就是在网络中指定一个或多个 `BGP Speaker` 作为 反射路由（Router Reflector），RR 与所有的 `BGP Speaker` 建立 bgp 连接。
 
@@ -126,7 +127,7 @@ RR 必须与所有的 `BGP Speaker` 建立 BGP 连接，以保证能够得到全
 
 关闭了全互联模式后，再将 RR 作为 `Global Peers` 添加到 Calico 中，Calico 网络就切换到了 RR 模式，可以支撑容纳更多的 node。
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. RR 模式部署</p>
+## 4. RR 模式部署
 ------
 
 集群环境：
@@ -138,9 +139,7 @@ RR 必须与所有的 `BGP Speaker` 建立 BGP 连接，以保证能够得到全
 | 10.10.31.194 | kube-node2 |
 | 10.10.31.168 | node1 |
 
-<br />
-
-### 4.1 在 node1 节点上启动反射路由实例
+### 在 node1 节点上启动反射路由实例
 
 ```bash
 $ docker run --privileged --net=host -d \
@@ -156,7 +155,7 @@ $ docker run --privileged --net=host -d \
 # <FULL_PATH_TO_CERT_DIR> 是你的宿主机的 etcd 证书和秘钥的存放目录
 ```
 
-### 4.2 配置反射路由的集群
+### 配置反射路由的集群
 
 反射路由关于 ipv4 的配置在 etcd 中的存储路径为：
 
@@ -194,7 +193,7 @@ $ curl --cacert <path_to_ca_cert> --cert <path_to_cert> --key <path_to_key> -L h
 $ curl --cacert <path_to_ca_cert> --cert <path_to_cert> --key <path_to_key> -L https://10.10.31.190:2379/v2/keys/calico/bgp/v1/rr_v4/10.10.31.168 -XPUT -d value="{\"ip\":\"10.10.31.168\",\"cluster_id\":\"1.0.0.1\"}"
 ```
 
-### 4.3 配置 calico 使用反射路由
+### 配置 calico 使用反射路由
 
 关闭全互联模式
 
@@ -403,9 +402,8 @@ protocol bgp Global_10_10_31_168 from bgp_template {
 
 # ------------- Node-specific peers -------------
 ```
-<br />
 
-## <p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">5. 多 cluster ID 实例拓扑</p>
+## 5. 多 cluster ID 实例拓扑
 ------
 
 当拓扑包含了多个反射路由时,BGP 利用集群 id 来保证分配路由时不陷入循环路由。

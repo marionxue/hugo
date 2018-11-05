@@ -426,12 +426,42 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-名词解释">1. 名词解释</a></li>
+<li><a href="#2-组网原理">2. 组网原理</a></li>
+<li><a href="#3-bgp-与-as">3. BGP 与 AS</a>
+<ul>
+<li><a href="#bgp-speaker全互联模式">BGP Speaker全互联模式</a></li>
+<li><a href="#bgp-speaker-rr-模式">BGP Speaker RR 模式</a></li>
+</ul></li>
+<li><a href="#4-rr-模式部署">4. RR 模式部署</a>
+<ul>
+<li><a href="#在-node1-节点上启动反射路由实例">在 node1 节点上启动反射路由实例</a></li>
+<li><a href="#配置反射路由的集群">配置反射路由的集群</a></li>
+<li><a href="#配置-calico-使用反射路由">配置 calico 使用反射路由</a></li>
+</ul></li>
+<li><a href="#5-多-cluster-id-实例拓扑">5. 多 cluster ID 实例拓扑</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://o7z41ciog.bkt.clouddn.com/Two%20Steps%20From%20Hell%20-%20Star%20Sky.mp3"></iframe>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-1-名词解释-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">1. 名词解释</p></h2>
+<h2 id="1-名词解释">1. 名词解释</h2>
 
 <hr />
 
@@ -447,7 +477,7 @@ autocomplete('#aa-search-input',
 <li><p><code>hostEndpoints</code>：Calico 网络中的物理机(node)的地址</p></li>
 </ul>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-2-组网原理-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">2. 组网原理</p></h2>
+<h2 id="2-组网原理">2. 组网原理</h2>
 
 <hr />
 
@@ -494,7 +524,7 @@ autocomplete('#aa-search-input',
 
 <p>通过这种方式每个 node 知晓了每个 <code>workload-endpoint</code> 的下一跳地址。</p>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-3-bgp-与-as-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">3. BGP 与 AS</p></h2>
+<h2 id="3-bgp-与-as">3. BGP 与 AS</h2>
 
 <hr />
 
@@ -526,7 +556,7 @@ $ calicoctl config set asNumber 64512
 <li>Router reflection(RR) 模式</li>
 </ul>
 
-<h3 id="3-1-bgp-speaker全互联模式">3.1 BGP Speaker全互联模式</h3>
+<h3 id="bgp-speaker全互联模式">BGP Speaker全互联模式</h3>
 
 <p>全互联模式，就是一个 <code>BGP Speaker</code> 需要与其它所有的 <code>BGP Speaker</code> 建立 bgp 连接（形成一个bgp mesh）。</p>
 
@@ -538,7 +568,7 @@ $ calicoctl config set asNumber 64512
 $ calicoctl config set nodeTonodeMesh on
 </code></pre>
 
-<h3 id="3-2-bgp-speaker-rr-模式">3.2 BGP Speaker RR 模式</h3>
+<h3 id="bgp-speaker-rr-模式">BGP Speaker RR 模式</h3>
 
 <p>RR模式，就是在网络中指定一个或多个 <code>BGP Speaker</code> 作为 反射路由（Router Reflector），RR 与所有的 <code>BGP Speaker</code> 建立 bgp 连接。</p>
 
@@ -552,7 +582,7 @@ $ calicoctl config set nodeTonodeMesh on
 
 <p>关闭了全互联模式后，再将 RR 作为 <code>Global Peers</code> 添加到 Calico 中，Calico 网络就切换到了 RR 模式，可以支撑容纳更多的 node。</p>
 
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-4-rr-模式部署-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">4. RR 模式部署</p></h2>
+<h2 id="4-rr-模式部署">4. RR 模式部署</h2>
 
 <hr />
 
@@ -589,9 +619,7 @@ $ calicoctl config set nodeTonodeMesh on
 </tbody>
 </table>
 
-<p><br /></p>
-
-<h3 id="4-1-在-node1-节点上启动反射路由实例">4.1 在 node1 节点上启动反射路由实例</h3>
+<h3 id="在-node1-节点上启动反射路由实例">在 node1 节点上启动反射路由实例</h3>
 
 <pre><code class="language-bash">$ docker run --privileged --net=host -d \
              -e IP=&lt;IPv4_RR&gt; \
@@ -606,7 +634,7 @@ $ calicoctl config set nodeTonodeMesh on
 # &lt;FULL_PATH_TO_CERT_DIR&gt; 是你的宿主机的 etcd 证书和秘钥的存放目录
 </code></pre>
 
-<h3 id="4-2-配置反射路由的集群">4.2 配置反射路由的集群</h3>
+<h3 id="配置反射路由的集群">配置反射路由的集群</h3>
 
 <p>反射路由关于 ipv4 的配置在 etcd 中的存储路径为：</p>
 
@@ -639,7 +667,7 @@ $ curl --cacert &lt;path_to_ca_cert&gt; --cert &lt;path_to_cert&gt; --key &lt;pa
 <pre><code class="language-bash">$ curl --cacert &lt;path_to_ca_cert&gt; --cert &lt;path_to_cert&gt; --key &lt;path_to_key&gt; -L https://10.10.31.190:2379/v2/keys/calico/bgp/v1/rr_v4/10.10.31.168 -XPUT -d value=&quot;{\&quot;ip\&quot;:\&quot;10.10.31.168\&quot;,\&quot;cluster_id\&quot;:\&quot;1.0.0.1\&quot;}&quot;
 </code></pre>
 
-<h3 id="4-3-配置-calico-使用反射路由">4.3 配置 calico 使用反射路由</h3>
+<h3 id="配置-calico-使用反射路由">配置 calico 使用反射路由</h3>
 
 <p>关闭全互联模式</p>
 
@@ -843,9 +871,7 @@ protocol bgp Global_10_10_31_168 from bgp_template {
 # ------------- Node-specific peers -------------
 </code></pre>
 
-<p><br /></p>
-
-<h2 id="p-markdown-1-style-margin-bottom-2em-margin-right-5px-padding-8px-15px-letter-spacing-2px-background-image-linear-gradient-to-right-bottom-rgb-0-188-212-rgb-63-81-181-background-color-rgb-63-81-181-color-rgb-255-255-255-border-left-10px-solid-rgb-51-51-51-border-radius-5px-text-shadow-rgb-102-102-102-1px-1px-1px-box-shadow-rgb-102-102-102-1px-1px-2px-5-多-cluster-id-实例拓扑-p"><p markdown="1" style="margin-bottom:2em; margin-right: 5px; padding: 8px 15px; letter-spacing: 2px; background-image: linear-gradient(to right bottom, rgb(0, 188, 212), rgb(63, 81, 181)); background-color: rgb(63, 81, 181); color: rgb(255, 255, 255); border-left: 10px solid rgb(51, 51, 51); border-radius:5px; text-shadow: rgb(102, 102, 102) 1px 1px 1px; box-shadow: rgb(102, 102, 102) 1px 1px 2px;">5. 多 cluster ID 实例拓扑</p></h2>
+<h2 id="5-多-cluster-id-实例拓扑">5. 多 cluster ID 实例拓扑</h2>
 
 <hr />
 
