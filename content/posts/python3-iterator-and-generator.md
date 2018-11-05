@@ -10,9 +10,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 ---
 
 <!--more-->
-<div align=life> 
-<iframe frameborder="no" marginwidth="0" marginheight="0" width=400 height=140 src="https://hugo-1.pek3b.qingstor.com/star-sky.mp3?expires=1541439275&signature=abNRp7uUa1Tgc5F%2BqjzlB%2FXq%2FV1LgwMDqxlEiip1dTc%3D&access_key_id=ZNWPBJLIHXGTWZYEXUPA"></iframe>
-</div>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/star-sky.mp3?rel=0&amp;autoplay=1"></iframe>
 
 ## 1. 迭代器
 ------
