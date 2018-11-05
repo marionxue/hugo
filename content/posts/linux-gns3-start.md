@@ -8,7 +8,6 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 ---
 
 <!--more-->
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="//music.163.com/outchain/player?type=2&id=32507038&auto=1&height=66"></iframe>
 
 ## 1. GNS3 简介
 ------
