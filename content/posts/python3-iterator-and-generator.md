@@ -11,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<video width="270" height="480" controls> <source src="https://rss.yangcs.net/?/35.%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0.mp4";> </video>
+<audio src="https://rss.yangcs.net/?/star-sky.mp3" controls="" autoplay="" style="width: 0%;" poster="&amp;width=0&amp;height=0"></audio>
 
 ## 1. 迭代器
 ------
