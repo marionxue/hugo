@@ -426,21 +426,65 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-kubernetes-中服务暴露的方式">1. Kubernetes 中服务暴露的方式</a>
+<ul>
+<li><a href="#hostnetwork">HostNetwork</a></li>
+<li><a href="#hostport">hostPort</a></li>
+<li><a href="#nodeport">NodePort</a></li>
+<li><a href="#loadbalancer">LoadBalancer</a></li>
+<li><a href="#ingress">Ingress</a></li>
+</ul></li>
+<li><a href="#2-集群环境">2. 集群环境</a>
+<ul>
+<li><a href="#架构环境">架构环境</a></li>
+<li><a href="#k8s-集群节点">k8s 集群节点</a></li>
+</ul></li>
+<li><a href="#3-部署边界-dns-代理服务器">3. 部署边界 dns 代理服务器</a></li>
+<li><a href="#4-部署-gateway-边界网关节点">4. 部署 gateway 边界网关节点</a>
+<ul>
+<li><a href="#首先开启内核转发">首先开启内核转发</a></li>
+<li><a href="#运行-calico">运行 calico</a></li>
+<li><a href="#创建边界路由器">创建边界路由器</a></li>
+<li><a href="#部署-kube-proxy">部署 kube-proxy</a>
+<ul>
+<li><a href="#安装-conntrack">安装 conntrack</a></li>
+<li><a href="#创建-kube-proxy-的-service-配置文件">创建 kube-proxy 的 service 配置文件</a></li>
+<li><a href="#启动-kube-proxy">启动 kube-proxy</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#5-测试网关和-dns-解析以及服务访问情况">5. 测试网关和 dns 解析以及服务访问情况</a></li>
+<li><a href="#6-参考">6. 参考</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
-<h2 id="p-id-h2-1-kubernetes-中服务暴露的方式-p"><p id="h2">1. Kubernetes 中服务暴露的方式</p></h2>
+<h2 id="1-kubernetes-中服务暴露的方式">1. Kubernetes 中服务暴露的方式</h2>
 
 <hr />
 
 <p>k8s 的服务暴露分为以下几种情况：</p>
 
 <ul>
-<li>hostNetwork<br /></li>
-<li>hostPort<br /></li>
-<li>NodePort<br /></li>
-<li>LoadBalancer<br /></li>
-<li>Ingress<br /></li>
+<li>hostNetwork</li>
+<li>hostPort</li>
+<li>NodePort</li>
+<li>LoadBalancer</li>
+<li>Ingress</li>
 </ul>
 
 <p>说是暴露 Pod 其实跟暴露 Service 是一回事，因为 Pod 就是 Service 的 backend。</p>
@@ -553,7 +597,7 @@ influxdb   10.97.121.42   10.13.242.236   8086:30051/TCP   39s
 <p>外部可以用以下两种方式访问该服务：</p>
 
 <ul>
-<li>使用任一节点的 IP 加 30051 端口访问该服务<br /></li>
+<li>使用任一节点的 IP 加 30051 端口访问该服务</li>
 <li>使用 <code>EXTERNAL-IP</code> 来访问，这是一个 VIP，是云供应商提供的负载均衡器 IP，如 <code>10.13.242.236:8086</code>。</li>
 </ul>
 
@@ -588,19 +632,19 @@ spec:
 <p>为什么我们不能做到像访问虚拟机一样直接访问 k8s 集群服务呢？当然可以，以下架构可以实现：</p>
 
 <ul>
-<li>打通 k8s 网络和物理网络直通<br /></li>
+<li>打通 k8s 网络和物理网络直通</li>
 <li>物理网络的 dns 域名服务直接调用 k8s-dns 域名服务直接互访</li>
 </ul>
 
-<h2 id="p-id-h2-2-集群环境-p"><p id="h2">2. 集群环境</p></h2>
+<h2 id="2-集群环境">2. 集群环境</h2>
 
 <hr />
 
 <h3 id="架构环境">架构环境</h3>
 
 <ul>
-<li>k8s 集群网络：<code>172.28.0.0/16</code><br /></li>
-<li>k8s-service 网络：<code>10.96.0.0/12</code><br /></li>
+<li>k8s 集群网络：<code>172.28.0.0/16</code></li>
+<li>k8s-service 网络：<code>10.96.0.0/12</code></li>
 <li>物理机网络：<code>192.168.0.0/16</code></li>
 </ul>
 
@@ -704,7 +748,7 @@ dao-2048                          10.98.217.155    &lt;none&gt;        80/TCP   
 
 <p>以下为该方案的实施步骤。</p>
 
-<h2 id="p-id-h2-3-部署边界-dns-代理服务器-p"><p id="h2">3. 部署边界 dns 代理服务器</p></h2>
+<h2 id="3-部署边界-dns-代理服务器">3. 部署边界 dns 代理服务器</h2>
 
 <hr />
 
@@ -1000,7 +1044,7 @@ deployment &quot;nginx-udp-ingress-controller&quot; created
 
 <p>通过 nginx 反向代理 <code>kube-dns</code> 服务，同时以 <code>hostNetwork: true</code> 向集群外部暴露 53 端口，为非 k8s 集群网络物理机节点提供 dns 服务。</p>
 
-<h2 id="p-id-h2-4-部署-gateway-边界网关节点-p"><p id="h2">4. 部署 gateway 边界网关节点</p></h2>
+<h2 id="4-部署-gateway-边界网关节点">4. 部署 gateway 边界网关节点</h2>
 
 <hr />
 
@@ -1129,7 +1173,7 @@ $ systemctl enable kube-proxy
 $ systemctl start kube-proxy
 </code></pre>
 
-<h2 id="p-id-h2-5-测试网关和-dns-解析以及服务访问情况-p"><p id="h2">5. 测试网关和 dns 解析以及服务访问情况</p></h2>
+<h2 id="5-测试网关和-dns-解析以及服务访问情况">5. 测试网关和 dns 解析以及服务访问情况</h2>
 
 <hr />
 
@@ -1220,7 +1264,9 @@ dao-2048.default.svc.cluster.local. 5 IN A      10.98.217.155
 
 <p id="div-border-top-red"><font color="blue">PS：</font>如果你不想一台台机器加路由和 dns，你可以把路由信息加入物理路由器上，这样就不用每台机都加路由和 dns 了，直接打通所有链路。</p>
 
-<h2 id="参考">参考</h2>
+<h2 id="6-参考">6. 参考</h2>
+
+<hr />
 
 <p><a href="http://blog.csdn.net/idea77/article/details/73863822" target="_blank">k8s-dns-gateway 网关网络扩展实战</a></p>
                 

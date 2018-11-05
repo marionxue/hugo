@@ -3,22 +3,25 @@ title: "Kubernetes 网络扩展"
 subtitle: "通过边界网关和边界 DNS 直接访问 k8s 中的服务"
 date: 2018-02-11T10:40:33Z
 draft: false
+toc: true
 categories: "kubernetes"
 tags: ["kubernetes", "docker"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
 <!--more-->
-## <p id="h2">1. Kubernetes 中服务暴露的方式</p>
+
+## 1. Kubernetes 中服务暴露的方式
+
 ----
 
 k8s 的服务暴露分为以下几种情况：
 
-+ hostNetwork<br />
-+ hostPort<br />
-+ NodePort<br />
-+ LoadBalancer<br />
-+ Ingress<br />
++ hostNetwork
++ hostPort
++ NodePort
++ LoadBalancer
++ Ingress
 
 说是暴露 Pod 其实跟暴露 Service 是一回事，因为 Pod 就是 Service 的 backend。
 
@@ -135,7 +138,7 @@ influxdb   10.97.121.42   10.13.242.236   8086:30051/TCP   39s
 
 外部可以用以下两种方式访问该服务：
 
-+ 使用任一节点的 IP 加 30051 端口访问该服务<br />
++ 使用任一节点的 IP 加 30051 端口访问该服务
 + 使用 `EXTERNAL-IP` 来访问，这是一个 VIP，是云供应商提供的负载均衡器 IP，如 `10.13.242.236:8086`。
 
 <p id="div-border-top-purple"><font color="red">缺点：</font>需要云服务商支持。</p>
@@ -169,16 +172,17 @@ spec:
 
 为什么我们不能做到像访问虚拟机一样直接访问 k8s 集群服务呢？当然可以，以下架构可以实现：
 
-+ 打通 k8s 网络和物理网络直通<br />
++ 打通 k8s 网络和物理网络直通
 + 物理网络的 dns 域名服务直接调用 k8s-dns 域名服务直接互访
 
-## <p id="h2">2. 集群环境</p>
+## 2. 集群环境
+
 ----
 
 ### 架构环境
 
-+ k8s 集群网络：`172.28.0.0/16`<br />
-+ k8s-service 网络：`10.96.0.0/12`<br />
++ k8s 集群网络：`172.28.0.0/16`
++ k8s-service 网络：`10.96.0.0/12`
 + 物理机网络：`192.168.0.0/16`
 
 ### k8s 集群节点
@@ -265,7 +269,7 @@ dao-2048                          10.98.217.155    <none>        80/TCP         
 
 以下为该方案的实施步骤。
 
-## <p id="h2">3. 部署边界 dns 代理服务器</p>
+## 3. 部署边界 dns 代理服务器
 ----
 
 布署 dns 代理服务节点为外部提供 dns 服务,以 `hostNetwork: true` 为非 k8s 集群网络物理机节点提供 dns 服务
@@ -561,7 +565,8 @@ deployment "nginx-udp-ingress-controller" created
 
 通过 nginx 反向代理 `kube-dns` 服务，同时以 `hostNetwork: true` 向集群外部暴露 53 端口，为非 k8s 集群网络物理机节点提供 dns 服务。
 
-## <p id="h2">4. 部署 gateway 边界网关节点</p>
+## 4. 部署 gateway 边界网关节点
+
 ----
 
 此节点只运行 `calico` 和 `kube-proxy`。
@@ -697,7 +702,8 @@ $ systemctl enable kube-proxy
 $ systemctl start kube-proxy
 ```
 
-## <p id="h2">5. 测试网关和 dns 解析以及服务访问情况</p>
+## 5. 测试网关和 dns 解析以及服务访问情况
+
 ------
 
 找台集群外的机器来验证，这台机器只有一个网卡，没有安装 `calico`。
@@ -784,7 +790,8 @@ $ route ADD -p 172.28.0.0 MASK 255.255.0.0 192.168.2.173
 
 <p id="div-border-top-red"><font color="blue">PS：</font>如果你不想一台台机器加路由和 dns，你可以把路由信息加入物理路由器上，这样就不用每台机都加路由和 dns 了，直接打通所有链路。</p>
 
-## 参考
+## 6. 参考
+
+----
 
 [k8s-dns-gateway 网关网络扩展实战](http://blog.csdn.net/idea77/article/details/73863822)
-

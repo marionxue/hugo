@@ -497,6 +497,7 @@
         "subtitle": "通过边界网关和边界 DNS 直接访问 k8s 中的服务",
         "date": "2018-02-11T10:40:33.000Z",
         "draft": false,
+        "toc": true,
         "categories": "kubernetes",
         "tags": [
             "kubernetes",
