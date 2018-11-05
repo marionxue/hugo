@@ -34,7 +34,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 内核中主要提供完成这些用户空间策略所需要的机制，负责具体过滤和重定向 IO 请求。通过不同的驱动插件，转发 IO 请求至目的设备上。附上 `Device Mapper` 架构图。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/device.mapper.2.gif)</center>
+![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwxo5xzdwkj30hs0dq76d.jpg)
 
 ## 3. Device Mapper 技术分析
 ------
@@ -47,7 +47,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 简而言之，`Device Mapper` 对外提供一个虚拟设备供使用，而这块虚拟设备可以通过映射表找到相应的地址，该地址可以指向一块物理设备，也可以指向一个虚拟设备。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/device.mapper.3.png)</center>
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwxo6vkxxzj30iv0d0gmr.jpg)
 
 映射表，是由用户空间创建，传递到内核空间。映射表里有映射设备逻辑的起始地址、范围、和表示在目标设备所在物理设备的地址偏移量以及Target 类型等信息（注：这些地址和偏移量都是以磁盘的扇区为单位的，即 512 个字节大小，所以，当你看到 128 的时候，其实表示的是 128*512=64K）。
 
@@ -70,11 +70,11 @@ Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复�
   
   下图所示，容器层所见 file1 文件为镜像层文件，当需要修改 file1 时，会从镜像层把文件复制到容器层，然后进行修改，从而保证镜像层数据的完整性和复用性。
   
-  ![](http://o7z41ciog.bkt.clouddn.com/cow-1.png)
+  ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwxo8egzl0j31140b8dho.jpg)
   
   下图所示，当需要删除 file1 时，由于 file1 是镜像层文件，容器层会创建一个 .wh 前置的隐藏文件，从而实现对 file1 的隐藏，实际并未删除 file1，从而保证镜像层数据的完整性和复用性。
   
-  ![](http://o7z41ciog.bkt.clouddn.com/cow-2.png)
+  ![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwxo8ntchkj31110b5763.jpg)
   
   `devicemapper` 支持在块级别（block）写复制。
   
@@ -85,9 +85,13 @@ Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复�
   
   好了，话题拉回来，我们这里说的是存储。看下面两个图，第一个是 `Fat Provisioning`，第二个是 `Thin Provisioning`，其很好的说明了是个怎么一回事（和虚拟内存是一个概念）。
   
-  <center>![](http://o7z41ciog.bkt.clouddn.com/thin-provisioning-1.jpg)</center>
+  ![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwxo9j0a96j30gu0b3gmo.jpg)
   
-  <center>![](http://o7z41ciog.bkt.clouddn.com/thin-provisioning-2.jpg)</center>
+  ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwxo9skqu6j30gu0atab6.jpg)
+
+  下图中展示了某位用户向服务器管理员请求分配 10TB 的资源的情形。实际情况中这个数值往往是峰值，根据使用情况，分配 2TB 就已足够。因此，系统管理员准备 2TB 的物理存储，并给服务器分配 10TB 的虚拟卷。服务器即可基于仅占虚拟卷容量 1/5 的现有物理磁盘池开始运行。这样的“始于小”方案能够实现更高效地利用存储容量。
+
+  ![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwxobopuclj30ej06rgma.jpg)
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
 那么，Docker 是怎么使用 <code>Thin Provisioning</code> 这个技术做到像 UnionFS 那样的分层镜像的呢？答案是，Docker 使用了 <code>Thin Provisioning</code> 的 <code>Snapshot</code> 的技术。下面一篇我们来介绍一下 <code>Thin Provisioning</code> 的 <code>Snapshot</code>。
