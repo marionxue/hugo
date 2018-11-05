@@ -93,6 +93,11 @@ Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复�
 
   ![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwxobopuclj30ej06rgma.jpg)
 
-<p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #9954bb;">
 那么，Docker 是怎么使用 <code>Thin Provisioning</code> 这个技术做到像 UnionFS 那样的分层镜像的呢？答案是，Docker 使用了 <code>Thin Provisioning</code> 的 <code>Snapshot</code> 的技术。下面一篇我们来介绍一下 <code>Thin Provisioning</code> 的 <code>Snapshot</code>。
-</p>
+
+## 5. 参考资料
+
+----
+
++ [DOCKER基础技术：DEVICEMAPPER](https://coolshell.cn/articles/17200.html)
++ [Docker存储驱动DeviceMapper](https://robinle.github.io/docker/2017/03/13/Docker%E5%AD%98%E5%82%A8%E9%A9%B1%E5%8A%A8%E4%B9%8BDeviceMapper/)
