@@ -10,8 +10,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 ---
 
 <!--more-->
-
-<video><source src="https://rss.yangcs.net/?/%E5%B4%94%E6%B0%B8%E5%85%83%E7%9B%B4%E6%92%AD%E3%80%90%E6%97%A0%E5%88%A0%E5%87%8F%E5%AE%8C%E6%95%B4%E7%89%88%E3%80%9110%E6%9C%881%E6%97%A5%E5%B4%94%E6%B0%B8%E5%85%83%E8%80%81%E5%B8%88%E6%9C%80%E6%96%B0%E7%9B%B4%E6%92%AD%E8%A7%86%E9%A2%91%EF%BC%81.mp4" type="video/mp4"></video>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=10 height=10 src="https://rss.yangcs.net/?/star-sky.mp3"></iframe>
 
 ## 1. 迭代器
 ------
