@@ -147,20 +147,20 @@
     </item>
     
     <item>
-      <title>Kubernetes 中的容器运行时</title>
-      <link>https://www.yangcs.net/posts/container-runtime/</link>
-      <pubDate>Tue, 03 Apr 2018 06:50:43 +0000</pubDate>
+      <title>CRI-O 简介</title>
+      <link>https://www.yangcs.net/posts/cri-o/</link>
+      <pubDate>Tue, 03 Apr 2018 08:11:38 +0000</pubDate>
       
-      <guid>https://www.yangcs.net/posts/container-runtime/</guid>
+      <guid>https://www.yangcs.net/posts/cri-o/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Kubernetes 中的容器运行时</title>
-      <link>https://www.yangcs.net/posts/cri-o/</link>
+      <link>https://www.yangcs.net/posts/container-runtime/</link>
       <pubDate>Tue, 03 Apr 2018 06:50:43 +0000</pubDate>
       
-      <guid>https://www.yangcs.net/posts/cri-o/</guid>
+      <guid>https://www.yangcs.net/posts/container-runtime/</guid>
       <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
