@@ -8,8 +8,6 @@ postmeta: false
 nocomment: true
 ---
 
-# Prometheus 中文文档
-
 随着容器技术的迅速发展，Kubernetes 已然成为大家追捧的容器集群管理系统。[Prometheus](https://prometheus.io) 作为生态圈 Cloud Native Computing Foundation（简称：CNCF）中的重要一员,其活跃度仅次于 Kubernetes, 现已广泛用于 Kubernetes 集群的监控系统中。
 
 本文是 Prometheus 官方文档的中文版，同时包括了本人平时在使用 Prometheus 时的参考指南和实践总结，形成一个系统化的参考指南以方便查阅。欢迎大家关注和添加完善内容。
