@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> Hugo 集成社交分享插件 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
+  <meta property="og:title" content="Hugo 集成社交分享插件" />
+  <meta name="twitter:title" content="Hugo 集成社交分享插件" />
+  <meta name="description" content="通过 share.js 让你的分享飞起来">
+  <meta property="og:description" content="通过 share.js 让你的分享飞起来">
+  <meta name="twitter:description" content="通过 share.js 让你的分享飞起来">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
+  <meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/hugo-social-share-plugin/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.49" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/hugo-social-share-plugin/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/my.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/reward.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/share.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/pygment_highlights.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/highlight.min.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/toc.css" />
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?cffe439e37449bb1c07ab26ab56484bb";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<script async src="//cdn.busuanzi.ibruce.info/cdn/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var int = setInterval(fixCount, 100);
+        var busuanziSiteOffset =  100000  
+        function fixCount() {
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                clearInterval(int);
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + busuanziSiteOffset);
+            }
+        }
+    });
+</script>
+
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124447767-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes/">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/service-mesh/">Service Mesh</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker/">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python/">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/loadbalance/"> 负载均衡</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw/">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math/">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/hugo/">Hugo</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/share/">分享</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags/">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated/">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="https://istio.io/zh/docs">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go/">Go 入门指南</a>
+                
+                
+                  <a href="https://www.yangcs.net/prometheus-handbook/">Prometheus 中文文档</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">葵花宝典</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/learn-english/"> 英语学习终极秘诀</a>
+                
+                
+                  <a href="https://www.yangcs.net/a-day-in-the-life-of-jeff/">A Day in the life of Jeff</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net/">
+            <img class="avatar-img" src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search yangcs.net</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("4BELQK2TOI", "62fd06bd949abb4211bfab0aa288f67b");
+var index = client.initIndex('blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Hugo 集成社交分享插件</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">通过 share.js 让你的分享飞起来</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on November 7, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">Hugo 集成社交分享插件</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">通过 share.js 让你的分享飞起来</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Wed Nov 7, 2018</h4>
+    </section>
+    <h5 id="wc">1500 Words|Read in about 3 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/hugo/">hugo</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+                <p></p>
+
+<p>开发网站时为了推广页面，或者获得更多的回访和流量，会在网站页面添加 “分享到” 插件，用来发布到某些社交网站。因此社会化分享是很多网站常用的功能之一，国内也有很多专业的公司在做，比较出名的包括 <code>j*this</code>，<code>B*hare</code> 等。不过很悲伤的是，这些公司的产品，无一利额外的具有一个特点：奇丑无比。丑就算了，还不允许别人修改其设计，结果就是，再好的 UI 设计也毁在这些插件手里了。</p>
+
+<p>还好我发现了一款简单高效的社交分享组件，只看一眼便可以确认这就是我要寻找的那个它。直接上预览，你看完一定会喜欢上：</p>
+
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwyrzp3xxvj30ro03y753.jpg" alt="" /></p>
+
+<h2 id="1-简介">1. 简介</h2>
+
+<hr />
+
+<p><a href="https://github.com/overtrue/share.js" target="_blank">share.js</a> 是一款简单高效的社交分享组件，直接引入使用即可，无须依赖其他库。它有以下这些特点：</p>
+
+<ul>
+<li>一个标签完成初始化</li>
+<li>自定义启用/禁用分享站点</li>
+<li>更美观的 UI 体验</li>
+<li>基于标签data属性轻松实现分享数据的自定义</li>
+<li>支持分别对不同站点设置分享内容</li>
+<li>同页面个分享组件</li>
+<li>支持npm安装</li>
+</ul>
+
+<h2 id="2-引入-share-js">2. 引入 share.js</h2>
+
+<hr />
+
+<p>由于我的博客使用的是 <a href="https://gohugo.io/" target="_blank">hugo</a>，而且使用的主题是 <a href="https://jimmysong.io/" target="_blank">Jimmy Song</a> 的 <a href="https://github.com/rootsongjc/beautifulhugo" target="_blank">beautifulhugo</a>，官方文档提供的安装方式不适用，需要稍作改动。</p>
+
+<blockquote>
+<p>如果你使用的是其他主题，安装方式类似，你可以自己研究一下。</p>
+</blockquote>
+
+<h3 id="导入静态资源">导入静态资源</h3>
+
+<p>首先克隆 share.js 的代码仓库：</p>
+
+<pre><code class="language-bash">$ git clone https://github.com/overtrue/share.js
+</code></pre>
+
+<p>然后分别将 <code>css</code>、<code>js</code> 和 <code>fonts</code> 拷贝到 beautiful 主题中的相应目录下：</p>
+
+<pre><code class="language-bash"># &lt;hugo_home&gt; 表示 hugo 的根目录
+$ cp share.js/css/share.min.css &lt;hugo_home&gt;/themes/beautifulhugo/static/css/
+$ cp share.js/js/social-share.min.js &lt;hugo_home&gt;/themes/beautifulhugo/static/js/
+$ cp -r share.js/fonts/* &lt;hugo_home&gt;/themes/beautifulhugo/static/fonts/
+</code></pre>
+
+<p>默认的 css 样式图标太小，我稍微调整了一下，将图标放大一点，修改后的 css 内容如下：</p>
+
+<pre><code class="language-bash">$ cat &lt;hugo_home&gt;/themes/beautifulhugo/static/css/share.min.css
+</code></pre>
+
+<pre><code class="language-css">@font-face{font-family:&quot;socialshare&quot;;src:url(&quot;../fonts/iconfont.eot&quot;);src:url(&quot;../fonts/iconfont.eot?#iefix&quot;) format(&quot;embedded-opentype&quot;),url(&quot;../fonts/iconfont.woff&quot;) format(&quot;woff&quot;),url(&quot;../fonts/iconfont.ttf&quot;) format(&quot;truetype&quot;),url(&quot;../fonts/iconfont.svg#iconfont&quot;) format(&quot;svg&quot;)}
+.social-share{font-family:&quot;socialshare&quot; !important;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-webkit-text-stroke-width:0.2px;-moz-osx-font-smoothing:grayscale}
+.social-share *{font-family:&quot;socialshare&quot; !important}
+.social-share .icon-tencent:before{content:&quot;\f07a&quot;}
+.social-share .icon-qq:before{content:&quot;\f11a&quot;}
+.social-share .icon-weibo:before{content:&quot;\f12a&quot;}
+.social-share .icon-wechat:before{content:&quot;\f09a&quot;}
+.social-share .icon-douban:before{content:&quot;\f10a&quot;}
+.social-share .icon-heart:before{content:&quot;\f20a&quot;}
+.social-share .icon-like:before{content:&quot;\f00a&quot;}
+.social-share .icon-qzone:before{content:&quot;\f08a&quot;}
+.social-share .icon-linkedin:before{content:&quot;\f01a&quot;}
+.social-share .icon-diandian:before{content:&quot;\f05a&quot;}
+.social-share .icon-facebook:before{content:&quot;\f03a&quot;}
+.social-share .icon-google:before{content:&quot;\f04a&quot;}
+.social-share .icon-twitter:before{content:&quot;\f06a&quot;}
+.social-share a{position:relative;text-decoration:none;margin:4px;display:inline-block;outline:none}
+.social-share .social-share-icon{position:relative;display:inline-block;width:42px;height:42px;font-size:25px;border-radius:50%;line-height:37px;border:2px solid #666;color:#666;text-align:center;vertical-align:middle;transition:background 0.6s ease-out 0s}
+.social-share .social-share-icon:hover{background:#666;color:#fff}
+.social-share .icon-weibo{color:#ff763b;border-color:#ff763b}
+.social-share .icon-weibo:hover{background:#ff763b}
+.social-share .icon-tencent{color:#56b6e7;border-color:#56b6e7}
+.social-share .icon-tencent:hover{background:#56b6e7}
+.social-share .icon-qq{color:#56b6e7;border-color:#56b6e7}
+.social-share .icon-qq:hover{background:#56b6e7}
+.social-share .icon-qzone{color:#FDBE3D;border-color:#FDBE3D}
+.social-share .icon-qzone:hover{background:#FDBE3D}
+.social-share .icon-douban{color:#33b045;border-color:#33b045}
+.social-share .icon-douban:hover{background:#33b045}
+.social-share .icon-linkedin{color:#0077B5;border-color:#0077B5}
+.social-share .icon-linkedin:hover{background:#0077B5}
+.social-share .icon-facebook{color:#44619D;border-color:#44619D}
+.social-share .icon-facebook:hover{background:#44619D}
+.social-share .icon-google{color:#db4437;border-color:#db4437}
+.social-share .icon-google:hover{background:#db4437}
+.social-share .icon-twitter{color:#55acee;border-color:#55acee}
+.social-share .icon-twitter:hover{background:#55acee}
+.social-share .icon-diandian{color:#307DCA;border-color:#307DCA}
+.social-share .icon-diandian:hover{background:#307DCA}
+.social-share .icon-wechat{position:relative;color:#7bc549;border-color:#7bc549}
+.social-share .icon-wechat:hover{background:#7bc549}
+.social-share .icon-wechat .wechat-qrcode{display:none;border:1px solid #eee;position:absolute;z-index:9;top:-205px;left:-84px;width:200px;height:192px;color:#666;font-size:12px;text-align:center;background-color:#fff;box-shadow:0 2px 10px #aaa;transition:all 200ms;-webkit-tansition:all 350ms;-moz-transition:all 350ms}
+.social-share .icon-wechat .wechat-qrcode.bottom{top:40px;left:-84px}
+.social-share .icon-wechat .wechat-qrcode.bottom:after{display:none}
+.social-share .icon-wechat .wechat-qrcode h4{font-weight:normal;height:26px;line-height:26px;font-size:12px;background-color:#f3f3f3;margin:0;padding:0;color:#777}
+.social-share .icon-wechat .wechat-qrcode .qrcode{width:105px;margin:10px auto}
+.social-share .icon-wechat .wechat-qrcode .qrcode table{margin:0 !important}
+.social-share .icon-wechat .wechat-qrcode .help p{font-weight:normal;line-height:16px;padding:0;margin:0}
+.social-share .icon-wechat .wechat-qrcode:after{content:'';position:absolute;left:50%;margin-left:-6px;bottom:-13px;width:0;height:0;border-width:8px 6px 6px 6px;border-style:solid;border-color:#fff transparent transparent transparent}
+.social-share .icon-wechat:hover .wechat-qrcode{display:block}
+</code></pre>
+
+<p>主要修改了这一段：</p>
+
+<pre><code class="language-css">.social-share .social-share-icon{position:relative;display:inline-block;width:42px;height:42px;font-size:25px;border-radius:50%;line-height:37px;border:2px solid #666;color:#666;text-align:center;vertical-align:middle;transition:background 0.6s ease-out 0s}
+</code></pre>
+
+<h3 id="将分享插件嵌入到网页中">将分享插件嵌入到网页中</h3>
+
+<p>为了将分享插件嵌入到每篇文章的网页中，我们需要修改一些模板。首先需要引入 css 样式，通过修改文件 <code>&lt;hugo_home&gt;/themes/beautifulhugo/layouts/partials/head.html</code>，在其中引入 <code>share.min.css</code>。</p>
+
+<pre><code class="language-html">  ...
+  &lt;!-- bootcss cdn 国外访问太慢 --&gt;
+  &lt;!--
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.bootcss.com/KaTeX/0.7.1/katex.min.css&quot; /&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css&quot; /&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css&quot; /&gt;
+  --&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;{{ &quot;css/main.css&quot; | absURL }}&quot; /&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;{{ &quot;css/share.min.css&quot; | absURL }}&quot; /&gt;
+  ...
+</code></pre>
+
+<p>然后在 <code>&lt;hugo_home&gt;/themes/beautifulhugo/layouts/partials/</code>目录下创建一个 html。</p>
+
+<pre><code class="language-bash">$ cat &lt;hugo_home&gt;/themes/beautifulhugo/layouts/partials/share.html
+</code></pre>
+
+<pre><code class="language-html">&lt;div class=&quot;social-share&quot; data-initialized=&quot;true&quot; data-wechat-qrcode-title=&quot;不扫别后悔&quot;&gt;
+    &lt;center&gt;
+    &lt;font style=&quot;font-size:18px;color:darkcyan;&quot;&gt;分享到：&lt;/font&gt;
+    &lt;a href=&quot;#&quot; class=&quot;social-share-icon icon-weibo&quot;&gt;&lt;/a&gt;
+    &lt;a href=&quot;#&quot; class=&quot;social-share-icon icon-wechat&quot;&gt;&lt;/a&gt;
+    &lt;a href=&quot;#&quot; class=&quot;social-share-icon icon-twitter&quot;&gt;&lt;/a&gt;
+    &lt;a href=&quot;#&quot; class=&quot;social-share-icon icon-linkedin&quot;&gt;&lt;/a&gt;
+    &lt;a href=&quot;#&quot; class=&quot;social-share-icon icon-facebook&quot;&gt;&lt;/a&gt;
+    &lt;a href=&quot;#&quot; class=&quot;social-share-icon icon-qq&quot;&gt;&lt;/a&gt;
+    &lt;a href=&quot;#&quot; class=&quot;social-share-icon icon-qzone&quot;&gt;&lt;/a&gt;
+    &lt;/center&gt;
+&lt;/div&gt;
+
+&lt;!--  css &amp; js --&gt;
+&lt;script src=&quot;https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<p>修改模板 <code>&lt;hugo_home&gt;/themes/beautifulhugo/layouts/_default/single.html</code>，加载 <code>share.html</code>。</p>
+
+<pre><code class="language-html">&lt;div class=&quot;container&quot; role=&quot;main&quot; itemscope itemtype=&quot;http://schema.org/Article&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
+            &lt;!-- post metadata--&gt;
+            {{ if isset .Params &quot;postmeta&quot; }}
+              {{ else }}
+            {{ partial &quot;postmeta.html&quot; . }}
+            {{ end }}
+            &lt;article role=&quot;main&quot; class=&quot;blog-post&quot; itemprop=&quot;articleBody&quot; id=&quot;content&quot;&gt;
+                ...
+                {{ .Content }}
+                {{ partial &quot;share.html&quot; }}
+            &lt;/article&gt;
+            ...
+</code></pre>
+
+<p>如果你想让某些页面不开启分享插件，可以通过参数 <code>(.Params.noshare)</code> 来控制是否加载分享插件。</p>
+
+<pre><code class="language-html">&lt;div class=&quot;container&quot; role=&quot;main&quot; itemscope itemtype=&quot;http://schema.org/Article&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1&quot;&gt;
+            &lt;!-- post metadata--&gt;
+            {{ if isset .Params &quot;postmeta&quot; }}
+              {{ else }}
+            {{ partial &quot;postmeta.html&quot; . }}
+            {{ end }}
+            &lt;article role=&quot;main&quot; class=&quot;blog-post&quot; itemprop=&quot;articleBody&quot; id=&quot;content&quot;&gt;
+                ...
+                {{ .Content }}
+                {{ if not (.Params.noshare) }}
+                {{ partial &quot;share.html&quot; }}
+                {{ end }}
+            &lt;/article&gt;
+            ...
+</code></pre>
+
+<p>这样我们就可以在页面中通过 <code>noshare</code> 参数来控制了。如下是不想加载分享插件的文章的 <strong>meta</strong> 信息参数：</p>
+
+<pre><code class="language-markdown">---
+title: xxxxxx
+date: xxxxxx
+...
+noshare: true
+---
+</code></pre>
+
+<h2 id="3-更多">3. 更多</h2>
+
+<hr />
+
+<p>关于分享插件的更多自定义配置请参考代码仓库的 <a href="https://github.com/overtrue/share.js" target="_blank">README</a>。</p>
+                
+                <div class="entry-shang text-center">
+	<p>「真诚赞赏，手留余香」</p>
+        <button class="zs show-zs btn rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><img src="/img/avatar-icon.png"/>杨传胜</span>
+		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+ 	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/wechat-2.png" id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+                <span class="zs-wechat"><img src="/img/wechat-btn.png"/></span>
+	</div>
+</div>
+
+                
+                
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="不扫别后悔">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
+                
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/" data-toggle="tooltip" data-placement="top" title="SRE 弹性能力：使用 Envoy 对应用进行速率限制">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/setting-up-ssl-in-envoy-practice/">为 Envoy 开启 TLS 验证实战</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+              
+            
+            </div>
+        </div>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+                
+                  
+                  
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    
+    <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 size=3>
+        <div class="gallery gallery-text">
+    <center><h4>扫码关注我的微信公众号，获取每日推送</h4></center>
+    <table frame="void" align="center">
+    <tr>
+        <td>
+            <a href="https://hugo-picture.oss-cn-beijing.aliyuncs.com/qcode-wechat.png" title="云原生实验室">
+            <img src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/qcode-wechat.png">
+            </a>
+        </td>
+    </tr>
+    </table>
+</div>
+
+    
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          &nbsp;&bull;&nbsp;
+          November 7,2018
+          updated
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net/">Home</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+        <a href="https://servicemesher.github.io" target="_blank">ServiceMesher</a>&nbsp;&bull;&nbsp;<a href="https://www.processon.com/view/link/5ac64532e4b00dc8a02f05eb" target="_blank">Kubernetes 知识图谱</a>&nbsp;&bull;&nbsp;<a href="/friend/">友情链接</a>
+        <br />
+        <span id="busuanzi_container_site_pv">
+            本站访问量：<span id="busuanzi_value_site_pv"></span>次
+        </span>
+        &nbsp;
+        <span id="busuanzi_container_site_uv">
+            您是本站第 <span id="busuanzi_value_site_uv"></span> 位访问者
+        </span>
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://www.yangcs.net/js/main.js"></script>
+<script src="https://www.yangcs.net/js/prism.js?t=123"></script>
+<script src="https://www.yangcs.net/js/highlight.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script src="https://www.yangcs.net/js/reward.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+
+
+
+
+
+
+  </body>
+</html>
+
