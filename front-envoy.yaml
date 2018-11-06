@@ -53,11 +53,16 @@ static_resources:
               domains:
               - "yangcs.net"
               - "www.yangcs.net"
+              response_headers_to_add:
               routes:
               - match:
                   prefix: "/"
                 route:
                   cluster: hugo
+              - match:
+                  path: "/stats/prometheus"
+                route:
+                  cluster: hugo_admin
           http_filters:
           - name: envoy.router
             config: {}
@@ -129,6 +134,15 @@ static_resources:
     - socket_address:
         address: hugo
         port_value: 8080
+  - name: hugo_admin
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: hugo
+        port_value: 8082
   - name: oneindex
     connect_timeout: 0.25s
     type: strict_dns
