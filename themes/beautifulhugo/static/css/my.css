@@ -249,3 +249,23 @@ border-top-width: 5px;
 border-radius: 3px;
 border-top-color: #9954bb;
 }
+
+.gallery-text {
+ text-align: center;
+ margin : 0px 1em 0px 1em;
+}
+
+.gallery-text a{
+ font-size: 15px;
+}
+
+.gallery-text table tr td{
+    border: 0;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 0;
+    border-top: 1px solid #eee;
+}
