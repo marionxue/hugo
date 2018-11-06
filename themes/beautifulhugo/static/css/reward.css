@@ -66,6 +66,7 @@ img{vertical-align: middle;}
     background: #fff;
     border-radius: 6px;
     display: none;
+    z-index: 1
 }
  .zs-modal-head {
     padding: 0 16px;
