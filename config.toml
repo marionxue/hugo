@@ -169,7 +169,7 @@ desc = "Using Big Data to make business decision"
 [[menu.main]]
     parent = "Books"
     name = "Prometheus 中文文档"
-    url = "prometheus-handbook"
+    url = "prometheus-handbook/"
     weight = 7
 
 [[menu.main]]
