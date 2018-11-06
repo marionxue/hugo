@@ -133,7 +133,7 @@ desc = "Using Big Data to make business decision"
 [[menu.main]]
     parent = "Books"
     name = "天才源自刻意练习"
-    url = "talent-is-overrated"
+    url = "talent-is-overrated/"
     weight = 1 
 
 [[menu.main]]
@@ -163,7 +163,7 @@ desc = "Using Big Data to make business decision"
 [[menu.main]]
     parent = "Books"
     name = "Go 入门指南"
-    url = "the-way-to-go"
+    url = "the-way-to-go/"
     weight = 6
 
 [[menu.main]]
@@ -180,13 +180,13 @@ desc = "Using Big Data to make business decision"
 [[menu.main]]
     parent = "Cheats"
     name = " 英语学习终极秘诀"
-    url = "learn-english"
+    url = "learn-english/"
     weight = 1
 
 [[menu.main]]
     parent = "Cheats"
     name = "A Day in the life of Jeff"
-    url = "https://www.yangcs.net/a-day-in-the-life-of-jeff"
+    url = "https://www.yangcs.net/a-day-in-the-life-of-jeff/"
     weight = 2
 
 [[menu.main]]
