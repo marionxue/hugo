@@ -14,7 +14,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 还好我发现了一款简单高效的社交分享组件，只看一眼便可以确认这就是我要寻找的那个它。直接上预览，你看完一定会喜欢上：
 
-![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwyruicodoj31d403omxt.jpg)
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fwyuzlathmj31fg03ewfd.jpg)
 
 ## 1. 简介
 
