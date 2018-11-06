@@ -6,7 +6,7 @@ draft: false
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 postmeta: false
 nocomment: true
-noshare:true
+noshare: true
 ---
 
 随着容器技术的迅速发展，Kubernetes 已然成为大家追捧的容器集群管理系统。[Prometheus](https://prometheus.io) 作为生态圈 Cloud Native Computing Foundation（简称：CNCF）中的重要一员,其活跃度仅次于 Kubernetes, 现已广泛用于 Kubernetes 集群的监控系统中。
