@@ -13,8 +13,8 @@ enableEmoji = true
 [Params]
 hello = "Hi,I'm Ryan"
 subtitle = "我可以给你提供云原生方面的知识以及帮助你提高资源整合能力"
-logo = "http://o7z41ciog.bkt.clouddn.com/05ba932c.jpg"
-favicon = "https://www.learnenvoy.io/assets/favicon-32x32.png"
+logo = "https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg"
+favicon = "https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png"
 dateFormat = "January 2, 2006"
 commit = true
 # ad section, comment this to disable it
