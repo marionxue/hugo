@@ -13,7 +13,9 @@
                 {{ if isset .Site.Params "reward" }}
                 {{ partial "reward.html" }}
                 {{ end }}
+                {{ if (eq .Params.share "true") }}
                 {{ partial "share.html" }}
+                {{ end }}
             </article>
 
             <ul class="pager blog-pager">
