@@ -345,6 +345,9 @@ footer .theme-by {
     /*border-bottom: 1px solid #eee;*/
     border-bottom:3px dashed #a4d8fa;
 }
+.post-preview:hover:before {
+  left: calc(95% - 20px);
+}
 .post-preview:before {
   position: absolute;
   top: -10px;
