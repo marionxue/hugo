@@ -22,6 +22,7 @@ const ap = new APlayer({
         artist: '郁可唯',
         url: 'http://up.mcyt.net/?down/37600.mp3',
         cover: 'http://imge.kugou.com/stdmusic/20130625/20130625181709936236.jpg',
+        lrc: 'http://hugo-picture.oss-cn-beijing.aliyuncs.com/%E9%83%81%E5%8F%AF%E5%94%AF%20-%20%E6%97%B6%E9%97%B4%E7%85%AE%E9%9B%A8.lrc'
       },
       {
         name: '爱情转移',
