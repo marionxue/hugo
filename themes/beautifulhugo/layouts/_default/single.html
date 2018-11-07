@@ -10,7 +10,9 @@
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 {{ partial "toc1.html" . }}
                 {{ .Content }}
-                <script id="ribbon" size="150" alpha='0.3' zIndex="-2" src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/canvas_ribbon.js"></script>
+                <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+                <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+                <script type="text/javascript" src="{{ "js/fireworks.js" | absURL }}"></script>
                 {{ if isset .Site.Params "reward" }}
                 {{ partial "reward.html" }}
                 {{ end }}
