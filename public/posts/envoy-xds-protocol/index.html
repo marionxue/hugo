@@ -732,9 +732,6 @@ admin:
 <p>单个 xDS API 可以通过 REST 端点进行同步（长）轮询。除了无持久流与管理服务器交互外，消息交互顺序与上述两个订阅方式相似。在任何时间点，只存在一个未完成的请求，因此响应消息中的 <code>nonce</code> 在 REST-JSON 中是可选的。<code>DiscoveryRequest</code> 和 <code>DiscoveryResponse</code> 的消息编码遵循 <a href="https://developers.google.com/protocol-buffers/docs/proto3#json" target="_blank">JSON 变换 proto3</a> 规范。ADS 不支持 REST-JSON 轮询订阅。</p>
 
 <p>当轮询周期设置为较小的值时，为了进行长轮询，这时要求避免发送 <code>DiscoveryResponse</code>，<a href="https://github.com/envoyproxy/data-plane-api/blob/master/XDS_PROTOCOL.md#when-to-send-an-update" target="_blank">除非发生了对请求的资源的更改</a>。</p>
-                <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
-                <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
-                <script type="text/javascript" src="https://www.yangcs.net/js/fireworks.js"></script>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
                 
@@ -980,6 +977,9 @@ admin:
 <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
 <script src="https://www.yangcs.net/js/reward.js"></script>
 <script src="https://www.yangcs.net/js/particle.js"></script>
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+<script type="text/javascript" src="https://www.yangcs.net/js/fireworks.js"></script>
 <script> renderMathInElement(document.body); </script>
 
 
