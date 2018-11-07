@@ -4,7 +4,12 @@
   <body>
     {{ partial "nav.html" . }}
     {{ block "header" . }}{{ partial "header.html" . }}{{ end }}
-    {{ block "main" . }}{{ end }}
+    {{ block "main" . }}
+    <link rel="stylesheet" href="{{ "css/APlayer.min.css" | absURL }}" />
+    <div id="aplayer"></div>
+    <script src="{{ "js/APlayer.min.js" | absURL }}"></script>
+    <script src="{{ "js/music.js" | absURL }}"></script> 
+    {{ end }}
     {{ if isset .Site.Params "ad" }}
     <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 size=3>
         {{ partial "ad.html" . }}
