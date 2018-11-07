@@ -1,16 +1,15 @@
 const ap = new APlayer({
     container: document.getElementById('aplayer'),
-    lrcType: 3,
     fixed: true,
     autoplay: true,
     volume: 0.3,
     loop: 'all',
     audio: [
       {
-        name: "逍遥叹",
-        artist: '徐薇',
-        url: 'http://other.web.ri01.sycdn.kuwo.cn/resource/n3/24/12/4042158646.mp3',
-        cover: 'http://imge.kugou.com/stdmusic/20171117/20171117142652315559.jpg',
+        name: "Here We Are Again",
+        artist: '《喜剧之王》电影插曲',
+        url: 'https://hugo-picture.oss-cn-beijing.aliyuncs.com/Here-We-Are-Again.mp3',
+        cover: 'https://ws3.sinaimg.cn/large/006tNbRwgy1fwzudj5k99j303m03mdfo.jpg',
       },
       {
         name: '红昭愿',
@@ -23,7 +22,6 @@ const ap = new APlayer({
         artist: '郁可唯',
         url: 'http://up.mcyt.net/?down/37600.mp3',
         cover: 'http://imge.kugou.com/stdmusic/20130625/20130625181709936236.jpg',
-        lrc: 'http://hugo-picture.oss-cn-beijing.aliyuncs.com/%E9%83%81%E5%8F%AF%E5%94%AF%20-%20%E6%97%B6%E9%97%B4%E7%85%AE%E9%9B%A8.lrc'
       },
       {
         name: '爱情转移',
