@@ -513,6 +513,72 @@ autocomplete('#aa-search-input',
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg" alt="" /></center>
 <center>扫一扫关注微信公众号</center></p>
+                <html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<canvas></canvas>
+<script>
+    document.addEventListener('touchmove', function (e) {
+        e.preventDefault()
+    });
+    var canvasRibbon = document.getElementsByTagName('canvas')[0],
+        ctx = canvasRibbon.getContext('2d'),    
+        dpr = window.devicePixelRatio || 1, 
+        width = window.innerWidth,     
+        height = window.innerHeight,
+        RIBBON_WIDE = 90,
+        path,
+        math = Math,
+        r = 0,
+        PI_2 = math.PI * 2,    
+        cos = math.cos,   
+        random = math.random;   
+    canvasRibbon.width = width * dpr;     
+    canvasRibbon.height = height * dpr;
+    ctx.scale(dpr, dpr);    
+    ctx.globalAlpha = 0.6;  
+    function init() {
+        ctx.clearRect(0, 0, width, height);     
+        path = [{x: 0, y: height * 0.7 + RIBBON_WIDE}, {x: 0, y: height * 0.7 - RIBBON_WIDE}];
+        
+        while (path[1].x < width + RIBBON_WIDE) {
+            draw(path[0], path[1])     
+        }
+    }
+    
+    function draw(start, end) {
+        ctx.beginPath();    
+        ctx.moveTo(start.x, start.y);   
+        ctx.lineTo(end.x, end.y);   
+        var nextX = end.x + (random() * 2 - 0.25) * RIBBON_WIDE,
+            nextY = geneY(end.y);
+        ctx.lineTo(nextX, nextY);
+        ctx.closePath();
+        r -= PI_2 / -50;
+        
+        ctx.fillStyle = '#' + (cos(r) * 127 + 128 << 16 | cos(r + PI_2 / 3) * 127 + 128 << 8 | cos(r + PI_2 / 3 * 2) * 127 + 128).toString(16);
+        ctx.fill();     
+        path[0] = path[1];    
+        path[1] = {x: nextX, y: nextY}     
+    }
+    
+    function geneY(y) {
+        var temp = y + (random() * 2 - 1.1) * RIBBON_WIDE;
+        return (temp > height || temp < 0) ? geneY(y) : temp
+    }
+    document.onclick = init;
+    document.ontouchstart = init;
+    init();
+</script>
+</body>
+</html>
+
                 
                 <div class="entry-shang text-center">
 	<p>「真诚赞赏，手留余香」</p>
@@ -634,72 +700,6 @@ autocomplete('#aa-search-input',
     </div>
     </section>
 </div>
-
-    <html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-<canvas></canvas>
-<script>
-    document.addEventListener('touchmove', function (e) {
-        e.preventDefault()
-    });
-    var canvasRibbon = document.getElementsByTagName('canvas')[0],
-        ctx = canvasRibbon.getContext('2d'),    
-        dpr = window.devicePixelRatio || 1, 
-        width = window.innerWidth,     
-        height = window.innerHeight,
-        RIBBON_WIDE = 90,
-        path,
-        math = Math,
-        r = 0,
-        PI_2 = math.PI * 2,    
-        cos = math.cos,   
-        random = math.random;   
-    canvasRibbon.width = width * dpr;     
-    canvasRibbon.height = height * dpr;
-    ctx.scale(dpr, dpr);    
-    ctx.globalAlpha = 0.6;  
-    function init() {
-        ctx.clearRect(0, 0, width, height);     
-        path = [{x: 0, y: height * 0.7 + RIBBON_WIDE}, {x: 0, y: height * 0.7 - RIBBON_WIDE}];
-        
-        while (path[1].x < width + RIBBON_WIDE) {
-            draw(path[0], path[1])     
-        }
-    }
-    
-    function draw(start, end) {
-        ctx.beginPath();    
-        ctx.moveTo(start.x, start.y);   
-        ctx.lineTo(end.x, end.y);   
-        var nextX = end.x + (random() * 2 - 0.25) * RIBBON_WIDE,
-            nextY = geneY(end.y);
-        ctx.lineTo(nextX, nextY);
-        ctx.closePath();
-        r -= PI_2 / -50;
-        
-        ctx.fillStyle = '#' + (cos(r) * 127 + 128 << 16 | cos(r + PI_2 / 3) * 127 + 128 << 8 | cos(r + PI_2 / 3 * 2) * 127 + 128).toString(16);
-        ctx.fill();     
-        path[0] = path[1];    
-        path[1] = {x: nextX, y: nextY}     
-    }
-    
-    function geneY(y) {
-        var temp = y + (random() * 2 - 1.1) * RIBBON_WIDE;
-        return (temp > height || temp < 0) ? geneY(y) : temp
-    }
-    document.onclick = init;
-    document.ontouchstart = init;
-    init();
-</script>
-</body>
-</html>
 
     
     <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 size=3>
