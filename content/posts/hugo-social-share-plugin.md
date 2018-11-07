@@ -31,7 +31,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 + 同页面个分享组件
 + 支持npm安装
 
-## 2. 引入 share.js
+## <span id="inline-toc">2.</span> 引入 share.js
 
 ----
 
@@ -211,7 +211,7 @@ noshare: true
 ---
 ```
 
-## 3. 更多
+## <span id="inline-toc">3.</span> 更多
 
 ----
 
