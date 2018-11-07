@@ -10,7 +10,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<div class="note info"><p>info</p></div>
+<span id="inline-toc">1.</span> 哈哈
 
 很多站长开发网站时为了推广页面，或者获得更多的回访和流量，会在网站页面添加 “分享到” 插件，用来发布到某些社交网站。因此社会化分享是很多网站常用的功能之一，国内也有很多专业的公司在做，比较出名的包括 `j*this`，`B*hare` 等。不过很悲伤的是，这些公司的产品，无一例外的具有一个特点：奇丑无比。丑就算了，还不允许别人修改其设计，结果就是，再好的 UI 设计也毁在这些插件手里了。
 

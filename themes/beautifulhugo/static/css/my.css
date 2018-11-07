@@ -251,7 +251,7 @@ border-radius: 3px;
 border-top-color: #9954bb;
 }
 // 自定义的数字块
-span#inline-toc {
+#inline-toc {
     display: inline-block;
     border-radius: 80% 100% 90% 20%;
     background-color: rgb(227, 242, 253);
@@ -279,34 +279,4 @@ hr {
     margin-bottom: 10px;
     border: 0;
     border-top: 1px solid #eee;
-}
-
-.post-body .note.info {
-    background-color: #eef7fa;
-    border-left-color: #428bca;
-}
-
-.post-body .note:not(.no-icon) {
-    padding-left: 45px;
-}
-.post-body .note {
-    position: relative;
-    padding: 15px;
-    margin-bottom: 20px;
-    border: initial;
-    border-left: 3px solid #eee;
-    background-color: #f9f9f9;
-    border-radius: 3px;
-}
-.note.info:not(.no-icon):before {
-    content: "\f05a";
-    color: #428bca;
-}
-
-.post-body .note:not(.no-icon):before {
-    position: absolute;
-    font-family: FontAwesome;
-    font-size: larger;
-    top: 13px;
-    left: 15px;
 }
