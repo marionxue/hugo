@@ -63,7 +63,7 @@
     bottom: 68px;
     background-color: #fafafa;
     border: 1px solid rgba(0, 0, 0, .07);
-    border-radius: 1px;
+    border-radius: 50%;
     -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
     background-clip: padding-box;
