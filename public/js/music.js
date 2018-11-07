@@ -12,10 +12,10 @@ const ap = new APlayer({
         cover: 'https://ws3.sinaimg.cn/large/006tNbRwgy1fwzudj5k99j303m03mdfo.jpg',
       },
       {
-        name: '红昭愿',
-        artist: '音阙诗听',
-        url: 'http://up.mcyt.net/?down/45962.mp3',
-        cover: 'http://imge.kugou.com/stdmusic/20170407/20170407225248906484.jpg',
+        name: 'Faded',
+        artist: 'Iselin Solheim',
+        url: 'https://default-1252251317.cos.ap-shanghai.myqcloud.com/faded.mp3',
+        cover: 'https://default-1252251317.cos.ap-shanghai.myqcloud.com/faded.jpeg',
       },
       {
         name: '时间煮雨',
