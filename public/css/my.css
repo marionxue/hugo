@@ -250,7 +250,6 @@ border-top-width: 5px;
 border-radius: 3px;
 border-top-color: #9954bb;
 }
-// 自定义的数字块
 #inline-toc {
     display: inline-block;
     border-radius: 80% 100% 90% 20%;
