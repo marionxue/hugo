@@ -18,6 +18,10 @@
                 {{ if not (.Params.noshare) }}
                 {{ partial "share.html" }}
                 {{ end }}
+                <link rel="stylesheet" href="{{ "css/APlayer.min.css" | absURL }}" />
+                <div id="aplayer"></div>
+                <script src="{{ "js/APlayer.min.js" | absURL }}"></script>
+                <script src="{{ "js/music.js" | absURL }}"></script>
             </article>
 
             <ul class="pager blog-pager">
