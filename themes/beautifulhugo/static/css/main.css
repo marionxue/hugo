@@ -431,18 +431,8 @@ footer .theme-by {
 }
 
 .post-preview .post-read-more {
-    /*font-weight: 800;*/
+    font-weight: 800;
     float: right;
-    display: inline-block;
-    padding: 0 0.6rem;
-    height: 1.6rem;
-    background: #49b1f5;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    line-height: 1.6rem;
-    cursor: pointer;
-    transition: all 0.2s ease-in-out;
 }
 
 @media only screen and (min-width: 768px) {
