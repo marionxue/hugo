@@ -10,7 +10,6 @@
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 {{ partial "toc1.html" . }}
                 {{ .Content }}
-                {{ partial "canvas.html" }}
                 {{ if isset .Site.Params "reward" }}
                 {{ partial "reward.html" }}
                 {{ end }}
