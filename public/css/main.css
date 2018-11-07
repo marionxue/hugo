@@ -342,7 +342,23 @@ footer .theme-by {
 
 .post-preview {
     padding: 20px 0;
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
+    border-bottom:3px dashed #a4d8fa;
+}
+.post-preview:before {
+  position: absolute;
+  top: -10px;
+  left: 5%;
+  z-index: 1;
+  color: #49b1f5;
+  content: "\f0c4";
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: 20px;
+  -webkit-transition: all 1s ease-in-out;
+  -moz-transition: all 1s ease-in-out;
+  -o-transition: all 1s ease-in-out;
+  -ms-transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out;
 }
 
 @media only screen and (min-width: 768px) {
