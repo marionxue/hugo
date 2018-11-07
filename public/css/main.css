@@ -431,8 +431,8 @@ footer .theme-by {
 }
 
 .post-preview .post-read-more {
-    /*font-weight: 800;
-    float: right;*/
+    /*font-weight: 800;*/
+    float: right;
     display: inline-block;
     padding: 0 0.6rem;
     height: 1.6rem;
