@@ -431,8 +431,12 @@ footer .theme-by {
 }
 
 .post-preview .post-read-more {
-    font-weight: 800;
+    /*font-weight: 800;*/
     float: right;
+    background: #0cc;
+    padding: 5px 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.06), 0 3px 10px rgba(0,0,0,0.13);
+    color: #fff !important;
 }
 
 @media only screen and (min-width: 768px) {
