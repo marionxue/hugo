@@ -8,7 +8,7 @@ const ap = new APlayer({
       {
         name: "Here We Are Again",
         artist: '《喜剧之王》电影插曲',
-        url: 'https://rss.yangcs.net/?/Here-We-Are-Again.mp3',
+        url: 'https://drive.yangcs.net/?/music/Here-We-Are-Again.mp3',
         cover: 'https://ws3.sinaimg.cn/large/006tNbRwgy1fwzudj5k99j303m03mdfo.jpg',
       },
       {
