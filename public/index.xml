@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>深入理解Kubernetes资源限制：CPU</title>
+      <link>https://www.yangcs.net/posts/understanding-resource-limits-in-kubernetes-cpu-time/</link>
+      <pubDate>Sat, 10 Nov 2018 13:32:30 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/understanding-resource-limits-in-kubernetes-cpu-time/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>Hugo 集成社交分享插件</title>
       <link>https://www.yangcs.net/posts/hugo-social-share-plugin/</link>
       <pubDate>Wed, 07 Nov 2018 01:22:31 +0800</pubDate>

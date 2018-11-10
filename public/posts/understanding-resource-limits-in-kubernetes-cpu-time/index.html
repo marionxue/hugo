@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 干货与湿货分享第4期 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> 深入理解Kubernetes资源限制：CPU - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="干货与湿货分享第4期" />
-  <meta name="twitter:title" content="干货与湿货分享第4期" />
-  <meta name="description" content="">
-  <meta property="og:description" content="">
-  <meta name="twitter:description" content="">
+  <meta property="og:title" content="深入理解Kubernetes资源限制：CPU" />
+  <meta name="twitter:title" content="深入理解Kubernetes资源限制：CPU" />
+  <meta name="description" content="剖析 CPU 资源限制背后的 cgroup 实现原理">
+  <meta property="og:description" content="剖析 CPU 资源限制背后的 cgroup 实现原理">
+  <meta name="twitter:description" content="剖析 CPU 资源限制背后的 cgroup 实现原理">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/weekly-4/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/understanding-resource-limits-in-kubernetes-cpu-time/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/weekly-4/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/understanding-resource-limits-in-kubernetes-cpu-time/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -372,19 +372,28 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>干货与湿货分享第4期</h1>
+                     <h1>深入理解Kubernetes资源限制：CPU</h1>
                      
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">剖析 CPU 资源限制背后的 cgroup 实现原理</span>
+                    
+                  
+                  
                     <span class="post-meta">
   
-  Posted on August 11, 2018
+  Posted on November 10, 2018
   
   
 </span>
 
 
-                    
                   
-                  
+                
               </div>
             </div>
           </div>
@@ -398,7 +407,11 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">干货与湿货分享第4期</h1>
+                <h1 align="center">深入理解Kubernetes资源限制：CPU</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">剖析 CPU 资源限制背后的 cgroup 实现原理</h2>
+                  
                 
                 
             </div>
@@ -418,237 +431,248 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Sat Aug 11, 2018</h4>
+        <h4 id="date"> Sat Nov 10, 2018</h4>
     </section>
-    <h5 id="wc">4100 Words|Read in about 9 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">3600 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/share/">share</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
     </h5>
 </div>
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-cpu-限制">1. CPU 限制</a></li>
+<li><a href="#默认限制">默认限制</a></li>
+<li><a href="#参考资料">参考资料</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
-<p>这是《干货与湿货分享》系列的第四期，主要记录过去一周我所见到的听到的值得分享的东西。</p>
+<p id="div-border-left-red">
+<strong>原文地址：</strong><a href="https://medium.com/@betz.mark/understanding-resource-limits-in-kubernetes-cpu-time-9eff74d3161b" target="_blank">Understanding resource limits in kubernetes: cpu time</a>
+<br />
+<strong>作者：</strong><a href="https://medium.com/@betz.mark?source=post_header_lockup" target="_blank">Mark Betz</a>
+<br />
+<strong>译者：</strong>杨传胜
+</p>
 
-<h3 id="p-id-h2-新闻-p"><p id="h2">新闻</p></h3>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fx2whz2ltaj318g0g1wku.jpg" alt="" /></p>
 
-<hr />
+<p>在关于 Kubernetes 资源限制的系列文章的<a href="https://mp.weixin.qq.com/s/j2FfqUHSRTzczNcfPuwRQw" target="_blank">第一篇文章</a>中，我讨论了如何使用 <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/#resourcerequirements-v1-core" target="_blank">ResourceRequirements</a> 对象来设置 Pod 中容器的内存资源限制，以及如何通过容器运行时和 linux control group（<code>cgroup</code>）来实现这些限制。我还谈到了 Requests 和 Limits 之间的区别，其中 <code>Requests</code> 用于在调度时通知调度器 Pod 需要多少资源才能调度，而 <code>Limits</code> 用来告诉 Linux 内核什么时候你的进程可以为了清理空间而被杀死。在这篇文章中，我会继续仔细分析 CPU 资源限制。想要理解这篇文章所说的内容，不一定要先阅读上一篇文章，但我建议那些工程师和集群管理员最好还是先阅读完第一篇，以便全面掌控你的集群。</p>
 
-<h4 id="1-摩拜女员工举报领导性骚扰-https-3g-163-com-all-article-dope3qg700097u7r-html">1. <a href="https://3g.163.com/all/article/DOPE3QG700097U7R.html" target="_blank">摩拜女员工举报领导性骚扰</a></h4>
-
-<p><center><img src="https://cms-bucket.nosdn.127.net/2018/08/09/6fb4d8a192d7460fb8b02442b1fe75fa.jpeg" alt="" /></center></p>
-
-<p><center><img src="https://cms-bucket.nosdn.127.net/catchpic/8/83/836bd63860e69573562d0e06fd14ba24.png" alt="" /></center></p>
-
-<p><center><img src="https://cms-bucket.nosdn.127.net/catchpic/3/3d/3d99e230238e37c9804b923a0f272278.png" alt="" /></center></p>
-
-<p><strong>8月9日，网络上出现一张截图，截图内容为摩拜女员工举报领导性骚扰。针对此事，摩拜回复称被举报人已被停职并接受进一步调查。</strong>网络截图显示，举报者为摩拜SPE前端组的一名普通员工，于2017年进入摩拜工作。据举报者描述，摩拜客户端&amp;前端组负责人张耀春曾对多位下属性骚扰，受骚扰最严重的女同事被迫离职。</p>
-
-<h4 id="2-中关村程序员在车流中改代码-http-www-cocoachina-com-cms-wap-php-action-article-id-24506">2. <a href="http://www.cocoachina.com/cms/wap.php?action=article&amp;id=24506" target="_blank">中关村程序员在车流中改代码</a></h4>
-
-<p><center><img src="http://api.cocoachina.com/uploads//20180809/1533784496266270.jpg" alt="" /></center></p>
-
-<p>事件发生在早高峰时期，地点为中关村软件园，因为堵车厉害，楼主恰巧看到了这一幕，一名略微有些秃顶，穿着蓝白条纹短袖的程序员蹲在信号灯下调试代码，疑似信号灯的算法程序出现了bug，该名程序员正在现场紧急处理。在其四周，车辆已经拥堵得水泄不通，但在这名程序员看来，此刻他眼里只有急需解决的代码问题，眼前的其它都被忽略。</p>
-
-<h4 id="3-特斯拉开出三倍工资抢上汽技术员工-http-tech-qq-com-a-20180807-002406-htm">3. <a href="http://tech.qq.com/a/20180807/002406.htm" target="_blank">特斯拉开出三倍工资抢上汽技术员工</a></h4>
-
-<p><center><img src="http://inews.gtimg.com/newsapp_bt/0/3871231544/641" alt="" /></center></p>
-
-<p>特斯拉在上海建设的、被称作“无敌舰”的工厂，目前正在大规模招募第一批“船员”。8月5日，特斯拉在其官方微信上首次发布热招职位，包括EPC工程总监、政府事务项目经理、施工经理、土木工程师、电气设计工程师、机械设计师以及法律顾问、高级财务经理、招聘人员等。</p>
-
-<p>一位知情人士告诉21世纪经济报道记者：“特斯拉上海工厂已经在抢人了，直接开出三倍工资，上汽的技术人员走了一大批。”</p>
-
-<h4 id="4-李彦宏回应谷歌重返大陆-有信心再赢一次-https-tech-sina-com-cn-i-2018-08-07-doc-ihhkuskt0298624-shtml">4. <a href="https://tech.sina.com.cn/i/2018-08-07/doc-ihhkuskt0298624.shtml" target="_blank">李彦宏回应谷歌重返大陆：有信心再赢一次</a></h4>
-
-<p><center><img src="https://n.sinaimg.cn/tech/transform/22/w550h1072/20180807/zMit-hhkuskt0328373.jpg" alt="" /></center></p>
-
-<p>Google 又双叒叕要回归中国，这是谷歌今年以来第5次传出“返华”的传闻，而有人民日报发文欢迎 Google 回归的消息，似乎印证这次应该是来真的了！</p>
-
-<p>人民日报近日在社交媒体平台 Twitter、Facebook 上刊登了一篇标题为 “Stability prerequisite for China’s internet opening up” 的文章，文章表示，“欢迎 Google 回到中国大陆，但前提是得遵守政府相关的法律政策。”作为主要的竞争对手，百度的李彦宏今天公开在朋友圈对传闻进行了回应“如果 Google 决定回到中国，我们非常有信心再PK一次，再赢一次”。</p>
-
-<p>很快就有调皮的小编开始做测验了，测试结果啪啪啪打脸。。。</p>
-
-<p><center><img src="https://resource01.ulifestyle.com.hk/res/v3/image/content/2130000/2132767/20180807_googlebaidu_04_600.jpg" alt="" /></center></p>
-
-<h4 id="5-腾讯云承认自身错误导致用户数据丢失-https-36kr-com-p-5146916-html">5. <a href="https://36kr.com/p/5146916.html" target="_blank">腾讯云承认自身错误导致用户数据丢失</a></h4>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/WechatIMG1262.jpeg" alt="" /></center></p>
-
-<p>腾讯云服务最近发生了一起引发广泛关注的用户数据丢失事故。“前沿数控技术新媒体”8月5日晚间发微博称，在使用腾讯云8个月后，公司存储在腾讯云上的数据无可挽回地全部丢失。腾讯云公布的调查报告，承认是自己犯下的一系列错误导致用户数据丢失，并表示将尽力帮助客户解决问题，同时优化机制避免类似情况再度发生。</p>
-
-<h3 id="p-id-h2-工具-p"><p id="h2">工具</p></h3>
+<h2 id="1-cpu-限制">1. CPU 限制</h2>
 
 <hr />
 
-<h4 id="1-ice-https-github-com-alibaba-ice">1. <a href="https://github.com/alibaba/ice" target="_blank">ice</a></h4>
+<p>正如我在上一篇文章中提到的，<code>CPU</code> 资源限制比内存资源限制更复杂，原因将在下文详述。幸运的是 <code>CPU</code> 资源限制和内存资源限制一样都是由 <code>cgroup</code> 控制的，上文中提到的思路和工具在这里同样适用，我们只需要关注他们的不同点就行了。首先，让我们将 CPU 资源限制添加到之前示例中的 yaml：</p>
 
-<p>飞冰是一套阿里巴巴开源的基于 React 的中后台应用解决方案，在阿里巴巴内部，已经有 270 多个来自几乎所有 BU 的项目在使用。</p>
+<pre><code class="language-yaml">resources:
+  requests:
+    memory: 50Mi
+    cpu: 50m
+  limits:
+    memory: 100Mi
+    cpu: 100m
+</code></pre>
 
-<h4 id="2-feediary-不跟踪-纯文本-rss-阅读器-https-feediary-com">2. <a href="https://feediary.com/" target="_blank">Feediary – 不跟踪、纯文本 RSS 阅读器</a></h4>
+<p>单位后缀 <code>m</code> 表示千分之一核，也就是说 <code>1 Core = 1000m</code>。因此该资源对象指定容器进程需要 <code>50/1000</code> 核（5%）才能被调度，并且允许最多使用 <code>100/1000</code> 核（10%）。同样，<code>2000m</code> 表示两个完整的 CPU 核心，你也可以写成 <code>2</code> 或者 <code>2.0</code>。为了了解 Docker 和 cgroup 如何使用这些值来控制容器，我们首先创建一个只配置了 CPU <code>requests</code> 的 Pod：</p>
 
-<p><center><img src="http://apprcn.b0.upaiyun.com/Feediary-1.png" alt="" /></center></p>
+<pre><code class="language-bash">$ kubectl run limit-test --image=busybox --requests &quot;cpu=50m&quot; --command -- /bin/sh -c &quot;while true; do sleep 2; done&quot;
 
-<p>RSS 阅读器是有不少了，但可能每个阅读器都会标榜自己有多么多的功能，功能丰富到你 90% 都用不上。Feediary 这个 RSS 阅读器反而是相反，它功能不多，但够专注和够纯净。</p>
+deployment.apps &quot;limit-test&quot; created
+</code></pre>
 
-<p>Feediary 是一款网页 RSS 阅读器，简单注册后就可以使用了。有免费版和收费版区分，最大区别就是免费版最多只可以添加 50 个 RSS 源，收费版当然就没什么限制了。</p>
+<p>通过 kubectl 命令我们可以验证这个 Pod 配置了 <code>50m</code> 的 CPU requests：</p>
 
-<p><center><img src="http://apprcn.b0.upaiyun.com/Feediary-2.png" alt="" /></center></p>
+<pre><code class="language-bash">$ kubectl get pods limit-test-5b4c495556-p2xkr -o=jsonpath='{.spec.containers[0].resources}'
 
-<h4 id="3-licketylink-http-lickety-link">3. <a href="http://lickety.link/" target="_blank">LicketyLink</a></h4>
+map[requests:map[cpu:50m]]
+</code></pre>
 
-<p><center><img src="http://cdn.ilovefreesoftware.com/wp-content/uploads/2018/08/create-a-new-sharing-link-with-custom-name-and-add-files.png" alt="" /></center></p>
+<p>我们还可以看到 Docker 为容器配置了相同的资源限制：</p>
 
-<p>这是一个可以在线共享文件的网站，并且对上传文件的大小没有任何限制，对下载速度也没有任何限制。我们都知道，百度云等其他国内网盘对上传文件大小有限制，而且在不买会员的情况下下载速度极慢！这个网站将会是你的救星。</p>
+<pre><code class="language-bash">$ docker ps | grep busy | cut -d' ' -f1
+f2321226620e
 
-<p>值得一提的是，该网站用一种很特别的方法来共享文件，它会先生成一个共享链接，然后你可以随意往这个链接里面添加或删除文件，共享链接不变，是不是很爽？还有一个大招就是你不用等待文件上传成功就可以分享给其他人了，我只能说还有谁？！</p>
+$ docker inspect f2321226620e --format '{{.HostConfig.CpuShares}}'
+51
+</code></pre>
 
-<h4 id="4-sharefiles-https-sharefiles-app">4. <a href="https://sharefiles.app/" target="_blank">ShareFiles</a></h4>
+<p>这里显示的为什么是 <code>51</code>，而不是 <code>50</code>？这是因为 Linux cgroup 和 Docker 都将 CPU 核心数分成了 <code>1024</code> 个时间片（shares），而 Kubernetes 将它分成了 <code>1000</code> 个 shares。</p>
 
-<p>另一个不限文件大小的在线共享网站。</p>
+<blockquote>
+<p>shares 用来设置 CPU 的相对值，并且是针对所有的 CPU（内核），默认值是 1024，假如系统中有两个 cgroup，分别是 A 和 B，A 的 shares 值是 1024，B 的 shares 值是 512，那么 A 将获得 1024/(1204+512)=66% 的 CPU 资源，而 B 将获得 33% 的 CPU 资源。shares 有两个特点：</p>
 
-<h4 id="5-onlim-https-onlim-com">5. <a href="https://onlim.com/" target="_blank">Onlim</a></h4>
+<p><li>如果 A 不忙，没有使用到 66% 的 CPU 时间，那么剩余的 CPU 时间将会被系统分配给 B，即 B 的 CPU 使用率可以超过 33%。</li>
+<li>如果添加了一个新的 cgroup C，且它的 shares 值是 1024，那么 A 的限额变成了 1024/(1204+512+1024)=40%，B 的变成了 20%。</li>
+<br />
+从上面两个特点可以看出：</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/onlim.jpg" alt="" /></center></p>
+<p><li>在闲的时候，shares 基本上不起作用，只有在 CPU 忙的时候起作用，这是一个优点。</li>
+<li>由于 shares 是一个绝对值，需要和其它 cgroup 的值进行比较才能得到自己的相对限额，而在一个部署很多容器的机器上，cgroup 的数量是变化的，所以这个限额也是变化的，自己设置了一个高的值，但别人可能设置了一个更高的值，所以这个功能没法精确的控制 CPU 使用率。</li></p>
+</blockquote>
 
-<p>Pnlim 是一个免费的在线社交媒体管理工具，你可以在这里面添加无限多的社交账户（支持 Facebook、Twitter 和 Slack 等）。同时还可以添加 RSS 源，所以你也可以把它当成一个 RSS 阅读器，颜值还是很高的。</p>
+<p>与配置内存资源限制时 Docker 配置容器进程的内存 cgroup 的方式相同，设置 CPU 资源限制时 Docker 会配置容器进程的 <code>cpu,cpuacct</code> cgroup：</p>
 
-<h4 id="6-zhuye-kim-https-github-com-wenguonideshou-zhuye-kim">6. <a href="https://github.com/wenguonideshou/zhuye_kim" target="_blank">zhuye_kim</a></h4>
+<pre><code class="language-bash">$ ps ax | grep /bin/sh
+   60554 ?      Ss     0:00 /bin/sh -c while true; do sleep 2; done
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/zhuye_kim_google.png" alt="" /></center></p>
+$ sudo cat /proc/60554/cgroup
+...
+4:cpu,cpuacct:/kubepods/burstable/pode12b33b1-db07-11e8-b1e1-42010a800070/3be263e7a8372b12d2f8f8f9b4251f110b79c2a3bb9e6857b2f1473e640e8e75
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/zhuye_kim_baidu.png" alt="" /></center></p>
+$ ls -l /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pode12b33b1-db07-11e8-b1e1-42010a800070/3be263e7a8372b12d2f8f8f9b4251f110b79c2a3bb9e6857b2f1473e640e8e75
+total 0
+drwxr-xr-x 2 root root 0 Oct 28 23:19 .
+drwxr-xr-x 4 root root 0 Oct 28 23:19 ..
+...
+-rw-r--r-- 1 root root 0 Oct 28 23:19 cpu.shares
+</code></pre>
 
-<p>仿 zhuye.kim 的简单个人主页/导航程序，带后台</p>
+<p>Docker 容器的 <code>HostConfig.CpuShares</code> 属性映射到 cgroup 的 <code>cpu.shares</code> 属性，可以验证一下：</p>
 
-<h4 id="7-cartoonify-https-www-kapwing-com-cartoonify">7. <a href="https://www.kapwing.com/cartoonify" target="_blank">Cartoonify</a></h4>
+<pre><code class="language-bash">$ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/podb5c03ddf-db10-11e8-b1e1-42010a800070/64b5f1b636dafe6635ddd321c5b36854a8add51931c7117025a694281fb11444/cpu.shares
 
-<p><center><img src="https://i.loli.net/2018/07/23/5b5548bc8df23.png" alt="" /></center></p>
+51
+</code></pre>
 
-<p>Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能将你上传的相片转为涂鸦手绘风格，它以 Draw This 做为基础，非常有意思，如果你想知道将相片丢给机器辨识、它会智能返回什么样的结果呢？</p>
+<p>你可能会很惊讶，设置了 CPU requests 竟然会把值传播到 <code>cgroup</code>，而在上一篇文章中我们设置内存 requests 时并没有将值传播到 cgroup。这是因为内存的 <code>soft limit</code> 内核特性对 Kubernetes 不起作用，而设置了 <code>cpu.shares</code> 却对 Kubernetes 很有用。后面我会详细讨论为什么会这样。现在让我们先看看设置 CPU <code>limits</code> 时会发生什么：</p>
 
-<h4 id="8-my-free-mp3-https-my-free-mp3-net-cn">8. <a href="https://my-free-mp3.net/cn" target="_blank">my-free-mp3</a></h4>
+<pre><code class="language-bash">$ kubectl run limit-test --image=busybox --requests &quot;cpu=50m&quot; --limits &quot;cpu=100m&quot; --command -- /bin/sh -c &quot;while true; do
+sleep 2; done&quot;
 
-<p><center><img src="http://wx1.sinaimg.cn/mw690/0060lm7Tly1ftwxawbt8aj30sm0ij75t.jpg" alt="" /></center></p>
+deployment.apps &quot;limit-test&quot; created
+</code></pre>
 
-<p>现在版权管理越来越严格，之前用百度音乐一个就行了，现在想下载一首歌要用到不同的 APP，不少大平台还只能试听不能下载。今天这个网页版的比较好用，输入歌曲名就可搜索了，同时输入歌曲名和歌手可提高精准度，点击后面的 Size-Kbps 可以查看码率，一般为 320K 音质，支持在线试听和下载，实在搜索不到换繁体字再搜。点后面下载会跳转到一个中间页面，点”ENTER”就可以下载了，个人测试多首音乐都可以下载。</p>
+<p>再一次使用 kubectl 验证我们的资源配置：</p>
 
-<p><center><img src="http://wx1.sinaimg.cn/mw690/0060lm7Tly1ftwxawt2r1j30xr0kmwhi.jpg" alt="" /></center></p>
+<pre><code class="language-bash">$ kubectl get pods limit-test-5b4fb64549-qpd4n -o=jsonpath='{.spec.containers[0].resources}'
 
-<h3 id="p-id-h2-教程-p"><p id="h2">教程</p></h3>
+map[limits:map[cpu:100m] requests:map[cpu:50m]]
+</code></pre>
 
-<hr />
+<p>查看对应的 Docker 容器的配置：</p>
 
-<h4 id="1-系统设计入门-https-github-com-donnemartin-system-design-primer">1. <a href="https://github.com/donnemartin/system-design-primer" target="_blank">系统设计入门</a></h4>
+<pre><code class="language-bash">$ docker ps | grep busy | cut -d' ' -f1
+f2321226620e
+$ docker inspect 472abbce32a5 --format '{{.HostConfig.CpuShares}} {{.HostConfig.CpuQuota}} {{.HostConfig.CpuPeriod}}'
+51 10000 100000
+</code></pre>
 
-<p>系统设计是一个很宽泛的话题。在互联网上，<strong>关于系统设计原则的资源也是多如牛毛。</strong>这个仓库就是这些资源的组织收集，它可以帮助你学习如何构建可扩展的系统。</p>
+<p>可以明显看出，CPU requests 对应于 Docker 容器的 <code>HostConfig.CpuShares</code> 属性。而 CPU limits 就不太明显了，它由两个属性控制：<code>HostConfig.CpuPeriod</code> 和 <code>HostConfig.CpuQuota</code>。Docker 容器中的这两个属性又会映射到进程的 <code>cpu,couacct</code> cgroup 的另外两个属性：<code>cpu.cfs_period_us</code> 和 <code>cpu.cfs_quota_us</code>。我们来看一下：</p>
 
-<h4 id="2-命令行的艺术-https-github-com-jlevy-the-art-of-command-line-blob-master-readme-zh-md">2. <a href="https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md" target="_blank">命令行的艺术</a></h4>
+<pre><code class="language-bash">$ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b1e1-42010a800070/f0845c65c3073e0b7b0b95ce0c1eb27f69d12b1fe2382b50096c4b59e78cdf71/cpu.cfs_period_us
+100000
 
-<p>熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会提高你作为工程师的灵活性以及生产力。本文是一份作者在 Linux 上工作时，发现的一些命令行使用技巧的摘要。有些技巧非常基础，而另一些则相当复杂，甚至晦涩难懂。这篇文章并不长，但当你能够熟练掌握这里列出的所有技巧时，你就学会了很多关于命令行的东西了。</p>
+$ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b1e1-42010a800070/f0845c65c3073e0b7b0b95ce0c1eb27f69d12b1fe2382b50096c4b59e78cdf71/cpu.cfs_quota_us
+10000
+</code></pre>
 
-<h4 id="3-kubernetes-in-action-https-www-manning-com-books-kubernetes-in-action">3. <a href="https://www.manning.com/books/kubernetes-in-action" target="_blank">Kubernetes In Action</a></h4>
+<p>如我所说，这些值与容器配置中指定的值相同。但是这两个属性的值是如何从我们在 Pod 中设置的 <code>100m</code> cpu limits 得出的呢，他们是如何实现该 limits 的呢？这是因为 cpu requests 和 cpu limits 是使用两个独立的控制系统来实现的。Requests 使用的是 cpu <code>shares</code> 系统，cpu shares 将每个 CPU 核心划分为 <code>1024</code> 个时间片，并保证每个进程将获得固定比例份额的时间片。如果总共有 1024 个时间片，并且两个进程中的每一个都将 <code>cpu.shares</code> 设置为 <code>512</code>，那么它们将分别获得大约一半的 CPU 可用时间。但 cpu shares 系统无法精确控制 CPU 使用率的上限，如果一个进程没有设置 shares，则另一个进程可用自由使用 CPU 资源。</p>
 
-<p><center><img src="https://pic4.zhimg.com/v2-3d850923108ea1f17348d435fe098c23_1200x500.jpg" alt="" /></center></p>
+<p>大约在 2010 年左右，谷歌团队和其他一部分人注意到了<a href="https://ai.google/research/pubs/pub36669" target="_blank">这个问题</a>。为了解决这个问题，后来在 linux 内核中增加了第二个功能更强大的控制系统：<strong>CPU 带宽控制组</strong>。带宽控制组定义了一个 <span id=inline-purple>周期</span>，通常为 <code>1/10</code> 秒（即 100000 微秒）。还定义了一个 <span id=inline-purple>配额</span>，表示允许进程在 cpu 上运行的那个周期内的最大时间片数。在本例中我们将 Pod 的 cpu limits 设置为 <code>100m</code>，这表示 <code>100/1000</code> 个 CPU 核心，即 <code>100000</code> 微秒的 CPU 时间周期中的 <code>10000</code>。所以该 limits 翻译到 <code>cpu,cpuacct</code> cgroup 中被设置为 <code>cpu.cfs_period_us=100000</code> 和 <code>cpu.cfs_quota_us=10000</code>。顺便说一下，其中的 <span id=inline-purple>cfs</span> 代表 <code>Completely Fair Scheduler</code>（绝对公平调度），这是 Linux 系统中默认的 CPU 调度算法。还有一个实时调度算法，它也有自己相应的配额值。</p>
 
-<p>这本书深入浅出的讲解了 Kubernetes 的构架和设计理念，非常难能可贵。通过这本书你将会学到如何在 non-deterministic 的分布式环境中，为 scheduler 和 controller 这种需要“唯一决策者设计”的组件提供 high availability 的同时，使 cluster 的调度决策稳定可靠的方法。</p>
-
-<h4 id="4-理解-linux-进程-https-github-com-tobegit3hub-understand-linux-process">4. <a href="https://github.com/tobegit3hub/understand_linux_process" target="_blank">理解 Linux 进程</a></h4>
-
-<p>本书受 <a href="http://www.duokan.com/book/41446" target="_blank">理解 Unix 进程</a> 启发而作，用极简的篇幅深入学习进程知识。理解 Linux 进程用 Go 重写了所有示例程序，通过循序渐进的方法介绍 Linux 进程的工作原理和一切你所需要知道的概念。</p>
-
-<h4 id="5-go语言高级编程-https-github-com-chai2010-advanced-go-programming-book">5. <a href="https://github.com/chai2010/advanced-go-programming-book" target="_blank">Go语言高级编程</a></h4>
-
-<p><center><img src="https://github.com/chai2010/advanced-go-programming-book/raw/master/cover.png" alt="" /></center></p>
-
-<p>本书涵盖 CGO、Go 汇编语言、RPC 实现、Web 框架实现、分布式系统等高阶主题，针对 Go 语言有一定经验想深入了解 Go 语言各种高级用法的开发人员。对于刚学习 Go 语言的读者，建议先从 <a href="https://github.com/golang-china/gopl-zh" target="_blank">《Go语言圣经》</a> 开始系统学习 Go 语言的基础知识。</p>
-
-<h4 id="6-envoy为什么能战胜ngnix-线程模型分析篇-https-www-itcodemonkey-com-article-7042-html">6. <a href="https://www.itcodemonkey.com/article/7042.html" target="_blank">Envoy为什么能战胜Ngnix——线程模型分析篇</a></h4>
-
-<p>随着 Service Mesh 在最近一年的流行，Envoy 作为其中很关键的组件，也开始被广大技术人员熟悉。作者是 Envoy 的开发者之一，本文详细说明了 Envoy 的线程模型，对于理解 Envoy 如何工作非常有帮助。内容较为深入，建议细细品读。</p>
-
-<h3 id="p-id-h2-资源-p"><p id="h2">资源</p></h3>
-
-<hr />
-
-<h4 id="1-programmer-job-blacklist-https-github-com-shengxinjing-programmer-job-blacklist">1. <a href="https://github.com/shengxinjing/programmer-job-blacklist" target="_blank">programmer-job-blacklist</a></h4>
-
-<p>这是一份程序员找工作黑名单，换工作和当技术合伙人需谨慎啊！每一个程序猿，每一个公司都有黑点，但是如果把黑点放大了，黑名单就没存在的意义了。</p>
-
-<h4 id="2-杭州房产知识扫盲-https-github-com-houshanren-hangzhou-house-knowledge">2. <a href="https://github.com/houshanren/hangzhou_house_knowledge" target="_blank">杭州房产知识扫盲</a></h4>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/hangzhou_house.jpg" alt="" /></center></p>
-
-<p>这是作者 2017 年买房经历总结出来的买房购房知识分享给大家，希望对大家有所帮助。买房不易，且买且珍惜。</p>
-
-<h4 id="3-wallhalla-https-wallhalla-com">3. <a href="https://wallhalla.com/" target="_blank">Wallhalla</a></h4>
-
-<p><center><img src="http://7xpi4m.com1.z0.glb.clouddn.com/201807282251_92.png" alt="" /></center></p>
-
-<p>一个设计感十足的壁纸网站。该网站特点：</p>
+<p>现在让我们来总结一下：</p>
 
 <ul>
-<li>网站整体设计的非常简约大方；</li>
-<li>可以按照关键字、色彩、图片、标签进行搜索；</li>
-<li>Wallhalla 本身只是个图片搜索引擎，并不持有图片，但可以直接下载到原始图片；</li>
-<li>通过放大镜查看图片细节；</li>
-<li>展示图片的色彩组成和色系；</li>
-<li>可以随机或者最热门浏览图片</li>
+<li>在 Kubernetes 中设置的 cpu requests 最终会被 cgroup 设置为 <code>cpu.shares</code> 属性的值， cpu limits 会被带宽控制组设置为 <code>cpu.cfs_period_us</code> 和 <code>cpu.cfs_quota_us</code> 属性的值。与内存一样，cpu requests 主要用于在调度时通知调度器节点上至少需要多少个 cpu shares 才可以被调度。</li>
+<li>与 内存 requests 不同，设置了 cpu requests 会在 cgroup 中设置一个属性，以确保内核会将该数量的 shares 分配给进程。</li>
+<li>cpu limits 与 内存 limits 也有所不同。如果容器进程使用的内存资源超过了内存使用限制，那么该进程将会成为 <code>oom-killing</code> 的候选者。但是容器进程基本上永远不能超过设置的 CPU 配额，所以容器永远不会因为尝试使用比分配的更多的 CPU 时间而被驱逐。系统会在调度程序中强制进行 CPU 资源限制，以确保进程不会超过这个限制。</li>
 </ul>
 
-<h4 id="4-mojo-weixin-https-github-com-sjdy521-mojo-weixin">4. <a href="https://github.com/sjdy521/Mojo-Weixin" target="_blank">Mojo-Weixin</a></h4>
+<p>如果你没有在容器中设置这些属性，或将他们设置为不准确的值，会发生什么呢？与内存一样，如果只设置了 limits 而没有设置 requests，Kubernetes 会将 CPU 的 requests 设置为 与 limits 的值一样。如果你对你的工作负载所需要的 CPU 时间了如指掌，那再好不过了。如果只设置了 CPU requests 却没有设置 CPU limits 会怎么样呢？这种情况下，Kubernetes 会确保该 Pod 被调度到合适的节点，并且该节点的内核会确保节点上的可用 cpu shares 大于 Pod 请求的 cpu shares，但是你的进程不会被阻止使用超过所请求的 CPU 数量。既不设置 requests 也不设置 limits 是最糟糕的情况：调度程序不知道容器需要什么，并且进程对 cpu shares 的使用是无限制的，这可能会对 node 产生一些负面影响。</p>
 
-<p>使用Perl语言编写的个人账号微信/weixin/wechat客户端框架（非GUI），可通过插件提供基于HTTP协议的api接口供其他语言或系统调用。可以利用微软小冰实现智能聊天回复、识别指定关键字发送美女图片、通过微信消息自定义问答知识库等各种功能应有尽有。</p>
+<p>最后我还想告诉你们的是：为每个 pod 都手动配置这些参数是挺麻烦的事情，kubernetes 提供了 <code>LimitRange</code> 资源，可以让我们配置某个 namespace 默认的 request 和 limit 值。</p>
 
-<h3 id="p-id-h2-奇闻-p"><p id="h2">奇闻</p></h3>
-
-<hr />
-
-<h4 id="1-历史上第一个真正能转的电动机">1. 历史上第一个真正能转的电动机</h4>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/WechatIMG1264.jpeg" alt="" /></center>
-<center><em>法拉第单极电机的现代仿品</em></center>
-<center><em>水银有毒，可用盐水代替</em></center></p>
-
-<p>1821 年，法拉第搞出了一个真正能转的电动机，现在看来这个装置有点简陋。首先是一杯水银，水银是导电的，中间插进一根条形磁铁。上面挂钩上垂下来一根铜丝，另一头泡在水银里面，可以任意移动。顶上通电，电池另一头接到水银里边。这等于电流通过了水银和铁丝形成了一个回路。一通电，这个铁丝在围着水银里边的磁铁画圈圈。这是世界上第一个利用电磁力驱动的电动机，后来称为“单极电机”。</p>
-
-<h4 id="2-维苏威火山">2. 维苏威火山</h4>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/8416081431.jpg" alt="" /></center></p>
-
-<p>维苏威火山是欧洲最危险的火山，11 公里以外就是那不勒斯。公元 79 年的一次大喷发，埋葬了庞贝古城和附近的赫库兰尼姆、斯塔比亚等等城市。一开始连续发生了 4 天的地震，但是震级都不大，当时古罗马的人都不在乎。哪知道维苏威火山突然喷发了，火山灰云柱直冲 33km 高空。</p>
-
-<p>大量火山灰落到了附近的城市里面，房顶上累积了 3 厘米厚。夜里发生了 6 次火山碎屑流，火山喷发的时候，喷出的火山灰是滚烫的，加热了周围的空气，空气形成强大的上升气流，裹挟着火山灰往天上冒。但是温度下降了，热空气没那个力气把火山灰送入高空，火山灰很可能喷出来没多高就沿着山坡往下翻滚，于是热空气和火山灰裹挟着，形成了火山的碎屑流。到达赫库兰尼姆的时候，温度高达 500 度。因此城里的人瞬间碳化，定格在了那一刻。到达稍远的庞贝城的时候，温度降低到 300 度，因此庞贝城里面的遗骸留下了大量的遗体和衣服。</p>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/WechatIMG1265.jpeg" alt="" /></center>
-<center><em>庞贝城的悲惨景象</em></center></p>
-
-<p>到了 1599 年的时候，因为挖掘地下引水工程，发现有雕塑和壁画，庞贝古城被发现。1738 年，命运悲惨的赫库兰尼姆被发现。1748 年，在那不勒斯王国国王夫妇的资助下，庞贝城也被挖出来了。如今这里都是世界文化遗产。</p>
-
-<h4 id="3-夜明珠到底值不值钱">3. 夜明珠到底值不值钱？</h4>
-
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/WechatIMG1267.jpeg" alt="" /></center>
-<center><em>美丽的萤石</em></center></p>
-
-<p>最早人们发现有一种东西叫做“萤石”，为什么起这个名字呢？因为在阳光照射过后，你迅速拿到黑暗中去看，会看到这种彩色的石头会发出荧光。有的石头荧光时间非常长，有的石头荧光时间非常短。今天市场上很多所谓的夜明珠，就是由发光时间比较长的萤石材料做成的。所以这些东西一点都不值钱。早在河姆渡时期就发现过用萤石来做装饰品。我们的老祖宗已经发现这东西是会发出荧光的。</p>
-
-<p>但是大家请注意，萤石这种材料千万不能和酸性的东西放在一起，和酸性的东西放在一起，会产生氟化氢，溶解在水里就是氢氟酸。1670年，有个德国人就发现，用萤石和硫酸放在一起，会冒出一种气体，这种气体居然能腐蚀玻璃。如果在玻璃表面涂上一层蜡，然后在蜡上刻出花纹，然后再用这种蒸汽去熏。等到你把蜡去掉就会发现，花纹已经刻在了玻璃上。</p>
-
-<h3 id="p-id-h2-欢迎关注-p"><p id="h2">欢迎关注</p></h3>
+<h2 id="默认限制">默认限制</h2>
 
 <hr />
 
-<p>该系列每周六发布，同步更新在我的个人<a href="https://www.yangcs.net/" target="_blank">博客</a>和微信公众号上。</p>
+<p>通过上文的讨论大家已经知道了忽略资源限制会对 Pod 产生负面影响，因此你可能会想，如果能够配置某个 namespace 默认的 request 和 limit 值就好了，这样每次创建新 Pod 都会默认加上这些限制。Kubernetes 允许我们通过 <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.11/#limitrange-v1-core" target="_blank">LimitRange</a> 资源对每个命名空间设置资源限制。要创建默认的资源限制，需要在对应的命名空间中创建一个 <code>LimitRange</code> 资源。下面是一个例子：</p>
 
-<p>微信搜索 “云原生实验室” 或者扫描二维码即可关注。</p>
+<pre><code class="language-yaml">apiVersion: v1
+kind: LimitRange
+metadata:
+  name: default-limit
+spec:
+  limits:
+  - default:
+      memory: 100Mi
+      cpu: 100m
+    defaultRequest:
+      memory: 50Mi
+      cpu: 50m
+  - max:
+      memory: 512Mi
+      cpu: 500m
+  - min:
+      memory: 50Mi
+      cpu: 50m
+    type: Container
+</code></pre>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg" alt="" /></center></p>
+<p>这里的几个字段可能会让你们有些困惑，我拆开来给你们分析一下。</p>
 
-<p><br /></p>
+<ul>
+<li><code>limits</code> 字段下面的 <code>default</code> 字段表示每个 Pod 的默认的 <code>limits</code> 配置，所以任何没有分配资源的 limits 的 Pod 都会被自动分配 <code>100Mi</code> limits 的内存和 <code>100m</code> limits 的 CPU。</li>
+<li><code>defaultRequest</code> 字段表示每个 Pod 的默认 <code>requests</code> 配置，所以任何没有分配资源的 requests 的 Pod 都会被自动分配 <code>50Mi</code> requests 的内存和 <code>50m</code> requests 的 CPU。</li>
+<li><code>max</code> 和 <code>min</code> 字段比较特殊，如果设置了这两个字段，那么只要这个命名空间中的 Pod 设置的 <code>limits</code> 和 <code>requests</code> 超过了这个上限和下限，就不会允许这个 Pod 被创建。我暂时还没有发现这两个字段的用途，如果你知道，欢迎在留言告诉我。</li>
+</ul>
+
+<p><code>LimitRange</code> 中设定的默认值最后由 Kubernetes 中的准入控制器 <code>LimitRanger</code> 插件来实现。准入控制器由一系列插件组成，它会在 API 接收对象之后创建 Pod 之前对 Pod 的 <code>Spec</code> 字段进行修改。对于 <code>LimitRanger</code> 插件来说，它会检查每个 Pod 是否设置了 limits 和 requests，如果没有设置，就给它配置 <code>LimitRange</code> 中设定的默认值。通过检查 Pod 中的 <code>annotations</code> 注释，你可以看到 <code>LimitRanger</code> 插件已经在你的 Pod 中设置了默认值。例如：</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    kubernetes.io/limit-ranger: 'LimitRanger plugin set: cpu request for container
+      limit-test'
+  name: limit-test-859d78bc65-g6657
+  namespace: default
+spec:
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - while true; do sleep 2; done
+    image: busybox
+    imagePullPolicy: Always
+    name: limit-test
+    resources:
+      requests:
+        cpu: 100m
+</code></pre>
+
+<p>以上就是我对 Kubernetes 资源限制的全部见解，希望能对你有所帮助。如果你想了解更多关于 Kubernetes 中资源的 limits 和 requests、以及 linux cgroup 和内存管理的更多详细信息，可以查看我在文末提供的参考链接。</p>
+
+<h2 id="参考资料">参考资料</h2>
+
+<hr />
+
+<ul>
+<li><a href="https://engineering.squarespace.com/blog/2017/understanding-linux-container-scheduling" target="_blank">Understanding Linux Container Scheduling</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/" target="_blank">Managing Compute Resources for Containers</a></li>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/resource_management_guide/sec-memory" target="_blank">Red Hat Customer Portal</a></li>
+<li><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/6/html/resource_management_guide/ch01" target="_blank">Chapter 1. Introduction to Control Groups (Cgroups)</a></li>
+<li><a href="https://kubernetes.io/docs/tasks/administer-cluster/manage-resources/memory-default-namespace/" target="_blank">Configure Default Memory Requests and Limits for a Namespace</a></li>
+</ul>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
@@ -708,11 +732,11 @@ autocomplete('#aa-search-input',
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/where-is-the-request-1/" data-toggle="tooltip" data-placement="top" title="请求都去哪了？">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/hugo-social-share-plugin/" data-toggle="tooltip" data-placement="top" title="Hugo 集成社交分享插件">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/where-is-the-request-2/" data-toggle="tooltip" data-placement="top" title="请求都去哪了？（续）">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -722,11 +746,15 @@ autocomplete('#aa-search-input',
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/weekly-3/">干货与湿货分享第3期</a></li>
+                    <li><a href="/posts/use-envoy-as-a-kubernetes-ingress/">初试 Kubernetes 集群中使用 Contour 反向代理</a></li>
                     
-                    <li><a href="/posts/weekly-2/">干货与湿货分享第2期</a></li>
+                    <li><a href="/posts/kubernetes-extensible-admission/">Kubernetes 准入控制介绍</a></li>
                     
-                    <li><a href="/posts/weekly-1/">干货与湿货分享第1期</a></li>
+                    <li><a href="/posts/kubernetes-dns/">Kubernetes DNS 高阶指南</a></li>
+                    
+                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
+                    
+                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
                     
                 </ul>
                 
