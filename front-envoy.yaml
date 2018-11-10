@@ -17,6 +17,7 @@ static_resources:
               - "yangcs.net"
               - "www.yangcs.net"
               - "youtube.yangcs.net"
+              - "drive.yangcs.net"
               routes:
               - match:
                   prefix: "/"

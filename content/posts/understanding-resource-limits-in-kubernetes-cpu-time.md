@@ -1,5 +1,5 @@
 ---
-title: "深入理解Kubernetes资源限制：CPU"
+title: "深入理解 Kubernetes 资源限制：CPU"
 subtitle: "剖析 CPU 资源限制背后的 cgroup 实现原理"
 date: 2018-11-10T13:32:30+08:00
 draft: false
