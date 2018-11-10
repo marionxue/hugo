@@ -153,7 +153,7 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 
 最后我还想告诉你们的是：为每个 pod 都手动配置这些参数是挺麻烦的事情，kubernetes 提供了 `LimitRange` 资源，可以让我们配置某个 namespace 默认的 request 和 limit 值。
 
-## 默认限制
+## 2. 默认限制
 
 ----
 
@@ -214,7 +214,7 @@ spec:
 
 以上就是我对 Kubernetes 资源限制的全部见解，希望能对你有所帮助。如果你想了解更多关于 Kubernetes 中资源的 limits 和 requests、以及 linux cgroup 和内存管理的更多详细信息，可以查看我在文末提供的参考链接。
 
-## 参考资料
+## 3. 参考资料
 
 ----
 

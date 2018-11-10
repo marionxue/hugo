@@ -451,8 +451,8 @@ autocomplete('#aa-search-input',
 <li>
 <ul>
 <li><a href="#1-cpu-限制">1. CPU 限制</a></li>
-<li><a href="#默认限制">默认限制</a></li>
-<li><a href="#参考资料">参考资料</a></li>
+<li><a href="#2-默认限制">2. 默认限制</a></li>
+<li><a href="#3-参考资料">3. 参考资料</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -601,7 +601,7 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 
 <p>最后我还想告诉你们的是：为每个 pod 都手动配置这些参数是挺麻烦的事情，kubernetes 提供了 <code>LimitRange</code> 资源，可以让我们配置某个 namespace 默认的 request 和 limit 值。</p>
 
-<h2 id="默认限制">默认限制</h2>
+<h2 id="2-默认限制">2. 默认限制</h2>
 
 <hr />
 
@@ -662,7 +662,7 @@ spec:
 
 <p>以上就是我对 Kubernetes 资源限制的全部见解，希望能对你有所帮助。如果你想了解更多关于 Kubernetes 中资源的 limits 和 requests、以及 linux cgroup 和内存管理的更多详细信息，可以查看我在文末提供的参考链接。</p>
 
-<h2 id="参考资料">参考资料</h2>
+<h2 id="3-参考资料">3. 参考资料</h2>
 
 <hr />
 
