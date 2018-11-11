@@ -160,7 +160,7 @@ static_resources:
     http2_protocol_options: {}
     hosts:
     - socket_address:
-        address: you2php
+        address: olaindex
         port_value: 8080
 admin:
   access_log_path: "/dev/null"

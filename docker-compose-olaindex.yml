@@ -1,0 +1,22 @@
+version: '2'
+services:
+
+  olaindex:
+    image: linux52/olaindex 
+    restart: always
+    networks:
+      - default
+    expose:
+      - "8080"
+
+  olaindex-envoy:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    volumes:
+      - ./service-envoy.yaml:/etc/envoy/envoy.yaml
+    network_mode: "service:olaindex"
+
+networks:
+  default:
+    external:
+      name: yang

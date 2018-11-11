@@ -141,7 +141,22 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 
 如我所说，这些值与容器配置中指定的值相同。但是这两个属性的值是如何从我们在 Pod 中设置的 `100m` cpu limits 得出的呢，他们是如何实现该 limits 的呢？这是因为 cpu requests 和 cpu limits 是使用两个独立的控制系统来实现的。Requests 使用的是 cpu `shares` 系统，cpu shares 将每个 CPU 核心划分为 `1024` 个时间片，并保证每个进程将获得固定比例份额的时间片。如果总共有 1024 个时间片，并且两个进程中的每一个都将 `cpu.shares` 设置为 `512`，那么它们将分别获得大约一半的 CPU 可用时间。但 cpu shares 系统无法精确控制 CPU 使用率的上限，如果一个进程没有设置 shares，则另一个进程可用自由使用 CPU 资源。
 
-大约在 2010 年左右，谷歌团队和其他一部分人注意到了[这个问题](https://ai.google/research/pubs/pub36669)。为了解决这个问题，后来在 linux 内核中增加了第二个功能更强大的控制系统：**CPU 带宽控制组**。带宽控制组定义了一个 <span id=inline-purple>周期</span>，通常为 `1/10` 秒（即 100000 微秒）。还定义了一个 <span id=inline-purple>配额</span>，表示允许进程在 cpu 上运行的那个周期内的最大时间片数。在本例中我们将 Pod 的 cpu limits 设置为 `100m`，这表示 `100/1000` 个 CPU 核心，即 `100000` 微秒的 CPU 时间周期中的 `10000`。所以该 limits 翻译到 `cpu,cpuacct` cgroup 中被设置为 `cpu.cfs_period_us=100000` 和 `cpu.cfs_quota_us=10000`。顺便说一下，其中的 <span id=inline-purple>cfs</span> 代表 `Completely Fair Scheduler`（绝对公平调度），这是 Linux 系统中默认的 CPU 调度算法。还有一个实时调度算法，它也有自己相应的配额值。
+大约在 2010 年左右，谷歌团队和其他一部分人注意到了[这个问题](https://ai.google/research/pubs/pub36669)。为了解决这个问题，后来在 linux 内核中增加了第二个功能更强大的控制系统：**CPU 带宽控制组**。带宽控制组定义了一个 <span id=inline-purple>周期</span>，通常为 `1/10` 秒（即 100000 微秒）。还定义了一个 <span id=inline-purple>配额</span>，表示允许进程在设置的周期长度内所能使用的 CPU 时间数，两个文件配合起来设置CPU的使用上限。两个文件的单位都是微秒（us），`cfs_period_us` 的取值范围为 1 毫秒（ms）到 1 秒（s），`cfs_quota_us` 的取值大于 1ms 即可，如果 cfs_quota_us 的值为 `-1`（默认值），表示不受 CPU 时间的限制。
+
+> **例子：**<br />
+>  1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
+      # echo 250000 > cpu.cfs_quota_us /* quota = 250ms */
+      # echo 250000 > cpu.cfs_period_us /* period = 250ms */
+
+>  2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
+      # echo 1000000 > cpu.cfs_quota_us /* quota = 1000ms */
+      # echo 500000 > cpu.cfs_period_us /* period = 500ms */
+
+>  3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
+      # echo 10000 > cpu.cfs_quota_us /* quota = 10ms */
+      # echo 50000 > cpu.cfs_period_us /* period = 50ms */
+
+在本例中我们将 Pod 的 cpu limits 设置为 `100m`，这表示 `100/1000` 个 CPU 核心，即 `100000` 微秒的 CPU 时间周期中的 `10000`。所以该 limits 翻译到 `cpu,cpuacct` cgroup 中被设置为 `cpu.cfs_period_us=100000` 和 `cpu.cfs_quota_us=10000`。顺便说一下，其中的 <span id=inline-purple>cfs</span> 代表 `Completely Fair Scheduler`（绝对公平调度），这是 Linux 系统中默认的 CPU 调度算法。还有一个实时调度算法，它也有自己相应的配额值。
 
 现在让我们来总结一下：
 
