@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>了解如何在服务网格中进行性能测试</title>
+      <link>https://www.yangcs.net/posts/service-mesh-performance-testing/</link>
+      <pubDate>Sun, 11 Nov 2018 18:10:14 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/service-mesh-performance-testing/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>深入理解 Kubernetes 资源限制：CPU</title>
       <link>https://www.yangcs.net/posts/understanding-resource-limits-in-kubernetes-cpu-time/</link>
       <pubDate>Sat, 10 Nov 2018 13:32:30 +0800</pubDate>
