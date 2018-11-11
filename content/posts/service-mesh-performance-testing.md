@@ -11,6 +11,30 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
+<div class="carousel">
+  <!-- carousel locator -->
+  <input class="carousel-locator" id="slide-1" type="radio" name="carousel-radio" hidden="" checked="">
+  <input class="carousel-locator" id="slide-2" type="radio" name="carousel-radio" hidden="">
+  
+  <!-- carousel container -->
+  <div class="carousel-container">
+    <!-- carousel item -->
+    <figure class="carousel-item">
+      <label class="item-prev btn btn-action btn-lg" for="slide-4"><i class="icon icon-arrow-left"></i></label>
+      <label class="item-next btn btn-action btn-lg" for="slide-2"><i class="icon icon-arrow-right"></i></label><img class="img-responsive rounded" src="https://ws1.sinaimg.cn/large/006tNbRwgy1fx2xr9ykf1j318g0tigp5.jpg" alt="macOS Yosemite Wallpaper">
+    </figure>
+    <figure class="carousel-item">
+      <label class="item-prev btn btn-action btn-lg" for="slide-1"><i class="icon icon-arrow-left"></i></label>
+      <label class="item-next btn btn-action btn-lg" for="slide-3"><i class="icon icon-arrow-right"></i></label><img class="img-responsive rounded" src="https://ws2.sinaimg.cn/large/006tNbRwgy1fx2xpc6d7mj30e00gi74z.jpg" alt="macOS Yosemite Wallpaper">
+    </figure>
+  </div>
+  <!-- carousel navigation -->
+  <div class="carousel-nav">
+    <label class="nav-item text-hide c-hand" for="slide-1">1</label>
+    <label class="nav-item text-hide c-hand" for="slide-2">2</label>
+  </div>
+</div>
+
 <p id="div-border-left-red">
 <strong>原文地址：</strong><a href="https://blog.gurock.com/service-mesh-performance-testing/" target="_blank">Understanding How the Service Mesh Fits with Performance Testing</a>
 <br />
