@@ -443,6 +443,25 @@ autocomplete('#aa-search-input',
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#1-服务网格的用例">1. 服务网格的用例</a></li>
+<li><a href="#2-在性能测试计划中使用服务网格">2. 在性能测试计划中使用服务网格</a></li>
+<li><a href="#3-总结">3. 总结</a></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
 
                 <p></p>
 
@@ -464,7 +483,7 @@ autocomplete('#aa-search-input',
 
 <p>随着服务网格逐渐成为标准控制平面，性能测试工程师在创建适用于服务网格体系架构的测试计划时提前熟悉该技术将会变得很有必要。</p>
 
-<h2 id="服务网格的用例">服务网格的用例</h2>
+<h2 id="1-服务网格的用例">1. 服务网格的用例</h2>
 
 <hr />
 
@@ -486,13 +505,13 @@ autocomplete('#aa-search-input',
 
 <p><img src="https://ww1.sinaimg.cn/large/005YhI8igy1fx4a185oxsj30oo087js5" alt="" /></p>
 
-<p>服务网格是一个控制平面，可以在各个服务之间路由流量，并为每个服务提供故障安全机制。此外，服务网格还将网格内流量的所有活动都记录下来，从而提供对系统整体性能的可观察性。这种记录方式记录增加了分布式链路追踪的可能性，这样不需要关心每个服务的位置就可以对这些服务进行观测和故障排除。</p>
+<p>服务网格是一个控制平面，可以在各个服务之间路由流量，并为每个服务提供故障安全机制。此外，服务网格还将网格内流量的所有活动都记录下来，从而提供对系统整体性能的可观察性。这种记录方式增加了分布式链路追踪的可能性，这样不需要关心每个服务的位置就可以对这些服务进行观测和故障排除。</p>
 
 <p>目前比较流行的服务网格技术是  <a href="https://linkerd.io/" target="_blank">Linkerd</a>、<a href="https://www.envoyproxy.io/" target="_blank">Envoy</a> 和 <a href="https://istio.io/" target="_blank">Istio</a>。</p>
 
 <p>从性能测试的角度来理解服务网格的原因在于该技术对系统性能有着直接影响。因此，测试工程师至少应该掌握服务网格技术的原理和实践方法。同时，测试工程师可以通过将服务网格中生成的数据集成到测试计划和报告中获得很多好处。</p>
 
-<h2 id="在性能测试计划中使用服务网格">在性能测试计划中使用服务网格</h2>
+<h2 id="2-在性能测试计划中使用服务网格">2. 在性能测试计划中使用服务网格</h2>
 
 <hr />
 
@@ -512,7 +531,7 @@ autocomplete('#aa-search-input',
 
 <p>随着服务网格渐渐成为企业系统架构的一部分，性能测试工程师会逐渐将服务网格本身的测试作为整体性能测试计划的一部分。</p>
 
-<h2 id="总结">总结</h2>
+<h2 id="3-总结">3. 总结</h2>
 
 <hr />
 
