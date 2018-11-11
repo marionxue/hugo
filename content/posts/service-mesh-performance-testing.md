@@ -12,7 +12,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 <!--more-->
 
 <div class="video-responsive">
-                  <iframe width="560" height="315" src="https://www.youtube.com/embed/7DbslbKsQSk" allowfullscreen=""></iframe>
+                  <iframe width="560" height="315" src="https://drive.yangcs.net/?/35.%E6%9C%9F%E6%9C%AB%E5%A4%8D%E4%B9%A0.mp4" allowfullscreen=""></iframe>
                 </div>
 
 <p id="div-border-left-red">
