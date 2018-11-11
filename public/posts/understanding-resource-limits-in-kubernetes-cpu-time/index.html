@@ -433,7 +433,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Sat Nov 10, 2018</h4>
     </section>
-    <h5 id="wc">3900 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">3700 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -592,16 +592,8 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 <blockquote>
 <p><strong>例子：</strong><br />
  1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
-        # echo 250000 &gt; cpu.cfs_quota_us /* quota = 250ms <em>/
-        # echo 250000 &gt; cpu.cfs_period_us /</em> period = 250ms */</p>
-
-<p>2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
-        # echo 1000000 &gt; cpu.cfs_quota_us /* quota = 1000ms <em>/
-        # echo 500000 &gt; cpu.cfs_period_us /</em> period = 500ms */</p>
-
-<p>3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
-        # echo 10000 &gt; cpu.cfs_quota_us /* quota = 10ms <em>/
-        # echo 50000 &gt; cpu.cfs_period_us /</em> period = 50ms */</p>
+<code class="language-yaml"># echo 250000 &gt; cpu.cfs_quota_us /* quota = 250ms <em>/
+     # echo 250000 &gt; cpu.cfs_period_us /</em> period = 250ms */</code></p>
 </blockquote>
 
 <p>在本例中我们将 Pod 的 cpu limits 设置为 <code>100m</code>，这表示 <code>100/1000</code> 个 CPU 核心，即 <code>100000</code> 微秒的 CPU 时间周期中的 <code>10000</code>。所以该 limits 翻译到 <code>cpu,cpuacct</code> cgroup 中被设置为 <code>cpu.cfs_period_us=100000</code> 和 <code>cpu.cfs_quota_us=10000</code>。顺便说一下，其中的 <span id=inline-purple>cfs</span> 代表 <code>Completely Fair Scheduler</code>（绝对公平调度），这是 Linux 系统中默认的 CPU 调度算法。还有一个实时调度算法，它也有自己相应的配额值。</p>

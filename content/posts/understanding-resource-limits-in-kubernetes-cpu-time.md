@@ -145,16 +145,9 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 
 > **例子：**<br />
 >  1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
-        # echo 250000 > cpu.cfs_quota_us /* quota = 250ms */
-        # echo 250000 > cpu.cfs_period_us /* period = 250ms */
+> <code class="language-yaml"># echo 250000 > cpu.cfs_quota_us /* quota = 250ms */
+     # echo 250000 > cpu.cfs_period_us /* period = 250ms */</code>
 
->  2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
-        # echo 1000000 > cpu.cfs_quota_us /* quota = 1000ms */
-        # echo 500000 > cpu.cfs_period_us /* period = 500ms */
-
->  3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
-        # echo 10000 > cpu.cfs_quota_us /* quota = 10ms */
-        # echo 50000 > cpu.cfs_period_us /* period = 50ms */
 
 在本例中我们将 Pod 的 cpu limits 设置为 `100m`，这表示 `100/1000` 个 CPU 核心，即 `100000` 微秒的 CPU 时间周期中的 `10000`。所以该 limits 翻译到 `cpu,cpuacct` cgroup 中被设置为 `cpu.cfs_period_us=100000` 和 `cpu.cfs_quota_us=10000`。顺便说一下，其中的 <span id=inline-purple>cfs</span> 代表 `Completely Fair Scheduler`（绝对公平调度），这是 Linux 系统中默认的 CPU 调度算法。还有一个实时调度算法，它也有自己相应的配额值。
 
