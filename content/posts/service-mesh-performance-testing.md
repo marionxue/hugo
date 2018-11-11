@@ -11,10 +11,6 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<div class="video-responsive">
-                  <iframe width="560" height="315" src="https://youngqfbr-my.sharepoint.com/personal/yangcs_x1_tn/_layouts/15/download.aspx?UniqueId=1bc5c266-5f83-44c4-93a7-53503633c7a6&amp;Translate=false&amp;tempauth=eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJhdWQiOiIwMDAwMDAwMy0wMDAwLTBmZjEtY2UwMC0wMDAwMDAwMDAwMDAveW91bmdxZmJyLW15LnNoYXJlcG9pbnQuY29tQDhhNzU0YzRkLWU4YTktNGVkZC1iYzQ2LWRkNDFmODc5MGYyYiIsImlzcyI6IjAwMDAwMDAzLTAwMDAtMGZmMS1jZTAwLTAwMDAwMDAwMDAwMCIsIm5iZiI6IjE1NDE5NDU1MDUiLCJleHAiOiIxNTQxOTQ5MTA1IiwiZW5kcG9pbnR1cmwiOiJwbEV0YS9GRGNrS2tiNGkzZktRVGVDbnlJcjZBWFVtSmVIN05vc09ldmtVPSIsImVuZHBvaW50dXJsTGVuZ3RoIjoiMTQ1IiwiaXNsb29wYmFjayI6IlRydWUiLCJjaWQiOiJZakl6WlRka05EY3RZamN3WXkwME9UUTBMVGszT1dRdFkyRmhZamt3TVRrMllUVXoiLCJ2ZXIiOiJoYXNoZWRwcm9vZnRva2VuIiwic2l0ZWlkIjoiTjJJeU1EWmxOV1V0WkRFNFl5MDBORGxtTFRobU1qa3RObUZoT1ROaFlXUTVNR0prIiwiYXBwX2Rpc3BsYXluYW1lIjoiT0xBSU5ERVgiLCJzaWduaW5fc3RhdGUiOiJbXCJrbXNpXCJdIiwiYXBwaWQiOiJiNWFkZGU2NS1lNDNjLTQwZDYtOGU3ZS1iMDZiMTY3YWE4MzEiLCJ0aWQiOiI4YTc1NGM0ZC1lOGE5LTRlZGQtYmM0Ni1kZDQxZjg3OTBmMmIiLCJ1cG4iOiJ5YW5nY3NAeDEudG4iLCJwdWlkIjoiMTAwMzAwMDBBRTcxOEE4MCIsInNjcCI6ImFsbGZpbGVzLndyaXRlIGFsbHByb2ZpbGVzLnJlYWQiLCJ0dCI6IjIiLCJ1c2VQZXJzaXN0ZW50Q29va2llIjpudWxsfQ.YU9mKzR0VEluak1EYS9ON3p3ZUxUSTFhaDVETW52ZDRCZXU1TWlxOHArWT0&amp;ApiVersion=2.0" allowfullscreen=""></iframe>
-                </div>
-
 <p id="div-border-left-red">
 <strong>原文地址：</strong><a href="https://blog.gurock.com/service-mesh-performance-testing/" target="_blank">Understanding How the Service Mesh Fits with Performance Testing</a>
 <br />
