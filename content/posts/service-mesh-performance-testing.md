@@ -40,22 +40,16 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 在服务网格出现之前，每个服务都需要知道它所依赖的服务的位置才能正常工作。例如，如下图所示，为了使服务 `A` 能够将请求任务传递给服务 `C`，它需要知道服务 `C` 的确切位置。服务 C 的位置可以定义为 IP 地址或 `DNS` 域名。一旦服务 C 的位置发生了变化，如果情况不是太糟，改一下服务 `A` 的配置就可以继续工作了，更糟糕的情况下整个服务 `A` 可能都需要重写。
 
 <div class="gallery">
-    <a href="https://ws1.sinaimg.cn/large/006tNbRwgy1fx2xr9ykf1j318g0tigp5.jpg" title="Istio 是什么？">
-    <img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fx2xr9ykf1j318g0tigp5.jpg">
-    </a>
-</div>
-
-<div class="gallery">
-    <a href="https://ww1.sinaimg.cn/large/005YhI8igy1fx49tyh984j30oo087aaj" title="服务 A 知道服务 C 的位置">
-    <img src="https://ww1.sinaimg.cn/large/005YhI8igy1fx49tyh984j30oo087aaj">
+    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/d18a30af652f49f3beb0305a05fc9e32.jpg" title="服务 A 知道服务 C 的位置">
+    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/d18a30af652f49f3beb0305a05fc9e32.jpg">
     </a>
 </div>
 
 服务之间的紧耦合将会导致系统很脆弱，并且难以扩展，因此很多公司开始使用诸如 [ZooKeeper](https://zookeeper.apache.org/)，[Consul](https://www.consul.io/) 和 [Etcd](https://github.com/coreos/etcd) 等服务发现工具，这样服务就不再需要知道它所依赖的服务的位置也可以正常工作了。如下图所示：
 
 <div class="gallery">
-    <a href="https://ww1.sinaimg.cn/large/005YhI8igy1fx49unxexqj30oo087aao" title="服务发现服务知道服务 C 的位置">
-    <img src="https://ww1.sinaimg.cn/large/005YhI8igy1fx49unxexqj30oo087aao">
+    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/fb777aef9c67481896e39dfb3083fffc.jpg" title="服务发现服务知道服务 C 的位置">
+    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/fb777aef9c67481896e39dfb3083fffc.jpg">
     </a>
 </div>
 
@@ -64,8 +58,8 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 服务网格聚合了服务发现和故障策略等其他功能，也就是说服务网格不仅允许各个服务之间相互交互，还会根据配置的策略执行重试、重定向或终止等操作。如下图所示：
 
 <div class="gallery">
-    <a href="https://ww1.sinaimg.cn/large/005YhI8igy1fx4a185oxsj30oo087js5" title="服务网格执行失败重试">
-    <img src="https://ww1.sinaimg.cn/large/005YhI8igy1fx4a185oxsj30oo087js5">
+    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/56954afbcd454fbd9e5a976632864007.jpg" title="服务网格执行失败重试">
+    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/56954afbcd454fbd9e5a976632864007.jpg">
     </a>
 </div>
 
