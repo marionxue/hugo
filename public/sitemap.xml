@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/hugo-add-busuanzi/</loc>
+    <lastmod>2018-11-12T15:30:35+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/service-mesh-performance-testing/</loc>
     <lastmod>2018-11-11T18:10:14+08:00</lastmod>
   </url>
@@ -379,13 +384,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/hugo/</loc>
-    <lastmod>2018-11-07T01:22:31+08:00</lastmod>
+    <lastmod>2018-11-12T15:30:35+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/hugo/</loc>
-    <lastmod>2018-11-07T01:22:31+08:00</lastmod>
+    <lastmod>2018-11-12T15:30:35+08:00</lastmod>
     <priority>0</priority>
   </url>
   

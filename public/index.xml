@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Hugo 添加站点统计信息</title>
+      <link>https://www.yangcs.net/posts/hugo-add-busuanzi/</link>
+      <pubDate>Mon, 12 Nov 2018 15:30:35 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/hugo-add-busuanzi/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>了解如何在服务网格中进行性能测试</title>
       <link>https://www.yangcs.net/posts/service-mesh-performance-testing/</link>
       <pubDate>Sun, 11 Nov 2018 18:10:14 +0800</pubDate>
