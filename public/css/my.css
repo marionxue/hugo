@@ -54,7 +54,7 @@ blockquote {
     color: #FFF;
     position: absolute;
     left: 0;
-    top: 0.25rem;
+    top: -1.20rem;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     border-radius: 4px;
     -webkit-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
