@@ -40,6 +40,12 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 在服务网格出现之前，每个服务都需要知道它所依赖的服务的位置才能正常工作。例如，如下图所示，为了使服务 `A` 能够将请求任务传递给服务 `C`，它需要知道服务 `C` 的确切位置。服务 C 的位置可以定义为 IP 地址或 `DNS` 域名。一旦服务 C 的位置发生了变化，如果情况不是太糟，改一下服务 `A` 的配置就可以继续工作了，更糟糕的情况下整个服务 `A` 可能都需要重写。
 
 <div class="gallery">
+    <a href="https://ws3.sinaimg.cn/large/006tNbRwly1fujrgeesk7j316c0tz10y.jpg" title="Istio 是什么？">
+    <img src="https://ws3.sinaimg.cn/large/006tNbRwly1fujrgeesk7j316c0tz10y.jpg">
+    </a>
+</div>
+
+<div class="gallery">
     <a href="https://ww1.sinaimg.cn/large/005YhI8igy1fx49tyh984j30oo087aaj" title="服务 A 知道服务 C 的位置">
     <img src="https://ww1.sinaimg.cn/large/005YhI8igy1fx49tyh984j30oo087aaj">
     </a>
