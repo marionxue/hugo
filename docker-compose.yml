@@ -7,6 +7,7 @@ services:
     volumes:
       - ./front-envoy.yaml:/etc/envoy/envoy.yaml
       - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime
     labels:
       EnvironmentName: "proxy"
       ServiceName: "envoy"
@@ -25,6 +26,7 @@ services:
     restart: always
     volumes:
       - /home/hugo/public:/usr/share/nginx/html
+      - /etc/localtime:/etc/localtime
     networks:
       - default
     expose:
@@ -35,6 +37,7 @@ services:
     restart: always
     volumes:
       - ./service-envoy.yaml:/etc/envoy/envoy.yaml
+      - /etc/localtime:/etc/localtime
     network_mode: "service:hugo"
 
 networks:
