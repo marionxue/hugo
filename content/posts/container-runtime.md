@@ -19,7 +19,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 CRI 最早从从 1.4 版就开始设计讨论和开发，在 v1.5 中发布第一个测试版。在 v1.6 时已经有了很多外部容器运行时，如 frakti、cri-o 的 alpha 支持。v1.7 版本新增了 `cri-containerd` 的 alpha 支持，而 `frakti` 和 `cri-o` 则升级到 beta 支持。
 
-## 1. CRI 接口
+## <span id="inline-toc">1.</span> CRI 接口
 
 ----
 
@@ -35,7 +35,7 @@ Kubelet 作为 CRI 的客户端，而 Runtime 维护者则需要实现 CRI 服�
 $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock ..
 ```
 
-## 2. 如何开发新的 Container Runtime
+## <span id="inline-toc">2.</span> 如何开发新的 Container Runtime
 
 ----
 
@@ -43,7 +43,7 @@ $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/ru
 
 具体的实现方法可以参考下面已经支持的 Container Runtime 列表。
 
-## 3. 目前支持的 Container Runtime
+## <span id="inline-toc">3.</span> 目前支持的 Container Runtime
 
 ----
 
@@ -72,7 +72,7 @@ $ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/ru
 Containerd 内置的 CRI 插件实现了 Kubelet CRI 接口中的 `Image Service` 和 `Runtime Service`，通过内部接口管理容器和镜像，并通过 CNI 插件给 Pod 配置网络。
 ![](https://ws3.sinaimg.cn/large/006tNbRwgy1fww2gsvgesj31a00j6n15.jpg)
 
-## 4. CRI Tools
+## <span id="inline-toc">4.</span> CRI Tools
 
 ----
 

@@ -471,16 +471,16 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-相关组件">1. 相关组件</a>
+<li><a href="#span-id-inline-toc-1-span-相关组件"><span id="inline-toc">1.</span> 相关组件</a>
 <ul>
 <li><a href="#路由">路由</a></li>
 <li><a href="#集群">集群</a></li>
 <li><a href="#监听器">监听器</a></li>
 </ul></li>
-<li><a href="#2-配置路由">2. 配置路由</a></li>
-<li><a href="#3-配置监听器">3. 配置监听器</a></li>
-<li><a href="#4-动态发现路由-集群和监听器">4. 动态发现路由、集群和监听器</a></li>
-<li><a href="#5-参考">5. 参考</a></li>
+<li><a href="#span-id-inline-toc-2-span-配置路由"><span id="inline-toc">2.</span> 配置路由</a></li>
+<li><a href="#span-id-inline-toc-3-span-配置监听器"><span id="inline-toc">3.</span> 配置监听器</a></li>
+<li><a href="#span-id-inline-toc-4-span-动态发现路由-集群和监听器"><span id="inline-toc">4.</span> 动态发现路由、集群和监听器</a></li>
+<li><a href="#span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -495,7 +495,7 @@ autocomplete('#aa-search-input',
 
 <p>本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：<a href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" target="_blank">在你的笔记本上运行 Envoy</a>，现在就可以更深入地了解如何在静态文件中配置路由（Route）、集群（Cluster）和监听器（Listener）了。</p>
 
-<h2 id="1-相关组件">1. 相关组件</h2>
+<h2 id="span-id-inline-toc-1-span-相关组件"><span id="inline-toc">1.</span> 相关组件</h2>
 
 <hr />
 
@@ -511,7 +511,7 @@ autocomplete('#aa-search-input',
 
 <p><span id="inline-blue">监听器</span> 是可以接受来自下游客户端的连接的命名网络位置（例如，端口，unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。同样，监听器可以通过静态定义，也可以通过监听器发现服务（LDS）动态获取。</p>
 
-<h2 id="2-配置路由">2. 配置路由</h2>
+<h2 id="span-id-inline-toc-2-span-配置路由"><span id="inline-toc">2.</span> 配置路由</h2>
 
 <hr />
 
@@ -555,7 +555,7 @@ autocomplete('#aa-search-input',
           port_value: 80
 </code></pre>
 
-<h2 id="3-配置监听器">3. 配置监听器</h2>
+<h2 id="span-id-inline-toc-3-span-配置监听器"><span id="inline-toc">3.</span> 配置监听器</h2>
 
 <hr />
 
@@ -592,7 +592,7 @@ autocomplete('#aa-search-input',
             config: {}
 </code></pre>
 
-<h2 id="4-动态发现路由-集群和监听器">4. 动态发现路由、集群和监听器</h2>
+<h2 id="span-id-inline-toc-4-span-动态发现路由-集群和监听器"><span id="inline-toc">4.</span> 动态发现路由、集群和监听器</h2>
 
 <hr />
 
@@ -600,7 +600,7 @@ autocomplete('#aa-search-input',
 
 <p>现在你已经了解了如何配置基本的路由、集群和监听器，下一节我们将学习如何在增量部署中设置更复杂的流量切换和过滤规则。</p>
 
-<h2 id="5-参考">5. 参考</h2>
+<h2 id="span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</h2>
 
 <hr />
 

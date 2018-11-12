@@ -473,17 +473,17 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-体系架构">1. 体系架构</a>
+<li><a href="#span-id-inline-toc-1-span-体系架构"><span id="inline-toc">1.</span> 体系架构</a>
 <ul>
 <li><a href="#流程分析">流程分析</a></li>
 </ul></li>
-<li><a href="#2-主要功能">2. 主要功能</a>
+<li><a href="#span-id-inline-toc-2-span-主要功能"><span id="inline-toc">2.</span> 主要功能</a>
 <ul>
 <li><a href="#基于-ipvs-lvs-的负载均衡器-run-service-proxy">基于 IPVS/LVS 的负载均衡器 | <code>--run-service-proxy</code></a></li>
 <li><a href="#容器网络-run-router">容器网络 | <code>--run-router</code></a></li>
 <li><a href="#网络策略管理-run-firewall">网络策略管理 | <code>--run-firewall</code></a></li>
 </ul></li>
-<li><a href="#3-使用-kube-router-替代-kube-proxy">3. 使用 kube-router 替代 kube-proxy</a>
+<li><a href="#span-id-inline-toc-3-span-使用-kube-router-替代-kube-proxy"><span id="inline-toc">3.</span> 使用 kube-router 替代 kube-proxy</a>
 <ul>
 <li><a href="#前提">前提</a></li>
 <li><a href="#集群环境">集群环境</a></li>
@@ -493,11 +493,11 @@ autocomplete('#aa-search-input',
 <li><a href="#nodeport">NodePort</a></li>
 <li><a href="#更改算法">更改算法</a></li>
 </ul></li>
-<li><a href="#4-问题解决">4. 问题解决</a>
+<li><a href="#span-id-inline-toc-4-span-问题解决"><span id="inline-toc">4.</span> 问题解决</a>
 <ul>
 <li><a href="#总结">总结</a></li>
 </ul></li>
-<li><a href="#5-参考">5. 参考</a></li>
+<li><a href="#span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -512,7 +512,7 @@ autocomplete('#aa-search-input',
 
 <p><a href="https://github.com/cloudnativelabs/kube-router" target="_blank">Kube-router</a> 是一个挺有想法的项目，兼备了 <code>calico</code> 和 <code>kube-proxy</code> 的功能，是基于 Kubernetes 网络设计的一个集负载均衡器、防火墙和容器网络的综合方案。</p>
 
-<h2 id="1-体系架构">1. 体系架构</h2>
+<h2 id="span-id-inline-toc-1-span-体系架构"><span id="inline-toc">1.</span> 体系架构</h2>
 
 <hr />
 
@@ -592,7 +592,7 @@ Cleanup() {
 }
 </code></pre>
 
-<h2 id="2-主要功能">2. 主要功能</h2>
+<h2 id="span-id-inline-toc-2-span-主要功能"><span id="inline-toc">2.</span> 主要功能</h2>
 
 <hr />
 
@@ -647,7 +647,7 @@ Cleanup() {
 <li><a href="https://link.jianshu.com/?t=https://cloudnativelabs.github.io/post/2017-05-1-kube-network-policies/" target="_blank">Enforcing Kubernetes network policies with iptables</a></li>
 </ul>
 
-<h2 id="3-使用-kube-router-替代-kube-proxy">3. 使用 kube-router 替代 kube-proxy</h2>
+<h2 id="span-id-inline-toc-3-span-使用-kube-router-替代-kube-proxy"><span id="inline-toc">3.</span> 使用 kube-router 替代 kube-proxy</h2>
 
 <hr />
 
@@ -888,7 +888,7 @@ TCP  10.254.175.147:8080 rr
 <pre><code class="language-bash">$ kubectl annotate service my-service &quot;kube-router.io/service.scheduler=dh&quot;
 </code></pre>
 
-<h2 id="4-问题解决">4. 问题解决</h2>
+<h2 id="span-id-inline-toc-4-span-问题解决"><span id="inline-toc">4.</span> 问题解决</h2>
 
 <hr />
 
@@ -1013,7 +1013,7 @@ done
 
 <p>如果想要在创建 <code>service</code> 时自动修改路由表，最好还是将该 fix 整合进 kube-router 的源码中。</p>
 
-<h2 id="5-参考">5. 参考</h2>
+<h2 id="span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</h2>
 
 <hr />
 

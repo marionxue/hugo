@@ -13,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 上一篇 [https://www.yangcs.net/posts/container-runtime/](https://www.yangcs.net/posts/container-runtime) 介绍了什么是容器运行时，并列出了不同的容器运行时。本篇重点介绍其中的一种容器运行时 `CRI-O`。
 
-## 1. CRI-O 的诞生
+## <span id="inline-toc">1.</span> CRI-O 的诞生
 
 ----
 
@@ -21,7 +21,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 根据 Red Hat 的 CRI-O 开发者 Mrunal Patel 在研究里面说的， 最开始 Red Hat 在 2016 年底为它的 OpenShift 平台启动了这个项目，同时项目也得到了 `Intel` 和 `SUSE` 的支持。CRI-O 与 `CRI` 规范兼容，并且与 `OCI` 和 Docker 镜像的格式也兼容。它也支持校验镜像的 GPG 签名。 它使用容器网络接口 Container Network Interface（CNI）处理网络，以便任何兼容 CNI 的网络插件可与该项目一起使用，OpenShift 也用它来做软件定义存储层。 它支持多个 CoW 文件系统，比如常见的 overlay，aufs，也支持不太常见的 Btrfs。
 
-## 2. CRI-O 的原理及架构
+## <span id="inline-toc">2.</span> CRI-O 的原理及架构
 
 ----
 
@@ -59,7 +59,7 @@ conmon 需要去做所有 `systemd` 不做或者不想做的事情。即使 CRI-
 
 因为 conmon（不是CRI daemon）是容器的父进程，它允许 CRI-O 的部分组件重启而不会影响容器，这样可以保证更加平滑的升级。**现在 Docker 部署的问题就是 Docker 升级需要重起所有的容器**。 通常这对于 Kubernetes 集群来说不是问题，但因为它可以将容器迁移来滚动升级。
 
-## 3. 下一步
+## <span id="inline-toc">3.</span> 下一步
 
 ----
 
@@ -71,7 +71,7 @@ CRI-O 在 `Openshift 3.7` 中作为 beta 版提供，Patel 考虑在 `Openshift 
 
 如果你想贡献或者关注开发，就去 [CRI-O 项目的 GitHub 仓库](https://github.com/kubernetes-incubator/cri-o)，然后关注 [CRI-O 博客](https://medium.com/cri-o)。
 
-## 4. 参考
+## <span id="inline-toc">4.</span> 参考
 
 ----
 

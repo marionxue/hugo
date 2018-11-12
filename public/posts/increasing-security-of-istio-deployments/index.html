@@ -473,13 +473,13 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-问题">1. 问题</a></li>
-<li><a href="#2-解决方案">2. 解决方案</a></li>
-<li><a href="#3-安装指南">3. 安装指南</a>
+<li><a href="#span-id-inline-toc-1-span-问题"><span id="inline-toc">1.</span> 问题</a></li>
+<li><a href="#span-id-inline-toc-2-span-解决方案"><span id="inline-toc">2.</span> 解决方案</a></li>
+<li><a href="#span-id-inline-toc-3-span-安装指南"><span id="inline-toc">3.</span> 安装指南</a>
 <ul>
 <li><a href="#测试自动注入功能">测试自动注入功能</a></li>
 </ul></li>
-<li><a href="#4-总结">4. 总结</a></li>
+<li><a href="#span-id-inline-toc-4-span-总结"><span id="inline-toc">4.</span> 总结</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -498,7 +498,7 @@ autocomplete('#aa-search-input',
 
 <p>为了从一定程度上缓解这个问题，本文将介绍一个新的工具：<a href="https://github.com/sabre1041/istio-pod-network-controller" target="_blank">istio-pod-network-controller</a>.</p>
 
-<h2 id="1-问题">1. 问题</h2>
+<h2 id="span-id-inline-toc-1-span-问题"><span id="inline-toc">1.</span> 问题</h2>
 
 <hr />
 
@@ -515,7 +515,7 @@ autocomplete('#aa-search-input',
 
 <p>虽然这个问题一直困扰着 Istio 社区，但迄今为止 Kubernetes 还没有提供一种机制来控制给予 Pod 的权限。从 <a href="https://github.com/kubernetes/kubernetes/blob/master/CHANGELOG-1.11.md" target="_blank">Kubernetes 1.11</a> 开始，<a href="https://kubernetes.io/docs/concepts/policy/pod-security-policy/" target="_blank">Pod 安全策略（PSP）</a>功能已经作为 <code>beta feature</code> 引入，PSP 与 SCC 的功能类似。一旦其他 Kubernetes 发行版开始支持开箱即用的 PSP，Istio 网格中的 Pod 就需要提升权限才能正常运行。</p>
 
-<h2 id="2-解决方案">2. 解决方案</h2>
+<h2 id="span-id-inline-toc-2-span-解决方案"><span id="inline-toc">2.</span> 解决方案</h2>
 
 <hr />
 
@@ -538,7 +538,7 @@ autocomplete('#aa-search-input',
 
 <p>现在，我们通过给 <code>istio-pod-network-controller</code> 提供 privileged 配置文件和 <code>NET_ADMIN</code> capability 来允许它修改其他 Pod 的 iptables 规则，这通常是可以接受的方案，因为该组件将由集群管理员以与 Istio 控制平面类似的方式安装和管理。</p>
 
-<h2 id="3-安装指南">3. 安装指南</h2>
+<h2 id="span-id-inline-toc-3-span-安装指南"><span id="inline-toc">3.</span> 安装指南</h2>
 
 <hr />
 
@@ -559,7 +559,7 @@ $ kubectl apply -f examples/bookinfo.yaml -n bookinfo
 
 <p>其他部署方案请参考<a href="https://github.com/sabre1041/istio-pod-network-controller" target="_blank">官方仓库的文档</a>。</p>
 
-<h2 id="4-总结">4. 总结</h2>
+<h2 id="span-id-inline-toc-4-span-总结"><span id="inline-toc">4.</span> 总结</h2>
 
 <hr />
 

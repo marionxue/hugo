@@ -25,7 +25,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-#### 1. [脑纹将成为新的指纹](https://www.earth.com/news/brainprints-new-fingerprints/)
+#### <span id="inline-toc">1.</span> [脑纹将成为新的指纹](https://www.earth.com/news/brainprints-new-fingerprints/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/Could-brainprints-become-the-new-fingerprints.png)</center>
 
@@ -33,7 +33,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 由于每个人的连接组都是独一无二的，因此使用连接组之间的映射关系创建的脑纹可以精确识别人的身份，甚至可以区分双胞胎。
 
-#### 2. [城市上空惊现疑似天国的幻象](http://strangesounds.org/2018/08/mysterious-glimpse-of-the-kingdom-of-heaven-appears-in-the-sky-over-china.html)
+#### <span id="inline-toc">2.</span> [城市上空惊现疑似天国的幻象](http://strangesounds.org/2018/08/mysterious-glimpse-of-the-kingdom-of-heaven-appears-in-the-sky-over-china.html)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/fata-morgana-china-august-2018.jpg)</center>
 
@@ -50,7 +50,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/fata-morgana-china-august-2018-1.jpg)</center>
 
-#### 3. [人类活动使得多种野生动物患上癌症](http://jandan.net/2018/08/18/cancer-causing.html)
+#### <span id="inline-toc">3.</span> [人类活动使得多种野生动物患上癌症](http://jandan.net/2018/08/18/cancer-causing.html)
 
 <center>![](http://img.jandan.net/news/2018/08/d7b776ec2cc7d6659379fc9d309d51b1.jpg)</center>
 
@@ -58,23 +58,23 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 但人类并不是唯一暴露在我们自己排放的污染物的中物种，我们大大低估了人类活动导致的野生动物癌症，一项研究发现，生活在高度污染的地区的白鲸中，27％患有癌症。
 
-#### 4. [科学家逆转了单个细胞的衰老](http://jandan.net/2018/08/21/human-cells-2.html)
+#### <span id="inline-toc">4.</span> [科学家逆转了单个细胞的衰老](http://jandan.net/2018/08/21/human-cells-2.html)
 
 每个人都明白逆转衰老的过程意味着什么。在现实中实现这样的技术，还有很长的路要走，但在最新的实验中，我们已经可以使单个的人类细胞返老还童；这可能成为未来研发“不老药”的基础。
 
-#### 5. [日本要借助 AI 和机器人来提升英语教育效果](https://cn.engadget.com/2018/08/21/japan-ai-robots-english-skills-schools/)
+#### <span id="inline-toc">5.</span> [日本要借助 AI 和机器人来提升英语教育效果](https://cn.engadget.com/2018/08/21/japan-ai-robots-english-skills-schools/)
 
 <center>![](http://s.aolcdn.com/hss/storage/midas/88e1fac2e73376dc3b0963c34fe29224/206607723/dims.jpg)</center>
 
 负责日本国内教育事务的文部科学省宣布，将会在明年开始进行一项利用 AI 和机器人来提升英语教育效果的试验。据 NHK 的报道，这预计耗资 2.5 亿日元的计划，将会在明年于 500 家学校设置搭载了 AI 的英语会话机器人，目的是让小朋友能通过以英语与机器人对话，提升会话和书写能力，部分学校更会纳入教学课程之中。
 
-#### 6. [Google 的资料中心已经交由 AI 操作冷却系统](https://cn.engadget.com/2018/08/18/google-deepmind-ai-run-data-center-cooling-systems/)
+#### <span id="inline-toc">6.</span> [Google 的资料中心已经交由 AI 操作冷却系统](https://cn.engadget.com/2018/08/18/google-deepmind-ai-run-data-center-cooling-systems/)
 
 <center>![](http://s.aolcdn.com/hss/storage/midas/8ee26ed91aefce02c38c344b78d8b1d0/206603622/GOOGLE_CBF_009.width-800.jpg)</center>
 
 Google 的数据中心说是世上最先进的之一也不为过，但先进的不仅是在服务器里跑的东西，甚至还包括了数据中心本身。Google 从两年多前就开始套用 AI 到数据中心的日常管理中，协助系统管理人员维持环境温度，而现在 Google 更是将整个温控的决定都交到了 AI 手上，管理人员只负监管的责任，而不介入操作，因为 AI 可以从人类想不到的地方找出节约能源的办法。
 
-#### 7. [NASA 确认了月球两极有水冰的存在](https://cn.engadget.com/2018/08/22/nasa-confirms-ice-moon-poles/)
+#### <span id="inline-toc">7.</span> [NASA 确认了月球两极有水冰的存在](https://cn.engadget.com/2018/08/22/nasa-confirms-ice-moon-poles/)
 
 <center>![](http://s.aolcdn.com/hss/storage/midas/6717a580a90157321777f2bf366a7925/206610165/elphic_south_north_lunar_pole_ice.png)</center>
 
@@ -86,35 +86,35 @@ Google 的数据中心说是世上最先进的之一也不为过，但先进的�
 
 ----
 
-#### 1. [不容错过的 GitHub 插件和工具](https://www.52pojie.cn/thread-784785-1-1.html)
+#### <span id="inline-toc">1.</span> [不容错过的 GitHub 插件和工具](https://www.52pojie.cn/thread-784785-1-1.html)
 
 以代码托管平台起家的 GitHub 网站，已然成为全球程序员工作和生活中不可或缺的一份子。从优秀的企业，到优秀的程序员，都将自己最优秀的代码作品存放在这片开源净土里，供彼此学习交流。GitHub Trending 栏目甚至已经成为 IT 从业人员的新闻日报，每日必读。既然 GitHub 这么重要，又被我们使用得这么频繁，那关于 GitHub 的一些优秀浏览器插件或者其他工具，我们就一定不可错过啦。本文就就是作者整理的一些平常使用最得心应手的东西，全都倾力推荐出来，绝对干货！
 
-#### 2. [PicGo](https://molunerfinn.com/PicGo/)
+#### <span id="inline-toc">2.</span> [PicGo](https://molunerfinn.com/PicGo/)
 
 <center>![](https://pix.waerfa.com/0rzkw.jpg)</center>
 
 PicGo 是一款开源免费的图片上传兼任相册管理软件，支持将图片上传到微博，七牛，腾讯云，又拍云，GitHub，SM.MS 这几大常见的存储平台或图床服务空间中。软件底层基于 electron-vue 开发，对于 macOS 系统版本的更迭没有原生开发软件那样特别敏感，兼容性很好。
 
-#### 3. [WeChatPlugin-MacOS](https://github.com/TKkk-iOSer/WeChatPlugin-MacOS)
+#### <span id="inline-toc">3.</span> [WeChatPlugin-MacOS](https://github.com/TKkk-iOSer/WeChatPlugin-MacOS)
 
 WeChatPlugin 是一款可玩性很高的 macOS 版开源的微信小助手，安装后可以实现「消息防撤回」、「自动回复」、「远程控制 macOS」、「开启多窗口登录」功能。
 
-#### 4. [Flow for Mac](https://www.waitsun.com/flow-1-0.html)
+#### <span id="inline-toc">4.</span> [Flow for Mac](https://www.waitsun.com/flow-1-0.html)
 
 <center>![](http://wx2.sinaimg.cn/large/5386e171gy1fueshfjwksj20qw0g279z.jpg)</center>
 
 在娱乐横行，内容产业丛生的当代，很多人都发现每天的时间都过的特别快，往往还不知道自己做了什么，一天的工作或者学习就已经结束了。Flow Mac版 是 MacOS 上的一款时长统计软件，可以统计你一天在哪些地方花费的时间最多。Flow Mac 版提供了轻便易用的自动时间统计功能，可以帮助你更加了解自己的 Mac 电脑使用情况。
 
-#### 5. [Bash-Snippets](http://blog.jobbole.com/114303/)
+#### <span id="inline-toc">5.</span> [Bash-Snippets](http://blog.jobbole.com/114303/)
 
 这是一组适用于命令行重度用户的实用 BASH 脚本，这些脚本被称为 Bash-Snippets，它们对于那些整天都与终端打交道的人来说可能会很有帮助。想要查看你居住地的天气情况？它为你做了。想知道股票价格？你可以运行显示股票当前详细信息的脚本。觉得无聊？你可以看一些 YouTube 视频。这些全部在命令行中完成，你无需安装任何严重消耗内存的 GUI 应用程序。
 
-#### 6. [kcs](https://blog.scottlowe.org/2018/08/21/a-simple-kubernetes-context-switcher/)
+#### <span id="inline-toc">6.</span> [kcs](https://blog.scottlowe.org/2018/08/21/a-simple-kubernetes-context-switcher/)
 
 一个非常简单实用的 Kubernetes 上下文切换工具。
 
-#### 7. [Picular](https://picular.co/)
+#### <span id="inline-toc">7.</span> [Picular](https://picular.co/)
 
 没错，这是一款色彩、颜色搜索引擎，通过不同的关键词，来寻找颜色。Picular 和搜索引擎不同之处在于，它会直接提取「图片搜索」中，图片的颜色，然后以纯色显示出来，支持中文。
 
@@ -122,23 +122,23 @@ WeChatPlugin 是一款可玩性很高的 macOS 版开源的微信小助手，安
 
 ----
 
-#### 1. [Gitlab Team Handbook](https://about.gitlab.com/handbook/)
+#### <span id="inline-toc">1.</span> [Gitlab Team Handbook](https://about.gitlab.com/handbook/)
 
 Gitlab 团队手册是 Gitlab 公司内部的运营方面的核心价值，全书超过 1000 页，现在向全世界开放。
 
-#### 2. [How to Write Your Own CNI Plug-in with Bash](https://www.altoros.com/blog/kubernetes-networking-writing-your-own-simple-cni-plug-in-with-bash/)
+#### <span id="inline-toc">2.</span> [How to Write Your Own CNI Plug-in with Bash](https://www.altoros.com/blog/kubernetes-networking-writing-your-own-simple-cni-plug-in-with-bash/)
 
 手把手教你如何使用 Bash 为 Kubernetes 编写自己的 CNI 插件。
 
-#### 3. [HTTPS 安全最佳实践](https://advancedweb.hu/2018/08/21/https_security/)
+#### <span id="inline-toc">3.</span> [HTTPS 安全最佳实践](https://advancedweb.hu/2018/08/21/https_security/)
 
 随着浏览器和搜索引擎越来越歧视非加密网站，使用 HTTPS 来保护网站已经变得至关重要，这篇文章会告诉你使用 HTTPS 时需要注意的问题以及一些小诀窍。
 
-#### 4. [共享库：理解动态加载](https://amir.rachum.com/blog/2016/09/17/shared-libraries/)
+#### <span id="inline-toc">4.</span> [共享库：理解动态加载](https://amir.rachum.com/blog/2016/09/17/shared-libraries/)
 
 在这篇文章中，作者将尝试解释在 Linux 系统中如何动态加载共享库的内部工作原理。
 
-#### 5. [PromQL For Humans](https://timber.io/blog/promql-for-humans/)
+#### <span id="inline-toc">5.</span> [PromQL For Humans](https://timber.io/blog/promql-for-humans/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/PromQL+Cheatsheet.jpg)</center>
 
@@ -148,7 +148,7 @@ PromQL 是为 Prometheus 制作的内置查询语言，这是 Timber 公司制�
 
 ----
 
-#### 1. [Fembed](https://www.fembed.com/)
+#### <span id="inline-toc">1.</span> [Fembed](https://www.fembed.com/)
 
 <center>![](http://wx3.sinaimg.cn/mw690/0060lm7Tly1ful45nq26qj30ri0plgns.jpg)</center>
 
@@ -162,31 +162,31 @@ PromQL 是为 Prometheus 制作的内置查询语言，这是 Timber 公司制�
 
 最后，Fembed 是调用的 Aria2 通过自身超级强悍的企业级服务带宽进行离线下载的，Aria2 对于老司机来说，这里就不多说了。
 
-#### 2. [Rapidvideo](https://www.rapidvideo.com/)
+#### <span id="inline-toc">2.</span> [Rapidvideo](https://www.rapidvideo.com/)
 
 这是一个国外视频网站，可以上传高清视频，用户观看时可自由切换480P、720P、1080P。上传视频后，每有一个用户观看，上传者可以赚钱。
 
-#### 3. [悦看书屋](https://www.yuekanshuwu.com/)
+#### <span id="inline-toc">3.</span> [悦看书屋](https://www.yuekanshuwu.com/)
 
 免费的 kindle 书籍推送服务站点。推送方法：注册登录，然后配置自己的邮箱，选择书籍即可推送至自己的 Kindle 设备。
 
-#### 4. [Resume Maker Online](http://resumemaker.online/)
+#### <span id="inline-toc">4.</span> [Resume Maker Online](http://resumemaker.online/)
 
 <center>![](http://cdn.ilovefreesoftware.com/wp-content/uploads/2018/08/Free-WYSIWYG-Resume-builder-to-design-Resume-Online-Download-PDF.png)</center>
 
 这是一份在线简历制作网站，用于在线设计简历并以高质量 PDF 的形式下载。
 
-#### 5. [知名互联网企业内推](https://github.com/BestDingSheng/resources)
+#### <span id="inline-toc">5.</span> [知名互联网企业内推](https://github.com/BestDingSheng/resources)
 
 这是一份知名互联网企业内推资料整理 持续更新ing 。作者目前维护了4个互联网内推求职招聘的群,现成员接近2000人。
 
 有些朋友技术很好，但是学历和背景不是很好，有时候投些大公司，简历直接被HR刷掉了，作者创建这个群也是为了帮助那些想进大厂的朋友搭建一个平台，通过企业内部推荐能够更大几率的获得面试机会~
 
-#### 6. [chinese-xinhua](https://github.com/pwxcoo/chinese-xinhua)
+#### <span id="inline-toc">6.</span> [chinese-xinhua](https://github.com/pwxcoo/chinese-xinhua)
 
 中华新华字典数据库和 API 。收录包括 14032 条歇后语，16142 个汉字，264434 个词语，31648 个成语。
 
-#### 7. [斯坦福 CS229 机器学习备忘录](https://github.com/afshinea/stanford-cs-229-machine-learning)
+#### <span id="inline-toc">7.</span> [斯坦福 CS229 机器学习备忘录](https://github.com/afshinea/stanford-cs-229-machine-learning)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180825-133445.jpg)</center>
 
@@ -210,7 +210,7 @@ PromQL 是为 Prometheus 制作的内置查询语言，这是 Timber 公司制�
 
 ----
 
-#### 1. 让达芬奇困惑不已的水跃现象
+#### <span id="inline-toc">1.</span> 让达芬奇困惑不已的水跃现象
 
 <center>![](http://img.jandan.net/news/2018/08/d49046927bb65b5c66c1f6084359f18e.jpg)</center>
 
@@ -224,7 +224,7 @@ PromQL 是为 Prometheus 制作的内置查询语言，这是 Timber 公司制�
 
 在一项新的研究中，化学工程研究员 Rajesh Bhagat 认为，以前的科学家为了方便将表面张力剔除在模型之外，有点急功近利了，其实水在边缘处升高时，表面张力和粘性力平衡了液膜中的动量，重力没有起到重要作用，而表面张力才是关键。达芬奇如果知道了最新的进展，应该会为更加接近水的本质而感到高兴吧。
 
-#### 2. 如何把一根生面条恰好掰成两段
+#### <span id="inline-toc">2.</span> 如何把一根生面条恰好掰成两段
 
 你饿不饿?我煮个面给你吃，顺便给你介绍一下细长脆性材质的断裂动力学机制。
 
@@ -240,7 +240,7 @@ PromQL 是为 Prometheus 制作的内置查询语言，这是 Timber 公司制�
 
 为此，他们专门制造了一台掰面条机，一番折腾下来，还真有所发现：如果你将意大利面条扭到一定程度，然后慢慢弯曲，它就会分成整齐的两截。这是为什么呢？研究人员发现，将意大利面扭转 270 度，然后以 3 毫米/秒的速度将两端弯曲在一起，可以使意大利面条分成两半。他们甚至尝试了两种不同厚度的意大利面条，都得到了相同的结果。这是因为扭曲减轻了反弹效应和回复的震动波，因为它削弱了初始反冲的强度。断裂的意大利面条以螺旋状的方式释放了弹性势能。因为扭曲波动比弯曲波动传播得更快，从而防止应力在意大利面条的结构中累积。
 
-#### 3. Git 的诞生
+#### <span id="inline-toc">3.</span> Git 的诞生
 
 很多人都知道，Linus 在 1991 年创建了开源的 Linux，从此，Linux 系统不断发展，已经成为最大的服务器系统软件了。Linus 虽然创建了 Linux，但 Linux 的壮大是靠全世界热心的志愿者参与的，这么多人在世界各地为 Linux 编写代码，那Linux的代码是如何管理的呢？事实是，在 2002 年以前，世界各地的志愿者把源代码文件通过 diff 的方式发给 Linus，然后由 Linus 本人通过手工方式合并代码！
 
@@ -254,7 +254,7 @@ Linus 花了两周时间自己用C写了一个分布式版本控制系统，这�
 
 Git 迅速成为最流行的分布式版本控制系统，尤其是 2008 年，GitHub 网站上线了，它为开源项目免费提供 Git 存储，无数开源项目开始迁移至 GitHub，包括 jQuery，PHP，Ruby 等等。历史就是这么偶然，如果不是当年 BitMover 公司威胁 Linux 社区，可能现在我们就没有免费而超级好用的 Git 了。
 
-#### 4. 台湾岛命名的由来
+#### <span id="inline-toc">4.</span> 台湾岛命名的由来
 
 1590 年（明万历年间），几艘葡萄牙的远航船绕过了马六甲海峡，进入开阔的洋面，他们在海上孤独地航行着，突然，眼前出现了一个郁郁葱葱的大岛，远远望去，阳光普照，草木丰盛，葡萄牙人嘴中迸出了赞美词：“Ilha Formosa”（英译 “福尔摩沙”，意为 “美丽岛”）。当年的美丽岛，就是今天的台湾。
 
@@ -264,7 +264,7 @@ Git 迅速成为最流行的分布式版本控制系统，尤其是 2008 年，G
 
 荷兰人败退离台之前，大员尺、大员斤除了在全台南北各地使用外，更渐渐扩大到中国沿海的外贸商界，所以中国沿海的人对使用大员尺的人很单纯的统称为「大员人」，同时对在海峡对岸的这岛屿称为「大员」岛。大员是以河洛话(闽南语)发音，若以今日的北京话就是「台湾」。这就是台湾名称的由来。
 
-#### 5. 柏拉图：地穴寓言
+#### <span id="inline-toc">5.</span> 柏拉图：地穴寓言
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/Allegory_of_the_Cave_blank.png)</center>
 

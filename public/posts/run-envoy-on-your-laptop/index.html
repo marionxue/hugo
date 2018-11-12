@@ -471,18 +471,18 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-前言">1. 前言</a></li>
-<li><a href="#2-前提">2. 前提</a></li>
-<li><a href="#3-部署-envoy">3. 部署 Envoy</a></li>
-<li><a href="#3-配置-envoy">3. 配置 Envoy</a>
+<li><a href="#span-id-inline-toc-1-span-前言"><span id="inline-toc">1.</span> 前言</a></li>
+<li><a href="#span-id-inline-toc-2-span-前提"><span id="inline-toc">2.</span> 前提</a></li>
+<li><a href="#span-id-inline-toc-3-span-部署-envoy"><span id="inline-toc">3.</span> 部署 Envoy</a></li>
+<li><a href="#span-id-inline-toc-3-span-配置-envoy"><span id="inline-toc">3.</span> 配置 Envoy</a>
 <ul>
 <li><a href="#listener-配置">Listener 配置</a></li>
 <li><a href="#cluster-配置">Cluster 配置</a></li>
 <li><a href="#修改配置">修改配置</a></li>
 <li><a href="#admin-server">Admin Server</a></li>
 </ul></li>
-<li><a href="#4-进一步探索">4. 进一步探索</a></li>
-<li><a href="#5-参考">5. 参考</a></li>
+<li><a href="#span-id-inline-toc-4-span-进一步探索"><span id="inline-toc">4.</span> 进一步探索</a></li>
+<li><a href="#span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -495,7 +495,7 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<h2 id="1-前言">1. 前言</h2>
+<h2 id="span-id-inline-toc-1-span-前言"><span id="inline-toc">1.</span> 前言</h2>
 
 <hr />
 
@@ -509,7 +509,7 @@ autocomplete('#aa-search-input',
 
 <p>本篇是 Envoy 系列教程的第一篇，介绍如何在笔记本电脑上运行 Envoy、测试代理配置并观察结果，让我们开始吧！</p>
 
-<h2 id="2-前提">2. 前提</h2>
+<h2 id="span-id-inline-toc-2-span-前提"><span id="inline-toc">2.</span> 前提</h2>
 
 <hr />
 
@@ -524,7 +524,7 @@ autocomplete('#aa-search-input',
 
 <p>我们使用 Docker 和 Docker Compose 来编排和运行 Envoy 的示例服务，使用 curl 来访问 Envoy 示例服务。</p>
 
-<h2 id="3-部署-envoy">3. 部署 Envoy</h2>
+<h2 id="span-id-inline-toc-3-span-部署-envoy"><span id="inline-toc">3.</span> 部署 Envoy</h2>
 
 <hr />
 
@@ -558,7 +558,7 @@ frontproxy_service2_1      /bin/sh -c /usr/local/bin/ ...   Up      80/tcp
 
 <p>该命令将会启动一个前端代理和两个服务实例：service1 和 service2。</p>
 
-<h2 id="3-配置-envoy">3. 配置 Envoy</h2>
+<h2 id="span-id-inline-toc-3-span-配置-envoy"><span id="inline-toc">3.</span> 配置 Envoy</h2>
 
 <hr />
 
@@ -812,13 +812,13 @@ $ docker-compose up --build -d
 
 <p>通过 API 管理端可以对 Envoy 进行动态配置，参考 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api" target="_blank">v2 API reference</a>。</p>
 
-<h2 id="4-进一步探索">4. 进一步探索</h2>
+<h2 id="span-id-inline-toc-4-span-进一步探索"><span id="inline-toc">4.</span> 进一步探索</h2>
 
 <hr />
 
 <p>如果你有兴趣探索 Envoy 的更多其他功能，<a href="https://github.com/envoyproxy/envoy/tree/master/examples" target="_blank">Envoy 官方示例</a>还有一些更复杂的拓扑结构，但这些示例仍然使用静态类型的服务发现。如果你还想了解有关如何在生产环境中使用 Envoy 的更多信息，请参阅 <a href="https://www.learnenvoy.io/articles/service-discovery.html" target="_blank">Integrating Service Discovery with Envoy</a> 以了解将 Envoy 与现有环境集成的意义。如果你在测试 Envoy 的过程中遇到问题，请访问 <a href="https://www.learnenvoy.io/articles/getting-help.html" target="_blank">Getting Help</a> 页面以获取更多的帮助信息。</p>
 
-<h2 id="5-参考">5. 参考</h2>
+<h2 id="span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</h2>
 
 <hr />
 

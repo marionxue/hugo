@@ -11,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-## 1. 什么是准入控制
+## <span id="inline-toc">1.</span> 什么是准入控制
 
 ----
 
@@ -60,7 +60,7 @@ API Server 接收到客户端请求后首先进行认证鉴权，认证鉴权通
 + `Admission Controller validate`，可以自定义任何的对象校验规则。
 + internal object 转化为 versioned object，并且持久化存储到 etcd。
 
-## 2. 如何使用准入控制
+## <span id="inline-toc">2.</span> 如何使用准入控制
 
 ----
 
@@ -71,7 +71,7 @@ Kubernetes 1.10 之前的版本可以使用 `--admission-control` 打开准入�
 
 值得一提的是，有些准入控制器可能会使用 `Alpha` 版本的 API，这时必须首先使能其使用的 API 版本。否则准入控制器不能工作，可能会影响系统功能。
 
-## 3. Admission Webhook
+## <span id="inline-toc">3.</span> Admission Webhook
 
 ----
 
@@ -162,7 +162,7 @@ webhooks:
 
 对于在集群内运行的 Admission Webhook 来说，一个巧妙构建的 Webhook Admission Server 和拓扑结构，就是能够利用 Admission 插件中内置的安全默认值，并具有可从任何 API server 运行的安全、可移植和零配置的拓扑结构。
 
-## 4. 简单安全，可移植的拓扑结构
+## <span id="inline-toc">4.</span> 简单安全，可移植的拓扑结构
 
 ----
 
@@ -180,7 +180,7 @@ webhooks:
 
 **简而言之：一个安全的拓扑结构可以使用 API server 聚合 (API server aggregation) 的所有安全机制，不需要额外的配置。**其他的拓扑结构也是可行的，但是需要额外的手动配置以及创建安全设置工作。尤其是像 `service catalog` 这种 extension API servers，上面的拓扑结构就是零配置，并且可移植到任何 Kubernetes 集群中。
 
-## 5. 如何使用 Admission Webhook
+## <span id="inline-toc">5.</span> 如何使用 Admission Webhook
 
 ----
 
@@ -442,7 +442,7 @@ spec:
 
 Istio 就是使用 `ValidatingAdmissionWebhooks` 验证 Istio 配置，使用 `MutatingAdmissionWebhooks` 自动将 sidecar 代理注入至用户 pod。可以参考：[动态准入 Webhooks 概述](https://istio.io/zh/help/ops/setup/webhook/)。
 
-## 6. 总结
+## <span id="inline-toc">6.</span> 总结
 
 ----
 
@@ -451,7 +451,7 @@ Istio 就是使用 `ValidatingAdmissionWebhooks` 验证 Istio 配置，使用 `M
 + webhook 可动态扩展 Admission 能力，满足自定义客户的需求。
 + 不需要重启 API Server，可通过创建 webhook configuration **热加载** webhook admission。
 
-## 7. 参考
+## <span id="inline-toc">7.</span> 参考
 
 ----
 

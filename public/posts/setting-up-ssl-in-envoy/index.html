@@ -473,9 +473,9 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-创建证书">1. 创建证书</a></li>
-<li><a href="#2-为-envoy-启用证书验证">2. 为 Envoy 启用证书验证</a></li>
-<li><a href="#3-将-80-端口重定向到-443-端口">3. 将 80 端口重定向到 443 端口</a></li>
+<li><a href="#span-id-inline-toc-1-span-创建证书"><span id="inline-toc">1.</span> 创建证书</a></li>
+<li><a href="#span-id-inline-toc-2-span-为-envoy-启用证书验证"><span id="inline-toc">2.</span> 为 Envoy 启用证书验证</a></li>
+<li><a href="#span-id-inline-toc-3-span-将-80-端口重定向到-443-端口"><span id="inline-toc">3.</span> 将 80 端口重定向到 443 端口</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -500,7 +500,7 @@ autocomplete('#aa-search-input',
 <li>配置 Envoy 将 80 端口重定向到 443 端口</li>
 </ol>
 
-<h2 id="1-创建证书">1. 创建证书</h2>
+<h2 id="span-id-inline-toc-1-span-创建证书"><span id="inline-toc">1.</span> 创建证书</h2>
 
 <hr />
 
@@ -545,7 +545,7 @@ An optional company name []:
 $ openssl x509 -req -days 365 -in example-com.csr -signkey example-com.key -out example-com.crt
 </code></pre>
 
-<h2 id="2-为-envoy-启用证书验证">2. 为 Envoy 启用证书验证</h2>
+<h2 id="span-id-inline-toc-2-span-为-envoy-启用证书验证"><span id="inline-toc">2.</span> 为 Envoy 启用证书验证</h2>
 
 <hr />
 
@@ -618,7 +618,7 @@ Hello from behind Envoy (service 1)! hostname: 56e8a5bff6bd resolvedhostname: 17
 <pre><code class="language-bash">$ curl --cacert example-com.crt https://example.com/service/1
 </code></pre>
 
-<h2 id="3-将-80-端口重定向到-443-端口">3. 将 80 端口重定向到 443 端口</h2>
+<h2 id="span-id-inline-toc-3-span-将-80-端口重定向到-443-端口"><span id="inline-toc">3.</span> 将 80 端口重定向到 443 端口</h2>
 
 <hr />
 

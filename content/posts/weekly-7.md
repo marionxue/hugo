@@ -27,13 +27,13 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-#### 1. [MIT 媒体实验室研究人员开发了水下无线通讯技术](https://scitechdaily.com/mit-media-lab-researchers-develop-wireless-underwater-to-air-communications/)
+#### <span id="inline-toc">1.</span> [MIT 媒体实验室研究人员开发了水下无线通讯技术](https://scitechdaily.com/mit-media-lab-researchers-develop-wireless-underwater-to-air-communications/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/Wireless-Water-to-Air-Communications.jpg)</center>
 
 麻省理工学院媒体实验室的研究人员设计了一个系统，允许水下的设备和飞机上的传感器直接共享数据。水下发射器将声呐信号引导到水面，然后产生与传输的 0 和 1 相对应的微小振动。在水面上方，高灵敏度的接收器读取这些微小的振动干扰并解码声呐信号。
 
-#### 2. [法国一公园训练乌鸦充当清洁工人](http://jandan.net/2018/08/26/rooks-corvids.html)
+#### <span id="inline-toc">2.</span> [法国一公园训练乌鸦充当清洁工人](http://jandan.net/2018/08/26/rooks-corvids.html)
 
 <center>![](http://img.jandan.net/news/2018/08/be5d1ecb7f7070f16bcc13353111a27b.jpg)</center>
 
@@ -41,19 +41,19 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 每当Boubou，Bamboo，Bill，Black，Bricole和Baco往一个特殊的容器内放置烟头或其他小块垃圾时，员工就会洒下食物作为给鸟儿们的奖品。
 
-#### 3. [日本使用机器人来送寿司](https://yellrobot.com/sushi-autonomous-delivery-robots/)
+#### <span id="inline-toc">3.</span> [日本使用机器人来送寿司](https://yellrobot.com/sushi-autonomous-delivery-robots/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/CarriRo-Delivery.jpg)</center>
 
 最近日本最受欢迎的寿司品牌 [Gin no Sara](https://www.ginsara.jp/) 与机器人公司 [ZMP](https://www.zmp.co.jp/en/products/carriro-delivery) 合作，通过机器人来给人们送午餐。这个可爱的机器人名叫 CarriRo，它有一个大大的眼睛，闪烁着蓝色的灯光，看起来像一个卡通娃娃，所以它在人行道上来回走动时不会吓到路人。它身高 3 英尺，使用相机和激光传感器来进行导航，运行时长可达 8 小时，期间可以送大约 60 份的寿司，白天或晚上都可以工作。
 
-#### 4. [在人和老鼠的免疫系统中发现了一种全新的「微器官 」](http://jandan.net/2018/08/26/lymph-node.html)
+#### <span id="inline-toc">4.</span> [在人和老鼠的免疫系统中发现了一种全新的「微器官 」](http://jandan.net/2018/08/26/lymph-node.html)
 
 <center>![](http://img.jandan.net/news/2018/08/1b9c50bb1794d58a1eaf5b61668d864c.jpg)</center>
 
 基于几个世纪的临床经验，我们知道身体一旦遇到特定类型的感染，下次就能更好地免疫它。最近研究人员在小鼠的免疫系统淋巴结顶部发现了一种薄而扁平的结构，他们将其称为“包膜下增殖病灶”(简称SPF)。这项新的研究表明，新的微器官可能是我们身体“记忆”感染产生免疫的关键。这些 SPF 似乎像生物体内国土安全局的特别行动小组一样，负责规划打击入侵的微生物。
 
-#### 5. [1973 年 MIT 一模型做出预言：文明将在 2040 年走到终点](http://jandan.net/2018/08/31/limits-growth.html)
+#### <span id="inline-toc">5.</span> [1973 年 MIT 一模型做出预言：文明将在 2040 年走到终点](http://jandan.net/2018/08/31/limits-growth.html)
 
 <center>![](http://img.jandan.net/news/2018/08/f6d21a32e75485295d54e4269149e624.jpg)</center>
 
@@ -61,7 +61,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 几十年以来，研究表明，这一开创性模型所做的许多预测都是准确的，有些人甚至认为我们应该做好迎接“很快就会出现的全球崩溃的早期阶段”的准备。你可以查看 [youtube 上面的视频](https://www.youtube.com/watch?v=cCxPOqwCr1I)，看看世界在1973年的样子——记住，从现在开始有所作为永远不会太晚。
 
-#### 6. [声音也是一种粒子，还带有负质量？](http://jandan.net/2018/08/24/negative-gravity.html)
+#### <span id="inline-toc">6.</span> [声音也是一种粒子，还带有负质量？](http://jandan.net/2018/08/24/negative-gravity.html)
 
 <center>![](http://img.jandan.net/news/2018/08/3e73965317efb9c2665c33662f36f8fb.jpg)</center>
 
@@ -71,71 +71,71 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-#### 1. [Videofk](https://www.videofk.com/)
+#### <span id="inline-toc">1.</span> [Videofk](https://www.videofk.com/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/QQ20180822-153658.jpg)</center>
 
 Videofk 是一款用来下载流媒体视频网站的视频文件的工具，支持包括快手、梨视频、微博、B站、YouTube、Instagram、Vimeo、汤不热等站点的视频下载。
 
-#### 2. [Easy to RSS](https://chrome.google.com/webstore/detail/easy-to-rss/hbcmpkcpbnecinpngdnfbnknfkdpdfli)
+#### <span id="inline-toc">2.</span> [Easy to RSS](https://chrome.google.com/webstore/detail/easy-to-rss/hbcmpkcpbnecinpngdnfbnknfkdpdfli)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/demo-rsshub.png)</center>
 
 Easy-to-RSS 是一个支持 RSSHub 的一键式发现当前网页 RSS 的 chrome 扩展。
 
-#### 3. [Winds](https://github.com/GetStream/Winds)
+#### <span id="inline-toc">3.</span> [Winds](https://github.com/GetStream/Winds)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/7562e706e67.png)</center>
 
 由 Getstream.io 提供的订阅 RSS 和 Podcast 的 APP，支持 Windows、MacOS 和 Linux 平台。
 
-#### 4. [FinalShell](https://liyuans.com/2018/08/finalshell.html)
+#### <span id="inline-toc">4.</span> [FinalShell](https://liyuans.com/2018/08/finalshell.html)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG52.jpeg)</center>
 
 可替代 Xshell 的 SSH 工具，支持 Linux、Windows、Mac，免费海外服务器远程桌面加速、ssh加速、双边tcp加速、内网穿透。
 
-#### 5. [Monlor-Tools](https://github.com/monlor/Monlor-Tools)
+#### <span id="inline-toc">5.</span> [Monlor-Tools](https://github.com/monlor/Monlor-Tools)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/img.png)</center>
 
 小米路由器 Shell 工具箱，支持 Shadowsocks、Aria2、KoolProxy 等插件。
 
-#### 6. [GSIL](https://github.com/FeeiCN/GSIL)
+#### <span id="inline-toc">6.</span> [GSIL](https://github.com/FeeiCN/GSIL)
 
 GitHub 敏感信息泄露监控，近实时监控 GitHub 敏感信息泄露，并发送告警通知。
 
-#### 7. [shyaml](https://github.com/0k/shyaml)
+#### <span id="inline-toc">7.</span> [shyaml](https://github.com/0k/shyaml)
 
 格式化 YAML 文件输出的命令行工具，与 jq 类似（jq 用来格式化 json 文件输出）。
 
-#### 8. [gatsby](https://github.com/gatsbyjs/gatsby)
+#### <span id="inline-toc">8.</span> [gatsby](https://github.com/gatsbyjs/gatsby)
 
 这是一个静态网站生成器，能够让你在不考虑数据源的情况下构建快速响应的网站。
 
-#### 9. [Mortar](https://github.com/kontena/mortar)
+#### <span id="inline-toc">9.</span> [Mortar](https://github.com/kontena/mortar)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/kontena-mortar.png)</center>
 
 Mortar 是一个用来轻松处理复杂的 Kubernetes 资源的工具。对于大多数简单的使用场景，我们只需要通过 `kubectl apply -f some_folder/` 来管理资源就行了，但在 CI/CD pipeline 中，情况将会变得很复杂。然而通过 Helm 仓库来编写组织所有资源又太繁琐了，因此就诞生了 Mortar。
 
-#### 10. [Docusaurus](https://github.com/facebook/Docusaurus)
+#### <span id="inline-toc">1.</span>. [Docusaurus](https://github.com/facebook/Docusaurus)
 
 易于维护的开源文档网站，由 Facebook 开源。
 
-#### 11. [boss](https://github.com/crosbymichael/boss)
+#### <span id="inline-toc">1.</span>. [boss](https://github.com/crosbymichael/boss)
 
 基于 Containerd 开发的容器平台。
 
-#### 12. [ebpf_exporter](https://github.com/cloudflare/ebpf_exporter)
+#### <span id="inline-toc">1.</span>. [ebpf_exporter](https://github.com/cloudflare/ebpf_exporter)
 
 由 Cloudflare 提供的用来收集 ePBF 监控指标的 Prometheus exporter。
 
-#### 13. [ModSecurity-envoy](https://github.com/octarinesec/ModSecurity-envoy)
+#### <span id="inline-toc">1.</span>. [ModSecurity-envoy](https://github.com/octarinesec/ModSecurity-envoy)
 
 ModSecurity-Envoy 是使用运行 ModSecurity（V3）的 HTTP 过滤器编译的 Envoy 版本。
 
-#### 14. [Shuttle](https://github.com/sipt/shuttle)
+#### <span id="inline-toc">1.</span>. [Shuttle](https://github.com/sipt/shuttle)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/shuttle.jpg)</center>
 
@@ -145,29 +145,29 @@ Shuttle 是一个基于 Go 开发的全平台 ss-local 工具，具有代理、�
 
 ----
 
-#### 1. [什么是 istio](http://cizixs.com/2018/08/26/what-is-istio)
+#### <span id="inline-toc">1.</span> [什么是 istio](http://cizixs.com/2018/08/26/what-is-istio)
 
 如果你比较关注新兴技术的话，那么很可能在不同的地方听说过 istio，并且知道它和 service mesh 有着牵扯。这篇文章是作者之前在公司内部做过的分享，可以作为了解 istio 的入门介绍，了解什么是 istio，istio 为什么最近这么火，以及 istio 能够我们带来什么好处。
 
-#### 2. [Ethereum Development with Go](https://github.com/miguelmota/ethereum-development-with-go-book)
+#### <span id="inline-toc">2.</span> [Ethereum Development with Go](https://github.com/miguelmota/ethereum-development-with-go-book)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/ethereum-development-with-go.jpg)</center>
 
 这是一本描述了如何通过 Go 语言来开发以太坊的小册子。
 
-#### 3. [OpenShift 和 Kubernetes 之间最重要的10个区别](https://cloudowski.com/articles/10-differences-between-openshift-and-kubernetes/)
+#### <span id="inline-toc">3.</span> [OpenShift 和 Kubernetes 之间最重要的10个区别](https://cloudowski.com/articles/10-differences-between-openshift-and-kubernetes/)
 
 OpenShift 经常被其供应商 Red Hat 称为“企业级 Kubernetes”。本文描述了 OpenShift 和 Kubernetes 之间的真正差异。
 
-#### 4. [Go 语言的内存分配与垃圾回收](https://about.sourcegraph.com/go/gophercon-2018-allocator-wrestling/)
+#### <span id="inline-toc">4.</span> [Go 语言的内存分配与垃圾回收](https://about.sourcegraph.com/go/gophercon-2018-allocator-wrestling/)
 
 Go 语言是一种内存托管语言，大多数情况下你不必手动管理内存，因为很多工作已经由 Go runtime 为你做好了。但是动态内存分配并不是完全没有代价的，有时候会严重影响程序性能。本文介绍了可用于检测和解决内存分配瓶颈的技术和工具。
 
-#### 5. [从零开始写区块链](https://github.com/OpensourceBooks/blockchain)
+#### <span id="inline-toc">5.</span> [从零开始写区块链](https://github.com/OpensourceBooks/blockchain)
 
 本教程用来说明，如何用 Python 语言来写一个区块链。
 
-#### 6. [构建一个计算器](https://tutorialedge.net/golang/go-webassembly-tutorial/)
+#### <span id="inline-toc">6.</span> [构建一个计算器](https://tutorialedge.net/golang/go-webassembly-tutorial/)
 
 本文介绍了如何使用 Go 和 WebAssembly 来构建前端应用程序。
 
@@ -175,37 +175,37 @@ Go 语言是一种内存托管语言，大多数情况下你不必手动管理�
 
 ----
 
-#### 1. [虫部落快搜](http://search.chongbuluo.com/)
+#### <span id="inline-toc">1.</span> [虫部落快搜](http://search.chongbuluo.com/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180901-163120.jpg)</center>
 
 这个网站真的无所不能，大家看图片就知道了，你想查的所有的东西基本上都能在这上面找到，查字体，查文献，查ACG资源，电子书资源，GitHub程序，论文数据，你想要的全都有！
 
-#### 2. [美剧在线看](http://moviesunus01.com/)
+#### <span id="inline-toc">2.</span> [美剧在线看](http://moviesunus01.com/)
 
 在如今的时代，WiFi遍地都是，我们更加倾向于在线看视频，由于某些特殊的原因，如今在各大视频网站想找到你想看的美剧资源越来越难了，我们更多地是在网盘里讨生活，这个网站提供了绝大多数主流美剧的在线观看，绝对能满足很多人的追剧需求。
 
-#### 3. [YouTube 频道推荐](https://zhuanlan.zhihu.com/p/20061774)
+#### <span id="inline-toc">3.</span> [YouTube 频道推荐](https://zhuanlan.zhihu.com/p/20061774)
 
 YouTube 不仅仅是一个视频网站，它和国内的优酷等网站完全不是同一种东西，就像 Google 和百度，Facebook 和人人的关系类似。很多人也许不知道，YouTube 上除了搞笑视频、猫咪视频、MTV 之外还有许多高质量的科普。这些科普频道兼顾专业性、科学性（科普的“科”）和娱乐性、生活性（科普的“普”），制作精良，诚意十足，堪称科普的优秀范本。不管你是喜欢科普知识，还是纯粹猎奇，还是科普从业或相关人士，这些频道都非常值得关注。
 
-#### 4. [发现导航 - V2](https://github.com/xjh22222228/nav)
+#### <span id="inline-toc">4.</span> [发现导航 - V2](https://github.com/xjh22222228/nav)
 
 这是一个采用三叉树分类的导航网站，现在还在不断的完善和新增当中，每天保持3+。
 
-#### 5. [awesome-chinese-podcasts](https://github.com/fffx/awesome-chinese-podcasts)
+#### <span id="inline-toc">5.</span> [awesome-chinese-podcasts](https://github.com/fffx/awesome-chinese-podcasts)
 
 收集了比较高质量的中文播客。
 
-#### 6. [每日一题](http://daily.letechinfo.com/)
+#### <span id="inline-toc">6.</span> [每日一题](http://daily.letechinfo.com/)
 
 程序员面试的题目网站，每日公布一个面试题。
 
-#### 7. [ML-From-Scratch](https://github.com/eriklindernoren/ML-From-Scratch)
+#### <span id="inline-toc">7.</span> [ML-From-Scratch](https://github.com/eriklindernoren/ML-From-Scratch)
 
 一些基本的机器学习模型和算法的 Python 实现。
 
-#### 8. Telegram 电影下载资源频道
+#### <span id="inline-toc">8.</span> Telegram 电影下载资源频道
 
 + 帮找资源: [https://t.me/lovesource](https://t.me/lovesource)
 + 美剧资源推送: [https://t.me/SSKMJBTS](https://t.me/SSKMJBTS)
@@ -214,7 +214,7 @@ YouTube 不仅仅是一个视频网站，它和国内的优酷等网站完全不
 + 中国高清电影: [https://t.me/CNHDTV](https://t.me/CNHDTV)
 + CosPlay R18 索引频道: [https://t.me/CosR18](https://t.me/CosR18)
 
-#### 9. [Powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+#### <span id="inline-toc">9.</span> [Powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或者 Zsh 框架，如 Oh-My-Zsh、Prezto、 Antigen 等。
 
@@ -222,7 +222,7 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 ----
 
-#### 1. 王小波：什么样的生活值得一过？
+#### <span id="inline-toc">1.</span> 王小波：什么样的生活值得一过？
 
 人从工作中可以得到乐趣，这是一种巨大的好处。
 
@@ -268,7 +268,7 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 还有更加重要的一条，那就是：某种样子的文章对我来说不可取，绝不能让它从我笔下写出来，冠以我的名字登在报刊上。以小喻大，这也是我对生活的态度。
 
-#### 2. 俞敏洪8月25日在亚布力论坛上的演讲节选
+#### <span id="inline-toc">2.</span> 俞敏洪8月25日在亚布力论坛上的演讲节选
 
 我们几乎所有的互联网公司做的都是国内的生意，而且都是利用了人们的低级趣味，不管是拼多多，包括阿里巴巴和腾讯，都是利用了中国人民喜欢买卖东西、喜欢互相八卦的这样的低级趣味，如果有哪一家科技公司创造出了真正的影响全世界的科技产品才是牛逼的。现在阿里巴巴有一点这样的苗头，但是如何真正升级为世界重要的经济体才是重要的。人工智能等技术极有可能催生出世界级别的产品来，中国有大数据的优势，人工智能基于的是大数据，但是到底能不能起来就看我们这些企业家的高度如何了。如果高度不够，依然是想着从老百姓身上的低级趣味赚钱，那我们依然永远起不来。
 
@@ -276,7 +276,7 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 ----
 
-#### 1. [达·芬奇在 1492 年设计的冰箱](https://www.bbc.co.uk/news/blogs-news-from-elsewhere-33478364)
+#### <span id="inline-toc">1.</span> [达·芬奇在 1492 年设计的冰箱](https://www.bbc.co.uk/news/blogs-news-from-elsewhere-33478364)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/_84198753_met.provincia.fi.it.jpg)</center>
 <center>*达·芬奇设计的冰箱原型*</center>
@@ -291,7 +291,7 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 达·芬奇生前可能建造过它，因为达·芬奇也为奢华宴会设计过特殊的喷泉，“没有理由排除他也在实验室里建造了这台机器的可能性。”它可能冷藏过从潘趣酒到雪葩的各种东西(意式冰淇淋几十年后才被发明)。
 
-#### 2. 关于屁的江湖恩怨
+#### <span id="inline-toc">2.</span> 关于屁的江湖恩怨
 
 屁不仅仅是一阵带着臭味的风而已。过去，它曾经是人们立法的对象、战争的罪魁祸首甚至还曾被神学化。
 
@@ -315,7 +315,7 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 不论屁给文化带来了怎样的影响，它都让人们饱受折磨。打嗝会引来一些尴尬，但却能逗乐大家；传染疾病的打喷嚏也能讨人喜欢，如果能用袖子或者手遮住的话，就连咳嗽也能被大家接受。可**屁的社会地位一直有待提高**，即便科学家们称每个人一天要放14次屁。
 
-#### 3. 紫禁城的来历
+#### <span id="inline-toc">3.</span> 紫禁城的来历
 
 清朝时整个北京分为三大区域：宫城、皇城和京城。宫城就是皇宫，也就是在如今叫作“故宫”的地方，它又称为紫禁城，皇上和他的后宫妃子们吃饭、睡觉、工作以及搞争风吃醋活动的地方非常之广大，又无比之庄严，处处有禁军把守，因此他是“禁城”。而“紫”指的是天上的**紫微星（北极星）**，明亮的紫微星象征天帝的君临，因而传说中天帝居住的地方也叫紫宫。作为天的儿子，皇上的紫禁城自然也是“紫宫”的一部分，于是它就叫“紫禁城”————天上紫微宫，人间帝王城。
 

@@ -471,8 +471,8 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-api简介">1. API简介</a></li>
-<li><a href="#2-zabbix-api的使用流程">2. Zabbix API的使用流程</a>
+<li><a href="#span-id-inline-toc-1-span-api简介"><span id="inline-toc">1.</span> API简介</a></li>
+<li><a href="#span-id-inline-toc-2-span-zabbix-api的使用流程"><span id="inline-toc">2.</span> Zabbix API的使用流程</a>
 <ul>
 <li><a href="#使用-api-的基本步骤">使用 <code>API</code> 的基本步骤</a></li>
 <li><a href="#使用-curl-模拟-api-的使用">使用 <code>curl</code> 模拟 API 的使用</a></li>
@@ -497,7 +497,7 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<h2 id="1-api简介">1. API简介</h2>
+<h2 id="span-id-inline-toc-1-span-api简介"><span id="inline-toc">1.</span> API简介</h2>
 
 <hr />
 
@@ -520,7 +520,7 @@ autocomplete('#aa-search-input',
 <p>API 采用JSON-RPC实现。这意味着调用任何函数，都需要发送POST请求，输入输出数据都是以JSON格式。</p>
 </blockquote>
 
-<h2 id="2-zabbix-api的使用流程">2. Zabbix API的使用流程</h2>
+<h2 id="span-id-inline-toc-2-span-zabbix-api的使用流程"><span id="inline-toc">2.</span> Zabbix API的使用流程</h2>
 
 <hr />
 
@@ -750,7 +750,7 @@ item_id = &quot;23296&quot;
 
 # Create a time range
 time_till = time.mktime(datetime.now().timetuple())
-time_from = time_till - 60 * 60 * 24 * 10  # 10 days
+time_from = time_till - 60 * 60 * 24 * 10  # &lt;span id=&quot;inline-toc&quot;&gt;1.&lt;/span&gt; days
 
 # Query item's history (integer) data
 history = zapi.history.get({&quot;itemids&quot;: item_id, &quot;time_from&quot;: time_from, &quot;time_till&quot;: time_till, &quot;output&quot;: &quot;extend&quot;, &quot;limit&quot;: &quot;10&quot;})

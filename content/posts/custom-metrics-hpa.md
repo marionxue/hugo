@@ -34,7 +34,7 @@ podinfo-6b86c8ccc9-qxhng          0m           6Mi
 
 <br />
 
-## 1. Resource Metrics API
+## <span id="inline-toc">1.</span> Resource Metrics API
 
 ----
 
@@ -44,7 +44,7 @@ Metrics API 和其他的 API 没有什么不同，它可以通过与 `/apis/metr
 
 **注意：** Metrics API 需要在集群中部署 Metrics Server。否则它将不可用。
 
-## 2. Metrics Server
+## <span id="inline-toc">2.</span> Metrics Server
 
 ----
 
@@ -56,13 +56,13 @@ Metrics Server 从每个节点上的 `Kubelet` 公开的 Summary API 中采集�
 
 通过在主 API server 中注册的 Metrics Server [Kubernetes 聚合器](https://kubernetes.io/docs/concepts/api-extension/apiserver-aggregation/) 来采集指标信息， 这是在 Kubernetes 1.7 中引入的。在 [设计文档](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/instrumentation/metrics-server.md) 中可以了解到有关 Metrics Server 的更多信息。
 
-## 3. custom metrics api
+## <span id="inline-toc">3.</span> custom metrics api
 
 ---- 
 
 该 API 允许消费者访问通过任意指标描述的 Kubernetes 资源。如果你想实现这个 API Service，请参阅 [kubernetes-incubator/custom-metrics-apiserver](https://github.com/kubernetes-incubator/custom-metrics-apiserver)，这是一个用来实现 Kubernetes 自定义指标的框架。
 
-## 4. HPA
+## <span id="inline-toc">4.</span> HPA
 
 ---- 
 
@@ -83,7 +83,7 @@ hpa 实现了一个控制环，可以周期性的从 Resource Metrics API 查询
 
 <center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuzei58fkj31kw0piwkd.jpg)</center>
 
-## 5. 实战
+## <span id="inline-toc">5.</span> 实战
 
 ---- 
 
@@ -384,13 +384,13 @@ Events:
   Normal  SuccessfulRescale  21s   horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
 ```
 
-## 6. 总结
+## <span id="inline-toc">6.</span> 总结
 
 ----
 
 并非所有的系统都可以仅依靠 CPU 和内存指标来满足 SLA，大多数 Web 应用的后端都需要基于每秒的请求数量进行弹性伸缩来处理突发流量。对于 ETL 应用程序，可以通过设置 Job 队列长度超过某个阈值来触发弹性伸缩。通过 Prometheus 来监控应用程序并暴露出用于弹性伸缩的指标，可以微调应用程序以更好地处理突发事件，从而确保其高可用性。
 
-## 7. 参考
+## <span id="inline-toc">7.</span> 参考
 
 ----
 

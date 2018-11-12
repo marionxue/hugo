@@ -473,22 +473,22 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-安装步骤">1. 安装步骤</a></li>
-<li><a href="#2-ingress-测试">2. Ingress 测试</a></li>
-<li><a href="#3-contour-工作原理">3. Contour 工作原理</a></li>
-<li><a href="#4-映射关系详情">4. 映射关系详情</a>
+<li><a href="#span-id-inline-toc-1-span-安装步骤"><span id="inline-toc">1.</span> 安装步骤</a></li>
+<li><a href="#span-id-inline-toc-2-span-ingress-测试"><span id="inline-toc">2.</span> Ingress 测试</a></li>
+<li><a href="#span-id-inline-toc-3-span-contour-工作原理"><span id="inline-toc">3.</span> Contour 工作原理</a></li>
+<li><a href="#span-id-inline-toc-4-span-映射关系详情"><span id="inline-toc">4.</span> 映射关系详情</a>
 <ul>
 <li><a href="#cds">CDS</a></li>
 <li><a href="#sds">SDS</a></li>
 <li><a href="#rds">RDS</a></li>
 </ul></li>
-<li><a href="#5-contour-架构分析">5. Contour 架构分析</a></li>
-<li><a href="#6-ingressroute-介绍">6. IngressRoute 介绍</a>
+<li><a href="#span-id-inline-toc-5-span-contour-架构分析"><span id="inline-toc">5.</span> Contour 架构分析</a></li>
+<li><a href="#span-id-inline-toc-6-span-ingressroute-介绍"><span id="inline-toc">6.</span> IngressRoute 介绍</a>
 <ul>
 <li><a href="#从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</a></li>
 <li><a href="#可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</a></li>
 </ul></li>
-<li><a href="#7-参考">7. 参考</a></li>
+<li><a href="#span-id-inline-toc-7-span-参考"><span id="inline-toc">7.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -516,7 +516,7 @@ autocomplete('#aa-search-input',
 
 <p>下面我们就来试用一下。</p>
 
-<h2 id="1-安装步骤">1. 安装步骤</h2>
+<h2 id="span-id-inline-toc-1-span-安装步骤"><span id="inline-toc">1.</span> 安装步骤</h2>
 
 <hr />
 
@@ -627,7 +627,7 @@ clusterrole.rbac.authorization.k8s.io &quot;contour&quot; created
 service &quot;contour&quot; created
 </code></pre>
 
-<h2 id="2-ingress-测试">2. Ingress 测试</h2>
+<h2 id="span-id-inline-toc-2-span-ingress-测试"><span id="inline-toc">2.</span> Ingress 测试</h2>
 
 <hr />
 
@@ -656,7 +656,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 <p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuylptv43j31kw0zkdot.jpg" alt="" /></center></p>
 
-<h2 id="3-contour-工作原理">3. Contour 工作原理</h2>
+<h2 id="span-id-inline-toc-3-span-contour-工作原理"><span id="inline-toc">3.</span> Contour 工作原理</h2>
 
 <hr />
 
@@ -680,7 +680,7 @@ ing/kuard   *         192.168.123.249   80        4m
 <li><p><span id="inline-blue">RDS</span> : 路由发现服务。映射为 Kubernetes 中的 <code>Ingress</code>。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。</p></li>
 </ul>
 
-<h2 id="4-映射关系详情">4. 映射关系详情</h2>
+<h2 id="span-id-inline-toc-4-span-映射关系详情"><span id="inline-toc">4.</span> 映射关系详情</h2>
 
 <hr />
 
@@ -696,7 +696,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 <p><code>RDS</code> 更像是 Kubernetes 中的 <code>Ingress</code> 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 <code>IngressSpec</code> 的配置项中获取（比如：<code>namespace/serviceName_servicePort</code>），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。</p>
 
-<h2 id="5-contour-架构分析">5. Contour 架构分析</h2>
+<h2 id="span-id-inline-toc-5-span-contour-架构分析"><span id="inline-toc">5.</span> Contour 架构分析</h2>
 
 <hr />
 
@@ -717,7 +717,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 <p>从 Kubernetes 到 Contour 的信息转换是通过 <code>SharedInformer</code> 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。</p>
 
-<h2 id="6-ingressroute-介绍">6. IngressRoute 介绍</h2>
+<h2 id="span-id-inline-toc-6-span-ingressroute-介绍"><span id="inline-toc">6.</span> IngressRoute 介绍</h2>
 
 <hr />
 
@@ -794,7 +794,7 @@ $ curl localhost:6060/debug/dag | dot -T png &gt; contour-dag.png
 
 <p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuymirnk4j30mt0jzq67.jpg" alt="" /></center></p>
 
-<h2 id="7-参考">7. 参考</h2>
+<h2 id="span-id-inline-toc-7-span-参考"><span id="inline-toc">7.</span> 参考</h2>
 
 <hr />
 

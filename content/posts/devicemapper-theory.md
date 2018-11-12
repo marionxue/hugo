@@ -10,7 +10,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 ---
 
 <!--more-->
-## 1. Device Mapper 简介
+## <span id="inline-toc">1.</span> Device Mapper 简介
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
@@ -25,7 +25,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 `devicemapper` 存储驱动使用专用于 `docker` 的块设备，它运行在块级别上而不是文件级别。使用块设备比直接使用文件系统性能更好，通过向 `Docker` 的宿主机添加物理存储可以扩展块设备的存储空间。
 
-## 2. 用户空间和内核空间
+## <span id="inline-toc">2.</span> 用户空间和内核空间
 ------
 
 **Device Mapper主要分为用户空间部分和内核空间部分**
@@ -36,7 +36,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwxo5xzdwkj30hs0dq76d.jpg)
 
-## 3. Device Mapper 技术分析
+## <span id="inline-toc">3.</span> Device Mapper 技术分析
 ------
 
 **`Device Mapper`** 作为 Linux 块设备映射技术框架，向外部提供逻辑设备。包含三个重要概念，映射设备（mapped device），映射表（map table），目标设备（target device）。
@@ -55,7 +55,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 `Device Mapper` 中的 IO 流处理，从虚拟设备（逻辑设备）根据映射表并指定特定的映射驱动转发到目标设备上。
 
-## 4. Docker 中的 Device Mapper 核心技术
+## <span id="inline-toc">4.</span> Docker 中的 Device Mapper 核心技术
 ------
 
 Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复制）`，`thin-provisioning（精简配置）`。`snapshot（快照）`，首先简单介绍一下这三种技术。
@@ -95,7 +95,7 @@ Docker 的 `devicemapper` 驱动有三个核心概念，`copy on-write（写复�
 
 那么，Docker 是怎么使用 <code>Thin Provisioning</code> 这个技术做到像 UnionFS 那样的分层镜像的呢？答案是，Docker 使用了 <code>Thin Provisioning</code> 的 <code>Snapshot</code> 的技术。下面一篇我们来介绍一下 <code>Thin Provisioning</code> 的 <code>Snapshot</code>。
 
-## 5. 参考资料
+## <span id="inline-toc">5.</span> 参考资料
 
 ----
 

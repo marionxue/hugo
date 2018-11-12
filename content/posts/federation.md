@@ -25,7 +25,7 @@ K8s 的设计定位是单一集群在同一个地域内，因为同一个地区�
 
 集群联邦（Federation）可以一定程度上解决这些问题。`Federation` 是可以将分布在多个 Region 或者多个云厂商的 Kubernetes 集群整合成一个大的集群，统一管理与调度。
 
-## 1. Kubernetes集群联邦介绍
+## <span id="inline-toc">1.</span> Kubernetes集群联邦介绍
 ------
 
 ### 管理多个 kuberntes 集群
@@ -70,7 +70,7 @@ Kubernetes 服务是由一组 kubernetes POD 组成的，这些 POD 是一些已
 
 集群联邦可以跨集群冗馀部署，当某个集群所在区域出现故障时，并不影响整个服务。集群联邦还可以检测集群是否为不可用状态，如果发现某个集群为不可用状态时，可以将失败的任务重新分配给集群联邦中其他可用状态的集群上。
 
-## 2. 使用集群联邦实现多集群管理
+## <span id="inline-toc">2.</span> 使用集群联邦实现多集群管理
 ------
 
 ### 系统环境
@@ -144,7 +144,7 @@ CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
 ```
 
 ### 设置 CoreDNS 作为集群联邦的 DNS 提供商
-#### 1. 前提
+#### <span id="inline-toc">1.</span> 前提
 
 + 为启用 `CoreDNS` 来实现跨联邦集群的服务发现，联邦的成员集群中必须支持 `LoadBalancer` 服务。（<font color="red">本地集群默认不支持 `LoadBalancer` 服务，所以要让本地集群支持 `LoadBalancer` 服务才能使用 `coredns` 来实现 federation 的服务发现功能！！！</font>）
 + 我们可以利用 `helm charts` 来部署 CoreDNS。 CoreDNS 部署时会以 etcd 作为后端，并且 etcd 应预先安装。 etcd 也可以利用 helm charts 进行部署。
@@ -152,7 +152,7 @@ CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
    `failure-domain.beta.kubernetes.io/region=<region>`<br />
    `failure-domain.beta.kubernetes.io/zone=<zone>`
 
-#### 2. 使本地集群支持 LoadBalancer 服务
+#### <span id="inline-toc">2.</span> 使本地集群支持 LoadBalancer 服务
 
 为了使本地集群支持 `LoadBalancer` 服务，可以参考以下两种实现方案：
 
@@ -195,7 +195,7 @@ $ kubectl create -f metallb-cm.yaml
 
 现在本地集群已经支持 LoadBalancer 服务了，下面我们开始 federation 的旅程吧！:clap:
 
-#### 3. 安装 helm
+#### <span id="inline-toc">3.</span> 安装 helm
 
 首先需要安装 `helm` 客户端
 
@@ -237,7 +237,7 @@ Client: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920
 Server: &version.Version{SemVer:"v2.8.2", GitCommit:"a80231648a1473929271764b920a8e346f6de844", GitTreeState:"clean"}
 ```
 
-#### 4. 部署 etcd
+#### <span id="inline-toc">4.</span> 部署 etcd
 
 下载 `helm charts` 仓库
 
@@ -310,7 +310,7 @@ kubernetes              ClusterIP   10.254.0.1       <none>        443/TCP      
 
 部署成功后，可以在 host 集群内通过 http://etcd-cluster-client.default:2379 端点访问 etcd。
 
-#### 5. 部署 CoreDNS
+#### <span id="inline-toc">5.</span> 部署 CoreDNS
 
 首先需要定制 `CoreDNS chart` 模板的默认配置，它会覆盖 `CoreDNS chart` 的默认配置参数。
 
@@ -358,7 +358,7 @@ NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)             
 coredns-coredns   NodePort   10.254.198.211   <none>        53:27165/UDP,53:27165/TCP,9153:26492/TCP   1d
 ```
 
-#### 6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation
+#### <span id="inline-toc">6.</span> 使用 CoreDNS 作为 DNS 提供商来部署 Federation
 
 可以使用 `kubefed init` 来部署联邦控制平面。 可以通过指定两个附加参数来选择 CoreDNS 作为 DNS 提供商。
 
@@ -485,7 +485,7 @@ $ kubefed init federation \ # 联邦的名字
 <p>默认情况下，<code>kubefed init</code> 通过动态创建 PV 的方式为 etcd 创建持久化存储。如果 kubernetes 集群不支持动态创建 PV，则可以预先创建 PV，注意 PV 要匹配 `kubefed` 的 PVC。或者使用 <code>hostpath</code>，同时指定调度节点。</p>
 </div>
 
-#### 7. 添加集群至 federation
+#### <span id="inline-toc">7.</span> 添加集群至 federation
 
 目前为止您已经成功的初始化好了 `Federation` 的控制平面。接下来需要将各个子集群加入到 Federation 集群中。
 
@@ -565,7 +565,7 @@ No resources found.
 $ kubectl delete ns federation-system
 ```
 
-## 3. Federation 支持的服务
+## <span id="inline-toc">3.</span> Federation 支持的服务
 ------
 
 集群联邦支持以下联邦资源，这些资源会自动在所有注册的 `kubernetes` 集群中创建。
@@ -688,7 +688,7 @@ $ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/yangpu/
 /skydns/com/example/yangpu/svc
 ```
 
-## 4. 参考文档
+## <span id="inline-toc">4.</span> 参考文档
 ------
 
 + [Kubernetes federation](https://kubernetes.io/docs/concepts/cluster-administration/federation/)

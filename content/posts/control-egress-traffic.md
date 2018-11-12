@@ -17,7 +17,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 本文的任务描述了如何将外部服务暴露给 Istio 集群中的客户端。你将会学到如何通过定义 [ServiceEntry](https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry) 来调用外部服务；或者简单的对 Istio 进行配置，要求其直接放行对特定 IP 范围的访问。
 
-## 1. 开始之前
+## <span id="inline-toc">1.</span> 开始之前
 
 ----
 
@@ -36,7 +36,7 @@ $ kubectl apply -f <(istioctl kube-inject -f samples/sleep/sleep.yaml)
 
 实际上任何可以 `exec` 和 `curl` 的 Pod 都可以用来完成这一任务。
 
-## 2. Istio 中配置外部服务
+## <span id="inline-toc">2.</span> Istio 中配置外部服务
 
 ----
 
@@ -406,7 +406,7 @@ sys     0m0.004s
 这一次会在 3 秒钟之后收到一个内容为 `504 (Gateway Timeout)` 的响应。虽然 httpbin.org 还在等待他的 5 秒钟，Istio 却在 3 秒钟的时候切断了请求。
 
 
-## 3. 直接调用外部服务
+## <span id="inline-toc">3.</span> 直接调用外部服务
 
 ----
 
@@ -429,7 +429,7 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o go-template='{{range .item
 $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 ```
 
-## 4. 总结
+## <span id="inline-toc">4.</span> 总结
 
 ----
 
@@ -442,7 +442,7 @@ $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 
 第二种方式越过了 Istio sidecar proxy，让服务直接访问到对应的外部地址。然而要进行这种配置，需要了解云供应商特定的知识和配置。
 
-## 5. 清理
+## <span id="inline-toc">5.</span> 清理
 
 ----
 

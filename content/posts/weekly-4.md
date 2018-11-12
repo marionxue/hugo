@@ -15,7 +15,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-#### 1. [摩拜女员工举报领导性骚扰](https://3g.163.com/all/article/DOPE3QG700097U7R.html)
+#### <span id="inline-toc">1.</span> [摩拜女员工举报领导性骚扰](https://3g.163.com/all/article/DOPE3QG700097U7R.html)
 
 <center>![](https://cms-bucket.nosdn.127.net/2018/08/09/6fb4d8a192d7460fb8b02442b1fe75fa.jpeg)</center>
 
@@ -25,13 +25,13 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 **8月9日，网络上出现一张截图，截图内容为摩拜女员工举报领导性骚扰。针对此事，摩拜回复称被举报人已被停职并接受进一步调查。**网络截图显示，举报者为摩拜SPE前端组的一名普通员工，于2017年进入摩拜工作。据举报者描述，摩拜客户端&前端组负责人张耀春曾对多位下属性骚扰，受骚扰最严重的女同事被迫离职。
 
-#### 2. [中关村程序员在车流中改代码](http://www.cocoachina.com/cms/wap.php?action=article&id=24506)
+#### <span id="inline-toc">2.</span> [中关村程序员在车流中改代码](http://www.cocoachina.com/cms/wap.php?action=article&id=24506)
 
 <center>![](http://api.cocoachina.com/uploads//20180809/1533784496266270.jpg)</center>
 
 事件发生在早高峰时期，地点为中关村软件园，因为堵车厉害，楼主恰巧看到了这一幕，一名略微有些秃顶，穿着蓝白条纹短袖的程序员蹲在信号灯下调试代码，疑似信号灯的算法程序出现了bug，该名程序员正在现场紧急处理。在其四周，车辆已经拥堵得水泄不通，但在这名程序员看来，此刻他眼里只有急需解决的代码问题，眼前的其它都被忽略。
 
-#### 3. [特斯拉开出三倍工资抢上汽技术员工](http://tech.qq.com/a/20180807/002406.htm)
+#### <span id="inline-toc">3.</span> [特斯拉开出三倍工资抢上汽技术员工](http://tech.qq.com/a/20180807/002406.htm)
 
 <center>![](http://inews.gtimg.com/newsapp_bt/0/3871231544/641)</center>
 
@@ -39,7 +39,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 一位知情人士告诉21世纪经济报道记者：“特斯拉上海工厂已经在抢人了，直接开出三倍工资，上汽的技术人员走了一大批。”
 
-#### 4. [李彦宏回应谷歌重返大陆：有信心再赢一次](https://tech.sina.com.cn/i/2018-08-07/doc-ihhkuskt0298624.shtml)
+#### <span id="inline-toc">4.</span> [李彦宏回应谷歌重返大陆：有信心再赢一次](https://tech.sina.com.cn/i/2018-08-07/doc-ihhkuskt0298624.shtml)
 
 <center>![](https://n.sinaimg.cn/tech/transform/22/w550h1072/20180807/zMit-hhkuskt0328373.jpg)</center>
 
@@ -51,7 +51,7 @@ Google 又双叒叕要回归中国，这是谷歌今年以来第5次传出“返
 
 <center>![](https://resource01.ulifestyle.com.hk/res/v3/image/content/2130000/2132767/20180807_googlebaidu_04_600.jpg)</center>
 
-#### 5. [腾讯云承认自身错误导致用户数据丢失](https://36kr.com/p/5146916.html)
+#### <span id="inline-toc">5.</span> [腾讯云承认自身错误导致用户数据丢失](https://36kr.com/p/5146916.html)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1262.jpeg)</center>
 
@@ -61,11 +61,11 @@ Google 又双叒叕要回归中国，这是谷歌今年以来第5次传出“返
 
 ----
 
-#### 1. [ice](https://github.com/alibaba/ice)
+#### <span id="inline-toc">1.</span> [ice](https://github.com/alibaba/ice)
 
 飞冰是一套阿里巴巴开源的基于 React 的中后台应用解决方案，在阿里巴巴内部，已经有 270 多个来自几乎所有 BU 的项目在使用。
 
-#### 2. [Feediary – 不跟踪、纯文本 RSS 阅读器](https://feediary.com/)
+#### <span id="inline-toc">2.</span> [Feediary – 不跟踪、纯文本 RSS 阅读器](https://feediary.com/)
 
 <center>![](http://apprcn.b0.upaiyun.com/Feediary-1.png)</center>
 
@@ -75,7 +75,7 @@ Feediary 是一款网页 RSS 阅读器，简单注册后就可以使用了。有
 
 <center>![](http://apprcn.b0.upaiyun.com/Feediary-2.png)</center>
 
-#### 3. [LicketyLink](http://lickety.link/)
+#### <span id="inline-toc">3.</span> [LicketyLink](http://lickety.link/)
 
 <center>![](http://cdn.ilovefreesoftware.com/wp-content/uploads/2018/08/create-a-new-sharing-link-with-custom-name-and-add-files.png)</center>
 
@@ -83,17 +83,17 @@ Feediary 是一款网页 RSS 阅读器，简单注册后就可以使用了。有
 
 值得一提的是，该网站用一种很特别的方法来共享文件，它会先生成一个共享链接，然后你可以随意往这个链接里面添加或删除文件，共享链接不变，是不是很爽？还有一个大招就是你不用等待文件上传成功就可以分享给其他人了，我只能说还有谁？！
 
-#### 4. [ShareFiles](https://sharefiles.app/)
+#### <span id="inline-toc">4.</span> [ShareFiles](https://sharefiles.app/)
 
 另一个不限文件大小的在线共享网站。
 
-#### 5. [Onlim](https://onlim.com/)
+#### <span id="inline-toc">5.</span> [Onlim](https://onlim.com/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/onlim.jpg)</center>
 
 Pnlim 是一个免费的在线社交媒体管理工具，你可以在这里面添加无限多的社交账户（支持 Facebook、Twitter 和 Slack 等）。同时还可以添加 RSS 源，所以你也可以把它当成一个 RSS 阅读器，颜值还是很高的。
 
-#### 6. [zhuye_kim](https://github.com/wenguonideshou/zhuye_kim)
+#### <span id="inline-toc">6.</span> [zhuye_kim](https://github.com/wenguonideshou/zhuye_kim)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/zhuye_kim_google.png)</center>
 
@@ -101,13 +101,13 @@ Pnlim 是一个免费的在线社交媒体管理工具，你可以在这里面�
 
 仿 zhuye.kim 的简单个人主页/导航程序，带后台
 
-#### 7. [Cartoonify](https://www.kapwing.com/cartoonify)
+#### <span id="inline-toc">7.</span> [Cartoonify](https://www.kapwing.com/cartoonify)
 
 <center>![](https://i.loli.net/2018/07/23/5b5548bc8df23.png)</center>
 
 Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能将你上传的相片转为涂鸦手绘风格，它以 Draw This 做为基础，非常有意思，如果你想知道将相片丢给机器辨识、它会智能返回什么样的结果呢？
 
-#### 8. [my-free-mp3](https://my-free-mp3.net/cn)
+#### <span id="inline-toc">8.</span> [my-free-mp3](https://my-free-mp3.net/cn)
 
 <center>![](http://wx1.sinaimg.cn/mw690/0060lm7Tly1ftwxawbt8aj30sm0ij75t.jpg)</center>
 
@@ -119,32 +119,32 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 ----
 
-#### 1. [系统设计入门](https://github.com/donnemartin/system-design-primer)
+#### <span id="inline-toc">1.</span> [系统设计入门](https://github.com/donnemartin/system-design-primer)
 
 系统设计是一个很宽泛的话题。在互联网上，**关于系统设计原则的资源也是多如牛毛。**这个仓库就是这些资源的组织收集，它可以帮助你学习如何构建可扩展的系统。
 
-#### 2. [命令行的艺术](https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md)
+#### <span id="inline-toc">2.</span> [命令行的艺术](https://github.com/jlevy/the-art-of-command-line/blob/master/README-zh.md)
 
 熟练使用命令行是一种常常被忽视，或被认为难以掌握的技能，但实际上，它会提高你作为工程师的灵活性以及生产力。本文是一份作者在 Linux 上工作时，发现的一些命令行使用技巧的摘要。有些技巧非常基础，而另一些则相当复杂，甚至晦涩难懂。这篇文章并不长，但当你能够熟练掌握这里列出的所有技巧时，你就学会了很多关于命令行的东西了。
 
-#### 3. [Kubernetes In Action](https://www.manning.com/books/kubernetes-in-action)
+#### <span id="inline-toc">3.</span> [Kubernetes In Action](https://www.manning.com/books/kubernetes-in-action)
 
 <center>![](https://pic4.zhimg.com/v2-3d850923108ea1f17348d435fe098c23_1200x500.jpg)</center>
 
 这本书深入浅出的讲解了 Kubernetes 的构架和设计理念，非常难能可贵。通过这本书你将会学到如何在 non-deterministic 的分布式环境中，为 scheduler 和 controller 这种需要“唯一决策者设计”的组件提供 high availability 的同时，使 cluster 的调度决策稳定可靠的方法。
 
-#### 4. [理解 Linux 进程](https://github.com/tobegit3hub/understand_linux_process)
+#### <span id="inline-toc">4.</span> [理解 Linux 进程](https://github.com/tobegit3hub/understand_linux_process)
 
 本书受 [理解 Unix 进程](http://www.duokan.com/book/41446) 启发而作，用极简的篇幅深入学习进程知识。理解 Linux 进程用 Go 重写了所有示例程序，通过循序渐进的方法介绍 Linux 进程的工作原理和一切你所需要知道的概念。
 
-#### 5. [Go语言高级编程](https://github.com/chai2010/advanced-go-programming-book)
+#### <span id="inline-toc">5.</span> [Go语言高级编程](https://github.com/chai2010/advanced-go-programming-book)
 
 <center>![](https://github.com/chai2010/advanced-go-programming-book/raw/master/cover.png)</center>
 
 
 本书涵盖 CGO、Go 汇编语言、RPC 实现、Web 框架实现、分布式系统等高阶主题，针对 Go 语言有一定经验想深入了解 Go 语言各种高级用法的开发人员。对于刚学习 Go 语言的读者，建议先从 [《Go语言圣经》](https://github.com/golang-china/gopl-zh) 开始系统学习 Go 语言的基础知识。
 
-#### 6. [Envoy为什么能战胜Ngnix——线程模型分析篇](https://www.itcodemonkey.com/article/7042.html)
+#### <span id="inline-toc">6.</span> [Envoy为什么能战胜Ngnix——线程模型分析篇](https://www.itcodemonkey.com/article/7042.html)
 
 随着 Service Mesh 在最近一年的流行，Envoy 作为其中很关键的组件，也开始被广大技术人员熟悉。作者是 Envoy 的开发者之一，本文详细说明了 Envoy 的线程模型，对于理解 Envoy 如何工作非常有帮助。内容较为深入，建议细细品读。
 
@@ -152,17 +152,17 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 ----
 
-#### 1. [programmer-job-blacklist](https://github.com/shengxinjing/programmer-job-blacklist)
+#### <span id="inline-toc">1.</span> [programmer-job-blacklist](https://github.com/shengxinjing/programmer-job-blacklist)
 
 这是一份程序员找工作黑名单，换工作和当技术合伙人需谨慎啊！每一个程序猿，每一个公司都有黑点，但是如果把黑点放大了，黑名单就没存在的意义了。
 
-#### 2. [杭州房产知识扫盲](https://github.com/houshanren/hangzhou_house_knowledge)
+#### <span id="inline-toc">2.</span> [杭州房产知识扫盲](https://github.com/houshanren/hangzhou_house_knowledge)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/hangzhou_house.jpg)</center>
 
 这是作者 2017 年买房经历总结出来的买房购房知识分享给大家，希望对大家有所帮助。买房不易，且买且珍惜。
 
-#### 3. [Wallhalla](https://wallhalla.com/)
+#### <span id="inline-toc">3.</span> [Wallhalla](https://wallhalla.com/)
 
 <center>![](http://7xpi4m.com1.z0.glb.clouddn.com/201807282251_92.png)</center>
 
@@ -175,7 +175,7 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 + 展示图片的色彩组成和色系；
 + 可以随机或者最热门浏览图片
 
-#### 4. [Mojo-Weixin](https://github.com/sjdy521/Mojo-Weixin)
+#### <span id="inline-toc">4.</span> [Mojo-Weixin](https://github.com/sjdy521/Mojo-Weixin)
 
 使用Perl语言编写的个人账号微信/weixin/wechat客户端框架（非GUI），可通过插件提供基于HTTP协议的api接口供其他语言或系统调用。可以利用微软小冰实现智能聊天回复、识别指定关键字发送美女图片、通过微信消息自定义问答知识库等各种功能应有尽有。
 
@@ -183,7 +183,7 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 ----
 
-#### 1. 历史上第一个真正能转的电动机
+#### <span id="inline-toc">1.</span> 历史上第一个真正能转的电动机
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1264.jpeg)</center>
 <center>*法拉第单极电机的现代仿品*</center>
@@ -191,7 +191,7 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 1821 年，法拉第搞出了一个真正能转的电动机，现在看来这个装置有点简陋。首先是一杯水银，水银是导电的，中间插进一根条形磁铁。上面挂钩上垂下来一根铜丝，另一头泡在水银里面，可以任意移动。顶上通电，电池另一头接到水银里边。这等于电流通过了水银和铁丝形成了一个回路。一通电，这个铁丝在围着水银里边的磁铁画圈圈。这是世界上第一个利用电磁力驱动的电动机，后来称为“单极电机”。
 
-#### 2. 维苏威火山
+#### <span id="inline-toc">2.</span> 维苏威火山
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/8416081431.jpg)</center>
 
@@ -204,7 +204,7 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 到了 1599 年的时候，因为挖掘地下引水工程，发现有雕塑和壁画，庞贝古城被发现。1738 年，命运悲惨的赫库兰尼姆被发现。1748 年，在那不勒斯王国国王夫妇的资助下，庞贝城也被挖出来了。如今这里都是世界文化遗产。
 
-#### 3. 夜明珠到底值不值钱？
+#### <span id="inline-toc">3.</span> 夜明珠到底值不值钱？
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1267.jpeg)</center>
 <center>*美丽的萤石*</center>

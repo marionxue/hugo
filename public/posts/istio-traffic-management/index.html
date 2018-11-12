@@ -473,9 +473,9 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-bookinfo-应用介绍">1. Bookinfo 应用介绍</a></li>
-<li><a href="#2-部署-bookinfo-应用">2. 部署 Bookinfo 应用</a></li>
-<li><a href="#3-金丝雀部署">3. 金丝雀部署</a>
+<li><a href="#span-id-inline-toc-1-span-bookinfo-应用介绍"><span id="inline-toc">1.</span> Bookinfo 应用介绍</a></li>
+<li><a href="#span-id-inline-toc-2-span-部署-bookinfo-应用"><span id="inline-toc">2.</span> 部署 Bookinfo 应用</a></li>
+<li><a href="#span-id-inline-toc-3-span-金丝雀部署"><span id="inline-toc">3.</span> 金丝雀部署</a>
 <ul>
 <li><a href="#virtualservice">VirtualService</a></li>
 <li><a href="#destinationrule">DestinationRule</a></li>
@@ -483,7 +483,7 @@ autocomplete('#aa-search-input',
 <li><a href="#示例二-将-jason-用户的请求全部发到-v2-版本">示例二：将 jason 用户的请求全部发到 v2 版本</a></li>
 <li><a href="#示例三-全部切换到-v3-版本">示例三：全部切换到 v3 版本</a></li>
 </ul></li>
-<li><a href="#4-参考">4. 参考</a></li>
+<li><a href="#span-id-inline-toc-4-span-参考"><span id="inline-toc">4.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -506,7 +506,7 @@ autocomplete('#aa-search-input',
 <p>正常情况下 istioctl 和 kubectl 都可以用来操作这些对象，但是 kubectl 缺乏验证功能，因此调试阶段使用 <code>istioctl</code> 会更方便一些。</p>
 </div>
 
-<h2 id="1-bookinfo-应用介绍">1. Bookinfo 应用介绍</h2>
+<h2 id="span-id-inline-toc-1-span-bookinfo-应用介绍"><span id="inline-toc">1.</span> Bookinfo 应用介绍</h2>
 
 <hr />
 
@@ -537,7 +537,7 @@ autocomplete('#aa-search-input',
 
 <p>Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的。这些服务对 Istio 并无依赖，但是构成了一个有代表性的服务网格的例子：它由多个服务、多个语言构成，并且 <code>reviews</code> 服务具有多个版本。</p>
 
-<h2 id="2-部署-bookinfo-应用">2. 部署 Bookinfo 应用</h2>
+<h2 id="span-id-inline-toc-2-span-部署-bookinfo-应用"><span id="inline-toc">2.</span> 部署 Bookinfo 应用</h2>
 
 <hr />
 
@@ -638,7 +638,7 @@ istio-ingressgateway   NodePort   10.254.160.93   &lt;none&gt;        80:31380/T
 
 <p>还可以用浏览器打开网址 <code>http://$GATEWAY_URL/productpage</code>，来浏览应用的 Web 页面。如果刷新几次应用的页面，就会看到页面中会随机展示 <code>reviews</code> 服务的不同版本的效果（红色、黑色的星形或者没有显示）。<code>reviews</code> 服务出现这种情况是因为我们还没有使用 Istio 来控制版本的路由。</p>
 
-<h2 id="3-金丝雀部署">3. 金丝雀部署</h2>
+<h2 id="span-id-inline-toc-3-span-金丝雀部署"><span id="inline-toc">3.</span> 金丝雀部署</h2>
 
 <hr />
 
@@ -948,7 +948,7 @@ EOF
 
 <p>现在不论你使用什么用户登陆 productpage 页面，你都可以看到带红色星标评分的评论了。</p>
 
-<h2 id="4-参考">4. 参考</h2>
+<h2 id="span-id-inline-toc-4-span-参考"><span id="inline-toc">4.</span> 参考</h2>
 
 <hr />
 

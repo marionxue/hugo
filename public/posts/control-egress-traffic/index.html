@@ -475,8 +475,8 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-开始之前">1. 开始之前</a></li>
-<li><a href="#2-istio-中配置外部服务">2. Istio 中配置外部服务</a>
+<li><a href="#span-id-inline-toc-1-span-开始之前"><span id="inline-toc">1.</span> 开始之前</a></li>
+<li><a href="#span-id-inline-toc-2-span-istio-中配置外部服务"><span id="inline-toc">2.</span> Istio 中配置外部服务</a>
 <ul>
 <li><a href="#配置外部服务">配置外部服务</a></li>
 <li><a href="#发起对外部服务的访问">发起对外部服务的访问</a></li>
@@ -485,9 +485,9 @@ autocomplete('#aa-search-input',
 <li><a href="#tls-virtualservice-配置深度解析">TLS VirtualService 配置深度解析</a></li>
 <li><a href="#为外部服务设置路由规则">为外部服务设置路由规则</a></li>
 </ul></li>
-<li><a href="#3-直接调用外部服务">3. 直接调用外部服务</a></li>
-<li><a href="#4-总结">4. 总结</a></li>
-<li><a href="#5-清理">5. 清理</a></li>
+<li><a href="#span-id-inline-toc-3-span-直接调用外部服务"><span id="inline-toc">3.</span> 直接调用外部服务</a></li>
+<li><a href="#span-id-inline-toc-4-span-总结"><span id="inline-toc">4.</span> 总结</a></li>
+<li><a href="#span-id-inline-toc-5-span-清理"><span id="inline-toc">5.</span> 清理</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -506,7 +506,7 @@ autocomplete('#aa-search-input',
 
 <p>本文的任务描述了如何将外部服务暴露给 Istio 集群中的客户端。你将会学到如何通过定义 <a href="https://istio.io/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry" target="_blank">ServiceEntry</a> 来调用外部服务；或者简单的对 Istio 进行配置，要求其直接放行对特定 IP 范围的访问。</p>
 
-<h2 id="1-开始之前">1. 开始之前</h2>
+<h2 id="span-id-inline-toc-1-span-开始之前"><span id="inline-toc">1.</span> 开始之前</h2>
 
 <hr />
 
@@ -525,7 +525,7 @@ autocomplete('#aa-search-input',
 
 <p>实际上任何可以 <code>exec</code> 和 <code>curl</code> 的 Pod 都可以用来完成这一任务。</p>
 
-<h2 id="2-istio-中配置外部服务">2. Istio 中配置外部服务</h2>
+<h2 id="span-id-inline-toc-2-span-istio-中配置外部服务"><span id="inline-toc">2.</span> Istio 中配置外部服务</h2>
 
 <hr />
 
@@ -892,7 +892,7 @@ sys     0m0.004s
 
 <p>这一次会在 3 秒钟之后收到一个内容为 <code>504 (Gateway Timeout)</code> 的响应。虽然 httpbin.org 还在等待他的 5 秒钟，Istio 却在 3 秒钟的时候切断了请求。</p>
 
-<h2 id="3-直接调用外部服务">3. 直接调用外部服务</h2>
+<h2 id="span-id-inline-toc-3-span-直接调用外部服务"><span id="inline-toc">3.</span> 直接调用外部服务</h2>
 
 <hr />
 
@@ -913,7 +913,7 @@ sys     0m0.004s
 $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 </code></pre>
 
-<h2 id="4-总结">4. 总结</h2>
+<h2 id="span-id-inline-toc-4-span-总结"><span id="inline-toc">4.</span> 总结</h2>
 
 <hr />
 
@@ -928,7 +928,7 @@ $ kubectl exec -it $SOURCE_POD -c sleep curl http://httpbin.org/headers
 
 <p>第二种方式越过了 Istio sidecar proxy，让服务直接访问到对应的外部地址。然而要进行这种配置，需要了解云供应商特定的知识和配置。</p>
 
-<h2 id="5-清理">5. 清理</h2>
+<h2 id="span-id-inline-toc-5-span-清理"><span id="inline-toc">5.</span> 清理</h2>
 
 <hr />
 

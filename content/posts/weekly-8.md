@@ -28,7 +28,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-#### 1. [Google 为 Chrome 浏览器带来了全新 UI](http://bbs.chongbuluo.com/thread-5360-1-1.html)
+#### <span id="inline-toc">1.</span> [Google 为 Chrome 浏览器带来了全新 UI](http://bbs.chongbuluo.com/thread-5360-1-1.html)
 
 ![](http://o7z41ciog.bkt.clouddn.com/chromenewdesign.0.jpg)
 
@@ -38,7 +38,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ![](http://o7z41ciog.bkt.clouddn.com/chrome-new-ui.png)
 
-#### 2. [Facebook 扩建门罗帕克总部](https://newsroom.fb.com/news/2018/09/expanding-our-home-in-menlo-park/)
+#### <span id="inline-toc">2.</span> [Facebook 扩建门罗帕克总部](https://newsroom.fb.com/news/2018/09/expanding-our-home-in-menlo-park/)
 
 ![](http://o7z41ciog.bkt.clouddn.com/21-lobby-six.jpg)
 
@@ -48,7 +48,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ![](http://o7z41ciog.bkt.clouddn.com/21-bowl-terrace.jpg)
 
-#### 3. [科学家发明大数据传输算法，网速可提高 50%](https://www.7tin.cn/news/117311.html)
+#### <span id="inline-toc">3.</span> [科学家发明大数据传输算法，网速可提高 50%](https://www.7tin.cn/news/117311.html)
 
 ![](http://www.7tin.cn/wp-content/uploads/2018/09/20180904184143418-800x533.jpg)
 
@@ -56,7 +56,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 据悉，使用这款算法在传输高峰时，数据传输速度至少可提高 50%。此外，不同框架之间可使用这款算法分享数据和路径，不管使用什么网络连接，算法的功能都不会改变。
 
-#### 4. [日本科技公司正组建“太空电梯”，火星救援不再是梦](http://mil.news.sina.com.cn/world/2018-09-04/doc-ihiqtcap0966287.shtml)
+#### <span id="inline-toc">4.</span> [日本科技公司正组建“太空电梯”，火星救援不再是梦](http://mil.news.sina.com.cn/world/2018-09-04/doc-ihiqtcap0966287.shtml)
 
 ![](http://n.sinaimg.cn/mil/crawl/103/w550h353/20180904/SxNh-hiqtcap0951984.jpg)
 
@@ -64,19 +64,19 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 而近日，日本科学家将对太空电梯概念进行首次试验，这项试验将在 2018 年 9 月 11 日举行。试验内容为：从日本的种子岛太空中心向国际空间站发送两颗尺寸约为 10×10×10 厘米的超小型卫星，两颗卫星之间由 10 米长的钢绳链接，在钢绳上装有一个形似电梯的箱子。这两颗卫星在到达国际空间站后将被放入太空，日本的研究人员将尝试使用电机来移动钢绳上的箱子，用以模拟太空电梯的工作原理。
 
-#### 5. [美国等国研究人员“重新编程”细胞，可使大伤口愈合如初](http://finance.sina.com.cn/roll/2018-09-06/doc-ihiixyeu4297975.shtml)
+#### <span id="inline-toc">5.</span> [美国等国研究人员“重新编程”细胞，可使大伤口愈合如初](http://finance.sina.com.cn/roll/2018-09-06/doc-ihiixyeu4297975.shtml)
 
 近日美国等国研究人员成功“重新编程”了伤口中的细胞，将其转化为皮肤细胞前体，从而有助于皮肤伤口愈合。这一技术还可用于修复皮肤损伤和抗衰老，也有助于进一步理解皮肤癌发病机理。
 
 论文作者、美国索尔克研究所教授贝尔蒙特说，新方法不单单是单一类型细胞的再生，而是像皮肤这样的全三维组织的体内再生。这一方法将来也可为其他体内再生疗法提供指导。
 
-#### 6. [六六用百度搜索遇骗子广告，微博质问李彦宏](https://tech.sina.com.cn/i/2018-09-06/doc-ihitesuz1641447.shtml)
+#### <span id="inline-toc">6.</span> [六六用百度搜索遇骗子广告，微博质问李彦宏](https://tech.sina.com.cn/i/2018-09-06/doc-ihitesuz1641447.shtml)
 
 ![](http://n.sinaimg.cn/tech/transform/100/w602h298/20180906/luPY-fzrwica2605301.png)
 
 作家六六今日发布微博称，她在百度上查一个上海美国领事馆官网的地址，翻了多少个都是骗子广告，最后不得已上谷歌，在谷歌上搜索出来的第一个就是美国领事馆官网的地址。作家六六在微博上@李彦宏称 ，你是做搜索引擎还是做骗子首领？
 
-#### 7. [谷歌成立 20 周年，杜蕾斯发第一份贺电](http://www.expreview.com/63902.html)
+#### <span id="inline-toc">7.</span> [谷歌成立 20 周年，杜蕾斯发第一份贺电](http://www.expreview.com/63902.html)
 
 ![](http://img.expreview.com/news/2018/09/04/google.jpg)
 
@@ -88,45 +88,45 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ----
 
-#### 1. [Cowtransfer 奶牛快传](https://cowtransfer.com)
+#### <span id="inline-toc">1.</span> [Cowtransfer 奶牛快传](https://cowtransfer.com)
 
 ![](http://o7z41ciog.bkt.clouddn.com/9522885e588814f2.jpg)
 
 Cowtransfer 奶牛快传不是一个网盘，官方给它的定位是大文件临时存放传输的工具网站。Cowtransfer 奶牛快传对标的是国外大文件中转站 Wetransfer，工作中邮箱无法发送的大文件可以使用此类网站传输。用户可以简单方便的上传文件分享给其他用户，最大支持 6 个文件同时上传，文件大小上限为 2G，文件可存放 7 天。
 
-#### 2. [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor)
+#### <span id="inline-toc">2.</span> [TrafficMonitor](https://github.com/zhongyang219/TrafficMonitor)
 
 这是一个用于显示当前网速、CPU 及内存利用率的桌面悬浮窗软件，并支持任务栏显示，支持更换皮肤。
 
-#### 3. [HTTPie](https://github.com/jakubroztocil/httpie)
+#### <span id="inline-toc">3.</span> [HTTPie](https://github.com/jakubroztocil/httpie)
 
 ![](http://o7z41ciog.bkt.clouddn.com/httpie.png)
 
 HTTPie （读aych-tee-tee-pie）是一个 HTTP 的命令行客户端。其目标是让 CLI 和 web 服务之间的交互尽可能的人性化。这个工具提供了简洁的 http 命令，允许通过自然的语法发送任意 HTTP 请求数据，展示色彩化的输出。HTTPie 可用于与 HTTP 服务器做测试、调试和常规交互。
 
-#### 4. [noti](https://github.com/variadico/noti)
+#### <span id="inline-toc">4.</span> [noti](https://github.com/variadico/noti)
 
 ![](http://o7z41ciog.bkt.clouddn.com/macos_banner.png)
 
 这是一个进程完成时的通知工具，当一个进程需要长时间运行时，noti 可以使你不需要长时间等待，当任务完成时可以弹窗通知用户，用户不需要频繁地去检查终端的任务是否运行完毕，提高用户的工作效率。
 
-#### 5. [Redis Desktop Manager](https://github.com/uglide/RedisDesktopManager)
+#### <span id="inline-toc">5.</span> [Redis Desktop Manager](https://github.com/uglide/RedisDesktopManager)
 
 ![](http://o7z41ciog.bkt.clouddn.com/687474703a2f.png)
 
 Redis Desktop Manager 是一款基于 Qt5 开发的 Redis 桌面管理工具，支持 SSH 连接。
 
-#### 6. [公式字符化网站](http://webdemo.myscript.com/#/home)
+#### <span id="inline-toc">6.</span> [公式字符化网站](http://webdemo.myscript.com/#/home)
 
 你还在苦恼复杂的数学公式和化学方程式没办法用电脑打出来吗？有了这个神器，你就可以轻松地以手绘的方式画出来，交给电脑自动帮你转化哟！
 
-#### 7. [Neofetch](https://github.com/dylanaraps/neofetch)
+#### <span id="inline-toc">7.</span> [Neofetch](https://github.com/dylanaraps/neofetch)
 
 ![](http://o7z41ciog.bkt.clouddn.com/neofetch1.png)
 
 Neofetch 是在 BASH 中编写的 CLI 系统信息工具。Neofetch 显示您系统的镜像信息、操作系统 Logo、或者你选择的任意 ASCII 编码的文件。Neofetch 主要用与向其他用户以屏幕截图的方式展示您运行的系统，主题、图标等，支持 Linux，MacOS，iOS，BSD，Solaris，Android，Haiku，GNU Hurd，MINIX，AIX，IRIX 和 Windows（Cygwin / MSYS2 / MinGW / Windows 10 Linux 子系统）。
 
-#### 8. [Vegeta](https://github.com/tsenart/vegeta)
+#### <span id="inline-toc">8.</span> [Vegeta](https://github.com/tsenart/vegeta)
 
 Vegeta 是个 Go 语言编写的 http 服务压力测试工具，拥有各种参数支持，功能服务。支持 json 形式报告输出，同时支持 html 形式图形化报告生成。
 
@@ -134,41 +134,41 @@ Vegeta 是个 Go 语言编写的 http 服务压力测试工具，拥有各种参
 
 ----
 
-#### 1. [Spring Boot Examples](https://github.com/ityouknow/spring-boot-examples)
+#### <span id="inline-toc">1.</span> [Spring Boot Examples](https://github.com/ityouknow/spring-boot-examples)
 
 Spring Boot 教程、技术栈示例代码，快速简单上手教程。
 
-#### 2. [Nginx 入门教程](https://github.com/xuexb/learn-nginx)
+#### <span id="inline-toc">2.</span> [Nginx 入门教程](https://github.com/xuexb/learn-nginx)
 
 这是一个 Nginx 入门指南，包括: 编译安装、反向代理、重定向、重写、缓存、跨域配置等。
 
-#### 3. [60_Days_RL_Challenge](https://github.com/andri27-ts/60_Days_RL_Challenge)
+#### <span id="inline-toc">3.</span> [60_Days_RL_Challenge](https://github.com/andri27-ts/60_Days_RL_Challenge)
 
 ![](http://o7z41ciog.bkt.clouddn.com/logo5.png)
 
 深度强化学习系列教程（视频）。
 
-#### 4. [The Open Guide to Amazon Web Services](https://github.com/open-guides/og-aws)
+#### <span id="inline-toc">4.</span> [The Open Guide to Amazon Web Services](https://github.com/open-guides/og-aws)
 
 亚马逊 Web Services 实用指南。
 
-#### 5. [JavaScript 教程](https://wangdoc.com/javascript/)
+#### <span id="inline-toc">5.</span> [JavaScript 教程](https://wangdoc.com/javascript/)
 
 本教程全面介绍 JavaScript 核心语法，从最简单的开始讲起，循序渐进、由浅入深，力求清晰易懂。所有章节都带有大量的代码实例，便于理解和模仿，可以用到实际项目中，即学即用。
 
 本教程适合初学者当作 JavaScript 语言的入门教程，也适合当作日常使用的参考手册。
 
-#### 6. [MacOS 的安全和隐私指南](https://github.com/drduh/macOS-Security-and-Privacy-Guide)
+#### <span id="inline-toc">6.</span> [MacOS 的安全和隐私指南](https://github.com/drduh/macOS-Security-and-Privacy-Guide)
 
 这里汇集了一些想法，它们是有关如何保护运行了 macOS 10.12 ""Sierra"" 操作系统（以前是 OS X）的现代化苹果 Mac 电脑，也包含了一些提高个人网络隐私的小贴士。
 
 这份指南的目标读者是那些希望采用企业级安全标准的"高级用户"，但是也适用于那些想在 Mac 上提高个人隐私和安全性的初级用户们。
 
-#### 7. [Markdown 简介](https://github.com/mzlogin/markdown-intro)
+#### <span id="inline-toc">7.</span> [Markdown 简介](https://github.com/mzlogin/markdown-intro)
 
 本文档的目的不在于面面俱到地介绍 Markdown，只是作为作者对其理解的笔记整理，希望能同时帮助一些对 Markdown 感兴趣的人快速上手，或是作为一个工具，供对其已经有所了解的人在需要时参考。
 
-#### 8. [利用 LXCFS 提升容器资源可见性](https://yq.aliyun.com/articles/566208)
+#### <span id="inline-toc">8.</span> [利用 LXCFS 提升容器资源可见性](https://yq.aliyun.com/articles/566208)
 
 Linuxs 利用 Cgroup 实现了对容器的资源限制，但在容器内部依然缺省挂载了宿主机上的 procfs 的 /proc 目录，其包含如：meminfo, cpuinfo，stat， uptime 等资源信息。一些监控工具如 free/top 或遗留应用还依赖上述文件内容获取资源配置和使用情况。当它们在容器中运行时，就会把宿主机的资源状态读取出来，引起错误和不便。
 
@@ -178,35 +178,35 @@ Linuxs 利用 Cgroup 实现了对容器的资源限制，但在容器内部依�
 
 ----
 
-#### 1. [一些命令行工具的增强版](https://www.kawabangga.com/posts/3084)
+#### <span id="inline-toc">1.</span> [一些命令行工具的增强版](https://www.kawabangga.com/posts/3084)
 
 本文要介绍的工具基本都是原来工具的增强版，也就是说原来工具有的，增强版也都有。因为习惯很难改变，所以完全可以用 alias 替换掉。
 
-#### 2. [Hackintosh 黑苹果驱动 Clover](https://github.com/sqlsec/clover)
+#### <span id="inline-toc">2.</span> [Hackintosh 黑苹果驱动 Clover](https://github.com/sqlsec/clover)
 
 网友分享的一些黑苹果 Clover 驱动配置文件。
 
-#### 3. [asd-price](http://asd-price.com/)
+#### <span id="inline-toc">3.</span> [asd-price](http://asd-price.com/)
 
 ![](http://o7z41ciog.bkt.clouddn.com/d535aff2e2e98d72.jpg)
 
 V2EX 网友制作的网站，可以方便快捷的查询各大电商网站的商品历史价格，支持的网站有：京东、淘宝、天猫、亚马逊、苏宁、一号店、当当、考拉、国美、蘑菇街、优购等。
 
-#### 4. [Awesome Bookmarks](https://github.com/PanJiaChen/awesome-bookmarks)
+#### <span id="inline-toc">4.</span> [Awesome Bookmarks](https://github.com/PanJiaChen/awesome-bookmarks)
 
 Awesome Bookmarks 是 [Github Awesome](https://github.com/topics/awesome) 主题下的一个子话题，致力于整理并收集适用于主流的现代浏览器如 Google Chrome / Mozilla Firefox / Microsoft Edge 的书签。书签收集的方式是索引、分类和注释，旨在为搜索提供一个便捷高效的浏览器集成方案。
 
-#### 5. [让 Firefox 界面变成 Chrome 的 Material Design 风格主题](http://www.apprcn.com/using-chrome-material-design-ui-in-firefox.html)
+#### <span id="inline-toc">5.</span> [让 Firefox 界面变成 Chrome 的 Material Design 风格主题](http://www.apprcn.com/using-chrome-material-design-ui-in-firefox.html)
 
 之前 Chrome 更新使用了新 UI 后有人喜欢有人不喜欢，而有些 Firefox 用户则是遗憾没有机会使用上 Material Design 风格主题。这不，就有开发者制作了一个 Firefox 主题，让你的 Firefox 浏览器也可以用上 Material Design 风格。
 
-#### 6. [WebSiteUseful](WebSiteUseful)
+#### <span id="inline-toc">6.</span> [WebSiteUseful](WebSiteUseful)
 
 ![](http://o7z41ciog.bkt.clouddn.com/chuangkou.png)
 
 科学上网，免费 ss 帐号分享、ssr 订阅源，免费 VPN 下载，获取及使用教程。就问你怕不怕？
 
-#### 7. [Terminals Are Sexy](https://github.com/k4m4/terminals-are-sexy)
+#### <span id="inline-toc">7.</span> [Terminals Are Sexy](https://github.com/k4m4/terminals-are-sexy)
 
 命令行工具和插件集合。
 
@@ -214,7 +214,7 @@ Awesome Bookmarks 是 [Github Awesome](https://github.com/topics/awesome) 主题
 
 ----
 
-#### 1. 中文屋思想实验
+#### <span id="inline-toc">1.</span> 中文屋思想实验
 
 1980年，UCBerkley 的哲学教授 John Searle 发表了一篇题为 "Minds, Brains and Programs" 的论文。在这篇论文中，Searle 旗帜鲜明地反对图灵：他认为一个计算机程序通过图灵测试并不意味着它具有智能，而至多只能是对智能的一个模拟。为了论证自己的观点，Searle 提出了一个名为“中文屋”(Chinese Room)的思想实验。
 
@@ -246,7 +246,7 @@ Awesome Bookmarks 是 [Github Awesome](https://github.com/topics/awesome) 主题
 
     他心应答则认为，塞尔自己所具有的“我不懂中文”的主观直觉并不能作为他是否懂中文的标准。只要他没有表现出与中文使用者的差别（没有被识破），那么在旁观人的直觉看来塞尔就是懂中文的。
     
-#### 2. 科学界的第一起谋杀案
+#### <span id="inline-toc">2.</span> 科学界的第一起谋杀案
 
 故事发生在古希腊，公元前5世纪左右，那里出了一位非常著名的数学家-毕达哥拉斯。他证明许多重要的定理，包括以他的名字命名的**毕达哥拉斯定理**（我们中国人通常叫 勾股定理）。
 
@@ -264,7 +264,7 @@ Awesome Bookmarks 是 [Github Awesome](https://github.com/topics/awesome) 主题
 
 无理数的发现被称为 第一次数学危机。在此后的 2000 多年里， 其他地方的科学家也发现了 类似的不能用分数表示的数。比如印度，在7世纪发现了 无理数的 现象，埃及到了大约 9 世纪也发现了类似现象。在欧洲数学家对无理数进行了孜孜不倦的研究。比如： 哲学家芝诺，15 世纪的达芬奇，17 世纪的天文学家开普勒。直到 19 世纪，1872 年，德国数学家 戴德金从连续性的要求出发，才真正地对无理数有一个全面的认识，建立起实数理论。
 
-#### 3. 能进行光合作用的动物
+#### <span id="inline-toc">3.</span> 能进行光合作用的动物
 
 如果要评选世界奇葩生物，**海蛞蝓**绝对算一个。这类软体动物是雌雄同体，不仅“能攻能受”，还可以群体交配。它们也是偷窃大师，有的能用食物中的色素给皮肤换色，有的还会存储猎物的细胞。
 
@@ -286,7 +286,7 @@ Awesome Bookmarks 是 [Github Awesome](https://github.com/topics/awesome) 主题
 
 ![](http://o7z41ciog.bkt.clouddn.com/YtjY9LrPpJ9qR.jpg)
 
-#### 4. 曼德勃罗集
+#### <span id="inline-toc">4.</span> 曼德勃罗集
 
 ![](http://o7z41ciog.bkt.clouddn.com/WechatIMG26.jpeg)
 

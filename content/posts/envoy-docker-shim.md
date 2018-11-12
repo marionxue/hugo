@@ -20,7 +20,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 要想真正掌握 Envoy，只有通过实践融入该语境才能真正理解这门技术，而目前能够找到的最佳实践项目就是 [Envoy Docker Shim](https://github.com/Nitro/envoy-docker-shim)。在实践该项目之前，你需要了解 Envoy 中的基本术语和概念，可以参考 Jimmy Song 的文章：[Envoy 的架构与基本术语](https://jimmysong.io/posts/envoy-archiecture-and-terminology/)。下面我就为大家简单地介绍下这个项目。
 
-## 1. Envoy Docker Shim
+## <span id="inline-toc">1.</span> Envoy Docker Shim
 
 ----
 
@@ -33,7 +33,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 通过将这些组件结合在一起，就形成了一个通过 Envoy 来代理 HTTP 和 TCP 流量的系统，对 `UDP` 流量的处理继续使用 docker-proxy 的代码逻辑，目前暂不支持 `SCTP` 协议。
 
-## 2. 安装步骤
+## <span id="inline-toc">2.</span> 安装步骤
 
 ----
 
@@ -122,7 +122,7 @@ $ docker run -d --name envoyproxy --restart always --net host --cap-add NET_ADMI
 
 至此，Envoy Docker Shim 已经完美地完成了替代 docker-proxy 的工作，接下来就可以不通过 iptables 而使用 Envoy 来实现 Docker 容器的端口映射啦！
 
-## 3. 容器配置
+## <span id="inline-toc">3.</span> 容器配置
 
 ----
 

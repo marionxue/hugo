@@ -471,15 +471,15 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-创建聚合层-api-证书">1. 创建聚合层 API 证书</a>
+<li><a href="#span-id-inline-toc-1-span-创建聚合层-api-证书"><span id="inline-toc">1.</span> 创建聚合层 API 证书</a>
 <ul>
 <li><a href="#安装-cfssl">安装 cfssl</a></li>
 <li><a href="#创建-ca-certificate-authority">创建 CA (Certificate Authority)</a></li>
 <li><a href="#创建-kubernetes-证书">创建 kubernetes 证书</a></li>
 <li><a href="#分发证书">分发证书</a></li>
 </ul></li>
-<li><a href="#2-开启聚合层-api">2. 开启聚合层 API</a></li>
-<li><a href="#3-参考">3. 参考</a></li>
+<li><a href="#span-id-inline-toc-2-span-开启聚合层-api"><span id="inline-toc">2.</span> 开启聚合层 API</a></li>
+<li><a href="#span-id-inline-toc-3-span-参考"><span id="inline-toc">3.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -498,7 +498,7 @@ autocomplete('#aa-search-input',
 
 <p>通常，通过在集群中的一个 Pod 中运行一个 <code>extension-apiserver</code> 来实现 APIService。如果已添加的资源需要主动管理，这个 extension-apiserver 通常需要和一个或多个控制器配对。</p>
 
-<h2 id="1-创建聚合层-api-证书">1. 创建聚合层 API 证书</h2>
+<h2 id="span-id-inline-toc-1-span-创建聚合层-api-证书"><span id="inline-toc">1.</span> 创建聚合层 API 证书</h2>
 
 <hr />
 
@@ -667,7 +667,7 @@ aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 <pre><code class="language-bash">$ cp *.pem /etc/kubernetes/ssl
 </code></pre>
 
-<h2 id="2-开启聚合层-api">2. 开启聚合层 API</h2>
+<h2 id="span-id-inline-toc-2-span-开启聚合层-api"><span id="inline-toc">2.</span> 开启聚合层 API</h2>
 
 <hr />
 
@@ -699,7 +699,7 @@ $ systemctl restart kube-apiserver
 <pre><code class="language-bash">--enable-aggregator-routing=true
 </code></pre>
 
-<h2 id="3-参考">3. 参考</h2>
+<h2 id="span-id-inline-toc-3-span-参考"><span id="inline-toc">3.</span> 参考</h2>
 
 <hr />
 

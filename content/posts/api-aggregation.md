@@ -17,7 +17,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 通常，通过在集群中的一个 Pod 中运行一个 `extension-apiserver` 来实现 APIService。如果已添加的资源需要主动管理，这个 extension-apiserver 通常需要和一个或多个控制器配对。
 
-## 1. 创建聚合层 API 证书
+## <span id="inline-toc">1.</span> 创建聚合层 API 证书
 
 ----
 
@@ -188,7 +188,7 @@ aggregator.csr  aggregator-csr.json  aggregator-key.pem  aggregator.pem
 $ cp *.pem /etc/kubernetes/ssl
 ```
 
-## 2. 开启聚合层 API
+## <span id="inline-toc">2.</span> 开启聚合层 API
 
 ----
 
@@ -223,7 +223,7 @@ $ systemctl restart kube-apiserver
 --enable-aggregator-routing=true
 ```
 
-## 3. 参考
+## <span id="inline-toc">3.</span> 参考
 
 ----
 

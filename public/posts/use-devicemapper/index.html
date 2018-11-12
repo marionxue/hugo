@@ -471,20 +471,20 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-准备条件">1. 准备条件</a></li>
-<li><a href="#2-配置docker使用devicemapper">2. 配置Docker使用devicemapper</a>
+<li><a href="#span-id-inline-toc-1-span-准备条件"><span id="inline-toc">1.</span> 准备条件</a></li>
+<li><a href="#span-id-inline-toc-2-span-配置docker使用devicemapper"><span id="inline-toc">2.</span> 配置Docker使用devicemapper</a>
 <ul>
-<li><a href="#2-1-生产环境配置direct-lvm模式">2.1 生产环境配置direct-lvm模式</a>
+<li><a href="#span-id-inline-toc-2-span-1-生产环境配置direct-lvm模式"><span id="inline-toc">2.</span>1 生产环境配置direct-lvm模式</a>
 <ul>
 <li><a href="#自动配置-direct-lvm-模式">自动配置 direct-lvm 模式</a></li>
 <li><a href="#手动配置-direct-lvm-模式">手动配置 direct-lvm 模式</a></li>
 <li><a href="#检查主机上的-devicemapper-结构">检查主机上的 <code>devicemapper</code> 结构</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#3-管理-devicemapper">3. 管理 devicemapper</a>
+<li><a href="#span-id-inline-toc-3-span-管理-devicemapper"><span id="inline-toc">3.</span> 管理 devicemapper</a>
 <ul>
-<li><a href="#3-1-监控-thin-pool">3.1 监控 thin pool</a></li>
-<li><a href="#3-2-为正在运行的设备增加容量">3.2 为正在运行的设备增加容量</a>
+<li><a href="#span-id-inline-toc-3-span-1-监控-thin-pool"><span id="inline-toc">3.</span>1 监控 thin pool</a></li>
+<li><a href="#span-id-inline-toc-3-span-2-为正在运行的设备增加容量"><span id="inline-toc">3.</span>2 为正在运行的设备增加容量</a>
 <ul>
 <li><a href="#调整-loop-lvm-精简池的大小">调整 <code>loop-lvm</code> 精简池的大小</a>
 <ul>
@@ -495,21 +495,21 @@ autocomplete('#aa-search-input',
 <li><a href="#重启操作系统后重新激活-devicemapper">重启操作系统后重新激活 devicemapper</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#4-devicemapper-存储驱动的工作原理">4. devicemapper 存储驱动的工作原理</a>
+<li><a href="#span-id-inline-toc-4-span-devicemapper-存储驱动的工作原理"><span id="inline-toc">4.</span> devicemapper 存储驱动的工作原理</a>
 <ul>
-<li><a href="#4-1-磁盘上的镜像和容器层">4.1 磁盘上的镜像和容器层</a></li>
-<li><a href="#4-2-镜像分层与共享">4.2 镜像分层与共享</a></li>
+<li><a href="#span-id-inline-toc-4-span-1-磁盘上的镜像和容器层"><span id="inline-toc">4.</span>1 磁盘上的镜像和容器层</a></li>
+<li><a href="#span-id-inline-toc-4-span-2-镜像分层与共享"><span id="inline-toc">4.</span>2 镜像分层与共享</a></li>
 </ul></li>
-<li><a href="#5-devicemapper-读写数据的过程">5. devicemapper 读写数据的过程</a>
+<li><a href="#span-id-inline-toc-5-span-devicemapper-读写数据的过程"><span id="inline-toc">5.</span> devicemapper 读写数据的过程</a>
 <ul>
-<li><a href="#5-1-读数据">5.1 读数据</a></li>
-<li><a href="#5-2-写数据">5.2 写数据</a></li>
+<li><a href="#span-id-inline-toc-5-span-1-读数据"><span id="inline-toc">5.</span>1 读数据</a></li>
+<li><a href="#span-id-inline-toc-5-span-2-写数据"><span id="inline-toc">5.</span>2 写数据</a></li>
 </ul></li>
-<li><a href="#6-device-mapper-对-docker-性能的影响">6. Device Mapper 对 Docker 性能的影响</a>
+<li><a href="#span-id-inline-toc-6-span-device-mapper-对-docker-性能的影响"><span id="inline-toc">6.</span> Device Mapper 对 Docker 性能的影响</a>
 <ul>
-<li><a href="#6-1-按需分配对性能的影响">6.1 按需分配对性能的影响</a></li>
-<li><a href="#6-2-写时拷贝对性能的影响">6.2 写时拷贝对性能的影响</a></li>
-<li><a href="#6-3-其他注意事项">6.3 其他注意事项</a></li>
+<li><a href="#span-id-inline-toc-6-span-1-按需分配对性能的影响"><span id="inline-toc">6.</span>1 按需分配对性能的影响</a></li>
+<li><a href="#span-id-inline-toc-6-span-2-写时拷贝对性能的影响"><span id="inline-toc">6.</span>2 写时拷贝对性能的影响</a></li>
+<li><a href="#span-id-inline-toc-6-span-3-其他注意事项"><span id="inline-toc">6.</span>3 其他注意事项</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -523,7 +523,7 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<h2 id="1-准备条件">1. 准备条件</h2>
+<h2 id="span-id-inline-toc-1-span-准备条件"><span id="inline-toc">1.</span> 准备条件</h2>
 
 <hr />
 
@@ -535,13 +535,13 @@ autocomplete('#aa-search-input',
 <li><p>如果你更改了 <code>Docker</code> 的存储驱动，那么你之前在本地创建的所有容器都将无法访问。</p></li>
 </ul>
 
-<h2 id="2-配置docker使用devicemapper">2. 配置Docker使用devicemapper</h2>
+<h2 id="span-id-inline-toc-2-span-配置docker使用devicemapper"><span id="inline-toc">2.</span> 配置Docker使用devicemapper</h2>
 
 <hr />
 
 <p>Docker 主机运行 <code>devicemapper</code> 存储驱动时，默认的配置模式为 <code>loop-lvm</code>。此模式使用空闲的文件来构建用于镜像和容器快照的精简存储池。该模式设计为无需额外配置开箱即用(out-of-the-box)。不过生产部署不应该以 <code>loop-lvm</code> 模式运行。</p>
 
-<h3 id="2-1-生产环境配置direct-lvm模式">2.1 生产环境配置direct-lvm模式</h3>
+<h3 id="span-id-inline-toc-2-span-1-生产环境配置direct-lvm模式"><span id="inline-toc">2.</span>1 生产环境配置direct-lvm模式</h3>
 
 <p>CentOS7 从 <code>Docker 17.06</code> 开始支持通过 Docker 自动配置  <code>direct-lvm</code>，所以推荐使用该工具配置。当然也可以手动配置 <code>lvm</code>，添加相关配置选项，不过过程较为繁琐一点。</p>
 
@@ -807,11 +807,11 @@ xvdf               202:80   0   10G  0 disk
 <p>Docker-主设备号:二级设备号-inode号-pool</p>
 </blockquote>
 
-<h2 id="3-管理-devicemapper">3. 管理 devicemapper</h2>
+<h2 id="span-id-inline-toc-3-span-管理-devicemapper"><span id="inline-toc">3.</span> 管理 devicemapper</h2>
 
 <hr />
 
-<h3 id="3-1-监控-thin-pool">3.1 监控 thin pool</h3>
+<h3 id="span-id-inline-toc-3-span-1-监控-thin-pool"><span id="inline-toc">3.</span>1 监控 thin pool</h3>
 
 <p>不要过于依赖 <code>lvm</code> 的自动扩展，通常情况下 <code>Volume Group</code> 会自动扩展，但有时候 <code>volume</code> 还是会被塞满，你可以通过命令 <code>lvs</code> 或 <code>lvs -a</code> 来监控 volume 剩余的空间。也可以考虑使用 <code>nagios</code> 等监控工具来进行监控。</p>
 
@@ -826,7 +826,7 @@ xvdf               202:80   0   10G  0 disk
 如果你在使用精简池（thin pool）的过程中频繁遇到问题，你可以在 <code>/etc/docker.daemon.json</code> 中设置参数 <code>dm.min_free_space</code> 的值（表示百分比）。例如将其设置为 10，以确保当可用空间达到或接近 10％ 时操作失败，并发出警告。参考 <a href="https://docs.docker.com/engine/reference/commandline/dockerd/#storage-driver-options">storage driver options in the Engine daemon reference</a>.
 </p>
 
-<h3 id="3-2-为正在运行的设备增加容量">3.2 为正在运行的设备增加容量</h3>
+<h3 id="span-id-inline-toc-3-span-2-为正在运行的设备增加容量"><span id="inline-toc">3.</span>2 为正在运行的设备增加容量</h3>
 
 <p>如果 lv 的存储空间已满，并且 vg 处于满负荷状态，你可以为正在运行的 <code>thin-pool</code> 设备增加存储卷的容量，具体过程取决于您是使用 <code>loop-lvm</code> 精简池还是使用 <code>direct-lvm</code> 精简池。</p>
 
@@ -1033,7 +1033,7 @@ Storage Driver: devicemapper
 <pre><code class="language-bash">$ lvchange -ay docker/thinpool
 </code></pre>
 
-<h2 id="4-devicemapper-存储驱动的工作原理">4. devicemapper 存储驱动的工作原理</h2>
+<h2 id="span-id-inline-toc-4-span-devicemapper-存储驱动的工作原理"><span id="inline-toc">4.</span> devicemapper 存储驱动的工作原理</h2>
 
 <hr />
 
@@ -1067,13 +1067,13 @@ xvdf                    202:80   0  100G  0 disk
 
 <p>使用 <code>devicemapper</code> 后，Docker 将镜像和层级内容存储在 thin pool 中，并将它们挂载到 <code>/var/lib/docker/devicemapper/</code> 目录中暴露给容器使用。</p>
 
-<h3 id="4-1-磁盘上的镜像和容器层">4.1 磁盘上的镜像和容器层</h3>
+<h3 id="span-id-inline-toc-4-span-1-磁盘上的镜像和容器层"><span id="inline-toc">4.</span>1 磁盘上的镜像和容器层</h3>
 
 <p><code>/var/lib/docker/devicemapper/metadata/</code> 目录中包含了有关 devicemapper 配置本身的元数据，以及卷、快照和每个卷的块或者快照同存储池中块的映射信息。<code>devicemapper</code> 使用了快照技术，元数据中也包含了这些快照的信息，以 json 格式保存在文本中。</p>
 
 <p><code>/var/lib/devicemapper/mnt/</code> 目录包含了所有镜像和容器层的挂载点。镜像层的挂载点表现为空目录，容器层的挂载点显示的是容器内部的文件系统。</p>
 
-<h3 id="4-2-镜像分层与共享">4.2 镜像分层与共享</h3>
+<h3 id="span-id-inline-toc-4-span-2-镜像分层与共享"><span id="inline-toc">4.</span>2 镜像分层与共享</h3>
 
 <p><code>devicemapper</code> 存储驱动使用专用块设备而不是格式化的文件系统，通过在块级别上对文件进行操作，能够在写时复制（CoW）期间实现最佳性能。</p>
 
@@ -1101,11 +1101,11 @@ xvdf                    202:80   0  100G  0 disk
 
 <p><center><img src="http://o7z41ciog.bkt.clouddn.com/devicemapper-in-practice-pic2.jpg" alt="" /></center></p>
 
-<h2 id="5-devicemapper-读写数据的过程">5. devicemapper 读写数据的过程</h2>
+<h2 id="span-id-inline-toc-5-span-devicemapper-读写数据的过程"><span id="inline-toc">5.</span> devicemapper 读写数据的过程</h2>
 
 <hr />
 
-<h3 id="5-1-读数据">5.1 读数据</h3>
+<h3 id="span-id-inline-toc-5-span-1-读数据"><span id="inline-toc">5.</span>1 读数据</h3>
 
 <p>我们来看下使用 <code>devicemapper</code> 存储驱动如何进行读文件。下图显示在示例容器中读取一个单独的块 [0x44f] 的过程。</p>
 
@@ -1121,7 +1121,7 @@ xvdf                    202:80   0  100G  0 disk
 <li><p>存储驱动最后将数据返回给请求的应用。</p></li>
 </ol>
 
-<h3 id="5-2-写数据">5.2 写数据</h3>
+<h3 id="span-id-inline-toc-5-span-2-写数据"><span id="inline-toc">5.</span>2 写数据</h3>
 
 <ul>
 <li><strong>写入新数据：</strong>使用 <code>devicemapper</code> 驱动，通过按需分配（allocate-on-demand）操作来实现写入新数据到容器，所有的新数据都被写入容器的可写层中。</li>
@@ -1145,25 +1145,25 @@ xvdf                    202:80   0  100G  0 disk
 <li><p><strong>写入新数据并删除旧数据：</strong>当你向容器中写入新数据并删除旧数据时，所有这些操作都发生在容器的可写层。如果你使用的是 <code>direct-lvm</code> 模式，删除的数据块将会被释放；如果你使用的是 <code>loop-lvm</code> 模式，那么这些数据块就不会被释放。因此不建议在生产环境中使用 <code>loop-lvm</code> 模式。</p></li>
 </ul>
 
-<h2 id="6-device-mapper-对-docker-性能的影响">6. Device Mapper 对 Docker 性能的影响</h2>
+<h2 id="span-id-inline-toc-6-span-device-mapper-对-docker-性能的影响"><span id="inline-toc">6.</span> Device Mapper 对 Docker 性能的影响</h2>
 
 <hr />
 
 <p>了解按需分配和写时拷贝操作对整体容器性能的影响很重要。</p>
 
-<h3 id="6-1-按需分配对性能的影响">6.1 按需分配对性能的影响</h3>
+<h3 id="span-id-inline-toc-6-span-1-按需分配对性能的影响"><span id="inline-toc">6.</span>1 按需分配对性能的影响</h3>
 
 <p><code>devicemapper</code> 存储驱动通过按需分配操作给容器分配新的数据块。这意味着每次应用程序写入容器内的某处时，一个或多个空数据块从存储池中分配并映射到容器中。</p>
 
 <p>所有数据块为 <code>64KB</code>。 写小于 <code>64KB</code> 的数据仍然分配一个 <code>64KB</code> 数据块。写入超过 <code>64KB</code> 的数据分配多个 <code>64KB</code> 数据块。所以，特别是当发生很多小的写操作时，就会比较影响容器的性能。不过一旦数据块分配给容器，后续的读和写可以直接在该数据块上操作。</p>
 
-<h3 id="6-2-写时拷贝对性能的影响">6.2 写时拷贝对性能的影响</h3>
+<h3 id="span-id-inline-toc-6-span-2-写时拷贝对性能的影响"><span id="inline-toc">6.</span>2 写时拷贝对性能的影响</h3>
 
 <p>每当容器首次更新现有数据时，<code>devicemapper</code> 存储驱动必须执行写时拷贝操作。这会从镜像快照复制数据到容器快照。此过程对容器性能产生显着影响。因此，更新一个 <code>1GB</code> 文件的 <code>32KB</code> 数据只复制一个 <code>64KB</code> 数据块到容器快照。这比在文件级别操作需要复制整个 <code>1GB</code> 文件到容器数据层有明显的性能优势。</p>
 
 <p>不过在实践中，当容器执行很多小于 <code>64KB</code> 的写操作时，<code>devicemapper</code> 的性能会比 <code>AUFS</code> 要差。</p>
 
-<h3 id="6-3-其他注意事项">6.3 其他注意事项</h3>
+<h3 id="span-id-inline-toc-6-span-3-其他注意事项"><span id="inline-toc">6.</span>3 其他注意事项</h3>
 
 <p>还有其他一些影响 <code>devicemapper</code> 存储驱动性能的因素。</p>
 

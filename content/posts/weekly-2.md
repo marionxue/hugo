@@ -13,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ## <p id="h2">新闻</p>
 
-### 1. [谷歌推出首款微信小程序“猜画小歌”](https://techcrunch.cn/2018/07/18/google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue/)
+### <span id="inline-toc">1.</span> [谷歌推出首款微信小程序“猜画小歌”](https://techcrunch.cn/2018/07/18/google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue/)
 
 ![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1130.jpeg)
 
@@ -25,7 +25,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 建议大家第一时间体验，感觉 Google 这个小程序要孕育出一大堆灵魂画手，秀出自己的灵魂画作吧！
 
-### 2. [微信批量封号](https://chinadigitaltimes.net/chinese/2018/07/%E3%80%90%E7%AB%8B%E6%AD%A4%E5%AD%98%E7%85%A7%E3%80%91%E6%89%B9%E9%87%8F%E5%B0%81%E5%8F%B7-%E5%BE%AE%E4%BF%A1%E5%B0%81%E5%BB%BA%E6%97%B6%E4%BB%A3%E5%88%B0%E6%9D%A5/)
+### <span id="inline-toc">2.</span> [微信批量封号](https://chinadigitaltimes.net/chinese/2018/07/%E3%80%90%E7%AB%8B%E6%AD%A4%E5%AD%98%E7%85%A7%E3%80%91%E6%89%B9%E9%87%8F%E5%B0%81%E5%8F%B7-%E5%BE%AE%E4%BF%A1%E5%B0%81%E5%BB%BA%E6%97%B6%E4%BB%A3%E5%88%B0%E6%9D%A5/)
 
 近日，中国数字时代发现，微博、推特、豆瓣等平台，集中出现一些声称遭遇微信封号的网友，数量较多，其中多数网友被封号原因推测都与“传播谣言”、“散布有害言论”、“妄议时政”等相关，也有一些网友对于被封号原因表示不解。
 
@@ -41,7 +41,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/wechat3.jpg)</center>
 
-### 3. [Android 免费模式或将终结](https://36kr.com/p/5143943.html)
+### <span id="inline-toc">3.</span> [Android 免费模式或将终结](https://36kr.com/p/5143943.html)
 
 <center>![](https://pic.36krcnd.com/201807/18232502/o6d9dnyk6lsmtvyu.jpg)</center>
 
@@ -53,7 +53,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 他认为，欧盟委员会针对 Android 及其商业模式的罚单定忽略了 Android 手机与 iOS 手机竞争的事实。也忽略了 Android 为成千上万的手机制造商和移动网络运营商提供了多少选择，正是这些手机制造商和移动运营商在生产并销售 Android 设备。此外，世界各地有数百万的企业依靠开发 Android 应用为生；数十亿的消费者使用着廉价的安卓手机。
 
-### 4. [Google印度工程师被活活打死](https://www.cnbeta.com/articles/tech/748631.htm)
+### <span id="inline-toc">4.</span> [Google印度工程师被活活打死](https://www.cnbeta.com/articles/tech/748631.htm)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/efa942f659a7e12.jpeg)</center>
 
@@ -69,7 +69,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/6e5e9c0eea7bc5c.jpeg)</center>
 
-### 5. [整个社区联合起来强奸一个孩子](https://cn.nytimes.com/world/20180719/rape-chennai-india/?utm_source=tw-nytimeschinese&utm_medium=social&utm_campaign=cur)
+### <span id="inline-toc">5.</span> [整个社区联合起来强奸一个孩子](https://cn.nytimes.com/world/20180719/rape-chennai-india/?utm_source=tw-nytimeschinese&utm_medium=social&utm_campaign=cur)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/merlin.jpg)</center>
 
@@ -79,7 +79,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 这些男子并非这个封闭式社区的闯入者，而是向居民打招呼、操作电梯、为公寓送饮水机的社区雇员。
 
-### 6. [马化腾朋友圈辟谣](https://getpocket.com/redirect?url=https%3A%2F%2Fm.mydrivers.com%2Fnewsview%2F585157.html%3Fref%3Dandroid-app%253A%2F%2Fcom.google.android.googlequicksearchbox%2Fhttps%2Fwww.google.com&formCheck=e3cf5ad1969099a5c614a0e851dfa82b)
+### <span id="inline-toc">6.</span> [马化腾朋友圈辟谣](https://getpocket.com/redirect?url=https%3A%2F%2Fm.mydrivers.com%2Fnewsview%2F585157.html%3Fref%3Dandroid-app%253A%2F%2Fcom.google.android.googlequicksearchbox%2Fhttps%2Fwww.google.com&formCheck=e3cf5ad1969099a5c614a0e851dfa82b)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/726c1d06f96.jpg)</center>
 
@@ -93,23 +93,23 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ## <p id="h2">工具</p>
 
-### 1. [HexoEditor](https://github.com/zhuzhuyule/HexoEditor)
+### <span id="inline-toc">1.</span> [HexoEditor](https://github.com/zhuzhuyule/HexoEditor)
 
 这是一款为 Hexo 做了优化的非常清新的 Markdown 编辑器，使用 Electron 做框架，修改自 [Moeditor](https://github.com/Moeditor/Moeditor)。
 
 <center>![](https://raw.githubusercontent.com/zhuzhuyule/HexoEditor/master/screenshots/gif-tag.gif)</center>
 
-### 2. [router7](https://github.com/rtr7/router7)
+### <span id="inline-toc">2.</span> [router7](https://github.com/rtr7/router7)
 
 一款用 Go 语言编写的软路由操作系统。该项目目前还只是个 demo，更多功能请继续关注。
 
-### 3. [Infinity 新标签页](https://cn.infinitynewtab.com/)
+### <span id="inline-toc">3.</span> [Infinity 新标签页](https://cn.infinitynewtab.com/)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/infinity.jpg)</center>
 
 Infinity，基于过去对新标签页的认识，重新定义了新标签页，一个追求极简美学和一站式服务体验。新一代的标签页，一个更好用，更强大的新标签页。
 
-### 4. [Camtd - Chrome 多线程下载管理器插件](https://github.com/jae-jae/Camtd)
+### <span id="inline-toc">4.</span> [Camtd - Chrome 多线程下载管理器插件](https://github.com/jae-jae/Camtd)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/6874.jpeg)</center>
 
@@ -119,7 +119,7 @@ Infinity，基于过去对新标签页的认识，重新定义了新标签页，
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/1bcf69d6.gif)</center>
 
-### 5. [Yomail](http://www.nextechat.com/)
+### <span id="inline-toc">5.</span> [Yomail](http://www.nextechat.com/)
 
 <center>![](https://img3.appinn.com/images/201611/yomail_app12x.jpg)</center>
 
@@ -127,7 +127,7 @@ Infinity，基于过去对新标签页的认识，重新定义了新标签页，
 
 不过这些试图「重新发明邮件」的客户端，并没有特别针对国内环境做设计。如果你不太热衷于尝试这些国外的邮件客户端，又不满足于国内邮件服务商的官方网页或客户端，想在工作中更好处理邮件，可以试试 YoMail。
 
-### 6. [Irreader 一个 RSS 阅读器](http://irreader.netqon.com/)
+### <span id="inline-toc">6.</span> [Irreader 一个 RSS 阅读器](http://irreader.netqon.com/)
 
 <center>![](http://irreader.netqon.com/libs/c/1.png)</center>
 
@@ -137,7 +137,7 @@ irreader 是一个 RSS 阅读器，除了 RSS 之外，也可以订阅网页和 
 
 <center>![](http://irreader.netqon.com/libs/mkt_0.png)</center>
 
-### 7. [人人影视 TV 版](http://app.yyets.com/)
+### <span id="inline-toc">7.</span> [人人影视 TV 版](http://app.yyets.com/)
 
 <center>![](https://img3.appinn.com/images/201807/banner01.jpg!o)</center>
 
@@ -154,47 +154,47 @@ irreader 是一个 RSS 阅读器，除了 RSS 之外，也可以订阅网页和 
 
 ## <p id="h2">教程</p>
 
-### 1. [Linux 内存管理](https://segmentfault.com/a/1190000008125006)
+### <span id="inline-toc">1.</span> [Linux 内存管理](https://segmentfault.com/a/1190000008125006)
 
 在linux下，使用 top，vmstat,free 等命令查看系统或者进程的内存使用情况时，经常看到 buff/cache memeory，swap，avail Mem 等，他们都代表什么意思呢？这篇文章将来聊一聊 Linux 下的内存管理并解答这个问题。
 
-### 2. [Etcd 架构与实现解析](http://jolestar.com/etcd-architecture/)
+### <span id="inline-toc">2.</span> [Etcd 架构与实现解析](http://jolestar.com/etcd-architecture/)
 
 Etcd 是 CoreOS 基于 Raft 开发的分布式 key-value 存储，可用于服务发现、共享配置以及一致性保障（如数据库选主、分布式锁等）。网上关于 Etcd 的使用介绍的文章不少，但分析具体架构实现的文章不多，同时 Etcd v3的文档也非常稀缺。本文通过分析 Etcd 的架构与实现，了解其优缺点以及瓶颈点，一方面可以学习分布式系统的架构，另外一方面也可以保证在业务中正确使用 Etcd，知其然同时知其所以然，避免误用。
 
-### 3. [Learning-SICP](https://github.com/DeathKing/Learning-SICP)
+### <span id="inline-toc">3.</span> [Learning-SICP](https://github.com/DeathKing/Learning-SICP)
 
 <center>![](https://camo.githubusercontent.com/0328cc5987e0ade0ba05d452171c90cbe4f61c43/687474703a2f2f67726f7570732e637361696c2e6d69742e6564752f6d61632f636c61737365732f362e3030312f6162656c736f6e2d737573736d616e2d6c656374757265732f77697a6172642e6a7067)</center>
 
 《计算机程序的构造和解释》系列公开课，视频是两位作者（Harold Abelson、Gerald Jay Sussman）在1986年7月给 Hewlett-Packard 公司员工培训时的录像。这门课程只提供了英文字幕，本项目旨在将这些英文字幕翻译为中文，方便广大的 `Scheme/Lisp` 学习者。
 
-### 4. [Tcpdump 示例教程](https://hackertarget.com/tcpdump-examples/)
+### <span id="inline-toc">4.</span> [Tcpdump 示例教程](https://hackertarget.com/tcpdump-examples/)
 
 tcpdump 是一个运行在命令行下的嗅探工具。它允许用户拦截和显示发送或收到过网络连接到该计算机的 TCP/IP 和其他数据包。一般情况下，非 HTTP 协议的网络分析，在服务器端用 tcpdump 比较多，在客户端用 wireshark 比较多，两个抓包软件的语法是一样的。
 
-### 5. [Envoy 官方文档中文版](http://www.servicemesher.com/envoy/)
+### <span id="inline-toc">5.</span> [Envoy 官方文档中文版](http://www.servicemesher.com/envoy/)
 
 ![](http://o7z41ciog.bkt.clouddn.com/envoyproxy11.jpg)
 
 Envoy ——为云原生应用而设计、开源的边缘和服务代理、Istio Service Mesh 默认的数据平面，最新官方文档中文版，由 ServiceMesher社区倾情奉献。
 
-### 6. [编写和优化Go代码](https://github.com/dgryski/go-perfbook/blob/master/performance-zh.md)
+### <span id="inline-toc">6.</span> [编写和优化Go代码](https://github.com/dgryski/go-perfbook/blob/master/performance-zh.md)
 
 本文档概述了编写高性能Go代码的最佳实践。
 
 ## <p id="h2">资源</p>
 
-### 1. [Vistio](https://github.com/nmnellis/vistio)
+### <span id="inline-toc">1.</span> [Vistio](https://github.com/nmnellis/vistio)
 
 <center>![](https://github.com/nmnellis/vistio/raw/master/documentation/sample.png)</center>
 
 [Vizceral](https://github.com/Netflix/vizceral) 是 Netflix 发布的一个开源项目，用于近乎实时地监控应用程序和集群之间的网络流量。Vistio 是使用 Vizceral 对 Istio 和网格监控的改进。它利用 Istio Mixer 生成的指标，然后将其输入 Prometheus。Vistio 查询 Prometheus 并将数据存储在本地以允许重播流量。
 
-### 2. [一个在线运行代码的网站](https://yxi.io/)
+### <span id="inline-toc">2.</span> [一个在线运行代码的网站](https://yxi.io/)
 
 这是一个可以在线运行短代码的网站，前端用 Vuejs 做的，后端用 Docker 提供不同语言的运行环境。目前支持的语言 Bash, C, C++, Go, Haskell, Java, Perl, PHP, Python, Ruby, Rust.
 
-### 3. [SOFAMesh](https://zhuanlan.zhihu.com/p/39931845)
+### <span id="inline-toc">3.</span> [SOFAMesh](https://zhuanlan.zhihu.com/p/39931845)
 
 蚂蚁金服自主研发的分布式中间件（Scalable Open Financial Architecture，简称 SOFA ）推出的第三轮的开源产品：`SOFAMesh`。
 
@@ -205,15 +205,15 @@ SOFAMesh 是基于 Istio 改进和扩展而来的 Service Mesh 大规模落地�
 + 增强 Pilot 以实现更灵活的服务发现机制
 + 增加对 SOFA RPC、Dubbo 的支持
 
-### 4. [rio](https://github.com/ibuildthecloud/rio)
+### <span id="inline-toc">4.</span> [rio](https://github.com/ibuildthecloud/rio)
 
 我也不知道这玩意儿到底是个什么东西，据项目 README 介绍，这是个和 Docker 一样有趣的东西，而且是一种新奇的技术，像 service mesh 一样。
 
-### 5. [Nabla containers](https://nabla-containers.github.io/)
+### <span id="inline-toc">5.</span> [Nabla containers](https://nabla-containers.github.io/)
 
 一种新型容器，专门为主机上的强隔离而设计。
 
-### 6. [golb](https://github.com/onestraw/golb)
+### <span id="inline-toc">6.</span> [golb](https://github.com/onestraw/golb)
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/golb.png)</center>
 

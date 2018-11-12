@@ -475,14 +475,14 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-pod-在服务网格之间如何通信">1. Pod 在服务网格之间如何通信？</a></li>
-<li><a href="#2-部署-bookinfo-应用的时候发生了什么">2. 部署 bookinfo 应用的时候发生了什么？</a></li>
-<li><a href="#3-virtualservice-和-destinationrule-配置解析">3. VirtualService 和 DestinationRule 配置解析</a>
+<li><a href="#span-id-inline-toc-1-span-pod-在服务网格之间如何通信"><span id="inline-toc">1.</span> Pod 在服务网格之间如何通信？</a></li>
+<li><a href="#span-id-inline-toc-2-span-部署-bookinfo-应用的时候发生了什么"><span id="inline-toc">2.</span> 部署 bookinfo 应用的时候发生了什么？</a></li>
+<li><a href="#span-id-inline-toc-3-span-virtualservice-和-destinationrule-配置解析"><span id="inline-toc">3.</span> VirtualService 和 DestinationRule 配置解析</a>
 <ul>
 <li><a href="#virtualservice">VirtualService</a></li>
 <li><a href="#destinationrule">DestinationRule</a></li>
 </ul></li>
-<li><a href="#4-参考">4. 参考</a></li>
+<li><a href="#span-id-inline-toc-4-span-参考"><span id="inline-toc">4.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -499,7 +499,7 @@ autocomplete('#aa-search-input',
 
 <p>在继续追踪请求之前，先对之前的内容做一个补充说明。</p>
 
-<h2 id="1-pod-在服务网格之间如何通信">1. Pod 在服务网格之间如何通信？</h2>
+<h2 id="span-id-inline-toc-1-span-pod-在服务网格之间如何通信"><span id="inline-toc">1.</span> Pod 在服务网格之间如何通信？</h2>
 
 <hr />
 
@@ -544,7 +544,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|9080||productpag
 
 <p>从这里可以看出，各个微服务之间是直接通过 <code>PodIP + Port</code> 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。</p>
 
-<h2 id="2-部署-bookinfo-应用的时候发生了什么">2. 部署 bookinfo 应用的时候发生了什么？</h2>
+<h2 id="span-id-inline-toc-2-span-部署-bookinfo-应用的时候发生了什么"><span id="inline-toc">2.</span> 部署 bookinfo 应用的时候发生了什么？</h2>
 
 <hr />
 
@@ -771,7 +771,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep &quot;outbound|53||kube-dns.kub
 
 <p>上面的整个过程就是在不创建任何规则的情况下请求从 <code>productpage</code> 到 <code>reviews</code> 的过程，从 reviews 到网格内其他应用的流量与上面类似，就不展开讨论了。接下来分析创建规则之后的请求转发过程。</p>
 
-<h2 id="3-virtualservice-和-destinationrule-配置解析">3. VirtualService 和 DestinationRule 配置解析</h2>
+<h2 id="span-id-inline-toc-3-span-virtualservice-和-destinationrule-配置解析"><span id="inline-toc">3.</span> VirtualService 和 DestinationRule 配置解析</h2>
 
 <hr />
 
@@ -930,7 +930,7 @@ reviews-v1-5b487cc689-njx5t   2/2       Running   0          11h       172.30.10
 
 <p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuy5isxp4j31kw0zkgtq.jpg" alt="" /></center></p>
 
-<h2 id="4-参考">4. 参考</h2>
+<h2 id="span-id-inline-toc-4-span-参考"><span id="inline-toc">4.</span> 参考</h2>
 
 <hr />
 

@@ -23,7 +23,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <center>*不同v1alpha3元素之间的关系*</center>
 
-## 1. Gateway 介绍
+## <span id="inline-toc">1.</span> Gateway 介绍
 
 ----
 
@@ -74,7 +74,7 @@ Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图
 
 下面通过一个示例来演示如何配置 Istio 以使用 Istio  Gateway 在服务网格外部公开服务。
 
-## 2. 使用 Istio 网关配置 Ingress
+## <span id="inline-toc">2.</span> 使用 Istio 网关配置 Ingress
 
 ----
 
@@ -164,7 +164,7 @@ Gateway 可以用于建模边缘代理或纯粹的内部代理，如第一张图
     transfer-encoding: chunked
     ```
 
-## 3. 使用浏览器访问 Ingress 服务
+## <span id="inline-toc">3.</span> 使用浏览器访问 Ingress 服务
 
 ----
 
@@ -250,7 +250,7 @@ $  cat <<EOF | istioctl replace -f -
 
 ![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuxjbe2cgj31kw0zkqa5.jpg)
 
-## 4. 清理
+## <span id="inline-toc">4.</span> 清理
 
 ----
 
@@ -262,7 +262,7 @@ $ istioctl delete virtualservice httpbin
 $ kubectl delete --ignore-not-found=true -f samples/httpbin/httpbin.yaml
 ```
 
-## 5. 参考
+## <span id="inline-toc">5.</span> 参考
 
 ----
 

@@ -19,7 +19,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <center>![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuyyezwn3j31kw10gdt5.jpg)</center>
 
-## 1. 为什么需要自定义 DNS
+## <span id="inline-toc">1.</span> 为什么需要自定义 DNS
 
 ----
 
@@ -31,7 +31,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 存在于独立出来的网络架构中的这些特殊的 Pod 基本上没法跟 Kubernetes 集群内的 DNS 互连，而且这些应用还有可能在外部有自己的 `DNS Server`，所以在这种场景下，我们希望这些应用（Pod1/Pod2）能够使用自定义的 `DNS Server`。
 
-## 2. 如何自定义 DNS
+## <span id="inline-toc">2.</span> 如何自定义 DNS
 
 ----
 

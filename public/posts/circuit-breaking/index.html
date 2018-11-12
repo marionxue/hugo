@@ -473,9 +473,9 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-熔断器配置">1. 熔断器配置</a></li>
-<li><a href="#2-基本的熔断策略">2. 基本的熔断策略</a></li>
-<li><a href="#3-高级熔断策略">3. 高级熔断策略</a>
+<li><a href="#span-id-inline-toc-1-span-熔断器配置"><span id="inline-toc">1.</span> 熔断器配置</a></li>
+<li><a href="#span-id-inline-toc-2-span-基本的熔断策略"><span id="inline-toc">2.</span> 基本的熔断策略</a></li>
+<li><a href="#span-id-inline-toc-3-span-高级熔断策略"><span id="inline-toc">3.</span> 高级熔断策略</a>
 <ul>
 <li><a href="#基于延迟设置熔断">基于延迟设置熔断</a></li>
 <li><a href="#基于长连接重试队列设置熔断">基于长连接重试队列设置熔断</a></li>
@@ -496,7 +496,7 @@ autocomplete('#aa-search-input',
 
 <p><span id="inline-purple">熔断器</span> 是分布式系统的关键组件，默认情况下处于关闭状态，这时请求被允许通过熔断器。它调用失败次数积累，如果当前健康状况低于设定阈值则启动熔断机制，这时请求被禁止通过。这样做可以实现更优雅的故障处理，并在问题被放大之前做出及时的响应。你可以选择在基础架构层面实现熔断机制，但熔断器本身会很容易受到故障的影响。为了更好地实现熔断机制，可以在 Envoy 的网络层面配置熔断器，这样做的好处是 <code>Envoy</code> 在网络级别强制实现断路，而不必为每个应用程序单独配置或编程。</p>
 
-<h2 id="1-熔断器配置">1. 熔断器配置</h2>
+<h2 id="span-id-inline-toc-1-span-熔断器配置"><span id="inline-toc">1.</span> 熔断器配置</h2>
 
 <hr />
 
@@ -519,7 +519,7 @@ autocomplete('#aa-search-input',
 <li><span id="inline-blue">max_requests</span> : 在任何给定时间内，集群中所有主机可以处理的最大请求数，默认值也是 1024。实际上，这适用于仅 HTTP/2 集群，因为 HTTP/1.1 集群由最大连接断路器控制。</li>
 </ul>
 
-<h2 id="2-基本的熔断策略">2. 基本的熔断策略</h2>
+<h2 id="span-id-inline-toc-2-span-基本的熔断策略"><span id="inline-toc">2.</span> 基本的熔断策略</h2>
 
 <hr />
 
@@ -532,7 +532,7 @@ autocomplete('#aa-search-input',
 
 <p>这两个配置项都可以很好地实现熔断机制，主要取决于两个指标：服务的请求/连接数量和请求延时。例如，具有 1000个请求/second 和平均延迟 2 秒的 HTTP/1 服务通常会在任何给定时间内打开 <code>2000</code> 个连接。由于当存在大量非正常连接时熔断器会启动熔断机制，因此建议将参数 max_connections 的值最少设置为 <code>10 x 2000</code>，这样当最后 10 秒内的大多数请求未能返回正确的响应时就会打开熔断器。当然，具体的熔断器配置还得取决于系统的负载以及相关服务的具体配置。</p>
 
-<h2 id="3-高级熔断策略">3. 高级熔断策略</h2>
+<h2 id="span-id-inline-toc-3-span-高级熔断策略"><span id="inline-toc">3.</span> 高级熔断策略</h2>
 
 <hr />
 

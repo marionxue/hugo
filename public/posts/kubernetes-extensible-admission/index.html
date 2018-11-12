@@ -471,20 +471,20 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-什么是准入控制">1. 什么是准入控制</a>
+<li><a href="#span-id-inline-toc-1-span-什么是准入控制"><span id="inline-toc">1.</span> 什么是准入控制</a>
 <ul>
 <li><a href="#修改-mutation-阶段">修改 （Mutation）阶段</a></li>
 <li><a href="#验证-validating-阶段">验证 （Validating）阶段</a></li>
 </ul></li>
-<li><a href="#2-如何使用准入控制">2. 如何使用准入控制</a></li>
-<li><a href="#3-admission-webhook">3. Admission Webhook</a>
+<li><a href="#span-id-inline-toc-2-span-如何使用准入控制"><span id="inline-toc">2.</span> 如何使用准入控制</a></li>
+<li><a href="#span-id-inline-toc-3-span-admission-webhook"><span id="inline-toc">3.</span> Admission Webhook</a>
 <ul>
 <li><a href="#webhook-admission-插件的优势">Webhook Admission 插件的优势</a></li>
 <li><a href="#注册">注册</a></li>
 <li><a href="#认证和信任">认证和信任</a></li>
 </ul></li>
-<li><a href="#4-简单安全-可移植的拓扑结构">4. 简单安全，可移植的拓扑结构</a></li>
-<li><a href="#5-如何使用-admission-webhook">5. 如何使用 Admission Webhook</a>
+<li><a href="#span-id-inline-toc-4-span-简单安全-可移植的拓扑结构"><span id="inline-toc">4.</span> 简单安全，可移植的拓扑结构</a></li>
+<li><a href="#span-id-inline-toc-5-span-如何使用-admission-webhook"><span id="inline-toc">5.</span> 如何使用 Admission Webhook</a>
 <ul>
 <li><a href="#开发-webhook-server">开发 Webhook Server</a></li>
 <li><a href="#部署-webhook-server">部署 Webhook Server</a></li>
@@ -492,8 +492,8 @@ autocomplete('#aa-search-input',
 <li><a href="#创建-pod">创建 Pod</a></li>
 <li><a href="#查询-pod">查询 Pod</a></li>
 </ul></li>
-<li><a href="#6-总结">6. 总结</a></li>
-<li><a href="#7-参考">7. 参考</a></li>
+<li><a href="#span-id-inline-toc-6-span-总结"><span id="inline-toc">6.</span> 总结</a></li>
+<li><a href="#span-id-inline-toc-7-span-参考"><span id="inline-toc">7.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -506,7 +506,7 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<h2 id="1-什么是准入控制">1. 什么是准入控制</h2>
+<h2 id="span-id-inline-toc-1-span-什么是准入控制"><span id="inline-toc">1.</span> 什么是准入控制</h2>
 
 <hr />
 
@@ -561,7 +561,7 @@ autocomplete('#aa-search-input',
 <li>internal object 转化为 versioned object，并且持久化存储到 etcd。</li>
 </ul>
 
-<h2 id="2-如何使用准入控制">2. 如何使用准入控制</h2>
+<h2 id="span-id-inline-toc-2-span-如何使用准入控制"><span id="inline-toc">2.</span> 如何使用准入控制</h2>
 
 <hr />
 
@@ -572,7 +572,7 @@ autocomplete('#aa-search-input',
 
 <p>值得一提的是，有些准入控制器可能会使用 <code>Alpha</code> 版本的 API，这时必须首先使能其使用的 API 版本。否则准入控制器不能工作，可能会影响系统功能。</p>
 
-<h2 id="3-admission-webhook">3. Admission Webhook</h2>
+<h2 id="span-id-inline-toc-3-span-admission-webhook"><span id="inline-toc">3.</span> Admission Webhook</h2>
 
 <hr />
 
@@ -674,7 +674,7 @@ webhooks:
 
 <p>对于在集群内运行的 Admission Webhook 来说，一个巧妙构建的 Webhook Admission Server 和拓扑结构，就是能够利用 Admission 插件中内置的安全默认值，并具有可从任何 API server 运行的安全、可移植和零配置的拓扑结构。</p>
 
-<h2 id="4-简单安全-可移植的拓扑结构">4. 简单安全，可移植的拓扑结构</h2>
+<h2 id="span-id-inline-toc-4-span-简单安全-可移植的拓扑结构"><span id="inline-toc">4.</span> 简单安全，可移植的拓扑结构</h2>
 
 <hr />
 
@@ -694,7 +694,7 @@ webhooks:
 
 <p><strong>简而言之：一个安全的拓扑结构可以使用 API server 聚合 (API server aggregation) 的所有安全机制，不需要额外的配置。</strong>其他的拓扑结构也是可行的，但是需要额外的手动配置以及创建安全设置工作。尤其是像 <code>service catalog</code> 这种 extension API servers，上面的拓扑结构就是零配置，并且可移植到任何 Kubernetes 集群中。</p>
 
-<h2 id="5-如何使用-admission-webhook">5. 如何使用 Admission Webhook</h2>
+<h2 id="span-id-inline-toc-5-span-如何使用-admission-webhook"><span id="inline-toc">5.</span> 如何使用 Admission Webhook</h2>
 
 <hr />
 
@@ -946,7 +946,7 @@ spec:
 
 <p>Istio 就是使用 <code>ValidatingAdmissionWebhooks</code> 验证 Istio 配置，使用 <code>MutatingAdmissionWebhooks</code> 自动将 sidecar 代理注入至用户 pod。可以参考：<a href="https://istio.io/zh/help/ops/setup/webhook/" target="_blank">动态准入 Webhooks 概述</a>。</p>
 
-<h2 id="6-总结">6. 总结</h2>
+<h2 id="span-id-inline-toc-6-span-总结"><span id="inline-toc">6.</span> 总结</h2>
 
 <hr />
 
@@ -957,7 +957,7 @@ spec:
 <li>不需要重启 API Server，可通过创建 webhook configuration <strong>热加载</strong> webhook admission。</li>
 </ul>
 
-<h2 id="7-参考">7. 参考</h2>
+<h2 id="span-id-inline-toc-7-span-参考"><span id="inline-toc">7.</span> 参考</h2>
 
 <hr />
 

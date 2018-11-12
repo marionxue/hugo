@@ -13,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：[在你的笔记本上运行 Envoy](https://www.yangcs.net/posts/run-envoy-on-your-laptop/)，现在就可以更深入地了解如何在静态文件中配置路由（Route）、集群（Cluster）和监听器（Listener）了。
 
-## 1. 相关组件
+## <span id="inline-toc">1.</span> 相关组件
 
 ----
 
@@ -29,7 +29,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <span id="inline-blue">监听器</span> 是可以接受来自下游客户端的连接的命名网络位置（例如，端口，unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。同样，监听器可以通过静态定义，也可以通过监听器发现服务（LDS）动态获取。
 
-## 2. 配置路由
+## <span id="inline-toc">2.</span> 配置路由
 
 ----
 
@@ -75,7 +75,7 @@ clusters:
           port_value: 80
 ```
 
-## 3. 配置监听器
+## <span id="inline-toc">3.</span> 配置监听器
 
 ----
 
@@ -113,7 +113,7 @@ listeners:
             config: {}
 ```
 
-## 4. 动态发现路由、集群和监听器
+## <span id="inline-toc">4.</span> 动态发现路由、集群和监听器
 
 ----
 
@@ -121,7 +121,7 @@ listeners:
 
 现在你已经了解了如何配置基本的路由、集群和监听器，下一节我们将学习如何在增量部署中设置更复杂的流量切换和过滤规则。
 
-## 5. 参考
+## <span id="inline-toc">5.</span> 参考
 
 ----
 

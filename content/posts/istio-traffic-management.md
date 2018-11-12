@@ -21,7 +21,7 @@ Istio 从 0.8 版本开始出现了一个新的 API 组：[networking.istio.io/v
 <p>正常情况下 istioctl 和 kubectl 都可以用来操作这些对象，但是 kubectl 缺乏验证功能，因此调试阶段使用 <code>istioctl</code> 会更方便一些。</p>
 </div>
 
-## 1. Bookinfo 应用介绍
+## <span id="inline-toc">1.</span> Bookinfo 应用介绍
 
 ----
 
@@ -48,7 +48,7 @@ Bookinfo 应用分为四个单独的微服务：
 
 Bookinfo 是一个异构应用，几个微服务是由不同的语言编写的。这些服务对 Istio 并无依赖，但是构成了一个有代表性的服务网格的例子：它由多个服务、多个语言构成，并且 `reviews` 服务具有多个版本。
 
-## 2. 部署 Bookinfo 应用
+## <span id="inline-toc">2.</span> 部署 Bookinfo 应用
 
 ----
 
@@ -150,7 +150,7 @@ $ curl -o /dev/null -s -w "%{http_code}\n" http://${GATEWAY_URL}/productpage
 
 还可以用浏览器打开网址 `http://$GATEWAY_URL/productpage`，来浏览应用的 Web 页面。如果刷新几次应用的页面，就会看到页面中会随机展示 `reviews` 服务的不同版本的效果（红色、黑色的星形或者没有显示）。`reviews` 服务出现这种情况是因为我们还没有使用 Istio 来控制版本的路由。
 
-## 3. 金丝雀部署
+## <span id="inline-toc">3.</span> 金丝雀部署
 
 ----
 
@@ -463,7 +463,7 @@ EOF
 
 现在不论你使用什么用户登陆 productpage 页面，你都可以看到带红色星标评分的评论了。
 
-## 4. 参考
+## <span id="inline-toc">4.</span> 参考
 
 ----
 

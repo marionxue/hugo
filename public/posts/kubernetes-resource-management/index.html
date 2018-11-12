@@ -471,35 +471,35 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-什么是资源">1. 什么是资源？</a></li>
-<li><a href="#2-kubernetes-资源的表示">2. kubernetes 资源的表示</a></li>
-<li><a href="#3-节点可用资源">3. 节点可用资源</a></li>
-<li><a href="#4-kubernetes-资源对象">4. kubernetes 资源对象</a>
+<li><a href="#span-id-inline-toc-1-span-什么是资源"><span id="inline-toc">1.</span> 什么是资源？</a></li>
+<li><a href="#span-id-inline-toc-2-span-kubernetes-资源的表示"><span id="inline-toc">2.</span> kubernetes 资源的表示</a></li>
+<li><a href="#span-id-inline-toc-3-span-节点可用资源"><span id="inline-toc">3.</span> 节点可用资源</a></li>
+<li><a href="#span-id-inline-toc-4-span-kubernetes-资源对象"><span id="inline-toc">4.</span> kubernetes 资源对象</a>
 <ul>
 <li><a href="#请求-requests-和上限-limits">请求（requests）和上限（limits）</a></li>
 <li><a href="#limit-range-默认资源配置">limit range（默认资源配置)</a></li>
 <li><a href="#资源配额-resource-quota">资源配额（resource quota）</a></li>
 </ul></li>
-<li><a href="#5-应用优先级">5. 应用优先级</a>
+<li><a href="#span-id-inline-toc-5-span-应用优先级"><span id="inline-toc">5.</span> 应用优先级</a>
 <ul>
 <li><a href="#qos-服务质量">QoS（服务质量）</a></li>
 <li><a href="#pod-优先级-priority">Pod 优先级（priority）</a></li>
 </ul></li>
-<li><a href="#6-驱逐-eviction">6. 驱逐（Eviction）</a>
+<li><a href="#span-id-inline-toc-6-span-驱逐-eviction"><span id="inline-toc">6.</span> 驱逐（Eviction）</a>
 <ul>
 <li><a href="#驱逐触发条件">驱逐触发条件</a></li>
 <li><a href="#软驱逐-soft-eviction-和硬驱逐-hard-eviction">软驱逐（soft eviction）和硬驱逐（hard eviction）</a></li>
 <li><a href="#驱逐哪些-pods">驱逐哪些 pods？</a></li>
 <li><a href="#防止波动">防止波动</a></li>
 </ul></li>
-<li><a href="#7-碎片整理和重调度">7. 碎片整理和重调度</a></li>
-<li><a href="#8-资源动态调整">8. 资源动态调整</a>
+<li><a href="#span-id-inline-toc-7-span-碎片整理和重调度"><span id="inline-toc">7.</span> 碎片整理和重调度</a></li>
+<li><a href="#span-id-inline-toc-8-span-资源动态调整"><span id="inline-toc">8.</span> 资源动态调整</a>
 <ul>
 <li><a href="#horizontal-pod-autoscaling-横向-pod-自动扩展">Horizontal Pod AutoScaling（横向 Pod 自动扩展）</a></li>
 <li><a href="#vertical-pod-autoscaling">Vertical Pod AutoScaling</a></li>
 <li><a href="#cluster-auto-scaler">Cluster Auto Scaler</a></li>
 </ul></li>
-<li><a href="#9-总结">9. 总结</a></li>
+<li><a href="#span-id-inline-toc-9-span-总结"><span id="inline-toc">9.</span> 总结</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -514,7 +514,7 @@ autocomplete('#aa-search-input',
 
 <p id="div-border-left-red">本文转载自 <a href="http://cizixs.com/2018/06/25/kubernetes-resource-management" target="_blank">Cizixs 的博客</a>。</p>
 
-<h2 id="1-什么是资源">1. 什么是资源？</h2>
+<h2 id="span-id-inline-toc-1-span-什么是资源"><span id="inline-toc">1.</span> 什么是资源？</h2>
 
 <hr />
 
@@ -532,7 +532,7 @@ autocomplete('#aa-search-input',
 
 <p>资源除了和调度相关之外，还和很多事情紧密相连，这正是这篇文章要解释的。</p>
 
-<h2 id="2-kubernetes-资源的表示">2. kubernetes 资源的表示</h2>
+<h2 id="span-id-inline-toc-2-span-kubernetes-资源的表示"><span id="inline-toc">2.</span> kubernetes 资源的表示</h2>
 
 <hr />
 
@@ -546,7 +546,7 @@ autocomplete('#aa-search-input',
 
 <p>内存比较容易理解，是通过字节大小指定的。如果直接一个数字，后面没有任何单位，表示这么多字节的内存；数字后面还可以跟着单位， 支持的单位有 <code>E</code>、<code>P</code>、<code>T</code>、<code>G</code>、<code>M</code>、<code>K</code>，前者分别是后者的 <code>1000</code> 倍大小的关系，此外还支持 <code>Ei</code>、<code>Pi</code>、<code>Ti</code>、<code>Gi</code>、<code>Mi</code>、<code>Ki</code>，其对应的倍数关系是 <code>2^10 = 1024</code>。比如要使用 100M 内存的话，直接写成 <code>100Mi</code> 即可。</p>
 
-<h2 id="3-节点可用资源">3. 节点可用资源</h2>
+<h2 id="span-id-inline-toc-3-span-节点可用资源"><span id="inline-toc">3.</span> 节点可用资源</h2>
 
 <hr />
 
@@ -584,7 +584,7 @@ autocomplete('#aa-search-input',
     pods: &quot;110&quot;
 </code></pre>
 
-<h2 id="4-kubernetes-资源对象">4. kubernetes 资源对象</h2>
+<h2 id="span-id-inline-toc-4-span-kubernetes-资源对象"><span id="inline-toc">4.</span> kubernetes 资源对象</h2>
 
 <hr />
 
@@ -677,7 +677,7 @@ spec:
 
 <p>Resource quota 要解决的问题和使用都相对独立和简单，但是它也有一个限制：那就是它不能根据集群资源动态伸缩。一旦配置之后，resource quota 就不会改变，即使集群增加了节点，整体资源增多也没有用。kubernetes 现在没有解决这个问题，但是用户可以通过编写一个 controller 的方式来自己实现。</p>
 
-<h2 id="5-应用优先级">5. 应用优先级</h2>
+<h2 id="span-id-inline-toc-5-span-应用优先级"><span id="inline-toc">5.</span> 应用优先级</h2>
 
 <hr />
 
@@ -741,7 +741,7 @@ description: &quot;This priority class should be used for XYZ service pods only.
 
 <p>另外，如果在调度的时候，发现某个 pod 因为资源不足无法找到合适的节点，调度器会尝试 preempt 的逻辑。 简单来说，调度器会试图找到这样一个节点：找到它上面优先级低于当前要调度 pod 的所有 pod，如果杀死它们，能腾足够的资源，调度器会执行删除操作，把 pod 调度到节点上。</p>
 
-<h2 id="6-驱逐-eviction">6. 驱逐（Eviction）</h2>
+<h2 id="span-id-inline-toc-6-span-驱逐-eviction"><span id="inline-toc">6.</span> 驱逐（Eviction）</h2>
 
 <hr />
 
@@ -826,7 +826,7 @@ description: &quot;This priority class should be used for XYZ service pods only.
 --eviction-minimum-reclaim=&quot;memory.available=0Mi,nodefs.available=500Mi,imagefs.available=2Gi&quot;
 </code></pre>
 
-<h2 id="7-碎片整理和重调度">7. 碎片整理和重调度</h2>
+<h2 id="span-id-inline-toc-7-span-碎片整理和重调度"><span id="inline-toc">7.</span> 碎片整理和重调度</h2>
 
 <hr />
 
@@ -860,7 +860,7 @@ description: &quot;This priority class should be used for XYZ service pods only.
 
 <p>总的来说，descheduler 是对原生调度器的补充，用来解决原生调度器的调度决策随着时间会变得失效，或者不够优化的缺陷。</p>
 
-<h2 id="8-资源动态调整">8. 资源动态调整</h2>
+<h2 id="span-id-inline-toc-8-span-资源动态调整"><span id="inline-toc">8.</span> 资源动态调整</h2>
 
 <hr />
 
@@ -900,7 +900,7 @@ description: &quot;This priority class should be used for XYZ service pods only.
 
 <p>理论上 HPA 和 VPA 是可以共同工作的，HPA 负责瓶颈资源，VPA 负责其他资源。比如对于 CPU 密集型的应用，使用 HPA 监听 CPU 使用率来调整 pods 个数，然后用 VPA 监听其他资源（memory、IO）来动态扩展这些资源的 request 大小即可。当然这只是理想情况。</p>
 
-<h2 id="9-总结">9. 总结</h2>
+<h2 id="span-id-inline-toc-9-span-总结"><span id="inline-toc">9.</span> 总结</h2>
 
 <hr />
 

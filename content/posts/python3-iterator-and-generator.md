@@ -11,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-## 1. 迭代器
+## <span id="inline-toc">1.</span> 迭代器
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
@@ -55,7 +55,7 @@ Traceback (most recent call last):
 StopIteration
 ```
 
-## 2. 生成器
+## <span id="inline-toc">2.</span> 生成器
 ------
 
 一个函数调用时返回一个迭代器，那这个函数就叫做生成器（generator），如果函数中包含 `yield` 语法，那这个函数就会变成生成器。

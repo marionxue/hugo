@@ -471,11 +471,11 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-device-mapper-简介">1. Device Mapper 简介</a></li>
-<li><a href="#2-用户空间和内核空间">2. 用户空间和内核空间</a></li>
-<li><a href="#3-device-mapper-技术分析">3. Device Mapper 技术分析</a></li>
-<li><a href="#4-docker-中的-device-mapper-核心技术">4. Docker 中的 Device Mapper 核心技术</a></li>
-<li><a href="#5-参考资料">5. 参考资料</a></li>
+<li><a href="#span-id-inline-toc-1-span-device-mapper-简介"><span id="inline-toc">1.</span> Device Mapper 简介</a></li>
+<li><a href="#span-id-inline-toc-2-span-用户空间和内核空间"><span id="inline-toc">2.</span> 用户空间和内核空间</a></li>
+<li><a href="#span-id-inline-toc-3-span-device-mapper-技术分析"><span id="inline-toc">3.</span> Device Mapper 技术分析</a></li>
+<li><a href="#span-id-inline-toc-4-span-docker-中的-device-mapper-核心技术"><span id="inline-toc">4.</span> Docker 中的 Device Mapper 核心技术</a></li>
+<li><a href="#span-id-inline-toc-5-span-参考资料"><span id="inline-toc">5.</span> 参考资料</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -488,7 +488,7 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<h2 id="1-device-mapper-简介">1. Device Mapper 简介</h2>
+<h2 id="span-id-inline-toc-1-span-device-mapper-简介"><span id="inline-toc">1.</span> Device Mapper 简介</h2>
 
 <hr />
 
@@ -504,7 +504,7 @@ autocomplete('#aa-search-input',
 
 <p><code>devicemapper</code> 存储驱动使用专用于 <code>docker</code> 的块设备，它运行在块级别上而不是文件级别。使用块设备比直接使用文件系统性能更好，通过向 <code>Docker</code> 的宿主机添加物理存储可以扩展块设备的存储空间。</p>
 
-<h2 id="2-用户空间和内核空间">2. 用户空间和内核空间</h2>
+<h2 id="span-id-inline-toc-2-span-用户空间和内核空间"><span id="inline-toc">2.</span> 用户空间和内核空间</h2>
 
 <hr />
 
@@ -516,7 +516,7 @@ autocomplete('#aa-search-input',
 
 <p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fwxo5xzdwkj30hs0dq76d.jpg" alt="" /></p>
 
-<h2 id="3-device-mapper-技术分析">3. Device Mapper 技术分析</h2>
+<h2 id="span-id-inline-toc-3-span-device-mapper-技术分析"><span id="inline-toc">3.</span> Device Mapper 技术分析</h2>
 
 <hr />
 
@@ -538,7 +538,7 @@ autocomplete('#aa-search-input',
 
 <p><code>Device Mapper</code> 中的 IO 流处理，从虚拟设备（逻辑设备）根据映射表并指定特定的映射驱动转发到目标设备上。</p>
 
-<h2 id="4-docker-中的-device-mapper-核心技术">4. Docker 中的 Device Mapper 核心技术</h2>
+<h2 id="span-id-inline-toc-4-span-docker-中的-device-mapper-核心技术"><span id="inline-toc">4.</span> Docker 中的 Device Mapper 核心技术</h2>
 
 <hr />
 
@@ -583,7 +583,7 @@ autocomplete('#aa-search-input',
 
 <p>那么，Docker 是怎么使用 <code>Thin Provisioning</code> 这个技术做到像 UnionFS 那样的分层镜像的呢？答案是，Docker 使用了 <code>Thin Provisioning</code> 的 <code>Snapshot</code> 的技术。下面一篇我们来介绍一下 <code>Thin Provisioning</code> 的 <code>Snapshot</code>。</p>
 
-<h2 id="5-参考资料">5. 参考资料</h2>
+<h2 id="span-id-inline-toc-5-span-参考资料"><span id="inline-toc">5.</span> 参考资料</h2>
 
 <hr />
 

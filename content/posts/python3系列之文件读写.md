@@ -11,12 +11,12 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-## 1. 文件与文件路径
+## <span id="inline-toc">1.</span> 文件与文件路径
 ------
 
 用到的模块：`os`
 
-### 1.1 当前工作目录
+### <span id="inline-toc">1.</span>1 当前工作目录
 
 在交互模式下输入以下代码：
 
@@ -39,7 +39,7 @@ FileNotFoundError: [Errno 2] No such file or directory: '/user/bin'
 ```
 
 
-### 1.2 创建新文件夹
+### <span id="inline-toc">1.</span>2 创建新文件夹
 
 ```python
 >>> os.makedirs('/tmp/test')
@@ -48,7 +48,7 @@ FileNotFoundError: [Errno 2] No such file or directory: '/user/bin'
 它会递归地创建文件夹，也就是说，`os.makedirs()` 将创建所有必要的中间文件夹。
 
 
-### 1.3 处理绝对路径和相对路径
+### <span id="inline-toc">1.</span>3 处理绝对路径和相对路径
 
 - `os.path.abspath(path)`：返回参数的`绝对路径`的字符串
 
@@ -101,7 +101,7 @@ True
 ['', 'usr', 'bin', 'vlc']
 ```
 
-### 1.4 查看文件大小和文件夹内容
+### <span id="inline-toc">1.</span>4 查看文件大小和文件夹内容
 
 - os.path.getsize(path)：返回path参数中文件的字节数。
 - os.listdir(path)：返回文件名字符串的列表，包含path参数中的每个文件。
@@ -125,7 +125,7 @@ True
 846656
 ```
 
-### 1.5 检查路径有效性
+### <span id="inline-toc">1.</span>5 检查路径有效性
 
 - `os.path.exists(path)`：如果path参数所指的文件或文件夹存在，将返回True，否则返回False。
 - `os.path.isfile(path)`：如果path参数存在，并且是一个文件，将返回True，否则返回False。
@@ -146,7 +146,7 @@ False
 True
 ```
 
-## 2. 文件读写过程
+## <span id="inline-toc">2.</span> 文件读写过程
 ------
 
 在 Python 中，读写文件有3个步骤：
@@ -156,7 +156,7 @@ True
 3、调用 File 对象的 `close()` 方法，关闭该文件。
 
 
-### 2.1 创建文件
+### <span id="inline-toc">2.</span>1 创建文件
 
 ```python
 >>> f = open('test.txt','w')
@@ -170,7 +170,7 @@ True
 >>> f.flush()
 ```
 
-### 2.2 读取文件
+### <span id="inline-toc">2.</span>2 读取文件
 
 ```python
 # 默认以“r”模式打开文本（只读）
@@ -190,7 +190,7 @@ True
 >>> f.seek(0)
 ```
 
-### 2.3 遍历文件内容
+### <span id="inline-toc">2.</span>3 遍历文件内容
 
 ```python
 >>> a = open('user_info.txt')
@@ -203,14 +203,14 @@ True
 <font color=#8A2BE2>readlines</font>将文本中的所有内容都读取到了内存中，对于大文本来说会很耗内存。
 为了解决这个问题，我们可以使用<font color=#8A2BE2>xreadlines。</font>
 
-### 2.4 追加
+### <span id="inline-toc">2.</span>4 追加
 ```python
 >>> F = open('test.txt','a')
 >>> F.write("append to the end")
 >>> f.close()
 ```
 
-### 2.5 用 `pprint.pformat()` 函数保存变量
+### <span id="inline-toc">2.</span>5 用 `pprint.pformat()` 函数保存变量
 
 `pprint.pformat()` 函数将返回同样的文本字符串，但不是打印它。这个字符串不仅是易于阅读的格式，同时也是语法上正确的 Pthon 代码。`pprint.pformat()` 函数将提供一个字符串，你可以将它写入.py文件，该文件将成为你字节的<span id="inline-blue">模块</span>，如果你需要使用存储在其中的变量，就可以导入它。
 
@@ -273,7 +273,7 @@ shelf值不必使用读模式或写模式打开，因为它们在打开后，既
 
 <p id="div-border-left-red">创建文件时，如果你需要在文本编辑器中读取它们，纯文本就非常有用。但是，如果想要保存 `Python` 程序中的数据，那就使用 `shelve` 模块</p>
 
-## 3. 项目：多重剪切板
+## <span id="inline-toc">3.</span> 项目：多重剪切板
 ------
 
 该程序被命名为 `mcb.py`，该程序将利用一个关键字保存每段剪切板文本。例如，当运行`python mcb.py spam`，这段文本稍后将重新加载到剪切板中。如果用户忘了有哪些关键字，他们可以运行 `python mcb.py list`，将所有关键字的列表复制到剪切板中。
@@ -305,7 +305,7 @@ $ pacman -S xclip
 ```
 </p>
 
-### 3.1 注释和 `shelve` 设置
+### <span id="inline-toc">3.</span>1 注释和 `shelve` 设置
 
 ```python
    #! python3
@@ -328,7 +328,7 @@ $ pacman -S xclip
 
 <span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(2)</span> 当用户希望将文本拷贝回剪切板时，你需要打开 shelf 文件，将它重新加载到程序中。这个 shelf 文件命名时带有前缀 `mcb`。
 
-### 3.2 用一个关键字保存剪切板内容
+### <span id="inline-toc">3.</span>2 用一个关键字保存剪切板内容
 
 ```python
    #! python3
@@ -350,7 +350,7 @@ $ pacman -S xclip
 
 <span style="display:inline; padding:.2em .6em .3em; font-size:80%; font-weight:bold; line-height:1; color:#fff; text-align:center; white-space:nowrap; vertical-align:baseline; border-radius:0; background-color: #2780e3;">(3)</span> 如果只有一个命令行参数，就假定它要么是 `list`，要么是需要加载到剪切板上的关键字。
 
-### 3.3 列出关键字和加载关键字的内容
+### <span id="inline-toc">3.</span>3 列出关键字和加载关键字的内容
 
 ```python
    #! python3

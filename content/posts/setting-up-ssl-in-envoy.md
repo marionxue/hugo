@@ -21,7 +21,7 @@ Envoy 同时支持监听器中的 [TLS 终止](https://www.envoyproxy.io/docs/en
 2. 为 Envoy 启用证书验证
 3. 配置 Envoy 将 80 端口重定向到 443 端口
 
-## 1. 创建证书
+## <span id="inline-toc">1.</span> 创建证书
 
 ----
 
@@ -67,7 +67,7 @@ An optional company name []:
 $ openssl x509 -req -days 365 -in example-com.csr -signkey example-com.key -out example-com.crt
 ```
 
-## 2. 为 Envoy 启用证书验证
+## <span id="inline-toc">2.</span> 为 Envoy 启用证书验证
 
 ----
 
@@ -147,7 +147,7 @@ Hello from behind Envoy (service 1)! hostname: 56e8a5bff6bd resolvedhostname: 17
 $ curl --cacert example-com.crt https://example.com/service/1
 ```
 
-## 3. 将 80 端口重定向到 443 端口
+## <span id="inline-toc">3.</span> 将 80 端口重定向到 443 端口
 
 ----
 

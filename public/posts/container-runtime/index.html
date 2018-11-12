@@ -473,13 +473,13 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-cri-接口">1. CRI 接口</a></li>
-<li><a href="#2-如何开发新的-container-runtime">2. 如何开发新的 Container Runtime</a></li>
-<li><a href="#3-目前支持的-container-runtime">3. 目前支持的 Container Runtime</a>
+<li><a href="#span-id-inline-toc-1-span-cri-接口"><span id="inline-toc">1.</span> CRI 接口</a></li>
+<li><a href="#span-id-inline-toc-2-span-如何开发新的-container-runtime"><span id="inline-toc">2.</span> 如何开发新的 Container Runtime</a></li>
+<li><a href="#span-id-inline-toc-3-span-目前支持的-container-runtime"><span id="inline-toc">3.</span> 目前支持的 Container Runtime</a>
 <ul>
 <li><a href="#cri-containerd">cri-containerd</a></li>
 </ul></li>
-<li><a href="#4-cri-tools">4. CRI Tools</a></li>
+<li><a href="#span-id-inline-toc-4-span-cri-tools"><span id="inline-toc">4.</span> CRI Tools</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -500,7 +500,7 @@ autocomplete('#aa-search-input',
 
 <p>CRI 最早从从 1.4 版就开始设计讨论和开发，在 v1.5 中发布第一个测试版。在 v1.6 时已经有了很多外部容器运行时，如 frakti、cri-o 的 alpha 支持。v1.7 版本新增了 <code>cri-containerd</code> 的 alpha 支持，而 <code>frakti</code> 和 <code>cri-o</code> 则升级到 beta 支持。</p>
 
-<h2 id="1-cri-接口">1. CRI 接口</h2>
+<h2 id="span-id-inline-toc-1-span-cri-接口"><span id="inline-toc">1.</span> CRI 接口</h2>
 
 <hr />
 
@@ -517,7 +517,7 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">$ kubelet --container-runtime=remote --container-runtime-endpoint=unix:///var/run/crio/crio.sock ..
 </code></pre>
 
-<h2 id="2-如何开发新的-container-runtime">2. 如何开发新的 Container Runtime</h2>
+<h2 id="span-id-inline-toc-2-span-如何开发新的-container-runtime"><span id="inline-toc">2.</span> 如何开发新的 Container Runtime</h2>
 
 <hr />
 
@@ -525,7 +525,7 @@ autocomplete('#aa-search-input',
 
 <p>具体的实现方法可以参考下面已经支持的 Container Runtime 列表。</p>
 
-<h2 id="3-目前支持的-container-runtime">3. 目前支持的 Container Runtime</h2>
+<h2 id="span-id-inline-toc-3-span-目前支持的-container-runtime"><span id="inline-toc">3.</span> 目前支持的 Container Runtime</h2>
 
 <hr />
 
@@ -559,7 +559,7 @@ autocomplete('#aa-search-input',
 <p>Containerd 内置的 CRI 插件实现了 Kubelet CRI 接口中的 <code>Image Service</code> 和 <code>Runtime Service</code>，通过内部接口管理容器和镜像，并通过 CNI 插件给 Pod 配置网络。
 <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fww2gsvgesj31a00j6n15.jpg" alt="" /></p>
 
-<h2 id="4-cri-tools">4. CRI Tools</h2>
+<h2 id="span-id-inline-toc-4-span-cri-tools"><span id="inline-toc">4.</span> CRI Tools</h2>
 
 <hr />
 

@@ -15,7 +15,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 在开始之前，需要先搞清楚我们创建的这些对象资源最后都交给谁来处理了，负责处理这些资源的就是 pilot。
 
-## 1. pilot总体架构
+## <span id="inline-toc">1.</span> pilot总体架构
 
 ----
 
@@ -30,7 +30,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 简单来说 Istio 做为管理面，集合了配置中心和服务中心两个功能，并把配置发现和服务发现以一组统一的 `xDS` 接口提供出来，数据面的 Envoy 通过 xDS 获取需要的信息来做服务间通信和服务治理。
 
-## 2. pilot-discovery 为 Envoy 提供的 xds 服务
+## <span id="inline-toc">2.</span> pilot-discovery 为 Envoy 提供的 xds 服务
 
 ----
 
@@ -176,7 +176,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/cdsz
 $ curl http://$PILOT_SVC_IP:8080/debug/adsz
 ```
 
-## 3. Envoy 基本术语回顾
+## <span id="inline-toc">3.</span> Envoy 基本术语回顾
 
 ----
 
@@ -189,7 +189,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/adsz
 
 更多详细信息可以参考 [Envoy 的架构与基本术语](https://jimmysong.io/posts/envoy-archiecture-and-terminology/)，本文重点突出 `Listener`、`Route` 和 `Cluster` 这三个基本术语，同时需要注意流量经过这些术语的先后顺序，请求首先到达 `Listener`，然后通过 `Http Route Table` 转到具体的 `Cluster`，最后由具体的 Cluster 对请求做出响应。
 
-## 4. Gateway 和 VirtualService 配置解析
+## <span id="inline-toc">4.</span> Gateway 和 VirtualService 配置解析
 
 ----
 
@@ -382,7 +382,7 @@ $ istioctl -n istio-system pc clusters istio-ingressgateway-b6db8c46f-qcfks --fq
 
 好了，现在请求已经转交给 productpage 了，那么接下来这个请求将会如何走完整个旅程呢？请听下回分解！
 
-## 5. 参考
+## <span id="inline-toc">5.</span> 参考
 
 ----
 

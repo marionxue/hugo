@@ -15,7 +15,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 在安装 Istio 之前要确保 Kubernetes 集群（仅支持 `v1.9` 及以后版本）已部署并配置好本地的 kubectl 客户端。
 
-## 1. 下载 Istio
+## <span id="inline-toc">1.</span> 下载 Istio
 
 ----
 
@@ -25,7 +25,7 @@ $ tar zxf istio-1.0.0-linux.tar.gz
 $ cp istio-1.0.0/bin/istioctl /usr/local/bin/
 ```
 
-## 2. 使用 Helm 部署 Istio 服务
+## <span id="inline-toc">2.</span> 使用 Helm 部署 Istio 服务
 
 ----
 
@@ -76,7 +76,7 @@ servicegraph-5b8d7b4d5-lzhth
 2. `istio-cleanup-secrets` 是一个 job，用于清理过去的 Istio 遗留下来的 CA 部署（包括 sa、deploy 以及 svc 三个对象）。
 3. `egressgateway`、`ingress` 以及 `ingressgateway`，可以看出边缘部分的变动很大，以后会另行发文。
 
-## 3. Prometheus、Grafana、Servicegraph 和 Jaeger
+## <span id="inline-toc">3.</span> Prometheus、Grafana、Servicegraph 和 Jaeger
 
 ----
 
@@ -198,7 +198,7 @@ $Ingree_host tracing.istio.io
 <p>如果你已经部署了 <code>Prometheus-operator</code>，可以不必部署 Grafana，直接将 <code>addons/grafana/dashboards</code> 目录下的 Dashboard 模板复制出来放到 Prometheus-operator 的 Grafana 上，然后添加 istio-system 命名空间中的 Prometheus 数据源就可以监控 Istio 了。</p>
 </div>
 
-## 4. Mesh Expansion
+## <span id="inline-toc">4.</span> Mesh Expansion
 
 ----
 
@@ -212,7 +212,7 @@ $ istioctl -n onprem register mysql 1.2.3.4 3306
 $ istioctl -n onprem register svc1 1.2.3.4 http:7000
 ```
 
-## 5. 参考
+## <span id="inline-toc">5.</span> 参考
 
 ----
 

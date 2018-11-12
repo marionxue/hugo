@@ -13,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 [Kube-router](https://github.com/cloudnativelabs/kube-router) 是一个挺有想法的项目，兼备了 `calico` 和 `kube-proxy` 的功能，是基于 Kubernetes 网络设计的一个集负载均衡器、防火墙和容器网络的综合方案。
 
-## 1. 体系架构
+## <span id="inline-toc">1.</span> 体系架构
 
 ----
 
@@ -97,7 +97,7 @@ Cleanup() {
 }
 ```
 
-## 2. 主要功能
+## <span id="inline-toc">2.</span> 主要功能
 
 ----
 
@@ -144,7 +144,7 @@ Kube-router 支持 `networking.k8s.io/NetworkPolicy` 接口或网络策略 V1/GA
 
 + [Enforcing Kubernetes network policies with iptables](https://link.jianshu.com/?t=https://cloudnativelabs.github.io/post/2017-05-1-kube-network-policies/)
 
-## 3. 使用 kube-router 替代 kube-proxy
+## <span id="inline-toc">3.</span> 使用 kube-router 替代 kube-proxy
 
 ----
 
@@ -364,7 +364,7 @@ $ kubectl annotate service my-service "kube-router.io/service.scheduler=sh"
 $ kubectl annotate service my-service "kube-router.io/service.scheduler=dh"
 ```
 
-## 4. 问题解决
+## <span id="inline-toc">4.</span> 问题解决
 
 ----
 
@@ -497,7 +497,7 @@ done
 
 如果想要在创建 `service` 时自动修改路由表，最好还是将该 fix 整合进 kube-router 的源码中。
 
-## 5. 参考
+## <span id="inline-toc">5.</span> 参考
 
 ----
 

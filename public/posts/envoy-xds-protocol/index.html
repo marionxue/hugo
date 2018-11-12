@@ -473,8 +473,8 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-文件订阅">1. 文件订阅</a></li>
-<li><a href="#2-grpc-流式订阅">2. gRPC 流式订阅</a>
+<li><a href="#span-id-inline-toc-1-span-文件订阅"><span id="inline-toc">1.</span> 文件订阅</a></li>
+<li><a href="#span-id-inline-toc-2-span-grpc-流式订阅"><span id="inline-toc">2.</span> gRPC 流式订阅</a>
 <ul>
 <li><a href="#单例资源类型发现">单例资源类型发现</a>
 <ul>
@@ -488,7 +488,7 @@ autocomplete('#aa-search-input',
 <li><a href="#聚合服务发现-ads">聚合服务发现（ADS）</a></li>
 <li><a href="#增量-xds">增量 xDS</a></li>
 </ul></li>
-<li><a href="#3-rest-json-轮询订阅">3. REST-JSON 轮询订阅</a></li>
+<li><a href="#span-id-inline-toc-3-span-rest-json-轮询订阅"><span id="inline-toc">3.</span> REST-JSON 轮询订阅</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -513,7 +513,7 @@ autocomplete('#aa-search-input',
 
 <p>Envoy 通过查询文件或管理服务器来动态发现资源。这些发现服务及其相应的 API 被统称为 <code>xDS</code>。Envoy 通过订阅（<code>subscription</code>）方式来获取资源，如监控指定路径下的文件、启动 gRPC 流（streaming）或轮询 REST-JSON URL。后两种方式会发送 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryrequest" target="_blank">DiscoveryRequest</a> 请求消息，发现的对应资源则包含在响应消息 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryrequest" target="_blank">DiscoveryResponse</a> 中。下面，我们将具体讨论每种订阅类型。</p>
 
-<h2 id="1-文件订阅">1. 文件订阅</h2>
+<h2 id="span-id-inline-toc-1-span-文件订阅"><span id="inline-toc">1.</span> 文件订阅</h2>
 
 <hr />
 
@@ -540,7 +540,7 @@ autocomplete('#aa-search-input',
 </p>
 </div>
 
-<h2 id="2-grpc-流式订阅">2. gRPC 流式订阅</h2>
+<h2 id="span-id-inline-toc-2-span-grpc-流式订阅"><span id="inline-toc">2.</span> gRPC 流式订阅</h2>
 
 <hr />
 
@@ -746,7 +746,7 @@ admin:
 
 <p><center><img src="http://hugo-picture.oss-cn-beijing.aliyuncs.com/incremental-reconnect.svg" alt="" /></center></p>
 
-<h2 id="3-rest-json-轮询订阅">3. REST-JSON 轮询订阅</h2>
+<h2 id="span-id-inline-toc-3-span-rest-json-轮询订阅"><span id="inline-toc">3.</span> REST-JSON 轮询订阅</h2>
 
 <hr />
 

@@ -9,7 +9,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-## 1. GNS3 简介
+## <span id="inline-toc">1.</span> GNS3 简介
 ------
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
@@ -20,7 +20,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 `Windows` 平台下的安装配置非常简单，下载一体化的安装包安装就可以了。但是考虑系统的资源和兼容性，`linux` 平台是最好的选择，以下的安装配置基于 `Archlinux` 的 64 位系统和`GNS1.5.2`版本。
 
-## 2. GNS3 安装
+## <span id="inline-toc">2.</span> GNS3 安装
 ------
 
 ### 安装Python3
@@ -128,7 +128,7 @@ $ systemctl start gns3-server
 
 <center>![](http://o7z41ciog.bkt.clouddn.com/%E5%B7%A5%E4%BD%9C%E5%8C%BA%201_432.png)</center>
 
-## 3. GNS3 配置
+## <span id="inline-toc">3.</span> GNS3 配置
 ------
 
 ### GNS3 基本配置

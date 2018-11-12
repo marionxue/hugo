@@ -23,7 +23,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 Envoy 通过查询文件或管理服务器来动态发现资源。这些发现服务及其相应的 API 被统称为 `xDS`。Envoy 通过订阅（`subscription`）方式来获取资源，如监控指定路径下的文件、启动 gRPC 流（streaming）或轮询 REST-JSON URL。后两种方式会发送 [DiscoveryRequest](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryrequest) 请求消息，发现的对应资源则包含在响应消息 [DiscoveryResponse](https://www.envoyproxy.io/docs/envoy/latest/api-v2/api/v2/discovery.proto#discoveryrequest) 中。下面，我们将具体讨论每种订阅类型。
 
-## 1. 文件订阅
+## <span id="inline-toc">1.</span> 文件订阅
 
 ----
 
@@ -51,7 +51,7 @@ Envoy 通过查询文件或管理服务器来动态发现资源。这些发现�
 </p>
 </div>
 
-## 2. gRPC 流式订阅
+## <span id="inline-toc">2.</span> gRPC 流式订阅
 
 ----
 
@@ -251,7 +251,7 @@ xDS 增量 `session` 始终位于 gRPC 双向流的上下文中。这允许 xDS 
 
 <center>![](http://hugo-picture.oss-cn-beijing.aliyuncs.com/incremental-reconnect.svg)</center>
 
-## 3. REST-JSON 轮询订阅
+## <span id="inline-toc">3.</span> REST-JSON 轮询订阅
 
 ----
 

@@ -473,11 +473,11 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-下载-istio">1. 下载 Istio</a></li>
-<li><a href="#2-使用-helm-部署-istio-服务">2. 使用 Helm 部署 Istio 服务</a></li>
-<li><a href="#3-prometheus-grafana-servicegraph-和-jaeger">3. Prometheus、Grafana、Servicegraph 和 Jaeger</a></li>
-<li><a href="#4-mesh-expansion">4. Mesh Expansion</a></li>
-<li><a href="#5-参考">5. 参考</a></li>
+<li><a href="#span-id-inline-toc-1-span-下载-istio"><span id="inline-toc">1.</span> 下载 Istio</a></li>
+<li><a href="#span-id-inline-toc-2-span-使用-helm-部署-istio-服务"><span id="inline-toc">2.</span> 使用 Helm 部署 Istio 服务</a></li>
+<li><a href="#span-id-inline-toc-3-span-prometheus-grafana-servicegraph-和-jaeger"><span id="inline-toc">3.</span> Prometheus、Grafana、Servicegraph 和 Jaeger</a></li>
+<li><a href="#span-id-inline-toc-4-span-mesh-expansion"><span id="inline-toc">4.</span> Mesh Expansion</a></li>
+<li><a href="#span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -494,7 +494,7 @@ autocomplete('#aa-search-input',
 
 <p>在安装 Istio 之前要确保 Kubernetes 集群（仅支持 <code>v1.9</code> 及以后版本）已部署并配置好本地的 kubectl 客户端。</p>
 
-<h2 id="1-下载-istio">1. 下载 Istio</h2>
+<h2 id="span-id-inline-toc-1-span-下载-istio"><span id="inline-toc">1.</span> 下载 Istio</h2>
 
 <hr />
 
@@ -503,7 +503,7 @@ $ tar zxf istio-1.0.0-linux.tar.gz
 $ cp istio-1.0.0/bin/istioctl /usr/local/bin/
 </code></pre>
 
-<h2 id="2-使用-helm-部署-istio-服务">2. 使用 Helm 部署 Istio 服务</h2>
+<h2 id="span-id-inline-toc-2-span-使用-helm-部署-istio-服务"><span id="inline-toc">2.</span> 使用 Helm 部署 Istio 服务</h2>
 
 <hr />
 
@@ -555,7 +555,7 @@ servicegraph-5b8d7b4d5-lzhth
 <li><code>egressgateway</code>、<code>ingress</code> 以及 <code>ingressgateway</code>，可以看出边缘部分的变动很大，以后会另行发文。</li>
 </ol>
 
-<h2 id="3-prometheus-grafana-servicegraph-和-jaeger">3. Prometheus、Grafana、Servicegraph 和 Jaeger</h2>
+<h2 id="span-id-inline-toc-3-span-prometheus-grafana-servicegraph-和-jaeger"><span id="inline-toc">3.</span> Prometheus、Grafana、Servicegraph 和 Jaeger</h2>
 
 <hr />
 
@@ -680,7 +680,7 @@ $Ingree_host tracing.istio.io
 <p>如果你已经部署了 <code>Prometheus-operator</code>，可以不必部署 Grafana，直接将 <code>addons/grafana/dashboards</code> 目录下的 Dashboard 模板复制出来放到 Prometheus-operator 的 Grafana 上，然后添加 istio-system 命名空间中的 Prometheus 数据源就可以监控 Istio 了。</p>
 </div>
 
-<h2 id="4-mesh-expansion">4. Mesh Expansion</h2>
+<h2 id="span-id-inline-toc-4-span-mesh-expansion"><span id="inline-toc">4.</span> Mesh Expansion</h2>
 
 <hr />
 
@@ -693,7 +693,7 @@ $ istioctl -n onprem register mysql 1.2.3.4 3306
 $ istioctl -n onprem register svc1 1.2.3.4 http:7000
 </code></pre>
 
-<h2 id="5-参考">5. 参考</h2>
+<h2 id="span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</h2>
 
 <hr />
 

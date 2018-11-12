@@ -454,7 +454,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Sat Nov 10, 2018</h4>
     </section>
-    <h5 id="wc">3900 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">4000 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -471,9 +471,9 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-cpu-限制">1. CPU 限制</a></li>
-<li><a href="#2-默认限制">2. 默认限制</a></li>
-<li><a href="#3-参考资料">3. 参考资料</a></li>
+<li><a href="#span-id-inline-toc-1-span-cpu-限制"><span id="inline-toc">1.</span> CPU 限制</a></li>
+<li><a href="#span-id-inline-toc-2-span-默认限制"><span id="inline-toc">2.</span> 默认限制</a></li>
+<li><a href="#span-id-inline-toc-3-span-参考资料"><span id="inline-toc">3.</span> 参考资料</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -498,7 +498,7 @@ autocomplete('#aa-search-input',
 
 <p>在关于 Kubernetes 资源限制的系列文章的<a href="https://mp.weixin.qq.com/s/j2FfqUHSRTzczNcfPuwRQw" target="_blank">第一篇文章</a>中，我讨论了如何使用 <a href="https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/#resourcerequirements-v1-core" target="_blank">ResourceRequirements</a> 对象来设置 Pod 中容器的内存资源限制，以及如何通过容器运行时和 linux control group（<code>cgroup</code>）来实现这些限制。我还谈到了 Requests 和 Limits 之间的区别，其中 <code>Requests</code> 用于在调度时通知调度器 Pod 需要多少资源才能调度，而 <code>Limits</code> 用来告诉 Linux 内核什么时候你的进程可以为了清理空间而被杀死。在这篇文章中，我会继续仔细分析 CPU 资源限制。想要理解这篇文章所说的内容，不一定要先阅读上一篇文章，但我建议那些工程师和集群管理员最好还是先阅读完第一篇，以便全面掌控你的集群。</p>
 
-<h2 id="1-cpu-限制">1. CPU 限制</h2>
+<h2 id="span-id-inline-toc-1-span-cpu-限制"><span id="inline-toc">1.</span> CPU 限制</h2>
 
 <hr />
 
@@ -612,15 +612,15 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 
 <p>下面是几个例子：</p>
 
-<pre><code class="language-bash"># 1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
+<pre><code class="language-bash"># &lt;span id=&quot;inline-toc&quot;&gt;1.&lt;/span&gt;限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
 $ echo 250000 &gt; cpu.cfs_quota_us /* quota = 250ms */
 $ echo 250000 &gt; cpu.cfs_period_us /* period = 250ms */
 
-# 2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
+# &lt;span id=&quot;inline-toc&quot;&gt;2.&lt;/span&gt;限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
 $ echo 1000000 &gt; cpu.cfs_quota_us /* quota = 1000ms */
 $ echo 500000 &gt; cpu.cfs_period_us /* period = 500ms */
 
-# 3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
+# &lt;span id=&quot;inline-toc&quot;&gt;3.&lt;/span&gt;限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
 $ echo 10000 &gt; cpu.cfs_quota_us /* quota = 10ms */
 $ echo 50000 &gt; cpu.cfs_period_us /* period = 50ms */
 </code></pre>
@@ -639,7 +639,7 @@ $ echo 50000 &gt; cpu.cfs_period_us /* period = 50ms */
 
 <p>最后我还想告诉你们的是：为每个 pod 都手动配置这些参数是挺麻烦的事情，kubernetes 提供了 <code>LimitRange</code> 资源，可以让我们配置某个 namespace 默认的 request 和 limit 值。</p>
 
-<h2 id="2-默认限制">2. 默认限制</h2>
+<h2 id="span-id-inline-toc-2-span-默认限制"><span id="inline-toc">2.</span> 默认限制</h2>
 
 <hr />
 
@@ -700,7 +700,7 @@ spec:
 
 <p>以上就是我对 Kubernetes 资源限制的全部见解，希望能对你有所帮助。如果你想了解更多关于 Kubernetes 中资源的 limits 和 requests、以及 linux cgroup 和内存管理的更多详细信息，可以查看我在文末提供的参考链接。</p>
 
-<h2 id="3-参考资料">3. 参考资料</h2>
+<h2 id="span-id-inline-toc-3-span-参考资料"><span id="inline-toc">3.</span> 参考资料</h2>
 
 <hr />
 

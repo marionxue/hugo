@@ -11,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-## 1. API简介
+## <span id="inline-toc">1.</span> API简介
 ------
 
 `Zabbix API` 开始扮演着越来越重要的角色，尤其是在集成第三方软件和自动化日常任务时。很难想象管理数千台服务器而没有自动化是多么的困难。
@@ -29,7 +29,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 > API 采用JSON-RPC实现。这意味着调用任何函数，都需要发送POST请求，输入输出数据都是以JSON格式。
 
-## 2. Zabbix API的使用流程
+## <span id="inline-toc">2.</span> Zabbix API的使用流程
 ------
 
 ### 使用 `API` 的基本步骤
@@ -264,7 +264,7 @@ item_id = "23296"
 
 # Create a time range
 time_till = time.mktime(datetime.now().timetuple())
-time_from = time_till - 60 * 60 * 24 * 10  # 10 days
+time_from = time_till - 60 * 60 * 24 * 10  # <span id="inline-toc">1.</span> days
 
 # Query item's history (integer) data
 history = zapi.history.get({"itemids": item_id, "time_from": time_from, "time_till": time_till, "output": "extend", "limit": "10"})

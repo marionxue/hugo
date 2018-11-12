@@ -473,20 +473,20 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-名词解释">1. 名词解释</a></li>
-<li><a href="#2-组网原理">2. 组网原理</a></li>
-<li><a href="#3-bgp-与-as">3. BGP 与 AS</a>
+<li><a href="#span-id-inline-toc-1-span-名词解释"><span id="inline-toc">1.</span> 名词解释</a></li>
+<li><a href="#span-id-inline-toc-2-span-组网原理"><span id="inline-toc">2.</span> 组网原理</a></li>
+<li><a href="#span-id-inline-toc-3-span-bgp-与-as"><span id="inline-toc">3.</span> BGP 与 AS</a>
 <ul>
 <li><a href="#bgp-speaker全互联模式">BGP Speaker全互联模式</a></li>
 <li><a href="#bgp-speaker-rr-模式">BGP Speaker RR 模式</a></li>
 </ul></li>
-<li><a href="#4-rr-模式部署">4. RR 模式部署</a>
+<li><a href="#span-id-inline-toc-4-span-rr-模式部署"><span id="inline-toc">4.</span> RR 模式部署</a>
 <ul>
 <li><a href="#在-node1-节点上启动反射路由实例">在 node1 节点上启动反射路由实例</a></li>
 <li><a href="#配置反射路由的集群">配置反射路由的集群</a></li>
 <li><a href="#配置-calico-使用反射路由">配置 calico 使用反射路由</a></li>
 </ul></li>
-<li><a href="#5-多-cluster-id-实例拓扑">5. 多 cluster ID 实例拓扑</a></li>
+<li><a href="#span-id-inline-toc-5-span-多-cluster-id-实例拓扑"><span id="inline-toc">5.</span> 多 cluster ID 实例拓扑</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -501,7 +501,7 @@ autocomplete('#aa-search-input',
 
 <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://o7z41ciog.bkt.clouddn.com/Two%20Steps%20From%20Hell%20-%20Star%20Sky.mp3"></iframe>
 
-<h2 id="1-名词解释">1. 名词解释</h2>
+<h2 id="span-id-inline-toc-1-span-名词解释"><span id="inline-toc">1.</span> 名词解释</h2>
 
 <hr />
 
@@ -517,7 +517,7 @@ autocomplete('#aa-search-input',
 <li><p><code>hostEndpoints</code>：Calico 网络中的物理机(node)的地址</p></li>
 </ul>
 
-<h2 id="2-组网原理">2. 组网原理</h2>
+<h2 id="span-id-inline-toc-2-span-组网原理"><span id="inline-toc">2.</span> 组网原理</h2>
 
 <hr />
 
@@ -564,7 +564,7 @@ autocomplete('#aa-search-input',
 
 <p>通过这种方式每个 node 知晓了每个 <code>workload-endpoint</code> 的下一跳地址。</p>
 
-<h2 id="3-bgp-与-as">3. BGP 与 AS</h2>
+<h2 id="span-id-inline-toc-3-span-bgp-与-as"><span id="inline-toc">3.</span> BGP 与 AS</h2>
 
 <hr />
 
@@ -622,7 +622,7 @@ $ calicoctl config set nodeTonodeMesh on
 
 <p>关闭了全互联模式后，再将 RR 作为 <code>Global Peers</code> 添加到 Calico 中，Calico 网络就切换到了 RR 模式，可以支撑容纳更多的 node。</p>
 
-<h2 id="4-rr-模式部署">4. RR 模式部署</h2>
+<h2 id="span-id-inline-toc-4-span-rr-模式部署"><span id="inline-toc">4.</span> RR 模式部署</h2>
 
 <hr />
 
@@ -911,7 +911,7 @@ protocol bgp Global_10_10_31_168 from bgp_template {
 # ------------- Node-specific peers -------------
 </code></pre>
 
-<h2 id="5-多-cluster-id-实例拓扑">5. 多 cluster ID 实例拓扑</h2>
+<h2 id="span-id-inline-toc-5-span-多-cluster-id-实例拓扑"><span id="inline-toc">5.</span> 多 cluster ID 实例拓扑</h2>
 
 <hr />
 

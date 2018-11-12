@@ -24,7 +24,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 下面我们就来试用一下。
 
-## 1. 安装步骤
+## <span id="inline-toc">1.</span> 安装步骤
 
 ----
 
@@ -136,7 +136,7 @@ clusterrole.rbac.authorization.k8s.io "contour" created
 service "contour" created
 ```
 
-## 2. Ingress 测试
+## <span id="inline-toc">2.</span> Ingress 测试
 
 ----
 
@@ -167,7 +167,7 @@ ing/kuard   *         192.168.123.249   80        4m
 
 <center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuylptv43j31kw0zkdot.jpg)</center>
 
-## 3. Contour 工作原理
+## <span id="inline-toc">3.</span> Contour 工作原理
 
 ----
 
@@ -189,7 +189,7 @@ Envoy API 调用和 Kubernetes API 资源之间的映射关系如下：
 
 + <span id="inline-blue">RDS</span> : 路由发现服务。映射为 Kubernetes 中的 `Ingress`。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。
 
-## 4. 映射关系详情
+## <span id="inline-toc">4.</span> 映射关系详情
 
 ----
 
@@ -205,7 +205,7 @@ Envoy API 调用和 Kubernetes API 资源之间的映射关系如下：
 
 `RDS` 更像是 Kubernetes 中的 `Ingress` 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 `IngressSpec` 的配置项中获取（比如：`namespace/serviceName_servicePort`），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。
 
-## 5. Contour 架构分析
+## <span id="inline-toc">5.</span> Contour 架构分析
 
 ----
 
@@ -224,7 +224,7 @@ Contour 相当于 Kubernetes API 的客户端。它监视 `Ingress`，`Service` 
 
 从 Kubernetes 到 Contour 的信息转换是通过 `SharedInformer` 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。
 
-## 6. IngressRoute 介绍
+## <span id="inline-toc">6.</span> IngressRoute 介绍
 
 ----
 
@@ -303,7 +303,7 @@ $ curl localhost:6060/debug/dag | dot -T png > contour-dag.png
 
 <center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuymirnk4j30mt0jzq67.jpg)</center>
 
-## 7. 参考
+## <span id="inline-toc">7.</span> 参考
 
 ----
 

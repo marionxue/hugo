@@ -29,7 +29,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 随着服务网格逐渐成为标准控制平面，性能测试工程师在创建适用于服务网格体系架构的测试计划时提前熟悉该技术将会变得很有必要。
 
-## 1. 服务网格的用例
+## <span id="inline-toc">1.</span> 服务网格的用例
 
 ----
 
@@ -69,7 +69,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 从性能测试的角度来理解服务网格的原因在于该技术对系统性能有着直接影响。因此，测试工程师至少应该掌握服务网格技术的原理和实践方法。同时，测试工程师可以通过将服务网格中生成的数据集成到测试计划和报告中获得很多好处。
 
-## 2. 在性能测试计划中使用服务网格
+## <span id="inline-toc">2.</span> 在性能测试计划中使用服务网格
 
 ----
 
@@ -87,7 +87,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 随着服务网格渐渐成为企业系统架构的一部分，性能测试工程师会逐渐将服务网格本身的测试作为整体性能测试计划的一部分。
 
-## 3. 总结
+## <span id="inline-toc">3.</span> 总结
 
 ----
 

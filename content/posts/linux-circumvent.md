@@ -20,7 +20,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 **<font color=Blue>本教程所用系统为 `Archlinux`，其他发型版类似，请自行参考相关资料。</font>**
 
-## 1. 通过 iptables 实现智能分流
+## <span id="inline-toc">1.</span> 通过 iptables 实现智能分流
 
 ----
 
@@ -300,7 +300,7 @@ net.ipv4.tcp_synack_retries = 5
 $ sysctl -p
 ```
 
-## 2. 通过 nftables 实现智能分流
+## <span id="inline-toc">2.</span> 通过 nftables 实现智能分流
 
 ----
 
@@ -429,7 +429,7 @@ $ systemctl enable shadowsocks-libev@shadowsocks
 
 同上
 
-## 3. 通过策略路由实现智能分流
+## <span id="inline-toc">3.</span> 通过策略路由实现智能分流
 
 ----
 

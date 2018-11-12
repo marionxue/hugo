@@ -13,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 本文我们将从实践者的角度仔细研究整个pod生命周期，包括如何影响启动和关闭行为，并通过实践来理解对应用程序健康状况的检查。
 
-## 1. Pod 的生命周期
+## <span id="inline-toc">1.</span> Pod 的生命周期
 
 ----
 ### Pod phase
@@ -45,7 +45,7 @@ Pod 有一个 PodStatus 对象，其中包含一个 [PodCondition](https://githu
 
 如果想知道究竟发生了什么，可以通过命令 `kubectl describe pod/$PODNAME` 查看输出信息的 `Events` 条目。通过 Events 条目可以看到一些具体的信息，比如正在拉取容器镜像，Pod 已经被调度，或者某个 container 处于 unhealthy 状态。
 
-## 2. Pod 的启动关闭流程
+## <span id="inline-toc">2.</span> Pod 的启动关闭流程
 
 ----
 
@@ -134,7 +134,7 @@ $ cat /tmp/loap/timing
 <p>必须主动杀掉 Pod 才会触发 <code>pre-stop hook</code>，如果是 Pod 自己 Down 掉，则不会执行 <code>pre-stop hook</code>。</p>
 </div>
 
-## 3. 如何快速 DEBUG
+## <span id="inline-toc">3.</span> 如何快速 DEBUG
 
 ----
 
@@ -172,7 +172,7 @@ $ kubectl get pod termination-demo -o go-template='{{range .status.containerStat
 0
 ```
 
-## 4. 参考
+## <span id="inline-toc">4.</span> 参考
 
 ----
 

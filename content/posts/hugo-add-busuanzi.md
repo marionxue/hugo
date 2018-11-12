@@ -26,7 +26,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 > 非官方，但好用。
 
-## 1. 分析问题
+## <span id="inline-toc">1.</span> 分析问题
 
 ----
 
@@ -85,7 +85,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 </script>
 ```
 
-## 2. Hugo 的解法
+## <span id="inline-toc">2.</span> Hugo 的解法
 
 ----
 
@@ -197,7 +197,7 @@ $ cat themes/beautifulhugo/layouts/partials/postmeta.html
 
 大家可以根据自己的审美，功能来定制主题，首先需要对主题的结构，调用等信息清楚，然后再添加自己的改动。
 
-## 3. 参考资料
+## <span id="inline-toc">3.</span> 参考资料
 
 ----
 

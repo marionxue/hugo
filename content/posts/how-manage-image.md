@@ -13,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 docker 里面可以通过 `docker pull`、`docker build`、`docker commit`、`docker load`、`docker import` 等方式得到一个 image，得到 image 之后 docker 在本地是怎么存储的呢？本篇将以 `docker pull` 为例，简述 image 的获取和存储方式。
 
-## 1. 镜像相关的配置
+## <span id="inline-toc">1.</span> 镜像相关的配置
 
 ----
 
@@ -23,7 +23,7 @@ docker 里面和 image 有关的目录为 `/var/lib/docker`，里面存放着 im
 --graph, -g /var/lib/docker Root of the Docker runtime
 ```
 
-## 2. 镜像的引用方式
+## <span id="inline-toc">2.</span> 镜像的引用方式
 
 ----
 
@@ -62,7 +62,7 @@ docker 里面和 image 有关的目录为 `/var/lib/docker`，里面存放着 im
 
 对于某些 `image` 来说，可能在发布之后还会做一些更新，比如安全方面的，这时虽然镜像的内容变了，但镜像的名称和 `tag` 没有变，所以会造成前后两次通过同样的名称和 `tag` 从服务器得到不同的两个镜像的问题，于是 docker 引入了镜像的 `digest` 的概念，一个镜像的 `digest` 就是镜像的 `manifes` 文件的 `sha256` 码，当镜像的内容发生变化的时候，即镜像的 `layer` 发生变化，从而 `layer` 的 `sha256` 发生变化，而 `manifest` 里面包含了每一个 `layer` 的 `sha256`，所以 `manifest` 的 `sha256` 也会发生变化，即镜像的 `digest` 发生变化，这样就保证了 `digest` 能唯一的对应一个镜像。
 
-## 3. docker pull的大概过程
+## <span id="inline-toc">3.</span> docker pull的大概过程
 
 ----
 
@@ -88,7 +88,7 @@ docker 里面和 image 有关的目录为 `/var/lib/docker`，里面存放着 im
 
 > dockerd 和 registry 服务器之间的协议为 [Registry HTTP API V2](https://docs.docker.com/registry/spec/api/)。
 
-## 4. image 本地存放位置
+## <span id="inline-toc">4.</span> image 本地存放位置
 
 ----
 
@@ -259,7 +259,7 @@ $ ll /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3
 -rw-r--r-- 1 root root 1.5K Apr  1 22:16 /var/lib/docker/image/overlay2/layerdb/sha256/14a40a140881d18382e13b37588b3aa70097bb4f3fb44085bc95663bdc68fe20/tar-split.json.gz
 ```
 
-## 5. layer数据
+## <span id="inline-toc">5.</span> layer数据
 
 ----
 
@@ -367,7 +367,7 @@ drwxr-xr-x 3 root root 18 Feb 28 14:13 usr/
 drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
 ```
 
-## 6. manifest文件去哪了？
+## <span id="inline-toc">6.</span> manifest文件去哪了？
 
 ----
 
@@ -377,7 +377,7 @@ drwxr-xr-x 3 root root 17 Feb 28 14:14 var/
 
 manifest 里面包含的内容就是对 config 和 layer 的 `sha256 + media type` 描述，目的就是为了下载 config 和 layer，等 image 下载完成后，manifest 的使命就完成了，里面的信息对于 image 的本地管理来说没什么用，所以 docker 在本地没有单独的存储一份 manifest 文件与之对应。
 
-## 7. 结束语
+## <span id="inline-toc">7.</span> 结束语
 
 ----
 
@@ -387,7 +387,7 @@ manifest 里面包含的内容就是对 config 和 layer 的 `sha256 + media typ
 
 + `/var/lib/docker/image/overlay2/layerdb/mounts`: 创建 container 时，docker 会为每个 container 在 image 的基础上创建一层新的 layer，里面主要包含 /etc/hosts、/etc/hostname、/etc/resolv.conf 等文件，创建的这一层 layer 信息就放在这里，后续在介绍容器的时候，会专门介绍这个目录的内容。
 
-## 8. 参考
+## <span id="inline-toc">8.</span> 参考
 
 ----
 

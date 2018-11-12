@@ -471,31 +471,31 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-kubernetes集群联邦介绍">1. Kubernetes集群联邦介绍</a>
+<li><a href="#span-id-inline-toc-1-span-kubernetes集群联邦介绍"><span id="inline-toc">1.</span> Kubernetes集群联邦介绍</a>
 <ul>
 <li><a href="#管理多个-kuberntes-集群">管理多个 kuberntes 集群</a></li>
 <li><a href="#跨集群服务发现">跨集群服务发现</a></li>
 <li><a href="#跨集群调度">跨集群调度</a></li>
 <li><a href="#集群高可用-故障自动迁移">集群高可用，故障自动迁移</a></li>
 </ul></li>
-<li><a href="#2-使用集群联邦实现多集群管理">2. 使用集群联邦实现多集群管理</a>
+<li><a href="#span-id-inline-toc-2-span-使用集群联邦实现多集群管理"><span id="inline-toc">2.</span> 使用集群联邦实现多集群管理</a>
 <ul>
 <li><a href="#系统环境">系统环境</a></li>
 <li><a href="#安装-kubefed">安装 kubefed</a></li>
 <li><a href="#配置-context">配置 context</a></li>
 <li><a href="#设置-coredns-作为集群联邦的-dns-提供商">设置 CoreDNS 作为集群联邦的 DNS 提供商</a>
 <ul>
-<li><a href="#1-前提">1. 前提</a></li>
-<li><a href="#2-使本地集群支持-loadbalancer-服务">2. 使本地集群支持 LoadBalancer 服务</a></li>
-<li><a href="#3-安装-helm">3. 安装 helm</a></li>
-<li><a href="#4-部署-etcd">4. 部署 etcd</a></li>
-<li><a href="#5-部署-coredns">5. 部署 CoreDNS</a></li>
-<li><a href="#6-使用-coredns-作为-dns-提供商来部署-federation">6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation</a></li>
-<li><a href="#7-添加集群至-federation">7. 添加集群至 federation</a></li>
+<li><a href="#span-id-inline-toc-1-span-前提"><span id="inline-toc">1.</span> 前提</a></li>
+<li><a href="#span-id-inline-toc-2-span-使本地集群支持-loadbalancer-服务"><span id="inline-toc">2.</span> 使本地集群支持 LoadBalancer 服务</a></li>
+<li><a href="#span-id-inline-toc-3-span-安装-helm"><span id="inline-toc">3.</span> 安装 helm</a></li>
+<li><a href="#span-id-inline-toc-4-span-部署-etcd"><span id="inline-toc">4.</span> 部署 etcd</a></li>
+<li><a href="#span-id-inline-toc-5-span-部署-coredns"><span id="inline-toc">5.</span> 部署 CoreDNS</a></li>
+<li><a href="#span-id-inline-toc-6-span-使用-coredns-作为-dns-提供商来部署-federation"><span id="inline-toc">6.</span> 使用 CoreDNS 作为 DNS 提供商来部署 Federation</a></li>
+<li><a href="#span-id-inline-toc-7-span-添加集群至-federation"><span id="inline-toc">7.</span> 添加集群至 federation</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#3-federation-支持的服务">3. Federation 支持的服务</a></li>
-<li><a href="#4-参考文档">4. 参考文档</a></li>
+<li><a href="#span-id-inline-toc-3-span-federation-支持的服务"><span id="inline-toc">3.</span> Federation 支持的服务</a></li>
+<li><a href="#span-id-inline-toc-4-span-参考文档"><span id="inline-toc">4.</span> 参考文档</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -524,7 +524,7 @@ autocomplete('#aa-search-input',
 
 <p>集群联邦（Federation）可以一定程度上解决这些问题。<code>Federation</code> 是可以将分布在多个 Region 或者多个云厂商的 Kubernetes 集群整合成一个大的集群，统一管理与调度。</p>
 
-<h2 id="1-kubernetes集群联邦介绍">1. Kubernetes集群联邦介绍</h2>
+<h2 id="span-id-inline-toc-1-span-kubernetes集群联邦介绍"><span id="inline-toc">1.</span> Kubernetes集群联邦介绍</h2>
 
 <hr />
 
@@ -574,7 +574,7 @@ autocomplete('#aa-search-input',
 
 <p>集群联邦可以跨集群冗馀部署，当某个集群所在区域出现故障时，并不影响整个服务。集群联邦还可以检测集群是否为不可用状态，如果发现某个集群为不可用状态时，可以将失败的任务重新分配给集群联邦中其他可用状态的集群上。</p>
 
-<h2 id="2-使用集群联邦实现多集群管理">2. 使用集群联邦实现多集群管理</h2>
+<h2 id="span-id-inline-toc-2-span-使用集群联邦实现多集群管理"><span id="inline-toc">2.</span> 使用集群联邦实现多集群管理</h2>
 
 <hr />
 
@@ -671,7 +671,7 @@ CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
 
 <h3 id="设置-coredns-作为集群联邦的-dns-提供商">设置 CoreDNS 作为集群联邦的 DNS 提供商</h3>
 
-<h4 id="1-前提">1. 前提</h4>
+<h4 id="span-id-inline-toc-1-span-前提"><span id="inline-toc">1.</span> 前提</h4>
 
 <ul>
 <li>为启用 <code>CoreDNS</code> 来实现跨联邦集群的服务发现，联邦的成员集群中必须支持 <code>LoadBalancer</code> 服务。（<font color="red">本地集群默认不支持 <code>LoadBalancer</code> 服务，所以要让本地集群支持 <code>LoadBalancer</code> 服务才能使用 <code>coredns</code> 来实现 federation 的服务发现功能！！！</font>）</li>
@@ -681,7 +681,7 @@ CURRENT   NAME          CLUSTER       AUTHINFO      NAMESPACE
 <code>failure-domain.beta.kubernetes.io/zone=&lt;zone&gt;</code></li>
 </ul>
 
-<h4 id="2-使本地集群支持-loadbalancer-服务">2. 使本地集群支持 LoadBalancer 服务</h4>
+<h4 id="span-id-inline-toc-2-span-使本地集群支持-loadbalancer-服务"><span id="inline-toc">2.</span> 使本地集群支持 LoadBalancer 服务</h4>
 
 <p>为了使本地集群支持 <code>LoadBalancer</code> 服务，可以参考以下两种实现方案：</p>
 
@@ -724,7 +724,7 @@ $ kubectl create -f metallb-cm.yaml
 
 <p>现在本地集群已经支持 LoadBalancer 服务了，下面我们开始 federation 的旅程吧！👏</p>
 
-<h4 id="3-安装-helm">3. 安装 helm</h4>
+<h4 id="span-id-inline-toc-3-span-安装-helm"><span id="inline-toc">3.</span> 安装 helm</h4>
 
 <p>首先需要安装 <code>helm</code> 客户端</p>
 
@@ -761,7 +761,7 @@ Client: &amp;version.Version{SemVer:&quot;v2.8.2&quot;, GitCommit:&quot;a8023164
 Server: &amp;version.Version{SemVer:&quot;v2.8.2&quot;, GitCommit:&quot;a80231648a1473929271764b920a8e346f6de844&quot;, GitTreeState:&quot;clean&quot;}
 </code></pre>
 
-<h4 id="4-部署-etcd">4. 部署 etcd</h4>
+<h4 id="span-id-inline-toc-4-span-部署-etcd"><span id="inline-toc">4.</span> 部署 etcd</h4>
 
 <p>下载 <code>helm charts</code> 仓库</p>
 
@@ -831,7 +831,7 @@ kubernetes              ClusterIP   10.254.0.1       &lt;none&gt;        443/TCP
 
 <p>部署成功后，可以在 host 集群内通过 <a href="http://etcd-cluster-client.default:2379" target="_blank">http://etcd-cluster-client.default:2379</a> 端点访问 etcd。</p>
 
-<h4 id="5-部署-coredns">5. 部署 CoreDNS</h4>
+<h4 id="span-id-inline-toc-5-span-部署-coredns"><span id="inline-toc">5.</span> 部署 CoreDNS</h4>
 
 <p>首先需要定制 <code>CoreDNS chart</code> 模板的默认配置，它会覆盖 <code>CoreDNS chart</code> 的默认配置参数。</p>
 
@@ -878,7 +878,7 @@ NAME              TYPE       CLUSTER-IP       EXTERNAL-IP   PORT(S)             
 coredns-coredns   NodePort   10.254.198.211   &lt;none&gt;        53:27165/UDP,53:27165/TCP,9153:26492/TCP   1d
 </code></pre>
 
-<h4 id="6-使用-coredns-作为-dns-提供商来部署-federation">6. 使用 CoreDNS 作为 DNS 提供商来部署 Federation</h4>
+<h4 id="span-id-inline-toc-6-span-使用-coredns-作为-dns-提供商来部署-federation"><span id="inline-toc">6.</span> 使用 CoreDNS 作为 DNS 提供商来部署 Federation</h4>
 
 <p>可以使用 <code>kubefed init</code> 来部署联邦控制平面。 可以通过指定两个附加参数来选择 CoreDNS 作为 DNS 提供商。</p>
 
@@ -999,7 +999,7 @@ federation-system:federation-controller-manager   39m
 <p>默认情况下，<code>kubefed init</code> 通过动态创建 PV 的方式为 etcd 创建持久化存储。如果 kubernetes 集群不支持动态创建 PV，则可以预先创建 PV，注意 PV 要匹配 `kubefed` 的 PVC。或者使用 <code>hostpath</code>，同时指定调度节点。</p>
 </div>
 
-<h4 id="7-添加集群至-federation">7. 添加集群至 federation</h4>
+<h4 id="span-id-inline-toc-7-span-添加集群至-federation"><span id="inline-toc">7.</span> 添加集群至 federation</h4>
 
 <p>目前为止您已经成功的初始化好了 <code>Federation</code> 的控制平面。接下来需要将各个子集群加入到 Federation 集群中。</p>
 
@@ -1074,7 +1074,7 @@ No resources found.
 <pre><code class="language-bash">$ kubectl delete ns federation-system
 </code></pre>
 
-<h2 id="3-federation-支持的服务">3. Federation 支持的服务</h2>
+<h2 id="span-id-inline-toc-3-span-federation-支持的服务"><span id="inline-toc">3.</span> Federation 支持的服务</h2>
 
 <hr />
 
@@ -1200,7 +1200,7 @@ $ kubectl exec etcd-cluster-fznzsrttt9 etcdctl ls /skydns/com/example/yangpu/
 /skydns/com/example/yangpu/svc
 </code></pre>
 
-<h2 id="4-参考文档">4. 参考文档</h2>
+<h2 id="span-id-inline-toc-4-span-参考文档"><span id="inline-toc">4.</span> 参考文档</h2>
 
 <hr />
 

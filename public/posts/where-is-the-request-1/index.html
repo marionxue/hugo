@@ -475,15 +475,15 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-pilot总体架构">1. pilot总体架构</a></li>
-<li><a href="#2-pilot-discovery-为-envoy-提供的-xds-服务">2. pilot-discovery 为 Envoy 提供的 xds 服务</a>
+<li><a href="#span-id-inline-toc-1-span-pilot总体架构"><span id="inline-toc">1.</span> pilot总体架构</a></li>
+<li><a href="#span-id-inline-toc-2-span-pilot-discovery-为-envoy-提供的-xds-服务"><span id="inline-toc">2.</span> pilot-discovery 为 Envoy 提供的 xds 服务</a>
 <ul>
 <li><a href="#所谓-xds">所谓 xds</a></li>
 <li><a href="#如何查看-xds">如何查看 xds</a></li>
 </ul></li>
-<li><a href="#3-envoy-基本术语回顾">3. Envoy 基本术语回顾</a></li>
-<li><a href="#4-gateway-和-virtualservice-配置解析">4. Gateway 和 VirtualService 配置解析</a></li>
-<li><a href="#5-参考">5. 参考</a></li>
+<li><a href="#span-id-inline-toc-3-span-envoy-基本术语回顾"><span id="inline-toc">3.</span> Envoy 基本术语回顾</a></li>
+<li><a href="#span-id-inline-toc-4-span-gateway-和-virtualservice-配置解析"><span id="inline-toc">4.</span> Gateway 和 VirtualService 配置解析</a></li>
+<li><a href="#span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -500,7 +500,7 @@ autocomplete('#aa-search-input',
 
 <p>在开始之前，需要先搞清楚我们创建的这些对象资源最后都交给谁来处理了，负责处理这些资源的就是 pilot。</p>
 
-<h2 id="1-pilot总体架构">1. pilot总体架构</h2>
+<h2 id="span-id-inline-toc-1-span-pilot总体架构"><span id="inline-toc">1.</span> pilot总体架构</h2>
 
 <hr />
 
@@ -517,7 +517,7 @@ autocomplete('#aa-search-input',
 
 <p>简单来说 Istio 做为管理面，集合了配置中心和服务中心两个功能，并把配置发现和服务发现以一组统一的 <code>xDS</code> 接口提供出来，数据面的 Envoy 通过 xDS 获取需要的信息来做服务间通信和服务治理。</p>
 
-<h2 id="2-pilot-discovery-为-envoy-提供的-xds-服务">2. pilot-discovery 为 Envoy 提供的 xds 服务</h2>
+<h2 id="span-id-inline-toc-2-span-pilot-discovery-为-envoy-提供的-xds-服务"><span id="inline-toc">2.</span> pilot-discovery 为 Envoy 提供的 xds 服务</h2>
 
 <hr />
 
@@ -662,7 +662,7 @@ autocomplete('#aa-search-input',
 <pre><code class="language-bash">$ curl http://$PILOT_SVC_IP:8080/debug/adsz
 </code></pre>
 
-<h2 id="3-envoy-基本术语回顾">3. Envoy 基本术语回顾</h2>
+<h2 id="span-id-inline-toc-3-span-envoy-基本术语回顾"><span id="inline-toc">3.</span> Envoy 基本术语回顾</h2>
 
 <hr />
 
@@ -677,7 +677,7 @@ autocomplete('#aa-search-input',
 
 <p>更多详细信息可以参考 <a href="https://jimmysong.io/posts/envoy-archiecture-and-terminology/" target="_blank">Envoy 的架构与基本术语</a>，本文重点突出 <code>Listener</code>、<code>Route</code> 和 <code>Cluster</code> 这三个基本术语，同时需要注意流量经过这些术语的先后顺序，请求首先到达 <code>Listener</code>，然后通过 <code>Http Route Table</code> 转到具体的 <code>Cluster</code>，最后由具体的 Cluster 对请求做出响应。</p>
 
-<h2 id="4-gateway-和-virtualservice-配置解析">4. Gateway 和 VirtualService 配置解析</h2>
+<h2 id="span-id-inline-toc-4-span-gateway-和-virtualservice-配置解析"><span id="inline-toc">4.</span> Gateway 和 VirtualService 配置解析</h2>
 
 <hr />
 
@@ -867,7 +867,7 @@ spec:
 
 <p>好了，现在请求已经转交给 productpage 了，那么接下来这个请求将会如何走完整个旅程呢？请听下回分解！</p>
 
-<h2 id="5-参考">5. 参考</h2>
+<h2 id="span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</h2>
 
 <hr />
 

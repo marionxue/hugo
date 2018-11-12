@@ -473,7 +473,7 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#1-kubernetes-中服务暴露的方式">1. Kubernetes 中服务暴露的方式</a>
+<li><a href="#span-id-inline-toc-1-span-kubernetes-中服务暴露的方式"><span id="inline-toc">1.</span> Kubernetes 中服务暴露的方式</a>
 <ul>
 <li><a href="#hostnetwork">HostNetwork</a></li>
 <li><a href="#hostport">hostPort</a></li>
@@ -481,13 +481,13 @@ autocomplete('#aa-search-input',
 <li><a href="#loadbalancer">LoadBalancer</a></li>
 <li><a href="#ingress">Ingress</a></li>
 </ul></li>
-<li><a href="#2-集群环境">2. 集群环境</a>
+<li><a href="#span-id-inline-toc-2-span-集群环境"><span id="inline-toc">2.</span> 集群环境</a>
 <ul>
 <li><a href="#架构环境">架构环境</a></li>
 <li><a href="#k8s-集群节点">k8s 集群节点</a></li>
 </ul></li>
-<li><a href="#3-部署边界-dns-代理服务器">3. 部署边界 dns 代理服务器</a></li>
-<li><a href="#4-部署-gateway-边界网关节点">4. 部署 gateway 边界网关节点</a>
+<li><a href="#span-id-inline-toc-3-span-部署边界-dns-代理服务器"><span id="inline-toc">3.</span> 部署边界 dns 代理服务器</a></li>
+<li><a href="#span-id-inline-toc-4-span-部署-gateway-边界网关节点"><span id="inline-toc">4.</span> 部署 gateway 边界网关节点</a>
 <ul>
 <li><a href="#首先开启内核转发">首先开启内核转发</a></li>
 <li><a href="#运行-calico">运行 calico</a></li>
@@ -499,8 +499,8 @@ autocomplete('#aa-search-input',
 <li><a href="#启动-kube-proxy">启动 kube-proxy</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#5-测试网关和-dns-解析以及服务访问情况">5. 测试网关和 dns 解析以及服务访问情况</a></li>
-<li><a href="#6-参考">6. 参考</a></li>
+<li><a href="#span-id-inline-toc-5-span-测试网关和-dns-解析以及服务访问情况"><span id="inline-toc">5.</span> 测试网关和 dns 解析以及服务访问情况</a></li>
+<li><a href="#span-id-inline-toc-6-span-参考"><span id="inline-toc">6.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -513,7 +513,7 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<h2 id="1-kubernetes-中服务暴露的方式">1. Kubernetes 中服务暴露的方式</h2>
+<h2 id="span-id-inline-toc-1-span-kubernetes-中服务暴露的方式"><span id="inline-toc">1.</span> Kubernetes 中服务暴露的方式</h2>
 
 <hr />
 
@@ -676,7 +676,7 @@ spec:
 <li>物理网络的 dns 域名服务直接调用 k8s-dns 域名服务直接互访</li>
 </ul>
 
-<h2 id="2-集群环境">2. 集群环境</h2>
+<h2 id="span-id-inline-toc-2-span-集群环境"><span id="inline-toc">2.</span> 集群环境</h2>
 
 <hr />
 
@@ -788,7 +788,7 @@ dao-2048                          10.98.217.155    &lt;none&gt;        80/TCP   
 
 <p>以下为该方案的实施步骤。</p>
 
-<h2 id="3-部署边界-dns-代理服务器">3. 部署边界 dns 代理服务器</h2>
+<h2 id="span-id-inline-toc-3-span-部署边界-dns-代理服务器"><span id="inline-toc">3.</span> 部署边界 dns 代理服务器</h2>
 
 <hr />
 
@@ -825,8 +825,8 @@ spec:
       containers:
       - name: default-http-backend
         # Any image is permissible as long as:
-        # 1. It serves a 404 page at /
-        # 2. It serves 200 on a /healthz endpoint
+        # &lt;span id=&quot;inline-toc&quot;&gt;1.&lt;/span&gt; It serves a 404 page at /
+        # &lt;span id=&quot;inline-toc&quot;&gt;2.&lt;/span&gt; It serves 200 on a /healthz endpoint
         image: gcr.io/google_containers/defaultbackend:1.4
         livenessProbe:
           httpGet:
@@ -1084,7 +1084,7 @@ deployment &quot;nginx-udp-ingress-controller&quot; created
 
 <p>通过 nginx 反向代理 <code>kube-dns</code> 服务，同时以 <code>hostNetwork: true</code> 向集群外部暴露 53 端口，为非 k8s 集群网络物理机节点提供 dns 服务。</p>
 
-<h2 id="4-部署-gateway-边界网关节点">4. 部署 gateway 边界网关节点</h2>
+<h2 id="span-id-inline-toc-4-span-部署-gateway-边界网关节点"><span id="inline-toc">4.</span> 部署 gateway 边界网关节点</h2>
 
 <hr />
 
@@ -1213,7 +1213,7 @@ $ systemctl enable kube-proxy
 $ systemctl start kube-proxy
 </code></pre>
 
-<h2 id="5-测试网关和-dns-解析以及服务访问情况">5. 测试网关和 dns 解析以及服务访问情况</h2>
+<h2 id="span-id-inline-toc-5-span-测试网关和-dns-解析以及服务访问情况"><span id="inline-toc">5.</span> 测试网关和 dns 解析以及服务访问情况</h2>
 
 <hr />
 
@@ -1304,7 +1304,7 @@ dao-2048.default.svc.cluster.local. 5 IN A      10.98.217.155
 
 <p id="div-border-top-red"><font color="blue">PS：</font>如果你不想一台台机器加路由和 dns，你可以把路由信息加入物理路由器上，这样就不用每台机都加路由和 dns 了，直接打通所有链路。</p>
 
-<h2 id="6-参考">6. 参考</h2>
+<h2 id="span-id-inline-toc-6-span-参考"><span id="inline-toc">6.</span> 参考</h2>
 
 <hr />
 

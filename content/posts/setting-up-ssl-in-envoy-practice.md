@@ -20,7 +20,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 关于如何为 Envoy 开启证书验证可以参考我之间的文章：[为 Envoy 启用证书验证](https://www.yangcs.net/posts/setting-up-ssl-in-envoy/)。本文将直接进入实战部分，通过 Envoy 来反向代理我的博客静态页面，并且加密客户端和 Envoy 代理之间的所有流量。
 
-## 1. 方案架构
+## <span id="inline-toc">1.</span> 方案架构
 
 ----
 
@@ -34,7 +34,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 但本文需要开启 TLS 验证，如果前端代理开启了 TLS 验证，那么必须配合服务 Envoy 使用，否则验证将无法通过。
 
-## 2. 部署服务 Envoy
+## <span id="inline-toc">2.</span> 部署服务 Envoy
 
 ----
 
@@ -122,7 +122,7 @@ admin:
 + ① `8080` : 服务 Envoy 的监听端口。
 + ② `80` : hugo 静态页面的监听端口。
 
-## 3. 部署前端代理
+## <span id="inline-toc">3.</span> 部署前端代理
 
 ----
 

@@ -15,7 +15,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 在继续追踪请求之前，先对之前的内容做一个补充说明。
 
-## 1. Pod 在服务网格之间如何通信？
+## <span id="inline-toc">1.</span> Pod 在服务网格之间如何通信？
 
 ----
 
@@ -61,7 +61,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080||productpage.def
 
 从这里可以看出，各个微服务之间是直接通过 `PodIP + Port` 来通信的，Service 只是做一个逻辑关联用来定位 Pod，实际通信的时候并没有通过 Service。
 
-## 2. 部署 bookinfo 应用的时候发生了什么？
+## <span id="inline-toc">2.</span> 部署 bookinfo 应用的时候发生了什么？
 
 ----
 
@@ -294,7 +294,7 @@ $ istioctl proxy-config clusters productpage-v1-76474f6fb7-pmglr --fqdn reviews.
 
 上面的整个过程就是在不创建任何规则的情况下请求从 `productpage` 到 `reviews` 的过程，从 reviews 到网格内其他应用的流量与上面类似，就不展开讨论了。接下来分析创建规则之后的请求转发过程。
 
-## 3. VirtualService 和 DestinationRule 配置解析
+## <span id="inline-toc">3.</span> VirtualService 和 DestinationRule 配置解析
 
 ----
 
@@ -458,7 +458,7 @@ $ curl http://$PILOT_SVC_IP:8080/debug/edsz|grep "outbound|9080|v1|reviews.defau
 
 <center>![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuy5isxp4j31kw0zkgtq.jpg)</center>
 
-## 4. 参考
+## <span id="inline-toc">4.</span> 参考
 
 ----
 

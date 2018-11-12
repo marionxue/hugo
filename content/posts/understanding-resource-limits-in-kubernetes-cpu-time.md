@@ -23,7 +23,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 在关于 Kubernetes 资源限制的系列文章的[第一篇文章](https://mp.weixin.qq.com/s/j2FfqUHSRTzczNcfPuwRQw)中，我讨论了如何使用 [ResourceRequirements](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.12/#resourcerequirements-v1-core) 对象来设置 Pod 中容器的内存资源限制，以及如何通过容器运行时和 linux control group（`cgroup`）来实现这些限制。我还谈到了 Requests 和 Limits 之间的区别，其中 `Requests` 用于在调度时通知调度器 Pod 需要多少资源才能调度，而 `Limits` 用来告诉 Linux 内核什么时候你的进程可以为了清理空间而被杀死。在这篇文章中，我会继续仔细分析 CPU 资源限制。想要理解这篇文章所说的内容，不一定要先阅读上一篇文章，但我建议那些工程师和集群管理员最好还是先阅读完第一篇，以便全面掌控你的集群。
 
-## 1. CPU 限制
+## <span id="inline-toc">1.</span> CPU 限制
 
 ----
 
@@ -146,15 +146,15 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 下面是几个例子：
 
 ```bash
-# 1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
+# <span id="inline-toc">1.</span>限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
 $ echo 250000 > cpu.cfs_quota_us /* quota = 250ms */
 $ echo 250000 > cpu.cfs_period_us /* period = 250ms */
 
-# 2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
+# <span id="inline-toc">2.</span>限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
 $ echo 1000000 > cpu.cfs_quota_us /* quota = 1000ms */
 $ echo 500000 > cpu.cfs_period_us /* period = 500ms */
 
-# 3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
+# <span id="inline-toc">3.</span>限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
 $ echo 10000 > cpu.cfs_quota_us /* quota = 10ms */
 $ echo 50000 > cpu.cfs_period_us /* period = 50ms */
 ```
@@ -171,7 +171,7 @@ $ echo 50000 > cpu.cfs_period_us /* period = 50ms */
 
 最后我还想告诉你们的是：为每个 pod 都手动配置这些参数是挺麻烦的事情，kubernetes 提供了 `LimitRange` 资源，可以让我们配置某个 namespace 默认的 request 和 limit 值。
 
-## 2. 默认限制
+## <span id="inline-toc">2.</span> 默认限制
 
 ----
 
@@ -232,7 +232,7 @@ spec:
 
 以上就是我对 Kubernetes 资源限制的全部见解，希望能对你有所帮助。如果你想了解更多关于 Kubernetes 中资源的 limits 和 requests、以及 linux cgroup 和内存管理的更多详细信息，可以查看我在文末提供的参考链接。
 
-## 3. 参考资料
+## <span id="inline-toc">3.</span> 参考资料
 
 ----
 

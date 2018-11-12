@@ -13,7 +13,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <p id="div-border-left-red">本文转载自 <a href="http://cizixs.com/2018/06/25/kubernetes-resource-management" target="_blank">Cizixs 的博客</a>。</p>
 
-## 1. 什么是资源？
+## <span id="inline-toc">1.</span> 什么是资源？
 
 ----
 
@@ -31,7 +31,7 @@ CPU 的使用时间是可压缩的，换句话说它本身无状态，申请资�
 
 资源除了和调度相关之外，还和很多事情紧密相连，这正是这篇文章要解释的。
 
-## 2. kubernetes 资源的表示
+## <span id="inline-toc">2.</span> kubernetes 资源的表示
 
 ----
 
@@ -45,7 +45,7 @@ CPU 的使用时间是可压缩的，换句话说它本身无状态，申请资�
 
 内存比较容易理解，是通过字节大小指定的。如果直接一个数字，后面没有任何单位，表示这么多字节的内存；数字后面还可以跟着单位， 支持的单位有 `E`、`P`、`T`、`G`、`M`、`K`，前者分别是后者的 `1000` 倍大小的关系，此外还支持 `Ei`、`Pi`、`Ti`、`Gi`、`Mi`、`Ki`，其对应的倍数关系是 `2^10 = 1024`。比如要使用 100M 内存的话，直接写成 `100Mi` 即可。
 
-## 3. 节点可用资源
+## <span id="inline-toc">3.</span> 节点可用资源
 
 ----
 
@@ -82,7 +82,7 @@ status:
     pods: "110"
 ```
 
-## 4. kubernetes 资源对象
+## <span id="inline-toc">4.</span> kubernetes 资源对象
 
 ----
 
@@ -176,7 +176,7 @@ resource quota 能够配置的选项还很多，比如 GPU、存储、configmaps
 
 Resource quota 要解决的问题和使用都相对独立和简单，但是它也有一个限制：那就是它不能根据集群资源动态伸缩。一旦配置之后，resource quota 就不会改变，即使集群增加了节点，整体资源增多也没有用。kubernetes 现在没有解决这个问题，但是用户可以通过编写一个 controller 的方式来自己实现。
 
-## 5. 应用优先级
+## <span id="inline-toc">5.</span> 应用优先级
 
 ----
 
@@ -240,7 +240,7 @@ Pod 的优先级在调度的时候会使用到。首先，待调度的 pod 都�
 
 另外，如果在调度的时候，发现某个 pod 因为资源不足无法找到合适的节点，调度器会尝试 preempt 的逻辑。 简单来说，调度器会试图找到这样一个节点：找到它上面优先级低于当前要调度 pod 的所有 pod，如果杀死它们，能腾足够的资源，调度器会执行删除操作，把 pod 调度到节点上。
 
-## 6. 驱逐（Eviction）
+## <span id="inline-toc">6.</span> 驱逐（Eviction）
 
 ----
 
@@ -322,7 +322,7 @@ Pod 也是不平等的，有些 pod 要比其他 pod 更重要。只管来说，
 --eviction-minimum-reclaim="memory.available=0Mi,nodefs.available=500Mi,imagefs.available=2Gi"
 ```
 
-## 7. 碎片整理和重调度
+## <span id="inline-toc">7.</span> 碎片整理和重调度
 
 ----
 
@@ -352,7 +352,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 总的来说，descheduler 是对原生调度器的补充，用来解决原生调度器的调度决策随着时间会变得失效，或者不够优化的缺陷。
 
-## 8. 资源动态调整
+## <span id="inline-toc">8.</span> 资源动态调整
 
 ----
 
@@ -390,7 +390,7 @@ Descheduler 不是一个常驻的任务，每次执行完之后会退出，因�
 
 理论上 HPA 和 VPA 是可以共同工作的，HPA 负责瓶颈资源，VPA 负责其他资源。比如对于 CPU 密集型的应用，使用 HPA 监听 CPU 使用率来调整 pods 个数，然后用 VPA 监听其他资源（memory、IO）来动态扩展这些资源的 request 大小即可。当然这只是理想情况。
 
-## 9. 总结
+## <span id="inline-toc">9.</span> 总结
 
 ----
 

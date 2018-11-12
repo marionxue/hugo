@@ -23,7 +23,7 @@ Vizceral 有两个可视化级别，全局可视化和集群级别可视化。�
 
 ![](https://ws1.sinaimg.cn/large/006tNbRwgy1fwuxma4shxj31kw0zk47d.jpg)
 
-## 1. 在 Istio 服务网格中安装 Vistio
+## <span id="inline-toc">1.</span> 在 Istio 服务网格中安装 Vistio
 
 ----
 
@@ -49,7 +49,7 @@ Vizceral 有两个可视化级别，全局可视化和集群级别可视化。�
 
 ![](https://ws4.sinaimg.cn/large/006tNbRwgy1fwuxonyyv5j31kw0zkh5k.jpg)
 
-## 2. 部署 Vistio
+## <span id="inline-toc">2.</span> 部署 Vistio
 
 ----
 
@@ -167,7 +167,7 @@ vistio-api-0                      1/1       Running   0          2m
 vistio-web-5c44b7f76d-hmjdc       1/1       Running   0          2m
 ```
 
-## 3. 验证和暴露 Vistio Web/API
+## <span id="inline-toc">3.</span> 验证和暴露 Vistio Web/API
 
 ----
 
@@ -234,7 +234,7 @@ vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.i
 
 ![](https://ws2.sinaimg.cn/large/006tNbRwgy1fwuxpaymg6j31kw0zkwjh.jpg)
 
-## 4. 探索
+## <span id="inline-toc">4.</span> 探索
 
 ----
 
@@ -248,7 +248,7 @@ vistio-web 调用 vistio-api 来渲染服务网格。访问 `http://vistio-api.i
 
 使用屏幕右上方的过滤器可以快速过滤出错误率较高的应用程序。通过高级配置，当错误率超过特定值时，也可以触发警报。警报将显示给定应用程序的当前错误率趋势。
 
-## 5. 问题排查
+## <span id="inline-toc">5.</span> 问题排查
 
 ----
 
