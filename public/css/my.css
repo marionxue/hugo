@@ -259,6 +259,10 @@ border-top-color: #9954bb;
     margin: 2px 5px 2px 0px;
     line-height: 1.5;
 }
+#small {
+    font-size: .9em;
+    color: #888;
+}
 
 .gallery-text {
  text-align: center;
