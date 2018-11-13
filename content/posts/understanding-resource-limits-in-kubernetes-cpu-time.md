@@ -146,15 +146,15 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 下面是几个例子：
 
 ```bash
-# <span id="inline-toc">1.</span>限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
+# 1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
 $ echo 250000 > cpu.cfs_quota_us /* quota = 250ms */
 $ echo 250000 > cpu.cfs_period_us /* period = 250ms */
 
-# <span id="inline-toc">2.</span>限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
+# 2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
 $ echo 1000000 > cpu.cfs_quota_us /* quota = 1000ms */
 $ echo 500000 > cpu.cfs_period_us /* period = 500ms */
 
-# <span id="inline-toc">3.</span>限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
+# 3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
 $ echo 10000 > cpu.cfs_quota_us /* quota = 10ms */
 $ echo 50000 > cpu.cfs_period_us /* period = 50ms */
 ```

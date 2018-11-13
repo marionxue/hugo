@@ -454,7 +454,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Sat Nov 10, 2018</h4>
     </section>
-    <h5 id="wc">4000 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">3900 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -612,15 +612,15 @@ $ sudo cat /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod2f1b50b6-db13-11e8-b
 
 <p>下面是几个例子：</p>
 
-<pre><code class="language-bash"># &lt;span id=&quot;inline-toc&quot;&gt;1.&lt;/span&gt;限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
+<pre><code class="language-bash"># 1.限制只能使用1个CPU（每250ms能使用250ms的CPU时间）
 $ echo 250000 &gt; cpu.cfs_quota_us /* quota = 250ms */
 $ echo 250000 &gt; cpu.cfs_period_us /* period = 250ms */
 
-# &lt;span id=&quot;inline-toc&quot;&gt;2.&lt;/span&gt;限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
+# 2.限制使用2个CPU（内核）（每500ms能使用1000ms的CPU时间，即使用两个内核）
 $ echo 1000000 &gt; cpu.cfs_quota_us /* quota = 1000ms */
 $ echo 500000 &gt; cpu.cfs_period_us /* period = 500ms */
 
-# &lt;span id=&quot;inline-toc&quot;&gt;3.&lt;/span&gt;限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
+# 3.限制使用1个CPU的20%（每50ms能使用10ms的CPU时间，即使用一个CPU核心的20%）
 $ echo 10000 &gt; cpu.cfs_quota_us /* quota = 10ms */
 $ echo 50000 &gt; cpu.cfs_period_us /* period = 50ms */
 </code></pre>
