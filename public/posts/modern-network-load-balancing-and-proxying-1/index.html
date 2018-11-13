@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title> 现代网络负载均衡与代理（上） - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
+  <meta property="og:title" content="现代网络负载均衡与代理（上）" />
+  <meta name="twitter:title" content="现代网络负载均衡与代理（上）" />
+  <meta name="description" content="详细介绍负载均衡技术的概念、功能和拓扑结构">
+  <meta property="og:description" content="详细介绍负载均衡技术的概念、功能和拓扑结构">
+  <meta name="twitter:description" content="详细介绍负载均衡技术的概念、功能和拓扑结构">
+  <meta name="author" content="{Description { .Site.Author.name }}"/>
+  <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
+  <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
+  <meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@Paranoid_yang" />
+  <meta name="twitter:creator" content="@Paranoid_yang" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ryan Yang" />
+
+  <meta name="generator" content="Hugo 0.49" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/" />
+  <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
+  <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  
+  
+  <link rel="stylesheet" href="https://www.yangcs.net/css/main.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/my.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/lightgallery.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/baguetteBox.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/search.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/reward.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/share.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/pygment_highlights.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/highlight.min.css" />
+  <link rel="stylesheet" href="https://www.yangcs.net/css/toc.css" />
+
+
+<meta name="baidu-site-verification" content="g8IYR9SNLF" />
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?cffe439e37449bb1c07ab26ab56484bb";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<link rel="stylesheet" href="https://www.yangcs.net/css/prism.css" />
+
+
+
+
+
+
+
+<script async src="//cdn.busuanzi.ibruce.info/cdn/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        var int = setInterval(fixCount, 100);
+        var busuanziSiteOffset =  100000  
+        function fixCount() {
+            if ($("#busuanzi_container_site_pv").css("display") != "none") {
+                clearInterval(int);
+                $("#busuanzi_value_site_pv").html(parseInt($("#busuanzi_value_site_pv").html()) + busuanziSiteOffset);
+            }
+        }
+    });
+</script>
+
+
+<script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+<link href="//cdn.bootcss.com/pace/1.0.2/themes/pink/pace-theme-flash.css" rel="stylesheet">
+<style>
+    .pace .pace-progress {
+           
+        height: 3px;
+    }
+    .pace .pace-progress-inner {
+         box-shadow: 0 0 10px #1E92FB, 0 0 5px     #1E92FB;  
+    }
+    .pace .pace-activity {
+        border-top-color: #1E92FB;     
+        border-left-color: #1E92FB;     
+    }
+</style>
+
+
+<script src="https://www.yangcs.net/js/instantclick.min.js" data-no-instant></script>
+   <script data-no-instant>
+   InstantClick.on('change', function(isInitialLoad) {
+     if (isInitialLoad === false) {
+       if (typeof MathJax !== 'undefined') 
+         MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+       if (typeof prettyPrint !== 'undefined') 
+         prettyPrint();
+       if (typeof _hmt !== 'undefined')  
+         _hmt.push(['_trackPageview', location.pathname + location.search]);
+       if (typeof ga !== 'undefined')  
+           ga('send', 'pageview', location.pathname + location.search);
+     }
+   });
+   InstantClick.init();
+</script>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/default-skin/default-skin.min.css" integrity="sha256-BFeI1V+Vh1Rk37wswuOYn5lsTcaU96hGaI7OUVCLjPc=" crossorigin="anonymous" />
+
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124447767-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://www.yangcs.net/">Ryan Yang</a>
+    </div>
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">文章分类</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/categories/kubernetes/">kubernetes</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/service-mesh/">Service Mesh</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/docker/">Docker</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/python/">Python</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/loadbalance/"> 负载均衡</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/gfw/">科学上网</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/math/">数学</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/hugo/">Hugo</a>
+                
+                
+                  <a href="https://www.yangcs.net/categories/share/">分享</a>
+                
+                
+                  <a href="https://www.yangcs.net/tags/">Tags</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">书籍推荐</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/talent-is-overrated/">天才源自刻意练习</a>
+                
+                
+                  <a href="https://www.gitbook.com/book/yeasy/docker_practice">Docker handbook</a>
+                
+                
+                  <a href="https://istio.io/zh/docs">Istio service mesh</a>
+                
+                
+                  <a href="https://github.com/ruanyf/reading-list">阮一峰书单</a>
+                
+                
+                  <a href="https://github.com/fengdu78/Coursera-ML-AndrewNg-Notes">机器学习笔记</a>
+                
+                
+                  <a href="https://www.yangcs.net/the-way-to-go/">Go 入门指南</a>
+                
+                
+                  <a href="https://www.yangcs.net/prometheus-handbook/">Prometheus 中文文档</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" href="javascript:void(0)">葵花宝典</a>
+              <div class="navlinks-children">
+                
+                
+                  <a href="https://www.yangcs.net/learn-english/"> 英语学习终极秘诀</a>
+                
+                
+                  <a href="https://www.yangcs.net/a-day-in-the-life-of-jeff/">A Day in the life of Jeff</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="关于我" href="/resume/">关于我</a>
+              
+              
+            </li>
+          
+        
+
+        
+
+        
+        
+          <li>
+            <a href="#modalSearch" data-toggle="modal" data-target="#modalSearch" style="outline: none;">
+              <span class="hidden-sm hidden-md hidden-lg">Search</span> <span id="searchGlyph" class="glyphicon glyphicon-search"></span>
+            </a>
+          </li>
+          
+      </ul>
+    </div>
+
+    <div class="avatar-container">
+      <div class="avatar-img-border">
+        
+          <a title="Ryan Yang" href="https://www.yangcs.net/">
+            <img class="avatar-img" src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" alt="Ryan Yang" />
+          </a>
+        
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+
+
+
+  <div id="modalSearch" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Search yangcs.net</h4>
+        </div>
+        <div class="modal-body">
+            
+<div class="aa-input-container" id="aa-input-container">
+    <input type="search" id="aa-search-input" class="aa-input-search" placeholder="Search for titles or URIs..." name="search" autocomplete="off" />
+    <svg class="aa-input-icon" viewBox="654 -372 1664 1664">
+        <path d="M1806,332c0-123.3-43.8-228.8-131.5-316.5C1586.8-72.2,1481.3-116,1358-116s-228.8,43.8-316.5,131.5  C953.8,103.2,910,208.7,910,332s43.8,228.8,131.5,316.5C1129.2,736.2,1234.7,780,1358,780s228.8-43.8,316.5-131.5  C1762.2,560.8,1806,455.3,1806,332z M2318,1164c0,34.7-12.7,64.7-38,90s-55.3,38-90,38c-36,0-66-12.7-90-38l-343-342  c-119.3,82.7-252.3,124-399,124c-95.3,0-186.5-18.5-273.5-55.5s-162-87-225-150s-113-138-150-225S654,427.3,654,332  s18.5-186.5,55.5-273.5s87-162,150-225s138-113,225-150S1262.7-372,1358-372s186.5,18.5,273.5,55.5s162,87,225,150s113,138,150,225  S2062,236.7,2062,332c0,146.7-41.3,279.7-124,399l343,343C2305.7,1098.7,2318,1128.7,2318,1164z" />
+    </svg>
+</div>
+
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/algoliasearch.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/autocomplete.min.js"></script>
+
+<script>
+var client = algoliasearch("4BELQK2TOI", "62fd06bd949abb4211bfab0aa288f67b");
+var index = client.initIndex('blog');
+
+autocomplete('#aa-search-input',
+{ hint: false}, {
+    source: autocomplete.sources.hits(index, {hitsPerPage: 5}),
+    
+    displayKey: 'name',
+    
+    templates: {
+        
+        suggestion: function(suggestion) {
+            
+            return '<span>' + '<a href="/' + suggestion.uri+ '">' +
+            suggestion._highlightResult.title.value + '</a></span>';
+        }
+    }
+});
+</script>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>现代网络负载均衡与代理（上）</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">详细介绍负载均衡技术的概念、功能和拓扑结构</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on November 13, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    <div class="intro-header no-img">
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 col-md-12 col-md-offset-0">
+            <div class="posts-heading">
+                <h1 align="center">现代网络负载均衡与代理（上）</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">详细介绍负载均衡技术的概念、功能和拓扑结构</h2>
+                  
+                
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+    <div class="row">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Tue Nov 13, 2018</h4>
+    </section>
+    <h5 id="wc">6200 Words|Read in about 13 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="tags">Tags: 
+        
+        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/loadbalance/">loadbalance</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#span-id-inline-toc-1-span-什么是网络负载均衡与代理"><span id="inline-toc">1.</span> 什么是网络负载均衡与代理？</a>
+<ul>
+<li><a href="#负载均衡-vs-代理">负载均衡 vs 代理</a></li>
+<li><a href="#l4-连接-session-负载均衡">L4（连接 /session）负载均衡</a></li>
+<li><a href="#l7-应用层-负载均衡">L7（应用层）负载均衡</a></li>
+<li><a href="#l7-负载均衡和-osi-模型">L7 负载均衡和 OSI 模型</a></li>
+</ul></li>
+<li><a href="#span-id-inline-toc-2-span-负载均衡器的功能"><span id="inline-toc">2.</span> 负载均衡器的功能</a>
+<ul>
+<li><a href="#服务发现">服务发现</a></li>
+<li><a href="#健康检查">健康检查</a></li>
+<li><a href="#负载均衡">负载均衡</a></li>
+<li><a href="#粘性-session">粘性 session</a></li>
+<li><a href="#tls-终止">TLS 终止</a></li>
+<li><a href="#观测性">观测性</a></li>
+<li><a href="#安全性和-dos-防御">安全性和 DoS 防御</a></li>
+<li><a href="#配置控制层">配置控制层</a></li>
+<li><a href="#更多内容">更多内容</a></li>
+</ul></li>
+<li><a href="#span-id-inline-toc-3-span-负载均衡器拓扑结构类型"><span id="inline-toc">3.</span> 负载均衡器拓扑结构类型</a>
+<ul>
+<li><a href="#中间代理">中间代理</a></li>
+<li><a href="#边缘代理">边缘代理</a></li>
+<li><a href="#嵌入式的客户端库">嵌入式的客户端库</a></li>
+<li><a href="#sidecar-代理">Sidecar 代理</a></li>
+<li><a href="#各种负载均衡器拓扑结构的优缺点">各种负载均衡器拓扑结构的优缺点</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+    </div>
+    <a href="#" id="GoTop">
+        <i class="fa fa-arrow-up"></i>
+    </a>
+</aside>
+
+
+                <p></p>
+
+<p>最近我注意到，关于当代网络负载均衡和代理的入门教材非常匮乏。我心想：为什么会这样？负载均衡是构建可靠的分布式系统所需要的核心概念之一。应当可以获取到一些有用的信息的吧？我在网上搜了搜，却没有得到多少有用的信息。维基百科上关于<a href="https://en.wikipedia.org/wiki/Load_balancing_%28computing%29" target="_blank">负载均衡</a>和<a href="https://en.wikipedia.org/wiki/Proxy_server" target="_blank">代理服务器</a>的文章包含了一些概念，但是对于这个课题没有一个完美的解答，更别提与现代微服务架构的联系了。<a href="https://www.google.com/search?q=load+balancing" target="_blank">Google 上关于负载均衡的搜索</a>结果主要是一些供应商的网页，显示的主要是一些流行术语，细节方面的内容很少。</p>
+
+<p>在本文中，我将尝试改变这种信息匮乏的情况，详细介绍现代网络负载均衡和代理。坦率地讲，这是一个非常大的话题，围绕它写一本书都不为过。为了在一定程度上控制本篇文章的篇幅，我试着化繁为简，对这一系列复杂的话题进行了提炼；根据读者的兴趣和反馈，我会考虑在后续帖子中详细介绍一些单独的话题。</p>
+
+<p>介绍了一点我写作本文的背景之后，让我们开始正文吧！</p>
+
+<h2 id="span-id-inline-toc-1-span-什么是网络负载均衡与代理"><span id="inline-toc">1.</span> 什么是网络负载均衡与代理？</h2>
+
+<hr />
+
+<p>维基百科将负载均衡<a href="https://en.wikipedia.org/wiki/Load_balancing_%28computing%29" target="_blank">定义</a>为：</p>
+
+<blockquote>
+<p>在计算机领域，负载均衡优化了多个计算资源间的工作量分布。这些计算资源包括计算机、计算机集群、网络连接、CPU 或者硬盘等。负载均衡的目的是优化资源利用、最大化吞吐量、最小化响应时间，并且避免任何单个资源过载。通过冗余机制，使用多个负载均衡组件而不是单一组件可以增加可靠性和可用性。负载均衡通常涉及专门的软件或硬件，例如多层交换机或者域名系统服务器进程。</p>
+</blockquote>
+
+<p>上述定义适用于所有计算机领域，而不仅仅是网络。操作系统使用负载均衡来调度物理处理器间的任务，容器编排工具（例如 Kubernetes）使用负载均衡来调度计算机集群内的任务，网络负载均衡器使用负载均衡来调度可用后端间的网络任务。本文剩余部分将只涵盖网络负载均衡相关的内容。</p>
+
+<div class="gallery">
+    <a href="https://ws1.sinaimg.cn/large/006tNbRwgy1fx6c4a9aw5j318g068758.jpg" title="图 1: 网络负载均衡概览">
+    <img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fx6c4a9aw5j318g068758.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 1: 网络负载均衡概览</p></center></p>
+
+<p><strong>图 1</strong> 高度概括了网络负载均衡。一些客户端从一些后端请求资源。负载均衡器位于客户端和后端之间，执行一些非常重要的任务：</p>
+
+<ul>
+<li><span id=inline-purple>服务发现</span> ：系统中有哪些后端可用？它们的地址是什么？（例如，负载均衡器如何和它们通信？）</li>
+<li><span id=inline-purple>状态检查</span> ：哪些后端现在可以接受请求？</li>
+<li><span id=inline-purple>负载均衡</span> ：应该使用什么算法来均衡后端间的请求？</li>
+</ul>
+
+<p>在分布式系统中合理使用负载均衡可以带来以下好处：</p>
+
+<ul>
+<li><span id=inline-purple>抽象命名</span> ：客户端可以通过一个预定义的机制寻址到负载均衡器，然后将名称解析委托给负载均衡器，而不是每一个客户端都需要知道每一个后端的（有关服务发现的）信息。预定义机制包括内置库和众所周知的 DNS/IP/ 端口地址，这些稍后都会详细讨论。</li>
+<li><span id=inline-purple>容错性</span> ：通过状态检查和各种算法技术，负载均衡器可以有效绕开挂掉的或者过载的后端。这意味着，运维人员通常可以在他们空闲时修复挂掉的后端而不是必须将这作为一个紧急事件来处理。</li>
+<li><span id=inline-purple>成本和性能方面的好处</span> ：分布式系统网络复杂多变。系统可能会包含多个网络区域和行政区。在一个区域内，网络可能相对过载。而不同区域间，网络通常又会有空余。（这里，网络过载或空余是指通过网卡消耗的带宽数量占不同路由器间的可用带宽的百分比）。智能负载均衡可以尽可能多地维持一个区域内的请求数量，这提高了性能（延迟降低）并且减少了整个系统的成本（不同区域间需要更少的宽带和光纤）。</li>
+</ul>
+
+<h3 id="负载均衡-vs-代理">负载均衡 vs 代理</h3>
+
+<p>谈到网络负载均衡器的时候，<strong>“负载均衡器”</strong>和<strong>“代理”</strong>这两个术语通常在行业内是差不多相同的意思。本文通常也会将这两个术语作为相同意思的词。（严格来说，并不是所有的代理都是负载均衡器，但是大部分代理将负载均衡作为首要功能）。</p>
+
+<p>有人也许会争论说，当用嵌入式客户端库来完成负载均衡时，负载均衡器并不是一个代理。然而，我认为这个话题本来就十分容易令人混淆，而这种区分会为这个话题增加更多不必要的复杂性。下面会详细介绍负载均衡器的各种拓扑结构，但是本文仍将嵌入式负载均衡器拓扑结构作为一种特殊的代理；应用程序通过嵌入式库进行代理，这个库提供了作为一个独立于应用进程外的负载均衡器的所有相同的抽象。</p>
+
+<h3 id="l4-连接-session-负载均衡">L4（连接 /session）负载均衡</h3>
+
+<p>现在讨论行业内的负载均衡方案时，通常会归结为两类：<code>L4</code> 和 <code>L7</code>。这两种分类指的是 <code>OSI</code> 模型的第 4 层和第 7 层。当我讲到 L7 负载均衡的时候，会明显发现我们使用这些术语来分类是错误的。OSI 模型是负载均衡方案的复杂性的一种非常粗劣的抽象，因为负载均衡方案中虽然包含传统的第 4 层协议，例如 <code>TCP</code> 和 <code>UDP</code>，但是通常最后还会或多或少包含一些其它 OSI 层级的协议。例如，如果一个 L4 TCP 负载均衡器也支持 <code>TLS</code> 终端，那么它现在是不是一个 L7 负载均衡器呢？</p>
+
+<div class="gallery">
+    <a href="https://ws4.sinaimg.cn/large/006tNbRwgy1fx6ccc824ij318g070q47.jpg" title="图 2:TCP L4 终端负载均衡">
+    <img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fx6ccc824ij318g070q47.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 2: TCP L4 终端负载均衡</p></center></p>
+
+<p><strong>图 2</strong> 展示了一个传统的 L4 TCP 负载均衡器。在这个例子中，客户端与负载均衡器建立 TCP 连接。负载均衡器终止连接（例如，直接响应 <code>SYN</code>），选择一个后端，与这个后端建立一个新的 TCP 连接（例如，发送一个新的 <code>SYN</code>）。示意图中的细节并不重要，会在后面关于 L4 负载均衡的章节详细讨论。</p>
+
+<p>本章节的要点是，L4 负载均衡器通常只操作 L4 层的 TCP/UDP 连接或 <code>session</code>。因此，负载均衡器只是来回地搬运 <code>bytes</code>，并确保来自同一个 session 的 bytes 发送到相同的后端。L4 负载均衡器不清楚这些搬运的 bytes 组成的应用的任何细节。这些 bytes 可以是 HTTP、Redis、MongoDB 或者其他任何应用层协议。</p>
+
+<h3 id="l7-应用层-负载均衡">L7（应用层）负载均衡</h3>
+
+<p>L4 负载均衡很简单并且仍被广泛使用。L4 负载均衡的哪些不足导致需要使用 L7（应用层）负载均衡？可以参考下列 L4 具体例子：</p>
+
+<ul>
+<li>两个 <code>gRPC/HTTP2</code> 客户端通过一个 L4 负载均衡器来和后端通信。</li>
+<li>L4 负载均衡器针对每个收到的 TCP 连接都会建立一个单独外出的 TCP 连接，导致会有 2 个收到的连接和 2 个外出的连接。</li>
+<li>然而，客户端 A 通过它建立的连接每分钟发送 1 个请求（1 RPM），而客户端 B 通过它建立的连接每秒发送 50 个请求（50 RPS）。</li>
+</ul>
+
+<p>在上述情景中，处理客户端 A 请求的后端比处理客户端 B 请求的后端处理的请求少了大约 3000 倍！这是一个非常重大的问题，也是违背负载均衡目标的首要问题。另外要注意到，这个问题在任何多路复用的长连接的协议中都会发生。（多路复用的意思是，通过单个 L4 连接并行发送应用请求。长连接的意思是，即使没有活跃请求也不关闭连接。）所有现代网络协议为了效率都会采用多路复用和长连接（通常建立连接的成本非常大，特别是连接使用 <code>TLS</code> 加密的时候），因此，随着时间的推移，L4 负载均衡器调节负载失败的现象变得越来越明显。这个问题可以被 L7 负载均衡器修复。</p>
+
+<div class="gallery">
+    <a href="https://ws4.sinaimg.cn/large/006tNbRwgy1fx6cgqgk2oj318g0i2aco.jpg" title="图 3：HTTP/2 L7 终端负载均衡">
+    <img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fx6cgqgk2oj318g0i2aco.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 3：HTTP/2 L7 终端负载均衡</p></center></p>
+
+<p><strong>图 3</strong> 展示了一个 L7 <code>HTTP/2</code> 负载均衡器。在这个例子中，客户端与负载均衡器建立了单个 <code>HTTP/2</code> TCP 连接。负载均衡器然后建立了两个后端连接。当客户端向负载均衡器发送了两个 <code>HTTP/2</code> 信息流时，信息流 1 被送到后端 1，而信息流 2 被送到后端 2。因此，即使多路复用的客户端会发送各种不同的请求，后端的负载也会被很高效地均衡分配。这就是为什么 L7 负载均衡对于现代网络协议是这么的重要。（L7 负载均衡能够监测应用流量，由此产生了非常多额外的好处，这些会在后面讲到）。</p>
+
+<h3 id="l7-负载均衡和-osi-模型">L7 负载均衡和 OSI 模型</h3>
+
+<p>正如我在上面关于 L4 负载均衡的章节讲到的，使用 <code>OSI</code> 模型来描述负载均衡的特性是有问题的。至少如 OSI 模型描述的那样，L7 自身就包含了其它层的负载均衡。例如，对于 <code>HTTP</code> 流量需要考虑以下子层：</p>
+
+<ul>
+<li>可选的传输层安全（<code>Transport Layer Security</code>，TLS）。网络领域人士对于 TLS 归属于 OSI 模型哪一层存在争议。在本文的讨论中，我们认为 TLS 属于 L7。</li>
+<li>HTTP 物理层协议（<code>HTTP/1</code> 或 <code>HTTP/2</code>）。</li>
+<li>HTTP 逻辑层协议（协议头、数据体、协议尾）。</li>
+<li>通信协议（<code>gRPC</code>、<code>REST</code> 等等）。</li>
+</ul>
+
+<p>一个复杂的 L7 负载均衡器会提供与上述每一个子层相关的功能。而另外一个 L7 负载均衡器可能只会包含 L7 范畴内的一小部分功能。总之，从功能比较的视角来看，L7 负载均衡器比 L4 复杂得多。（当然，本章节只涉及了 HTTP；<code>Redis</code>、<code>Kafka</code>、<code>MongoDB</code> 等都是受益于 L7 负载均衡的 L7 应用层协议）。</p>
+
+<h2 id="span-id-inline-toc-2-span-负载均衡器的功能"><span id="inline-toc">2.</span> 负载均衡器的功能</h2>
+
+<hr />
+
+<p>本节中，我将简要总结负载均衡器提供的高级功能。不是所有的负载均衡器都提供所有这些功能。</p>
+
+<h3 id="服务发现">服务发现</h3>
+
+<p>服务发现是负载均衡器判断可用后端集合的过程。服务发现的方法各不相同，包括以下一些例子：</p>
+
+<ul>
+<li>静态配置文件。</li>
+<li>NDS。</li>
+<li><a href="https://zookeeper.apache.org/" target="_blank">Zookeeper</a>、<a href="https://coreos.com/etcd/" target="_blank">Etcd</a>、<a href="https://www.consul.io/" target="_blank">Consul</a> 等。</li>
+<li>Envoy 的<a href="https://medium.com/@mattklein123/the-universal-data-plane-api-d15cec7a" target="_blank">统一数据层 API</a>。</li>
+</ul>
+
+<h3 id="健康检查">健康检查</h3>
+
+<p>健康检查是负载均衡器判断后端是否服务可用的过程。健康检查通常分为两类：</p>
+
+<ul>
+<li><span id=inline-purple>主动的</span> ：负载均衡器以固定时间间隔向后端发送 <code>ping</code> 请求（例如，每个健康检查的端点发送一个 HTTP 请求），并以此来判断健康状态。</li>
+<li><span id=inline-purple>被动的</span> ：负载均衡器从主要的数据流中检测健康状态。例如，如果在一段时间内有三次连接错误，L4 负载均衡器可能会认为这个后端是不健康的。如果在一段时间内有三次 HTTP <code>503</code> 响应代码，L7 负载均衡器可能会认为该后端是不健康的。</li>
+</ul>
+
+<h3 id="负载均衡">负载均衡</h3>
+
+<p>是的，负载均衡器要真的能够均衡负载！如果有一堆状态良好的后端，如何选中一个后端来服务一个连接或请求？负载均衡算法是一个热门的研究领域，从比较简化的算法，例如随机选择法和循环淘汰法，到复杂一些的考虑到延迟和后端负载变化的算法。最流行的负载均衡算法之一是 <a href="https://brooker.co.za/blog/2012/01/17/two-random.html" target="_blank">power of 2 request load balancing</a>，具有良好的性能和较低的复杂度。（这种算法的机制是：当请求到达负载均衡器时，负载均衡器会先从系统中随机选择 2 个后端，然后从这 2 个后端中选择负载最小的那个来响应请求。）</p>
+
+<h3 id="粘性-session">粘性 session</h3>
+
+<p>在特定应用中，同一个 <code>session</code> 的请求到达同一个后端是非常重要的。这可能与缓存、临时创建的复杂状态等有关。session 的定义很多，可能包括 HTTP <code>cookies</code>、客户端连接属性或者其它一些属性。许多 L7 负载均衡器支持粘性 session。另外，我要提醒你注意的是，session 的粘性本质上是脆弱的（后端持有的 session 可能会消亡），因此建议在设计依赖粘性 session 的系统时保持谨慎。</p>
+
+<h3 id="tls-终止">TLS 终止</h3>
+
+<p>关于 <code>TLS</code> 和它在服务和保障服务间通信中的角色的话题值得深入探讨。许多 L7 负载均衡器承担了许多 TLS 处理流程，包括终止请求、证书验证和绑定、使用 <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">SNI</a> 的证书服务等。</p>
+
+<h3 id="观测性">观测性</h3>
+
+<p>正如我常说的：“观测性、观测性、观测性。”网络本质上是不可靠的，负载均衡器通常有责任导出统计数据、跟踪数据和日志，这些信息可以帮助运维人员发现问题从而修复这些问题。负载均衡器在可观测性输出结果上有很大不同。最高级的负载均衡器提供丰富的输出结果，包括数值统计、分布式跟踪信息和自定义日志。我要指出的是，为了增强功能而增加的观测性不是没有代价的；负载均衡器不得不做一些额外的工作来产出观测结果。然而，这些数据带来的好处远远超过了相对较小的性能影响。</p>
+
+<h3 id="安全性和-dos-防御">安全性和 DoS 防御</h3>
+
+<p>特别是在边缘部署拓扑结构中（见下文），负载均衡器通常实现各种安全功能，包括速率限制、认证和 <code>DoS</code> 防御（例如，IP 地址标记、识别、<a href="https://en.wikipedia.org/wiki/Tarpit_%28networking%29" target="_blank">过滤</a>等）。</p>
+
+<h3 id="配置控制层">配置控制层</h3>
+
+<p>负载均衡需要进行配置。这对于大型部署来说，是一种非常重要的保证。通常，配置负载均衡器的系统被称为“控制层”，而且它有各种各样的实现。关于这个话题的更多信息，请查看我的<a href="https://medium.com/@mattklein123/service-mesh-data-plane-vs-control-plane-2774e720f7fc" target="_blank">关于《service mesh data plane vs. control plane》的博客</a>。</p>
+
+<h3 id="更多内容">更多内容</h3>
+
+<p>本节初步涉猎了负载均衡器提供的各种功能。其它的讨论可以查看下文中关于 L7 负载均衡器的章节。</p>
+
+<h2 id="span-id-inline-toc-3-span-负载均衡器拓扑结构类型"><span id="inline-toc">3.</span> 负载均衡器拓扑结构类型</h2>
+
+<hr />
+
+<p>既然我已经高度概括了什么是负载均衡器、L4 和 L7 负载均衡器的区别以及负载均衡器的功能总结，下面我将继续介绍部署了负载均衡器的各种分布式系统的拓扑结构。（下面的每种拓扑结构都适用于 L4 和 L7 负载均衡器。）</p>
+
+<h3 id="中间代理">中间代理</h3>
+
+<div class="gallery">
+    <a href="https://ws1.sinaimg.cn/large/006tNbRwgy1fx6cvegxutj318g068758.jpg" title="图 4: 中间代理型负载均衡拓扑结构">
+    <img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fx6cvegxutj318g068758.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 4: 中间代理型负载均衡拓扑结构</p></center></p>
+
+<p><strong>图 4</strong> 所示的中间代理拓扑结构对于大部分读者来说可能是最熟悉的使用负载均衡的方式。这类负载均衡包括 Cisco、Juniper、F5 出产的硬件设备；云端软件解决方案，例如 Amazon 的 <a href="https://aws.amazon.com/elasticloadbalancing/" target="_blank">ALB 和 NLB</a> 以及 Google 的<a href="https://cloud.google.com/load-balancing/" target="_blank">云端负载均衡器（Cloud Load Balancer）</a>；自托管的纯软件解决方案，例如 <a href="https://www.haproxy.com/" target="_blank">HAProxy</a>、<a href="https://www.nginx.com/" target="_blank">NGINX</a> 和 <a href="https://www.envoyproxy.io/" target="_blank">Envoy</a>。中间代理解决方案的优点是简单易用。通常，用户通过 DNS 连接到负载均衡器，然后就不需要再关心其它任何事情了。中间代理解决方案的缺点是，代理（即使使用集群）是一个故障单点，同时也是一个扩展瓶颈。中间代理通常也是一个黑盒子，运维人员难以维护。如果发生了故障，那么这是一个在客户端能够观察到的问题吗？是发生在物理网络吗？还是发生在中间代理？或者是发生在后端？这很难说的清楚。</p>
+
+<h3 id="边缘代理">边缘代理</h3>
+
+<div class="gallery">
+    <a href="https://ws2.sinaimg.cn/large/006tNbRwgy1fx6cy0wxmuj318g07tgmq.jpg" title="图 5: 边缘代理负载均衡拓扑结构">
+    <img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fx6cy0wxmuj318g07tgmq.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 5: 边缘代理负载均衡拓扑结构</p></center></p>
+
+<p><strong>图 5</strong> 所示的边缘代理拓扑结构只是中间代理拓扑结构的一个变种，其中负载均衡器通过 Internet 访问。在这个场景中，负载均衡器通常必须提供额外的 <strong>“API 网关”</strong> 功能，例如 TLS 终端、速率限制、身份认证和复杂的流量路由。边缘代理的优点和缺点与中间代理一样。需要注意的是，通常在大型的面向互联网的分布式系统中部署专用的边缘代理是不可避免的。客户端通常会使用任意网络库经过 DNS 访问系统，但这些网络库不受客户端的控制（这使得嵌入式客户端库负载均衡器或下面章节会提到的 <code>sidecar</code> 代理拓扑结构负载均衡器直接在客户端上运行变得不切实际）。另外，为了安全原因设置一个单独的安全网关是值得的，所有面向互联网的流量都必须先经过这个安全网关才能进入系统。</p>
+
+<h3 id="嵌入式的客户端库">嵌入式的客户端库</h3>
+
+<div class="gallery">
+    <a href="https://ws4.sinaimg.cn/large/006tNbRwgy1fx6d0bbk7vj318g09oabk.jpg" title="图 6: 通过嵌入式客户端库的负载均衡">
+    <img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fx6d0bbk7vj318g09oabk.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 6: 通过嵌入式客户端库的负载均衡</p></center></p>
+
+<p>为了避免中间代理拓扑结构天生的单点故障和扩展问题，更复杂的基础设施朝着将负载均衡器通过一个库直接嵌入到服务中的方向发展，正如 <strong>图 6</strong> 所示的那样。这些库支持的功能各种各样，其中最知名的功能丰富的库有 <code>Finagle</code>、<code>Eureka/Ribbon/Hystrix</code> 和 <code>gRPC</code>（基于一个 Google 内部称作 Stubby 的系统）。基于库的解决方案的主要优点是，它完全将负载均衡器的所有功能分布到每一个客户端，因此消除了前面提到的单点故障和扩展问题。基于库的解决方案的主要缺点是所用的库必须用一个机构使用的每一种语言实现。分布式架构变得越来越“通晓各种语言”（使用多种语言编写的）。在这种环境下，用多种不同的语言重新实现一个非常复杂的网络库的代价会非常大。最后，跨一个大型服务架构来升级库会非常痛苦，很可能会造成许多不同版本的库同时在生产环境中运行，从而增加运维时了解网络情况的负担。</p>
+
+<p>尽管如此，对于那些能够限制使用的编程语言的种类并且克服升级库的痛苦的公司来说，上面提到的各种库还是非常成功的。</p>
+
+<h3 id="sidecar-代理">Sidecar 代理</h3>
+
+<div class="gallery">
+    <a href="https://ws3.sinaimg.cn/large/006tNbRwgy1fx6d2p2aolj318g0csac1.jpg" title="图 7: 通过 sidecar 代理的负载均衡">
+    <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fx6d2p2aolj318g0csac1.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 7: 通过 sidecar 代理的负载均衡</p></center></p>
+
+<p><strong>图 7</strong> 所示的 <code>sidecar</code> 代理拓扑结构是客户端嵌入式库负载均衡拓扑结构的一个变种。最近几年，这种拓扑结构被称作“服务网格”并且非常流行。sidecar 代理背后的思路是，以切换到另外一个进程造成轻微延迟的代价，获得嵌入式库方案的所有好处，而且无需局限于任何编程语言。截至本文，最流行的 sidecar 代理负载均衡器有 <a href="https://www.envoyproxy.io/" target="_blank">Envoy</a>、<a href="https://www.nginx.com/" target="_blank">NGINX</a>、<a href="https://www.haproxy.com/" target="_blank">HAProxy</a> 和 <a href="https://linkerd.io/" target="_blank">Linkerd</a>。如果想要更详细地了解 sidecar 代理方案的优化方法，请查看我博客中<a href="https://eng.lyft.com/announcing-envoy-c-l7-proxy-and-communication-bus-92520b6c8191" target="_blank">介绍 Envoy 的帖子</a>和关于<a href="https://medium.com/@mattklein123/service-mesh-data-plane-vs-control-plane-2774e720f7fc" target="_blank">《service mesh data plane vs. control plane》（服务网格数据层 vs 控制层）</a>的帖子。</p>
+
+<h3 id="各种负载均衡器拓扑结构的优缺点">各种负载均衡器拓扑结构的优缺点</h3>
+
+<ul>
+<li>中间代理拓扑结构是最容易使用的负载均衡拓扑结构。它的弊端是单点故障、扩展限制和黑箱操作端。</li>
+<li>边缘代理拓扑结构和中间代理类似，但通常还免不了会用到。</li>
+<li>嵌入式客户端库拓扑结构提供了最好的性能和可扩展性，但是需要用各种语言来实现这个库而且需要跨所有服务来升级这个库。</li>
+<li>sidecar 代理拓扑结构执行性能虽然不如嵌入式客户端库拓扑结构，但是不会受到其中的任何限制。</li>
+</ul>
+
+<p>总之，我认为 sidecar 代理拓扑结构（服务网格）正逐渐取代所有其它用来进行服务间通信的拓扑结构。在流量进入服务网格之前需要使用边缘代理拓扑结构。</p>
+                <br />
+                <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
+                <script src="https://www.yangcs.net/js/particle.js"></script>
+                
+                <div class="entry-shang text-center">
+	<p>「真诚赞赏，手留余香」</p>
+        <button class="zs show-zs btn rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><img src="/img/avatar-icon.png"/>杨传胜</span>
+		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+ 	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/wechat-2.png" id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+                <span class="zs-wechat"><img src="/img/wechat-btn.png"/></span>
+	</div>
+</div>
+
+                
+                
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="不扫别后悔">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
+                
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/hugo-add-busuanzi/" data-toggle="tooltip" data-placement="top" title="Hugo 添加站点统计信息">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/">SRE 弹性能力：使用 Envoy 对应用进行速率限制</a></li>
+                    
+                    <li><a href="/posts/extending-the-envoy-admin-interface/">扩展 Envoy 的管理界面</a></li>
+                    
+                    <li><a href="/posts/envoy-xds-protocol/">Envoy 中的 xDS REST 和 gRPC 协议详解</a></li>
+                    
+                    <li><a href="/posts/use-envoy-as-a-kubernetes-ingress/">初试 Kubernetes 集群中使用 Contour 反向代理</a></li>
+                    
+                    <li><a href="/posts/setting-up-ssl-in-envoy-practice/">为 Envoy 开启 TLS 验证实战</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+              
+            
+            </div>
+        </div>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+                
+                  
+                  
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
+
+    <link rel="stylesheet" href="https://www.yangcs.net/css/APlayer.min.css" />
+    <div id="aplayer"></div>
+    <script src="https://www.yangcs.net/js/APlayer.min.js"></script>
+    <script src="https://www.yangcs.net/js/music.js"></script>
+    
+    <hr style="filter: alpha(opacity=100,finishopacity=0,style=3)" width="80%" color=#987cb9 size=3>
+        <div class="gallery gallery-text">
+    <center><h4>扫码关注我的微信公众号，获取每日推送</h4></center>
+    <table frame="void" align="center">
+    <tr>
+        <td>
+            <a href="https://hugo-picture.oss-cn-beijing.aliyuncs.com/qcode-wechat.png" title="云原生实验室">
+            <img src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/qcode-wechat.png">
+            </a>
+        </td>
+    </tr>
+    </table>
+</div>
+
+    
+    <script src="//static.getclicky.com/js" type="text/javascript"></script>
+    <script type="text/javascript">try{ clicky.init(101151419); }catch(e){}</script>
+    <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/101151419ns.gif" /></p></noscript>
+    
+    <footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+                <a href="https://www.facebook.com/ryanyangio" title="Facebook">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://plus.google.com/111949124259063786697" title="Google&#43;">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-google-plus fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://github.com/yangchuansheng" title="GitHub">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://twitter.com/Paranoid_yang" title="Twitter">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a href="https://drive.google.com/drive/folders/0By_W-zIhlMXqSGJyU3pHaVVpV2M" title="小视频共享">
+                  <span class="fa-stack fa-lg">
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-youtube-play fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          <li>
+            <a href="https://www.yangcs.net/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+        &copy;2017-2018
+          
+            
+              Ryan Yang
+                      
+          
+          &nbsp;&bull;&nbsp;
+          November 13,2018
+          updated
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://www.yangcs.net/">Home</a>
+          
+        </p>
+
+        <p class="credits theme-by text-muted">
+        <a href="https://servicemesher.github.io" target="_blank">ServiceMesher</a>&nbsp;&bull;&nbsp;<a href="https://www.processon.com/view/link/5ac64532e4b00dc8a02f05eb" target="_blank">Kubernetes 知识图谱</a>&nbsp;&bull;&nbsp;<a href="/friend/">友情链接</a>
+        <br />
+        <span id="busuanzi_container_site_pv">
+            本站已经被访问 <span id="busuanzi_value_site_pv"></span> 次啦
+        </span>
+        <span id="busuanzi_container_site_uv">
+            &ensp;|&ensp;&thinsp;您是第 <span id="busuanzi_value_site_uv"></span> 位到访的小伙伴喔
+        </span>
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          &nbsp;&bull;&nbsp;[<a href="true"></a>]
+          <center><section class="credits theme-by text-muted">
+    <span class="footer__copyright">
+    <div>
+    <span id="span_dt_dt"> </span>
+    <script language="javascript">
+      function show_date_time(){
+        window.setTimeout("show_date_time()", 1000);
+        BirthDay=new Date("7/8/2017 10:56:12");
+        today=new Date();
+        timeold=(today.getTime()-BirthDay.getTime());
+        sectimeold=timeold/1000
+        secondsold=Math.floor(sectimeold);
+        msPerDay=24*60*60*1000
+        e_daysold=timeold/msPerDay
+        daysold=Math.floor(e_daysold);
+        e_hrsold=(e_daysold-daysold)*24;
+        hrsold=Math.floor(e_hrsold);
+        e_minsold=(e_hrsold-hrsold)*60;
+        minsold=Math.floor((e_hrsold-hrsold)*60);
+        seconds=Math.floor((e_minsold-minsold)*60);
+        span_dt_dt.innerHTML="本博客已经开心运行 "+daysold+" 天 "+hrsold+" 小时 "+minsold+" 分 "+seconds+" 秒";
+      }
+      show_date_time();
+    </script>
+    </div>
+    <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+</section>
+</center>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/bootstrap.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe-ui-default.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/photoswipe.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/auto-render.min.js"></script>
+<script src="https://www.yangcs.net/js/main.js"></script>
+<script src="https://www.yangcs.net/js/prism.js?t=123"></script>
+<script src="https://www.yangcs.net/js/highlight.min.js"></script>
+<script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/katex.min.js"></script>
+<script src="https://www.yangcs.net/js/reward.js"></script>
+<script src="https://www.yangcs.net/js/canvas_ribbon.js"></script>
+<script> renderMathInElement(document.body); </script>
+
+<script src="https://www.yangcs.net/js/baguetteBox.js"></script>
+<script> baguetteBox.run('.gallery');</script>
+
+
+
+
+
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script>
+<script type="text/javascript" src="https://www.yangcs.net/js/fireworks.js"></script>
+
+
+  </body>
+</html>
+

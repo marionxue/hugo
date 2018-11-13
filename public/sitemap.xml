@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/</loc>
+    <lastmod>2018-11-13T13:26:17+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/hugo-add-busuanzi/</loc>
     <lastmod>2018-11-12T15:30:35+08:00</lastmod>
   </url>
@@ -366,7 +371,7 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/envoy/</loc>
-    <lastmod>2018-11-01T17:55:47+08:00</lastmod>
+    <lastmod>2018-11-13T13:26:17+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -413,8 +418,14 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/tags/loadbalance/</loc>
+    <lastmod>2018-11-13T13:26:17+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/categories/loadbalance/</loc>
-    <lastmod>2018-04-18T11:18:06+00:00</lastmod>
+    <lastmod>2018-11-13T13:26:17+08:00</lastmod>
     <priority>0</priority>
   </url>
   

@@ -6,10 +6,19 @@
     <description>Recent content in Loadbalance on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 18 Apr 2018 11:18:06 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 13 Nov 2018 13:26:17 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/categories/loadbalance/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>现代网络负载均衡与代理（上）</title>
+      <link>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/</link>
+      <pubDate>Tue, 13 Nov 2018 13:26:17 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>LVS负载均衡之持久性连接介绍</title>
