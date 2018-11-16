@@ -62,44 +62,44 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata
 
 1. 创建一个 `ServiceEntry` 以允许访问外部 HTTP 和 HTTPS 服务：
 
-   ```yaml
-   kubectl apply -f - <<EOF
-   apiVersion: networking.istio.io/v1alpha3
-   kind: ServiceEntry
-   metadata:
-     name: cnn
-   spec:
-     hosts:
-     - "*.cnn.com"
-     ports:
-     - number: 80
-       name: http-port
-       protocol: HTTP
-     - number: 443
-       name: https-port
-       protocol: HTTPS
-     resolution: NONE
-   EOF
-   ```
+    ```yaml
+    kubectl apply -f - <<EOF
+    apiVersion: networking.istio.io/v1alpha3
+    kind: ServiceEntry
+    metadata:
+      name: cnn
+    spec:
+      hosts:
+      - "*.cnn.com"
+      ports:
+      - number: 80
+        name: http-port
+        protocol: HTTP
+      - number: 443
+        name: https-port
+        protocol: HTTPS
+      resolution: NONE
+    EOF
+    ```
 
 2. 向外部 HTTP 服务发出请求：
 
-   ```bash
-   $ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+    ```bash
+    $ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
    
-   HTTP/1.1 301 Moved Permanently
-   ...
-   location: https://edition.cnn.com/politics
-   ...
+    HTTP/1.1 301 Moved Permanently
+    ...
+    location: https://edition.cnn.com/politics
+    ...
 
-   HTTP/1.1 200 OK
-   Content-Type: text/html; charset=utf-8
-   ...
-   Content-Length: 151654
-   ...
-   ```
+    HTTP/1.1 200 OK
+    Content-Type: text/html; charset=utf-8
+    ...
+    Content-Length: 151654
+    ...
+    ```
    
-   输出应该与上面的类似（一些细节用省略号代替）。
+    输出应该与上面的类似（一些细节用省略号代替）。
    
 注意 curl 的 `-L` 标志，它指示 curl 遵循重定向, 在这种情况下， 服务器返回一个重定向响应（[301 Moved Permanently](https://tools.ietf.org/html/rfc2616#section-10.3.2)）到 `http://edition.cnn.com/politics` 的 HTTP 请求, 重定向响应指示客户端通过 HTTPS 向 `https://edition.cnn.com/politics` 发送附加请求, 对于第二个请求，服务器返回所请求的内容和 `200 OK` 状态代码。
 
@@ -143,11 +143,7 @@ EOF
 
 此处 `ServiceEntry` 与 Envoy 配置文件的映射关系可以参考我之前的文章 [控制 Egress 流量](https://www.yangcs.net/posts/control-egress-traffic/) 中的 **HTTP ServiceEntry 配置深度解析**这一部分，具体细节不再赘述。
 
-<div class="gallery">
-    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg" title="图 1：ServiceEntry 与 Envoy route 的映射关系">
-    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg">
-    </a>
-</div>
+![](https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg)
 
 <center><p id=small>图 1：ServiceEntry 与 Envoy route 的映射关系</p></center>
 
@@ -205,11 +201,7 @@ $ istioctl pc routes $SOURCE_POD --name 80 -o json
 
 该 VirtualService 的作用就是将目的地址是 `edition.cnn.com:80` 的流量重新路由到 Cluster `outbound|443||edition.cnn.com`，以此来**实现访问 80 端口重定向到 443 端口的功能**。
 
-<div class="gallery">
-    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry2.svg" title="图 2：ServiceEntry + VirtualService 与 Envoy route 的映射关系">
-    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry2.svg">
-    </a>
-</div>
+![](https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry2.svg)
 
 <center><p id=small>图 2：ServiceEntry + VirtualService 与 Envoy route 的映射关系</p></center>
 
