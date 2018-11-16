@@ -330,6 +330,6 @@ Content-Length: 151654
    
 2. 删除 [sleep](https://github.com/istio/istio/tree/master/samples/sleep) 服务：
 
-   ```bash
-   $ kubectl delete -f samples/sleep/sleep.yaml
-   ```
+    ```bash
+    $ kubectl delete -f samples/sleep/sleep.yaml
+    ```
