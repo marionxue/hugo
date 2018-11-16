@@ -799,15 +799,13 @@ Content-Length: 151654
 <hr />
 
 <ol>
-<li>删除创建的 Istio 资源对象：</li>
-</ol>
+<li><p>删除创建的 Istio 资源对象：</p>
 
-<pre><code class="language-bash">   $ kubectl delete serviceentry cnn
-   $ kubectl delete virtualservice rewrite-port-for-edition-cnn-com
-   $ kubectl delete destinationrule originate-tls-for-edition-cnn-com
-</code></pre>
+<pre><code class="language-bash">$ kubectl delete serviceentry cnn
+$ kubectl delete virtualservice rewrite-port-for-edition-cnn-com
+$ kubectl delete destinationrule originate-tls-for-edition-cnn-com
+</code></pre></li>
 
-<ol>
 <li><p>删除 <a href="https://github.com/istio/istio/tree/master/samples/sleep" target="_blank">sleep</a> 服务：</p>
 
 <pre><code class="language-bash">$ kubectl delete -f samples/sleep/sleep.yaml
