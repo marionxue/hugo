@@ -64,7 +64,7 @@ blockquote {
     transform: rotate(-5deg) translateX(-10px) translateY(-25px);
 }
 #blue {
-color: blue
+color: #2780e3; 
 }
 #inline-yellow {
 display:inline;
