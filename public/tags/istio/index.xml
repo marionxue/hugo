@@ -6,10 +6,19 @@
     <description>Recent content in Istio on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Thu, 11 Oct 2018 15:59:54 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 16 Nov 2018 15:56:49 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/istio/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Istio 出口流量的 TLS</title>
+      <link>https://www.yangcs.net/posts/egress-tls-origination/</link>
+      <pubDate>Fri, 16 Nov 2018 15:56:49 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/egress-tls-origination/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>在 Istio 中调试 503 错误</title>
