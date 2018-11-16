@@ -60,7 +60,7 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata
 
 首先，与[控制出口流量](https://preliminary.istio.io/zh/docs/tasks/traffic-management/egress/)任务相同的方式配置对 cnn.com 的访问。 请注意，在 `hosts` 中定义中使用 `*` 通配符：`*.cnn.com` , 使用通配符可以访问 www.cnn.com 以及 edition.cnn.com 。
 
-<p id=blue>1. 创建一个 `ServiceEntry` 以允许访问外部 HTTP 和 HTTPS 服务：</p>
+<p id=blue>1. 创建一个 <code>ServiceEntry</code> 以允许访问外部 HTTP 和 HTTPS 服务：</p>
 
 ```yaml
 $ kubectl apply -f - <<EOF
