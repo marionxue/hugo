@@ -548,34 +548,30 @@ autocomplete('#aa-search-input',
 
 <p>首先，与<a href="https://preliminary.istio.io/zh/docs/tasks/traffic-management/egress/" target="_blank">控制出口流量</a>任务相同的方式配置对 cnn.com 的访问。 请注意，在 <code>hosts</code> 中定义中使用 <code>*</code> 通配符：<code>*.cnn.com</code> , 使用通配符可以访问 www.cnn.com 以及 edition.cnn.com 。</p>
 
-<ol>
-<li>创建一个 <code>ServiceEntry</code> 以允许访问外部 HTTP 和 HTTPS 服务：</li>
-</ol>
+<p id=blue>1. 创建一个 `ServiceEntry` 以允许访问外部 HTTP 和 HTTPS 服务：</p>
 
-<pre><code class="language-yaml">    kubectl apply -f - &lt;&lt;EOF
-    apiVersion: networking.istio.io/v1alpha3
-    kind: ServiceEntry
-    metadata:
-      name: cnn
-    spec:
-      hosts:
-      - &quot;*.cnn.com&quot;
-      ports:
-      - number: 80
-        name: http-port
-        protocol: HTTP
-      - number: 443
-        name: https-port
-        protocol: HTTPS
-      resolution: NONE
-    EOF
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: cnn
+spec:
+  hosts:
+  - &quot;*.cnn.com&quot;
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: https-port
+    protocol: HTTPS
+  resolution: NONE
 </code></pre>
 
-<ol>
-<li><p>向外部 HTTP 服务发出请求：</p>
+<p id=blue>2. 向外部 HTTP 服务发出请求：</p>
 
 <pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
-   
+
 HTTP/1.1 301 Moved Permanently
 ...
 location: https://edition.cnn.com/politics
@@ -588,8 +584,7 @@ Content-Length: 151654
 ...
 </code></pre>
 
-<p>输出应该与上面的类似（一些细节用省略号代替）。</p></li>
-</ol>
+<p>输出应该与上面的类似（一些细节用省略号代替）。</p>
 
 <p>注意 curl 的 <code>-L</code> 标志，它指示 curl 遵循重定向, 在这种情况下， 服务器返回一个重定向响应（<a href="https://tools.ietf.org/html/rfc2616#section-10.3.2" target="_blank">301 Moved Permanently</a>）到 <code>http://edition.cnn.com/politics</code> 的 HTTP 请求, 重定向响应指示客户端通过 HTTPS 向 <code>https://edition.cnn.com/politics</code> 发送附加请求, 对于第二个请求，服务器返回所请求的内容和 <code>200 OK</code> 状态代码。</p>
 

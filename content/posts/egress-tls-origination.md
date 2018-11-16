@@ -60,46 +60,45 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata
 
 首先，与[控制出口流量](https://preliminary.istio.io/zh/docs/tasks/traffic-management/egress/)任务相同的方式配置对 cnn.com 的访问。 请注意，在 `hosts` 中定义中使用 `*` 通配符：`*.cnn.com` , 使用通配符可以访问 www.cnn.com 以及 edition.cnn.com 。
 
-1. 创建一个 `ServiceEntry` 以允许访问外部 HTTP 和 HTTPS 服务：
+<p id=blue>1. 创建一个 `ServiceEntry` 以允许访问外部 HTTP 和 HTTPS 服务：</p>
 
-   ```yaml
-    kubectl apply -f - <<EOF
-    apiVersion: networking.istio.io/v1alpha3
-    kind: ServiceEntry
-    metadata:
-      name: cnn
-    spec:
-      hosts:
-      - "*.cnn.com"
-      ports:
-      - number: 80
-        name: http-port
-        protocol: HTTP
-      - number: 443
-        name: https-port
-        protocol: HTTPS
-      resolution: NONE
-    EOF
-   ```
+```yaml
+$ kubectl apply -f - <<EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: cnn
+spec:
+  hosts:
+  - "*.cnn.com"
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: https-port
+    protocol: HTTPS
+  resolution: NONE
+```
 
-2. 向外部 HTTP 服务发出请求：
+<p id=blue>2. 向外部 HTTP 服务发出请求：</p>
 
-    ```bash
-    $ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+```bash
+$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+
+HTTP/1.1 301 Moved Permanently
+...
+location: https://edition.cnn.com/politics
+...
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+...
+Content-Length: 151654
+...
+```
    
-    HTTP/1.1 301 Moved Permanently
-    ...
-    location: https://edition.cnn.com/politics
-    ...
-
-    HTTP/1.1 200 OK
-    Content-Type: text/html; charset=utf-8
-    ...
-    Content-Length: 151654
-    ...
-    ```
-   
-    输出应该与上面的类似（一些细节用省略号代替）。
+输出应该与上面的类似（一些细节用省略号代替）。
    
 注意 curl 的 `-L` 标志，它指示 curl 遵循重定向, 在这种情况下， 服务器返回一个重定向响应（[301 Moved Permanently](https://tools.ietf.org/html/rfc2616#section-10.3.2)）到 `http://edition.cnn.com/politics` 的 HTTP 请求, 重定向响应指示客户端通过 HTTPS 向 `https://edition.cnn.com/politics` 发送附加请求, 对于第二个请求，服务器返回所请求的内容和 `200 OK` 状态代码。
 
