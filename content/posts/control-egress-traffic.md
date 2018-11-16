@@ -458,11 +458,3 @@ $ istioctl delete virtualservice httpbin-ext baidu
 ```bash
 $ kubectl delete -f samples/sleep/sleep.yaml
 ```
-
-----
-
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
-<center>扫一扫关注微信公众号</center>
-
-
-
