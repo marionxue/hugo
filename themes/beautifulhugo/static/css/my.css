@@ -63,6 +63,9 @@ blockquote {
     -o-transform: rotate(-5deg) translateX(-10px) translateY(-25px);
     transform: rotate(-5deg) translateX(-10px) translateY(-25px);
 }
+#blue {
+color: blue
+}
 #inline-yellow {
 display:inline;
 padding:.2em .6em .3em;

@@ -390,7 +390,7 @@ spec:
 EOF
 ```
 
-<p id="blue">3. 等待几秒钟之后，再次发起 `curl` 请求：</p>
+<p id="blue">3. 等待几秒钟之后，再次发起 <code>curl</code> 请求：</p>
 
 ```bash
 $ kubectl exec -it $SOURCE_POD -c sleep bash

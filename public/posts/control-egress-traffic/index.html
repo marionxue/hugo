@@ -878,7 +878,7 @@ spec:
 EOF
 </code></pre>
 
-<p id="blue">3. 等待几秒钟之后，再次发起 `curl` 请求：</p>
+<p id="blue">3. 等待几秒钟之后，再次发起 <code>curl</code> 请求：</p>
 
 <pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep bash
 $ time curl -o /dev/null -s -w &quot;%{http_code}\n&quot; http://httpbin.org/delay/5
