@@ -549,31 +549,29 @@ autocomplete('#aa-search-input',
 <p>首先，与<a href="https://preliminary.istio.io/zh/docs/tasks/traffic-management/egress/" target="_blank">控制出口流量</a>任务相同的方式配置对 cnn.com 的访问。 请注意，在 <code>hosts</code> 中定义中使用 <code>*</code> 通配符：<code>*.cnn.com</code> , 使用通配符可以访问 www.cnn.com 以及 edition.cnn.com 。</p>
 
 <ol>
-<li><p>创建一个 <code>ServiceEntry</code> 以允许访问外部 HTTP 和 HTTPS 服务：</p>
+<li>创建一个 <code>ServiceEntry</code> 以允许访问外部 HTTP 和 HTTPS 服务：</li>
+</ol>
 
-<p>```yaml
-kubectl apply -f - &lt;&lt;EOF
-apiVersion: networking.istio.io/v1alpha3
-kind: ServiceEntry
-metadata:
-  name: cnn
-spec:
-  hosts:</p>
+<pre><code class="language-yaml">    kubectl apply -f - &lt;&lt;EOF
+    apiVersion: networking.istio.io/v1alpha3
+    kind: ServiceEntry
+    metadata:
+      name: cnn
+    spec:
+      hosts:
+      - &quot;*.cnn.com&quot;
+      ports:
+      - number: 80
+        name: http-port
+        protocol: HTTP
+      - number: 443
+        name: https-port
+        protocol: HTTPS
+      resolution: NONE
+    EOF
+</code></pre>
 
-<ul>
-<li>&ldquo;*.cnn.com&rdquo;
-ports:</li>
-<li>number: 80
-name: http-port
-protocol: HTTP</li>
-<li>number: 443
-name: https-port
-protocol: HTTPS
-resolution: NONE
-EOF
-```</li>
-</ul></li>
-
+<ol>
 <li><p>向外部 HTTP 服务发出请求：</p>
 
 <pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics

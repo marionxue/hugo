@@ -62,7 +62,7 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata
 
 1. 创建一个 `ServiceEntry` 以允许访问外部 HTTP 和 HTTPS 服务：
 
-    ```yaml
+   ```yaml
     kubectl apply -f - <<EOF
     apiVersion: networking.istio.io/v1alpha3
     kind: ServiceEntry
@@ -80,7 +80,7 @@ $ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata
         protocol: HTTPS
       resolution: NONE
     EOF
-    ```
+   ```
 
 2. 向外部 HTTP 服务发出请求：
 
