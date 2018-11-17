@@ -204,7 +204,11 @@ $ istioctl pc routes $SOURCE_POD --name 80 -o json
 
 该 VirtualService 的作用就是将目的地址是 `edition.cnn.com:80` 的流量重新路由到 Cluster `outbound|443||edition.cnn.com`，以此来**实现访问 80 端口重定向到 443 端口的功能**。
 
-![](https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry2.svg)
+<div class="gallery">
+    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry2.svg" data-lightbox="image-1" data-title="图 2：ServiceEntry + VirtualService 与 Envoy route 的映射关系">
+    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry2.svg">
+    </a>
+</div>
 
 <center><p id=small>图 2：ServiceEntry + VirtualService 与 Envoy route 的映射关系</p></center>
 
