@@ -11,6 +11,8 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
+[![](https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg)](https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg)
+
 <p id="div-border-left-red">
 <strong>本文主要内容来自 </strong><a href="https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-tls-origination/" target="_blank">Istio 官方文档</a>，并对其进行了大量扩展和补充。
 </p>
