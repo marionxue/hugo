@@ -14,8 +14,8 @@ const ap = new APlayer({
       {
         name: 'Faded',
         artist: 'Iselin Solheim',
-        url: 'https://default-1252251317.cos.ap-shanghai.myqcloud.com/faded.mp3',
-        cover: 'https://default-1252251317.cos.ap-shanghai.myqcloud.com/faded.jpeg',
+        url: 'https://drive.yangcs.net/?/music/faded.mp3',
+        cover: 'https://ws4.sinaimg.cn/large/006tNbRwgy1fxb05q71q8j303m03mjr7.jpg',
       },
       {
         name: '时间煮雨',
