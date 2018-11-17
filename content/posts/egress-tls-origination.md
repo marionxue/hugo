@@ -11,18 +11,6 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="300" height="400">
-    <defs>
-        <g id="ShapeGroup">
-            <rect x="50" y="50" width="100" height="100" fill="#69C" stroke="red" stroke-width="2"/>
-            <circle cx="100" cy="100" r="40" stroke="#00f" fill="none" stroke-width="5"/>
-        </g>
-    </defs>
-    <use xlink:href="#ShapeGroup" transform="translate(-10,0) scale(0.5)"/>
-    <use xlink:href="#ShapeGroup" transform="translate(10,10) scale(1)"/>
-    <use xlink:href="#ShapeGroup" transform="translate(50,60) scale(1.5)"/>
-</svg>
-
 <p id="div-border-left-red">
 <strong>本文主要内容来自 </strong><a href="https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-tls-origination/" target="_blank">Istio 官方文档</a>，并对其进行了大量扩展和补充。
 </p>
