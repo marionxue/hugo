@@ -11,12 +11,6 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<div class="gallery">
-    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg" data-lightbox="image-1" data-title="My caption">
-    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg">
-    </a>
-</div>
-
 <p id="div-border-left-red">
 <strong>本文主要内容来自 </strong><a href="https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-tls-origination/" target="_blank">Istio 官方文档</a>，并对其进行了大量扩展和补充。
 </p>
@@ -148,7 +142,11 @@ EOF
 
 此处 `ServiceEntry` 与 Envoy 配置文件的映射关系可以参考我之前的文章 [控制 Egress 流量](https://www.yangcs.net/posts/control-egress-traffic/) 中的 **HTTP ServiceEntry 配置深度解析**这一部分，具体细节不再赘述。
 
-![](https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg)
+<div class="gallery">
+    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg" data-lightbox="image-1" data-title="图 1：ServiceEntry 与 Envoy route 的映射关系">
+    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg">
+    </a>
+</div>
 
 <center><p id=small>图 1：ServiceEntry 与 Envoy route 的映射关系</p></center>
 
