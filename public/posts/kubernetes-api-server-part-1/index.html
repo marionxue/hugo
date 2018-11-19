@@ -472,29 +472,29 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#environment"><span id="inline-toc">1.</span> 前言——什么是 API Server</a></li>
-<li><a href="#span-id-inline-toc-2-span-api-server-详解"><span id="inline-toc">2.</span> API Server 详解</a>
+<li><a href="#the-term-apiserver"><span id="inline-toc">1.</span> 前言——什么是 API Server</a></li>
+<li><a href="#the-apiserver"><span id="inline-toc">2.</span> API Server 详解</a>
 <ul>
-<li><a href="#防护-token-和新鲜度-token">防护 token 和新鲜度 token</a></li>
+<li><a href="#fencing-and-freshness-tokens">防护 token 和新鲜度 token</a></li>
 </ul></li>
-<li><a href="#span-id-inline-toc-3-span-架构规范"><span id="inline-toc">3.</span> 架构规范</a></li>
-<li><a href="#span-id-inline-toc-4-span-行为规范"><span id="inline-toc">4.</span> 行为规范</a>
+<li><a href="#structural-specification"><span id="inline-toc">3.</span> 架构规范</a></li>
+<li><a href="#behavioral-specification"><span id="inline-toc">4.</span> 行为规范</a>
 <ul>
-<li><a href="#写入接口">写入接口</a>
+<li><a href="#the-write-interface">写入接口</a>
 <ul>
-<li><a href="#创建命令">创建命令</a></li>
-<li><a href="#更新命令">更新命令</a></li>
-<li><a href="#删除命令">删除命令</a></li>
+<li><a href="#create-command">创建命令</a></li>
+<li><a href="#update-command">更新命令</a></li>
+<li><a href="#delete-command">删除命令</a></li>
 </ul></li>
-<li><a href="#读取接口">读取接口</a>
+<li><a href="#the-read-interface">读取接口</a>
 <ul>
-<li><a href="#对象相关的子接口">对象相关的子接口</a></li>
-<li><a href="#事件相关的子接口">事件相关的子接口</a></li>
-<li><a href="#例子">例子</a></li>
+<li><a href="#object-related-interface">对象相关的子接口</a></li>
+<li><a href="#event-related-interface">事件相关的子接口</a></li>
+<li><a href="#example">例子</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#span-id-inline-toc-5-span-总结"><span id="inline-toc">5.</span> 总结</a></li>
-<li><a href="#span-id-inline-toc-6-span-后记"><span id="inline-toc">6.</span> 后记</a></li>
+<li><a href="#conclusion"><span id="inline-toc">5.</span> 总结</a></li>
+<li><a href="#about-this-post"><span id="inline-toc">6.</span> 后记</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -537,7 +537,7 @@ autocomplete('#aa-search-input',
 
 <p>本文主要讲述第一部分的内容。</p>
 
-<h2 id="environment"><span id="inline-toc">1.</span> 前言——什么是 API Server</h2>
+<h2 id="the-term-apiserver"><span id="inline-toc">1.</span> 前言——什么是 API Server</h2>
 
 <hr />
 
@@ -557,7 +557,7 @@ autocomplete('#aa-search-input',
 <li><span id=inline-purple>API Server</span> 表示 Kubernetes API 和 Kubernetes 对象存储的并集。</li>
 </ul>
 
-<h2 id="span-id-inline-toc-2-span-api-server-详解"><span id="inline-toc">2.</span> API Server 详解</h2>
+<h2 id="the-apiserver"><span id="inline-toc">2.</span> API Server 详解</h2>
 
 <hr />
 
@@ -612,7 +612,7 @@ autocomplete('#aa-search-input',
 
 <p><center><p id=small>图 4：读取</p></center></p>
 
-<h3 id="防护-token-和新鲜度-token">防护 token 和新鲜度 token</h3>
+<h3 id="fencing-and-freshness-tokens">防护 token 和新鲜度 token</h3>
 
 <p>客户端可以使用属性 <code>rev</code> 作为用于写入操作的防护 token（<code>fencing tokens</code>），以此来抵消丢失的事务性语义。或者作为用于读取操作的新鲜度 token（<code>freshness tokens</code>），以此来抵消丢失的 <code>read-last-write</code> 语义。</p>
 
@@ -640,7 +640,7 @@ autocomplete('#aa-search-input',
 
 <p>在执行读取操作时，客户端使用 <code>rev</code> 或 <code>mod</code> 作为新鲜度 token，该 token 用来确保读取请求返回的结果不早于新鲜度 token 的值指定的结果。</p>
 
-<h2 id="span-id-inline-toc-3-span-架构规范"><span id="inline-toc">3.</span> 架构规范</h2>
+<h2 id="structural-specification"><span id="inline-toc">3.</span> 架构规范</h2>
 
 <hr />
 
@@ -668,7 +668,7 @@ fact {
 <li>API Server 中任何两个不同的 Kubernetes 对象都不可能具有相同的 kind，name 和 namespace 三元组。</li>
 </ul>
 
-<h2 id="span-id-inline-toc-4-span-行为规范"><span id="inline-toc">4.</span> 行为规范</h2>
+<h2 id="behavioral-specification"><span id="inline-toc">4.</span> 行为规范</h2>
 
 <hr />
 
@@ -683,7 +683,7 @@ fact {
 
 <p><center><p id=small>图 7：写入和读取接口</p></center></p>
 
-<h3 id="写入接口">写入接口</h3>
+<h3 id="the-write-interface">写入接口</h3>
 
 <p>写入接口提供创建、更新和删除对象的命令。</p>
 
@@ -724,7 +724,7 @@ fact {
 <pre><code class="language-bash">state = reduce(apply, events, {})
 </code></pre>
 
-<h4 id="创建命令">创建命令</h4>
+<h4 id="create-command">创建命令</h4>
 
 <pre><code class="language-bash">sig Create extends Command {toCreate : one Object}
 
@@ -758,7 +758,7 @@ fact {
 <li>每个创建命令都会生成一个持久且可查询的 <code>Created Event</code>，event 的 <code>object</code> 字段引用创建的 Kubernetes 对象。</li>
 </ul>
 
-<h4 id="更新命令">更新命令</h4>
+<h4 id="update-command">更新命令</h4>
 
 <pre><code class="language-bash">sig Update extends Command {old : one Object, new : one Object, mod : Int}
 
@@ -794,7 +794,7 @@ fact {
 <li>每个更新命令都会生成一个持久且可查询的 Updated Event，event 的 object 字段引用新的 Kubernetes 对象。</li>
 </ul>
 
-<h4 id="删除命令">删除命令</h4>
+<h4 id="delete-command">删除命令</h4>
 
 <pre><code class="language-bash">sig Delete extends Command {toDelete : one Object, mod : Int}
 
@@ -828,11 +828,11 @@ fact {
 <li>每个删除命令都会生成一个持久且可查询的 Deleted Event，event 的 object 字段引用已删除的 Kubernetes 对象。</li>
 </ul>
 
-<h3 id="读取接口">读取接口</h3>
+<h3 id="the-read-interface">读取接口</h3>
 
 <p>Kubernetes API 读取接口提供两个字接口，一个接口与对象相关，另一个与事件相关。</p>
 
-<h4 id="对象相关的子接口">对象相关的子接口</h4>
+<h4 id="object-related-interface">对象相关的子接口</h4>
 
 <p>对象相关的子接口提供读取对象和对象列表的命令。</p>
 
@@ -854,7 +854,7 @@ fact {
 <li>API Server 至少在由 <code>min</code> 指定的 API Server 的版本处返回匹配的 Kubernetes 对象。</li>
 </ul>
 
-<h4 id="事件相关的子接口">事件相关的子接口</h4>
+<h4 id="event-related-interface">事件相关的子接口</h4>
 
 <p>事件相关的子接口提供命令以读取关于对象和对象列表的事件。</p>
 
@@ -886,7 +886,7 @@ fact {
 <li>API Server 从指定的 API Server 版本开始返回所有匹配的事件。</li>
 </ul>
 
-<h4 id="例子">例子</h4>
+<h4 id="example">例子</h4>
 
 <p>对象相关的子接口与事件相关的子接口一起组成了 Kubernetes 中广泛使用的有效查询机制，例如在 Kubernetes 控制器中就用到了这种机制。</p>
 
@@ -901,7 +901,7 @@ for e in request-watch-list(kind=&quot;pods&quot;, namespace=&quot;default&quot;
 
 <p>这种实现机制可以确保客户端的状态与 API Server 的状态保持最终一致性。</p>
 
-<h2 id="span-id-inline-toc-5-span-总结"><span id="inline-toc">5.</span> 总结</h2>
+<h2 id="conclusion"><span id="inline-toc">5.</span> 总结</h2>
 
 <hr />
 
@@ -909,7 +909,7 @@ for e in request-watch-list(kind=&quot;pods&quot;, namespace=&quot;default&quot;
 
 <p>下一篇文章将会为大家介绍 Kubernetes API 和 Kubernetes 对象存储。</p>
 
-<h2 id="span-id-inline-toc-6-span-后记"><span id="inline-toc">6.</span> 后记</h2>
+<h2 id="about-this-post"><span id="inline-toc">6.</span> 后记</h2>
 
 <hr />
 
