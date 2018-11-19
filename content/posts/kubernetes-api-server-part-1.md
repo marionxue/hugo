@@ -11,6 +11,8 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fxdbyu51xbj31fp0j6ad0.jpg)
+
 <p id="div-border-left-red">
 <strong>原文地址：</strong><a href="https://medium.com/@dominik.tornow/kubernetes-api-server-part-i-3fbaf2138a31" target="_blank">Kubernetes API Server, Part I</a>
 <br />
