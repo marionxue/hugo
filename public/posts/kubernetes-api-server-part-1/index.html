@@ -640,8 +640,7 @@ autocomplete('#aa-search-input',
 
 <hr />
 
-<pre><code>
-sig Server {objects : set Object, rev : Int}
+<pre><code class="language-bash">sig Server {objects : set Object, rev : Int}
 
 sig Object {kind : Kind, name : Name, namespace : Namespace, mod : Int}
 
@@ -684,7 +683,7 @@ fact {
 
 <p>写入接口提供创建、更新和删除对象的命令。</p>
 
-<pre><code>abstract sig Command {server : one Server, server' : one Server}
+<pre><code class="language-bash">abstract sig Command {server : one Server, server' : one Server}
 
 fact {
   all c : Command {
@@ -695,7 +694,7 @@ fact {
 
 <p>每一个 <strong>Command</strong> 表示一个状态转换：将 API Server 从当前状态转换到下一个状态。每个命令都会增加 API Server 的版本。</p>
 
-<pre><code>abstract sig Event { origin : one Command, object : one Object }
+<pre><code class="language-bash">abstract sig Event { origin : one Command, object : one Object }
 
 fact {
   all c : Command {
@@ -723,7 +722,7 @@ fact {
 
 <h4 id="创建命令">创建命令</h4>
 
-<pre><code>sig Create extends Command {toCreate : one Object}
+<pre><code class="language-bash">sig Create extends Command {toCreate : one Object}
 
 fact {
   all c : Create {
@@ -742,7 +741,7 @@ fact {
 <li>如果想要创建的对象违反了 API Server 的唯一性约束，则会拒绝创建命令。</li>
 </ul>
 
-<pre><code>sig Created extends Event {}
+<pre><code class="language-bash">sig Created extends Event {}
 
 fact {
   all c : Create {
@@ -757,7 +756,7 @@ fact {
 
 <h4 id="更新命令">更新命令</h4>
 
-<pre><code>sig Update extends Command {old : one Object, new : one Object, mod : Int}
+<pre><code class="language-bash">sig Update extends Command {old : one Object, new : one Object, mod : Int}
 
 fact {
   all u : Update {
@@ -778,7 +777,7 @@ fact {
 <li>如果命令的 <code>mod</code> 值与对象的 <code>rev</code> 值不匹配，则拒绝更新命令。这里的 <code>mod</code> 用作防护 token。</li>
 </ul>
 
-<pre><code>sig Updated extends Event {}
+<pre><code class="language-bash">sig Updated extends Event {}
 
 fact {
   all u : Update {
@@ -793,7 +792,7 @@ fact {
 
 <h4 id="删除命令">删除命令</h4>
 
-<pre><code>sig Delete extends Command {toDelete : one Object, mod : Int}
+<pre><code class="language-bash">sig Delete extends Command {toDelete : one Object, mod : Int}
 
 fact {
   all d : Delete {
@@ -812,7 +811,7 @@ fact {
 <li>如果命令的 <code>mod</code> 值与对象的 <code>mod</code> 值不匹配，则拒绝删除命令。这里的 <code>mod</code> 用作防护 token。</li>
 </ul>
 
-<pre><code>sig Deleted extends Event {}
+<pre><code class="language-bash">sig Deleted extends Event {}
 
 fact {
   all d : Delete {
@@ -833,7 +832,7 @@ fact {
 
 <p>对象相关的子接口提供读取对象和对象列表的命令。</p>
 
-<pre><code>sig ReadO {kind : one Kind, name : one Name, namespace : one Namespace, min : Int, res : lone Object, rev : Int}
+<pre><code class="language-bash">sig ReadO {kind : one Kind, name : one Name, namespace : one Namespace, min : Int, res : lone Object, rev : Int}
 
 fact {
   all r : ReadO {
@@ -855,7 +854,7 @@ fact {
 
 <p>事件相关的子接口提供命令以读取关于对象和对象列表的事件。</p>
 
-<pre><code>sig WatchO {kind : Kind, name : Name, namespace : Namespace, min : Int, res : set Event}
+<pre><code class="language-bash">sig WatchO {kind : Kind, name : Name, namespace : Namespace, min : Int, res : set Event}
 
 fact {
   all w : WatchO {
@@ -869,7 +868,7 @@ fact {
 <li>API Server 从指定的 API Server 版本开始返回所有匹配的事件。</li>
 </ul>
 
-<pre><code>sig WatchL {kind : Kind, name : Name, min : Int, res : set Event}
+<pre><code class="language-bash">sig WatchL {kind : Kind, name : Name, min : Int, res : set Event}
 
 fact {
   all w : WatchL {
@@ -889,7 +888,7 @@ fact {
 
 <p>通过这种机制，客户端可以先请求一次当前状态，然后订阅后续事件流，而不是重复轮询对象或对象列表的当前状态。</p>
 
-<pre><code>pods, rev := request-object-list(kind=&quot;pods&quot;, namespace=&quot;default&quot;)
+<pre><code class="language-bash">pods, rev := request-object-list(kind=&quot;pods&quot;, namespace=&quot;default&quot;)
 for e in request-watch-list(kind=&quot;pods&quot;, namespace=&quot;default&quot;, rev)
   pods := apply(pods, e)
 </code></pre>

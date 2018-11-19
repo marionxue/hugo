@@ -131,8 +131,7 @@ Kubernetes API Server 暴露了一个不支持事务性语义的 CRUD （`Create
 
 ----
 
-```
-
+```bash
 sig Server {objects : set Object, rev : Int}
 
 sig Object {kind : Kind, name : Name, namespace : Namespace, mod : Int}
@@ -174,7 +173,7 @@ fact {
 
 写入接口提供创建、更新和删除对象的命令。
 
-```
+```bash
 abstract sig Command {server : one Server, server' : one Server}
 
 fact {
@@ -186,7 +185,7 @@ fact {
 
 每一个 **Command** 表示一个状态转换：将 API Server 从当前状态转换到下一个状态。每个命令都会增加 API Server 的版本。
 
-```
+```bash
 abstract sig Event { origin : one Command, object : one Object }
 
 fact {
@@ -216,7 +215,7 @@ state = reduce(apply, events, {})
 
 #### 创建命令
 
-```
+```bash
 sig Create extends Command {toCreate : one Object}
 
 fact {
@@ -234,7 +233,7 @@ fact {
 + 创建命令将 Kubernetes 对象添加到 API Server，并将对象的 `mod` 值设置为 API Server 的 `rev` 值。
 + 如果想要创建的对象违反了 API Server 的唯一性约束，则会拒绝创建命令。
 
-```
+```bash
 sig Created extends Event {}
 
 fact {
@@ -248,7 +247,7 @@ fact {
 
 #### 更新命令
 
-```
+```bash
 sig Update extends Command {old : one Object, new : one Object, mod : Int}
 
 fact {
@@ -268,7 +267,7 @@ fact {
 + 更新命令将更新 API Server 中的 Kubernetes 对象，并将对象的 `mod` 值设置为 API Server 的 `rev` 值。
 + 如果命令的 `mod` 值与对象的 `rev` 值不匹配，则拒绝更新命令。这里的 `mod` 用作防护 token。
 
-```
+```bash
 sig Updated extends Event {}
 
 fact {
@@ -282,7 +281,7 @@ fact {
 
 #### 删除命令
 
-```
+```bash
 sig Delete extends Command {toDelete : one Object, mod : Int}
 
 fact {
@@ -300,7 +299,7 @@ fact {
 + 删除命令从 API Server 中删除 Kubernetes 对象。
 + 如果命令的 `mod` 值与对象的 `mod` 值不匹配，则拒绝删除命令。这里的 `mod` 用作防护 token。
 
-```
+```bash
 sig Deleted extends Event {}
 
 fact {
@@ -320,7 +319,7 @@ Kubernetes API 读取接口提供两个字接口，一个接口与对象相关�
 
 对象相关的子接口提供读取对象和对象列表的命令。
 
-```
+```bash
 sig ReadO {kind : one Kind, name : one Name, namespace : one Namespace, min : Int, res : lone Object, rev : Int}
 
 fact {
@@ -341,7 +340,7 @@ fact {
 
 事件相关的子接口提供命令以读取关于对象和对象列表的事件。
 
-```
+```bash
 sig WatchO {kind : Kind, name : Name, namespace : Namespace, min : Int, res : set Event}
 
 fact {
@@ -354,7 +353,7 @@ fact {
 + Watch 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 `min` 参数。
 + API Server 从指定的 API Server 版本开始返回所有匹配的事件。
 
-```
+```bash
 sig WatchL {kind : Kind, name : Name, min : Int, res : set Event}
 
 fact {
@@ -373,7 +372,7 @@ fact {
 
 通过这种机制，客户端可以先请求一次当前状态，然后订阅后续事件流，而不是重复轮询对象或对象列表的当前状态。
 
-```
+```bash
 pods, rev := request-object-list(kind="pods", namespace="default")
 for e in request-watch-list(kind="pods", namespace="default", rev)
   pods := apply(pods, e)
