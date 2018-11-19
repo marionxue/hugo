@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Kubernetes DNS 高阶指南 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> 深入理解 Kubernetes API Server（一） - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="Kubernetes DNS 高阶指南" />
-  <meta name="twitter:title" content="Kubernetes DNS 高阶指南" />
-  <meta name="description" content="为你的 Pod 自定义 DNS">
-  <meta property="og:description" content="为你的 Pod 自定义 DNS">
-  <meta name="twitter:description" content="为你的 Pod 自定义 DNS">
+  <meta property="og:title" content="深入理解 Kubernetes API Server（一）" />
+  <meta name="twitter:title" content="深入理解 Kubernetes API Server（一）" />
+  <meta name="description" content="Kubernetes API Server 的架构和行为规范">
+  <meta property="og:description" content="Kubernetes API Server 的架构和行为规范">
+  <meta name="twitter:description" content="Kubernetes API Server 的架构和行为规范">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/kubernetes-dns/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/kubernetes-api-server-part-1/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/kubernetes-dns/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/kubernetes-api-server-part-1/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -394,7 +394,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>Kubernetes DNS 高阶指南</h1>
+                     <h1>深入理解 Kubernetes API Server（一）</h1>
                      
                      
                   
@@ -402,13 +402,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">为你的 Pod 自定义 DNS</span>
+                      <span class="post-subheading">Kubernetes API Server 的架构和行为规范</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on August 27, 2018
+  Posted on November 19, 2018
   
   
 </span>
@@ -429,10 +429,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">Kubernetes DNS 高阶指南</h1>
+                <h1 align="center">深入理解 Kubernetes API Server（一）</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">为你的 Pod 自定义 DNS</h2>
+                    <h2 align="center" class="posts-subheading">Kubernetes API Server 的架构和行为规范</h2>
                   
                 
                 
@@ -453,9 +453,9 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Mon Aug 27, 2018</h4>
+        <h4 id="date"> Mon Nov 19, 2018</h4>
     </section>
-    <h5 id="wc">3200 Words|Read in about 7 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">3400 Words|Read in about 7 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
@@ -472,12 +472,29 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#span-id-inline-toc-1-span-为什么需要自定义-dns"><span id="inline-toc">1.</span> 为什么需要自定义 DNS</a></li>
-<li><a href="#span-id-inline-toc-2-span-如何自定义-dns"><span id="inline-toc">2.</span> 如何自定义 DNS</a>
+<li><a href="#span-id-inline-toc-1-span-前言-什么是-api-server"><span id="inline-toc">1.</span> 前言——什么是 API Server</a></li>
+<li><a href="#span-id-inline-toc-2-span-api-server-详解"><span id="inline-toc">2.</span> API Server 详解</a>
 <ul>
-<li><a href="#dnsconfig">dnsConfig</a></li>
-<li><a href="#dnspolicy">dnsPolicy</a></li>
+<li><a href="#防护-token-和新鲜度-token">防护 token 和新鲜度 token</a></li>
 </ul></li>
+<li><a href="#span-id-inline-toc-3-span-架构规范"><span id="inline-toc">3.</span> 架构规范</a></li>
+<li><a href="#span-id-inline-toc-4-span-行为规范"><span id="inline-toc">4.</span> 行为规范</a>
+<ul>
+<li><a href="#写入接口">写入接口</a>
+<ul>
+<li><a href="#创建命令">创建命令</a></li>
+<li><a href="#更新命令">更新命令</a></li>
+<li><a href="#删除命令">删除命令</a></li>
+</ul></li>
+<li><a href="#读取接口">读取接口</a>
+<ul>
+<li><a href="#对象相关的子接口">对象相关的子接口</a></li>
+<li><a href="#事件相关的子接口">事件相关的子接口</a></li>
+<li><a href="#例子">例子</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#span-id-inline-toc-5-span-总结"><span id="inline-toc">5.</span> 总结</a></li>
+<li><a href="#span-id-inline-toc-6-span-后记"><span id="inline-toc">6.</span> 后记</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -490,365 +507,410 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<p><code>DNS</code> 是 Kubernetes 的核心功能之一，Kubernetes 通过 <code>kube-dns</code> 或 <code>CoreDNS</code> 作为集群的必备扩展来提供命名服务，通过 DNS 扩展，每一个 <code>Service</code> 都会产生一个独一无二的 FQDN（Fully Qualified Domain Name）名称。</p>
-
-<p>在大多数使用场景下，我们并不会太关心 DNS 插件的内部运作细节，直接使用 Kubernetes 预设的 DNS 配置和策略就可以满足需求。然而随着使用场景越来越复杂，譬如跟 NFV（Network Function Virtualization）相关的场景，我们的应用（Pod）可能就会需要更加个性化的 DNS 配置。</p>
-
-<p>接下来使用下面这张架构图来说明可能的使用场景：</p>
-
-<p><center><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fwuyyezwn3j31kw10gdt5.jpg" alt="" /></center></p>
-
-<h2 id="span-id-inline-toc-1-span-为什么需要自定义-dns"><span id="inline-toc">1.</span> 为什么需要自定义 DNS</h2>
-
-<hr />
-
-<p>一般的使用场景下，我们的 Kubernetes 集群的使用方式就像图中<strong>紫色/粉红色（Pod3）</strong>区域一样，所有的 Pod 如果有任何要存取 <code>DNS</code> 的需求，都会透过集群内的的 <code>k8s DNS</code> 来处理对应的请求与回复。</p>
-
-<p>然而在 <code>NFV</code> 的使用场景下，网络变成一个很重要的区域，整体的性能都取决于该应用的设计与集群的网络架构设计。这部分应用通常都会追求高输出或是低延迟，为了得到更好的性能，需要避免这些流量跟其他无关的流量使用相同的网络线路进行传输。</p>
-
-<p>在这种情况下，通常就会把整个集群的网络设计成两种架构，分别是 <code>Control Network</code> 和 <code>Data Network</code> 这两个不同用途的网络架构。在 Kubernetes 中，<code>Control Network</code> 就类似于图中的 <code>Cluster Network</code>，负责整个集群之间的沟通。图中<strong>绿色/橘色（Pod1，Pod2）</strong>这两个区域就是所谓的 <code>Data Network</code>，其网卡本身也被独立出来，不会与本来的 Kubernetes 集群发生冲突，它们之间的流量通过独立的网络进行传输。</p>
-
-<p>存在于独立出来的网络架构中的这些特殊的 Pod 基本上没法跟 Kubernetes 集群内的 DNS 互连，而且这些应用还有可能在外部有自己的 <code>DNS Server</code>，所以在这种场景下，我们希望这些应用（Pod1/Pod2）能够使用自定义的 <code>DNS Server</code>。</p>
-
-<h2 id="span-id-inline-toc-2-span-如何自定义-dns"><span id="inline-toc">2.</span> 如何自定义 DNS</h2>
-
-<hr />
-
-<p>为了让用户更容易控制 Pod 中的 DNS 设置，Kubernetes v1.9 引入了一项新的 Alpha 特性（在 v1.10 中处于 Beta 阶段）。该特性在 v1.10 中被默认启用，在 v1.9 中如果想要启用此功能，集群管理员需要在 apiserver 和 kubelet 上启用 <code>CustomPodDNS</code> 特性，例如：<code>“--feature-gates=CustomPodDNS=true,...”</code>。启用了该特性之后，用户可以将 Pod 的 <code>dnsPolicy</code> 字段设置为 <code>&quot;None&quot;</code>，并且可以在 <code>Pod.Spec</code> 中添加新的字段 <code>dnsConfig</code>。</p>
-
-<p>其中 <code>dnsConfig</code> 用来自定义 DNS 参数，而 <code>dnsPolicy</code> 用来给 Pod 选取预设的 DNS。接下来就看看可以通过哪些手段自定义 DNS。</p>
-
-<h3 id="dnsconfig">dnsConfig</h3>
-
-<p>dnsConfig 可以让操作者延伸到 Pod 内部关于 DNS 的配置，这边需要特别注意的是，我使用的字眼是 <strong>延伸</strong> 而不是 <strong>配置</strong>，这是因为通过下一节的 dnsPolicy，每个 Pod 都会有一组预设的 DNS 配置。通过 dnsConfig 我们可以继续往上叠加相关的 DNS 参数到 Pod 之中。</p>
-
-<p>目前总共支持三个参数，分别是：</p>
-
-<ul>
-<li>nameservers</li>
-<li>searches</li>
-<li>options</li>
-</ul>
-
-<p>这三个参数对应的就是大家熟悉的 <code>/etc/resolv.conf</code> 里面的三个参数，这里就不针对 DNS 进行详细解释了，不熟悉的朋友可以自行去 <strong>Google</strong> 学一下这些参数的意思。</p>
-
-<p>在 Kubernetes 里面，这三个参数都包含在 dnsConfig 配置项中，而 dnsConfig 包含在 <code>PodSpec</code> 配置项中，因为 Pod 内所有的容器都共享相同的 Network Namespace，所以网络方面的配置都会共享。</p>
-
-<p>这边提供一个简单的 yaml 示例：</p>
-
-<pre><code class="language-yaml">apiVersion: v1
-kind: Pod
-metadata:
-  name: ubuntu-setting
-  namespace: default
-spec:
-  containers:
-  - image: hwchiu/netutils
-    command:
-      - sleep
-      - &quot;360000&quot;
-    imagePullPolicy: IfNotPresent
-    name: ubuntu
-  restartPolicy: Always
-  dnsConfig:
-    nameservers:
-      - 1.2.3.4
-    searches:
-      - ns1.svc.cluster.local
-      - my.dns.search.suffix
-    options:
-      - name: ndots
-        value: &quot;2&quot;
-      - name: edns0
-</code></pre>
-
-<p>通过上述 yaml 创建 Pod 之后，通过下面的命令可以观察到容器中 DNS 配置文件中会出现额外的配置。</p>
-
-<pre><code class="language-bash">$ kubectl exec ubuntu-setting cat /etc/resolv.conf
-
-nameserver 10.254.0.2
-nameserver 1.2.3.4
-search default.svc.cluster.local svc.cluster.local cluster.local ns1.svc.cluster.local my.dns.search.suffix
-options ndots:2 edns0
-</code></pre>
-
-<p>可以看到 nameserver 多了一个 1.2.3.4，而 search 则多了 <code>ns1.svc.cluster.local my.dns.search.suffix</code> 这两个自定义的值，最后 options 则增加了我们示例中指定的 <code>ndots:2 edns0</code>。</p>
-
-<p>dnsConfig 非常简单直观，如果你需要自定义 DNS 参数，就可以通过这个字段来指定。</p>
-
-<h3 id="dnspolicy">dnsPolicy</h3>
-
-<p>前面提过，<code>dnsConfig</code> 提供的是延伸 Pod 内预设的 DNS 配置，而 <code>dnsPolicy</code> 就是决定 Pod 内预设的 DNS 配置有哪些。</p>
-
-<p>目前总共有四个类型可以选择：</p>
-
-<ul>
-<li>None</li>
-<li>Default</li>
-<li>ClusterFirst</li>
-<li>ClusterFirstHostNet</li>
-</ul>
-
-<p>接下来针对这四个类型分别介绍。</p>
-
-<p id="blue">None</p>
-
-<p><code>None</code> 表示会清除 Pod 预设的 DNS 配置，当 dnsPolicy 设置成这个值之后，Kubernetes 不会为 Pod 预先载入任何自身逻辑判断得到的 DNS 配置。因此若要将 dnsPolicy 的值设为 None，为了避免 Pod 里面没有配置任何 DNS，最好再添加 dnsConfig 来描述自定义的 DNS 参数。</p>
-
-<p>使用下面的示例来进行测试：</p>
-
-<pre><code class="language-yaml">apiVersion: v1
-kind: Pod
-metadata:
-  name: ubuntu-none
-  namespace: default
-spec:
-  containers:
-  - image: hwchiu/netutils
-    command:
-      - sleep
-      - &quot;360000&quot;
-    imagePullPolicy: IfNotPresent
-    name: ubuntu
-  restartPolicy: Always
-  dnsPolicy: None
-  dnsConfig:
-    nameservers:
-      - 1.2.3.4
-    searches:
-      - ns1.svc.cluster.local
-      - my.dns.search.suffix
-    options:
-      - name: ndots
-        value: &quot;2&quot;
-      - name: edns0
-</code></pre>
-
-<p>通过上述 yaml 创建 Pod 之后，通过下面的命令可以观察容器中的 DNS 配置文件，可以观察到跟之前的 <code>dnsConfig</code> 的结果有一点差异，这里只有我们在 yaml 里配置的那些参数，而没有加入集群预设的 DNS 配置。</p>
-
-<pre><code class="language-bash">$ kubectl exec ubuntu-none cat /etc/resolv.conf
-
-nameserver 1.2.3.4
-search ns1.svc.cluster.local my.dns.search.suffix
-options ndots:2 edns0
-</code></pre>
-
-<p id="blue">Default</p>
-
-<p><code>Default</code> 表示 Pod 里面的 DNS 配置继承了宿主机上的 DNS 配置。简单来说，就是该 Pod 的 DNS 配置会跟宿主机完全一致。</p>
-
-<p>使用下面的示例来进行测试：</p>
-
-<pre><code class="language-yaml">apiVersion: v1
-kind: Pod
-metadata:
-  name: ubuntu-default
-  namespace: default
-spec:
-  containers:
-  - image: hwchiu/netutils
-    command:
-      - sleep
-      - &quot;360000&quot;
-    imagePullPolicy: IfNotPresent
-    name: ubuntu
-  restartPolicy: Always
-  dnsPolicy: Default
-</code></pre>
-
-<p>首先，我们先观察 Node 上面的 DNS 配置：</p>
-
-<pre><code class="language-bash">$ cat /etc/resolv.conf
-
-# Dynamic resolv.conf(5) file for glibc resolver(3) generated by resolvconf(8)
-#     DO NOT EDIT THIS FILE BY HAND -- YOUR CHANGES WILL BE OVERWRITTEN
-nameserver 10.0.2.3
-</code></pre>
-
-<p>可以观察到，Node 上面的 DNS 配置得很简单，只有单纯的 <code>10.0.2.3</code>。
-接下来我们观察该 Pod 内的 DNS 配置：</p>
-
-<pre><code class="language-bash">$ kubectl exec ubuntu-default cat /etc/resolv.conf
-
-nameserver 10.0.2.3
-</code></pre>
-
-<p>可以看到这两个的 DNS 配置完全一致，该 Pod 内的 DNS 配置已经直接继承 Node 上面的配置了。</p>
-
-<p id="blue">ClusterFirst</p>
-
-<p>相对于上述的 Default，<code>ClusterFirst</code> 是完全相反的操作，它会预先把 <code>kube-dns</code>（或 CoreDNS）的信息当作预设参数写入到该 Pod 内的 DNS 配置。</p>
-
-<div id="note">
-<p id="note-title">Note</p>
+<p id="div-border-left-red">
+<strong>原文地址：</strong><a href="https://medium.com/@dominik.tornow/kubernetes-api-server-part-i-3fbaf2138a31" target="_blank">Kubernetes API Server, Part I</a>
 <br />
-<p>ClusterFirst 是预设的行为，若没有在 Pod 內特別描述 PodPolicy, 则会将 dnsPolicy 预设为 ClusterFirst。</p>
+<strong>作者：</strong></strong><a href="https://medium.com/@chenopis" target="_blank">Andrew Chen</a>，<a href="https://medium.com/@dominik.tornow" target="_blank">Dominik Tornow</a>
+<br />
+<strong>译者：</strong>杨传胜
+</p>
+
+<p><code>Kubernetes</code> 是一个用于在一组节点（通常称之为集群）上托管容器化应用程序的容器编排引擎。本系列教程旨在通过系统建模的方法帮助大家更好地理解 <code>Kubernetes</code> 及其基本概念。</p>
+
+<p>本文使用的语言是 <a href="http://alloytools.org/" target="_blank">Alloy</a>，这是一种基于一阶逻辑表达结构和行为的<a href="https://www.wikiwand.com/zh-hans/%E8%A7%84%E7%BA%A6%E8%AF%AD%E8%A8%80" target="_blank">规范语言</a>。文中我对每一段 Alloy 规范语言表达的意思都作了简明的描述。</p>
+
+<blockquote>
+<p><strong>规约语言</strong>（英语：Specification language），或称<strong>规范语言</strong>，是在计算机科学领域的使用的一种形式语言。编程语言是用于系统实现的、可以直接运行的形式语言。与之不同，规约语言主要用于系统分析和设计的过程中。</p>
+</blockquote>
+
+<p>本系列文章总共分为三个部分：</p>
+
+<ul>
+<li>第一部分描述了 <code>API Server</code> 的架构和行为</li>
+<li>第二部分描述了 <code>Kubernetes API</code></li>
+<li>第三部分描述了 Kubernetes 的对象存储</li>
+</ul>
+
+<p>本文主要讲述第一部分的内容。</p>
+
+<h2 id="span-id-inline-toc-1-span-前言-什么是-api-server"><span id="inline-toc">1.</span> 前言——什么是 API Server</h2>
+
+<hr />
+
+<p>“API Server” 这个术语很宽泛，涉及了太多的概念，本文将尝试使用 <code>API Server</code>，<code>Kubernetes API</code> 和 <code>Kubernetes 对象存储</code> 这三个不同的术语来明确表示各个概念。</p>
+
+<div class="gallery">
+    <a href="https://ws2.sinaimg.cn/large/006tNbRwgy1fxc8pwh73mj30tu0fr3zn.jpg" title="图 1：API Server，Kubernetes API 和 Kubernetes 对象存储">
+    <img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fxc8pwh73mj30tu0fr3zn.jpg">
+    </a>
 </div>
 
-<p>使用下面的示例来进行测试：</p>
+<p><center><p id=small>图 1：API Server，Kubernetes API 和 Kubernetes 对象存储</p></center></p>
 
-<pre><code class="language-yaml">apiVersion: v1
-kind: Pod
-metadata:
-  name: ubuntu-clusterfirst
-  namespace: default
-spec:
-  containers:
-  - image: hwchiu/netutils
-    command:
-      - sleep
-      - &quot;360000&quot;
-    imagePullPolicy: IfNotPresent
-    name: ubuntu
-  restartPolicy: Always
-  dnsPolicy: ClusterFirst
-</code></pre>
+<ul>
+<li><span id=inline-purple>Kubernetes API</span> 表示处理读取和写入请求以及相应地查询或修改 Kubernetes 对象存储的组件。</li>
+<li><span id=inline-purple>Kubernetes 对象存储</span> 表示持久化的 Kubernetes 对象集合。</li>
+<li><span id=inline-purple>API Server</span> 表示 Kubernetes API 和 Kubernetes 对象存储的并集。</li>
+</ul>
 
-<p>通过上述 yaml 创建 Pod 之后，通过下面的命令观察容器中的 DNS 配置文件：</p>
+<h2 id="span-id-inline-toc-2-span-api-server-详解"><span id="inline-toc">2.</span> API Server 详解</h2>
 
-<pre><code class="language-bash">$ kubectl exec ubuntu-clusterfirst cat /etc/resolv.conf
+<hr />
 
-nameserver 10.254.0.2
-search default.svc.cluster.local svc.cluster.local cluster.local
-options ndots:5
-</code></pre>
+<p><strong>Kubernetes API Server</strong> 是 Kubernetes 的核心组件。从概念上来看，Kubernetes API Server 就是 Kubernetes 的数据库，它将集群的状态表示为一组 <strong>Kubernetes 对象</strong>，例如 <code>Pod</code>、<code>ReplicaSet</code> 和 <code>Deployment</code> 都属于 Kubernetes 对象。</p>
 
-<p>可以看到这里使用的是 k8s DNS 的设置。</p>
+<div class="gallery">
+    <a href="https://ws3.sinaimg.cn/large/006tNbRwgy1fxchxltk62j30hp03jaa8.jpg" title="图 2：Kubernetes API Server & Kubernetes 对象">
+    <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxchxltk62j30hp03jaa8.jpg">
+    </a>
+</div>
 
-<p>此外，ClusterFirst 还有一个冲突，如果你的 Pod 设置了 <code>HostNetwork=true</code>，则 ClusterFirst 就会被强制转换成 <code>Default</code>。</p>
+<p><center><p id=small>图 2：Kubernetes API Server &amp; Kubernetes 对象</p></center></p>
 
-<p id="blue">HostNetwork</p>
+<p>Kubernetes API Server 存在多个版本，每一个版本都是它在不同时间段的快照，类似于 git 仓库：</p>
 
-<p>使用下面的示例来进行测试：</p>
+<ul>
+<li>Kubernetes API Server 具有属性 <code>rev</code>，是 Kubernetes API Server 版本的缩写。该属性表示的是 Kubernetes API Server 在每个时间戳的快照。</li>
+<li>Kubernetes 对象具有属性 <code>mod</code>，是 Kubernetes 对象版本的缩写。该属性表示的是该对象最后一次被修改的快照。</li>
+</ul>
 
-<pre><code class="language-yaml">apiVersion: v1
-kind: Pod
-metadata:
-  name: ubuntu-hostnetwork-policy-default
-  namespace: default
-spec:
-  containers:
-  - image: hwchiu/netutils
-    command:
-      - sleep
-      - &quot;360000&quot;
-    imagePullPolicy: IfNotPresent
-    name: ubuntu
-  hostNetwork: true
-  restartPolicy: Always
-  dnsPolicy: ClusterFirst
-</code></pre>
+<p>但实际上 Kubernetes API Server 在实现上会限制快照的时间长度，并且默认情况下会在 5 分钟后丢弃快照。</p>
 
-<p>通过上述 yaml 创建 Pod 之后，通过下面的命令观察容器中的 DNS 配置文件：</p>
+<div class="gallery">
+    <a href="https://ws1.sinaimg.cn/large/006tNbRwgy1fxciw5ywkkj30um044gm9.jpg" title="图 3：Kubernetes API Server & 版本">
+    <img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxciw5ywkkj30um044gm9.jpg">
+    </a>
+</div>
 
-<pre><code class="language-bash">$ kubectl exec ubuntu-hostnetwork-policy-default cat /etc/resolv.conf
+<p><center><p id=small>图 3：Kubernetes API Server &amp; 版本</p></center></p>
 
-nameserver 10.0.2.3
-</code></pre>
+<p>Kubernetes API Server 暴露了一个不支持事务性语义的 CRUD （<code>Create/Read/Update/Delete</code>）接口：</p>
 
-<p>可以观察到，Pod 里面的 DNS 配置直接继承了宿主机上的 DNS 配置。</p>
+<ul>
+<li>保证<strong>写入请求</strong>是针对最新版本执行的，并相应地增加版本号。</li>
+<li>但不保证<strong>读取请求</strong>是针对最新版本执行的，这主要取决于 API Server 的安装与配置方式。</li>
+</ul>
 
-<p>这边稍微来解释一下这个设计上的原理以及流程：</p>
+<p>缺乏事务性语义会导致经典的<a href="https://www.wikiwand.com/zh-hans/%E7%AB%B6%E7%88%AD%E5%8D%B1%E5%AE%B3" target="_blank">竞争危害</a>现象，如非确定性写入。</p>
 
-<ol>
-<li>因为设置了 <code>HostNetwork=true</code>, 会让该 Pod 与该节点共用相同的网路空间(网卡/路由等功能)。</li>
-<li>预设的 k8s DNS 是使用 <code>ClusterIP</code> 的 kubernetes serivce. 这种情况下，只有属于 Cluster 內的 <code>Pod</code> 可以获取该 ClusterIP。</li>
-<li>所以设置了 <code>HostNetwork=true</code> 的 Pod 就没有办法获取该 ClusterIP。</li>
-<li>于是预设就会将对应的 DNS 配置改回 <code>Default</code> 的形式，从节点继承其 DNS 配置信息。</li>
-</ol>
+<p>缺乏 <code>read-last-write</code> 语义会导致两个截然不同的后果，即过期读取和无序读取：</p>
 
-<p>这种情况下，就会有人想要问，如果我刻意想要这样设置不行吗？</p>
+<ul>
+<li><span id=inline-purple>过期读取（Stale reads）</span> 指的是读取请求针对的不是最新版本的现象，因此会产生“过期”响应。</li>
+<li><span id=inline-purple>无序读取（Out-of-order reads）</span> 指的是在两个连续的读取请求中，第一个请求读取的是较高版本，而第二个请求读取的是较低版本，因此会产生无序响应。</li>
+</ul>
 
-<p>原先的设计中，是没有办法刻意处理的，原因是当 <code>Pod yaml</code> 配置文件被发送出去后，在发现没有设定 <code>dnsPolicy</code> 的情况下，会自动帮你把该 dnsPolicy 补上 <code>ClusterFirst</code> 的数值。</p>
+<div class="gallery">
+    <a href="https://ws3.sinaimg.cn/large/006tNbRwgy1fxcjti2wl0j31jk0aoac9.jpg" title="图 4：读取">
+    <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxcjti2wl0j31jk0aoac9.jpg">
+    </a>
+</div>
 
-<p>然后最后面的程序处理逻辑中，其实並没有办法分別下列两种情况：</p>
+<p><center><p id=small>图 4：读取</p></center></p>
 
-<ol>
-<li>HostNetwork：我希望走 Host DNS</li>
-<li>HostNetwork &amp; dnsPolicy=ClusterFirst：我希望走 ClusterIP DNS</li>
-</ol>
+<h3 id="防护-token-和新鲜度-token">防护 token 和新鲜度 token</h3>
 
-<p>上述两种情况对于后端的程序来看都长得一样，完全没有办法分辨，我们可以直接从 <a href="https://github.com/kubernetes/kubernetes/blob/release-1.11/pkg/kubelet/network/dns/dns.go#L258" target="_blank">Kubernetes 源码</a> 来阅读一下其运作流程：</p>
+<p>客户端可以使用属性 <code>rev</code> 作为用于写入操作的防护 token（<code>fencing tokens</code>），以此来抵消丢失的事务性语义。或者作为用于读取操作的新鲜度 token（<code>freshness tokens</code>），以此来抵消丢失的 <code>read-last-write</code> 语义。</p>
 
-<pre><code class="language-go">func getPodDNSType(pod *v1.Pod) (podDNSType, error) {
-	dnsPolicy := pod.Spec.DNSPolicy
-	switch dnsPolicy {
-	case v1.DNSNone:
-		if utilfeature.DefaultFeatureGate.Enabled(features.CustomPodDNS) {
-			return podDNSNone, nil
-		}
-		// This should not happen as kube-apiserver should have rejected
-		// setting dnsPolicy to DNSNone when feature gate is disabled.
-		return podDNSCluster, fmt.Errorf(fmt.Sprintf(&quot;invalid DNSPolicy=%v: custom pod DNS is disabled&quot;, dnsPolicy))
-	case v1.DNSClusterFirstWithHostNet:
-		return podDNSCluster, nil
-	case v1.DNSClusterFirst:
-		if !kubecontainer.IsHostNetworkPod(pod) {
-			return podDNSCluster, nil
-		}
-		// Fallback to DNSDefault for pod on hostnetowrk.
-		fallthrough
-	case v1.DNSDefault:
-		return podDNSHost, nil
-	}
-	// This should not happen as kube-apiserver should have rejected
-	// invalid dnsPolicy.
-	return podDNSCluster, fmt.Errorf(fmt.Sprintf(&quot;invalid DNSPolicy=%v&quot;, dnsPolicy))
+<div class="gallery">
+    <a href="https://ws3.sinaimg.cn/large/006tNbRwgy1fxckathpzcj31f40azdhw.jpg" title="图 5：防护 token">
+    <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxckathpzcj31f40azdhw.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 5：防护 token</p></center></p>
+
+<p>在执行写入操作时，客户端使用 <code>rev</code> 或 <code>mod</code> 作为防护 token。客户端指定期望的 <code>rev</code> 或 <code>mod</code> 值，但只有当前 <code>rev</code> 或 <code>mod</code> 值等于期望值时，API Server 才会处理该请求。这一过程被称为乐观锁定（optimistic locking）。</p>
+
+<blockquote>
+<p>图 5 中客户端期望的 <code>rev</code> 值为 n，而当前的 <code>rev</code> 值为 n+1，与期望不符，因此 API Server 不处理该请求，<code>rev</code> 值仍然保持为 n+1。</p>
+</blockquote>
+
+<div class="gallery">
+    <a href="https://ws1.sinaimg.cn/large/006tNbRwgy1fxckvkwm1ij31jk0ao40u.jpg" title="图 6：新鲜度 token">
+    <img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxckvkwm1ij31jk0ao40u.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 6：新鲜度 token</p></center></p>
+
+<p>在执行读取操作时，客户端使用 <code>rev</code> 或 <code>mod</code> 作为新鲜度 token，该 token 用来确保读取请求返回的结果不早于新鲜度 token 的值指定的结果。</p>
+
+<h2 id="span-id-inline-toc-3-span-架构规范"><span id="inline-toc">3.</span> 架构规范</h2>
+
+<hr />
+
+<pre><code>
+sig Server {objects : set Object, rev : Int}
+
+sig Object {kind : Kind, name : Name, namespace : Namespace, mod : Int}
+
+// Equality of objects
+pred eq(o, o' : Object) {
+  o.kind = o'.kind and o.name = o'.name and o.namespace = o'.namespace
+}
+
+// Uniqueness constraint
+fact {
+  all s : Server {
+    all disj o, o' : s.objects | not eq[o, o']
+  }
 }
 </code></pre>
 
-<p>这边可以看到一旦是 <code>DNSClusterFirst</code> 的情况下，若设置了 HostNetwork, 最后就会直节回传 <code>podDNSHost</code> 节点的 DNS 设定回去。</p>
+<ul>
+<li>Kubernetes API Server 有一组 Kubernetes 对象和一个 <code>rev</code> 属性。</li>
+<li>Kubernetes 对象具有 <a href="https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#types-kinds" target="_blank">kind</a>，<a href="https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#metadata" target="_blank">name</a>，<a href="https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#metadata" target="_blank">namespace</a> 和 mod 这几个属性。</li>
+<li>对象由其 kind，name 和 namespace 三元组来标识。</li>
+<li>API Server 中任何两个不同的 Kubernetes 对象都不可能具有相同的 kind，name 和 namespace 三元组。</li>
+</ul>
 
-<p>为了解决上述的问题，所以引进了一个新的类型 <code>ClusterFirstHostNet</code>。</p>
-
-<p id="blue">ClusterFirstWithHostNet</p>
-
-<p><code>ClusterFirstWithHostNet</code> 用途非常简单，我希望满足使用 HostNetwork 同时使用 <code>k8s DNS</code> 作为我 Pod 预设 DNS 的配置。</p>
-
-<p>根据上面的源码也可以观察到：</p>
-
-<pre><code class="language-go">case v1.DNSClusterFirstWithHostNet:
-	return podDNSCluster, nil
-</code></pre>
-
-<p>只要將 dnsPolicy 设置为 <code>ClusterFirstWithHostNet</code>, 就会一律返回 k8s DNS 的 <code>clusterIP</code> 这种形式。</p>
-
-<p>使用下面的示例来进行测试：</p>
-
-<pre><code class="language-yaml">apiVersion: v1
-kind: Pod
-metadata:
-  name: ubuntu-hostnetwork-policy
-  namespace: default
-spec:
-  containers:
-  - image: hwchiu/netutils
-    command:
-      - sleep
-      - &quot;360000&quot;
-    imagePullPolicy: IfNotPresent
-    name: ubuntu
-  hostNetwork: true
-  restartPolicy: Always
-  dnsPolicy: ClusterFirstWithHostNet
-</code></pre>
-
-<p>通过上述 yaml 创建 Pod 之后，通过下面的命令观察该 Pod 的状态：</p>
-
-<pre><code class="language-bash">
-$ kubectl exec ubuntu-hostnetwork-policy cat /etc/resolv.conf
-
-nameserver 10.254.0.2
-search default.svc.cluster.local svc.cluster.local cluster.local
-options ndots:5
-</code></pre>
-
-<p>可以发现这时候的 DNS 就会配置成 k8s DNS 的 <code>ClusterIP</code> 了。</p>
+<h2 id="span-id-inline-toc-4-span-行为规范"><span id="inline-toc">4.</span> 行为规范</h2>
 
 <hr />
 
-<p><center><img src="http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg" alt="" /></center>
-<center>扫一扫关注微信公众号</center></p>
+<p>从概念上来看，Kubernetes API Server 提供了写入接口和读取接口。
+其中写入接口将所有更改状态的命令组合在一起，读取接口将所有查询状态的命令组合在一起。</p>
+
+<div class="gallery">
+    <a href="https://ws3.sinaimg.cn/large/006tNbRwgy1fxcli4vrpsj31bc0dajsu.jpg" title="图 7：写入和读取接口">
+    <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fxcli4vrpsj31bc0dajsu.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 7：写入和读取接口</p></center></p>
+
+<h3 id="写入接口">写入接口</h3>
+
+<p>写入接口提供创建、更新和删除对象的命令。</p>
+
+<pre><code>abstract sig Command {server : one Server, server' : one Server}
+
+fact {
+  all c : Command {
+    c.server'.revision = c.server.revision.plus[1]
+  }
+}
+</code></pre>
+
+<p>每一个 <strong>Command</strong> 表示一个状态转换：将 API Server 从当前状态转换到下一个状态。每个命令都会增加 API Server 的版本。</p>
+
+<pre><code>abstract sig Event { origin : one Command, object : one Object }
+
+fact {
+  all c : Command {
+    one e : Event | e.origin = c
+  }
+}
+</code></pre>
+
+<p>此外，每个命令都会生成一个事件。<strong>Event</strong> 表示命令执行的持久化可查询记录。</p>
+
+<div class="gallery">
+    <a href="https://ws4.sinaimg.cn/large/006tNbRwgy1fxcltkebzkj30yu0e4abl.jpg" title="图 8：API Server，命令和事件">
+    <img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fxcltkebzkj30yu0e4abl.jpg">
+    </a>
+</div>
+
+<p><center><p id=small>图 8：API Server，命令和事件</p></center></p>
+
+<p><strong>图 8</strong> 描述了 API Server 的一系列命令和结果状态转换。总共分为三层结构，从下往上依次表示为 API Server，命令和事件。</p>
+
+<p>Kubernetes API Server 的设计和实现方式保证了 API Server 在任何时间点的当前状态等于事件流到该时间点的聚合状况，这种模式也被称为 <a href="https://docs.microsoft.com/en-us/azure/architecture/patterns/event-sourcing" target="_blank">事件溯源（event sourcing）</a>。</p>
+
+<pre><code class="language-bash">state = reduce(apply, events, {})
+</code></pre>
+
+<h4 id="创建命令">创建命令</h4>
+
+<pre><code>sig Create extends Command {toCreate : one Object}
+
+fact {
+  all c : Create {
+    // pre-condition(s)
+    not c.toCreate in c.server.objects
+    // next state
+    c.server'.objects = c.server.objects + c.toCreate
+    // mod
+    c.toCreate.mod = c.server'.rev
+  }
+}
+</code></pre>
+
+<ul>
+<li>创建命令将 Kubernetes 对象添加到 API Server，并将对象的 <code>mod</code> 值设置为 API Server 的 <code>rev</code> 值。</li>
+<li>如果想要创建的对象违反了 API Server 的唯一性约束，则会拒绝创建命令。</li>
+</ul>
+
+<pre><code>sig Created extends Event {}
+
+fact {
+  all c : Create {
+    one e : Created | e.origin = c and e.object = c.toCreate
+  }
+}
+</code></pre>
+
+<ul>
+<li>每个创建命令都会生成一个持久且可查询的 <code>Created Event</code>，event 的 <code>object</code> 字段引用创建的 Kubernetes 对象。</li>
+</ul>
+
+<h4 id="更新命令">更新命令</h4>
+
+<pre><code>sig Update extends Command {old : one Object, new : one Object, mod : Int}
+
+fact {
+  all u : Update {
+    // pre-condition(s)
+    u.old in u.server.objects and not u.new in u.server.objects and eq[u.old, u.new]
+    // optimistic locking
+    u.old.mod = u.mod 
+    // next state
+    u.server'.objects = u.server.objects - u.old + u.new
+    // mod
+    u.new.mod = u.server'.rev
+  }
+}
+</code></pre>
+
+<ul>
+<li>更新命令将更新 API Server 中的 Kubernetes 对象，并将对象的 <code>mod</code> 值设置为 API Server 的 <code>rev</code> 值。</li>
+<li>如果命令的 <code>mod</code> 值与对象的 <code>rev</code> 值不匹配，则拒绝更新命令。这里的 <code>mod</code> 用作防护 token。</li>
+</ul>
+
+<pre><code>sig Updated extends Event {}
+
+fact {
+  all u : Update {
+    one e : Updated | e.origin = u and e.object = u.new
+  }
+}
+</code></pre>
+
+<ul>
+<li>每个更新命令都会生成一个持久且可查询的 Updated Event，event 的 object 字段引用新的 Kubernetes 对象。</li>
+</ul>
+
+<h4 id="删除命令">删除命令</h4>
+
+<pre><code>sig Delete extends Command {toDelete : one Object, mod : Int}
+
+fact {
+  all d : Delete {
+    // pre-condition(s)
+    d.toDelete in d.server.objects
+    // optimistic locking
+    d.toDelete.mod = d.mod 
+    // next state
+    d.server'.objects = d.server.objects - d.toDelete
+  }
+}
+</code></pre>
+
+<ul>
+<li>删除命令从 API Server 中删除 Kubernetes 对象。</li>
+<li>如果命令的 <code>mod</code> 值与对象的 <code>mod</code> 值不匹配，则拒绝删除命令。这里的 <code>mod</code> 用作防护 token。</li>
+</ul>
+
+<pre><code>sig Deleted extends Event {}
+
+fact {
+  all d : Delete {
+    one e : Deleted | e.origin = d and e.object = d.toDelete
+  }
+}
+</code></pre>
+
+<ul>
+<li>每个删除命令都会生成一个持久且可查询的 Deleted Event，event 的 object 字段引用已删除的 Kubernetes 对象。</li>
+</ul>
+
+<h3 id="读取接口">读取接口</h3>
+
+<p>Kubernetes API 读取接口提供两个字接口，一个接口与对象相关，另一个与事件相关。</p>
+
+<h4 id="对象相关的子接口">对象相关的子接口</h4>
+
+<p>对象相关的子接口提供读取对象和对象列表的命令。</p>
+
+<pre><code>sig ReadO {kind : one Kind, name : one Name, namespace : one Namespace, min : Int, res : lone Object, rev : Int}
+
+fact {
+  all r : ReadO {
+    some s : Server {
+      r.min &lt;= server.rev
+      r.rev = s.rev
+      r.res = {o : s.objects | o.kind = r.kind and o.name = r.name and o.namespace = r.namespace}
+    }
+  }
+}
+</code></pre>
+
+<ul>
+<li>读取对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 <code>min</code> 参数。</li>
+<li>API Server 至少在由 <code>min</code> 指定的 API Server 的版本处返回匹配的 Kubernetes 对象。</li>
+</ul>
+
+<h4 id="事件相关的子接口">事件相关的子接口</h4>
+
+<p>事件相关的子接口提供命令以读取关于对象和对象列表的事件。</p>
+
+<pre><code>sig WatchO {kind : Kind, name : Name, namespace : Namespace, min : Int, res : set Event}
+
+fact {
+  all w : WatchO {
+    w.res = {e : Event | e.origin.server.rev &gt;= w.min and e.object.kind = w.kind and e.object.name = w.name and e.object.namespace = w.namespace}
+  }
+}
+</code></pre>
+
+<ul>
+<li>Watch 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 <code>min</code> 参数。</li>
+<li>API Server 从指定的 API Server 版本开始返回所有匹配的事件。</li>
+</ul>
+
+<pre><code>sig WatchL {kind : Kind, name : Name, min : Int, res : set Event}
+
+fact {
+  all w : WatchL {
+    w.res = {e : Event | e.origin.server.rev &gt;= w.min and e.object.kind = w.kind and e.object.name = w.name}
+  }
+}
+</code></pre>
+
+<ul>
+<li>Watch List 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 min 参数。</li>
+<li>API Server 从指定的 API Server 版本开始返回所有匹配的事件。</li>
+</ul>
+
+<h4 id="例子">例子</h4>
+
+<p>对象相关的子接口与事件相关的子接口一起组成了 Kubernetes 中广泛使用的有效查询机制，例如在 Kubernetes 控制器中就用到了这种机制。</p>
+
+<p>通过这种机制，客户端可以先请求一次当前状态，然后订阅后续事件流，而不是重复轮询对象或对象列表的当前状态。</p>
+
+<pre><code>pods, rev := request-object-list(kind=&quot;pods&quot;, namespace=&quot;default&quot;)
+for e in request-watch-list(kind=&quot;pods&quot;, namespace=&quot;default&quot;, rev)
+  pods := apply(pods, e)
+</code></pre>
+
+<p>通过将读取请求最初返回的 Kubernetes API Server 版本线程化到 watch 请求，可以保证客户端能够接收到读取和写入请求之间以及之后发生的任何事件。</p>
+
+<p>这种实现机制可以确保客户端的状态与 API Server 的状态保持最终一致性。</p>
+
+<h2 id="span-id-inline-toc-5-span-总结"><span id="inline-toc">5.</span> 总结</h2>
+
+<hr />
+
+<p>本文描述了 Kubernetes API Server 的架构和行为。设计和实现一个适当的客户端的关键部分是正确使用  Kubernetes API Server 的版本和 Kubernetes 对象的版本作为防护 token 和新鲜度 token。</p>
+
+<p>下一篇文章将会为大家介绍 Kubernetes API 和 Kubernetes 对象存储。</p>
+
+<h2 id="span-id-inline-toc-6-span-后记"><span id="inline-toc">6.</span> 后记</h2>
+
+<hr />
+
+<p>本系列文章是 CNCF，Google 和 SAP 之间合作努力的结果，旨在促进大家对 Kubernetes 及其基本概念的理解。</p>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
@@ -908,11 +970,11 @@ options ndots:5
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/weekly-6/" data-toggle="tooltip" data-placement="top" title="干货与湿货分享第6期">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/egress-tls-origination/" data-toggle="tooltip" data-placement="top" title="Istio 出口流量的 TLS">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/weekly-7/" data-toggle="tooltip" data-placement="top" title="干货与湿货分享第7期">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -922,15 +984,15 @@ options ndots:5
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
+                    <li><a href="/posts/egress-tls-origination/">Istio 出口流量的 TLS</a></li>
                     
-                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
+                    <li><a href="/posts/understanding-resource-limits-in-kubernetes-cpu-time/">深入理解 Kubernetes 资源限制：CPU</a></li>
                     
-                    <li><a href="/posts/where-is-the-request-1/">请求都去哪了？</a></li>
+                    <li><a href="/posts/use-envoy-as-a-kubernetes-ingress/">初试 Kubernetes 集群中使用 Contour 反向代理</a></li>
                     
-                    <li><a href="/posts/kubernetes-resource-management/">Kubernetes 资源管理概述</a></li>
+                    <li><a href="/posts/kubernetes-extensible-admission/">Kubernetes 准入控制介绍</a></li>
                     
-                    <li><a href="/posts/custom-metrics-hpa/">使用自定义指标进行弹性伸缩</a></li>
+                    <li><a href="/posts/kubernetes-dns/">Kubernetes DNS 高阶指南</a></li>
                     
                 </ul>
                 

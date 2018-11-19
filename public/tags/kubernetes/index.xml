@@ -6,10 +6,19 @@
     <description>Recent content in Kubernetes on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 16 Nov 2018 15:56:49 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 19 Nov 2018 13:42:03 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>深入理解 Kubernetes API Server（一）</title>
+      <link>https://www.yangcs.net/posts/kubernetes-api-server-part-1/</link>
+      <pubDate>Mon, 19 Nov 2018 13:42:03 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-api-server-part-1/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Istio 出口流量的 TLS</title>
