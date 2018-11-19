@@ -143,8 +143,8 @@ EOF
 此处 `ServiceEntry` 与 Envoy 配置文件的映射关系可以参考我之前的文章 [控制 Egress 流量](https://www.yangcs.net/posts/control-egress-traffic/) 中的 **HTTP ServiceEntry 配置深度解析**这一部分，具体细节不再赘述。
 
 <div class="gallery">
-    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg" data-lightbox="image-1" data-title="图 1：ServiceEntry 与 Envoy route 的映射关系">
-    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/serviceentry1.svg">
+    <a href="https://drive.yangcs.net/?/picture/serviceentry1.svg" data-lightbox="image-1" data-title="图 1：ServiceEntry 与 Envoy route 的映射关系">
+    <img src="https://drive.yangcs.net/?/picture/serviceentry1.svg">
     </a>
 </div>
 
