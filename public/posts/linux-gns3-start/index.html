@@ -509,7 +509,7 @@ autocomplete('#aa-search-input',
 <code>GNS3</code> 是一款具有图形化界面可以运行在多平台（包括 Windows, Linux, and MacOS 等）的网络虚拟软件。Cisco 网络设备管理员或是想要通过 <code>CCNA</code>,<code>CCNP</code>,<code>CCIE</code> 等 Cisco 认证考试的相关人士可以通过它来完成相关的实验模拟操作。同时它也可以用于虚拟体验 Cisco 网际操作系统 IOS 或者是检验将要在真实的路由器上部署实施的相关配置。
 </p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/gns3.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/gns3.png" alt="" /></center></p>
 
 <p><code>Windows</code> 平台下的安装配置非常简单，下载一体化的安装包安装就可以了。但是考虑系统的资源和兼容性，<code>linux</code> 平台是最好的选择，以下的安装配置基于 <code>Archlinux</code> 的 64 位系统和<code>GNS1.5.2</code>版本。</p>
 
@@ -619,7 +619,7 @@ port = 3080
 <li>如果所有的组件都已正常安装，接下来在图形界面下的终端输入 <code>gns3</code> 就可以启动应用了。</li>
 </ul>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/%E5%B7%A5%E4%BD%9C%E5%8C%BA%201_432.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/%E5%B7%A5%E4%BD%9C%E5%8C%BA%201_432.png" alt="" /></center></p>
 
 <h2 id="span-id-inline-toc-3-span-gns3-配置"><span id="inline-toc">3.</span> GNS3 配置</h2>
 
@@ -629,11 +629,11 @@ port = 3080
 
 <p>点击“<code>edit</code>”-“<code>preferences</code>”找到“<code>general</code>”检查相关设置是否正确，可以根据实际系统的配置和自己的喜好设置，例如“<code>console application</code>”中我把 <code>telnet</code> 的指令设成 <code>Gnome terminal</code>,设置好后如图所示。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/gns3-console%E8%AE%BE%E7%BD%AE.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/gns3-console%E8%AE%BE%E7%BD%AE.png" alt="" /></center></p>
 
 <p>点击“<code>edit</code>”-“<code>preferences</code>”找到“<code>server</code>”主要用于设置系统和 <code>console</code> 绑定的端口。通过设定相应的端口，远程用户可以 <code>telnet</code> 主机的指定端口进行配置。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/gns3-server.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/gns3-server.png" alt="" /></center></p>
 
 <h3 id="配置ios路由">配置IOS路由</h3>
 
@@ -649,7 +649,7 @@ port = 3080
 <li>点击“<code>edit</code>”-“<code>preferences</code>”找到“<code>dynamips</code>”检查相关设置是否正确，然后选取“<code>IOS routers</code>”找到已解压好的IOS映像，设置好后如图所示。</li>
 </ul>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Preferences_435.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/Preferences_435.png" alt="" /></center></p>
 
 <p>这里需要指定3个地方： 【镜像文件】、【平台】、【型号】，然后 Apply。</p>
 
@@ -662,10 +662,10 @@ port = 3080
 </ul>
 
 <p>我们知道cisco路由器采用模块化的结构，路由器上面有额外的插槽，这些插槽可以安装各种模块，以提供更多的端口或其他东西，悲催的事儿就是当你需要添加更多的模块时，你必须为每个模块支付相应的费用，也就是按模块收费。
-<center><img src="http://o7z41ciog.bkt.clouddn.com/wKioL1QFRSDytnjOAAHgwQqfNBg933.jpg" alt="" /></center></p>
+<center><img src="http://ycs.ylck.me/wKioL1QFRSDytnjOAAHgwQqfNBg933.jpg" alt="" /></center></p>
 
 <p>我们可以拖拽左侧相应的设备（路由器或交换机）至工作区，然后对其 <code>右键</code> - <code>配置</code>， 在 <code>solt</code> 中选择合适的模块。
-<center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_447.png" alt="" /></center></p>
+<center><img src="http://ycs.ylck.me/Unsaved%20project-%20-%20GNS3_447.png" alt="" /></center></p>
 
 <p>可以按照实验需求自行添加所需模块，T 结尾的为 <code>Serial 接口</code>，E 为 <code>Ethernet 接口</code>，FE 为 <code>fast-Ethernet 接口</code>。
 那么各个模块都是什么含义呢？</p>
@@ -689,15 +689,15 @@ port = 3080
 <p><br \>
 需要注意的是 <code>Idle-PC</code> 值的选取，只有配置了合适的 <code>idle-pc</code> 值，<code>dynamips</code> 的运行才正常（CPU的值在 <code>20%</code> 以内），如果 CPU 占用过高可以重新获取 <code>idle-pc</code> 值。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_436.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/Unsaved%20project-%20-%20GNS3_436.png" alt="" /></center></p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_437.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/Unsaved%20project-%20-%20GNS3_437.png" alt="" /></center></p>
 
-<p><img src="http://o7z41ciog.bkt.clouddn.com/top.png" alt="" /></p>
+<p><img src="http://ycs.ylck.me/top.png" alt="" /></p>
 
 <p>回到 <code>gns3</code> 界面选择刚配置好的路由器（例如 <code>C3640</code>）拖至中间空白区域，然后选中它右击“<code>start</code>”启动，启动后可以选择“<code>console</code>”进入配置模式。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_440.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/Unsaved%20project-%20-%20GNS3_440.png" alt="" /></center></p>
 
 <h3 id="配置vpcs">配置vpcs</h3>
 
@@ -709,11 +709,11 @@ port = 3080
 </code></pre>
 
 <p>安装成功后，在gns3的设置界面选取 <code>VPCS</code> 的选项，找到已经编译好的 <code>vpcs</code> 执行文件，如下图所示。
-<center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project%20-%20GNS3_441.png" alt="" /></center></p>
+<center><img src="http://ycs.ylck.me/Unsaved%20project%20-%20GNS3_441.png" alt="" /></center></p>
 
 <p>注意：启动 <code>vpcs</code> 之前，必须要把 <code>VPCS</code> 和其他设备用网线连接起来，不然会报错 Server error from <a href="http://127.0.0.1:3080:" target="_blank">http://127.0.0.1:3080:</a> PC1: This VPCS instance must be connected in order to start</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_446.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/Unsaved%20project-%20-%20GNS3_446.png" alt="" /></center></p>
 
 <ul>
 <li><code>vpcs</code> 必须连接路由的 <code>Fast-Ethernet</code> 接口</li>
@@ -737,32 +737,32 @@ port = 3080
 
 <p>点击 <code>Preferences</code> - <code>Docker containers</code> - <code>New</code>，新建一个Docker 容器模板。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/79452a76c6a569b251929440a96b3c31.jpg" alt="" /></center>
+<p><center><img src="http://ycs.ylck.me/79452a76c6a569b251929440a96b3c31.jpg" alt="" /></center>
 <br \></p>
 
 <p>选择一个镜像。你可以选择 &ldquo;<code>Existing image</code>&ldquo;，用的是本机已经存在的镜像，也可以选择 &ldquo;<code>New image</code>&ldquo;，它会自动去官方仓库拉取你需要的镜像。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/d895f4c984286d4169008eb95af66617.jpg" alt="" /></center>
+<p><center><img src="http://ycs.ylck.me/d895f4c984286d4169008eb95af66617.jpg" alt="" /></center>
 <br \></p>
 
 <p>选择一个启动命令，通常我们只想要一个 <code>shell</code>。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/655343e3e4d84b1d54764c4bec8ca397.jpg" alt="" /></center>
+<p><center><img src="http://ycs.ylck.me/655343e3e4d84b1d54764c4bec8ca397.jpg" alt="" /></center>
 <br \></p>
 
 <p>设置环境变量。容器启动后你会在容器里看到你设置的这些环境变量。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/711e7a83854868f97f4987fac0e0fea8.jpg" alt="" /></center>
+<p><center><img src="http://ycs.ylck.me/711e7a83854868f97f4987fac0e0fea8.jpg" alt="" /></center>
 <br \></p>
 
 <p>设置好了之后，你可以将容器模板拖到中间区域，如果这个镜像在本地不存在，就会自动从官方仓库拉取这个镜像。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Unsaved%20project-%20-%20GNS3_448.png" alt="" /></center>
+<p><center><img src="http://ycs.ylck.me/Unsaved%20project-%20-%20GNS3_448.png" alt="" /></center>
 <br \></p>
 
 <p>现在你可以启动这个容器并打开 <code>console</code>。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/alpine-1_449.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/alpine-1_449.png" alt="" /></center></p>
 
 <p>需要注意的是：一般情况下，容器会启动一个后台守护进程并开放一些端口，但在 GNS3 中并不是这样，因为我们需要到容器中去手动设置 ip。</p>
 
@@ -775,7 +775,7 @@ port = 3080
 
 <p>安装成功后，<code>GNS3</code> 的配置如下图所示。</p>
 
-<p><center><img src="http://o7z41ciog.bkt.clouddn.com/Preferences_450.png" alt="" /></center></p>
+<p><center><img src="http://ycs.ylck.me/Preferences_450.png" alt="" /></center></p>
 
 <p>在需要抓包的设备上右键选择“<code>Capture</code>”进行抓包操作，如果设备有多块网卡会提示选择那块。</p>
                 <br />

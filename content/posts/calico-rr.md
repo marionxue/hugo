@@ -11,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://o7z41ciog.bkt.clouddn.com/Two%20Steps%20From%20Hell%20-%20Star%20Sky.mp3"></iframe>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://ycs.ylck.me/Two%20Steps%20From%20Hell%20-%20Star%20Sky.mp3"></iframe>
 
 ## <span id="inline-toc">1.</span> 名词解释
 ------
@@ -417,7 +417,7 @@ For example, the topology outlined in the diagram below is based on the Top of R
 - Each node (server in the rack) peers with a redundant set of route reflectors specific to that rack.
 - All of the ToR route reflectors form a full mesh with each other.
 
-![](http://o7z41ciog.bkt.clouddn.com/mesh-topology.png)
+![](http://ycs.ylck.me/mesh-topology.png)
 
 For example, to set up the topology described above, you would:
 

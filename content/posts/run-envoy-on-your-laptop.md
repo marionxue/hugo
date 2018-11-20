@@ -272,6 +272,6 @@ Envoy 的一大特色是内置的 Admin 服务，如果你在浏览器中访问 
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat_big.jpg)</center>
 <center>扫一扫关注微信公众号</center>
 

@@ -34,7 +34,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ### <span id="inline-toc">3.</span> [世纪月全食遇上火星冲：世人抬头看“红月亮”奇景](https://www.bbc.com/zhongwen/simp/science-44990456)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/moonlight.jpg)</center>
+<center>![](http://ycs.ylck.me/moonlight.jpg)</center>
 
 北京香港台湾时间周六（7月28日）凌晨，地球运行到刚好在太阳与月球之间的位置，阻挡了大部份通常会照射到月球的光线，为各地的天文爱好者上演本世纪最长的月全食。在世纪月全食发生之际，也是15年来最大、最亮的“火星冲”，闪耀红光的火星与“红月亮”相距不到10度。
 
@@ -110,7 +110,7 @@ WeRss 是一个新的选择。有个注意事项是每个人都必须使用自�
 
 ### <span id="inline-toc">1.</span> [follow-me-install-kubernetes-cluster](https://github.com/opsnull/follow-me-install-kubernetes-cluster)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/follow-me-install-kubernetes-cluster-min.png)</center>
+<center>![](http://ycs.ylck.me/follow-me-install-kubernetes-cluster-min.png)</center>
 
 部署 kubernetes 集群教程。该教程介绍使用二进制部署最新 kubernetes 集群的所有步骤，而不是使用 kubeadm 等自动化方式来部署集群。这样有助于理解系统各组件的交互原理，进而能够快速定位、解决实际中遇到的问题。
 
@@ -138,7 +138,7 @@ Spark 源码阅读笔记。
 
 ### <span id="inline-toc">6.</span> [progit2](https://git-scm.com/book/zh/v2)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/progit2-min.png)</center>
+<center>![](http://ycs.ylck.me/progit2-min.png)</center>
 
 《Pro Git 第二版》在线中文阅读
 
@@ -152,7 +152,7 @@ Spark 源码阅读笔记。
 
 ### <span id="inline-toc">2.</span> [InterviewMap](https://github.com/InterviewMap/InterviewMap)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/InterviewMap-min.png)</center>
+<center>![](http://ycs.ylck.me/InterviewMap-min.png)</center>
 
 这是一份制作精良、系统的面试图谱。内容包括：前端、计算机网络、算法、数据结构等方面。相信认真学习完这份资料，你会找到自己心仪的工作。
 
@@ -194,7 +194,7 @@ Go 夜读，该项目每周四晚上更新 Go 源码阅读以及线下技术讨�
 
 ### <span id="inline-toc">4.</span> 女程序员该如何求救？
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1180.jpeg)</center>
+<center>![](http://ycs.ylck.me/WechatIMG1180.jpeg)</center>
 
 设想一个故事场景：如果一个女程序员落难到一个孤岛上，该如何求救？然后就有人用漫画告诉了我们最佳答案。。。我也觉得 php 是世界上最好的语言，不接受反驳！
 
@@ -206,6 +206,6 @@ Go 夜读，该项目每周四晚上更新 Go 源码阅读以及线下技术讨�
 
 微信搜索 “云原生实验室” 或者扫描二维码即可关注。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat.jpg)</center>
 
 

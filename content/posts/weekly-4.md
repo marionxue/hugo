@@ -53,7 +53,7 @@ Google 又双叒叕要回归中国，这是谷歌今年以来第5次传出“返
 
 #### <span id="inline-toc">5.</span> [腾讯云承认自身错误导致用户数据丢失](https://36kr.com/p/5146916.html)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1262.jpeg)</center>
+<center>![](http://ycs.ylck.me/WechatIMG1262.jpeg)</center>
 
 腾讯云服务最近发生了一起引发广泛关注的用户数据丢失事故。“前沿数控技术新媒体”8月5日晚间发微博称，在使用腾讯云8个月后，公司存储在腾讯云上的数据无可挽回地全部丢失。腾讯云公布的调查报告，承认是自己犯下的一系列错误导致用户数据丢失，并表示将尽力帮助客户解决问题，同时优化机制避免类似情况再度发生。
 
@@ -89,15 +89,15 @@ Feediary 是一款网页 RSS 阅读器，简单注册后就可以使用了。有
 
 #### <span id="inline-toc">5.</span> [Onlim](https://onlim.com/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/onlim.jpg)</center>
+<center>![](http://ycs.ylck.me/onlim.jpg)</center>
 
 Pnlim 是一个免费的在线社交媒体管理工具，你可以在这里面添加无限多的社交账户（支持 Facebook、Twitter 和 Slack 等）。同时还可以添加 RSS 源，所以你也可以把它当成一个 RSS 阅读器，颜值还是很高的。
 
 #### <span id="inline-toc">6.</span> [zhuye_kim](https://github.com/wenguonideshou/zhuye_kim)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/zhuye_kim_google.png)</center>
+<center>![](http://ycs.ylck.me/zhuye_kim_google.png)</center>
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/zhuye_kim_baidu.png)</center>
+<center>![](http://ycs.ylck.me/zhuye_kim_baidu.png)</center>
 
 仿 zhuye.kim 的简单个人主页/导航程序，带后台
 
@@ -158,7 +158,7 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 #### <span id="inline-toc">2.</span> [杭州房产知识扫盲](https://github.com/houshanren/hangzhou_house_knowledge)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/hangzhou_house.jpg)</center>
+<center>![](http://ycs.ylck.me/hangzhou_house.jpg)</center>
 
 这是作者 2017 年买房经历总结出来的买房购房知识分享给大家，希望对大家有所帮助。买房不易，且买且珍惜。
 
@@ -185,7 +185,7 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 #### <span id="inline-toc">1.</span> 历史上第一个真正能转的电动机
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1264.jpeg)</center>
+<center>![](http://ycs.ylck.me/WechatIMG1264.jpeg)</center>
 <center>*法拉第单极电机的现代仿品*</center>
 <center>*水银有毒，可用盐水代替*</center>
 
@@ -193,20 +193,20 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 #### <span id="inline-toc">2.</span> 维苏威火山
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/8416081431.jpg)</center>
+<center>![](http://ycs.ylck.me/8416081431.jpg)</center>
 
 维苏威火山是欧洲最危险的火山，11 公里以外就是那不勒斯。公元 79 年的一次大喷发，埋葬了庞贝古城和附近的赫库兰尼姆、斯塔比亚等等城市。一开始连续发生了 4 天的地震，但是震级都不大，当时古罗马的人都不在乎。哪知道维苏威火山突然喷发了，火山灰云柱直冲 33km 高空。
 
 大量火山灰落到了附近的城市里面，房顶上累积了 3 厘米厚。夜里发生了 6 次火山碎屑流，火山喷发的时候，喷出的火山灰是滚烫的，加热了周围的空气，空气形成强大的上升气流，裹挟着火山灰往天上冒。但是温度下降了，热空气没那个力气把火山灰送入高空，火山灰很可能喷出来没多高就沿着山坡往下翻滚，于是热空气和火山灰裹挟着，形成了火山的碎屑流。到达赫库兰尼姆的时候，温度高达 500 度。因此城里的人瞬间碳化，定格在了那一刻。到达稍远的庞贝城的时候，温度降低到 300 度，因此庞贝城里面的遗骸留下了大量的遗体和衣服。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1265.jpeg)</center>
+<center>![](http://ycs.ylck.me/WechatIMG1265.jpeg)</center>
 <center>*庞贝城的悲惨景象*</center>
 
 到了 1599 年的时候，因为挖掘地下引水工程，发现有雕塑和壁画，庞贝古城被发现。1738 年，命运悲惨的赫库兰尼姆被发现。1748 年，在那不勒斯王国国王夫妇的资助下，庞贝城也被挖出来了。如今这里都是世界文化遗产。
 
 #### <span id="inline-toc">3.</span> 夜明珠到底值不值钱？
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1267.jpeg)</center>
+<center>![](http://ycs.ylck.me/WechatIMG1267.jpeg)</center>
 <center>*美丽的萤石*</center>
 
 最早人们发现有一种东西叫做“萤石”，为什么起这个名字呢？因为在阳光照射过后，你迅速拿到黑暗中去看，会看到这种彩色的石头会发出荧光。有的石头荧光时间非常长，有的石头荧光时间非常短。今天市场上很多所谓的夜明珠，就是由发光时间比较长的萤石材料做成的。所以这些东西一点都不值钱。早在河姆渡时期就发现过用萤石来做装饰品。我们的老祖宗已经发现这东西是会发出荧光的。
@@ -221,7 +221,7 @@ Cartoonify 是 Google 一项很有趣的免费在线工具，使用人工智能�
 
 微信搜索 “云原生实验室” 或者扫描二维码即可关注。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat.jpg)</center>
 
 <br />
 

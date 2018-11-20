@@ -15,13 +15,13 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ### <span id="inline-toc">1.</span> [谷歌推出首款微信小程序“猜画小歌”](https://techcrunch.cn/2018/07/18/google-launches-its-first-wechat-mini-program-as-its-china-experiments-continue/)
 
-![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1130.jpeg)
+![](http://ycs.ylck.me/WechatIMG1130.jpeg)
 
 为了让每个人都有机会体验人工智能技术驱动下的人机交互，近日，谷歌推出了旗下首款微信小程序“猜画小歌”，也是一款有趣的社交微信小程序。官方表示，猜画小歌由来自 Google AI 的神经网络驱动，该网络源自全世界最大的、囊括超过 5000 万个手绘素描的数据群。
 
 当天中午体验了下，简直停不下来，立马发了朋友圈告知好友，然后就看到朋友圈内诞生了各种灵魂画作，选一个比较有代表性的给你们感受下：
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG1129.jpeg)</center>
+<center>![](http://ycs.ylck.me/WechatIMG1129.jpeg)</center>
 
 建议大家第一时间体验，感觉 Google 这个小程序要孕育出一大堆灵魂画手，秀出自己的灵魂画作吧！
 
@@ -35,11 +35,11 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 但在中国，由于微信经常与个人社交相关联，许多人被封号封群后又不得不重新创建，于是有网友调侃“我们进入了一个封建时期”。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/wechat1.jpg)</center>
+<center>![](http://ycs.ylck.me/wechat1.jpg)</center>
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/wechat2.jpg)</center>
+<center>![](http://ycs.ylck.me/wechat2.jpg)</center>
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/wechat3.jpg)</center>
+<center>![](http://ycs.ylck.me/wechat3.jpg)</center>
 
 ### <span id="inline-toc">3.</span> [Android 免费模式或将终结](https://36kr.com/p/5143943.html)
 
@@ -55,7 +55,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ### <span id="inline-toc">4.</span> [Google印度工程师被活活打死](https://www.cnbeta.com/articles/tech/748631.htm)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/efa942f659a7e12.jpeg)</center>
+<center>![](http://ycs.ylck.me/efa942f659a7e12.jpeg)</center>
 
 据外媒报道，近日，印度一位32岁的 Google 软件工程师 Mohammad Azam 遭遇不幸，被人活活打死，而原因竟然是村民听信谣言，以为这位工程师是个人贩子。报道称，Azam 和他们的两位友人去外地见另外一位朋友，回程途中休息的时候碰到一群小学生经过，出于好心拿出巧克力分给孩子们。
 
@@ -67,11 +67,11 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 最后，车子被砸得稀烂，Azam 被打死，另外两人也受了重伤。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/6e5e9c0eea7bc5c.jpeg)</center>
+<center>![](http://ycs.ylck.me/6e5e9c0eea7bc5c.jpeg)</center>
 
 ### <span id="inline-toc">5.</span> [整个社区联合起来强奸一个孩子](https://cn.nytimes.com/world/20180719/rape-chennai-india/?utm_source=tw-nytimeschinese&utm_medium=social&utm_campaign=cur)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/merlin.jpg)</center>
+<center>![](http://ycs.ylck.me/merlin.jpg)</center>
 
 新德里——警方表示，数月来，一群男子一直在轮奸一名11岁的女孩。
 
@@ -81,7 +81,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ### <span id="inline-toc">6.</span> [马化腾朋友圈辟谣](https://getpocket.com/redirect?url=https%3A%2F%2Fm.mydrivers.com%2Fnewsview%2F585157.html%3Fref%3Dandroid-app%253A%2F%2Fcom.google.android.googlequicksearchbox%2Fhttps%2Fwww.google.com&formCheck=e3cf5ad1969099a5c614a0e851dfa82b)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/726c1d06f96.jpg)</center>
+<center>![](http://ycs.ylck.me/726c1d06f96.jpg)</center>
 
 近日，一则“王思聪表白马化腾女儿”的传闻在网上传播，**对此马化腾本人在朋友圈辟谣回应，称“这两天集中爆发的针对我家人的谣言越来越卑劣”，表示“一定会追查到底”。**
 
@@ -89,7 +89,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 不过也许是考虑到抑制谣言传播，目前张军已经删除了自己的辟谣微博，代之转发了一条新浪科技的辟谣报道。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/d20b8f8b16.jpg)</center>
+<center>![](http://ycs.ylck.me/d20b8f8b16.jpg)</center>
 
 ## <p id="h2">工具</p>
 
@@ -105,19 +105,19 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 ### <span id="inline-toc">3.</span> [Infinity 新标签页](https://cn.infinitynewtab.com/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/infinity.jpg)</center>
+<center>![](http://ycs.ylck.me/infinity.jpg)</center>
 
 Infinity，基于过去对新标签页的认识，重新定义了新标签页，一个追求极简美学和一站式服务体验。新一代的标签页，一个更好用，更强大的新标签页。
 
 ### <span id="inline-toc">4.</span> [Camtd - Chrome 多线程下载管理器插件](https://github.com/jae-jae/Camtd)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/6874.jpeg)</center>
+<center>![](http://ycs.ylck.me/6874.jpeg)</center>
 
 如果你跟我一样不满 Chrome 默认的下载管理器，或许 Camtd 这款多线程下载管理器插件正适合你，它基于 Aria2 和 AriaNg，可满速下载百度网盘文件。
 
 **演示：满速下载百度网盘**
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/1bcf69d6.gif)</center>
+<center>![](http://ycs.ylck.me/1bcf69d6.gif)</center>
 
 ### <span id="inline-toc">5.</span> [Yomail](http://www.nextechat.com/)
 
@@ -174,7 +174,7 @@ tcpdump 是一个运行在命令行下的嗅探工具。它允许用户拦截和
 
 ### <span id="inline-toc">5.</span> [Envoy 官方文档中文版](http://www.servicemesher.com/envoy/)
 
-![](http://o7z41ciog.bkt.clouddn.com/envoyproxy11.jpg)
+![](http://ycs.ylck.me/envoyproxy11.jpg)
 
 Envoy ——为云原生应用而设计、开源的边缘和服务代理、Istio Service Mesh 默认的数据平面，最新官方文档中文版，由 ServiceMesher社区倾情奉献。
 
@@ -215,7 +215,7 @@ SOFAMesh 是基于 Istio 改进和扩展而来的 Service Mesh 大规模落地�
 
 ### <span id="inline-toc">6.</span> [golb](https://github.com/onestraw/golb)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/golb.png)</center>
+<center>![](http://ycs.ylck.me/golb.png)</center>
 
 Go 语言编写的新型负载均衡器。
 
@@ -225,7 +225,7 @@ Go 语言编写的新型负载均衡器。
 
 微信搜索 “云原生实验室” 或者扫描二维码即可关注。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat.jpg)</center>
 
 
 

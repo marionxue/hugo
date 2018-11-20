@@ -292,6 +292,6 @@ admin:
 
 ----
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat_big.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat_big.jpg)</center>
 <center>扫一扫关注微信公众号</center>
 

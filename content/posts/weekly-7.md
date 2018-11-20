@@ -29,7 +29,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">1.</span> [MIT 媒体实验室研究人员开发了水下无线通讯技术](https://scitechdaily.com/mit-media-lab-researchers-develop-wireless-underwater-to-air-communications/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Wireless-Water-to-Air-Communications.jpg)</center>
+<center>![](http://ycs.ylck.me/Wireless-Water-to-Air-Communications.jpg)</center>
 
 麻省理工学院媒体实验室的研究人员设计了一个系统，允许水下的设备和飞机上的传感器直接共享数据。水下发射器将声呐信号引导到水面，然后产生与传输的 0 和 1 相对应的微小振动。在水面上方，高灵敏度的接收器读取这些微小的振动干扰并解码声呐信号。
 
@@ -43,7 +43,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">3.</span> [日本使用机器人来送寿司](https://yellrobot.com/sushi-autonomous-delivery-robots/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/CarriRo-Delivery.jpg)</center>
+<center>![](http://ycs.ylck.me/CarriRo-Delivery.jpg)</center>
 
 最近日本最受欢迎的寿司品牌 [Gin no Sara](https://www.ginsara.jp/) 与机器人公司 [ZMP](https://www.zmp.co.jp/en/products/carriro-delivery) 合作，通过机器人来给人们送午餐。这个可爱的机器人名叫 CarriRo，它有一个大大的眼睛，闪烁着蓝色的灯光，看起来像一个卡通娃娃，所以它在人行道上来回走动时不会吓到路人。它身高 3 英尺，使用相机和激光传感器来进行导航，运行时长可达 8 小时，期间可以送大约 60 份的寿司，白天或晚上都可以工作。
 
@@ -73,31 +73,31 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">1.</span> [Videofk](https://www.videofk.com/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/QQ20180822-153658.jpg)</center>
+<center>![](http://ycs.ylck.me/QQ20180822-153658.jpg)</center>
 
 Videofk 是一款用来下载流媒体视频网站的视频文件的工具，支持包括快手、梨视频、微博、B站、YouTube、Instagram、Vimeo、汤不热等站点的视频下载。
 
 #### <span id="inline-toc">2.</span> [Easy to RSS](https://chrome.google.com/webstore/detail/easy-to-rss/hbcmpkcpbnecinpngdnfbnknfkdpdfli)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/demo-rsshub.png)</center>
+<center>![](http://ycs.ylck.me/demo-rsshub.png)</center>
 
 Easy-to-RSS 是一个支持 RSSHub 的一键式发现当前网页 RSS 的 chrome 扩展。
 
 #### <span id="inline-toc">3.</span> [Winds](https://github.com/GetStream/Winds)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/7562e706e67.png)</center>
+<center>![](http://ycs.ylck.me/7562e706e67.png)</center>
 
 由 Getstream.io 提供的订阅 RSS 和 Podcast 的 APP，支持 Windows、MacOS 和 Linux 平台。
 
 #### <span id="inline-toc">4.</span> [FinalShell](https://liyuans.com/2018/08/finalshell.html)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/WechatIMG52.jpeg)</center>
+<center>![](http://ycs.ylck.me/WechatIMG52.jpeg)</center>
 
 可替代 Xshell 的 SSH 工具，支持 Linux、Windows、Mac，免费海外服务器远程桌面加速、ssh加速、双边tcp加速、内网穿透。
 
 #### <span id="inline-toc">5.</span> [Monlor-Tools](https://github.com/monlor/Monlor-Tools)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/img.png)</center>
+<center>![](http://ycs.ylck.me/img.png)</center>
 
 小米路由器 Shell 工具箱，支持 Shadowsocks、Aria2、KoolProxy 等插件。
 
@@ -115,7 +115,7 @@ GitHub 敏感信息泄露监控，近实时监控 GitHub 敏感信息泄露，�
 
 #### <span id="inline-toc">9.</span> [Mortar](https://github.com/kontena/mortar)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/kontena-mortar.png)</center>
+<center>![](http://ycs.ylck.me/kontena-mortar.png)</center>
 
 Mortar 是一个用来轻松处理复杂的 Kubernetes 资源的工具。对于大多数简单的使用场景，我们只需要通过 `kubectl apply -f some_folder/` 来管理资源就行了，但在 CI/CD pipeline 中，情况将会变得很复杂。然而通过 Helm 仓库来编写组织所有资源又太繁琐了，因此就诞生了 Mortar。
 
@@ -137,7 +137,7 @@ ModSecurity-Envoy 是使用运行 ModSecurity（V3）的 HTTP 过滤器编译的
 
 #### <span id="inline-toc">1.</span>. [Shuttle](https://github.com/sipt/shuttle)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/shuttle.jpg)</center>
+<center>![](http://ycs.ylck.me/shuttle.jpg)</center>
 
 Shuttle 是一个基于 Go 开发的全平台 ss-local 工具，具有代理、多服务器选择、HTTP/HTTPS 抓包、独立 DNS 解析机制，目标为开发者提供便利。 
 
@@ -151,7 +151,7 @@ Shuttle 是一个基于 Go 开发的全平台 ss-local 工具，具有代理、�
 
 #### <span id="inline-toc">2.</span> [Ethereum Development with Go](https://github.com/miguelmota/ethereum-development-with-go-book)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/ethereum-development-with-go.jpg)</center>
+<center>![](http://ycs.ylck.me/ethereum-development-with-go.jpg)</center>
 
 这是一本描述了如何通过 Go 语言来开发以太坊的小册子。
 
@@ -177,7 +177,7 @@ Go 语言是一种内存托管语言，大多数情况下你不必手动管理�
 
 #### <span id="inline-toc">1.</span> [虫部落快搜](http://search.chongbuluo.com/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180901-163120.jpg)</center>
+<center>![](http://ycs.ylck.me/Jietu20180901-163120.jpg)</center>
 
 这个网站真的无所不能，大家看图片就知道了，你想查的所有的东西基本上都能在这上面找到，查字体，查文献，查ACG资源，电子书资源，GitHub程序，论文数据，你想要的全都有！
 
@@ -278,12 +278,12 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 #### <span id="inline-toc">1.</span> [达·芬奇在 1492 年设计的冰箱](https://www.bbc.co.uk/news/blogs-news-from-elsewhere-33478364)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/_84198753_met.provincia.fi.it.jpg)</center>
+<center>![](http://ycs.ylck.me/_84198753_met.provincia.fi.it.jpg)</center>
 <center>*达·芬奇设计的冰箱原型*</center>
 
 人类历史上公认的旷世奇才只有两个人，一个是发明了交流电的尼古拉•特斯拉，另一个就是**莱昂纳多•达芬奇**。在我看来，达·芬奇更加传奇一些，当他在给中世纪意大利贵族画肖像时，他就在研究如何冷藏他们的饮料。他的概念图中描绘了把空气泵入三个皮革腔室的复杂的风箱系统，它们通过18个喷管把空气快速地压进中间的空间，要冷却的容器就在存放在那里。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/13094240pvy5.jpg)</center>
+<center>![](http://ycs.ylck.me/13094240pvy5.jpg)</center>
 
 <center>*制冷机的详细图纸*</center>
 
@@ -327,7 +327,7 @@ Powerlevel9k 是使用 Powerline 字体的 Zsh 主题，它可以用于 Zsh 或�
 
 微信搜索 “云原生实验室” 或者扫描二维码即可关注。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat.jpg)</center>
 
 
 

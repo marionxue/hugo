@@ -27,7 +27,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">2.</span> [谷歌员工签联名信抗议重返中国项目](http://cn.rfi.fr/%E7%BE%8E%E6%B4%B2/20180817-%E7%BA%BD%E7%BA%A6%E6%97%B6%E6%8A%A5%E8%B0%B7%E6%AD%8C%E5%91%98%E5%B7%A5%E7%AD%BE%E8%81%94%E5%90%8D%E4%BF%A1%E6%8A%97%E8%AE%AE%E9%87%8D%E8%BF%94%E4%B8%AD%E5%9B%BD%E9%A1%B9%E7%9B%AE)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180818-155529.jpg)</center>
+<center>![](http://ycs.ylck.me/Jietu20180818-155529.jpg)</center>
 
 据 NYT 报道，自谷歌打造阉割版搜索引擎、欲重返中国的项目经媒体报道公开后，谷歌内部越来越多员工对此表示担忧，认为如果搜索引擎遵循中国政府的审查要求则可能有严重的道德问题，已有超过 1400 名谷歌员工在内部信上签名抗议，要求审查该项目。
 
@@ -35,7 +35,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">3.</span> [一大波筹拍中的国产烂片正朝你涌来](https://zhuanlan.zhihu.com/p/41978032)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/aiqinggongyu.jpg)</center>
+<center>![](http://ycs.ylck.me/aiqinggongyu.jpg)</center>
 
 最近，一部披着抄袭剧的皮，卖着《盗墓笔记》肉的借壳电影《爱情公寓》深陷舆论漩涡。
 
@@ -85,7 +85,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">1.</span> [速盘双引擎版](https://www.speedpan.com/index.html)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/snipaste_20180806_191035.png)</center>
+<center>![](http://ycs.ylck.me/snipaste_20180806_191035.png)</center>
 
 不知不觉间，百度云网盘几乎已成为国内互联网上最重要的网络资源分享和下载渠道了。平时无论是工作还是娱乐，不可避免地都需要下载**百度网盘**的文件。
 
@@ -111,13 +111,13 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">5.</span> [Medis](https://github.com/luin/medis)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/meids.png)</center>
+<center>![](http://ycs.ylck.me/meids.png)</center>
 
 Medis 是一款Mac上优秀的Redis图形界面客户端，提供了大部分常用的功能，包括键空间的浏览、键和键值的增删改查、重命名修改 TTL 等。也提供了一些 redis-cli 难以实现的功能，包括创建键副本、修改列表值等，很不错！
 
 #### <span id="inline-toc">6.</span> [Prometheus Formatter](https://github.com/fhemberger/chrome-prometheus-formatter)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/prometheus-formatter.png)</center>
+<center>![](http://ycs.ylck.me/prometheus-formatter.png)</center>
 
 随着 Prometheus 从 CNCF 正式毕业，各种工具如雨后春笋。这款 Chrome 扩展就是用来高亮显示纯文本的 Prometheus 指标。
 
@@ -137,7 +137,7 @@ Medis 是一款Mac上优秀的Redis图形界面客户端，提供了大部分常
 
 #### <span id="inline-toc">2.</span> [The Site Reliability Workbook](https://landing.google.com/sre/book.html)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/workbook-2x.png)</center>
+<center>![](http://ycs.ylck.me/workbook-2x.png)</center>
 
 在 7 月 24 日的 Google Next '18 大会上，Google 发布了 SRE 系列新书《The Site Reliability Workbook — Practical Ways to Implement SRE》纸质版。
 
@@ -145,19 +145,19 @@ Medis 是一款Mac上优秀的Redis图形界面客户端，提供了大部分常
 
 #### <span id="inline-toc">3.</span> [Prometheus: Up and Running](https://www.robustperception.io/prometheus-up-and-running-is-out)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/book-cover-914x1200.png)</center>
+<center>![](http://ycs.ylck.me/book-cover-914x1200.png)</center>
 
 这是一本 Prometheus 的操作指南，内容非常详实，从架构设计到仪表盘、配置、查询和管理，应有尽有。全书共 386 页，目前美国亚马逊官网有出售，国内尚未引进。
 
 #### <span id="inline-toc">4.</span> [Vue.js 源码分析](https://github.com/ustbhuangyi/vue-analysis)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/vue-analysis.png)</center>
+<center>![](http://ycs.ylck.me/vue-analysis.png)</center>
 
 目前社区有很多 Vue.js 的源码解析文章，但是质量层次不齐，不够系统和全面，这本电子书的目标是全方位细致深度解析 Vue.js 的实现原理，让同学们可以彻底掌握 Vue.js。
 
 #### <span id="inline-toc">5.</span> [You Don't Know JS](https://github.com/getify/You-Dont-Know-JS)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/you-don%27t-know-js.jpg)</center>
+<center>![](http://ycs.ylck.me/you-don%27t-know-js.jpg)</center>
 
 这是一套深入探讨 JavaScript 语言核心机制的系列丛书。本系列的第一版已经完成，诚意推荐给所有的前端工程师（或者 JavaScript 工程师，以及其它想了解这门语言一些细节的人），不过初学者并不建议阅读，这本书里没有任何基础知识，主要面向的是有经验的工程师，用来加深对一些概念和细节的认识和理解，但并不能教会你如何写 JavaScript。
 
@@ -167,7 +167,7 @@ Medis 是一款Mac上优秀的Redis图形界面客户端，提供了大部分常
 
 #### <span id="inline-toc">7.</span> [build-your-own-x](https://github.com/danistefanovic/build-your-own-x)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/feynman.png)</center>
+<center>![](http://ycs.ylck.me/feynman.png)</center>
 
 费曼：“我不能创造的东西，我就不了解。”该项目收集了不同编程语言造轮子的教程。
 
@@ -187,7 +187,7 @@ spring cloud + vue 全家桶实战，模拟商城，完整的购物流程、后�
 
 #### <span id="inline-toc">3.</span> [react-tetris](https://github.com/chvin/react-tetris)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/react-tetris.gif)</center>
+<center>![](http://ycs.ylck.me/react-tetris.gif)</center>
 
 逼真的俄罗斯方块（非常逼真、强大！），有详细的技术介绍。[在线试玩](https://chvin.github.io/react-tetris/?lan=zh)
 
@@ -225,7 +225,7 @@ spring cloud + vue 全家桶实战，模拟商城，完整的购物流程、后�
 
 #### <span id="inline-toc">3.</span> 韩国国旗的来历
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/chaoxian.jpg)</center>
+<center>![](http://ycs.ylck.me/chaoxian.jpg)</center>
 
 在明朝，朝鲜（包括现在的朝鲜和韩国）是大明帝国的藩属国，天聪元年（1627年），皇太极对明作战失败，缺少银两，就先易后难，派大将阿敏攻下了朝鲜（打朝鲜不攻山海关），从此朝鲜成为八旗军的后勤供应基地，**粮食可能不管饱，但人参随便拿。。。**你想没事就喝个参汤的军队打仗有多猛。就这样，八旗一边流鼻血一边砍敌人，一路杀进山海关。大清建立后，朝鲜自然而然沦为大清藩属国（虽然他们一直很想念明朝）。
 
@@ -233,7 +233,7 @@ spring cloud + vue 全家桶实战，模拟商城，完整的购物流程、后�
 
 #### <span id="inline-toc">4.</span> Wi-Fi 之母
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Hedy_Lamarr_Publicity_Photo_for_The_Heavenly_Body_1944.jpg)</center>
+<center>![](http://ycs.ylck.me/Hedy_Lamarr_Publicity_Photo_for_The_Heavenly_Body_1944.jpg)</center>
 
 今天我要介绍一位超级大美女给大家认识。
 
@@ -257,7 +257,7 @@ spring cloud + vue 全家桶实战，模拟商城，完整的购物流程、后�
 
 微信搜索 “云原生实验室” 或者扫描二维码即可关注。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat.jpg)</center>
 
 
 

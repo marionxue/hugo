@@ -6,9 +6,9 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 ---
 
 <!--more-->
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://o7z41ciog.bkt.clouddn.com/Linkin%20Park%20-%20In%20The%20End.mp3"></iframe>
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=0 height=0 src="http://ycs.ylck.me/Linkin%20Park%20-%20In%20The%20End.mp3"></iframe>
 
-![](http://o7z41ciog.bkt.clouddn.com/l.jpg)
+![](http://ycs.ylck.me/l.jpg)
 
 <p markdown="1" style="display: block;padding: 10px;margin: 10px 0;border: 1px solid #ccc;border-top-width: 5px;border-radius: 3px;border-top-color: #2780e3;">
 去年的今天，我正在求职面试的道路上自虐，转眼一年又过去了。今天上午，趁着苏州的雾霾刚被吹散，我赶紧取出刚加热的牛奶，跑到路边小摊买了份手抓饼、两个水煮蛋和一杯南瓜粥，匆匆踏上了地铁，到公司已经9点了。

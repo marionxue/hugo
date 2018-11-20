@@ -27,7 +27,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">1.</span> [脑纹将成为新的指纹](https://www.earth.com/news/brainprints-new-fingerprints/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Could-brainprints-become-the-new-fingerprints.png)</center>
+<center>![](http://ycs.ylck.me/Could-brainprints-become-the-new-fingerprints.png)</center>
 
 在过去很长一段时间内，我们一直使用面部识别、语音识别和指纹识别技术来辨别一个人的身份，但是识别率并不能达到百分之百，很快就会有一种新的万无一失的方法来识别身份，它与大脑中称为**连接组（connectome）**的区域之间的物理联系有关。
 
@@ -35,7 +35,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 #### <span id="inline-toc">2.</span> [城市上空惊现疑似天国的幻象](http://strangesounds.org/2018/08/mysterious-glimpse-of-the-kingdom-of-heaven-appears-in-the-sky-over-china.html)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/fata-morgana-china-august-2018.jpg)</center>
+<center>![](http://ycs.ylck.me/fata-morgana-china-august-2018.jpg)</center>
 
 近年来，世界各地的人们都在空中看到很多惊奇的现象，有时候是**鬼城**，有时候是**天使**...很多目击者对此感到很困惑，甚至会感到恐惧，那么天空中这些奇怪的现象到底是什么呢？
 
@@ -48,7 +48,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 除了海市蜃楼之外，很多地方还出现了**“上帝之眼”**。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/fata-morgana-china-august-2018-1.jpg)</center>
+<center>![](http://ycs.ylck.me/fata-morgana-china-august-2018-1.jpg)</center>
 
 #### <span id="inline-toc">3.</span> [人类活动使得多种野生动物患上癌症](http://jandan.net/2018/08/18/cancer-causing.html)
 
@@ -140,7 +140,7 @@ Gitlab 团队手册是 Gitlab 公司内部的运营方面的核心价值，全�
 
 #### <span id="inline-toc">5.</span> [PromQL For Humans](https://timber.io/blog/promql-for-humans/)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/PromQL+Cheatsheet.jpg)</center>
+<center>![](http://ycs.ylck.me/PromQL+Cheatsheet.jpg)</center>
 
 PromQL 是为 Prometheus 制作的内置查询语言，这是 Timber 公司制作的 PromQL 基础入门教程。
 
@@ -188,7 +188,7 @@ PromQL 是为 Prometheus 制作的内置查询语言，这是 Timber 公司制�
 
 #### <span id="inline-toc">7.</span> [斯坦福 CS229 机器学习备忘录](https://github.com/afshinea/stanford-cs-229-machine-learning)
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Jietu20180825-133445.jpg)</center>
+<center>![](http://ycs.ylck.me/Jietu20180825-133445.jpg)</center>
 
 在 Github 上，afshinea 贡献了一个备忘录对经典的斯坦福 CS229 课程进行了总结，内容包括监督学习、无监督学习，以及进修所用的概率与统计、线性代数与微积分等知识。
 
@@ -266,7 +266,7 @@ Git 迅速成为最流行的分布式版本控制系统，尤其是 2008 年，G
 
 #### <span id="inline-toc">5.</span> 柏拉图：地穴寓言
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/Allegory_of_the_Cave_blank.png)</center>
+<center>![](http://ycs.ylck.me/Allegory_of_the_Cave_blank.png)</center>
 
 苏格拉底描述了一个地下洞穴住所，洞里有一条宽阔的通道通向地面。这个山洞里居住着终生被关押在那里的囚犯。他们被捆绑着大腿和脖子坐在那里，以致他们只能朝前看到洞穴的墙壁，而不能转身回头顾望。因此，他们永远看不到背后的出口，也根本不知道有这么一个出口。他们也不能看到自己和其他囚犯。他们唯一能看到的是他们面对的墙壁。他们的住所被身后远方高处燃烧的火炬照亮。囚犯只能看见这唯一的亮光，照亮着墙壁。但是看不见光源。在墙上他们只能看见光影。
 
@@ -288,7 +288,7 @@ Git 迅速成为最流行的分布式版本控制系统，尤其是 2008 年，G
 
 微信搜索 “云原生实验室” 或者扫描二维码即可关注。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat.jpg)</center>
 
 
 

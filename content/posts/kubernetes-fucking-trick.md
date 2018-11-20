@@ -6,7 +6,7 @@ draft: false
 toc: true
 categories: "kubernetes"
 tags: ["kubernetes"]
-bigimg: [{src: "http://o7z41ciog.bkt.clouddn.com/kubernetes4.png"}]
+bigimg: [{src: "http://ycs.ylck.me/kubernetes4.png"}]
 ---
 
 <!--more-->

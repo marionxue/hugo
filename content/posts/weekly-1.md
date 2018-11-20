@@ -67,7 +67,7 @@ PayPal 最近遭遇了一起让无数网友感到愤怒的公关危机，事件�
 
 比如，街头吃煎饼果子：
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/s_c98cb49fa3c7472ca75a3b7b8c2cc75f.jpg)</center>
+<center>![](http://ycs.ylck.me/s_c98cb49fa3c7472ca75a3b7b8c2cc75f.jpg)</center>
 
 ## <p id="h2">工具</p>
 
@@ -183,6 +183,6 @@ Telegram 群合集，收集了非常全面好玩的 telegram 群。
 
 微信搜索 **“云原生实验室”** 或者扫描二维码即可关注。
 
-<center>![](http://o7z41ciog.bkt.clouddn.com/qrcode_for_wechat.jpg)</center>
+<center>![](http://ycs.ylck.me/qrcode_for_wechat.jpg)</center>
 
 
