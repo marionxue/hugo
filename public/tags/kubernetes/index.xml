@@ -6,10 +6,19 @@
     <description>Recent content in Kubernetes on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Mon, 19 Nov 2018 13:42:03 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 21 Nov 2018 17:09:25 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>在服务网格内部调用外部 Web 服务</title>
+      <link>https://www.yangcs.net/posts/egress-https/</link>
+      <pubDate>Wed, 21 Nov 2018 17:09:25 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/egress-https/</guid>
+      <description>原文地址：使用外部 Web 服务 英文作者：VADIM EISENBERG 修订：杨传胜 此博客文章于 2018 年 8 月 9 日更新。新版本使用了 Istio 1.0，并使用了新的 v1alpha3 流量管理 API。</description>
+    </item>
     
     <item>
       <title>深入理解 Kubernetes API Server（一）</title>

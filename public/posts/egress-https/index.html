@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 初试 Kubernetes 集群中使用 Contour 反向代理 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> 在服务网格内部调用外部 Web 服务 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="初试 Kubernetes 集群中使用 Contour 反向代理" />
-  <meta name="twitter:title" content="初试 Kubernetes 集群中使用 Contour 反向代理" />
-  <meta name="description" content="一种全新的 Ingress 实现方式——Envoy">
-  <meta property="og:description" content="一种全新的 Ingress 实现方式——Envoy">
-  <meta name="twitter:description" content="一种全新的 Ingress 实现方式——Envoy">
+  <meta property="og:title" content="在服务网格内部调用外部 Web 服务" />
+  <meta name="twitter:title" content="在服务网格内部调用外部 Web 服务" />
+  <meta name="description" content="HTTPS 流量的出口规则">
+  <meta property="og:description" content="HTTPS 流量的出口规则">
+  <meta name="twitter:description" content="HTTPS 流量的出口规则">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/egress-https/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/egress-https/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -394,7 +394,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>初试 Kubernetes 集群中使用 Contour 反向代理</h1>
+                     <h1>在服务网格内部调用外部 Web 服务</h1>
                      
                      
                   
@@ -402,13 +402,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">一种全新的 Ingress 实现方式——Envoy</span>
+                      <span class="post-subheading">HTTPS 流量的出口规则</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on September 28, 2018
+  Posted on November 21, 2018
   
   
 </span>
@@ -429,10 +429,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">初试 Kubernetes 集群中使用 Contour 反向代理</h1>
+                <h1 align="center">在服务网格内部调用外部 Web 服务</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">一种全新的 Ingress 实现方式——Envoy</h2>
+                    <h2 align="center" class="posts-subheading">HTTPS 流量的出口规则</h2>
                   
                 
                 
@@ -453,12 +453,14 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Fri Sep 28, 2018</h4>
+        <h4 id="date"> Wed Nov 21, 2018</h4>
     </section>
-    <h5 id="wc">2900 Words|Read in about 6 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">3200 Words|Read in about 7 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
         
         <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
     </h5>
@@ -474,22 +476,19 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#span-id-inline-toc-1-span-安装步骤"><span id="inline-toc">1.</span> 安装步骤</a></li>
-<li><a href="#span-id-inline-toc-2-span-ingress-测试"><span id="inline-toc">2.</span> Ingress 测试</a></li>
-<li><a href="#span-id-inline-toc-3-span-contour-工作原理"><span id="inline-toc">3.</span> Contour 工作原理</a></li>
-<li><a href="#span-id-inline-toc-4-span-映射关系详情"><span id="inline-toc">4.</span> 映射关系详情</a>
+<li><a href="#initial-setting"><span id="inline-toc">1.</span> 初始设定</a></li>
+<li><a href="#bookinfo-with-https-access-to-a-google-books-web-service"><span id="inline-toc">2.</span> Bookinfo 使用 HTTPS 访问 Google 图书 Web 服务</a>
 <ul>
-<li><a href="#cds">CDS</a></li>
-<li><a href="#sds">SDS</a></li>
-<li><a href="#rds">RDS</a></li>
+<li><a href="#enable-https-access-to-a-google-books-web-service">启用对 Google 图书 Web 服务的 HTTPS 访问</a></li>
+<li><a href="#cleanup-of-https-access-to-a-google-books-web-service">清除对 Google 图书 Web 服务的 HTTPS 访问权限</a></li>
 </ul></li>
-<li><a href="#span-id-inline-toc-5-span-contour-架构分析"><span id="inline-toc">5.</span> Contour 架构分析</a></li>
-<li><a href="#span-id-inline-toc-6-span-ingressroute-介绍"><span id="inline-toc">6.</span> IngressRoute 介绍</a>
+<li><a href="#tls-origination-by-istio"><span id="inline-toc">3.</span> 由 Istio 发起的 TLS</a>
 <ul>
-<li><a href="#从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</a></li>
-<li><a href="#可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</a></li>
+<li><a href="#bookinfo-with-tls-origination-to-a-google-books-web-service">配置 Bookinfo 到 Google 图书 Web 服务之间的 TLS 发起</a></li>
+<li><a href="#cleanup-of-tls-origination-to-a-google-books-web-service">清除 Bookinfo 到 Google 图书 Web 服务之间的 TLS 发起</a></li>
+<li><a href="#relation-to-istio-mutual-tls">与 Istio 双向 TLS 的关系</a></li>
 </ul></li>
-<li><a href="#span-id-inline-toc-7-span-参考"><span id="inline-toc">7.</span> 参考</a></li>
+<li><a href="#conclusion"><span id="inline-toc">4.</span> 总结</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -500,315 +499,283 @@ autocomplete('#aa-search-input',
 </aside>
 
 
-                <p></p>
+                
 
-<p>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 <code>L7</code> 层实现高效流畅的入口流量管理。自从第一批 <code>Kubernetes Ingress Controller</code> 开发完成以来，<code>Envoy</code>（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。</p>
+<p id="div-border-left-red">
+<strong>原文地址：</strong><a href="https://preliminary.istio.io/zh/blog/2018/egress-https/" target="_blank">使用外部 Web 服务</a>
+<br>
+<strong>英文作者：</strong>VADIM EISENBERG
+<br>
+<strong>修订：</strong>杨传胜
+</p>
 
-<p>容器公司 <a href="https://heptio.com/" target="_blank">Heptio</a> 开源的项目 <a href="https://github.com/heptio/contour" target="_blank">Contour</a> 使用 <code>Envoy</code> 作为 Kubernetes 的 Ingress Controller 实现，为大家提供了一条新的 Kubernetes 外部负载均衡实现思路。</p>
+<blockquote>
+<p>此博客文章于 2018 年 8 月 9 日更新。新版本使用了 Istio 1.0，并使用了新的 <a href="https://preliminary.istio.io/zh/blog/2018/v1alpha3-routing/" target="_blank">v1alpha3 流量管理 API</a>。如果您使用的 Istio 是旧版本，请参考 <a href="https://archive.istio.io/v0.7/blog/2018/egress-https.html" target="_blank">使用外部 Web 服务归档版</a>。</p>
+</blockquote>
 
-<p>据<a href="https://blog.heptio.com/making-it-easy-to-use-envoy-as-a-kubernetes-load-balancer-dde82959f171" target="_blank">官方博客</a>介绍，<code>Heptio Contour</code> 可以为用户提供以下好处：</p>
+<p>在许多情况下，在 service mesh 中的微服务应用并不是应用程序的全部，有时，网格内部的微服务需要使用在服务网格外部的遗留系统提供的功能。虽然我们希望逐步将这些系统迁移到服务网格中，但是在迁移这些系统之前，必须让服务网格内的应用程序能访问它们。在其他情况下，应用程序使用外部组织提供的 Web 服务，这些服务通常是通过万维网提供的服务。</p>
 
-<ul>
-<li>一种简单的安装机制来快速部署和集成 Envoy。</li>
-<li>与 Kubernetes 对象模型的集成。</li>
-<li><code>Ingress</code> 配置的动态更新，而无需重启底层负载均衡器。</li>
-<li>项目成熟后，将允许使用 Envoy 一些强大的功能，如熔断器、插件式的处理器链，以及可观测性和可调试性。</li>
-</ul>
+<p>在这篇博客文章中，我修改了 <a href="https://preliminary.istio.io/zh/docs/examples/bookinfo/" target="_blank">Istio Bookinfo 示例应用程序</a>让它可以从外部 Web 服务（<a href="https://developers.google.com/books/docs/v1/getting_started" target="_blank">Google Books APIs</a>）中获取图书详细信息。 我将展示如何使用 <code>mesh-external service entries</code> 在 Istio 中启用外部 HTTPS 流量。我提供了两种方式来配置出口流量的 TLS，并描述了每个选项的优缺点。</p>
 
-<p>下面我们就来试用一下。</p>
-
-<h2 id="span-id-inline-toc-1-span-安装步骤"><span id="inline-toc">1.</span> 安装步骤</h2>
+<h2 id="initial-setting"><span id="inline-toc">1.</span> 初始设定</h2>
 
 <hr />
 
-<p>首先克隆官方仓库，进入 manifest 清单目录：</p>
+<p>为了演示使用外部 Web 服务的场景，首先需要一个安装了 <a href="https://preliminary.istio.io/zh/docs/setup/kubernetes/quick-start/#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4" target="_blank">Istio</a> 的 Kubernetes 集群，然后部署 <a href="https://preliminary.istio.io/zh/docs/examples/bookinfo/" target="_blank">Istio Bookinfo 示例应用程序</a>，此应用程序使用 details 微服务来获取书籍详细信息，例如页数和作者。原始的 details 微服务无需调用任何外部服务就可以提供书籍的详细信息。</p>
 
-<pre><code class="language-bash">$ git clone https://github.com/heptio/contour
-$ cd contour/deployment/deployment-grpc-v2
+<p>本文的示例命令适用于 Istio 1.0+，无论你有没有启用<a href="https://preliminary.istio.io/zh/docs/concepts/security/#%E5%8F%8C%E5%90%91-tls-%E8%AE%A4%E8%AF%81" target="_blank">双向 TLS 认证</a>。Bookinfo 配置文件位于 Istio 发行存档的 <code>samples/bookinfo</code> 目录中。</p>
+
+<p>以下是原始版本的 Bookinfo 示例应用程序中应用程序端到端架构的副本。</p>
+
+<div class="gallery">
+    <a href="http://ycs.ylck.me/withistio.svg" data-lightbox="image-1" data-title="原 Bookinfo 应用程序">
+    <img src="http://ycs.ylck.me/withistio.svg">
+    </a>
+</div>
+
+<p><center><p id=small>原 Bookinfo 应用程序</p></center></p>
+
+<p>首先按照<a href="https://preliminary.istio.io/zh/docs/examples/bookinfo/#%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A8" target="_blank">部署应用程序</a>、<a href="https://preliminary.istio.io/zh/docs/examples/bookinfo/#%E7%A1%AE%E8%AE%A4%E5%BA%94%E7%94%A8%E5%9C%A8%E8%BF%90%E8%A1%8C%E4%B8%AD" target="_blank">确认应用正在运行</a>，以及<a href="https://preliminary.istio.io/zh/docs/examples/bookinfo/#%E5%BA%94%E7%94%A8%E7%BC%BA%E7%9C%81%E7%9B%AE%E6%A0%87%E8%A7%84%E5%88%99" target="_blank">应用默认目标规则</a>中的步骤进行操作。</p>
+
+<h2 id="bookinfo-with-https-access-to-a-google-books-web-service"><span id="inline-toc">2.</span> Bookinfo 使用 HTTPS 访问 Google 图书 Web 服务</h2>
+
+<hr />
+
+<p>让我们添加一个新的 <code>v2</code> 版本的 details 微服务，用来从 <a href="https://developers.google.com/books/docs/v1/getting_started" target="_blank">Google Books APIs</a> 中获取图书详细信息。执行下面的命令将新版本的 details 服务所在的容器的环境变量 <code>DO_NOT_ENCRYPT</code> 设置为 <code>false</code>，表示使用 HTTPS（而不是 HTTP ）来访问外部服务。</p>
+
+<pre><code class="language-bash">$ kubectl apply -f samples/bookinfo/platform/kube/bookinfo-details-v2.yaml --dry-run -o yaml | kubectl set env --local -f - 'DO_NOT_ENCRYPT=false' -o yaml | kubectl apply -f -
 </code></pre>
 
-<p>修改 <code>Deployment</code> YAML 文件：</p>
+<p>更新后的架构如下所示：</p>
 
-<pre><code class="language-yaml">apiVersion: extensions/v1beta1
-kind: Deployment
+<div class="gallery">
+    <a href="http://ycs.ylck.me/bookinfo-details-v2.svg" data-lightbox="image-1" data-title="details V2 版本的 Bookinfo 应用程序">
+    <img src="http://ycs.ylck.me/bookinfo-details-v2.svg">
+    </a>
+</div>
+
+<p><center><p id=small>details V2 版本的 Bookinfo 应用程序</p></center></p>
+
+<blockquote>
+<p>请注意，Google Book 服务位于 Istio 服务网格之外，其边界由虚线标记。</p>
+</blockquote>
+
+<p>将指向 details 微服务的所有流量重定向到 <code>details v2</code>：</p>
+
+<pre><code class="language-bash">$ kubectl apply -f samples/bookinfo/networking/virtual-service-details-v2.yaml
+</code></pre>
+
+<blockquote>
+<p>请注意，此处的 <code>VirtualService</code> 依赖于您在<a href="https://preliminary.istio.io/zh/docs/examples/bookinfo/#%E5%BA%94%E7%94%A8%E7%BC%BA%E7%9C%81%E7%9B%AE%E6%A0%87%E8%A7%84%E5%88%99" target="_blank">应用默认目标规则</a>部分中创建的目标规则。</p>
+</blockquote>
+
+<p>在<a href="https://preliminary.istio.io/zh/docs/examples/bookinfo/#%E7%A1%AE%E5%AE%9A-ingress-%E7%9A%84-ip-%E5%92%8C%E7%AB%AF%E5%8F%A3" target="_blank">确定 ingress 的 IP 和端口</a>之后， 就可以访问应用程序的 web 页面了。</p>
+
+<p>糟糕…页面显示的是 <code>Error fetching product details</code>，而不是书籍详细信息：</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxa3tteey2j313x0eg76j.jpg" alt="" /></p>
+
+<p><center><p id=small>获取产品详细信息的错误消息</p></center></p>
+
+<p>好消息是应用程序没有崩溃, 我们通过良好的微服务设计，没有让<strong>故障扩散</strong>。调用 details 服务失败并不会导致无法访问 <code>productpage</code> 服务，并且 productpage 的绝大多数功能仍然可用，它通过优雅降级来让评论和评级能够正确显示。</p>
+
+<p>那么问题到底出在哪里呢？啊……原来是我忘了启用从网格内部访问外部服务的流量，在本例中外部服务指的是 Google Book Web 服务。默认情况下，Istio sidecar 代理（<a href="https://www.envoyproxy.io/" target="_blank">Envoy proxies</a>） 阻止到集群外服务的所有流量，要启用此类流量，我们必须先定义 <a href="https://preliminary.istio.io/zh/docs/reference/config/istio.networking.v1alpha3/#ServiceEntry" target="_blank">mesh-external service entry</a>。</p>
+
+<h3 id="enable-https-access-to-a-google-books-web-service">启用对 Google 图书 Web 服务的 HTTPS 访问</h3>
+
+<p>别担心，创建一个 <strong>mesh-external</strong> <code>ServiceEntry</code> 就可以修复应用程序的访问错误啦，同时还需要定义一个 <code>VirtualService</code> 以使用 <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">SNI</a> 对外部服务进行路由。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
 metadata:
-  labels:
-    app: contour
-  name: contour
-  namespace: heptio-contour
+  name: googleapis
 spec:
-  selector:
-    matchLabels:
-      app: contour
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: contour
-      annotations:
-        prometheus.io/scrape: &quot;true&quot;
-        prometheus.io/port: &quot;9001&quot;
-        prometheus.io/path: &quot;/stats&quot;
-        prometheus.io/format: &quot;prometheus&quot;
-    spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: kubernetes.io/hostname
-                operator: In
-                values:
-                - &quot;192.168.123.249&quot;
-      hostNetwork: true
-      containers:
-      - image: gcr.io/heptio-images/contour:master
-        imagePullPolicy: Always
-        name: contour
-        command: [&quot;contour&quot;]
-        args:
-        - serve
-        - --incluster
-        - --envoy-http-port=80
-        - --envoy-https-port=443
-      - image: docker.io/envoyproxy/envoy-alpine:v1.7.0
-        name: envoy
-        ports:
-        - containerPort: 80
-          name: http
-        - containerPort: 443
-          name: https
-        command: [&quot;envoy&quot;]
-        args:
-        - --config-path /config/contour.yaml
-        - --service-cluster cluster0
-        - --service-node node0
-        - --log-level info
-        - --v2-config-only
-        volumeMounts:
-        - name: contour-config
-          mountPath: /config
-      initContainers:
-      - image: gcr.io/heptio-images/contour:master
-        imagePullPolicy: Always
-        name: envoy-initconfig
-        command: [&quot;contour&quot;]
-        args: [&quot;bootstrap&quot;, &quot;/config/contour.yaml&quot;]
-        volumeMounts:
-        - name: contour-config
-          mountPath: /config
-      volumes:
-      - name: contour-config
-        emptyDir: {}
-      dnsPolicy: ClusterFirst
-      serviceAccountName: contour
-      terminationGracePeriodSeconds: 30
-</code></pre>
-
-<p>总共修改以下几处：</p>
-
-<ol>
-<li>将实例数修改为 1。</li>
-<li>将网络模式改为 <code>hostNetwork</code>。</li>
-<li>删除 Pod 反亲和性配置，添加 Node 亲和性配置，调度到指定的节点。</li>
-<li>修改 contour 启动参数，将 <code>Listener</code> 端口改为 80 和 443。</li>
-<li>将 Envoy 容器的暴露端口改为 80 和 443。</li>
-</ol>
-
-<p>部署：</p>
-
-<pre><code class="language-bash">$ kubectl apply -f ./
-
-namespace &quot;heptio-contour&quot; created
-serviceaccount &quot;contour&quot; created
-customresourcedefinition.apiextensions.k8s.io &quot;ingressroutes.contour.heptio.com&quot; created
-deployment.extensions &quot;contour&quot; created
-clusterrolebinding.rbac.authorization.k8s.io &quot;contour&quot; created
-clusterrole.rbac.authorization.k8s.io &quot;contour&quot; created
-service &quot;contour&quot; created
-</code></pre>
-
-<h2 id="span-id-inline-toc-2-span-ingress-测试"><span id="inline-toc">2.</span> Ingress 测试</h2>
-
-<hr />
-
-<p>安装结束后，我们就可以来测试 Ingress 了。在 <code>deployment</code> 目录下包含一个示例应用，可以直接使用：</p>
-
-<pre><code class="language-bash">$ kubectl apply -f ../example-workload/kuard.yaml
-</code></pre>
-
-<p>查看创建好的资源：</p>
-
-<pre><code class="language-bash">$ kubectl get po,svc,ing -l app=kuard
-
-NAME                       READY     STATUS    RESTARTS   AGE
-kuard-bcc7bf7df-6h55x      1/1       Running   0          4m
-kuard-bcc7bf7df-9sdnr      1/1       Running   0          4m
-kuard-bcc7bf7df-ws57j      1/1       Running   0          4m
-
-NAME        CLUSTER-IP      EXTERNAL-IP   PORT(S)   AGE
-svc/kuard   10.254.85.181   &lt;none&gt;        80/TCP    4m
-
-NAME        HOSTS     ADDRESS           PORTS     AGE
-ing/kuard   *         192.168.123.249   80        4m
-</code></pre>
-
-<p>现在在浏览器中输入 Contour 运行节点的 IP 地址或 DNS 域名来访问示例应用程序了。</p>
-
-<p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuylptv43j31kw0zkdot.jpg" alt="" /></center></p>
-
-<h2 id="span-id-inline-toc-3-span-contour-工作原理"><span id="inline-toc">3.</span> Contour 工作原理</h2>
-
-<hr />
-
-<p>Contour 同时支持 <code>Ingress</code> 资源对象和 <code>IngressRoute</code> 资源对象（通过 CRD 创建），这些对象都是为进入集群的请求提供路由规则的集合。这两个对象的结构和实现方式有所不同，但它们的核心意图是相同的，都是为进入集群的请求提供路由规则。如不作特殊说明，后面当我们描述 “Ingress” 时，它将同时适用于 <code>Ingress</code> 和 <code>IngressRoute</code> 对象。</p>
-
-<p>通常情况下，当 Envoy 配置了 <code>CDS</code> 端点时，它会定期轮询端点，然后将返回的 JSON 片段合并到其运行配置中。如果返回到 Envoy 的集群配置代表当前的 Ingress 对象的集合，则可以将 Contour 视为从 <code>Ingress</code> 对象到 <code>Envoy</code> 集群配置的转换器。随着 Ingress 对象的添加和删除，Envoy 会动态添加并删除相关配置，而无需不断重新加载配置。</p>
-
-<p>在实践中，将 Ingress 对象转换为 Envoy 配置更加微妙，需要将 Envoy 中的 xDS 配置（包括 <code>CDS</code>，<code>SDS</code> 和 <code>RDS</code>）映射到 Kubernetes 中。Contour 至少需要观察 <code>Ingress</code>、<code>Service</code> 和 <code>Endpoint</code> 这几个资源对象以构建这些服务的响应，它通过 <code>client-go</code> 的 <a href="https://www.kubernetes.org.cn/2693.html" target="_blank">cache/informer</a> 机制免费获得这些 <code>watchers</code>。这些机制提供添加，更新和删除对象的边缘触发通知，以及通过 <code>watch API</code> 执行查询对象的本地缓存的列表机制。</p>
-
-<p>Contour 将收集到的这些对象处理为虚拟主机及其路由规则的<strong>有向非循环图</strong>（DAG），这表明 Contour 将有权构建路由规则的顶级视图，并将群集中的相应服务和TLS秘钥连接在一起。一旦构建了这个新的数据结构，我们就可以轻松实现 <code>IngressRoute</code> 对象的验证，授权和分发。改数据结构导出的 <code>png</code> 图片如下图所示：</p>
-
-<p><center><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fwuym39aaej30nf07s0tp.jpg" alt="" /></center></p>
-
-<p>Envoy API 调用和 Kubernetes API 资源之间的映射关系如下：</p>
-
-<ul>
-<li><p><span id="inline-blue">CDS</span> : 集群发现服务。映射为 Kubernetes 中的 <code>Service</code> 以及一部分 Ingress 对象的 <code>TLS</code> 配置。</p></li>
-
-<li><p><span id="inline-blue">SDS</span> : 服务发现服务。映射为 Kubernetes 中的 <code>Endpoint</code>。Envoy 使用 SDS 自动获取 <code>Cluster</code> 成员，这与 Endpoint 对象中包含的信息非常匹配。Envoy 使用 Contour 在 <code>CDS</code> 响应中返回的名称查询 <code>SDS</code>。</p></li>
-
-<li><p><span id="inline-blue">RDS</span> : 路由发现服务。映射为 Kubernetes 中的 <code>Ingress</code>。提供了虚拟主机名和前缀路由信息的 RDS 与 Ingress 匹配得更好。</p></li>
-</ul>
-
-<h2 id="span-id-inline-toc-4-span-映射关系详情"><span id="inline-toc">4.</span> 映射关系详情</h2>
-
-<hr />
-
-<h3 id="cds">CDS</h3>
-
-<p><code>CDS</code> 更像是 Kubernetes 中的 <code>Service</code> 资源，因为 Service 是具体 <code>Endpoint</code>（Pods）的抽象，Envoy Cluster 是指 Envoy 连接到的一组逻辑上相似的上游主机（参考下文的 RDS）。其中 <code>TLS</code> 配置也是 CDS 的一部分，而 Kubernetes 中的 TLS 信息由 Ingress 提供，所以这部分之间的映射关系会有些复杂。</p>
-
-<h3 id="sds">SDS</h3>
-
-<p><code>SDS</code> 更像是 Kubernetes 中的 <code>Endpoint</code> 资源，这部分映射关系的实现最简单。Contour 将 Endpoint 的响应对象转换为 SDS 的 <code>{ hosts: [] }</code> json 配置块。</p>
-
-<h3 id="rds">RDS</h3>
-
-<p><code>RDS</code> 更像是 Kubernetes 中的 <code>Ingress</code> 资源。RDS 将前缀，路径或正则表达式之一路由到 Envoy 群集。Envoy 集群的名称可以从 Ingress 的 <code>IngressSpec</code> 的配置项中获取（比如：<code>namespace/serviceName_servicePort</code>），因为这是一个选择器，它会匹配 Service 对象被转换后返回的 CDS 对象。</p>
-
-<h2 id="span-id-inline-toc-5-span-contour-架构分析"><span id="inline-toc">5.</span> Contour 架构分析</h2>
-
-<hr />
-
-<p>Contour Ingress controller 由两个组件组成：</p>
-
-<ul>
-<li><code>Envoy</code> : 提供高性能反向代理。</li>
-<li><code>Contour</code> : 充当 Envoy 的控制平面，为 Envoy 的路由配置提供统一的来源。</li>
-</ul>
-
-<p>这些容器以 <code>Sidecar</code> 的形式部署在同一个 <code>Pod</code> 中，当然也包括了一些其他的配置。</p>
-
-<p>在 Pod 初始化期间，Contour 作为 <code>Init</code> 容器运行，并将引导程序配置写入一个 temporary volume。该 <code>Volume</code> 被传递给 Envoy 容器并告诉 Envoy 将其 Sidecar Contour 容器视为控制平面。</p>
-
-<p>初始化完成后，Envoy 容器启动，检索 Contour 写入的引导程序配置，并开始轮询 Contour 以热更新配置。如果控制平面无法访问，Envoy 将会进行优雅重试。</p>
-
-<p>Contour 相当于 Kubernetes API 的客户端。它监视 <code>Ingress</code>，<code>Service</code> 和 <code>Endpoint</code> 对象，并通过将其对象缓存转换为相关的 <code>JSON</code> 字段来充当其 Envoy 的控制平面。</p>
-
-<p>从 Kubernetes 到 Contour 的信息转换是通过 <code>SharedInformer</code> 框架 watching API 来完成的；而从 Contour 到 Envoy 的信息转换是通过 Envoy 定期轮询来实现的。</p>
-
-<h2 id="span-id-inline-toc-6-span-ingressroute-介绍"><span id="inline-toc">6.</span> IngressRoute 介绍</h2>
-
-<hr />
-
-<p><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/" target="_blank">Ingress</a> 对象从 Kubernetes 1.1 版本开始被引进，用来描述进入集群的请求的 HTTP 路由规则。但迄今为止 Ingress 对象还停留在 <code>beta</code> 阶段，不同的 Ingress Controller 插件为了添加 HTTP 路由的额外属性，只能通过添加大量的 <code>annotation</code> 来实现，而且每个插件的 annotation 都不一样，非常混乱。</p>
-
-<p><code>IngressRoute</code> CRD 的目标就是扩展 Ingress API 的功能，以便提供更丰富的用户体验以及解决原始设计中的缺点。</p>
-
-<p><strong>目前 Contour 是唯一支持 IngressRoute CRD 的 Kubernetes Ingress Controller。</strong>下面就来看看它与 Ingress 相比的优点：</p>
-
-<ul>
-<li>安全地支持多团队 Kubernetes 集群，能够限制哪些命名空间可以配置虚拟主机和 TLS 凭据。</li>
-<li>允许将路径或域名的路由配置分发给另一个命名空间。</li>
-<li>接受单个路由中的多个服务，并对它们之间的流量进行负载均衡。</li>
-<li>无需通过添加 <code>annotation</code> 就可以定义服务权重和负载均衡策略。</li>
-<li>在创建时验证 IngressRoute 对象，并为创建后报告验证是否有效。</li>
-</ul>
-
-<h3 id="从-ingress-到-ingressroute">从 Ingress 到 IngressRoute</h3>
-
-<p>一个基本的 <code>Ingress</code> 对象如下所示：</p>
-
-<pre><code class="language-yaml"># ingress.yaml
-apiVersion: extensions/v1beta1
-kind: Ingress
+  hosts:
+  - www.googleapis.com
+  ports:
+  - number: 443
+    name: https
+    protocol: HTTPS
+  location: MESH_EXTERNAL
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
 metadata:
-  name: basic
+  name: googleapis
 spec:
-  rules:
-  - host: foo-basic.bar.com
-    http:
-      paths:
-      - backend:
-          serviceName: s1
-          servicePort: 80
+  hosts:
+  - www.googleapis.com
+  tls:
+  - match:
+    - port: 443
+      sni_hosts:
+      - www.googleapis.com
+    route:
+    - destination:
+        host: www.googleapis.com
+        port:
+          number: 443
+      weight: 100
+EOF
 </code></pre>
 
-<p>这个 Ingress 对象名为 <code>basic</code>，它将传入的 HTTP 流量路由到头文件中 <code>Host:</code> 字段值为 <code>foo-basic.bar.com</code> 且端口为 80 的 <code>s1</code> 服务。该路由规则通过 <code>IngressRoute</code> 来实现如下：</p>
+<p>现在再次访问应用程序的网页就会显示书籍的详细信息了：</p>
 
-<pre><code class="language-yaml"># ingressroute.yaml
-apiVersion: contour.heptio.com/v1beta1
-kind: IngressRoute
+<p><img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fxefwnjj1mj327a0rm459.jpg" alt="" /></p>
+
+<p><center><p id=small>正确显示书籍详细信息</p></center></p>
+
+<p>查看创建的 <code>ServiceEntry</code>：</p>
+
+<pre><code class="language-bash">$ kubectl get serviceentries
+
+NAME         AGE
+googleapis   8m
+</code></pre>
+
+<p>删除该 <code>ServiceEntry</code>：</p>
+
+<pre><code class="language-bash">$ kubectl delete serviceentry googleapis
+
+serviceentry &quot;googleapis&quot; deleted
+</code></pre>
+
+<p>删除 <code>ServiceEntry</code> 后访再问 Web 页面会产生我们之前遇到的相同错误，即 <code>Error fetching product details</code>。因为 <code>ServiceEntry</code> 和其他 Istio 的配置一样是<strong>动态定义</strong>的，Istio operators 可以在不重新部署微服务的情况下动态决定允许哪些微服务访问哪些域名，也可以动态启用和禁用外部服务的流量。</p>
+
+<h3 id="cleanup-of-https-access-to-a-google-books-web-service">清除对 Google 图书 Web 服务的 HTTPS 访问权限</h3>
+
+<pre><code class="language-bash">$ kubectl delete serviceentry googleapis
+$ kubectl delete virtualservice googleapis
+$ kubectl delete -f samples/bookinfo/networking/virtual-service-details-v2.yaml
+$ kubectl delete -f samples/bookinfo/platform/kube/bookinfo-details-v2.yaml
+</code></pre>
+
+<h2 id="tls-origination-by-istio"><span id="inline-toc">3.</span> 由 Istio 发起的 TLS</h2>
+
+<hr />
+
+<p>假设你想监控你的你的微服务使用哪些特定的 <a href="https://developers.google.com/apis-explorer/" target="_blank">Google API</a>（<a href="https://developers.google.com/books/docs/v1/getting_started" target="_blank">书籍</a>，<a href="https://developers.google.com/calendar/" target="_blank">日历</a>，<a href="https://developers.google.com/tasks/" target="_blank">任务</a>等）；假设你要强制执行仅允许使用 <a href="https://developers.google.com/books/docs/v1/getting_started" target="_blank">Books API</a> 的策略；假设你要监控被微服务访问的书籍标识符。对于这些监控和策略任务，你需要知道确切的 URL 路径。例如考虑这样一个 URL：<code>www.googleapis.com/books/v1/volumes?q=isbn:0486424618</code>，在该 URL 中，<a href="https://developers.google.com/books/docs/v1/getting_started" target="_blank">Books API</a> 由路径 <code>/books</code> 和路径 <code>/volumes?q=isbn:0486424618</code> 的 <a href="https://en.wikipedia.org/wiki/International_Standard_Book_Number" target="_blank">ISBN</a> 编号指定。但在 <code>HTTPS</code> 中，所有 HTTP 详细信息（主机名，路径，头文件等）都是加密的，sidecar 代理的这种监控和策略执行是无法实现的，Istio 只能通过 <a href="https://tools.ietf.org/html/rfc3546#section-3.1" target="_blank">SNI</a>（<code>Server Name Indication</code>）得知加密请求中的主机名称，在这里就是 <code>www.googleapis.com</code>。</p>
+
+<p>为了让 Istio 能够根据 HTTP 详细信息对出口请求进行监控和过滤，微服务必须发出 HTTP 请求，然后 Istio 再打开到目标的 HTTPS 连接（执行 TLS 发起）。微服务的代码编写方式和配置方式需要根据该微服务运行在 Istio 服务网格内部还是外部来进行调整，虽然这与 Istio 的<a href="https://preliminary.istio.io/zh/docs/concepts/what-is-istio/#%E8%AE%BE%E8%AE%A1%E7%9B%AE%E6%A0%87" target="_blank">最大化透明度</a>设计目标相矛盾, 但有时我们需要妥协……</p>
+
+<p>下图显示了通过 HTTPS 协议将流量发送到外部服务的两种方式。上面这幅图中，微服务自己发送常规的端到端加密 HTTPS 请求。下图中微服务在同一个 Pod 内发送未加密的 HTTP 请求，这些请求被 sidecar Envoy 代理拦截，sidecar 代理执行 TLS 发起，因此 pod 和外部服务之间的流量被加密。</p>
+
+<div class="gallery">
+    <a href="http://ycs.ylck.me/https_from_the_app.svg" data-lightbox="image-1" data-title="对外发起 HTTPS 流量的两种方式：微服务自行发起，或由 Sidecar 代理发起">
+    <img src="http://ycs.ylck.me/https_from_the_app.svg">
+    </a>
+</div>
+
+<p><center><p id=small>对外发起 HTTPS 流量的两种方式：微服务自行发起，或由 Sidecar 代理发起</p></center></p>
+
+<p>以下代码展示了如何在 <a href="https://raw.githubusercontent.com/istio/istio/master/samples/bookinfo/src/details/details.rb" target="_blank">Bookinfo 的 details 微服务代码</a> 中使用 Ruby <a href="https://docs.ruby-lang.org/en/2.0.0/Net/HTTP.html" target="_blank">net/http</a> 模块：</p>
+
+<pre><code class="language-ruby">uri = URI.parse('https://www.googleapis.com/books/v1/volumes?q=isbn:' + isbn)
+http = Net::HTTP.new(uri.host, uri.port)
+...
+unless ENV['DO_NOT_ENCRYPT'] === 'true' then
+     http.use_ssl = true
+end
+</code></pre>
+
+<p>请注意，默认的 HTTPS 端口 <code>443</code> 的取值是 <code>URI.parse</code> 通过对 URI (<code>https://</code>) 的解析得来的。当定义了 <code>DO_NOT_ENCRYPT</code> 环境变量时，请求将通过普通的 HTTP 协议发出。</p>
+
+<p>你可以在 <a href="https://raw.githubusercontent.com/istio/istio/master/samples/bookinfo/platform/kube/bookinfo-details-v2.yaml" target="_blank">details v2 的 deployment 配置文件</a>的 <code>container</code> 配置项中将环境变量 <code>DO_NOT_ENCRYPT</code> 的值设置为 “true”。</p>
+
+<pre><code class="language-yaml">env:
+- name: DO_NOT_ENCRYPT
+  value: &quot;true&quot;
+</code></pre>
+
+<p>下一节将会配置 TLS 发起以访问外部 Web 服务。</p>
+
+<h3 id="bookinfo-with-tls-origination-to-a-google-books-web-service">配置 Bookinfo 到 Google 图书 Web 服务之间的 TLS 发起</h3>
+
+<p><span id=blue>1.</span> 部署 details v2 版本，将 HTTP 请求发送到 <a href="https://developers.google.com/books/docs/v1/getting_started" target="_blank">Google Books API</a>。 在 <a href="https://raw.githubusercontent.com/istio/istio/master/samples/bookinfo/platform/kube/bookinfo-details-v2.yaml" target="_blank">bookinfo-details-v2.yaml</a> 中， 将 <code>DO_NOT_ENCRYPT</code> 变量设置为 true。</p>
+
+<pre><code class="language-bash">$ kubectl apply -f samples/bookinfo/platform/kube/bookinfo-details-v2.yaml
+</code></pre>
+
+<p><span id=blue>2.</span> 将指向 details 微服务的流量重定向到 details v2。</p>
+
+<pre><code class="language-bash">$ kubectl apply -f samples/bookinfo/networking/virtual-service-details-v2.yaml
+</code></pre>
+
+<p><span id=blue>3.</span> 为 <code>www.google.apis</code> 创建一个 mesh-external <code>ServiceEntry</code>，再创建一个 <code>DestinationRule</code> 用于执行 TLS 发起。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
 metadata:
-  name: basic
+  name: googleapis
 spec:
-  virtualhost:
-    fqdn: foo-basic.bar.com
-  routes:
-    - match: /
-      services:
-        - name: s1
-          port: 80
+  hosts:
+  - www.googleapis.com
+  ports:
+  - number: 443
+    name: http-port-for-tls-origination
+    protocol: HTTP
+  resolution: DNS
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: originate-tls-for-googleapis
+spec:
+  host: www.googleapis.com
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: SIMPLE # initiates HTTPS when accessing edition.cnn.com
+EOF
 </code></pre>
 
-<p>对应关系很简单，我就不再详细介绍了，更多功能配置可以参考官方仓库的文档：<a href="https://github.com/heptio/contour/blob/master/docs/ingressroute.md" target="_blank">IngressRoute</a>。</p>
+<div id="note">
+<p id="note-title">Note</p>
+<br>
+<p>
+注意，端口 <code>443</code> 的名称以 <code>http-</code> 为前缀，使用的协议是 <code>HTTP</code>，你不需要在 Bookinfo 使用 443 端口发送 HTTP 请求时执行 TLS 发起。关于如何使用端口重定向来执行 TLS 发起可以参考<a href="https://preliminary.istio.io/docs/examples/advanced-gateways/egress-tls-origination/" target="_blank">这篇文章</a>。 
+</p>
+</div>
 
-<h3 id="可视化-contour-的内部有向非循环图">可视化 Contour 的内部有向非循环图</h3>
+<p><span id=blue>4.</span> 访问应用程序的 Web 页面，并验证是否能显示图书的详细信息。</p>
 
-<p>Contour 使用 DAG 对其配置进行建模，可以通过以 <a href="https://en.wikipedia.org/wiki/DOT_(graph_description_language)" target="_blank">DOT</a> 格式输出 DAG 的调试端点对其进行可视化，当然需要先在系统中安装 <code>graphviz</code>：</p>
+<p><span id=blue>5.</span> 检查 <code>details v2</code> 的 sidecar 代理的日志，并查看 HTTP 请求。</p>
 
-<pre><code class="language-bash">$ yum install -y graphviz
+<pre><code class="language-bash">$ kubectl logs $(kubectl get pods -l app=details -l version=v2 -o jsonpath='{.items[0].metadata.name}') istio-proxy | grep googleapis
+
+[2018-08-09T11:32:58.171Z] &quot;GET /books/v1/volumes?q=isbn:0486424618 HTTP/1.1&quot; 200 - 0 1050 264 264 &quot;-&quot; &quot;Ruby&quot; &quot;b993bae7-4288-9241-81a5-4cde93b2e3a6&quot; &quot;www.googleapis.com:443&quot; &quot;172.217.20.74:443&quot;
+EOF
 </code></pre>
 
-<p>下载图表并将其另存为 <code>PNG</code>：</p>
+<blockquote>
+<p>日志中的 URL 路径可以被监控，也可以根据该路径来应用访问策略。要了解有关HTTP 出口流量的监控和访问策略的更多信息，请查看 <a href="https://archive.istio.io/v0.8/blog/2018/egress-monitoring-access-control/#logging" target="_blank">归档博客之出口流量监控之日志</a>。</p>
+</blockquote>
 
-<pre><code class="language-bash"># Port forward into the contour pod
-$ CONTOUR_POD=$(kubectl -n heptio-contour get pod -l app=contour -o jsonpath='{.items[0].metadata.name}')
-# Do the port forward to that pod
-$ kubectl -n heptio-contour port-forward $CONTOUR_POD 6060
-# Download and store the DAG in png format
-$ curl localhost:6060/debug/dag | dot -T png &gt; contour-dag.png
+<h3 id="cleanup-of-tls-origination-to-a-google-books-web-service">清除 Bookinfo 到 Google 图书 Web 服务之间的 TLS 发起</h3>
+
+<pre><code class="language-bash">$ kubectl delete serviceentry googleapis
+$ kubectl delete destinationrule originate-tls-for-googleapis
+$ kubectl delete -f samples/bookinfo/networking/virtual-service-details-v2.yaml
+$ kubectl delete -f samples/bookinfo/platform/kube/bookinfo-details-v2.yaml
 </code></pre>
 
-<p>我自己保存的 PNG 图片如下所示：</p>
+<h3 id="relation-to-istio-mutual-tls">与 Istio 双向 TLS 的关系</h3>
 
-<p><center><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fwuymirnk4j30mt0jzq67.jpg" alt="" /></center></p>
+<p>TLS 发起与 Istio 的<a href="https://preliminary.istio.io/docs/concepts/security/#mutual-tls-authentication" target="_blank">双向 TLS</a> 无关，无论 Istio 是否开启双向 TLS，对外部服务的 TLS 发起都会起作用。双向 TLS 用来保护网格<strong>内</strong>的服务之间通信，并为每个服务提供强大的身份认证功能。而本文中的<strong>外部服务</strong>是使用单向 TLS 访问的，这种机制用于保护 Web 浏览器和 Web 服务器之间的通信。将 TLS 应用于与外部服务之间的通信，可以对流量加密，并对外部服务器进行身份认证。</p>
 
-<h2 id="span-id-inline-toc-7-span-参考"><span id="inline-toc">7.</span> 参考</h2>
+<h2 id="conclusion"><span id="inline-toc">4.</span> 总结</h2>
 
 <hr />
 
-<ul>
-<li><a href="https://github.com/heptio/contour/blob/master/docs/about.md" target="_blank">About Contour and Envoy</a></li>
-<li><a href="https://github.com/heptio/contour/blob/master/docs/architecture.md" target="_blank">Contour architecture</a></li>
-<li><a href="https://blog.heptio.com/making-it-easy-to-use-envoy-as-a-kubernetes-load-balancer-dde82959f171" target="_blank">Making it easy to use Envoy as a Kubernetes load balancer</a></li>
-</ul>
+<p>本文我演示了如何让 Istio 服务网格中的微服务通过 HTTPS 协议和外部的 Web 服务进行通信。默认情况下，Istio 会阻止群集外主机的所有流量，想要访问外部服务，必须得为该服务创建一个 mesh-external <code>ServiceEntry</code>。可以通过发出 HTTPS 请求来访问外部服务，也可以只发出 HTTP 请求，然后通过 sidecar 代理执行 TLS 发起来访问外部服务。当微服务发出 HTTPS 请求时，流量是端到端加密的，Istio 无法监控到 HTTP 详细信息，例如请求的 URL 路径。当服务器发出 HTTP 请求时，Istio 就可以监控到 HTTP 详细信息了，并且可以强制执行基于 HTTP 的访问策略。 但此时微服务和 sidecar 代理之间的流量是未加密的，在有严格安全要求的环境中，这种方法还是不够的，你必须通过发出 HTTPS 请求来加密所有的流量。</p>
 
-<hr />
-
-<p><center><img src="http://hugo-picture.oss-cn-beijing.aliyuncs.com/qrcode_for_wechat_big.jpg" alt="" /></center>
-<center>扫一扫关注微信公众号</center></p>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
@@ -868,11 +835,11 @@ $ curl localhost:6060/debug/dag | dot -T png &gt; contour-dag.png
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/" data-toggle="tooltip" data-placement="top" title="为 Envoy 开启 TLS 验证实战">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/kubernetes-api-server-part-1/" data-toggle="tooltip" data-placement="top" title="深入理解 Kubernetes API Server（一）">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/istio-traffic-management-impl-intro/" data-toggle="tooltip" data-placement="top" title="Istio 流量管理实现机制深度解析">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -882,15 +849,15 @@ $ curl localhost:6060/debug/dag | dot -T png &gt; contour-dag.png
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/setting-up-ssl-in-envoy-practice/">为 Envoy 开启 TLS 验证实战</a></li>
-                    
-                    <li><a href="/posts/kubernetes-extensible-admission/">Kubernetes 准入控制介绍</a></li>
-                    
-                    <li><a href="/posts/kubernetes-dns/">Kubernetes DNS 高阶指南</a></li>
+                    <li><a href="/posts/egress-tls-origination/">Istio 出口流量的 TLS</a></li>
                     
                     <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
                     
                     <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
+                    
+                    <li><a href="/posts/where-is-the-request-1/">请求都去哪了？</a></li>
+                    
+                    <li><a href="/posts/istio-mtls-debugging-a-503-error/">在 Istio 中调试 503 错误</a></li>
                     
                 </ul>
                 

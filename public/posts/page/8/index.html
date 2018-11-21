@@ -5,13 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> HTTP 路由解析 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> Posts - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="HTTP 路由解析" />
-  <meta name="twitter:title" content="HTTP 路由解析" />
-  <meta name="description" content="通过 HTTP 路由规则来切换流量">
-  <meta property="og:description" content="通过 HTTP 路由规则来切换流量">
-  <meta name="twitter:description" content="通过 HTTP 路由规则来切换流量">
+  <meta property="og:title" content="Posts" />
+  <meta name="twitter:title" content="Posts" />
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -19,12 +16,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/routing-basics/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/routing-basics/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -371,71 +368,14 @@ autocomplete('#aa-search-input',
 
 
     
-  
-  
-  
-
-
-
-
-  
-    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg" ></div>
-  
-
-  <header class="header-section has-img">
-    
-      <div class="intro-header big-img">
-        
-        
-        <div class="container">
-          <div class="row">
-              <div class="col-lg-12 col-md-12 col-md-offset-0">
-                
-                <div class="post-heading">
-                
-                  
-                     <h1>HTTP 路由解析</h1>
-                     
-                     
-                  
-                  
-                  
-                    
-                      <hr class="small">
-                      <span class="post-subheading">通过 HTTP 路由规则来切换流量</span>
-                    
-                  
-                  
-                    <span class="post-meta">
-  
-  Posted on June 29, 2018
-  
-  
-</span>
-
-
-                  
-                
-              </div>
-            </div>
-          </div>
-        </div>
-        <span class="img-desc" style="display: inline;"></span>
-      </div>
-    
+  <header class="header-section ">
     <div class="intro-header no-img">
-      
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="posts-heading">
-                <h1 align="center">HTTP 路由解析</h1>
-                
-                  
-                    <h2 align="center" class="posts-subheading">通过 HTTP 路由规则来切换流量</h2>
-                  
-                
-                
+            <div class="page-heading">
+              <h1>Posts</h1>
+              <hr class="small">
             </div>
           </div>
         </div>
@@ -443,287 +383,169 @@ autocomplete('#aa-search-input',
     </div>
   </header>
 
-
     
-<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
+  <div class="container" role="main">
     <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
-            
-            
-<div>
-    <section id="datecount">
-        <h4 id="date"> Fri Jun 29, 2018</h4>
-    </section>
-    <h5 id="wc">1000 Words|Read in about 2 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
-    <h5 id="tags">Tags: 
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         
-        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
-    </h5>
-</div>
-
-            
-            <article role="main" class="blog-post" itemprop="articleBody" id="content">
-                
-<aside class="toc">
-    <div id='anchors-navbar'>
-        <i class='fa fa-anchor'></i>
-        <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#span-id-inline-toc-1-span-相关组件"><span id="inline-toc">1.</span> 相关组件</a>
-<ul>
-<li><a href="#路由">路由</a></li>
-<li><a href="#集群">集群</a></li>
-<li><a href="#监听器">监听器</a></li>
-</ul></li>
-<li><a href="#span-id-inline-toc-2-span-配置路由"><span id="inline-toc">2.</span> 配置路由</a></li>
-<li><a href="#span-id-inline-toc-3-span-配置监听器"><span id="inline-toc">3.</span> 配置监听器</a></li>
-<li><a href="#span-id-inline-toc-4-span-动态发现路由-集群和监听器"><span id="inline-toc">4.</span> 动态发现路由、集群和监听器</a></li>
-<li><a href="#span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</a></li>
-</ul></li>
-</ul>
-</nav>
-    </div>
-    <a href="#" id="GoTop">
-        <i class="fa fa-arrow-up"></i>
-    </a>
-</aside>
-
-
-                <p></p>
-
-<p>本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：<a href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" target="_blank">在你的笔记本上运行 Envoy</a>，现在就可以更深入地了解如何在静态文件中配置路由（Route）、集群（Cluster）和监听器（Listener）了。</p>
-
-<h2 id="span-id-inline-toc-1-span-相关组件"><span id="inline-toc">1.</span> 相关组件</h2>
-
-<hr />
-
-<h3 id="路由">路由</h3>
-
-<p><span id="inline-blue">路由</span> 是一组将虚拟主机与集群相匹配的规则，通过路由你可以很轻松地创建流量切换规则。路由的定义方式有两种：通过静态配置文件定义或通过路由发现服务（<code>RDS</code>）进行配置。</p>
-
-<h3 id="集群">集群</h3>
-
-<p><span id="inline-blue">集群</span> 是一组逻辑上相似的上游主机，它接收来自 Envoy 的流量。集群可以通过负载均衡策略来提高基础架构的弹性。集群可以通过静态文件进行配置，也可以通过集群发现服务（<code>CDS</code>）API 动态获取。</p>
-
-<h3 id="监听器">监听器</h3>
-
-<p><span id="inline-blue">监听器</span> 是可以接受来自下游客户端的连接的命名网络位置（例如，端口，unix域套接字等）。Envoy 公开一个或多个下游主机连接的侦听器。同样，监听器可以通过静态定义，也可以通过监听器发现服务（LDS）动态获取。</p>
-
-<h2 id="span-id-inline-toc-2-span-配置路由"><span id="inline-toc">2.</span> 配置路由</h2>
-
-<hr />
-
-<p>Envoy 的路由定义将 <code>域 + URL</code> 映射到集群。在上一篇文章中，我们定义了两个集群（service1 和 service2），每一个集群都匹配一个单独的 URL（<code>/service1</code> 和 <code>/service2</code>）。</p>
-
-<pre><code class="language-yaml">virtual_hosts:
-  - name: backend
-    domains:
-    - &quot;*&quot;
-    routes:
-    - match:
-        prefix: &quot;/service/1&quot;
-      route:
-        cluster: service1
-    - match:
-        prefix: &quot;/service/2&quot;
-      route:
-        cluster: service2
-</code></pre>
-
-<p>集群从 DNS 中获取集群成员数据，并对集群中的所有主机使用<strong>轮询</strong>的方式进行负载均衡。</p>
-
-<pre><code class="language-yaml">clusters:
-  - name: service1
-      connect_timeout: 0.25s
-      type: strict_dns
-      lb_policy: round_robin
-      http2_protocol_options: {}
-      hosts:
-      - socket_address:
-          address: service1
-          port_value: 80
-  - name: service2
-      connect_timeout: 0.25s
-      type: strict_dns
-      lb_policy: round_robin
-      http2_protocol_options: {}
-      hosts:
-      - socket_address:
-          address: service2
-          port_value: 80
-</code></pre>
-
-<h2 id="span-id-inline-toc-3-span-配置监听器"><span id="inline-toc">3.</span> 配置监听器</h2>
-
-<hr />
-
-<p>路由的配置包含在监听器的配置中，现在我们再回过头来看一下监听器的配置。监听器通过<strong>监听器过滤器</strong>（Listener filter）来操作路由配置中定义的两个服务。监听器的 API 非常简单，它的作用是在不更改 Envoy 的核心功能的情况下添加更多的集成功能。</p>
-
-<pre><code class="language-yaml">listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 80
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: backend
-              domains:
-              - &quot;*&quot;
-              routes:
-              - match:
-                  prefix: &quot;/service/1&quot;
-                route:
-                  cluster: service1
-              - match:
-                  prefix: &quot;/service/2&quot;
-                route:
-                  cluster: service2
-          http_filters:
-          - name: envoy.router
-            config: {}
-</code></pre>
-
-<h2 id="span-id-inline-toc-4-span-动态发现路由-集群和监听器"><span id="inline-toc">4.</span> 动态发现路由、集群和监听器</h2>
-
-<hr />
-
-<p>到目前为止我们都是通过静态配置文件来配置路由和集群，但你也可以通过 <code>RDS</code> 和 <code>CDS</code> 来动态更新路由和集群。特别是当你的基础架构规模非常大时，你可以通过配置动态服务发现的规则来简化你的重复配置成本，并且可以将同一套动态服务发现规则应用于多个 Envoy 集群。</p>
-
-<p>现在你已经了解了如何配置基本的路由、集群和监听器，下一节我们将学习如何在增量部署中设置更复杂的流量切换和过滤规则。</p>
-
-<h2 id="span-id-inline-toc-5-span-参考"><span id="inline-toc">5.</span> 参考</h2>
-
-<hr />
-
-<ul>
-<li><a href="https://servicemesher.github.io/envoy/" target="_blank">Envoy 官方文档中文版</a></li>
-</ul>
-                <br />
-                <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
-                <script src="https://www.yangcs.net/js/particle.js"></script>
-                
-                <div class="entry-shang text-center">
-	<p>「真诚赞赏，手留余香」</p>
-        <button class="zs show-zs btn rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
-</div>
-<div class="zs-modal-bg"></div>
-<div class="zs-modal-box">
-	<div class="zs-modal-head">
-		<button type="button" class="close">×</button>
-		<span class="author"><img src="/img/avatar-icon.png"/>杨传胜</span>
-		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
- 	</div>
-	<div class="zs-modal-body">
-		<div class="zs-modal-btns">
-			<button class="btn btn-blink" data-num="2">2元</button>
-			<button class="btn btn-blink" data-num="5">5元</button>
-			<button class="btn btn-blink" data-num="10">10元</button>
-			<button class="btn btn-blink" data-num="50">50元</button>
-			<button class="btn btn-blink" data-num="100">100元</button>
-			<button class="btn btn-blink" data-num="1">任意金额</button>
-		</div>
-		<div class="zs-modal-pay">
-			<button class="btn btn-bred" id="pay-text">2元</button>
-			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
-			<img src="/img/wechat-2.png" id="pay-image"/>
-		</div>
-	</div>
-	<div class="zs-modal-footer">
-                <span class="zs-wechat"><img src="/img/wechat-btn.png"/></span>
-	</div>
-</div>
+        <div class="posts-list">
+          
+            <article class="post-preview">
+              <a href="https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/">
+                <h2 class="post-title">十分钟告诉你什么是最小二乘法</h2>
 
                 
+                  <h3 class="post-subtitle">
+                    理解最小二乘法
+                  </h3>
                 
-                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="不扫别后悔">
-    <center>
-    <font style="font-size:18px;color:darkcyan;">分享到：</font>
-    <a href="#" class="social-share-icon icon-weibo"></a>
-    <a href="#" class="social-share-icon icon-wechat"></a>
-    <a href="#" class="social-share-icon icon-twitter"></a>
-    <a href="#" class="social-share-icon icon-linkedin"></a>
-    <a href="#" class="social-share-icon icon-facebook"></a>
-    <a href="#" class="social-share-icon icon-qq"></a>
-    <a href="#" class="social-share-icon icon-qzone"></a>
-    </center>
-</div>
+              </a>
 
+              <p class="post-meta">
+                Posted on June 4, 2016
+              </p>
+              <div class="post-entry">
+                
+                  <p></p>
+                  <a href="https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/" class="post-read-more">[Read More]</a>
+                
+              </div>
 
-<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
-
-                
-            </article>
-
-            <ul class="pager blog-pager">
-                
-                <li class="previous">
-                    <a href="https://www.yangcs.net/posts/run-envoy-on-your-laptop/" data-toggle="tooltip" data-placement="top" title="在你的笔记本上运行 Envoy">&larr; Previous Post</a>
-                </li>
-                 
-                <li class="next">
-                    <a href="https://www.yangcs.net/posts/incremental-deploys/" data-toggle="tooltip" data-placement="top" title="通过 Envoy 实现增量部署">Next Post &rarr;</a>
-                </li>
-                
-            </ul>
-            
-            <div>
-                 
-                <h2>See Also</h2>
-                <ul>
-                    
-                    <li><a href="/posts/run-envoy-on-your-laptop/">在你的笔记本上运行 Envoy</a></li>
-                    
-                </ul>
-                
-            </div>
-            
-            
-            
               
-            
-            </div>
-        </div>
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
-            
-                
+                <span class="post-meta">
                   
+                    #<a href="https://www.yangcs.net/tags/math/">math</a>&nbsp;
                   
-<aside id=comments>
-    
-    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
-    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
-       (function(d, s) {
-           var j, e = d.getElementsByTagName(s)[0];
-           if (typeof LivereTower === 'function') { return; }
-           j = d.createElement(s);
-           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-           j.async = true;
-           e.parentNode.insertBefore(j, e);
-       })(document, 'script');
-    	</script>
-    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
-    </div>
-    
-</aside>
+                </span>
+              
 
-
-                
-            
+            </article>
+          
         </div>
+        
+          <ul class="pager main-pager">
+            
+              <li class="previous">
+                <a href="/posts/page/7">&larr; Newer Posts</a>
+              </li>
+            
+            
+          </ul>
+        
+      </div>
+    <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="/posts/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+    <a href="/posts/page/7/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/page/3/">3</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/page/7/">7</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="/posts/page/8/">8</a></li>
+    
+    
+    <li class="page-item disabled">
+    <a href="" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/posts/page/8/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+        
+        
+      </div>
     </div>
-    </section>
-</div>
+  </div>
 
     <link rel="stylesheet" href="https://www.yangcs.net/css/APlayer.min.css" />
     <div id="aplayer"></div>
