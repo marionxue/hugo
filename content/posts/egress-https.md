@@ -19,6 +19,8 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 <strong>修订：</strong>杨传胜
 </p>
 
+<br />
+
 > 此博客文章于 2018 年 8 月 9 日更新。新版本使用了 Istio 1.0，并使用了新的 [v1alpha3 流量管理 API](https://preliminary.istio.io/zh/blog/2018/v1alpha3-routing/)。如果您使用的 Istio 是旧版本，请参考 [使用外部 Web 服务归档版](https://archive.istio.io/v0.7/blog/2018/egress-https.html)。
 
 在许多情况下，在 service mesh 中的微服务应用并不是应用程序的全部，有时，网格内部的微服务需要使用在服务网格外部的遗留系统提供的功能。虽然我们希望逐步将这些系统迁移到服务网格中，但是在迁移这些系统之前，必须让服务网格内的应用程序能访问它们。在其他情况下，应用程序使用外部组织提供的 Web 服务，这些服务通常是通过万维网提供的服务。
