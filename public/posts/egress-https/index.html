@@ -499,7 +499,7 @@ autocomplete('#aa-search-input',
 </aside>
 
 
-                
+                <p></p>
 
 <p id="div-border-left-red">
 <strong>原文地址：</strong><a href="https://preliminary.istio.io/zh/blog/2018/egress-https/" target="_blank">使用外部 Web 服务</a>
@@ -775,7 +775,6 @@ $ kubectl delete -f samples/bookinfo/platform/kube/bookinfo-details-v2.yaml
 <hr />
 
 <p>本文我演示了如何让 Istio 服务网格中的微服务通过 HTTPS 协议和外部的 Web 服务进行通信。默认情况下，Istio 会阻止群集外主机的所有流量，想要访问外部服务，必须得为该服务创建一个 mesh-external <code>ServiceEntry</code>。可以通过发出 HTTPS 请求来访问外部服务，也可以只发出 HTTP 请求，然后通过 sidecar 代理执行 TLS 发起来访问外部服务。当微服务发出 HTTPS 请求时，流量是端到端加密的，Istio 无法监控到 HTTP 详细信息，例如请求的 URL 路径。当服务器发出 HTTP 请求时，Istio 就可以监控到 HTTP 详细信息了，并且可以强制执行基于 HTTP 的访问策略。 但此时微服务和 sidecar 代理之间的流量是未加密的，在有严格安全要求的环境中，这种方法还是不够的，你必须通过发出 HTTPS 请求来加密所有的流量。</p>
-
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
