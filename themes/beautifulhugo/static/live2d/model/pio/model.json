@@ -2,6 +2,7 @@
     "version":"1.0.0",
     "model":"model.moc",
     "textures":[
+        "textures/default-costume.png",
         "textures/pajamas-costume.png",
         "textures/school-costume.png"
     ],
