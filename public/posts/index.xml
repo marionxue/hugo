@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>在服务网格内部调用外部 TCP 服务</title>
+      <link>https://www.yangcs.net/posts/egress-tcp/</link>
+      <pubDate>Fri, 23 Nov 2018 14:18:48 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/egress-tcp/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>在服务网格内部调用外部 Web 服务</title>
       <link>https://www.yangcs.net/posts/egress-https/</link>
       <pubDate>Wed, 21 Nov 2018 17:09:25 +0800</pubDate>
