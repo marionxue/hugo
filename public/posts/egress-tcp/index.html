@@ -482,7 +482,7 @@ autocomplete('#aa-search-input',
 <li><a href="#initial-setting-of-bookinfo-application">Bookinfo 应用程序的初始设置</a></li>
 <li><a href="#use-the-database-for-ratings-data-in-bookinfo-application">使用外部数据库存储 Bookinfo 应用程序的评级数据</a></li>
 <li><a href="#access-the-webpage">访问 Web 页面</a></li>
-<li><a href="#外部-mysql-实例的-mesh-external-serviceentry">外部 MySQL 实例的 Mesh-external ServiceEntry</a></li>
+<li><a href="#mesh-external-service-entry-for-an-external-mysql-instance">外部 MySQL 实例的 Mesh-external ServiceEntry</a></li>
 </ul></li>
 <li><a href="#motivation-for-egress-tcp-traffic-control"><span id="inline-toc">2.</span> 控制出口 TCP 流量的动机</a></li>
 <li><a href="#service-entries-for-tcp-traffic"><span id="inline-toc">3.</span> TCP 流量的 ServiceEntry</a></li>
@@ -699,7 +699,7 @@ deployment &quot;ratings-v2-mysql&quot; created
 
 <p>默认情况下， Istio sidecar 代理（Envoy proxies） 会阻止到集群外服务的所有流量（TCP 和 HTTP），要为 TCP 启用此类流量，我们必须先定义 TCP 协议的 <code>mesh-external ServiceEntry</code>。</p>
 
-<h3 id="外部-mysql-实例的-mesh-external-serviceentry">外部 MySQL 实例的 Mesh-external ServiceEntry</h3>
+<h3 id="mesh-external-service-entry-for-an-external-mysql-instance">外部 MySQL 实例的 Mesh-external ServiceEntry</h3>
 
 <p>下面就该 mesh-external ServiceEntry 上场了。</p>
 

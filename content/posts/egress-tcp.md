@@ -220,7 +220,7 @@ $ kubectl apply -f samples/bookinfo/networking/virtual-service-ratings-mysql.yam
 
 默认情况下， Istio sidecar 代理（Envoy proxies） 会阻止到集群外服务的所有流量（TCP 和 HTTP），要为 TCP 启用此类流量，我们必须先定义 TCP 协议的 `mesh-external ServiceEntry`。
 
-### 外部 MySQL 实例的 Mesh-external ServiceEntry
+### 外部 MySQL 实例的 Mesh-external ServiceEntry {#mesh-external-service-entry-for-an-external-mysql-instance}
 
 下面就该 mesh-external ServiceEntry 上场了。
 
