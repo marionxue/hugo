@@ -23,7 +23,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 > 本篇博客于 2018 年 7 月 23 日更新。新版本使用了 Istio 1.0，并使用了新的 [v1alpha3 流量管理 API](https://preliminary.istio.io/zh/blog/2018/v1alpha3-routing/)。如果您使用的 Istio 是旧版本，请参考 [这篇文档](https://archive.istio.io/v0.7/blog/2018/egress-tcp.html)。
 
-在上一篇文章[在服务网格内部调用外部 Web 服务](https://www.yangcs.net/posts/egress-https/)中，我描述了如何让 Istio 服务网格中的微服务通过 HTTPS 协议和外部的 Web 服务进行通信。本文我将着重介绍如何让 Istio 服务网格中的微服务通过 `TCP` 协议和外部服务进行通信。讲解的过程中会用到 [Bookinfo 示例应用程序](https://preliminary.istio.io/docs/examples/bookinfo/)中将书籍评级数据保存在 MySQL 数据库中那个版本。数据库部署在集群外，`ratings` 服务调用该数据库，还要定义一个 `ServiceEntry` 以允许网格内的应用程序访问外部的数据库。
+在上一篇文章[在服务网格内部调用外部 Web 服务](https://www.yangcs.net/posts/egress-https/)中，我描述了如何让 Istio 服务网格中的微服务通过 HTTPS 协议和外部的 Web 服务进行通信。本文我将着重介绍如何让 Istio 服务网格中的微服务通过 `TCP` 协议和外部服务进行通信。讲解的过程中会用到 [Bookinfo 示例应用程序](https://preliminary.istio.io/docs/examples/bookinfo/)中将书籍评级数据保存在 MySQL 数据库中的那个版本。数据库部署在集群外，`ratings` 服务调用该数据库，还要定义一个 `ServiceEntry` 以允许网格内的应用程序访问外部的数据库。
 
 ## <span id="inline-toc">1.</span> Bookinfo 示例应用程序与外部评级数据库 {#bookinfo-sample-application-with-external-ratings-database}
 
