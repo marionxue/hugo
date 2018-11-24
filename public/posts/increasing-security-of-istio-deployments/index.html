@@ -122,6 +122,8 @@ setTimeout("flash_title()",380);
 flash_title()
 </script>
 
+<script type="text/javascript" src="https://www.yangcs.net/js/rocket-up.js"></script>
+
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
@@ -490,9 +492,19 @@ autocomplete('#aa-search-input',
 </ul>
 </nav>
     </div>
-    <a href="#" id="GoTop">
-        <i class="fa fa-arrow-up"></i>
-    </a>
+    
+    <div id="scrollTop">
+      <div class="level-2"></div>
+      <div class="level-3"></div>
+    </div>
+    <script type="text/javascript">
+            UI.global_search();
+            var uvOptions = {};
+            
+            (function() {
+                initScrollTop();
+            })();
+    </script>
 </aside>
 
 
@@ -909,6 +921,7 @@ jQuery(document).ready(function($) {
 
 
 <script type="text/javascript" src="https://www.yangcs.net/js/lightbox.js"></script>
+
 
 <script type="text/javascript">
     var live2d_Path = '/live2d/model/pio/'
