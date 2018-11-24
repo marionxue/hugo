@@ -45,6 +45,10 @@ static_resources:
       filters:
       - name: envoy.http_connection_manager
         config:
+          response_headers_to_add:
+            - header:
+                key: "test"
+                value: "preload"
           codec_type: auto
           stat_prefix: ingress_http
           route_config:
