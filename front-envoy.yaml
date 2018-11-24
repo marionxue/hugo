@@ -60,9 +60,9 @@ static_resources:
                 route:
                   cluster: hugo
                   response_headers_to_add:
-                  - header:
-                      key: "test"
-                      value: "preload"
+                    - header:
+                        key: "test"
+                        value: "preload"
           http_filters:
           - name: envoy.router
             config: {}
