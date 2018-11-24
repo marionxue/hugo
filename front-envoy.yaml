@@ -54,16 +54,16 @@ static_resources:
               domains:
               - "yangcs.net"
               - "www.yangcs.net"
-              response_headers_to_add:
-              - header: 
-                  key: "Strict-Transport-Security"
-                  value: "max-age=63072000; includeSubDomains; preload"
-                append: true
               routes:
               - match:
                   prefix: "/"
                 route:
                   cluster: hugo
+                  response_headers_to_add:
+                  - header:
+                      key: "Strict-Transport-Security"
+                      value: "max-age=63072000; includeSubDomains; preload"
+                    append: true
           http_filters:
           - name: envoy.router
             config: {}
