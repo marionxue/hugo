@@ -1016,13 +1016,18 @@ jQuery(document).ready(function($) {
         a_idx = (a_idx + 1) % a.length;
         var x = e.pageX,
         y = e.pageY;
+        function randomColor() {
+          var flakeColor = new Array("#FFDA65", "#00BFFF", "#BA55D3", "#FFA07A", "#fbfcff", "#87CEEB", "#FFB6C1", "#00FFFF");
+          var snowColor = flakeColor[Math.floor(flakeColor.length * Math.random())];
+          return snowColor;
+        }
         $i.css({
             "z-index": 999999999999999999999999999999999999999999999999999999999999999999999,
             "top": y - 20,
             "left": x,
             "position": "absolute",
             "font-weight": "bold",
-            "color": "#ff6651"
+            "color": randomColor()
         });
         $("body").append($i);
         $i.animate({
