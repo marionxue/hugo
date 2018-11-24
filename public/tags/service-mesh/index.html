@@ -105,6 +105,19 @@ var _hmt = _hmt || [];
    InstantClick.init();
 </script>
 
+<script>
+step=0
+function flash_title()
+{
+step++
+if (step==3) {step=1}         
+if (step==1) {document.title='【VirCloud’s Blog】'}
+if (step==2) {document.title='【　　　　        】'}
+setTimeout("flash_title()",380);
+}
+flash_title()
+</script>
+
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.1/photoswipe.min.css" integrity="sha256-sCl5PUOGMLfFYctzDW3MtRib0ctyUvI9Qsmq2wXOeBY=" crossorigin="anonymous" />
@@ -983,7 +996,7 @@ jQuery(document).ready(function($) {
         var x = e.pageX,
         y = e.pageY;
         function randomColor() {
-          var flakeColor = new Array("#FFDA65", "#00BFFF", "#BA55D3", "#FFA07A", "#fbfcff", "#87CEEB", "#FFB6C1", "#00FFFF");
+          var flakeColor = new Array("#FFDA65", "#00BFFF", "#BA55D3", "#FFA07A", "#fbfcff", "#87CEEB", "#FFB6C1");
           var snowColor = flakeColor[Math.floor(flakeColor.length * Math.random())];
           return snowColor;
         }
