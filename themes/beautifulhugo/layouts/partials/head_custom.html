@@ -98,3 +98,22 @@ MathJax.Hub.Config({
    });
    InstantClick.init();
 </script>
+
+<script>
+    function showtime(){
+        var now_time = new Date(); //创建时间对象的实例
+        var hours = now_time.getHours(); //获得当前小时数
+        var minutes = now_time.getMinutes(); //获得当前分钟数
+        var seconds = now_time.getSeconds(); //获得当前秒数
+        var timer = " "+((hours>12)?hours - 12 :hours); //将小时数值赋予变量timer
+        timer += ((minutes<10)?":0":":")+minutes; //将分钟数值赋予变量timer
+        timer += ((seconds<10)?":0":":")+seconds; ///将秒数值赋予变量timer
+        timer += ((hours>12)?"pm":"am"); //将字符am或pm赋予变量timer
+        document.clock.show.value=timer; //在名为clock的表单中输出变量timer的值
+        setTimeout("showtime()",1000); //设置每隔一秒钟自动调用一次showtime()函数
+    }
+  /* setTimeout()方法是由windows对象所提供的，用来实现经过一定时间后
+  * 自动进行指定处理。该语句的意思就是1秒后调用showtime().setTimeout()
+  * 方法中的时间是以毫秒为单位进行计算的，因此1000ms就等于1s。*/
+
+</script>

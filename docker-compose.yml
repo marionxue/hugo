@@ -27,6 +27,7 @@ services:
     volumes:
       - /home/hugo/public:/usr/share/nginx/html
       - /etc/localtime:/etc/localtime
+      - /etc/letsencrypt:/etc/letsencrypt
     networks:
       - default
     expose:
@@ -38,6 +39,7 @@ services:
     volumes:
       - ./service-envoy.yaml:/etc/envoy/envoy.yaml
       - /etc/localtime:/etc/localtime
+      - /etc/letsencrypt:/etc/letsencrypt
     network_mode: "service:hugo"
 
 networks:

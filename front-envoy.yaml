@@ -22,8 +22,8 @@ static_resources:
               - match:
                   prefix: "/"
                 redirect:
-                  path_redirect: "/"
                   https_redirect: true
+                  response_code: "FOUND"
           http_filters:
           - name: envoy.router
             config: {}
@@ -60,10 +60,6 @@ static_resources:
                   prefix: "/"
                 route:
                   cluster: hugo
-              - match:
-                  path: "/stats/prometheus"
-                route:
-                  cluster: hugo_admin
           http_filters:
           - name: envoy.router
             config: {}
@@ -135,15 +131,6 @@ static_resources:
     - socket_address:
         address: hugo
         port_value: 8080
-  - name: hugo_admin
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
-    - socket_address:
-        address: hugo
-        port_value: 8082
   - name: oneindex
     connect_timeout: 0.25s
     type: strict_dns
