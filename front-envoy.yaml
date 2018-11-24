@@ -62,7 +62,7 @@ static_resources:
                   response_headers_to_add:
                   - header:
                       key: "Strict-Transport-Security"
-                      value: "max-age=63072000; includeSubDomains; preload"
+                      value: "preload"
           http_filters:
           - name: envoy.router
             config: {}
