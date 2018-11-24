@@ -61,7 +61,7 @@ static_resources:
                   cluster: hugo
                   response_headers_to_add:
                   - header:
-                      key: "Strict-Transport-Security"
+                      key: "test"
                       value: "preload"
           http_filters:
           - name: envoy.router
