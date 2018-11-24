@@ -55,7 +55,9 @@ static_resources:
               - "yangcs.net"
               - "www.yangcs.net"
               request_headers_to_add:
-              - header: "Strict-Transport-Security: max-age=63072000; includeSubDomains; preload"
+              - header: 
+                  key: "Strict-Transport-Security"
+                  value: "max-age=63072000; includeSubDomains; preload"
               routes:
               - match:
                   prefix: "/"
