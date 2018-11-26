@@ -135,6 +135,8 @@ Kubernetes API Server 暴露了一个不支持事务性语义的 CRUD （`Create
 
 ----
 
+<code data-gist-id="efdf2c6988dc6787108787c01154b2da"></code>
+
 {{% gist "dtornow/efdf2c6988dc6787108787c01154b2da" %}}
 
 + Kubernetes API Server 有一组 Kubernetes 对象和一个 `rev` 属性。
