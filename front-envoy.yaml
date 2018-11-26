@@ -45,10 +45,6 @@ static_resources:
       filters:
       - name: envoy.http_connection_manager
         config:
-          response_headers_to_add:
-            - header:
-                key: "test"
-                value: "preload"
           codec_type: auto
           stat_prefix: ingress_http
           route_config:
@@ -65,8 +61,8 @@ static_resources:
                   cluster: hugo
                   response_headers_to_add:
                     - header:
-                        key: "test"
-                        value: "preload"
+                        key: "Strict-Transport-Security"
+                        value: "max-age=63072000; includeSubDomains; preload"
           http_filters:
           - name: envoy.router
             config: {}
