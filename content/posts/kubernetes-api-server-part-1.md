@@ -137,24 +137,6 @@ Kubernetes API Server 暴露了一个不支持事务性语义的 CRUD （`Create
 
 {{% gist "dtornow/efdf2c6988dc6787108787c01154b2da" %}}
 
-```bash
-sig Server {objects : set Object, rev : Int}
-
-sig Object {kind : Kind, name : Name, namespace : Namespace, mod : Int}
-
-// Equality of objects
-pred eq(o, o' : Object) {
-  o.kind = o'.kind and o.name = o'.name and o.namespace = o'.namespace
-}
-
-// Uniqueness constraint
-fact {
-  all s : Server {
-    all disj o, o' : s.objects | not eq[o, o']
-  }
-}
-```
-
 + Kubernetes API Server 有一组 Kubernetes 对象和一个 `rev` 属性。
 + Kubernetes 对象具有 [kind](https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#types-kinds)，[name](https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#metadata)，[namespace](https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#metadata) 和 mod 这几个属性。
 + 对象由其 kind，name 和 namespace 三元组来标识。
@@ -179,27 +161,11 @@ fact {
 
 写入接口提供创建、更新和删除对象的命令。
 
-```bash
-abstract sig Command {server : one Server, server' : one Server}
-
-fact {
-  all c : Command {
-    c.server'.revision = c.server.revision.plus[1]
-  }
-}
-```
+{{% gist "dtornow/31e1be0478931422d5a687b24679a42e" %}}
 
 每一个 **Command** 表示一个状态转换：将 API Server 从当前状态转换到下一个状态。每个命令都会增加 API Server 的版本。
 
-```bash
-abstract sig Event { origin : one Command, object : one Object }
-
-fact {
-  all c : Command {
-    one e : Event | e.origin = c
-  }
-}
-```
+{{% gist "dtornow/f4b3d70341bc4425d51c0a64ebb864b0" %}}
 
 此外，每个命令都会生成一个事件。**Event** 表示命令执行的持久化可查询记录。
 
@@ -221,99 +187,34 @@ state = reduce(apply, events, {})
 
 #### 创建命令 {#create-command}
 
-```bash
-sig Create extends Command {toCreate : one Object}
-
-fact {
-  all c : Create {
-    // pre-condition(s)
-    not c.toCreate in c.server.objects
-    // next state
-    c.server'.objects = c.server.objects + c.toCreate
-    // mod
-    c.toCreate.mod = c.server'.rev
-  }
-}
-```
+{{% gist "dtornow/0bcbaad099158b2d6fc3296b1764c819" %}}
 
 + 创建命令将 Kubernetes 对象添加到 API Server，并将对象的 `mod` 值设置为 API Server 的 `rev` 值。
 + 如果想要创建的对象违反了 API Server 的唯一性约束，则会拒绝创建命令。
 
-```bash
-sig Created extends Event {}
-
-fact {
-  all c : Create {
-    one e : Created | e.origin = c and e.object = c.toCreate
-  }
-}
-```
+{{% gist "dtornow/256345b0f4bc31ff240b80a720f7f7cd" %}}
 
 + 每个创建命令都会生成一个持久且可查询的 `Created Event`，event 的 `object` 字段引用创建的 Kubernetes 对象。
 
 #### 更新命令 {#update-command}
 
-```bash
-sig Update extends Command {old : one Object, new : one Object, mod : Int}
-
-fact {
-  all u : Update {
-    // pre-condition(s)
-    u.old in u.server.objects and not u.new in u.server.objects and eq[u.old, u.new]
-    // optimistic locking
-    u.old.mod = u.mod 
-    // next state
-    u.server'.objects = u.server.objects - u.old + u.new
-    // mod
-    u.new.mod = u.server'.rev
-  }
-}
-```
+{{% gist "dtornow/7ea44fa165324d23c8722134ff7ec4f4" %}}
 
 + 更新命令将更新 API Server 中的 Kubernetes 对象，并将对象的 `mod` 值设置为 API Server 的 `rev` 值。
 + 如果命令的 `mod` 值与对象的 `rev` 值不匹配，则拒绝更新命令。这里的 `mod` 用作防护 token。
 
-```bash
-sig Updated extends Event {}
-
-fact {
-  all u : Update {
-    one e : Updated | e.origin = u and e.object = u.new
-  }
-}
-```
+{{% gist "dtornow/10e49aac7e90739300bc35f6e3240638" %}}
 
 + 每个更新命令都会生成一个持久且可查询的 Updated Event，event 的 object 字段引用新的 Kubernetes 对象。
 
 #### 删除命令 {#delete-command}
 
-```bash
-sig Delete extends Command {toDelete : one Object, mod : Int}
-
-fact {
-  all d : Delete {
-    // pre-condition(s)
-    d.toDelete in d.server.objects
-    // optimistic locking
-    d.toDelete.mod = d.mod 
-    // next state
-    d.server'.objects = d.server.objects - d.toDelete
-  }
-}
-```
+{{% gist "dtornow/99be5e54b2d7af17d9bca420321dd86c" %}}
 
 + 删除命令从 API Server 中删除 Kubernetes 对象。
 + 如果命令的 `mod` 值与对象的 `mod` 值不匹配，则拒绝删除命令。这里的 `mod` 用作防护 token。
 
-```bash
-sig Deleted extends Event {}
-
-fact {
-  all d : Delete {
-    one e : Deleted | e.origin = d and e.object = d.toDelete
-  }
-}
-```
+{{% gist "dtornow/70bdf6b117e35a7f084fb28d6c0b7a58" %}}
 
 + 每个删除命令都会生成一个持久且可查询的 Deleted Event，event 的 object 字段引用已删除的 Kubernetes 对象。
 
@@ -325,19 +226,7 @@ Kubernetes API 读取接口提供两个字接口，一个接口与对象相关�
 
 对象相关的子接口提供读取对象和对象列表的命令。
 
-```bash
-sig ReadO {kind : one Kind, name : one Name, namespace : one Namespace, min : Int, res : lone Object, rev : Int}
-
-fact {
-  all r : ReadO {
-    some s : Server {
-      r.min <= server.rev
-      r.rev = s.rev
-      r.res = {o : s.objects | o.kind = r.kind and o.name = r.name and o.namespace = r.namespace}
-    }
-  }
-}
-```
+{{% gist "dtornow/ca656ee97a26889332a578b2d26c6205" %}}
 
 + 读取对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 `min` 参数。
 + API Server 至少在由 `min` 指定的 API Server 的版本处返回匹配的 Kubernetes 对象。
@@ -346,28 +235,12 @@ fact {
 
 事件相关的子接口提供命令以读取关于对象和对象列表的事件。
 
-```bash
-sig WatchO {kind : Kind, name : Name, namespace : Namespace, min : Int, res : set Event}
-
-fact {
-  all w : WatchO {
-    w.res = {e : Event | e.origin.server.rev >= w.min and e.object.kind = w.kind and e.object.name = w.name and e.object.namespace = w.namespace}
-  }
-}
-```
+{{% gist "dtornow/8787bfaca9813192e118fd01ba0a53db" %}}
 
 + Watch 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 `min` 参数。
 + API Server 从指定的 API Server 版本开始返回所有匹配的事件。
 
-```bash
-sig WatchL {kind : Kind, name : Name, min : Int, res : set Event}
-
-fact {
-  all w : WatchL {
-    w.res = {e : Event | e.origin.server.rev >= w.min and e.object.kind = w.kind and e.object.name = w.name}
-  }
-}
-```
+{{% gist "dtornow/359321900d058554bb80a6001306e9b2" %}}
 
 + Watch List 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 min 参数。
 + API Server 从指定的 API Server 版本开始返回所有匹配的事件。
