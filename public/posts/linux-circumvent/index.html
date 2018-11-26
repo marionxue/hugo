@@ -512,6 +512,25 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
+<pre><code><div class="tabset" id="tabset-posts-linux-circumvent-1">
+	<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active"
+									data-toggle="tab"
+									data-cookie-name="mtls"
+                                    data-cookie-value="enabled"
+									href="#tabset-posts-linux-circumvent-1-0"><span>mTLS enabled</span></a>
+			</li></ul>
+
+	<div class="tab-content"><div class="tab-pane fade container active show" id="tabset-posts-linux-circumvent-1-0"><pre><code class='language-bash'>kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-egressgateway</code></pre>
+    
+</div></div>
+</div>
+
+</code></pre>
+
 <p id="div-border-left-red">Github 地址：<a href="https://github.com/yangchuansheng/love-gfw" target="_blank">Linux 和 MacOS 设备智能分流方案</a></p>
 
 <p><strong>本来我是决定不再写这样的文章了的。但是呢，最近连续配置了两次 <code>ArchLinux</code>，在配置这种东西的时候连续撞到了同样的坑，加上这段时间经常有人问我关于 <code>Linux</code> 下的 <code>shadowsocks</code> 的问题，所以我想了想还是写一篇记录一下吧，也免得自己以后再忘记了。</strong></p>
