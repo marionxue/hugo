@@ -11,7 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-{{% codepen "RoaWdE" "ð Snake Rush" "laozhu" "Ritchie Zhu" %}}
+{{% shengxiang "a8a49a00" %}}
 
 <p id="div-border-left-red">
 <strong>原文地址：</strong><a href="https://preliminary.istio.io/zh/blog/2018/egress-tcp/" target="_blank">使用外部 TCP 服务</a>
