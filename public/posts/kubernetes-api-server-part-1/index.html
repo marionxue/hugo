@@ -516,8 +516,6 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<script type="application/javascript" src="//gist.github.com/spf13/7896402.js"></script>
-
 <p id="div-border-left-red">
 <strong>原文地址：</strong><a href="https://medium.com/@dominik.tornow/kubernetes-api-server-part-i-3fbaf2138a31" target="_blank">Kubernetes API Server, Part I</a>
 <br />
@@ -655,7 +653,8 @@ autocomplete('#aa-search-input',
 
 <hr />
 
-<script type="application/javascript" src="//gist.github.com/dtornow/efdf2c6988dc6787108787c01154b2da/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/efdf2c6988dc6787108787c01154b2da.js"></script>
+
 
 <ul>
 <li>Kubernetes API Server 有一组 Kubernetes 对象和一个 <code>rev</code> 属性。</li>
@@ -683,11 +682,13 @@ autocomplete('#aa-search-input',
 
 <p>写入接口提供创建、更新和删除对象的命令。</p>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/31e1be0478931422d5a687b24679a42e/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/31e1be0478931422d5a687b24679a42e.js"></script>
+
 
 <p>每一个 <strong>Command</strong> 表示一个状态转换：将 API Server 从当前状态转换到下一个状态。每个命令都会增加 API Server 的版本。</p>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/f4b3d70341bc4425d51c0a64ebb864b0/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/f4b3d70341bc4425d51c0a64ebb864b0.js"></script>
+
 
 <p>此外，每个命令都会生成一个事件。<strong>Event</strong> 表示命令执行的持久化可查询记录。</p>
 
@@ -708,14 +709,16 @@ autocomplete('#aa-search-input',
 
 <h4 id="create-command">创建命令</h4>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/0bcbaad099158b2d6fc3296b1764c819/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/0bcbaad099158b2d6fc3296b1764c819.js"></script>
+
 
 <ul>
 <li>创建命令将 Kubernetes 对象添加到 API Server，并将对象的 <code>mod</code> 值设置为 API Server 的 <code>rev</code> 值。</li>
 <li>如果想要创建的对象违反了 API Server 的唯一性约束，则会拒绝创建命令。</li>
 </ul>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/256345b0f4bc31ff240b80a720f7f7cd/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/256345b0f4bc31ff240b80a720f7f7cd.js"></script>
+
 
 <ul>
 <li>每个创建命令都会生成一个持久且可查询的 <code>Created Event</code>，event 的 <code>object</code> 字段引用创建的 Kubernetes 对象。</li>
@@ -723,14 +726,16 @@ autocomplete('#aa-search-input',
 
 <h4 id="update-command">更新命令</h4>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/7ea44fa165324d23c8722134ff7ec4f4/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/7ea44fa165324d23c8722134ff7ec4f4.js"></script>
+
 
 <ul>
 <li>更新命令将更新 API Server 中的 Kubernetes 对象，并将对象的 <code>mod</code> 值设置为 API Server 的 <code>rev</code> 值。</li>
 <li>如果命令的 <code>mod</code> 值与对象的 <code>rev</code> 值不匹配，则拒绝更新命令。这里的 <code>mod</code> 用作防护 token。</li>
 </ul>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/10e49aac7e90739300bc35f6e3240638/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/10e49aac7e90739300bc35f6e3240638.js"></script>
+
 
 <ul>
 <li>每个更新命令都会生成一个持久且可查询的 Updated Event，event 的 object 字段引用新的 Kubernetes 对象。</li>
@@ -738,14 +743,16 @@ autocomplete('#aa-search-input',
 
 <h4 id="delete-command">删除命令</h4>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/99be5e54b2d7af17d9bca420321dd86c/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/99be5e54b2d7af17d9bca420321dd86c.js"></script>
+
 
 <ul>
 <li>删除命令从 API Server 中删除 Kubernetes 对象。</li>
 <li>如果命令的 <code>mod</code> 值与对象的 <code>mod</code> 值不匹配，则拒绝删除命令。这里的 <code>mod</code> 用作防护 token。</li>
 </ul>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/70bdf6b117e35a7f084fb28d6c0b7a58/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/70bdf6b117e35a7f084fb28d6c0b7a58.js"></script>
+
 
 <ul>
 <li>每个删除命令都会生成一个持久且可查询的 Deleted Event，event 的 object 字段引用已删除的 Kubernetes 对象。</li>
@@ -759,7 +766,8 @@ autocomplete('#aa-search-input',
 
 <p>对象相关的子接口提供读取对象和对象列表的命令。</p>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/ca656ee97a26889332a578b2d26c6205/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/ca656ee97a26889332a578b2d26c6205.js"></script>
+
 
 <ul>
 <li>读取对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 <code>min</code> 参数。</li>
@@ -770,14 +778,16 @@ autocomplete('#aa-search-input',
 
 <p>事件相关的子接口提供命令以读取关于对象和对象列表的事件。</p>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/8787bfaca9813192e118fd01ba0a53db/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/8787bfaca9813192e118fd01ba0a53db.js"></script>
+
 
 <ul>
 <li>Watch 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 <code>min</code> 参数。</li>
 <li>API Server 从指定的 API Server 版本开始返回所有匹配的事件。</li>
 </ul>
 
-<script type="application/javascript" src="//gist.github.com/dtornow/359321900d058554bb80a6001306e9b2/.js"></script>
+<script type="text/javascript" src="https://gist.github.com/dtornow/359321900d058554bb80a6001306e9b2.js"></script>
+
 
 <ul>
 <li>Watch List 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 min 参数。</li>
