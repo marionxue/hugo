@@ -135,6 +135,8 @@ Kubernetes API Server 暴露了一个不支持事务性语义的 CRUD （`Create
 
 ----
 
+{{% gist "dtornow/efdf2c6988dc6787108787c01154b2da" %}}
+
 ```bash
 sig Server {objects : set Object, rev : Int}
 
