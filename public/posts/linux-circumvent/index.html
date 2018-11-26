@@ -518,6 +518,11 @@ autocomplete('#aa-search-input',
 									data-cookie-name="mtls"
                                     data-cookie-value="enabled"
 									href="#tabset-posts-linux-circumvent-1-0"><span>mTLS enabled</span></a>
+			</li><li class="nav-item"><a class="nav-link"
+									data-toggle="tab"
+									data-cookie-name="mtls"
+                                    data-cookie-value="disabled"
+									href="#tabset-posts-linux-circumvent-1-1"><span>mTLS disabled</span></a>
 			</li></ul>
 
 	<div class="tab-content"><div class="tab-pane fade container active show" id="tabset-posts-linux-circumvent-1-0"><pre><code class='language-bash'>kubectl apply -f - &lt;&lt;EOF
@@ -526,6 +531,14 @@ kind: Gateway
 metadata:
   name: istio-egressgateway</code></pre>
     
+</div><div class="tab-pane fade container" id="tabset-posts-linux-circumvent-1-1"><pre><code class='language-bash'>kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-egressgateway
+spec:
+  selector:
+    istio: egressgateway</code></pre>
 </div></div>
 </div>
 

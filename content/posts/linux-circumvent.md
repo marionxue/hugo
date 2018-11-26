@@ -24,6 +24,21 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 {{< /text >}}
     {{% /tab %}}
 
+{{% tab name="mTLS disabled" cookie-value="disabled" %}}
+
+{{< text bash >}}
+    $ kubectl apply -f - <<EOF
+    apiVersion: networking.istio.io/v1alpha3
+    kind: Gateway
+    metadata:
+      name: istio-egressgateway
+    spec:
+      selector:
+        istio: egressgateway
+{{< /text >}}
+
+    {{% /tab %}}
+
     {{< /tabset >}}
 
 <p id="div-border-left-red">Github 地址：<a href="https://github.com/yangchuansheng/love-gfw" target="_blank">Linux 和 MacOS 设备智能分流方案</a></p>
