@@ -137,8 +137,6 @@ Kubernetes API Server 暴露了一个不支持事务性语义的 CRUD （`Create
 
 <code data-gist-id="efdf2c6988dc6787108787c01154b2da"></code>
 
-{{% gist "dtornow/efdf2c6988dc6787108787c01154b2da" %}}
-
 + Kubernetes API Server 有一组 Kubernetes 对象和一个 `rev` 属性。
 + Kubernetes 对象具有 [kind](https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#types-kinds)，[name](https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#metadata)，[namespace](https://github.com/kubernetes/community/blob/master/contributors/devel/api-conventions.md#metadata) 和 mod 这几个属性。
 + 对象由其 kind，name 和 namespace 三元组来标识。
@@ -163,11 +161,11 @@ Kubernetes API Server 暴露了一个不支持事务性语义的 CRUD （`Create
 
 写入接口提供创建、更新和删除对象的命令。
 
-{{% gist "dtornow/31e1be0478931422d5a687b24679a42e" %}}
+<code data-gist-id="31e1be0478931422d5a687b24679a42e"></code>
 
 每一个 **Command** 表示一个状态转换：将 API Server 从当前状态转换到下一个状态。每个命令都会增加 API Server 的版本。
 
-{{% gist "dtornow/f4b3d70341bc4425d51c0a64ebb864b0" %}}
+<code data-gist-id="f4b3d70341bc4425d51c0a64ebb864b0"></code>
 
 此外，每个命令都会生成一个事件。**Event** 表示命令执行的持久化可查询记录。
 
@@ -189,34 +187,34 @@ state = reduce(apply, events, {})
 
 #### 创建命令 {#create-command}
 
-{{% gist "dtornow/0bcbaad099158b2d6fc3296b1764c819" %}}
+<code data-gist-id="0bcbaad099158b2d6fc3296b1764c819"></code>
 
 + 创建命令将 Kubernetes 对象添加到 API Server，并将对象的 `mod` 值设置为 API Server 的 `rev` 值。
 + 如果想要创建的对象违反了 API Server 的唯一性约束，则会拒绝创建命令。
 
-{{% gist "dtornow/256345b0f4bc31ff240b80a720f7f7cd" %}}
+<code data-gist-id="256345b0f4bc31ff240b80a720f7f7cd"></code>
 
 + 每个创建命令都会生成一个持久且可查询的 `Created Event`，event 的 `object` 字段引用创建的 Kubernetes 对象。
 
 #### 更新命令 {#update-command}
 
-{{% gist "dtornow/7ea44fa165324d23c8722134ff7ec4f4" %}}
+<code data-gist-id="7ea44fa165324d23c8722134ff7ec4f4"></code>
 
 + 更新命令将更新 API Server 中的 Kubernetes 对象，并将对象的 `mod` 值设置为 API Server 的 `rev` 值。
 + 如果命令的 `mod` 值与对象的 `rev` 值不匹配，则拒绝更新命令。这里的 `mod` 用作防护 token。
 
-{{% gist "dtornow/10e49aac7e90739300bc35f6e3240638" %}}
+<code data-gist-id="10e49aac7e90739300bc35f6e3240638"></code>
 
 + 每个更新命令都会生成一个持久且可查询的 Updated Event，event 的 object 字段引用新的 Kubernetes 对象。
 
 #### 删除命令 {#delete-command}
 
-{{% gist "dtornow/99be5e54b2d7af17d9bca420321dd86c" %}}
+<code data-gist-id="99be5e54b2d7af17d9bca420321dd86c"></code>
 
 + 删除命令从 API Server 中删除 Kubernetes 对象。
 + 如果命令的 `mod` 值与对象的 `mod` 值不匹配，则拒绝删除命令。这里的 `mod` 用作防护 token。
 
-{{% gist "dtornow/70bdf6b117e35a7f084fb28d6c0b7a58" %}}
+<code data-gist-id="70bdf6b117e35a7f084fb28d6c0b7a58"></code>
 
 + 每个删除命令都会生成一个持久且可查询的 Deleted Event，event 的 object 字段引用已删除的 Kubernetes 对象。
 
@@ -228,7 +226,7 @@ Kubernetes API 读取接口提供两个字接口，一个接口与对象相关�
 
 对象相关的子接口提供读取对象和对象列表的命令。
 
-{{% gist "dtornow/ca656ee97a26889332a578b2d26c6205" %}}
+<code data-gist-id="ca656ee97a26889332a578b2d26c6205"></code>
 
 + 读取对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 `min` 参数。
 + API Server 至少在由 `min` 指定的 API Server 的版本处返回匹配的 Kubernetes 对象。
@@ -237,12 +235,12 @@ Kubernetes API 读取接口提供两个字接口，一个接口与对象相关�
 
 事件相关的子接口提供命令以读取关于对象和对象列表的事件。
 
-{{% gist "dtornow/8787bfaca9813192e118fd01ba0a53db" %}}
+<code data-gist-id="8787bfaca9813192e118fd01ba0a53db"></code>
 
 + Watch 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 `min` 参数。
 + API Server 从指定的 API Server 版本开始返回所有匹配的事件。
 
-{{% gist "dtornow/359321900d058554bb80a6001306e9b2" %}}
+<code data-gist-id="359321900d058554bb80a6001306e9b2"></code>
 
 + Watch List 对象的请求接收 kind、name 和 namespace 三元组，同时也会接收用作新鲜度 token 的 min 参数。
 + API Server 从指定的 API Server 版本开始返回所有匹配的事件。
