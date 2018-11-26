@@ -11,14 +11,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-{{< tabs name="tab_with_code" >}}
-{{{< tab name="Tab 1" codelang="bash" >}}
-echo "This is tab 1."
-{{< /tab >}}
-{{< tab name="Tab 2" codelang="go" >}}
-println "This is tab 2."
-{{< /tab >}}}
-{{< /tabs >}}
+{{< Lego2012/47b08ec1d1c7db588030be911558df40 >}}
 
 <p id="div-border-left-red">
 <strong>原文地址：</strong><a href="https://preliminary.istio.io/zh/blog/2018/egress-tcp/" target="_blank">使用外部 TCP 服务</a>
