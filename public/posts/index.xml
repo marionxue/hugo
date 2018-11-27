@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>通过 Egress Gateway 引导 Istio 的出口流量</title>
+      <link>https://www.yangcs.net/posts/egress-gateway/</link>
+      <pubDate>Mon, 26 Nov 2018 14:43:51 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/egress-gateway/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>在服务网格内部调用外部 TCP 服务</title>
       <link>https://www.yangcs.net/posts/egress-tcp/</link>
       <pubDate>Fri, 23 Nov 2018 14:18:48 +0800</pubDate>

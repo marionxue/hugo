@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 为 Envoy 开启 TLS 验证实战 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> 通过 Egress Gateway 引导 Istio 的出口流量 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="为 Envoy 开启 TLS 验证实战" />
-  <meta name="twitter:title" content="为 Envoy 开启 TLS 验证实战" />
-  <meta name="description" content="通过 Envoy 反向代理 hugo 静态页面">
-  <meta property="og:description" content="通过 Envoy 反向代理 hugo 静态页面">
-  <meta name="twitter:description" content="通过 Envoy 反向代理 hugo 静态页面">
+  <meta property="og:title" content="通过 Egress Gateway 引导 Istio 的出口流量" />
+  <meta name="twitter:title" content="通过 Egress Gateway 引导 Istio 的出口流量" />
+  <meta name="description" content="Istio 的高级边缘流量控制">
+  <meta property="og:description" content="Istio 的高级边缘流量控制">
+  <meta name="twitter:description" content="Istio 的高级边缘流量控制">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -19,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/egress-gateway/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/egress-gateway/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -403,7 +403,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>为 Envoy 开启 TLS 验证实战</h1>
+                     <h1>通过 Egress Gateway 引导 Istio 的出口流量</h1>
                      
                      
                   
@@ -411,13 +411,13 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">通过 Envoy 反向代理 hugo 静态页面</span>
+                      <span class="post-subheading">Istio 的高级边缘流量控制</span>
                     
                   
                   
                     <span class="post-meta">
   
-  Posted on September 26, 2018
+  Posted on November 26, 2018
   
   
 </span>
@@ -438,10 +438,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">为 Envoy 开启 TLS 验证实战</h1>
+                <h1 align="center">通过 Egress Gateway 引导 Istio 的出口流量</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">通过 Envoy 反向代理 hugo 静态页面</h2>
+                    <h2 align="center" class="posts-subheading">Istio 的高级边缘流量控制</h2>
                   
                 
                 
@@ -462,272 +462,44 @@ autocomplete('#aa-search-input',
             
 <div>
     <section id="datecount">
-        <h4 id="date"> Wed Sep 26, 2018</h4>
+        <h4 id="date"> Mon Nov 26, 2018</h4>
     </section>
-    <h5 id="wc">1500 Words|Read in about 3 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">100 Words|Read in about 0 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
-        <a href="https://www.yangcs.net/tags/envoy/">envoy</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
         
         <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
         
-        <a href="https://www.yangcs.net/tags/hugo/">hugo</a> &nbsp;
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
     </h5>
 </div>
 
             
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        
+    </div>
+    
+<div id="scrollTop">
+  <div class="level-2"></div>
+  <div class="level-3"></div>
+</div>
+<script type="text/javascript">
+	UI.global_search();
+	var uvOptions = {};
+	
+	(function() {
+		initScrollTop();
+	})();
+</script>
+</aside>
 
-                <p></p>
 
-<p>我的博客之前是使用 <code>Nginx</code> 来反代的，由于 Nginx 性能优异，目前有很多国内网站采用 Nginx 作为 Web 服务器，而且参考文档比较丰富，无论是对于其部署，配置还是调优都更为有经验。但是还是会碰到几个绕不开的问题：</p>
-
-<ul>
-<li>Nginx 的反向代理不支持 <code>http2/grpc</code> (好像今年 3 月份刚支持)</li>
-<li>不像 Envoy 几乎所有的网络配置都可以利用 <code>xDS API</code> 来实现动态变更，Nginx 缺乏有效的配置热变更机制(除非深入开发或者不断地 <code>reload</code>)。</li>
-<li>Nginx 的很多微服务功能都是要买 Nginx Plus 才有的。</li>
-</ul>
-
-<p>而 <a href="https://www.envoyproxy.io/" target="_blank">Envoy</a> 是一款现代化的，高性能，小体积的边缘及服务代理，浑身散发出一股时尚潮流的气息。作为一名斜杠青年，在经过一定地了解后，我果断入了 Envoy 的坑。</p>
-
-<p>关于如何为 Envoy 开启证书验证可以参考我之间的文章：<a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" target="_blank">为 Envoy 启用证书验证</a>。本文将直接进入实战部分，通过 Envoy 来反向代理我的博客静态页面，并且加密客户端和 Envoy 代理之间的所有流量。</p>
-
-<h2 id="span-id-inline-toc-1-span-方案架构"><span id="inline-toc">1.</span> 方案架构</h2>
-
-<hr />
-
-<p>本方案涉及到两层 Envoy：</p>
-
-<ul>
-<li>首先会有一个前端代理在某个地方单独运行。前端代理的工作是给其他地方提供一个入口。来自外部的传入连接请求到这里，前端代理将会决定他们在内部的转发路径。</li>
-<li>其次，博客静态页面由 nginx 提供，同时运行一个 “服务 Envoy”，它与 nginx 容器共享 <code>network nemspace</code>（相当于 Kubernetes 的 <code>Sidecar</code>）。</li>
-<li>所有的 Envoy 形成一个网格，然后在他们之间共享路由信息。</li>
-</ul>
-
-<p>注意，通常情况下你也可以只使用前端代理，然后去掉服务 Envoy 这一层。但是，使用完整网格的话，服务 Envoy 可以对应用服务进行健康监控等，让网格知道尝试联系一个挂掉的服务是否是毫无意义的。此外，Envoy 的统计数据收集最适合用在全网格上。</p>
-
-<p>但本文需要开启 TLS 验证，如果前端代理开启了 TLS 验证，那么必须配合服务 Envoy 使用，否则验证将无法通过。</p>
-
-<h2 id="span-id-inline-toc-2-span-部署服务-envoy"><span id="inline-toc">2.</span> 部署服务 Envoy</h2>
-
-<hr />
-
-<p>我的博客是通过 hugo 生成的，其他生成静态页面的软件类似，都可以采用我的方案。由于我的 hugo 根目录是 <code>/home/hugo</code>，首先进入该目录，然后创建容器编排的 <code>docker-compose.yml</code> 文件。</p>
-
-<pre><code class="language-yaml">version: '2'
-services:
-
-  hugo:
-    image: nginx:alpine
-    restart: always
-    volumes:
-      - /home/hugo/public:/usr/share/nginx/html ①
-    networks:
-      - default 
-    expose:
-      - &quot;80&quot;
-      - &quot;8080&quot;
-
-  service-envoy:
-    image: envoyproxy/envoy-alpine:latest
-    restart: always
-    volumes:
-      - ./service-envoy.yaml:/etc/envoy/envoy.yaml ②
-    network_mode: &quot;service:hugo&quot; ③
-
-networks:
-  default:
-    external:
-      name: yang ④
-</code></pre>
-
-<ul>
-<li>① : 将博客的静态页面挂载到 nginx 的 <code>root</code> 目录。</li>
-<li>② : 将服务 Envoy 的配置文件挂载到 Envoy 容器中。</li>
-<li>③ : 与 hugo 容器共享 <code>network namespace</code>。</li>
-<li>④ : 这是我自定义的网络，你可以换成你自己的。</li>
-</ul>
-
-<p>接下来需要创建服务 Envoy 的配置文件 <code>service-envoy.yaml</code>：</p>
-
-<pre><code class="language-yaml">static_resources:
-  listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 8080 ①
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: service
-              domains:
-              - &quot;*&quot;
-              routes:
-              - match:
-                  prefix: &quot;/&quot;
-                route:
-                  cluster: local_service
-          http_filters:
-          - name: envoy.router
-            config: {}
-  clusters:
-  - name: local_service
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    hosts:
-    - socket_address:
-        address: 127.0.0.1
-        port_value: 80 ②
-admin:
-  access_log_path: &quot;/dev/null&quot;
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 8081
-</code></pre>
-
-<ul>
-<li>① <code>8080</code> : 服务 Envoy 的监听端口。</li>
-<li>② <code>80</code> : hugo 静态页面的监听端口。</li>
-</ul>
-
-<h2 id="span-id-inline-toc-3-span-部署前端代理"><span id="inline-toc">3.</span> 部署前端代理</h2>
-
-<hr />
-
-<p>在 <code>docker-compose.yml</code> 文件中添加前端代理部分：</p>
-
-<pre><code class="language-yaml">version: '2'
-services:
-
-  ...
-  front-envoy:
-    image: envoyproxy/envoy
-    restart: always
-    volumes:
-      - ./front-envoy.yaml:/etc/envoy/envoy.yaml
-      - /etc/letsencrypt:/etc/letsencrypt
-    labels:
-      EnvironmentName: &quot;proxy&quot;
-      ServiceName: &quot;envoy&quot;
-      ProxyMode: &quot;tcp&quot;
-    networks:
-      - default
-    expose:
-      - &quot;80&quot;
-      - &quot;443&quot;
-    ports:
-      - &quot;80:80&quot;
-      - &quot;443:443&quot;
-</code></pre>
-
-<p>创建前端代理需要的配置文件 <code>front-envoy.yaml</code>：</p>
-
-<pre><code class="language-yaml">static_resources:
-  listeners:
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 80
-    filter_chains:
-    - filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto ①
-          stat_prefix: ingress_http
-          route_config:
-            virtual_hosts:
-            - name: backend
-              domains: ②
-              - &quot;yangcs.net&quot;
-              - &quot;www.yangcs.net&quot;
-              routes:
-              - match:
-                  prefix: &quot;/&quot;
-                redirect:
-                  path_redirect: &quot;/&quot;
-                  https_redirect: true
-          http_filters:
-          - name: envoy.router
-            config: {}
-  - address:
-      socket_address:
-        address: 0.0.0.0
-        port_value: 443
-    filter_chains:
-    - tls_context:
-        common_tls_context:
-          alpn_protocols: h2,http/1.1 ③
-          tls_certificates: ④
-            - certificate_chain:
-                filename: &quot;/etc/letsencrypt/live/www.yangcs.net/fullchain.pem&quot;
-              private_key:
-                filename: &quot;/etc/letsencrypt/live/www.yangcs.net/privkey.pem&quot;
-      filters:
-      - name: envoy.http_connection_manager
-        config:
-          codec_type: auto
-          stat_prefix: ingress_http
-          route_config:
-            name: local_route
-            virtual_hosts:
-            - name: backend
-              domains:
-              - &quot;yangcs.net&quot;
-              - &quot;www.yangcs.net&quot;
-              routes:
-              - match:
-                  prefix: &quot;/&quot;
-                route:
-                  cluster: hugo
-          http_filters:
-          - name: envoy.router
-            config: {}
-  clusters:
-  - name: hugo
-    connect_timeout: 0.25s
-    type: strict_dns
-    lb_policy: round_robin
-    http2_protocol_options: {}
-    hosts:
-    - socket_address:
-        address: hugo
-        port_value: 8080
-admin:
-  access_log_path: &quot;/dev/null&quot;
-  address:
-    socket_address:
-      address: 0.0.0.0
-      port_value: 8001
-</code></pre>
-
-<ul>
-<li>① : 编码/解码方式。参考：<a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#enum-config-filter-network-http-connection-manager-v2-httpconnectionmanager-codectype" target="_blank">HttpConnectionManager.CodecType</a></li>
-<li>② : 允许访问的域名（这里使用公网可以访问的域名）。</li>
-<li>③ : TLS 监听器支持 <code>ALPN</code>。HTTP 连接管理器使用这个信息（以及协议接口）来确定客户端使用的是 <code>HTTP/1.1</code> 还是 <code>HTTP/2</code>。</li>
-<li>④ : 网站使用的证书。可以通过 <a href="https://letsencrypt.org/" target="_blank">Let&rsquo;s Encrypt</a> 申请免费的证书。</li>
-</ul>
-
-<p>其他配置详细说明请参考：<a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy/" target="_blank">为 Envoy 启用证书验证</a>。</p>
-
-<p>准备好所有配置以后，我们就可以通过以下命令来启动所有服务了：</p>
-
-<pre><code class="language-bash">$ docker-compose up -d
-
-Creating front-proxy_hugo_1        ... done
-Creating front-proxy_front-envoy_1 ... done
-Creating front-proxy_service-envoy_1 ... done
-</code></pre>
-
-<p>接下来就可以通过公网域名访问博客网站啦！没错，你现在浏览的我的博客就是通过 Envoy 反向代理的。</p>
+                
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
@@ -787,11 +559,11 @@ Creating front-proxy_service-envoy_1 ... done
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/kubernetes-extensible-admission/" data-toggle="tooltip" data-placement="top" title="Kubernetes 准入控制介绍">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/egress-tcp/" data-toggle="tooltip" data-placement="top" title="在服务网格内部调用外部 TCP 服务">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" data-toggle="tooltip" data-placement="top" title="初试 Kubernetes 集群中使用 Contour 反向代理">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -801,15 +573,15 @@ Creating front-proxy_service-envoy_1 ... done
                 <h2>See Also</h2>
                 <ul>
                     
-                    <li><a href="/posts/circuit-breaking/">Envoy 熔断器的原理和使用</a></li>
+                    <li><a href="/posts/egress-tcp/">在服务网格内部调用外部 TCP 服务</a></li>
                     
-                    <li><a href="/posts/routing-with-a-control-plane/">通过控制平面提供路由</a></li>
+                    <li><a href="/posts/egress-https/">在服务网格内部调用外部 Web 服务</a></li>
                     
-                    <li><a href="/posts/integrating-service-discovery-with-envoy/">将服务发现与 Envoy 集成</a></li>
+                    <li><a href="/posts/egress-tls-origination/">Istio 出口流量的 TLS</a></li>
                     
-                    <li><a href="/posts/setting-up-ssl-in-envoy/">为 Envoy 启用证书验证</a></li>
+                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
                     
-                    <li><a href="/posts/incremental-deploys/">通过 Envoy 实现增量部署</a></li>
+                    <li><a href="/posts/where-is-the-request-2/">请求都去哪了？（续）</a></li>
                     
                 </ul>
                 

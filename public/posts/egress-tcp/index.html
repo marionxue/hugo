@@ -502,9 +502,19 @@ autocomplete('#aa-search-input',
 </ul>
 </nav>
     </div>
-    <a href="#" id="GoTop">
-        <i class="fa fa-arrow-up"></i>
-    </a>
+    
+<div id="scrollTop">
+  <div class="level-2"></div>
+  <div class="level-3"></div>
+</div>
+<script type="text/javascript">
+	UI.global_search();
+	var uvOptions = {};
+	
+	(function() {
+		initScrollTop();
+	})();
+</script>
 </aside>
 
 
@@ -905,7 +915,7 @@ Deleted config: serviceentry mysql-external
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/egress-gateway/" data-toggle="tooltip" data-placement="top" title="通过 Egress Gateway 引导 Istio 的出口流量">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -1057,7 +1067,7 @@ Deleted config: serviceentry mysql-external
                       
           
           &nbsp;&bull;&nbsp;
-          November 23,2018
+          November 26,2018
           updated
           
             &nbsp;&bull;&nbsp;
