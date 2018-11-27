@@ -814,6 +814,27 @@ autocomplete('#aa-search-input',
     </div>
   </div>
 
+    <div class="rocket"><img src="http://ycs.ylck.me/rocket_up.png" alt="" width="100" height="100"></div>
+<script>
+    $(function () {
+      $(window).scroll(function () {
+        
+        if ($(window).scrollTop() >= 1000) {
+          $('.rocket').stop().fadeIn(1000);
+        }else {
+          $('.rocket').stop().fadeOut(1000);
+        }
+      })
+      
+      $('.rocket').click(function () {
+        $('html,body').stop().animate({scrollTop:0},20);
+       
+      })
+    })
+
+</script>
+
+    
     <div id="landlord">
         <div class="message" style="opacity:0"></div>
         <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
