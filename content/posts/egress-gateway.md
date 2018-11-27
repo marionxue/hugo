@@ -341,8 +341,8 @@ $ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-fj6zr -o json
 **该 VirtualService 的作用是通过 Egress Gateway 访问目的地址 `edition.cnn.com:80`。**这里 Egress Gateway 将流量路由到 Cluster `outbound|80||edition.cnn.com`，最后将流量转发到服务 `edition.cnn.com:80`。完整的流量转发流程如下图所示：
 
 <div class="gallery">
-    <a href="http://ycs.ylck.me/istio-egress.svg" data-lightbox="image-1" data-title="原 Bookinfo 应用程序">
-    <img src="http://ycs.ylck.me/istio-egress.svg">
+    <a href="http://ycs.ylck.me/istio-egress%20%282%29.svg" data-lightbox="image-1" data-title="原 Bookinfo 应用程序">
+    <img src="http://ycs.ylck.me/istio-egress%20%282%29.svg">
     </a>
 </div>
 
