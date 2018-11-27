@@ -1,6 +1,6 @@
 ---
-title: "通过 Egress Gateway 引导 Istio 的出口流量"
-subtitle: "Istio 的高级边缘流量控制"
+title: "Istio 的高级边缘流量控制（一）"
+subtitle: "通过 Egress Gateway 引导 Istio 的出口 HTTP 流量"
 date: 2018-11-26T14:43:51+08:00
 draft: false
 toc: true
@@ -231,7 +231,7 @@ EOF
 
 这里其实创建了两条路由，我们一个一个来看：
 
-+ ① : gateway 选择了 `mesh`，表示该路由表创建在网格内的应用中：
++ ① : gateway 选择了 `mesh`，表示该路由创建在网格内的应用中：
 
 ```bash
 $ istioctl pc route sleep-5bc866558c-5nl8k --name 80 -o json|grep "edition.cnn.com" -A 11 -B 1
@@ -309,7 +309,7 @@ $ istioctl pc cluster sleep-5bc866558c-5nl8k --fqdn istio-egressgateway.istio-sy
 ]
 ```
 
-+ ② : gateway 选择了 `istio-egressgateway`，表示该路由表创建在 Egress Gateway 中：
++ ② : gateway 选择了 `istio-egressgateway`，表示该路由创建在 Egress Gateway 中：
 
 ```bash
 $ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-fj6zr -o json
@@ -347,3 +347,49 @@ $ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-fj6zr -o json
 </div>
 
 <center><p id=small>通过 Egress Gateway 引导 Istio 的出口 HTTP 流量</p></center>
+
+<span id=blue>5.</span> 重新发送 HTTP 请求到 [http://edition.cnn.com/politics](http://edition.cnn.com/politics)。
+
+```bash
+$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+
+HTTP/1.1 301 Moved Permanently
+...
+location: https://edition.cnn.com/politics
+...
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+...
+Content-Length: 151654
+...
+```
+
+输出应与步骤 2 中的输出相同。
+
+<span id=blue>6.</span> 查看 `istio-egressgateway` pod 中与我们的请求相对应的日志。
+
+```bash
+$ kubectl logs $(kubectl get pod -l istio=egressgateway -n istio-system -o jsonpath='{.items[0].metadata.name}') istio-proxy -n istio-system | tail
+```
+
+你会在输出结果中看到与请求相关的日志：
+
+```bash
+[2018-06-14T11:46:23.596Z] "GET /politics HTTP/1.1" 301 - 0 0 3 1 "172.30.146.87" "curl/7.35.0" "ab7be694-e367-94c5-83d1-086eca996dae" "edition.cnn.com" "151.101.193.67:80"
+```
+
+> 这里我们只将到 80 端口的 HTTP 流量重定向到 Egress Gateway，到 443 端口的 HTTPS 流量直接转到 `edition.cnn.com` 。
+
+## <span id="inline-toc">4.</span> 清理 {#cleanup}
+
+----
+
+删除 Gateway、VirtualService、DestinationRule 和 ServiceEntry。
+
+```bash
+$ kubectl delete gateway istio-egressgateway
+$ kubectl delete serviceentry cnn
+$ kubectl delete virtualservice direct-cnn-through-egress-gateway
+$ kubectl delete destinationrule egressgateway-for-cnn
+```

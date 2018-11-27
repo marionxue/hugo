@@ -5,13 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> 通过 Egress Gateway 引导 Istio 的出口流量 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> Istio 的高级边缘流量控制（一） - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="通过 Egress Gateway 引导 Istio 的出口流量" />
-  <meta name="twitter:title" content="通过 Egress Gateway 引导 Istio 的出口流量" />
-  <meta name="description" content="Istio 的高级边缘流量控制">
-  <meta property="og:description" content="Istio 的高级边缘流量控制">
-  <meta name="twitter:description" content="Istio 的高级边缘流量控制">
+  <meta property="og:title" content="Istio 的高级边缘流量控制（一）" />
+  <meta name="twitter:title" content="Istio 的高级边缘流量控制（一）" />
+  <meta name="description" content="通过 Egress Gateway 引导 Istio 的出口 HTTP 流量">
+  <meta property="og:description" content="通过 Egress Gateway 引导 Istio 的出口 HTTP 流量">
+  <meta name="twitter:description" content="通过 Egress Gateway 引导 Istio 的出口 HTTP 流量">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -403,7 +403,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>通过 Egress Gateway 引导 Istio 的出口流量</h1>
+                     <h1>Istio 的高级边缘流量控制（一）</h1>
                      
                      
                   
@@ -411,7 +411,7 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">Istio 的高级边缘流量控制</span>
+                      <span class="post-subheading">通过 Egress Gateway 引导 Istio 的出口 HTTP 流量</span>
                     
                   
                   
@@ -438,10 +438,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">通过 Egress Gateway 引导 Istio 的出口流量</h1>
+                <h1 align="center">Istio 的高级边缘流量控制（一）</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">Istio 的高级边缘流量控制</h2>
+                    <h2 align="center" class="posts-subheading">通过 Egress Gateway 引导 Istio 的出口 HTTP 流量</h2>
                   
                 
                 
@@ -464,7 +464,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Mon Nov 26, 2018</h4>
     </section>
-    <h5 id="wc">1900 Words|Read in about 4 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">2200 Words|Read in about 5 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -488,6 +488,7 @@ autocomplete('#aa-search-input',
 <li><a href="#use-case"><span id="inline-toc">1.</span> 用例</a></li>
 <li><a href="#before-you-begin"><span id="inline-toc">2.</span> 前提条件</a></li>
 <li><a href="#egress-gateway-for-http-traffic"><span id="inline-toc">3.</span> 定义 Egress Gateway 来引导 Istio 的出口 HTTP 流量</a></li>
+<li><a href="#cleanup"><span id="inline-toc">4.</span> 清理</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -716,7 +717,7 @@ EOF
 <p>这里其实创建了两条路由，我们一个一个来看：</p>
 
 <ul>
-<li>① : gateway 选择了 <code>mesh</code>，表示该路由表创建在网格内的应用中：</li>
+<li>① : gateway 选择了 <code>mesh</code>，表示该路由创建在网格内的应用中：</li>
 </ul>
 
 <pre><code class="language-bash">$ istioctl pc route sleep-5bc866558c-5nl8k --name 80 -o json|grep &quot;edition.cnn.com&quot; -A 11 -B 1
@@ -795,7 +796,7 @@ EOF
 </code></pre>
 
 <ul>
-<li>② : gateway 选择了 <code>istio-egressgateway</code>，表示该路由表创建在 Egress Gateway 中：</li>
+<li>② : gateway 选择了 <code>istio-egressgateway</code>，表示该路由创建在 Egress Gateway 中：</li>
 </ul>
 
 <pre><code class="language-bash">$ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-fj6zr -o json
@@ -833,6 +834,50 @@ EOF
 </div>
 
 <p><center><p id=small>通过 Egress Gateway 引导 Istio 的出口 HTTP 流量</p></center></p>
+
+<p><span id=blue>5.</span> 重新发送 HTTP 请求到 <a href="http://edition.cnn.com/politics" target="_blank">http://edition.cnn.com/politics</a>。</p>
+
+<pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+
+HTTP/1.1 301 Moved Permanently
+...
+location: https://edition.cnn.com/politics
+...
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+...
+Content-Length: 151654
+...
+</code></pre>
+
+<p>输出应与步骤 2 中的输出相同。</p>
+
+<p><span id=blue>6.</span> 查看 <code>istio-egressgateway</code> pod 中与我们的请求相对应的日志。</p>
+
+<pre><code class="language-bash">$ kubectl logs $(kubectl get pod -l istio=egressgateway -n istio-system -o jsonpath='{.items[0].metadata.name}') istio-proxy -n istio-system | tail
+</code></pre>
+
+<p>你会在输出结果中看到与请求相关的日志：</p>
+
+<pre><code class="language-bash">[2018-06-14T11:46:23.596Z] &quot;GET /politics HTTP/1.1&quot; 301 - 0 0 3 1 &quot;172.30.146.87&quot; &quot;curl/7.35.0&quot; &quot;ab7be694-e367-94c5-83d1-086eca996dae&quot; &quot;edition.cnn.com&quot; &quot;151.101.193.67:80&quot;
+</code></pre>
+
+<blockquote>
+<p>这里我们只将到 80 端口的 HTTP 流量重定向到 Egress Gateway，到 443 端口的 HTTPS 流量直接转到 <code>edition.cnn.com</code> 。</p>
+</blockquote>
+
+<h2 id="cleanup"><span id="inline-toc">4.</span> 清理</h2>
+
+<hr />
+
+<p>删除 Gateway、VirtualService、DestinationRule 和 ServiceEntry。</p>
+
+<pre><code class="language-bash">$ kubectl delete gateway istio-egressgateway
+$ kubectl delete serviceentry cnn
+$ kubectl delete virtualservice direct-cnn-through-egress-gateway
+$ kubectl delete destinationrule egressgateway-for-cnn
+</code></pre>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
