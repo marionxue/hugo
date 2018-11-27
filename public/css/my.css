@@ -340,3 +340,12 @@ hr {
 .post-copyright-info a {
   word-break: break-word;
 }
+
+.rocket{
+  width: 100px;
+  height: 100px;
+  position: fixed; /*设置固定定位*/
+  bottom: 0;
+  right: 0;
+  display: none;
+  }

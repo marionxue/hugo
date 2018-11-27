@@ -487,9 +487,26 @@ autocomplete('#aa-search-input',
 </ul>
 </nav>
     </div>
-    <a href="#" id="GoTop">
-        <i class="fa fa-arrow-up"></i>
-    </a>
+    
+<div class="rocket"><img src="../images/rocket_up.png" alt="" width="100" height="100"></div>
+<script>
+    $(function () {
+      $(window).scroll(function () {
+        
+        if ($(window).scrollTop() >= 1000) {
+          $('.rocket').stop().fadeIn(1000);
+        }else {
+          $('.rocket').stop().fadeOut(1000);
+        }
+      })
+      
+      $('.rocket').click(function () {
+        $('html,body').stop().animate({scrollTop:0},2000);
+       
+      })
+    })
+
+</script>
 </aside>
 
 
