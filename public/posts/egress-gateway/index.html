@@ -464,7 +464,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Mon Nov 26, 2018</h4>
     </section>
-    <h5 id="wc">100 Words|Read in about 0 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">1900 Words|Read in about 4 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
@@ -481,15 +481,358 @@ autocomplete('#aa-search-input',
 <aside class="toc">
     <div id='anchors-navbar'>
         <i class='fa fa-anchor'></i>
-        
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#use-case"><span id="inline-toc">1.</span> 用例</a></li>
+<li><a href="#before-you-begin"><span id="inline-toc">2.</span> 前提条件</a></li>
+<li><a href="#egress-gateway-for-http-traffic"><span id="inline-toc">3.</span> 定义 Egress Gateway 来引导 Istio 的出口 HTTP 流量</a></li>
+</ul></li>
+</ul>
+</nav>
     </div>
-    <a href="#" id="GoTop">
-        <i class="fa fa-arrow-up"></i>
-    </a>
+    
 </aside>
 
 
-                
+                <p></p>
+
+<p>在上一篇文章 <a href="https://www.yangcs.net/posts/egress-tls-origination/" target="_blank">Istio 出口流量的 TLS</a> 中，我演示了如何在网格内部直接通过 HTTP 协议访问外部加密服务，并揭示了其背后 Envoy 的配置逻辑。</p>
+
+<p>本文将会通过 <code>Egress Gateway</code> 来引导 Istio 的出口流量，与 <a href="https://www.yangcs.net/posts/egress-tls-origination/" target="_blank">Istio 出口流量的 TLS</a> 任务中描述的功能的相同，唯一的区别就是，这里会使用 <code>Egress Gateway</code> 来完成这一任务。</p>
+
+<p>Istio 0.8 引入了 i<a href="https://preliminary.istio.io/zh/docs/reference/config/istio.networking.v1alpha3/#gateway" target="_blank">ngress 和 Egress gateway</a> 的概念。 Ingress Gateway 允许定义进入服务网格的流量入口，所有入站流量都通过该入口；<code>Egress Gateway</code> 与之相对，它定义了网格的流量出口。 Egress Gateway 允许将 Istio  的流量治理功能（例如，监控和路由规则）应用于 Egress 流量。</p>
+
+<h2 id="use-case"><span id="inline-toc">1.</span> 用例</h2>
+
+<hr />
+
+<p>设想一个具有严格安全要求的组织。根据这些要求，服务网格的所有出口流量必须流经一组专用节点。这些节点与运行其他应用的节点分开，通过策略来控制出口流量。相比其他节点而言，对这些专用节点的监控也更加详细。</p>
+
+<p>另一个用例是设想一个集群，它的应用程序所在的节点没有外网 IP，因此在其上运行的网格内服务无法访问外网服务。通过定义 <code>Egress Gateway</code>，并将公共 IP 分配给 <code>Egress Gateway</code> 节点，然后通过它引导所有出口流量，就可以控制网格内服务访问外网服务了。</p>
+
+<h2 id="before-you-begin"><span id="inline-toc">2.</span> 前提条件</h2>
+
+<hr />
+
+<ul>
+<li>按照<a href="https://preliminary.istio.io/zh/docs/setup/" target="_blank">安装指南</a>中的说明设置 Istio 。</li>
+<li>启动 <a href="https://github.com/istio/istio/tree/master/samples/sleep" target="_blank">sleep</a> 示例，它将作为外部调用的测试源。</li>
+</ul>
+
+<p>如果您已启用<a href="https://preliminary.istio.io/zh/docs/setup/kubernetes/sidecar-injection/#sidecar-%E7%9A%84%E8%87%AA%E5%8A%A8%E6%B3%A8%E5%85%A5" target="_blank">自动注入 sidecar</a>, 请按如下命令部署 <code>sleep</code> 应用程序:</p>
+
+<pre><code class="language-bash">$ kubectl apply -f samples/sleep/sleep.yaml
+</code></pre>
+
+<p>否则，您必须在部署 <code>sleep</code> 应用程序之前手动注入 sidecar：</p>
+
+<pre><code class="language-bash">$ kubectl apply -f &lt;(istioctl kube-inject -f samples/sleep/sleep.yaml)
+</code></pre>
+
+<p>请注意，任何可以 <code>exec</code> 和 <code>curl</code> 的 pod 都可以执行以下步骤。</p>
+
+<ul>
+<li>创建一个 shell 变量来保存源 pod 的名称，以便将请求发送到外部服务, 如果您使用 <a href="https://github.com/istio/istio/tree/master/samples/sleep" target="_blank">sleep</a> 示例，请按如下命令运行:</li>
+</ul>
+
+<pre><code class="language-bash">$ export SOURCE_POD=$(kubectl get pod -l app=sleep -o jsonpath={.items..metadata.name})
+</code></pre>
+
+<h2 id="egress-gateway-for-http-traffic"><span id="inline-toc">3.</span> 定义 Egress Gateway 来引导 Istio 的出口 HTTP 流量</h2>
+
+<hr />
+
+<p>首先创建一个 <code>ServiceEntry</code> 以允许网格内服务访问外部服务。</p>
+
+<p><span id=blue>1.</span> 为 <code>edition.cnn.com</code> 定义一个 <code>ServiceEntry</code>：</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: cnn
+spec:
+  hosts:
+  - edition.cnn.com
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: https
+    protocol: HTTPS
+  resolution: DNS
+EOF
+</code></pre>
+
+<p><span id=blue>2.</span> 验证 <code>ServiceEntry</code> 是否生效。发送 HTTPS 请求到 <a href="http://edition.cnn.com/politics" target="_blank">http://edition.cnn.com/politics</a>。</p>
+
+<pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+
+HTTP/1.1 301 Moved Permanently
+...
+location: https://edition.cnn.com/politics
+...
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+...
+Content-Length: 151654
+...
+</code></pre>
+
+<p>此处的返回结果应该与 <a href="https://www.yangcs.net/posts/egress-tls-origination/" target="_blank">Istio 出口流量的 TLS</a> 中没有配置 TLS 发起的情况下的返回结果相同。</p>
+
+<p><span id=blue>3.</span> 为 <code>edition.cnn.com</code> 的 80 端口创建一个 Egress Gateway（假设没有启用<a href="https://preliminary.istio.io/zh/docs/tasks/security/mutual-tls/" target="_blank">双向 TLS 认证</a>）。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-egressgateway
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - edition.cnn.com
+EOF
+</code></pre>
+
+<p>此处 Istio 会将 <code>Gateway</code> 翻译成 Egress Gateway 所在的 Pod 的 <code>Listener</code>。具体配置如下：</p>
+
+<pre><code class="language-bash">$ istioctl -n istio-system pc listeners istio-egressgateway-f8b6469db-4csb2 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;0.0.0.0_80&quot;,
+        &quot;address&quot;: {
+            &quot;socketAddress&quot;: {
+                &quot;address&quot;: &quot;0.0.0.0&quot;,
+                &quot;portValue&quot;: 80
+            }
+        },
+        &quot;filterChains&quot;: [
+            {
+                &quot;filters&quot;: [
+                    {
+                        &quot;name&quot;: &quot;envoy.http_connection_manager&quot;,
+                        &quot;config&quot;: {
+                            ...
+                            &quot;rds&quot;: {
+                                &quot;config_source&quot;: {
+                                    &quot;ads&quot;: {}
+                                },
+                                &quot;route_config_name&quot;: &quot;http.80&quot;
+                            },
+                            ...
+</code></pre>
+
+<p>可以看到流量经过该 Listener 之后被转交给 RDS <code>http.80</code>，由于此时我们还没有创建 <code>VirtualService</code>，所以 RDS <code>http.80</code> 中不会包含任何有意义的路由，它会直接返回 <code>404</code> 状态码。</p>
+
+<pre><code class="language-bash">$ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-4csb2 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;http.80&quot;,
+        &quot;virtualHosts&quot;: [
+            {
+                &quot;name&quot;: &quot;blackhole:80&quot;,
+                &quot;domains&quot;: [
+                    &quot;*&quot;
+                ],
+                &quot;routes&quot;: [
+                    {
+                        &quot;match&quot;: {
+                            &quot;prefix&quot;: &quot;/&quot;
+                        },
+                        &quot;directResponse&quot;: {
+                            &quot;status&quot;: 404
+                        },
+                        &quot;perFilterConfig&quot;: {
+                            &quot;mixer&quot;: {}
+                        }
+                    }
+                ]
+            }
+        ],
+        &quot;validateClusters&quot;: false
+    }
+]
+</code></pre>
+
+<p>此处的 <code>validateClusters</code> 用来决定集群管理器是否对路由表中指向的 Cluster 进行验证。如果该参数设置为 <code>true</code> 且路由指向了不存在的集群，则不会加载该路由表；如果该参数设置为 <code>false</code> 且路由指向了不存在的集群，则会继续加载该路由表，最后找不到路由会返回 404。如果通过静态配置文件 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-field-config-filter-network-http-connection-manager-v2-httpconnectionmanager-route-config" target="_blank">route_config</a> 定义路由表，则该选项默认值为 <code>true</code>；如果通过 RDS 接口动态加载路由器，则该选项默认值为 <code>false</code>。</p>
+
+<blockquote>
+<p>如果你启用了双向 TLS 认证，需要加上额外的 TLS 配置，这里我不展开详述，可以参考<a href="https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-gateway/" target="_blank">官方文档</a>。</p>
+</blockquote>
+
+<p><span id=blue>4.</span> 创建一个 <code>DestinationRule</code> 和 <code>VirtualService</code> 来引导流量通过 Egress Gateway 与外部服务通信。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: direct-cnn-through-egress-gateway
+spec:
+  hosts:
+  - edition.cnn.com
+  gateways:
+  - istio-egressgateway
+  - mesh
+  http:
+  - match:
+    - gateways:
+      - mesh    ①
+      port: 80
+    route:
+    - destination:
+        host: istio-egressgateway.istio-system.svc.cluster.local
+        subset: cnn
+        port:
+          number: 80
+      weight: 100
+  - match:
+    - gateways:
+      - istio-egressgateway    ②
+      port: 80
+    route:
+    - destination:
+        host: edition.cnn.com
+        port:
+          number: 80
+      weight: 100
+EOF
+</code></pre>
+
+<p>这里其实创建了两条路由，我们一个一个来看：</p>
+
+<ul>
+<li>① : gateway 选择了 <code>mesh</code>，表示该路由表创建在网格内的应用中：</li>
+</ul>
+
+<pre><code class="language-bash">$ istioctl pc route sleep-5bc866558c-5nl8k --name 80 -o json|grep &quot;edition.cnn.com&quot; -A 11 -B 1
+</code></pre>
+
+<pre><code class="language-json">{
+    &quot;name&quot;: &quot;edition.cnn.com:80&quot;,
+    &quot;domains&quot;: [
+        &quot;edition.cnn.com&quot;,
+        &quot;edition.cnn.com:80&quot;
+    ],
+    &quot;routes&quot;: [
+        {
+            &quot;match&quot;: {
+                &quot;prefix&quot;: &quot;/&quot;
+            },
+            &quot;route&quot;: {
+                &quot;cluster&quot;: &quot;outbound|80|cnn|istio-egressgateway.istio-system.svc.cluster.local&quot;,
+                &quot;timeout&quot;: &quot;0.000s&quot;,
+                &quot;maxGrpcTimeout&quot;: &quot;0.000s&quot;
+            },
+</code></pre>
+
+<blockquote>
+<p>如果不指定 gateway，gateway 默认值就是 <code>mesh</code>。</p>
+</blockquote>
+
+<p><strong>该 VirtualService 的作用就是将目的地址是 <code>edition.cnn.com:80</code> 的流量重定向到 <code>Egress Gateway</code>。</strong></p>
+
+<div class="gallery">
+    <a href="https://cdn.nlark.com/yuque/0/2018/svg/122404/1543226447622-e17653c5-4dd3-4768-9b8f-cb1f3b0ef6a5.svg" data-lightbox="image-1" data-title="原 Bookinfo 应用程序">
+    <img src="https://cdn.nlark.com/yuque/0/2018/svg/122404/1543226447622-e17653c5-4dd3-4768-9b8f-cb1f3b0ef6a5.svg">
+    </a>
+</div>
+
+<p>这里我们将流量打向了 subset 为 <code>cnn</code> 的 Cluster，但现在不存在这个 Cluster，所以还需要通过 <code>DestinationRule</code> 定义一个 Cluster：</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: egressgateway-for-cnn
+spec:
+  host: istio-egressgateway.istio-system.svc.cluster.local
+  subsets:
+  - name: cnn
+EOF
+</code></pre>
+
+<p>查看创建好的 Cluster：</p>
+
+<pre><code class="language-bash">$ istioctl pc cluster sleep-5bc866558c-5nl8k --fqdn istio-egressgateway.istio-system.svc.cluster.local --subset cnn --port 80 -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;outbound|80|cnn|istio-egressgateway.istio-system.svc.cluster.local&quot;,
+        &quot;type&quot;: &quot;EDS&quot;,
+        &quot;edsClusterConfig&quot;: {
+            &quot;edsConfig&quot;: {
+                &quot;ads&quot;: {}
+            },
+            &quot;serviceName&quot;: &quot;outbound|80|cnn|istio-egressgateway.istio-system.svc.cluster.local&quot;
+        },
+        &quot;connectTimeout&quot;: &quot;1.000s&quot;,
+        &quot;circuitBreakers&quot;: {
+            &quot;thresholds&quot;: [
+                {}
+            ]
+        },
+        &quot;http2ProtocolOptions&quot;: {
+            &quot;maxConcurrentStreams&quot;: 1073741824
+        }
+    }
+]
+</code></pre>
+
+<ul>
+<li>② : gateway 选择了 <code>istio-egressgateway</code>，表示该路由表创建在 Egress Gateway 中：</li>
+</ul>
+
+<pre><code class="language-bash">$ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-fj6zr -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;http.80&quot;,
+        &quot;virtualHosts&quot;: [
+            {
+                &quot;name&quot;: &quot;edition.cnn.com:80&quot;,
+                &quot;domains&quot;: [
+                    &quot;edition.cnn.com&quot;,
+                    &quot;edition.cnn.com:80&quot;
+                ],
+                &quot;routes&quot;: [
+                    {
+                        &quot;match&quot;: {
+                            &quot;prefix&quot;: &quot;/&quot;
+                        },
+                        &quot;route&quot;: {
+                            &quot;cluster&quot;: &quot;outbound|80||edition.cnn.com&quot;,
+                            &quot;timeout&quot;: &quot;0.000s&quot;,
+                            &quot;maxGrpcTimeout&quot;: &quot;0.000s&quot;
+                        },
+                        ...
+</code></pre>
+
+<p><strong>该 VirtualService 的作用是通过 Egress Gateway 访问目的地址 <code>edition.cnn.com:80</code>。</strong>这里 Egress Gateway 将流量路由到 Cluster <code>outbound|80||edition.cnn.com</code>，最后将流量转发到服务 <code>edition.cnn.com:80</code>。完整的流量转发流程如下图所示：</p>
+
+<div class="gallery">
+    <a href="http://ycs.ylck.me/istio-egress.svg" data-lightbox="image-1" data-title="原 Bookinfo 应用程序">
+    <img src="http://ycs.ylck.me/istio-egress.svg">
+    </a>
+</div>
+
+<p><center><p id=small>通过 Egress Gateway 引导 Istio 的出口 HTTP 流量</p></center></p>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
@@ -615,6 +958,27 @@ autocomplete('#aa-search-input',
     </section>
 </div>
 
+    <div class="rocket"><img src="http://ycs.ylck.me/rocket_up.png" alt="" width="100" height="100"></div>
+<script>
+    $(function () {
+      $(window).scroll(function () {
+        
+        if ($(window).scrollTop() >= 1000) {
+          $('.rocket').stop().fadeIn(1000);
+        }else {
+          $('.rocket').stop().fadeOut(1000);
+        }
+      })
+      
+      $('.rocket').click(function () {
+        $('html,body').stop().animate({scrollTop:0},20);
+       
+      })
+    })
+
+</script>
+
+    
     <div id="landlord">
         <div class="message" style="opacity:0"></div>
         <canvas id="live2d" width="280" height="250" class="live2d"></canvas>
