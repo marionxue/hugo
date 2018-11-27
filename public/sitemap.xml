@@ -8,11 +8,6 @@
   </url>
   
   <url>
-    <loc>https://www.yangcs.net/posts/egress-gateway/</loc>
-    <lastmod>2018-11-26T14:43:51+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://www.yangcs.net/posts/egress-tcp/</loc>
     <lastmod>2018-11-23T14:18:48+08:00</lastmod>
   </url>
@@ -431,13 +426,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/istio/</loc>
-    <lastmod>2018-11-26T14:43:51+08:00</lastmod>
+    <lastmod>2018-11-23T14:18:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
-    <lastmod>2018-11-26T14:43:51+08:00</lastmod>
+    <lastmod>2018-11-23T14:18:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -497,13 +492,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/service-mesh/</loc>
-    <lastmod>2018-11-26T14:43:51+08:00</lastmod>
+    <lastmod>2018-11-23T14:18:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/service-mesh/</loc>
-    <lastmod>2018-11-26T14:43:51+08:00</lastmod>
+    <lastmod>2018-11-23T14:18:48+08:00</lastmod>
     <priority>0</priority>
   </url>
   
