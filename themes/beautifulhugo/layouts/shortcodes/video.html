@@ -68,6 +68,22 @@
 {{/* DEFAULTS */}}
 {{ $poster := "/images/poster.jpg" }}
 
-<video class="mdui-video-fluid mdui-center" preload="" controls="" poster="{{ or (.Get "poster") $poster }}">
-<source src="{{ .Get 0 }}" type="video/mp4">
-</video>
+{{ if .IsNamedParams }}
+
+  <video id="my-player" class="video-js" controls preload="auto" width="640" height="264" poster="{{ or (.Get "poster") $poster }}" data-setup="{}">
+    <source src="{{ .Get "mp4" }}" type="video/mp4"></source>
+    <source src="{{ .Get "webm" }}" type="video/webm"></source>
+    <source src="{{ .Get "ogv" }}" type=video/ogg></source>
+    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+  </video>
+
+{{ else }}
+
+  <video id="my-player" class="video-js vjs-big-play-centered" controls preload="auto" width="640" height="264" poster="{{ if isset .Params 3 }}{{ .Get 3 }}{{ else }}{{ $poster }}{{ end }}" data-setup="{}">
+    <source src="{{ .Get 0 }}" type="video/mp4"></source>
+    <source src="{{ .Get 1 }}" type="video/webm"></source>
+    <source src="{{ .Get 2 }}" type="video/ogg"></source>
+    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+  </video>
+
+{{ end }}
