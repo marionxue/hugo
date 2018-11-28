@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Istio 的高级边缘流量控制（二）</title>
+      <link>https://www.yangcs.net/posts/egress-gateway-2/</link>
+      <pubDate>Wed, 28 Nov 2018 18:19:56 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/egress-gateway-2/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香</title>
       <link>https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/</link>
       <pubDate>Wed, 28 Nov 2018 11:43:54 +0800</pubDate>

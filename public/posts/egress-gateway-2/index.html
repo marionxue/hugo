@@ -5,10 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Posts - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> Istio 的高级边缘流量控制（二） - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="Posts" />
-  <meta name="twitter:title" content="Posts" />
+  <meta property="og:title" content="Istio 的高级边缘流量控制（二）" />
+  <meta name="twitter:title" content="Istio 的高级边缘流量控制（二）" />
+  <meta name="description" content="通过 Egress gateway 发起 TLS 连接">
+  <meta property="og:description" content="通过 Egress gateway 发起 TLS 连接">
+  <meta name="twitter:description" content="通过 Egress gateway 发起 TLS 连接">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -16,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/egress-gateway-2/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/egress-gateway-2/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -377,14 +380,71 @@ autocomplete('#aa-search-input',
 
 
     
-  <header class="header-section ">
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Istio 的高级边缘流量控制（二）</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">通过 Egress gateway 发起 TLS 连接</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on November 28, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
     <div class="intro-header no-img">
+      
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="page-heading">
-              <h1>Posts</h1>
-              <hr class="small">
+            <div class="posts-heading">
+                <h1 align="center">Istio 的高级边缘流量控制（二）</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">通过 Egress gateway 发起 TLS 连接</h2>
+                  
+                
+                
             </div>
           </div>
         </div>
@@ -392,467 +452,438 @@ autocomplete('#aa-search-input',
     </div>
   </header>
 
+
     
-  <div class="container" role="main">
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="posts-list">
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/where-is-the-request-2/">
-                <h2 class="post-title">请求都去哪了？（续）</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    服务网格内部的 VirtualService 和 DestinationRule 配置深度解析
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 13, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/where-is-the-request-2/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/weekly-4/">
-                <h2 class="post-title">干货与湿货分享第4期</h2>
-
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 11, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/weekly-4/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/share/">share</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/where-is-the-request-1/">
-                <h2 class="post-title">请求都去哪了？</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    Istio 网关中的 Gateway 和 VirtualService 配置深度解析
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 8, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/where-is-the-request-1/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/kubernetes-resource-management/">
-                <h2 class="post-title">Kubernetes 资源管理概述</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    聊聊 Kubernetes 的计算资源模型以及如何调度管理资源
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 3, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/kubernetes-resource-management/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/">
-                <h2 class="post-title">Vistio—使用 Netflix 的 Vizceral 可视化 Istio service mesh</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    Vistio 部署使用教程
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 3, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/istio-ingress/">
-                <h2 class="post-title">Istio 服务网格中的网关</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用 Istio 控制 Ingress 流量
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 2, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/istio-ingress/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/istio-traffic-management/">
-                <h2 class="post-title">Istio 流量管理</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用 Istio 实现应用的金丝雀部署
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 1, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/istio-traffic-management/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/istio-1.0-deploy/">
-                <h2 class="post-title">Istio 1.0 部署</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用 Helm 部署 Istio 服务
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 1, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/istio-1.0-deploy/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/weekly-3/">
-                <h2 class="post-title">干货与湿货分享第3期</h2>
-
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on July 29, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/weekly-3/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/share/">share</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/weekly-2/">
-                <h2 class="post-title">干货与湿货分享第2期</h2>
-
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on July 21, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/weekly-2/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/share/">share</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-        </div>
-        
-          <ul class="pager main-pager">
-            
-              <li class="previous">
-                <a href="/posts/page/3">&larr; Newer Posts</a>
-              </li>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
             
-              <li class="next">
-                <a href="/posts/page/5">Older Posts &rarr;</a>
-              </li>
             
-          </ul>
+<div>
+    <section id="datecount">
+        <h4 id="date"> Wed Nov 28, 2018</h4>
+    </section>
+    <h5 id="wc">1400 Words|Read in about 3 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="tags">Tags: 
         
-      </div>
-    <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
         
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
 
-<ul class="pagination">
-    
-    <li class="page-item">
-        <a href="/posts/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-    <a href="/posts/page/3/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/posts/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/posts/page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/posts/page/3/">3</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item active"><a class="page-link" href="/posts/page/4/">4</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/posts/page/5/">5</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item disabled"><span aria-hidden="true">&nbsp;&hellip;&nbsp;</span></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/posts/page/8/">8</a></li>
-    
-    
-    <li class="page-item">
-    <a href="/posts/page/5/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-        <a href="/posts/page/8/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#serviceentry"><span id="inline-toc">1.</span> ServiceEntry</a></li>
+<li><a href="#gateway"><span id="inline-toc">2.</span> Gateway</a></li>
+<li><a href="#virtualservice_and_destinationrule"><span id="inline-toc">3.</span> VirtualService 和 DestinationRule</a></li>
+<li><a href="#cleanup"><span id="inline-toc">4.</span> 清理</a></li>
+<li><a href="#reference"><span id="inline-toc">5.</span> 参考</a></li>
+</ul></li>
 </ul>
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </div>
+</nav>
     </div>
-  </div>
+    
+</aside>
+
+
+                <p></p>
+
+<p><a href="https://www.yangcs.net/posts/egress-gateway-1/" target="_blank">上一节</a>我演示了如何通过 <code>Egress Gateway</code> 引导 Istio 的出口 <code>HTTP</code> 流量，但到 443 端口的 <code>HTTPS</code> 流量没有通过 Egress Gateway，而是直接转到 <code>edition.cnn.com</code> 。<a href="https://www.yangcs.net/posts/egress-tls-origination/" target="_blank">Istio 出口流量的 TLS</a> 演示了如何在网格内部直接通过 HTTP 协议访问外部加密服务。本文尝试将这两者结合起来，先将 HTTP 流量路由到 Egress Gateway，然后直接使用 Egress Gateway 发起 <code>TLS</code> 连接。</p>
+
+<blockquote>
+<p>前提条件与<a href="https://www.yangcs.net/posts/egress-gateway-1/#before-you-begin" target="_blank">上一篇文章</a>相同。</p>
+</blockquote>
+
+<h2 id="serviceentry"><span id="inline-toc">1.</span> ServiceEntry</h2>
+
+<hr />
+
+<p>首先需要为 <code>edition.cnn.com</code> 定义一个 <code>ServiceEntry</code> 以允许网格内服务访问外部服务。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: ServiceEntry
+metadata:
+  name: cnn
+spec:
+  hosts:
+  - edition.cnn.com
+  ports:
+  - number: 80
+    name: http-port
+    protocol: HTTP
+  - number: 443
+    name: http-port-for-tls-origination
+    protocol: HTTP
+  resolution: DNS
+EOF
+</code></pre>
+
+<p>该 ServiceEntry 会在服务网格内的所有应用的所有 Pod上创建相应的路由规则和与之对应的 Cluster。具体可以参考：<a href="https://www.yangcs.net/posts/control-egress-traffic/" target="_blank">控制 Egress 流量</a>。</p>
+
+<p>验证 <code>ServiceEntry</code> 是否生效。发送 HTTPS 请求到 <a href="http://edition.cnn.com/politics" target="_blank">http://edition.cnn.com/politics</a>。</p>
+
+<pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+
+HTTP/1.1 301 Moved Permanently
+...
+location: https://edition.cnn.com/politics
+...
+
+command terminated with exit code 35
+</code></pre>
+
+<p>如果看到输出结果中包含 <code>301 Moved Permanently</code>，说明 <code>ServiceEntry</code> 配置正确。退出码 <code>35</code> 是由于 Istio 没有执行 TLS。 为了让 Egress gateway 执行 TLS，还要继续执行以下步骤进行配置。</p>
+
+<h2 id="gateway"><span id="inline-toc">2.</span> Gateway</h2>
+
+<hr />
+
+<p>为 <code>edition.cnn.com</code> 的 <code>443</code> 端口创建一个 Egress Gateway（假设没有启用双向 TLS 认证）。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: istio-egressgateway
+spec:
+  selector:
+    istio: egressgateway
+  servers:
+  - port:
+      number: 443
+      name: http-port-for-tls-origination
+      protocol: HTTP
+    hosts:
+    - edition.cnn.com
+EOF
+</code></pre>
+
+<p>此处 Istio 会将 <code>Gateway</code> 翻译成 Egress Gateway 所在的 Pod 的 <code>Listener</code>。具体配置如下：</p>
+
+<pre><code class="language-bash">$ istioctl -n istio-system pc listener istio-egressgateway-f8b6469db-fj6zr -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;0.0.0.0_443&quot;,
+        &quot;address&quot;: {
+            &quot;socketAddress&quot;: {
+                &quot;address&quot;: &quot;0.0.0.0&quot;,
+                &quot;portValue&quot;: 443
+            }
+        },
+        &quot;filterChains&quot;: [
+            {
+                &quot;filters&quot;: [
+                    {
+                        &quot;name&quot;: &quot;envoy.http_connection_manager&quot;,
+                        &quot;config&quot;: {
+                            ...
+                            &quot;rds&quot;: {
+                                &quot;config_source&quot;: {
+                                    &quot;ads&quot;: {}
+                                },
+                                &quot;route_config_name&quot;: &quot;http.443&quot;
+                            },
+                            ...
+</code></pre>
+
+<p>可以看到经过该 Listener 的流量被转交给 RDS <code>http.443</code>，由于此时我们还没有创建 <code>VirtualService</code>，所以 RDS <code>http.443</code> 中不会包含任何有意义的路由，它会直接返回 <code>404</code> 状态码。</p>
+
+<pre><code class="language-bash">$ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-fj6zr -o json
+</code></pre>
+
+<pre><code class="language-json">[
+    {
+        &quot;name&quot;: &quot;http.443&quot;,
+        &quot;virtualHosts&quot;: [
+            {
+                &quot;name&quot;: &quot;blackhole:443&quot;,
+                &quot;domains&quot;: [
+                    &quot;*&quot;
+                ],
+                &quot;routes&quot;: [
+                    {
+                        &quot;match&quot;: {
+                            &quot;prefix&quot;: &quot;/&quot;
+                        },
+                        &quot;directResponse&quot;: {
+                            &quot;status&quot;: 404
+                        },
+                        &quot;perFilterConfig&quot;: {
+                            &quot;mixer&quot;: {}
+                        }
+                    }
+                ]
+            }
+        ],
+        &quot;validateClusters&quot;: false
+    }
+]
+</code></pre>
+
+<h2 id="virtualservice_and_destinationrule"><span id="inline-toc">3.</span> VirtualService 和 DestinationRule</h2>
+
+<hr />
+
+<p>创建一个 <code>DestinationRule</code> 和 <code>VirtualService</code> 来引导流量通过 Egress Gateway 与外部服务通信。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: egressgateway-for-cnn
+spec:
+  host: istio-egressgateway.istio-system.svc.cluster.local
+  subsets:
+  - name: cnn
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: direct-cnn-through-egress-gateway
+spec:
+  hosts:
+  - edition.cnn.com
+  gateways:
+  - istio-egressgateway
+  - mesh
+  http:
+  - match:
+    - gateways:
+      - mesh
+      port: 80
+    route:
+    - destination:
+        host: istio-egressgateway.istio-system.svc.cluster.local
+        subset: cnn
+        port:
+          number: 443
+      weight: 100
+  - match:
+    - gateways:
+      - istio-egressgateway
+      port: 443
+    route:
+    - destination:
+        host: edition.cnn.com
+        port:
+          number: 443
+      weight: 100
+EOF
+</code></pre>
+
+<p>这里 VirtualService 会分别为网格内的应用和 Egress Gateway 各创建一条路由，以实现通过 Egress Gateway 访问目的地址 <code>edition.cnn.com:443</code>。具体的 Envoy 配置解析与<a href="https://www.yangcs.net/posts/egress-gateway-1/" target="_blank">上一篇文章</a>类似。</p>
+
+<p>但此时我们仍然不能访问外部服务，因为 Egress Gateway 通过 <code>443</code> 端口发起连接的时候，使用的仍然是 <code>HTTP</code> 协议。所以我们需要让 Egress Gateway 在出口流量上执行 TLS 发起，使用 <code>HTTPS</code> 协议来访问外部服务。</p>
+
+<pre><code class="language-yaml">$ kubectl apply -f - &lt;&lt;EOF
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: originate-tls-for-edition-cnn-com
+spec:
+  host: edition.cnn.com
+  trafficPolicy:
+    loadBalancer:
+      simple: ROUND_ROBIN
+    portLevelSettings:
+    - port:
+        number: 443
+      tls:
+        mode: SIMPLE # initiates HTTPS for connections to edition.cnn.com
+EOF
+</code></pre>
+
+<p>现在所有的配置都已经完成，只要是访问 <code>edition.cnn.com:80</code> 的流量都会被 Egress Gateway 路由到 Cluster <code>outbound|443||edition.cnn.com</code>，最后将流量转发到服务 <code>https://edition.cnn.com:443</code>。</p>
+
+<p>完整的流量转发流程如下图所示：</p>
+
+<div class="gallery">
+    <a href="http://ycs.ylck.me/istio-egress-tls1.svg" data-lightbox="image-1" data-title="网格内服务访问 http://edition.cnn.com">
+    <img src="http://ycs.ylck.me/istio-egress-tls1.svg">
+    </a>
+</div>
+
+<p><center><p id=small>网格内服务访问 <a href="http://edition.cnn.com" target="_blank">http://edition.cnn.com</a></p></center></p>
+
+<p>重新发送 HTTP 请求到 <a href="http://edition.cnn.com/politics" target="_blank">http://edition.cnn.com/politics</a>。</p>
+
+<pre><code class="language-bash">$ kubectl exec -it $SOURCE_POD -c sleep -- curl -sL -o /dev/null -D - http://edition.cnn.com/politics
+
+HTTP/1.1 200 OK
+...
+content-length: 150793
+...
+</code></pre>
+
+<p>输出应该与 <a href="https://www.yangcs.net/posts/egress-tls-origination/" target="_blank">Istio 出口流量的 TLS</a> 中的输出相同：没有 <code>301 Moved Permanently</code> 信息。</p>
+
+<div id="note">
+<p id="note-title">Note</p>
+<br>
+<p>
+注意，这里我们只将到 80 端口的 <code>HTTP</code> 流量重定向到 Egress Gateway，并通过 Egress Gateway 发起 TLS 连接；到 443 端口的 `HTTP` 流量仍然直接通过应用的 sidecar 代理发起 TLS 连接。
+</p>
+</div>
+
+<h2 id="cleanup"><span id="inline-toc">4.</span> 清理</h2>
+
+<hr />
+
+<p>删除之前创建的 Istio 配置项：</p>
+
+<pre><code class="language-bash">$ kubectl delete gateway istio-egressgateway
+$ kubectl delete serviceentry cnn
+$ kubectl delete virtualservice direct-cnn-through-egress-gateway
+$ kubectl delete destinationrule originate-tls-for-edition-cnn-com
+$ kubectl delete destinationrule egressgateway-for-cnn
+</code></pre>
+
+<h2 id="reference"><span id="inline-toc">5.</span> 参考</h2>
+
+<hr />
+
+<ul>
+<li><a href="https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-gateway/" target="_blank">配置 Egress gateway</a></li>
+</ul>
+                <br />
+                <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
+                <script src="https://www.yangcs.net/js/particle.js"></script>
+                
+                <div class="entry-shang text-center">
+	<p>「真诚赞赏，手留余香」</p>
+        <button class="zs show-zs btn rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><img src="/img/avatar-icon.png"/>杨传胜</span>
+		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+ 	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/wechat-2.png" id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+                <span class="zs-wechat"><img src="/img/wechat-btn.png"/></span>
+	</div>
+</div>
+
+                
+                
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="不扫别后悔">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
+                
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/" data-toggle="tooltip" data-placement="top" title="KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/">KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香</a></li>
+                    
+                    <li><a href="/posts/egress-gateway-1/">Istio 的高级边缘流量控制（一）</a></li>
+                    
+                    <li><a href="/posts/egress-tcp/">在服务网格内部调用外部 TCP 服务</a></li>
+                    
+                    <li><a href="/posts/egress-https/">在服务网格内部调用外部 Web 服务</a></li>
+                    
+                    <li><a href="/posts/egress-tls-origination/">Istio 出口流量的 TLS</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+              
+            
+            </div>
+        </div>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+                
+                  
+                  
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
 
     <div class="rocket"><img src="http://ycs.ylck.me/rocket_up.png" alt="" width="100" height="100"></div>
 <script>
