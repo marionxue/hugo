@@ -5,10 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Istio - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="Istio" />
-  <meta name="twitter:title" content="Istio" />
+  <meta property="og:title" content="KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香" />
+  <meta name="twitter:title" content="KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香" />
+  <meta name="description" content="浅析 KubeRBS 的原理和使用方法">
+  <meta property="og:description" content="浅析 KubeRBS 的原理和使用方法">
+  <meta name="twitter:description" content="浅析 KubeRBS 的原理和使用方法">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -16,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/tags/istio/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/tags/istio/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -377,14 +380,71 @@ autocomplete('#aa-search-input',
 
 
     
-  <header class="header-section ">
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">浅析 KubeRBS 的原理和使用方法</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on November 28, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
     <div class="intro-header no-img">
+      
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="page-heading">
-              <h1>#Istio</h1>
-              <hr class="small">
+            <div class="posts-heading">
+                <h1 align="center">KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">浅析 KubeRBS 的原理和使用方法</h2>
+                  
+                
+                
             </div>
           </div>
         </div>
@@ -392,427 +452,251 @@ autocomplete('#aa-search-input',
     </div>
   </header>
 
+
     
-  <div class="container" role="main">
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Wed Nov 28, 2018</h4>
+    </section>
+    <h5 id="wc">600 Words|Read in about 2 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="tags">Tags: 
         
-        <div class="posts-list">
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/">
-                <h2 class="post-title">KubeRBS 助力 Kubernetes 自动回滚，让你晚上睡得更香</h2>
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+
+                <p></p>
+
+<p>随着越来越多的企业开始大量使用 Kubernetes，持续交付越来越趋向于标准化，软件版本的更新也越来越趋向于自动化。但你有没有想过，如果新发布的版本有缺陷时该怎么办？你需要多少时间和精力来回滚到之前的版本？</p>
+
+<p>人生苦短，不能把有限的精力浪费在无限的手动回滚中，最好的办法还是让系统自己决定要不要回滚，通过设定一系列指标，并对这些指标进行监控，就可以在应用不满足该指标时触发控制器对应用进行回滚。<a href="https://github.com/doitintl/kuberbs" target="_blank">kuberbs</a>（Kubernetes Rollback System）就是对该方案的一种尝试，它会监控 Kubernetes 的 <code>Deployment</code> 资源，如果该应用的错误率（用户定义的度量标准）高于指定的阈值，就会将该 <code>Deployment</code> 回滚到之前的版本。</p>
+
+<p>到目前为止，<code>kuberbs</code> 支持使用 <code>Stackdriver</code> 和 <code>Datadog</code> 的指标作为错误率指标，未来还计划增加更多对其他监控系统的支持。</p>
+
+<p>kuberbs 是一个 <code>Operator</code> 控制器，使用 <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/" target="_blank">CRD</a> 来管理需要监控的 Deployment 的配置、指标和阈值。下面是一个示例：</p>
+
+<pre><code class="language-yaml">apiVersion: &quot;doit-intl.com/v1&quot;
+kind: Rbs
+metadata:
+    name: my-rbs-example
+spec:
+  watchperiod: 5
+  metricssource: stackdriver
+  namespaces:
+  - name: default
+    deployments:
+    - deployment:
+        name: hello-kubernetes-app
+        #Stack driver metric
+        metric: logging.googleapis.com/user/hello-kubernetes-app-errors
+        threshold: 1
+    - deployment:
+        name: kubernetes-app-2
+        # DataDog metric
+        metric: gcp.container.cpu.usage_time{*}
+        threshold: 85
+  - name: kube-system
+    deployments:
+    - deployment:
+        name: kube-dns
+        metric: logging.googleapis.com/user/dig
+        threshold: 30
+</code></pre>
+
+<p>可以看到指标和阈值都是通过 CRD 资源 <code>Rbs</code> 来定义的，配置是通过 deployment 中的环境变量来定义的，而环境变量被存储在 kuberbs 的 <code>ConfigMap</code> 中。</p>
+
+<pre><code class="language-yaml">apiVersion: v1
+data:
+  KUBERBS_CHECKMETRICSINTERVAL: &quot;10&quot;
+  KUBERBS_APIKEY: &quot;&quot;
+  KUBERBS_APPKEY: &quot;&quot;
+  KUBERBS_DEBUG: &quot;false&quot;
+kind: ConfigMap
+metadata:
+  labels:
+    app: kuberbs
+  name: kuberbs-config
+  namespace: kube-system
+</code></pre>
+
+<p>你可以通过下面的小视频看到 KubeRBS 的运行状况：</p>
+
+
+
+
+
+
+
+
+  <video id="my-player" class="video-js vjs-big-play-centered vjs-fluid" controls preload="meta" poster="https://ws1.sinaimg.cn/large/006tNbRwgy1fxnqmu6le9j30pu0dct9t.jpg" data-setup="{}">
+    <source src="https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" type="video/mp4"></source>
+    <source src="" type="video/webm"></source>
+    <source src="" type=video/ogg></source>
+    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+  </video>
+  <div id="output"></div>
+  <script type="text/javascript">
+  (function(){
+  var video, output;
+  var scale = 0.8;
+  var initialize = function() {
+  output = document.getElementById("output");
+  video = document.getElementById("video");
+  video.addEventListener('loadeddata',captureImage);
+  };
+   
+  var captureImage = function() {
+              var canvas = document.createElement("canvas");
+              canvas.width = video.videoWidth * scale;
+              canvas.height = video.videoHeight * scale;
+              canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+   
+              var img = document.createElement("img");
+              img.src = canvas.toDataURL("image/png");
+              output.appendChild(img);
+  };
+   
+  initialize();
+  })();
+  </script>
+                <br />
+                <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
+                <script src="https://www.yangcs.net/js/particle.js"></script>
+                
+                <div class="entry-shang text-center">
+	<p>「真诚赞赏，手留余香」</p>
+        <button class="zs show-zs btn rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><img src="/img/avatar-icon.png"/>杨传胜</span>
+		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+ 	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/wechat-2.png" id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+                <span class="zs-wechat"><img src="/img/wechat-btn.png"/></span>
+	</div>
+</div>
 
                 
-                  <h3 class="post-subtitle">
-                    浅析 KubeRBS 的原理和使用方法
-                  </h3>
                 
-              </a>
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="不扫别后悔">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
 
-              <p class="post-meta">
-                Posted on November 28, 2018
-              </p>
-              <div class="post-entry">
+
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
                 
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
             </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/egress-gateway-1/">
-                <h2 class="post-title">Istio 的高级边缘流量控制（一）</h2>
 
+            <ul class="pager blog-pager">
                 
-                  <h3 class="post-subtitle">
-                    通过 Egress Gateway 引导 Istio 的出口 HTTP 流量
-                  </h3>
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/egress-gateway-1/" data-toggle="tooltip" data-placement="top" title="Istio 的高级边缘流量控制（一）">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
                 
-              </a>
-
-              <p class="post-meta">
-                Posted on November 26, 2018
-              </p>
-              <div class="post-entry">
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/egress-gateway-1/">Istio 的高级边缘流量控制（一）</a></li>
+                    
+                    <li><a href="/posts/egress-tcp/">在服务网格内部调用外部 TCP 服务</a></li>
+                    
+                    <li><a href="/posts/egress-https/">在服务网格内部调用外部 Web 服务</a></li>
+                    
+                    <li><a href="/posts/egress-tls-origination/">Istio 出口流量的 TLS</a></li>
+                    
+                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
+                    
+                </ul>
                 
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/egress-gateway-1/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
+            </div>
+            
+            
+            
               
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/egress-tcp/">
-                <h2 class="post-title">在服务网格内部调用外部 TCP 服务</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    TCP 流量的出口规则
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on November 23, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/egress-tcp/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/egress-https/">
-                <h2 class="post-title">在服务网格内部调用外部 Web 服务</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    HTTPS 流量的出口规则
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on November 21, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/egress-https/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/egress-tls-origination/">
-                <h2 class="post-title">Istio 出口流量的 TLS</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    在网格内部直接通过 HTTP 协议访问外部加密服务
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on November 16, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/egress-tls-origination/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/">
-                <h2 class="post-title">在 Istio 中调试 503 错误</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    记一次 mTLS 趟坑经历
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on October 11, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/istio-traffic-management-impl-intro/">
-                <h2 class="post-title">Istio 流量管理实现机制深度解析</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    从整体上理解 Pilot 和 Envoy 的流量管理机制
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on October 9, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/istio-traffic-management-impl-intro/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/increasing-security-of-istio-deployments/">
-                <h2 class="post-title">通过消除对特权容器的需求来提高 Istio Deployment 的安全性</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    istio-pod-network-controller 介绍
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on September 21, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/increasing-security-of-istio-deployments/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/expose-gateway-of-istio/">
-                <h2 class="post-title">暴露 Istio Service Mesh 中的 Gateway</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用 Envoy 作为 Ingress Gateway 的前端代理
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on September 17, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/expose-gateway-of-istio/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/control-egress-traffic/">
-                <h2 class="post-title">控制 Egress 流量</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    服务网格内部的 ServiceEntry 配置深度解析以及 Egress 流量的访问策略管理
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on August 16, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/control-egress-traffic/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/istio/">istio</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
+            
+            </div>
         </div>
-        
-          <ul class="pager main-pager">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
             
-              <li class="next">
-                <a href="/tags/istio/page/2">Older Posts &rarr;</a>
-              </li>
-            
-          </ul>
-        
-      </div>
-    <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-
-<ul class="pagination">
+                
+                  
+                  
+<aside id=comments>
     
-    <li class="page-item">
-        <a href="/tags/istio/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li class="page-item disabled">
-    <a href="" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item active"><a class="page-link" href="/tags/istio/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/tags/istio/page/2/">2</a></li>
-    
-    
-    <li class="page-item">
-    <a href="/tags/istio/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-        <a href="/tags/istio/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
-</ul>
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </div>
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
     </div>
-  </div>
+    
+</aside>
+
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
 
     <div class="rocket"><img src="http://ycs.ylck.me/rocket_up.png" alt="" width="100" height="100"></div>
 <script>
