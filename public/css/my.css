@@ -360,3 +360,4 @@ hr {
     margin-right: auto!important;
     margin-left: auto!important;
 }
+.center { margin: 0 auto; width: 400px; }
