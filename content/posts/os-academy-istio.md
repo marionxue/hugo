@@ -10,4 +10,19 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-<iframe width="560" height="315" src="http://player.youku.com/embed/XMzkwMDEzMzkxNg==" frameborder="0" allowfullscreen></iframe>
+<script src="const dp = new DPlayer({
+    container: document.getElementById('dplayer'),
+    screenshot: true,
+    video: {
+        url: 'https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4',
+        pic: 'demo.jpg',
+        thumbnails: 'thumbnails.jpg'
+    },
+    subtitle: {
+        url: 'webvtt.vtt'
+    },
+    danmaku: {
+        id: 'demo',
+        api: 'https://api.prprpr.me/dplayer/'
+    }
+});" async></script>

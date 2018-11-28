@@ -481,7 +481,22 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<iframe width="560" height="315" src="http://player.youku.com/embed/XMzkwMDEzMzkxNg==" frameborder="0" allowfullscreen></iframe>
+<script src="const dp = new DPlayer({
+    container: document.getElementById('dplayer'),
+    screenshot: true,
+    video: {
+        url: 'https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4',
+        pic: 'demo.jpg',
+        thumbnails: 'thumbnails.jpg'
+    },
+    subtitle: {
+        url: 'webvtt.vtt'
+    },
+    danmaku: {
+        id: 'demo',
+        api: 'https://api.prprpr.me/dplayer/'
+    }
+});" async></script>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
