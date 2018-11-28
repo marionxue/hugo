@@ -489,6 +489,7 @@ autocomplete('#aa-search-input',
 <li><a href="#before-you-begin"><span id="inline-toc">2.</span> 前提条件</a></li>
 <li><a href="#egress-gateway-for-http-traffic"><span id="inline-toc">3.</span> 定义 Egress Gateway 来引导 Istio 的出口 HTTP 流量</a></li>
 <li><a href="#cleanup"><span id="inline-toc">4.</span> 清理</a></li>
+<li><a href="#reference"><span id="inline-toc">5.</span> 参考</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -670,7 +671,7 @@ EOF
 ]
 </code></pre>
 
-<p>此处的 <code>validateClusters</code> 用来决定集群管理器是否对路由表中指向的 Cluster 进行验证。如果该参数设置为 <code>true</code> 且路由指向了不存在的集群，则不会加载该路由表；如果该参数设置为 <code>false</code> 且路由指向了不存在的集群，则会继续加载该路由表，最后找不到路由会返回 404。如果通过静态配置文件 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-field-config-filter-network-http-connection-manager-v2-httpconnectionmanager-route-config" target="_blank">route_config</a> 定义路由表，则该选项默认值为 <code>true</code>；如果通过 RDS 接口动态加载路由器，则该选项默认值为 <code>false</code>。</p>
+<p>此处的 <code>validateClusters</code> 用来决定集群管理器是否对路由中指向的 Cluster 进行验证。如果该参数设置为 <code>true</code> 且路由指向了不存在的集群，则不会加载该路由；如果该参数设置为 <code>false</code> 且路由指向了不存在的集群，则会继续加载该路由，最后找不到路由会返回 404。如果通过静态配置文件 <a href="https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-field-config-filter-network-http-connection-manager-v2-httpconnectionmanager-route-config" target="_blank">route_config</a> 定义路由，则该选项默认值为 <code>true</code>；如果通过 RDS 接口动态加载路由，则该选项默认值为 <code>false</code>。</p>
 
 <blockquote>
 <p>如果你启用了双向 TLS 认证，需要加上额外的 TLS 配置，这里我不展开详述，可以参考<a href="https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-gateway/" target="_blank">官方文档</a>。</p>
@@ -828,7 +829,7 @@ EOF
 <p><strong>该 VirtualService 的作用是通过 Egress Gateway 访问目的地址 <code>edition.cnn.com:80</code>。</strong>这里 Egress Gateway 将流量路由到 Cluster <code>outbound|80||edition.cnn.com</code>，最后将流量转发到服务 <code>edition.cnn.com:80</code>。完整的流量转发流程如下图所示：</p>
 
 <div class="gallery">
-    <a href="http://ycs.ylck.me/istio-egress%20%282%29.svg" data-lightbox="image-1" data-title="原 Bookinfo 应用程序">
+    <a href="http://ycs.ylck.me/istio-egress%20%282%29.svg" data-lightbox="image-1" data-title="通过 Egress Gateway 引导 Istio 的出口 HTTP 流量">
     <img src="http://ycs.ylck.me/istio-egress%20%282%29.svg">
     </a>
 </div>
@@ -878,6 +879,14 @@ $ kubectl delete serviceentry cnn
 $ kubectl delete virtualservice direct-cnn-through-egress-gateway
 $ kubectl delete destinationrule egressgateway-for-cnn
 </code></pre>
+
+<h2 id="reference"><span id="inline-toc">5.</span> 参考</h2>
+
+<hr />
+
+<ul>
+<li><a href="https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-gateway/" target="_blank">配置 Egress gateway</a></li>
+</ul>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>

@@ -186,7 +186,7 @@ $ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-4csb2 -o json
 ]
 ```
 
-此处的 `validateClusters` 用来决定集群管理器是否对路由表中指向的 Cluster 进行验证。如果该参数设置为 `true` 且路由指向了不存在的集群，则不会加载该路由表；如果该参数设置为 `false` 且路由指向了不存在的集群，则会继续加载该路由表，最后找不到路由会返回 404。如果通过静态配置文件 [route_config](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-field-config-filter-network-http-connection-manager-v2-httpconnectionmanager-route-config) 定义路由表，则该选项默认值为 `true`；如果通过 RDS 接口动态加载路由器，则该选项默认值为 `false`。
+此处的 `validateClusters` 用来决定集群管理器是否对路由中指向的 Cluster 进行验证。如果该参数设置为 `true` 且路由指向了不存在的集群，则不会加载该路由；如果该参数设置为 `false` 且路由指向了不存在的集群，则会继续加载该路由，最后找不到路由会返回 404。如果通过静态配置文件 [route_config](https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/filter/network/http_connection_manager/v2/http_connection_manager.proto#envoy-api-field-config-filter-network-http-connection-manager-v2-httpconnectionmanager-route-config) 定义路由，则该选项默认值为 `true`；如果通过 RDS 接口动态加载路由，则该选项默认值为 `false`。
 
 > 如果你启用了双向 TLS 认证，需要加上额外的 TLS 配置，这里我不展开详述，可以参考[官方文档](https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-gateway/)。
 
@@ -341,7 +341,7 @@ $ istioctl -n istio-system pc route istio-egressgateway-f8b6469db-fj6zr -o json
 **该 VirtualService 的作用是通过 Egress Gateway 访问目的地址 `edition.cnn.com:80`。**这里 Egress Gateway 将流量路由到 Cluster `outbound|80||edition.cnn.com`，最后将流量转发到服务 `edition.cnn.com:80`。完整的流量转发流程如下图所示：
 
 <div class="gallery">
-    <a href="http://ycs.ylck.me/istio-egress%20%282%29.svg" data-lightbox="image-1" data-title="原 Bookinfo 应用程序">
+    <a href="http://ycs.ylck.me/istio-egress%20%282%29.svg" data-lightbox="image-1" data-title="通过 Egress Gateway 引导 Istio 的出口 HTTP 流量">
     <img src="http://ycs.ylck.me/istio-egress%20%282%29.svg">
     </a>
 </div>
@@ -393,3 +393,9 @@ $ kubectl delete serviceentry cnn
 $ kubectl delete virtualservice direct-cnn-through-egress-gateway
 $ kubectl delete destinationrule egressgateway-for-cnn
 ```
+
+## <span id="inline-toc">5.</span> 参考 {#reference}
+
+----
+
++ [配置 Egress gateway](https://preliminary.istio.io/zh/docs/examples/advanced-gateways/egress-gateway/)
