@@ -10,4 +10,10 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-{{% video "http://player.youku.com/embed/XMzkwMDEzMzkxNg==" %}}
+<iframe 
+    width="800" 
+    height="450" 
+    src="http://player.youku.com/embed/XMzkwMDEzMzkxNg=="
+    frameborder="0" 
+    allowfullscreen>
+</iframe>
