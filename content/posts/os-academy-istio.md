@@ -10,4 +10,4 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-{{% "https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" %}}
+{{% video "https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" %}}
