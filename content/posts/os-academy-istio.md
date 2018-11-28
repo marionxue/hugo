@@ -15,8 +15,8 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
     screenshot: true,
     video: {
         url: 'https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4',
-        pic: 'demo.jpg',
-        thumbnails: 'thumbnails.jpg'
+        pic: 'http://ycs.ylck.me/004.jpg',
+        thumbnails: 'http://ycs.ylck.me/004.jpg'
     },
     subtitle: {
         url: 'webvtt.vtt'
