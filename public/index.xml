@@ -21,6 +21,16 @@
     </item>
     
     <item>
+      <title> Istio 系列视频课程</title>
+      <link>https://www.yangcs.net/posts/os-academy-istio/</link>
+      <pubDate>Wed, 28 Nov 2018 11:43:54 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/os-academy-istio/</guid>
+      <description>    To view this video please enable JavaScript, and consider upgrading to a web browser that supports HTML5 video
+ </description>
+    </item>
+    
+    <item>
       <title>Istio 的高级边缘流量控制（一）</title>
       <link>https://www.yangcs.net/posts/egress-gateway-1/</link>
       <pubDate>Mon, 26 Nov 2018 14:43:51 +0800</pubDate>

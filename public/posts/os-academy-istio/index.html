@@ -5,10 +5,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <title> Envoy - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title>  Istio 系列视频课程 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="Envoy" />
-  <meta name="twitter:title" content="Envoy" />
+  <meta property="og:title" content=" Istio 系列视频课程" />
+  <meta name="twitter:title" content=" Istio 系列视频课程" />
+  <meta name="description" content="开源技术 * IBM 微讲堂">
+  <meta property="og:description" content="开源技术 * IBM 微讲堂">
+  <meta name="twitter:description" content="开源技术 * IBM 微讲堂">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -16,12 +19,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/tags/envoy/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/os-academy-istio/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/tags/envoy/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/os-academy-istio/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -377,14 +380,71 @@ autocomplete('#aa-search-input',
 
 
     
-  <header class="header-section ">
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1> Istio 系列视频课程</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">开源技术 * IBM 微讲堂</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on November 28, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
     <div class="intro-header no-img">
+      
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="page-heading">
-              <h1>#Envoy</h1>
-              <hr class="small">
+            <div class="posts-heading">
+                <h1 align="center"> Istio 系列视频课程</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">开源技术 * IBM 微讲堂</h2>
+                  
+                
+                
             </div>
           </div>
         </div>
@@ -392,417 +452,174 @@ autocomplete('#aa-search-input',
     </div>
   </header>
 
+
     
-  <div class="container" role="main">
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Wed Nov 28, 2018</h4>
+    </section>
+    <h5 id="wc">100 Words|Read in about 1 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="tags">Tags: 
         
-        <div class="posts-list">
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-2/">
-                <h2 class="post-title">现代网络负载均衡与代理（下）</h2>
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+        
+        <a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a> &nbsp;
+    </h5>
+</div>
+
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
 
                 
-                  <h3 class="post-subtitle">
-                    介绍各种负载均衡技术的现状、演变和前景
-                  </h3>
-                
-              </a>
 
-              <p class="post-meta">
-                Posted on November 13, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-2/" class="post-read-more">[Read More]</a>
-                
-              </div>
 
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/loadbalance/">loadbalance</a>&nbsp;
-                  
-                </span>
-              
 
+
+
+
+  <video id="my-player" class="video-js vjs-big-play-centered" controls preload="auto" poster="/images/poster.jpg" data-setup="{}">
+    <source src="https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" type="video/mp4"></source>
+    <source src="" type="video/webm"></source>
+    <source src="" type="video/ogg"></source>
+    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+  </video>
+
+
+
+
+                <br />
+                <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
+                <script src="https://www.yangcs.net/js/particle.js"></script>
+                
+                <div class="entry-shang text-center">
+	<p>「真诚赞赏，手留余香」</p>
+        <button class="zs show-zs btn rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><img src="/img/avatar-icon.png"/>杨传胜</span>
+		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+ 	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/wechat-2.png" id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+                <span class="zs-wechat"><img src="/img/wechat-btn.png"/></span>
+	</div>
+</div>
+
+                
+                
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="不扫别后悔">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
+                
             </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/">
-                <h2 class="post-title">现代网络负载均衡与代理（上）</h2>
 
+            <ul class="pager blog-pager">
                 
-                  <h3 class="post-subtitle">
-                    详细介绍负载均衡技术的概念、功能和拓扑结构
-                  </h3>
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/egress-gateway-1/" data-toggle="tooltip" data-placement="top" title="Istio 的高级边缘流量控制（一）">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
                 
-              </a>
-
-              <p class="post-meta">
-                Posted on November 13, 2018
-              </p>
-              <div class="post-entry">
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/egress-gateway-1/">Istio 的高级边缘流量控制（一）</a></li>
+                    
+                    <li><a href="/posts/egress-tcp/">在服务网格内部调用外部 TCP 服务</a></li>
+                    
+                    <li><a href="/posts/egress-https/">在服务网格内部调用外部 Web 服务</a></li>
+                    
+                    <li><a href="/posts/egress-tls-origination/">Istio 出口流量的 TLS</a></li>
+                    
+                    <li><a href="/posts/control-egress-traffic/">控制 Egress 流量</a></li>
+                    
+                </ul>
                 
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
+            </div>
+            
+            
+            
               
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/loadbalance/">loadbalance</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/">
-                <h2 class="post-title">SRE 弹性能力：使用 Envoy 对应用进行速率限制</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用速率限制服务来减轻客户端对 API 资源的消耗
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on November 1, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/">
-                <h2 class="post-title">扩展 Envoy 的管理界面</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    提高 Envoy 管理界面的安全性
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on October 25, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/extending-the-envoy-admin-interface/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/envoy-xds-protocol/">
-                <h2 class="post-title">Envoy 中的 xDS REST 和 gRPC 协议详解</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过示例详解 Envoy 的 xDS REST 和 gRPC 协议
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on October 10, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/envoy-xds-protocol/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/">
-                <h2 class="post-title">初试 Kubernetes 集群中使用 Contour 反向代理</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    一种全新的 Ingress 实现方式——Envoy
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on September 28, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/">
-                <h2 class="post-title">为 Envoy 开启 TLS 验证实战</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过 Envoy 反向代理 hugo 静态页面
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on September 26, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/hugo/">hugo</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/circuit-breaking/">
-                <h2 class="post-title">Envoy 熔断器的原理和使用</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用熔断器来预防服务出现雪崩效应
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on July 13, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/circuit-breaking/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/routing-with-a-control-plane/">
-                <h2 class="post-title">通过控制平面提供路由</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    路由定义的最佳实践
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on July 6, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/routing-with-a-control-plane/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/">
-                <h2 class="post-title">将服务发现与 Envoy 集成</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    为 Envoy 配置 CDS 和 EDS
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on July 4, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/envoy/">envoy</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
+            
+            </div>
         </div>
-        
-          <ul class="pager main-pager">
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
             
-              <li class="next">
-                <a href="/tags/envoy/page/2">Older Posts &rarr;</a>
-              </li>
-            
-          </ul>
-        
-      </div>
-    <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-
-<ul class="pagination">
+                
+                  
+                  
+<aside id=comments>
     
-    <li class="page-item">
-        <a href="/tags/envoy/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li class="page-item disabled">
-    <a href="" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item active"><a class="page-link" href="/tags/envoy/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/tags/envoy/page/2/">2</a></li>
-    
-    
-    <li class="page-item">
-    <a href="/tags/envoy/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-        <a href="/tags/envoy/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
-</ul>
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </div>
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
     </div>
-  </div>
+    
+</aside>
+
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
 
     <div class="rocket"><img src="http://ycs.ylck.me/rocket_up.png" alt="" width="100" height="100"></div>
 <script>
