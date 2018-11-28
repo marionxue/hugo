@@ -253,7 +253,7 @@ content-length: 150793
 <p id="note-title">Note</p>
 <br>
 <p>
-注意，这里我们只将到 80 端口的 <code>HTTP</code> 流量重定向到 Egress Gateway，并通过 Egress Gateway 发起 TLS 连接；到 443 端口的 `HTTP` 流量仍然直接通过应用的 sidecar 代理发起 TLS 连接。
+注意，这里我们只将到 80 端口的 <code>HTTP</code> 流量重定向到 Egress Gateway，并通过 Egress Gateway 发起 TLS 连接；到 443 端口的 <code>HTTP</code> 流量仍然直接通过应用的 sidecar 代理发起 TLS 连接。
 </p>
 </div>
 
