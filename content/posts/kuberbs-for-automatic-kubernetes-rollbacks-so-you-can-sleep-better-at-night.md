@@ -4,7 +4,7 @@ subtitle: "浅析 KubeRBS 的原理和使用方法"
 date: 2018-11-28T11:43:54+08:00
 draft: false
 categories: "service mesh"
-tags: ["istio", "service mesh", "kubernetes"]
+tags: ["kubernetes"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
