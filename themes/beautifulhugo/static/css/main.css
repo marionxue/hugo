@@ -916,7 +916,9 @@ label {
 
 code {
     word-break: break-all;
-    background-color: white
+//    background-color: white
+    color: rgb(255, 0, 109);
+    background-color: rgba(238, 238, 238, 0.8);
 }
 
 aside.toc{
