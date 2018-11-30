@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Ryan Yang</title>
+    <link>https://www.yangcs.net/categories/linux/</link>
+    <description>Recent content in Linux on Ryan Yang</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 30 Nov 2018 17:45:57 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.yangcs.net/categories/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>某个应用的 CPU 使用率居然达到 100%，我该怎么办？</title>
+      <link>https://www.yangcs.net/posts/how-to-deal-with-increasing-of-cpu-usage/</link>
+      <pubDate>Fri, 30 Nov 2018 17:45:57 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/how-to-deal-with-increasing-of-cpu-usage/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

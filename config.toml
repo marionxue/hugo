@@ -91,6 +91,12 @@ desc = "Using Big Data to make business decision"
 
 [[menu.main]]
     parent = "Categories"
+    name = "Linux"
+    url = "categories/linux/"
+    weight = 3
+
+[[menu.main]]
+    parent = "Categories"
     name = "Python"
     url = "categories/python/"
     weight = 4
