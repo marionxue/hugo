@@ -12,7 +12,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 <!--more-->
 
 <p id="div-border-left-red">
-本文经作者许可，转载自 [极客时间](https://time.geekbang.org/column/article/70476)
+本文经作者许可，转载自 <a href="https://time.geekbang.org/column/article/70476" target="_blank">极客时间</a>
 </p>
 
 你好，我是倪朋飞。
