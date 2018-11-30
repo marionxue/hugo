@@ -251,5 +251,19 @@ Creating front-proxy_front-envoy_1 ... done
 Creating front-proxy_service-envoy_1 ... done
 ```
 
-接下来就可以通过公网域名访问博客网站啦！没错，你现在浏览的我的博客就是通过 Envoy 反向代理的。
+接下来就可以通过公网域名访问博客网站啦！没错，你现在浏览的我的博客就是通过 Envoy 反向代理的。 不信请看：
 
+```bash
+$ curl -I https://www.yangcs.net
+
+HTTP/2 200
+server: envoy
+date: Fri, 30 Nov 2018 06:42:52 GMT
+content-type: text/html
+content-length: 40537
+last-modified: Thu, 29 Nov 2018 05:41:29 GMT
+etag: "5bff7c09-9e59"
+accept-ranges: bytes
+x-envoy-upstream-service-time: 0
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+```
