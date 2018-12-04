@@ -10,8 +10,6 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
-# Kubernetes 设计与开发原则 
-
 <p id="div-border-left-red">
 原文地址：<a href="https://thenewstack.io/kubernetes-design-and-development-explained/" target="_blank">Kubernetes Design and Development Explained</a>
 </p>
