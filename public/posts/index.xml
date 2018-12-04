@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Kubernetes 设计与开发原则</title>
+      <link>https://www.yangcs.net/posts/kubernetes-design-and-development-explained/</link>
+      <pubDate>Tue, 04 Dec 2018 17:35:59 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/kubernetes-design-and-development-explained/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>某个应用的 CPU 使用率居然达到 100%，我该怎么办？</title>
       <link>https://www.yangcs.net/posts/how-to-deal-with-increasing-of-cpu-usage/</link>
       <pubDate>Fri, 30 Nov 2018 17:45:57 +0800</pubDate>

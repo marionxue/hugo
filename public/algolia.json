@@ -701,7 +701,7 @@
         "subtitle": "浅析 KubeRBS 的原理和使用方法",
         "date": "2018-11-28T03:43:54.000Z",
         "draft": false,
-        "categories": "service mesh",
+        "categories": "kubernetes",
         "tags": [
             "kubernetes"
         ],
@@ -718,6 +718,24 @@
         "objectID": "posts/kubernetes-api-server-part-1",
         "subtitle": "Kubernetes API Server 的架构和行为规范",
         "date": "2018-11-19T05:42:03.000Z",
+        "draft": false,
+        "toc": true,
+        "categories": "kubernetes",
+        "tags": [
+            "kubernetes"
+        ],
+        "bigimg": [
+            {
+                "src": "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"
+            }
+        ]
+    },
+    {
+        "title": "Kubernetes 设计与开发原则",
+        "uri": "posts/kubernetes-design-and-development-explained",
+        "content": "Kubernetes              Kubernetes Design Development Explained     8   29    31                                    Kubernetes                                                         Kubernetes  1              declarative over imperative          Kubernetes                Pod         Kubernetes        Kubernetes API                    API                                             API                                                                 Kubernetes           API            REST API                                                                                                       API    Pod simple pod yaml apiVersion  v1 kind  Pod metadata  name  nginx spec  containers  name  nginx image  internal mycorp com 5000 mycontainer 1 7 9   kubectl create  f simple pod yaml pod  nginx  created             API Server      kubectl pods NAME READY STATUS RESTARTS AGE nginx 1 1 Running 0 17s                                       Pod       kubectl delete  f https   k8s io examples pods simple pod yaml pod  nginx  deleted                  why declarative over imperative        API                                                                               API                                                                     API           API Server                                                 API                                                                                                                                   API   Kubernetes                      2           API   no hidden internal apis        Kubernetes                 Kubernetes                              API       Kubernetes               API       Kubernetes        API            Kubernetes API             Kubernetes                  Kubernetes API                                                                       Kubernetes API Server       Pod           Kubernetes                  Pod               Kubernetes API Server       Pod               Pod                          Pod       Pod              Pod                           Pod    Kubernetes API                    API        Pod      NodeName        Pod         Kubelet         Kubernetes agent      Kubernetes API                 Pod   NodeName              Pod                      kubelet     Pod         Pod            API Server        Pod                  Pod        kubelet                                 API   why no hidden internal apis  Kubernetes               API       Kubernetes        API       Kubernetes                   Kubernetes                                      API                             API              Kubernetes      3               meet user where they are  Kubernetes API                       Secret   ConfigMap Secret                                      ComfigMap                                           Kubernetes                Kubernetes              Kubernetes API Server    Secret   ConfigMap                            Kubernetes        Kubernetes                       Kubernetes                  Kubenretes                   Secret   ConfigMap              Kubernetes     Secret   ConfigMap             Pod            Secret           Secret                        meet user where they are                 Kubernetes                   Kubernetes                           4              workload portability        Kubernetes                        Kubernetes             Kubernetes           volume                        Kubernetes                       API Server     Google Cloud Persistent Disk     Pod         apiVersion  v1 kind  Pod metadata  name  sleepypod spec  volumes  name  data gcePersistentDisk  pdName  panda disk containers  name  sleepycontainer image  gcr io google_containers busybox command  sleep  6000  volumeMounts  name  data mountPath   data     Pod      Kubernetes          GCE PD     Pod                                  Pod               GCE PD                     YAML          Google Cloud Persistent Disk     Pod       Google Cloud Kubernetes                  GCE PD      Kubernetes                                                       Pod yaml                            Pod         GCE PD          Pod        Kubernetes     PersistentVolumeClaim PVC   PersistentVolume PV API                        PersistentVolumeClaim                                     PVC       10 GB                   GCE PD  apiVersion  v1 kind  PersistentVolumeClaim metadata  name  mypvc spec  accessModes  ReadWriteOnce resources  requests  storage  100Gi Kubernetes         Pod         PersistentVolume                                        Kubernetes                                 why workload portability                Kubernetes                                    Kubernetes                                Kubernetes                                 Kubernetes                                                      Kubernetes endpoint      5       conclusion           Kubernetes                             Kubernetes                             Note                                                                                                       AI                DevOp",
+        "objectID": "posts/kubernetes-design-and-development-explained",
+        "date": "2018-12-04T09:35:59.000Z",
         "draft": false,
         "toc": true,
         "categories": "kubernetes",
