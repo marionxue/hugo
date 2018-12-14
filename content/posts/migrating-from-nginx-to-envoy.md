@@ -31,7 +31,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 先来看一个 Nginx 配置文件的完整示例，该配置文件取自于 [Nginx wiki](https://www.nginx.com/resources/wiki/start/topics/examples/fullexample2/)，内容如下：
 
-```nginx
+```bash
 $ cat nginx.conf
 
 user  www www;
@@ -131,7 +131,7 @@ Nginx 的下一个配置块是 HTTP 块，包括资源的媒体类型（mime typ
 
 在 HTTP 配置块中，Nginx 配置指定了监听 8080 端口并接收对域名 `one.example.com` 和 `www.one.example.com` 的访问请求。
 
-```nginx
+```bash
  server {
     listen        80;
     server_name   one.example.com  www.one.example.com;
@@ -161,7 +161,7 @@ static_resources:
 
 当请求进入 Nginx 时，Location 块定义了如何处理流量的元数据，以及如何转发处理后的流量。在下面的配置项中，进入站点的所有流量都被代理到名为 `targetCluster` 的上游集群。上游集群定了用来接收流量的后端实例，下一节再详细讨论。
 
-```nginx
+```bash
 location / {
     proxy_pass         http://targetCluster/;
     proxy_redirect     off;
@@ -208,7 +208,7 @@ filter_chains:
 
 在 Nginx 中，`upstream` 配置项定义了用来接收流量的目标服务集群。下面的 upstream 配置项分配了两个后端实例：
 
-```nginx
+```bash
 upstream targetCluster {
   172.18.0.3:80;
   172.18.0.4:80;

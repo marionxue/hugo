@@ -542,7 +542,7 @@ autocomplete('#aa-search-input',
 
 <p>先来看一个 Nginx 配置文件的完整示例，该配置文件取自于 <a href="https://www.nginx.com/resources/wiki/start/topics/examples/fullexample2/" target="_blank">Nginx wiki</a>，内容如下：</p>
 
-<pre><code class="language-nginx">$ cat nginx.conf
+<pre><code class="language-bash">$ cat nginx.conf
 
 user  www www;
 pid /var/run/nginx.pid;
@@ -644,7 +644,7 @@ events {
 
 <p>在 HTTP 配置块中，Nginx 配置指定了监听 8080 端口并接收对域名 <code>one.example.com</code> 和 <code>www.one.example.com</code> 的访问请求。</p>
 
-<pre><code class="language-nginx"> server {
+<pre><code class="language-bash"> server {
     listen        80;
     server_name   one.example.com  www.one.example.com;
 </code></pre>
@@ -672,7 +672,7 @@ events {
 
 <p>当请求进入 Nginx 时，Location 块定义了如何处理流量的元数据，以及如何转发处理后的流量。在下面的配置项中，进入站点的所有流量都被代理到名为 <code>targetCluster</code> 的上游集群。上游集群定了用来接收流量的后端实例，下一节再详细讨论。</p>
 
-<pre><code class="language-nginx">location / {
+<pre><code class="language-bash">location / {
     proxy_pass         http://targetCluster/;
     proxy_redirect     off;
 
@@ -717,7 +717,7 @@ events {
 
 <p>在 Nginx 中，<code>upstream</code> 配置项定义了用来接收流量的目标服务集群。下面的 upstream 配置项分配了两个后端实例：</p>
 
-<pre><code class="language-nginx">upstream targetCluster {
+<pre><code class="language-bash">upstream targetCluster {
   172.18.0.3:80;
   172.18.0.4:80;
 }
