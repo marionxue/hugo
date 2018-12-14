@@ -1,5 +1,10 @@
 ---
+keywords:
+- 杨传胜的博客
+- kubernetes
+- apiserver
 title: "Kubernetes 设计与开发原则"
+description: 本文将通过揭示其底层的设计原则，帮助您更深入地了解 Kubernetes。
 date: 2018-12-04T17:35:59+08:00
 draft: false
 toc: true
