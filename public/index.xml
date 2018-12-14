@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>从 Nginx 迁移到 Envoy Proxy</title>
+      <link>https://www.yangcs.net/posts/migrating-from-nginx-to-envoy/</link>
+      <pubDate>Fri, 14 Dec 2018 17:39:06 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/migrating-from-nginx-to-envoy/</guid>
+      <description>本文将会手把手教你如何从 Nginx 迁移到 Envoy Proxy，你可以将任何以前的经验和对 Nginx 的理解直接应用于 Envoy Proxy 中。 主要内容： 配置 Envoy Proxy 的 server 配置项 配置 Envoy Proxy 以将流</description>
+    </item>
+    
+    <item>
       <title>Kubernetes 设计与开发原则</title>
       <link>https://www.yangcs.net/posts/kubernetes-design-and-development-explained/</link>
       <pubDate>Tue, 04 Dec 2018 17:35:59 +0800</pubDate>

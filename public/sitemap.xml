@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/migrating-from-nginx-to-envoy/</loc>
+    <lastmod>2018-12-14T17:39:06+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/kubernetes-design-and-development-explained/</loc>
     <lastmod>2018-12-04T17:35:59+08:00</lastmod>
   </url>
@@ -421,7 +426,7 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/envoy/</loc>
-    <lastmod>2018-11-13T19:02:55+08:00</lastmod>
+    <lastmod>2018-12-14T17:39:06+08:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -541,7 +546,7 @@
   
   <url>
     <loc>https://www.yangcs.net/categories/servicemesh/</loc>
-    <lastmod>2018-06-29T09:57:33+00:00</lastmod>
+    <lastmod>2018-12-14T17:39:06+08:00</lastmod>
     <priority>0</priority>
   </url>
   
