@@ -9,6 +9,12 @@ tags: ["envoy"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
+<!--more>
+
+<p id="div-border-left-red">
+原文链接：<a href="https://www.envoyproxy.io/try/migrating-from-nginx-to-envoy" target="_blank">Migrating from NGINX to Envoy Proxy</a>
+</p>
+
 本文将会手把手教你如何从 `Nginx` 迁移到 `Envoy Proxy`，你可以将任何以前的经验和对 Nginx 的理解直接应用于 `Envoy Proxy` 中。
 
 主要内容：
@@ -346,7 +352,7 @@ admin:
     socket_address: { address: 0.0.0.0, port_value: 9090 }
 ```
 
-## <span id="inline-toc">6.</span> 启动 Envoy Proxy
+## <span id="inline-toc">7.</span> 启动 Envoy Proxy
 
 ----
 
