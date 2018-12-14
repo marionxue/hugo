@@ -5,6 +5,7 @@ keywords:
 - Service Mesh
 title: "从 Nginx 迁移到 Envoy Proxy"
 subtitle: "对比 Nginx 与 Envoy Proxy 的核心模块"
+description: 本文将会带你了解 Envoy Proxy 的核心功能，以及如何将现有的 Nginx 配置文件迁移到 Envoy Proxy 中。
 date: 2018-12-14T17:39:06+08:00
 draft: false
 toc: true
