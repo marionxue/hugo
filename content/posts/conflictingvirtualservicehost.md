@@ -5,8 +5,8 @@ keywords:
 - service mesh
 - istio
 title: "Istio 中 VirtualService 的注意事项"
-subtitle: "VirtualService 最佳实践准则"
-description: 本文将会告诉你在 Istio 中定义 VirtualService 的一些注意事项和实践准则。
+subtitle: "VirtualService 最佳定义准则"
+description: 本文将会告诉你在 Istio 中定义 VirtualService 的一些注意事项和定义准则。
 date: 2018-12-15T18:28:30+08:00
 draft: false
 toc: true
