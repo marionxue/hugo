@@ -99,6 +99,33 @@
         ]
     },
     {
+        "keywords": [
+            "杨传胜的博客",
+            "virtualservice",
+            "service mesh",
+            "istio"
+        ],
+        "uri": "posts/conflictingvirtualservicehost",
+        "content": "Istio       VirtualService                                                reviews     reviews default svc cluster local  Istio           VirtualService            FQDN                    FQDN                 VirtualService                                   IP     Web     VirtualService                       FQDN                    1                                             1      VirtualService        FQDN     reviews foo svc cluster local   reviews bar svc cluster local         apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs1 namespace  foo spec  hosts  reviews     apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs2 namespace  bar spec  hosts  reviews        2      VirtualService        FQDN    reviews default svc cluster local                     apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs3 namespace  default spec  hosts  reviews     apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs4 namespace  default spec  hosts  reviews                            3                        VirtualService           Web             apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs5 namespace  foo spec  hosts  google com http  match  uri  prefix   search route  destination  host  search foo svc cluster local apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs6 namespace  foo spec  hosts  google com http  match  uri  prefix   mail route  destination  host  mail foo svc cluster local                  VirtualService  2                                          make the hostnames unique         VirtualService                    VirtualServices           reviews   ratings            2      apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs3 namespace  default spec  hosts  reviews     apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs4 namespace  default spec  hosts  ratings           VirtualService   merge the conflicting virtualServices         VirtualService                VirtualService       VirtualService        3                         google com     VirtualService  apiVersion  networking istio io v1alpha3 kind  VirtualService metadata  name  vs5 namespace  foo spec  hosts  google com http  match  uri  prefix   search route  destination  host  search foo svc cluster local match  uri  prefix   mail route  destination  host  mail foo svc cluster local",
+        "objectID": "posts/conflictingvirtualservicehost",
+        "title": "Istio 中 VirtualService 的注意事项",
+        "subtitle": "VirtualService 最佳实践准则",
+        "description": "本文将会告诉你在 Istio 中定义 VirtualService 的一些注意事项和实践准则。",
+        "date": "2018-12-15T10:28:30.000Z",
+        "draft": false,
+        "toc": true,
+        "categories": "service mesh",
+        "tags": [
+            "istio",
+            "service mesh"
+        ],
+        "bigimg": [
+            {
+                "src": "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"
+            }
+        ]
+    },
+    {
         "title": "Kubernetes 中的容器运行时",
         "uri": "posts/container-runtime",
         "content": "Container Runtime   Kubernetes                           Kubelet    Container Runtime Interface  CRI                             Container Runtime Interface  CRI     Kubelet 1 5   kubelet 1 6                   Kubelet Container Runtime API         Pod     API       Sandbox   Container   API                     CRI      1 4               v1 5             v1 6                  frakti cri o   alpha    v1 7       cri containerd   alpha      frakti   cri o      beta     1  CRI    CRI    gRPC     RuntimeService   ImageService                      v1 10   pkg kubelet apis cri v1alpha2 runtime v1 7 v1 9  pkg kubelet apis cri v1alpha1 runtime v1 6  pkg kubelet api v1alpha1 runtime Kubelet    CRI        Runtime          CRI          kubelet          kubelet   container runtime remote   container runtime endpoint unix    var run crio crio sock    2         Container Runtime      Container Runtime       CRI gRPC Server    RuntimeService   ImageService   gRPC Server          unix socket Linux    unix socket    Windows    tcp                         Container Runtime     3        Container Runtime              CRI                 Docker            kubelet    pkg kubelet dockershim                 Runtime HyperContainer     Kubernetes v1 6       hypervisor   docker                         NFV     Runc       cri o   cri containerd cri containerd     kubernetes v1 7  cri o     Kubernetes v1 6          runc   intel clear container Rkt      Mirantis       libvirt          qcow2    Infranetes       IaaS         GCE AWS   cri containerd   Containerd      1 0        dockershim   docker daemon     cri containerd   containerd    1 1       cri containerd     Containerd         CRI     Containerd     CRI       Kubelet CRI      Image Service   Runtime Service                   CNI     Pod       4  CRI Tools                Container Runtime          cri tools            crictl      docker              Kubelet      Container Runtime               critest  CRI                Container Runtime       CRI               libpod           podman     crictl           oci              buildah",

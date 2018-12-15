@@ -4,12 +4,15 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta content="" name="keywords">
+  <meta content="杨传胜的博客, virtualservice, service mesh, istio" name="keywords">
 
-  <title> Kubernetes - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> Istio 中 VirtualService 的注意事项 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="Kubernetes" />
-  <meta name="twitter:title" content="Kubernetes" />
+  <meta property="og:title" content="Istio 中 VirtualService 的注意事项" />
+  <meta name="twitter:title" content="Istio 中 VirtualService 的注意事项" />
+  <meta name="description" content="本文将会告诉你在 Istio 中定义 VirtualService 的一些注意事项和实践准则。">
+  <meta property="og:description" content="本文将会告诉你在 Istio 中定义 VirtualService 的一些注意事项和实践准则。">
+  <meta name="twitter:description" content="本文将会告诉你在 Istio 中定义 VirtualService 的一些注意事项和实践准则。">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -17,12 +20,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/tags/kubernetes/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/conflictingvirtualservicehost/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/tags/kubernetes/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/conflictingvirtualservicehost/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -370,14 +373,71 @@ autocomplete('#aa-search-input',
 
 
     
-  <header class="header-section ">
+  
+  
+  
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=1 data-img-src-1="https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg" ></div>
+  
+
+  <header class="header-section has-img">
+    
+      <div class="intro-header big-img">
+        
+        
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-12 col-md-12 col-md-offset-0">
+                
+                <div class="post-heading">
+                
+                  
+                     <h1>Istio 中 VirtualService 的注意事项</h1>
+                     
+                     
+                  
+                  
+                  
+                    
+                      <hr class="small">
+                      <span class="post-subheading">VirtualService 最佳实践准则</span>
+                    
+                  
+                  
+                    <span class="post-meta">
+  
+  Posted on December 15, 2018
+  
+  
+</span>
+
+
+                  
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
     <div class="intro-header no-img">
+      
       <div class="container">
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
-            <div class="page-heading">
-              <h1>#Kubernetes</h1>
-              <hr class="small">
+            <div class="posts-heading">
+                <h1 align="center">Istio 中 VirtualService 的注意事项</h1>
+                
+                  
+                    <h2 align="center" class="posts-subheading">VirtualService 最佳实践准则</h2>
+                  
+                
+                
             </div>
           </div>
         </div>
@@ -385,384 +445,338 @@ autocomplete('#aa-search-input',
     </div>
   </header>
 
+
     
-  <div class="container" role="main">
+<div class="container" role="main" itemscope itemtype="http://schema.org/Article">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="posts-list">
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/what-happens-when-k8s/">
-                <h2 class="post-title">kubectl run 背后到底发生了什么？</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    探寻 Kubectl 创建 Pod 背后的原理
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on June 1, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/what-happens-when-k8s/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/introduce-kubernetes-descheduler/">
-                <h2 class="post-title">走进 Descheduler</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过 Descheduler 来实现更高级的调度策略
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on May 23, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/introduce-kubernetes-descheduler/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/pods-life/">
-                <h2 class="post-title">Pod 的生命周期管理</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    探究 Pod 的启动关闭流程以及快速 DEBUG
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on May 3, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/pods-life/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/kube-router/">
-                <h2 class="post-title">Kube-router 实战</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用 Kube-router 作为 Kubernetes 负载均衡器
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on April 20, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/kube-router/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/lvs/">lvs</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/cri-o/">
-                <h2 class="post-title">CRI-O 简介</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    轻量级容器运行时 CRI-O 解析
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on April 3, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/cri-o/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/container-runtime/">
-                <h2 class="post-title">Kubernetes 中的容器运行时</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    容器运行时接口解析
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on April 3, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/container-runtime/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/federation/">
-                <h2 class="post-title">Kubernetes 使用集群联邦实现多集群管理</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    使用联邦服务进行跨集群服务发现
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on March 22, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/federation/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/k8s-network-expand/">
-                <h2 class="post-title">Kubernetes 网络扩展</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过边界网关和边界 DNS 直接访问 k8s 中的服务
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on February 11, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/k8s-network-expand/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/calico-rr/">
-                <h2 class="post-title">calico Router reflection(RR) 模式介绍及部署</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过 calico RR 模式来使 K8S 支撑容纳更多的 node
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on February 1, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/calico-rr/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                    #<a href="https://www.yangcs.net/tags/docker/">docker</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
-        </div>
-        
-          <ul class="pager main-pager">
-            
-              <li class="previous">
-                <a href="/tags/kubernetes/page/2">&larr; Newer Posts</a>
-              </li>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
             
-          </ul>
+            
+<div>
+    <section id="datecount">
+        <h4 id="date"> Sat Dec 15, 2018</h4>
+    </section>
+    <h5 id="wc">900 Words|Read in about 2 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="tags">Tags: 
         
-      </div>
-    <div align="center" class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <a href="https://www.yangcs.net/tags/istio/">istio</a> &nbsp;
         
+        <a href="https://www.yangcs.net/tags/service-mesh/">service mesh</a> &nbsp;
+    </h5>
+</div>
 
-<ul class="pagination">
-    
-    <li class="page-item">
-        <a href="/tags/kubernetes/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-    <a href="/tags/kubernetes/page/2/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
-    </li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/tags/kubernetes/">1</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item"><a class="page-link" href="/tags/kubernetes/page/2/">2</a></li>
-    
-    
-    
-    
-    
-    
-        
-        
-    
-    
-    <li class="page-item active"><a class="page-link" href="/tags/kubernetes/page/3/">3</a></li>
-    
-    
-    <li class="page-item disabled">
-    <a href="" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
-    </li>
-    
-    <li class="page-item">
-        <a href="/tags/kubernetes/page/3/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
-    </li>
-    
+            
+            <article role="main" class="blog-post" itemprop="articleBody" id="content">
+                
+<aside class="toc">
+    <div id='anchors-navbar'>
+        <i class='fa fa-anchor'></i>
+        <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#span-id-inline-toc-1-span-目标主机冲突示例"><span id="inline-toc">1.</span> 目标主机冲突示例</a>
+<ul>
+<li><a href="#示例-1">示例 1</a></li>
+<li><a href="#示例-2">示例 2</a></li>
+<li><a href="#示例-3">示例 3</a></li>
+</ul></li>
+<li><a href="#span-id-inline-toc-2-span-优化方案"><span id="inline-toc">2.</span> 优化方案</a>
+<ul>
+<li><a href="#make-the-hostnames-unique">使目标主机唯一</a></li>
+<li><a href="#merge-the-conflicting-virtualServices">合并冲突的 VirtualService</a></li>
+</ul></li>
+</ul></li>
 </ul>
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-      </div>
+</nav>
     </div>
-  </div>
+    
+</aside>
+
+
+                <p></p>
+
+<p>Istio 要求集群中 <a href="https://istio.io/zh/docs/reference/config/istio.networking.v1alpha3/#virtualservice" target="_blank">VirtualService</a> 定义的所有目标主机都是唯一的。当使用目标主机的短名称时（不包含 <code>'.'</code> 的目标主机，例如使用 <code>reviews</code>，而不是 <code>reviews.default.svc.cluster.local</code>），Istio 会将该短名称转换为 VirtualService 规则所在的命名空间的 <a href="https://www.wikiwand.com/zh/%E5%AE%8C%E6%95%B4%E7%B6%B2%E5%9F%9F%E5%90%8D%E7%A8%B1" target="_blank">FQDN</a>，而不是转换为目标主机所在的命名空间的 FQDN。因此，当在不同的命名空间中定义 VirtualService 资源时允许目标主机的短名称重复。当你的目标主机包含 <code>*</code> 通配符前缀、IP 地址或 Web 地址时，VirtualService 不会将其视为短名称，也就不会尝试将其转换为 FQDN。反正无论如何，目标主机必须是唯一的。</p>
+
+<h2 id="span-id-inline-toc-1-span-目标主机冲突示例"><span id="inline-toc">1.</span> 目标主机冲突示例</h2>
+
+<hr />
+
+<p>下面举几个目标主机冲突的例子，以帮助大家加深对这方面的理解。</p>
+
+<h3 id="示例-1">示例 1</h3>
+
+<p>下面两个 <code>VirtualService</code> 的目标主机的 FQDN 分别是 <code>reviews.foo.svc.cluster.local</code> 和 <code>reviews.bar.svc.cluster.local</code>，这是允许的。</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs1
+  namespace: foo
+spec:
+  hosts:
+  - reviews
+  ...
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs2
+  namespace: bar
+spec:
+  hosts:
+  - reviews
+  ...
+</code></pre>
+
+<h3 id="示例-2">示例 2</h3>
+
+<p>下面两个 <code>VirtualService</code> 的目标主机的 FQDN 都是 <code>reviews.default.svc.cluster.local</code>，这是不推荐的，会导致不确定的路由行为。</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs3
+  namespace: default
+spec:
+  hosts:
+  - reviews
+  ...
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs4
+  namespace: default
+spec:
+  hosts:
+  - reviews
+  ...
+</code></pre>
+
+<p>优化方案请参考下文的 使目标主机唯一。</p>
+
+<h3 id="示例-3">示例 3</h3>
+
+<p>下面这种写法也是不推荐的，因为它在两个不同的 VirtualService 资源中定义了相同的 Web 地址，会导致路由冗余。</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs5
+  namespace: foo
+spec:
+  hosts:
+  - google.com
+  http:
+  - match:
+    - uri:
+        prefix: /search
+    route:
+    - destination:
+        host: search.foo.svc.cluster.local
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs6
+  namespace: foo
+spec:
+  hosts:
+  - google.com
+  http:
+  - match:
+    - uri:
+        prefix: /mail
+    route:
+    - destination:
+        host: mail.foo.svc.cluster.local
+</code></pre>
+
+<p>优化方案请参考下文的 合并冲突的 VirtualService。</p>
+
+<h2 id="span-id-inline-toc-2-span-优化方案"><span id="inline-toc">2.</span> 优化方案</h2>
+
+<hr />
+
+<p>这里给出两个优化准则，可以改进上文的不恰当写法。</p>
+
+<h3 id="make-the-hostnames-unique">使目标主机唯一</h3>
+
+<p>可以将冲突的 VirtualService 中定义的目标主机更改为唯一的。以下的 VirtualServices 具有唯一的目标主机 <code>reviews</code> 和 <code>ratings</code>，可以用来优化上面示例 2 的写法。</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs3
+  namespace: default
+spec:
+  hosts:
+  - reviews
+  ...
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs4
+  namespace: default
+spec:
+  hosts:
+  - ratings
+  ...
+</code></pre>
+
+<h3 id="merge-the-conflicting-virtualServices">合并冲突的 VirtualService</h3>
+
+<p>可以将冲突的 VirtualService 中定义的路由规则合并到同一个 VirtualService 中。下面的 VirtualService 可以解决示例 3 的问题，因为规则已合并，并且仅保留具有目标主机 <code>google.com</code> 的单个 VirtualService。</p>
+
+<pre><code class="language-yaml">apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: vs5
+  namespace: foo
+spec:
+  hosts:
+  - google.com
+  http:
+  - match:
+    - uri:
+        prefix: /search
+    route:
+    - destination:
+        host: search.foo.svc.cluster.local
+  - match:
+    - uri:
+        prefix: /mail
+    route:
+    - destination:
+        host: mail.foo.svc.cluster.local
+</code></pre>
+                <br />
+                <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
+                <script src="https://www.yangcs.net/js/particle.js"></script>
+                
+                <div class="entry-shang text-center">
+	<p>「真诚赞赏，手留余香」</p>
+        <button class="zs show-zs btn rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}"> <span>赏</span> </button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><img src="/img/avatar-icon.png"/>杨传胜</span>
+		<p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+ 	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/wechat-2.png" id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+                <span class="zs-wechat"><img src="/img/wechat-btn.png"/></span>
+	</div>
+</div>
+
+                
+                
+                <div class="social-share" data-initialized="true" data-wechat-qrcode-title="不扫别后悔">
+    <center>
+    <font style="font-size:18px;color:darkcyan;">分享到：</font>
+    <a href="#" class="social-share-icon icon-weibo"></a>
+    <a href="#" class="social-share-icon icon-wechat"></a>
+    <a href="#" class="social-share-icon icon-twitter"></a>
+    <a href="#" class="social-share-icon icon-linkedin"></a>
+    <a href="#" class="social-share-icon icon-facebook"></a>
+    <a href="#" class="social-share-icon icon-qq"></a>
+    <a href="#" class="social-share-icon icon-qzone"></a>
+    </center>
+</div>
+
+
+<script src="https://hugo-picture.oss-cn-beijing.aliyuncs.com/social-share.min.js"></script>
+
+                
+            </article>
+
+            <ul class="pager blog-pager">
+                
+                <li class="previous">
+                    <a href="https://www.yangcs.net/posts/migrating-from-nginx-to-envoy/" data-toggle="tooltip" data-placement="top" title="从 Nginx 迁移到 Envoy Proxy">&larr; Previous Post</a>
+                </li>
+                 
+                <li class="next">
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
+                </li>
+                
+            </ul>
+            
+            <div>
+                 
+                <h2>See Also</h2>
+                <ul>
+                    
+                    <li><a href="/posts/egress-gateway-2/">Istio 的高级边缘流量控制（二）</a></li>
+                    
+                    <li><a href="/posts/egress-gateway-1/">Istio 的高级边缘流量控制（一）</a></li>
+                    
+                    <li><a href="/posts/egress-tcp/">在服务网格内部调用外部 TCP 服务</a></li>
+                    
+                    <li><a href="/posts/egress-https/">在服务网格内部调用外部 Web 服务</a></li>
+                    
+                    <li><a href="/posts/egress-tls-origination/">Istio 出口流量的 TLS</a></li>
+                    
+                </ul>
+                
+            </div>
+            
+            
+            
+              
+            
+            </div>
+        </div>
+        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            
+            
+                
+                  
+                  
+<aside id=comments>
+    
+    <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTAwMy81NTcy">
+    	<script data-cfasync="false" src="/cdn-cgi/scripts/d07b1474/cloudflare-static/email-decode.min.js"></script><script type="text/javascript">
+       (function(d, s) {
+           var j, e = d.getElementsByTagName(s)[0];
+           if (typeof LivereTower === 'function') { return; }
+           j = d.createElement(s);
+           j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+           j.async = true;
+           e.parentNode.insertBefore(j, e);
+       })(document, 'script');
+    	</script>
+    <noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+    </div>
+    
+</aside>
+
+
+                
+            
+        </div>
+    </div>
+    </section>
+</div>
 
     <div class="rocket"><img src="http://ycs.ylck.me/rocket_up.png" alt="" width="100" height="100"></div>
 <script>

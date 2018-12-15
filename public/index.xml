@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Istio 中 VirtualService 的注意事项</title>
+      <link>https://www.yangcs.net/posts/conflictingvirtualservicehost/</link>
+      <pubDate>Sat, 15 Dec 2018 18:28:30 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/conflictingvirtualservicehost/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>从 Nginx 迁移到 Envoy Proxy</title>
       <link>https://www.yangcs.net/posts/migrating-from-nginx-to-envoy/</link>
       <pubDate>Fri, 14 Dec 2018 17:39:06 +0800</pubDate>
