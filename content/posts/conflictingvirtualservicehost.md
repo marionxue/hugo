@@ -77,7 +77,7 @@ spec:
   ...
 ```
 
-优化方案请参考下文的 使目标主机唯一。
+优化方案请参考下文的 [使目标主机唯一](https://www.yangcs.net/posts/conflictingvirtualservicehost/#make-the-hostnames-unique)。
 
 ### 示例 3
 
@@ -117,7 +117,7 @@ spec:
         host: mail.foo.svc.cluster.local
 ```
 
-优化方案请参考下文的 合并冲突的 VirtualService。
+优化方案请参考下文的 [合并冲突的 VirtualService](https://www.yangcs.net/posts/conflictingvirtualservicehost/#merge-the-conflicting-virtualServices)。
 
 ## <span id="inline-toc">2.</span> 优化方案
 
