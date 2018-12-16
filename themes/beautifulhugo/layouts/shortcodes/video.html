@@ -70,70 +70,18 @@
 
 {{ if .IsNamedParams }}
 
-  <video id="my-player" class="video-js vjs-big-play-centered vjs-fluid" controls preload="meta" poster="{{ or (.Get "poster") $poster }}" data-setup="{}">
+  <video poster="{{ or (.Get "poster") $poster }}" id="player" playsinline controls>
     <source src="{{ .Get "mp4" }}" type="video/mp4"></source>
     <source src="{{ .Get "webm" }}" type="video/webm"></source>
     <source src="{{ .Get "ogv" }}" type=video/ogg></source>
-    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
   </video>
-  <div id="output"></div>
-  <script type="text/javascript">
-  (function(){
-  var video, output;
-  var scale = 0.8;
-  var initialize = function() {
-  output = document.getElementById("output");
-  video = document.getElementById("video");
-  video.addEventListener('loadeddata',captureImage);
-  };
-   
-  var captureImage = function() {
-              var canvas = document.createElement("canvas");
-              canvas.width = video.videoWidth * scale;
-              canvas.height = video.videoHeight * scale;
-              canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-   
-              var img = document.createElement("img");
-              img.src = canvas.toDataURL("image/png");
-              output.appendChild(img);
-  };
-   
-  initialize();
-  })();
-  </script>
 
 {{ else }}
 
-  <video id="my-player" class="video-js vjs-big-play-centered vjs-fluid" controls preload="meta" poster="{{ if isset .Params 3 }}{{ .Get 3 }}{{ else }}{{ $poster }}{{ end }}" data-setup="{}">
+  <video poster="{{ if isset .Params 3 }}{{ .Get 3 }}{{ else }}{{ $poster }}{{ end }}" id="player" playsinline controls>
     <source src="{{ .Get 0 }}" type="video/mp4"></source>
     <source src="{{ .Get 1 }}" type="video/webm"></source>
     <source src="{{ .Get 2 }}" type="video/ogg"></source>
-    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
   </video>
-  <div id="output"></div>
-  <script type="text/javascript">
-  (function(){
-  var video, output;
-  var scale = 0.8;
-  var initialize = function() {
-  output = document.getElementById("output");
-  video = document.getElementById("video");
-  video.addEventListener('loadeddata',captureImage);
-  };
-   
-  var captureImage = function() {
-              var canvas = document.createElement("canvas");
-              canvas.width = video.videoWidth * scale;
-              canvas.height = video.videoHeight * scale;
-              canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-   
-              var img = document.createElement("img");
-              img.src = canvas.toDataURL("image/png");
-              output.appendChild(img);
-  };
-   
-  initialize();
-  })();
-  </script>
 
 {{ end }}
