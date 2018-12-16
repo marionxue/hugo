@@ -68,6 +68,4 @@ metadata:
 
 {{% video mp4="https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" poster="https://ws1.sinaimg.cn/large/006tNbRwgy1fxnqmu6le9j30pu0dct9t.jpg" %}}
 
-  <video poster="https://ws1.sinaimg.cn/large/006tNbRwgy1fxnqmu6le9j30pu0dct9t.jpg" id="player" playsinline controls data-plyr-config='{ "title": "This is an example video", "volume": 1, "debug": true }>
-    <source src="https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" type="video/mp4"></source>
-  </video>
+<video src="https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" id="player" controls data-plyr-config='{ "title": "This is an example video", "volume": 1, "debug": true }'></video>
