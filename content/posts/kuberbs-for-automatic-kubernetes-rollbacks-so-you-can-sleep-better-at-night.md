@@ -67,3 +67,7 @@ metadata:
 你可以通过下面的小视频看到 KubeRBS 的运行状况：
 
 {{% video mp4="https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" poster="https://ws1.sinaimg.cn/large/006tNbRwgy1fxnqmu6le9j30pu0dct9t.jpg" %}}
+
+<video poster="https://ws1.sinaimg.cn/large/006tNbRwgy1fxnqmu6le9j30pu0dct9t.jpg" id="player" playsinline controls>
+  <source src="https://drive.yangcs.net/?/video/KubeRBS%20in%20Action%21.mp4" type="video/mp4">
+</video>

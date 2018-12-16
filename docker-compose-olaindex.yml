@@ -2,8 +2,11 @@ version: '2'
 services:
 
   olaindex:
-    image: linux52/olaindex 
+    image: ej52/alpine-nginx-php 
     restart: always
+    privileged: true
+    volumes:
+      - /root/OLAINDEX:/var/www
     networks:
       - default
     expose:
@@ -12,6 +15,7 @@ services:
   olaindex-envoy:
     image: envoyproxy/envoy-alpine:latest
     restart: always
+    privileged: true
     volumes:
       - ./service-envoy.yaml:/etc/envoy/envoy.yaml
     network_mode: "service:olaindex"
