@@ -20,7 +20,7 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 今天就为大家推荐一个高质量的视频，视频中的演讲内容主要通过跟踪一个网络包进入 Istio 网格，完成一系列的交互，然后再从网格出来的整个过程，以此来探索数据包在 Istio 网格中的生命周期。你将会了解到当数据包遇到每个组件时，会如何调用这些组件，这些组件为什么存在，它可以为数据包做些什么，其中还会涉及到数据包在进出网格的过程中是如何调用控制平面的，最后还会告诉你一些调试 Istio 的套路。
 
-{{% mp4="https://drive.yangcs.net/?/video/Life%20of%20a%20packet%20through%20Istio%20by%20Matt%20Turner.mp4" poster="https://ws4.sinaimg.cn/large/006tNbRwgy1fy9s96fobzj30pu0dcaal.jpg" %}}
+{{% video mp4="https://drive.yangcs.net/?/video/Life%20of%20a%20packet%20through%20Istio%20by%20Matt%20Turner.mp4" poster="https://ws4.sinaimg.cn/large/006tNbRwgy1fy9s96fobzj30pu0dcaal.jpg" %}}
 
 视频中的 PPT 下载：<a id="download" href="https://drive.yangcs.net/?/document/Istio%2C%20the%20packet%27s-eye%20view%20-%20kubecon%20NA%202018.pdf"><i class="fa fa-download"></i><span> Download Now</span>
 </a>
