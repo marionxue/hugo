@@ -2,7 +2,7 @@ version: '2'
 services:
 
   olaindex:
-    image: ej52/alpine-nginx-php 
+    image: linux52/olaindex 
     restart: always
     privileged: true
     volumes:

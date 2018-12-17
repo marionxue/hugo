@@ -6,10 +6,19 @@
     <description>Recent content in Istio on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Sat, 15 Dec 2018 18:28:30 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 17 Dec 2018 16:05:24 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/istio/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>数据包在 Istio 网格中的生命周期</title>
+      <link>https://www.yangcs.net/posts/life-of-a-packet-through-istio/</link>
+      <pubDate>Mon, 17 Dec 2018 16:05:24 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/life-of-a-packet-through-istio/</guid>
+      <description>众所周知，当我们讨论 Istio 时，性能并不是它最大的痛点，最大的痛点是有时候会出现一些莫名其妙的问题，而我们根本不知道问题出在哪里，也无从下手，在很</description>
+    </item>
     
     <item>
       <title>Istio 中 VirtualService 的注意事项</title>
