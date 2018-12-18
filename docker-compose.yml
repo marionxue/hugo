@@ -36,6 +36,8 @@ services:
   service-envoy:
     image: envoyproxy/envoy-alpine:latest
     restart: always
+    depends_on:
+      - hugo
     volumes:
       - ./service-envoy.yaml:/etc/envoy/envoy.yaml
       - /etc/localtime:/etc/localtime

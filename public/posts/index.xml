@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>优化生产环境中的 Kubernetes 资源分配</title>
+      <link>https://www.yangcs.net/posts/optimizing-kubernetes-resource-allocation-production/</link>
+      <pubDate>Tue, 18 Dec 2018 16:15:12 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/optimizing-kubernetes-resource-allocation-production/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>数据包在 Istio 网格中的生命周期</title>
       <link>https://www.yangcs.net/posts/life-of-a-packet-through-istio/</link>
       <pubDate>Mon, 17 Dec 2018 16:05:24 +0800</pubDate>

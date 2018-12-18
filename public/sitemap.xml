@@ -8,6 +8,11 @@
   </url>
   
   <url>
+    <loc>https://www.yangcs.net/posts/optimizing-kubernetes-resource-allocation-production/</loc>
+    <lastmod>2018-12-18T16:15:12+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.yangcs.net/posts/life-of-a-packet-through-istio/</loc>
     <lastmod>2018-12-17T16:05:24+08:00</lastmod>
   </url>
@@ -472,13 +477,13 @@
   
   <url>
     <loc>https://www.yangcs.net/tags/kubernetes/</loc>
-    <lastmod>2018-12-04T17:35:59+08:00</lastmod>
+    <lastmod>2018-12-18T16:15:12+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.yangcs.net/categories/kubernetes/</loc>
-    <lastmod>2018-12-04T17:35:59+08:00</lastmod>
+    <lastmod>2018-12-18T16:15:12+08:00</lastmod>
     <priority>0</priority>
   </url>
   

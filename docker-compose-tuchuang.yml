@@ -1,0 +1,39 @@
+version: '2'
+services:
+
+  mysql:
+    image: mysql:5.6
+    restart: always
+    volumes:
+      - /data/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD="yang8683060"   
+    networks:
+      - default
+
+  fantasy:
+    image: linux52/olaindex 
+    restart: always
+    depends_on:
+      - mysql
+    volumes:
+      - /data/Fantasy-field:/var/www/public
+    networks:
+      - default
+    expose:
+      - "80"
+
+  fantasy-envoy:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    depends_on:
+      - mysql
+      - fantasy
+    volumes:
+      - ./oneindex-envoy.yaml:/etc/envoy/envoy.yaml
+    network_mode: "service:fantasy"
+
+networks:
+  default:
+    external:
+      name: yang
