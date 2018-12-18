@@ -17,6 +17,10 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 <!--more-->
 
+<p id="div-border-left-red">
+原文链接：<a href="https://opensource.com/article/18/12/optimizing-kubernetes-resource-allocation-production?sc_cid=70160000001273HAAQ" target="_blank">Optimizing Kubernetes resource allocation in production</a>
+</p>
+
 我和 Kubernetes 的初次接触就涉及到将应用容器化并部署到生产环境集群中，当时我的工作重点是把 buffer 吞吐量最高（低风险）的某个端点从单个应用程序中分离出来，因为这个特殊的端点会给我们带来很大的困扰，偶尔还会影响到其他更高优先级的流量。
 
 在使用 `curl` 进行一些手动测试之后，我们决定将这个剥离出来的端点部署在 `Kubernetes` 上。当有 `1%` 的流量打进来时，服务运行正常，一切看起来都是那么地美好；当流量增加到 `10%` 时，也没有什么大问题；最后我将流量增加到 `50%`，麻烦来了，这时候服务突然陷入了 crash 循环状态。当时我的第一反应是将该服务的副本数扩到 `20` 个，扩完之后有一点成效，但没过多久 Pod 仍然陷入 crash 循环状态。通过 `kubectl describe` 查看审计日志，我了解到 Kubelet 因为 `OOMKilled` 杀掉了 Pod，即内存不足。深入挖掘后，我找到了问题根源，当时我从另一个 deployment 文件中复制粘贴 YAML 内容时设置了一些严格的内存限制，从而导致了上述一系列问题。这段经历让我开始思考如何才能有效地设置资源的 `requests` 和 `limits`。
