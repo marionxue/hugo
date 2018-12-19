@@ -570,6 +570,3 @@ div.notices p:first-child:after {
     color: #fff;
     left: 2rem;
 }
-div.notices.note p:first-child:after {
-    content: 'Note';
-}
