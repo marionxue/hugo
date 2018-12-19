@@ -264,13 +264,9 @@ metadata:
 ...
 ```
 
-<div id="note">
-<p id="note-title">Note</p>
-<br>
-<p>
+{{% notice note %}}
 对于 TCP ServiceEntry，你需要指定 <code>port</code> 列表的 <code>protocol</code> 字段值为 <code>tcp</code>，还要在 <code>addresses</code> 列表里面指定外部服务的 IP 地址，该 IP 地址以网络号为 <code>32</code> 位的无类型域间选路（<a href="https://tools.ietf.org/html/rfc2317" target="_blank">CIDR</a>）形式表示。 
-</p>
-</div>
+{{% /notice %}}
 
 下面我将详细讨论 TCP ServiceEntry。现在先来验证添加 `ServiceEntry` 之后是否解决了上面遇到的问题，再次访问 Web 页面，看看评级星标是不是回来了。
 
