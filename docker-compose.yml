@@ -20,6 +20,31 @@ services:
     ports:
       - "80:80"
       - "443:443"
+  envoy-ui:
+    image: gonitro/envoy-ui:42bae1c
+    restart: always
+    depends_on:
+      - front-envoy
+    environment:
+      - ENVOY_UI_HOST=front-envoy
+      - ENVOY_UI_PORT=8001
+      - ENVOY_UI_LISTEN_PORT=80
+    volumes:
+      - /etc/localtime:/etc/localtime
+    networks:
+      - default
+    expose:
+      - "8080"
+  service-envoy-ui:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    depends_on:
+      - envoy-ui
+    volumes:
+      - ./service-envoy.yaml:/etc/envoy/envoy.yaml
+      - /etc/localtime:/etc/localtime
+      - /etc/letsencrypt:/etc/letsencrypt
+    network_mode: "service:envoy-ui"
 
   hugo:
     image: nginx:alpine

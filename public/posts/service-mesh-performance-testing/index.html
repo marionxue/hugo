@@ -517,16 +517,16 @@ autocomplete('#aa-search-input',
 <p>在服务网格出现之前，每个服务都需要知道它所依赖的服务的位置才能正常工作。例如，如下图所示，为了使服务 <code>A</code> 能够将请求任务传递给服务 <code>C</code>，它需要知道服务 <code>C</code> 的确切位置。服务 C 的位置可以定义为 IP 地址或 <code>DNS</code> 域名。一旦服务 C 的位置发生了变化，如果情况不是太糟，改一下服务 <code>A</code> 的配置就可以继续工作了，更糟糕的情况下整个服务 <code>A</code> 可能都需要重写。</p>
 
 <div class="gallery">
-    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/d18a30af652f49f3beb0305a05fc9e32.jpg" title="服务 A 知道服务 C 的位置">
-    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/d18a30af652f49f3beb0305a05fc9e32.jpg">
+    <a href="https://ws3.sinaimg.cn/large/006tNbRwgy1fyhwmxk93lj30oo087gm0.jpg" title="服务 A 知道服务 C 的位置">
+    <img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fyhwmxk93lj30oo087gm0.jpg">
     </a>
 </div>
 
 <p>服务之间的紧耦合将会导致系统很脆弱，并且难以扩展，因此很多公司开始使用诸如 <a href="https://zookeeper.apache.org/" target="_blank">ZooKeeper</a>，<a href="https://www.consul.io/" target="_blank">Consul</a> 和 <a href="https://github.com/coreos/etcd" target="_blank">Etcd</a> 等服务发现工具，这样服务就不再需要知道它所依赖的服务的位置也可以正常工作了。如下图所示：</p>
 
 <div class="gallery">
-    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/fb777aef9c67481896e39dfb3083fffc.jpg" title="服务发现服务知道服务 C 的位置">
-    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/fb777aef9c67481896e39dfb3083fffc.jpg">
+    <a href="https://ws1.sinaimg.cn/large/006tNbRwgy1fyhwni6ri7j30oo087dgd.jpg" title="服务发现服务知道服务 C 的位置">
+    <img src="https://ws1.sinaimg.cn/large/006tNbRwgy1fyhwni6ri7j30oo087dgd.jpg">
     </a>
 </div>
 
@@ -535,8 +535,8 @@ autocomplete('#aa-search-input',
 <p>服务网格聚合了服务发现和故障策略等其他功能，也就是说服务网格不仅允许各个服务之间相互交互，还会根据配置的策略执行重试、重定向或终止等操作。如下图所示：</p>
 
 <div class="gallery">
-    <a href="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/56954afbcd454fbd9e5a976632864007.jpg" title="服务网格执行失败重试">
-    <img src="https://default-1252251317.cos.ap-shanghai.myqcloud.com/superbed/2018/11/11/56954afbcd454fbd9e5a976632864007.jpg">
+    <a href="https://ws4.sinaimg.cn/large/006tNbRwgy1fyhwnzbhxej30oo087t9d.jpg" title="服务网格执行失败重试">
+    <img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fyhwnzbhxej30oo087t9d.jpg">
     </a>
 </div>
 

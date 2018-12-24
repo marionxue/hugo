@@ -18,6 +18,7 @@ services:
     privileged: true
     volumes:
       - ./service-envoy.yaml:/etc/envoy/envoy.yaml
+      - /etc/letsencrypt:/etc/letsencrypt
     network_mode: "service:olaindex"
 
 networks:

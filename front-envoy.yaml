@@ -10,6 +10,10 @@ static_resources:
         config:
           codec_type: auto
           stat_prefix: ingress_http
+          access_log:
+          - name: envoy.file_access_log
+            config:
+              path: "/dev/stdout"
           route_config:
             virtual_hosts:
             - name: backend
@@ -58,6 +62,11 @@ static_resources:
               - "yangcs.net"
               - "www.yangcs.net"
               routes:
+              - match:
+                  prefix: "/admin"
+                route:
+                  prefix_rewrite: "/"
+                  cluster: envoy-ui
               - match:
                   prefix: "/"
                 route:
@@ -165,6 +174,15 @@ static_resources:
     hosts:
     - socket_address:
         address: hugo
+        port_value: 8080
+  - name: envoy-ui
+    connect_timeout: 0.25s
+    type: strict_dns
+    lb_policy: round_robin
+    http2_protocol_options: {}
+    hosts:
+    - socket_address:
+        address: envoy-ui
         port_value: 8080
   - name: oneindex
     connect_timeout: 0.25s
