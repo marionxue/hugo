@@ -1,0 +1,53 @@
+version: '2'
+services:
+
+  grafana:
+    image: grafana/grafana
+    restart: always
+    privileged: true
+    volumes:
+      - /data/grafana:/var/lib/grafana
+      - /etc/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /etc/localtime:/etc/localtime
+    networks:
+      - default
+    expose:
+      - "8080"
+
+  grafana-envoy:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    privileged: true
+    volumes:
+      - ./service-envoy-grafana.yaml:/etc/envoy/envoy.yaml
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime
+    network_mode: "service:grafana"
+
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    privileged: true
+    volumes:
+      - /data/prometheus:/prometheus
+      - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - /etc/localtime:/etc/localtime
+    networks:
+      - default
+    expose:
+      - "8080"
+
+  prometheus-envoy:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    privileged: true
+    volumes:
+      - ./service-envoy-prometheus.yaml:/etc/envoy/envoy.yaml
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /etc/localtime:/etc/localtime
+    network_mode: "service:prometheus"
+
+networks:
+  default:
+    external:
+      name: yang
