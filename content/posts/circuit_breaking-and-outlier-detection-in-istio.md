@@ -15,6 +15,8 @@ tags: ["istio", "service mesh", "kubernetes"]
 bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"}]
 ---
 
+<!--more-->
+
 在微服务领域，各个服务需要在网络上执行大量的调用。而网络是很脆弱的，如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而造成整个系统不可用，通常把这种现象称为 <span id="inline-purple">服务雪崩效应</span>。为了使服务有一定的冗余，以便在系统故障期间能够保持服务能力，我们可以使用熔断机制。
 
 ## <span id="inline-toc">1.</span> 什么是熔断？
