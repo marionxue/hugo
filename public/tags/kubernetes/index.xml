@@ -6,10 +6,19 @@
     <description>Recent content in Kubernetes on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Tue, 18 Dec 2018 16:15:12 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 28 Dec 2018 17:23:43 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>熔断与异常检测在 Istio 中的应用</title>
+      <link>https://www.yangcs.net/posts/circuit_breaking-and-outlier-detection-in-istio/</link>
+      <pubDate>Fri, 28 Dec 2018 17:23:43 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/circuit_breaking-and-outlier-detection-in-istio/</guid>
+      <description>在微服务领域，各个服务需要在网络上执行大量的调用。而网络是很脆弱的，如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而</description>
+    </item>
     
     <item>
       <title>优化生产环境中的 Kubernetes 资源分配</title>

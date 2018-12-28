@@ -1,0 +1,36 @@
+version: '2'
+services:
+
+  olaindex:
+    image: linux52/olaindex 
+    restart: always
+    privileged: true
+    volumes:
+      - /root/OLAINDEX:/var/www
+      - phpfpm:/var/run/
+    networks:
+      - default
+    expose:
+      - "8080"
+
+  olaindex-exporter:
+    image: yangchuansheng/phpfpm_exporter 
+    restart: always
+    privileged: true
+    volumes:
+      - phpfpm:/var/run/
+    network_mode: "service:olaindex"
+
+  olaindex-envoy:
+    image: envoyproxy/envoy-alpine:latest
+    restart: always
+    privileged: true
+    volumes:
+      - ./service-envoy.yaml:/etc/envoy/envoy.yaml
+      - /etc/letsencrypt:/etc/letsencrypt
+    network_mode: "service:olaindex"
+
+networks:
+  default:
+    external:
+      name: yang
