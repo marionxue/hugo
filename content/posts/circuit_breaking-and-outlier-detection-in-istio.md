@@ -204,9 +204,9 @@ $ kubectl apply -f <(istioctl kube-inject -f httpbin-client-deploy.yaml)
 $ CLIENT_POD=$(kubectl get pod | grep httpbin-client | awk '{ print $1 }')
 $ kubectl exec -it $CLIENT_POD -c httpbin-client -- sh -c 'export URL_UNDER_TEST=http://httpbin:8000/get export NUM_THREADS=1 && java -jar http-client.jar'
 
-    using num threads: 1
-    Starting pool-1-thread-1 with numCalls=5 delayBetweenCalls=0 url=http://localhost:15001/get mixedRespTimes=false
-    pool-1-thread-1: successes=[5], failures=[0], duration=[545ms]
+using num threads: 1
+Starting pool-1-thread-1 with numCalls=5 delayBetweenCalls=0 url=http://localhost:15001/get mixedRespTimes=false
+pool-1-thread-1: successes=[5], failures=[0], duration=[545ms]
 ```
 
 可以看到所有请求都通过了：
