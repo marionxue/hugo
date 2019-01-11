@@ -2,6 +2,12 @@
 
 ----
 
+### [love-gfw - Linux 和 MacOS 全局智能分流方案](https://github.com/yangchuansheng/love-gfw)
+
+<a class="github-button" href="https://github.com/yangchuansheng/love-gfw/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch yangchuansheng/love-gfw on GitHub">Watch</a>
+<a class="github-button" href="https://github.com/yangchuansheng/love-gfw" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star yangchuansheng/love-gfw on GitHub">Star</a>
+<a class="github-button" href="https://github.com/yangchuansheng/love-gfw/fork" data-icon="octicon-repo-forked" data-size="large" data-show-count="true" aria-label="Fork yangchuansheng/love-gfw on GitHub">Fork</a>
+
 ### [Prometheus Handbook - Prometheus 中文文档](/prometheus/)
 
 <a class="github-button" href="https://github.com/yangchuansheng/prometheus-handbook/subscription" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch yangchuansheng/prometheus-handbook on GitHub">Watch</a>
