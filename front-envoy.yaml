@@ -48,9 +48,9 @@ static_resources:
             tls_maximum_protocol_version: TLSv1_3
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/fullchain.pem"
               private_key:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/privkey.pem"
       filters:
       - name: envoy.http_connection_manager
         config:
@@ -87,9 +87,9 @@ static_resources:
           alpn_protocols: h2
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/fullchain.pem"
               private_key:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/privkey.pem"
       filters:
       - name: envoy.http_connection_manager
         config:
@@ -116,9 +116,9 @@ static_resources:
           alpn_protocols: h2
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/fullchain.pem"
               private_key:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/privkey.pem"
       filters:
       - name: envoy.http_connection_manager
         config:
@@ -145,9 +145,9 @@ static_resources:
           alpn_protocols: h2
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/fullchain.pem"
               private_key:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/privkey.pem"
       filters:
       - name: envoy.http_connection_manager
         config:
@@ -174,9 +174,9 @@ static_resources:
           alpn_protocols: h2
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/fullchain.pem"
               private_key:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/privkey.pem"
       filters:
       - name: envoy.http_connection_manager
         config:
@@ -203,9 +203,9 @@ static_resources:
           alpn_protocols: h2
           tls_certificates:
             - certificate_chain:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/fullchain.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/fullchain.pem"
               private_key:
-                filename: "/etc/letsencrypt/live/www.yangcs.net/privkey.pem"
+                filename: "/etc/letsencrypt/live/yangcs.net/privkey.pem"
       filters:
       - name: envoy.http_connection_manager
         config:
