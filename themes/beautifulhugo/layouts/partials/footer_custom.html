@@ -15,6 +15,14 @@ Do not put anything in this file - it's only here so that hugo won't throw an er
 
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
+<!-- 网页预加载 -->
+<script type="text/javascript" src="{{ "js/quicklink.umd.js" | absURL }}"></script>
+<script>
+window.addEventListener('load', () =>{
+   quicklink();
+});
+</script>
+
 <!-- 点击特效 -->
 <!--
 <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas>
