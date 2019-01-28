@@ -1030,6 +1030,32 @@
     },
     {
         "keywords": [
+            "nginx",
+            "mirror",
+            "load balance"
+        ],
+        "uri": "posts/nginx-mirror",
+        "content": "nginx mirroring tips tricks        Nginx 1 13 4     mirror       mirror                                     Nginx     mirror     mirror                                                                                                                                       1                                                    Nginx         upstream backend   server backend local 10000    server   server_name proxy local  listen 8000  location     proxy_pass http   backend                               8000                  10000                                  hey                                         wrk  apache benchmark  siege     hey  z 10s  q 1000  n 100000  c 1  t 1 http   proxy local 8000 Summary  Total  10 0016 secs Slowest  0 0225 secs Fastest  0 0003 secs Average  0 0005 secs Requests sec  995 8393 Total data  6095520 bytes Size request  612 bytes Response time histogram  0 000  1    0 003  9954                                               0 005  4    0 007  0    0 009  0    0 011  0    0 014  0    0 016  0    0 018  0    0 020  0    0 022  1    Latency distribution  10  0 0003 secs 25  0 0004 secs 50  0 0005 secs 75  0 0006 secs 90  0 0007 secs 95  0 0007 secs 99  0 0009 secs Details  average  fastest  slowest   DNS dialup  0 0000 secs  0 0003 secs  0 0225 secs DNS lookup  0 0000 secs  0 0000 secs  0 0008 secs req write  0 0000 secs  0 0000 secs  0 0003 secs resp wait  0 0004 secs  0 0002 secs  0 0198 secs resp read  0 0001 secs  0 0000 secs  0 0012 secs Status code distribution   200  9960 responses         1                               2                                                             upstream backend   server backend local 10000    upstream test_backend   server test local 20000    server   server_name proxy local  listen 8000  location     mirror  mirror  proxy_pass http   backend    location    mirror   internal  proxypass http   testbackend request_uri      mirror        uri    mirror location    mirror    internal     location                          Not found   404    mirror                                                          hey  z 10s  q 1000  n 100000  c 1  t 1 http   proxy local 8000 Summary  Total  10 0010 secs Slowest  0 0042 secs Fastest  0 0003 secs Average  0 0005 secs Requests sec  997 3967 Total data  6104700 bytes Size request  612 bytes Response time histogram  0 000  1    0 001  9132                                            0 001  792       0 001  43    0 002  3    0 002  0    0 003  2    0 003  0    0 003  0    0 004  1    0 004  1    Latency distribution  10  0 0003 secs 25  0 0004 secs 50  0 0005 secs 75  0 0006 secs 90  0 0007 secs 95  0 0008 secs 99  0 0010 secs Details  average  fastest  slowest   DNS dialup  0 0000 secs  0 0003 secs  0 0042 secs DNS lookup  0 0000 secs  0 0000 secs  0 0009 secs req write  0 0000 secs  0 0000 secs  0 0002 secs resp wait  0 0004 secs  0 0002 secs  0 0041 secs resp read  0 0001 secs  0 0000 secs  0 0021 secs Status code distribution   200  9975 responses                     1                                         3                                                                                           golang                                mirror backend  errors 2019 01 13 14 43 12 Listening port 20000  delay 0  error injecting true             hey  z 10s  q 1000  n 100000  c 1  t 1 http   proxy local 8000 Summary  Total  10 0008 secs Slowest  0 0027 secs Fastest  0 0003 secs Average  0 0005 secs Requests sec  998 7205 Total data  6112656 bytes Size request  612 bytes Response time histogram  0 000  1    0 001  7388                                            0 001  2232                0 001  324      0 001  27    0 002  6    0 002  2    0 002  3    0 002  2    0 002  0    0 003  3    Latency distribution  10  0 0003 secs 25  0 0003 secs 50  0 0004 secs 75  0 0006 secs 90  0 0007 secs 95  0 0008 secs 99  0 0009 secs Details  average  fastest  slowest   DNS dialup  0 0000 secs  0 0003 secs  0 0027 secs DNS lookup  0 0000 secs  0 0000 secs  0 0008 secs req write  0 0000 secs  0 0000 secs  0 0001 secs resp wait  0 0004 secs  0 0002 secs  0 0026 secs resp read  0 0001 secs  0 0000 secs  0 0006 secs Status code distribution   200  9988 responses                                     Nginx                          4                                                                                    1         mirror backend  delay 1 2019 01 13 14 50 39 Listening port 20000  delay 1  error injecting false             hey  z 10s  q 1000  n 100000  c 1  t 1 http   proxy local 8000 Summary  Total  10 0290 secs Slowest  0 0023 secs Fastest  0 0018 secs Average  0 0021 secs Requests sec  1 9942 Total data  6120 bytes Size request  612 bytes Response time histogram  0 002  1              0 002  0    0 002  1              0 002  0    0 002  0    0 002  0    0 002  1              0 002  1              0 002  0    0 002  4                                            0 002  2                        Latency distribution  10  0 0018 secs 25  0 0021 secs 50  0 0022 secs 75  0 0023 secs 90  0 0023 secs 0  0 0000 secs 0  0 0000 secs Details  average  fastest ",
+        "objectID": "posts/nginx-mirror",
+        "title": "Nginx 流量镜像使用技巧",
+        "subtitle": "使用 Nginx 的 mirror 模块过程中的一些趟坑经历",
+        "description": null,
+        "date": "2019-01-28T08:39:48.000Z",
+        "draft": false,
+        "toc": true,
+        "categories": "loadbalance",
+        "tags": [
+            "nginx",
+            "loadbalance"
+        ],
+        "bigimg": [
+            {
+                "src": "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jpg"
+            }
+        ]
+    },
+    {
+        "keywords": [
             "杨传胜的博客",
             "kubernetes",
             "qos",

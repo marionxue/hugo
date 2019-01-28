@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>Nginx 流量镜像使用技巧</title>
+      <link>https://www.yangcs.net/posts/nginx-mirror/</link>
+      <pubDate>Mon, 28 Jan 2019 16:39:48 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/nginx-mirror/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>熔断与异常检测在 Istio 中的应用</title>
       <link>https://www.yangcs.net/posts/circuit_breaking-and-outlier-detection-in-istio/</link>
       <pubDate>Fri, 28 Dec 2018 17:23:43 +0800</pubDate>
