@@ -4,8 +4,8 @@ keywords:
 - mirror
 - load balance
 title: "Nginx 流量镜像使用技巧"
-subtitle: "使用 Nginx 的 mirror 模块过程中的一些趟坑经历"
-description:
+subtitle: "使用 Nginx mirror 模块过程中的趟坑经历"
+description: 本文展示了如何通过 Nginx mirror 模块简单地复制所有的流量，以及如何通过 split_client 模块来复制部分流量，同时还解释了当镜像后端响应缓慢时为什么原始请求会被阻塞，并给出了解决方案。
 date: 2019-01-28T16:39:48+08:00
 draft: false
 toc: true
