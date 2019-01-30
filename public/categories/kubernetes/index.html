@@ -394,6 +394,39 @@ autocomplete('#aa-search-input',
         <div class="posts-list">
           
             <article class="post-preview">
+              <a href="https://www.yangcs.net/posts/etcd-cluster-number/">
+                <h2 class="post-title">etcd 集群大小迷思</h2>
+
+                
+                  <h3 class="post-subtitle">
+                    你真的理解为什么 etcd 推荐使用奇数作为集群节点个数吗？
+                  </h3>
+                
+              </a>
+
+              <p class="post-meta">
+                Posted on January 30, 2019
+              </p>
+              <div class="post-entry">
+                
+                  etcd 使用 raft 协议保证各个节点之间的状态一致。根据 raft 算法原理，节点数目越多，会降低集群的写性能。这是因为每一次写操作，需要集群中大多数节点将日志落
+                  <a href="https://www.yangcs.net/posts/etcd-cluster-number/" class="post-read-more">[Read More]</a>
+                
+              </div>
+
+              
+                <span class="post-meta">
+                  
+                    #<a href="https://www.yangcs.net/tags/etcd/">etcd</a>&nbsp;
+                  
+                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
+                  
+                </span>
+              
+
+            </article>
+          
+            <article class="post-preview">
               <a href="https://www.yangcs.net/posts/optimizing-kubernetes-resource-allocation-production/">
                 <h2 class="post-title">优化生产环境中的 Kubernetes 资源分配</h2>
 
@@ -670,37 +703,6 @@ autocomplete('#aa-search-input',
 
             </article>
           
-            <article class="post-preview">
-              <a href="https://www.yangcs.net/posts/custom-metrics-hpa/">
-                <h2 class="post-title">使用自定义指标进行弹性伸缩</h2>
-
-                
-                  <h3 class="post-subtitle">
-                    通过 Prometheus adaptor 来自定义监控指标
-                  </h3>
-                
-              </a>
-
-              <p class="post-meta">
-                Posted on June 19, 2018
-              </p>
-              <div class="post-entry">
-                
-                  <p></p>
-                  <a href="https://www.yangcs.net/posts/custom-metrics-hpa/" class="post-read-more">[Read More]</a>
-                
-              </div>
-
-              
-                <span class="post-meta">
-                  
-                    #<a href="https://www.yangcs.net/tags/kubernetes/">kubernetes</a>&nbsp;
-                  
-                </span>
-              
-
-            </article>
-          
         </div>
         
           <ul class="pager main-pager">
@@ -896,7 +898,7 @@ autocomplete('#aa-search-input',
                       
           
           &nbsp;&bull;&nbsp;
-          January 28,2019
+          January 30,2019
           updated
           
             &nbsp;&bull;&nbsp;

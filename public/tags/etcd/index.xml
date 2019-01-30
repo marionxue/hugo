@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Etcd on Ryan Yang</title>
+    <link>https://www.yangcs.net/tags/etcd/</link>
+    <description>Recent content in Etcd on Ryan Yang</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Wed, 30 Jan 2019 13:13:56 +0800</lastBuildDate>
+    
+	<atom:link href="https://www.yangcs.net/tags/etcd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>etcd 集群大小迷思</title>
+      <link>https://www.yangcs.net/posts/etcd-cluster-number/</link>
+      <pubDate>Wed, 30 Jan 2019 13:13:56 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/etcd-cluster-number/</guid>
+      <description>etcd 使用 raft 协议保证各个节点之间的状态一致。根据 raft 算法原理，节点数目越多，会降低集群的写性能。这是因为每一次写操作，需要集群中大多数节点将日志落</description>
+    </item>
+    
+  </channel>
+</rss>

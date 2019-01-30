@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>etcd 集群大小迷思</title>
+      <link>https://www.yangcs.net/posts/etcd-cluster-number/</link>
+      <pubDate>Wed, 30 Jan 2019 13:13:56 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/etcd-cluster-number/</guid>
+      <description>etcd 使用 raft 协议保证各个节点之间的状态一致。根据 raft 算法原理，节点数目越多，会降低集群的写性能。这是因为每一次写操作，需要集群中大多数节点将日志落</description>
+    </item>
+    
+    <item>
       <title>Nginx 流量镜像使用技巧</title>
       <link>https://www.yangcs.net/posts/nginx-mirror/</link>
       <pubDate>Mon, 28 Jan 2019 16:39:48 +0800</pubDate>
