@@ -179,3 +179,10 @@ Learner 被提升为 follower 之前会一直被当成备用节点，且 leader 
 + 当 learner 的 log 数据与 leader 保持一致后，集群会自动将 learner 转换为 follower。从用户的角度来看，你仍然可以使用 `member add` 命令来加入新节点，但集群会自动帮你把新加入的节点设置为 learner 状态。
 + 新加入的节点被视为备用节点，一旦集群的可用性受到影响，就会被提升为 follower 状态。
 + learner 节点可以被设置为只读状态，被设置成只读状态后就永远不能被提升为 follower 状态。在弱一致性模式中，learner 只接收 leader 发送的数据，并且永远不会响应写操作。在没有共识开销的情况下从本地读取数据会大大减少 leader 的工作量，但向客户端提供的数据可能会过时。在强一致性模式中，learner 会向 leader 发送 `read index` 以获取最新的数据，但仍然拒绝写请求。
+
+## <span id="inline-toc">4.</span> 参考资料
+
+----
+
++ [ETCD Progress](https://github.com/etcd-io/etcd/blob/master/raft/design.md)
++ [ETCD Learner](https://etcd.readthedocs.io/en/latest/server-learner.html)
