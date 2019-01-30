@@ -32,7 +32,7 @@ progress 有两个比较重要的属性：`match` 和 `next`。`match` 是 leade
 
 progress 有三个状态：`probe`，`replicate` 和 `snapshot`。
 
-```
+```bash
                             +--------------------------------------------------------+          
                             |                  send snapshot                         |          
                             |                                                        |          
