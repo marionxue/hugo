@@ -4,15 +4,15 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta content="杨传胜的博客, etcd, raft, kubernetes" name="keywords">
+  <meta content="杨传胜的博客, etcd, raft, kubernetes, quorum" name="keywords">
 
-  <title> etcd 集群大小迷思 - 杨传胜的博客|Cloud Native|yangcs.net</title>
+  <title> 通过集群成员变更来看 etcd 的分布式一致性 - 杨传胜的博客|Cloud Native|yangcs.net</title>
   <meta name="description" content="杨传胜的博客|Cloud Native|yangcs.net" />
-  <meta property="og:title" content="etcd 集群大小迷思" />
-  <meta name="twitter:title" content="etcd 集群大小迷思" />
-  <meta name="description" content="你真的理解为什么 etcd 推荐使用奇数作为集群节点个数吗？">
-  <meta property="og:description" content="你真的理解为什么 etcd 推荐使用奇数作为集群节点个数吗？">
-  <meta name="twitter:description" content="你真的理解为什么 etcd 推荐使用奇数作为集群节点个数吗？">
+  <meta property="og:title" content="通过集群成员变更来看 etcd 的分布式一致性" />
+  <meta name="twitter:title" content="通过集群成员变更来看 etcd 的分布式一致性" />
+  <meta name="description" content="本文带你了解 etcd 内部的 raft 实现，并带你通过集群成员变更来看 etcd 的分布式一致性。">
+  <meta property="og:description" content="本文带你了解 etcd 内部的 raft 实现，并带你通过集群成员变更来看 etcd 的分布式一致性。">
+  <meta name="twitter:description" content="本文带你了解 etcd 内部的 raft 实现，并带你通过集群成员变更来看 etcd 的分布式一致性。">
   <meta name="author" content="{Description { .Site.Author.name }}"/>
   <link href='https://hugo-picture.oss-cn-beijing.aliyuncs.com/favicon-32x32.png' rel='icon' type='image/x-icon'/>
   <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNbRwgy1fwyhv7w4yjj307j07j0st.jpg" />
@@ -20,12 +20,12 @@
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@Paranoid_yang" />
   <meta name="twitter:creator" content="@Paranoid_yang" />
-  <meta property="og:url" content="https://www.yangcs.net/posts/etcd-cluster-number/" />
+  <meta property="og:url" content="https://www.yangcs.net/posts/etcd-server-learner/" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
   <meta name="generator" content="Hugo 0.49" />
-  <link rel="canonical" href="https://www.yangcs.net/posts/etcd-cluster-number/" />
+  <link rel="canonical" href="https://www.yangcs.net/posts/etcd-server-learner/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css" integrity="sha384-wITovz90syo1dJWVh32uuETPVEtGigN07tkttEqPv+uR2SE/mbQcG7ATL28aI9H0" crossorigin="anonymous">
@@ -397,7 +397,7 @@ autocomplete('#aa-search-input',
                 <div class="post-heading">
                 
                   
-                     <h1>etcd 集群大小迷思</h1>
+                     <h1>通过集群成员变更来看 etcd 的分布式一致性</h1>
                      
                      
                   
@@ -405,7 +405,7 @@ autocomplete('#aa-search-input',
                   
                     
                       <hr class="small">
-                      <span class="post-subheading">你真的理解为什么 etcd 推荐使用奇数作为集群节点个数吗？</span>
+                      <span class="post-subheading">etcd 新增角色 learner 介绍</span>
                     
                   
                   
@@ -432,10 +432,10 @@ autocomplete('#aa-search-input',
         <div class="row">
           <div class="col-lg-12 col-md-12 col-md-offset-0">
             <div class="posts-heading">
-                <h1 align="center">etcd 集群大小迷思</h1>
+                <h1 align="center">通过集群成员变更来看 etcd 的分布式一致性</h1>
                 
                   
-                    <h2 align="center" class="posts-subheading">你真的理解为什么 etcd 推荐使用奇数作为集群节点个数吗？</h2>
+                    <h2 align="center" class="posts-subheading">etcd 新增角色 learner 介绍</h2>
                   
                 
                 
@@ -458,7 +458,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Wed Jan 30, 2019</h4>
     </section>
-    <h5 id="wc">1600 Words|Read in about 4 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">3500 Words|Read in about 7 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/etcd/">etcd</a> &nbsp;
@@ -477,8 +477,19 @@ autocomplete('#aa-search-input',
 <ul>
 <li>
 <ul>
-<li><a href="#span-id-inline-toc-1-span-选举方法"><span id="inline-toc">1.</span> 选举方法</a></li>
-<li><a href="#span-id-inline-toc-2-span-集群大小与容错"><span id="inline-toc">2.</span> 集群大小与容错</a></li>
+<li><a href="#span-id-inline-toc-1-span-etcd-内部的-raft-实现"><span id="inline-toc">1.</span> etcd 内部的 raft 实现</a></li>
+<li><a href="#span-id-inline-toc-2-span-集群成员变更"><span id="inline-toc">2.</span> 集群成员变更</a>
+<ul>
+<li><a href="#网络隔离">网络隔离</a></li>
+<li><a href="#新加入节点后隔离网络">新加入节点后隔离网络</a></li>
+<li><a href="#隔离网络后再加入新节点">隔离网络后再加入新节点</a></li>
+<li><a href="#加入新节点带来的问题">加入新节点带来的问题</a></li>
+</ul></li>
+<li><a href="#span-id-inline-toc-3-span-引入-raft-learner-角色"><span id="inline-toc">3.</span> 引入 Raft Learner 角色</a>
+<ul>
+<li><a href="#v3-4-中的新特性">v3.4 中的新特性</a></li>
+<li><a href="#v3-5-中的新特性">v3.5 中的新特性</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -489,113 +500,174 @@ autocomplete('#aa-search-input',
 
                 <p></p>
 
-<p>etcd 使用 <a href="https://ramcloud.stanford.edu/~ongaro/thesis.pdf" target="_blank">raft</a> 协议保证各个节点之间的状态一致。根据 raft 算法原理，节点数目越多，会降低集群的写性能。这是因为每一次写操作，需要集群中大多数节点将日志落盘成功后，<code>Leader</code> 节点才能将修改内部状态机，并返回将结果返回给客户端。但是根据 etcd 分布式数据冗余策略，集群节点越多，容错能力(Failure Tolerance)越强。所以关于集群大小的优化，其实就是容错和写性能的一个平衡。</p>
+<p>集群成员变更一直是 etcd 最棘手的问题之一，在变更过程中会遇到各种各样的挑战，我们稍后一一来看。为了把问题描述清楚，首先需要了解 etcd 内部的 <code>raft</code> 实现。</p>
 
-<blockquote>
-<p>集群的大小指集群节点的个数。</p>
-</blockquote>
-
-<p>你可能会在很多文章中看到 etcd 推荐使用奇数作为集群节点个数。因为奇数个节点与和其配对的偶数个节点相比(比如 3 节点和 4 节点对比)，容错能力相同，却可以少一个节点。但却没有人告诉你为什么会这样，今天我就给你们带来详细解读。</p>
-
-<h2 id="span-id-inline-toc-1-span-选举方法"><span id="inline-toc">1.</span> 选举方法</h2>
+<h2 id="span-id-inline-toc-1-span-etcd-内部的-raft-实现"><span id="inline-toc">1.</span> etcd 内部的 raft 实现</h2>
 
 <hr />
 
-<p>首先简单介绍一下 etcd 的选举方法：</p>
+<p>leader 会存储所有 follower 对自身 log 数据的 <code>progress</code>（复制进度），leader 根据每个 follower 的 <code>progress</code> 向其发送 <code>replication message</code>。</p>
 
-<ul>
-<li>初始启动时，节点处于 <code>follower</code> 状态并被设定一个 election timeout，如果在这一时间周期内没有收到来自 leader 的 <code>heartbeat</code>，节点将发起选举：将自己切换为 <code>candidate</code> 之后，向集群中其它 follower 节点发送请求，询问其是否选举自己成为 <code>leader</code>。</li>
-<li>当收到来自集群中过半数节点的接受投票后，节点即成为 <code>leader</code>，开始接收保存 client 的数据并向其它的 <code>follower</code> 节点同步日志。如果没有达成一致，则 <code>candidate</code> 随机选择一个等待间隔（150ms ~ 300ms）再次发起投票，得到集群中半数以上 follower 接受的 candidate 将成为 leader。</li>
-<li>leader 节点依靠定时向 follower 发送 <code>heartbeat</code> 来保持其地位。</li>
-<li>任何时候如果其它 follower 在 <code>election timeout</code> 期间都没有收到来自 leader 的 heartbeat，同样会将自己的状态切换为 candidate 并发起选举。每成功选举一次，新 leader 的任期（Term）都会比之前 leader 的任期大 1。</li>
-</ul>
+<p><code>replication message</code> 是 <code>msgApp</code> 外加上 log 数据。</p>
 
-<div class="notices note" ><p>请注意：这里说的超过半数节点接受投票，是包括 <code>candidate</code> 自身在内的！而且这里的半数是以<strong>原集群大小</strong>作为总数来计算的！举个例子：假设某个 etcd 集群有 <code>N</code> 个节点，挂了一个节点之后，如果重新发起选举，一定要有超过 <code>N/2</code> 个节点接受投票（包括 candidate 在内），即最少需要 <code>(N+1)/2</code> 个节点接受投票，参加选举的节点才能成为 leader。</p>
-</div>
+<p>progress 有两个比较重要的属性：<code>match</code> 和 <code>next</code>。<code>match</code> 是 leader 知道的 follower 对自身数据的最新复制进度【或者说就是 follower 最新的 log entry sent index】，如果 leader 对 follower 的复制进度一无所知则这个值为 0。<code>next</code> 则是将要发送给 follower 的下一个 log entry sent 的序号。</p>
 
+<p>progress 有三个状态：<code>probe</code>，<code>replicate</code> 和 <code>snapshot</code>。</p>
 
-<h2 id="span-id-inline-toc-2-span-集群大小与容错"><span id="inline-toc">2.</span> 集群大小与容错</h2>
+<pre><code>                            +--------------------------------------------------------+          
+                            |                  send snapshot                         |          
+                            |                                                        |          
+                  +---------+----------+                                  +----------v---------+
+              +---&gt;       probe        |                                  |      snapshot      |
+              |   |  max inflight = 1  &lt;----------------------------------+  max inflight = 0  |
+              |   +---------+----------+                                  +--------------------+
+              |             |            1. snapshot success                                    
+              |             |               (next=snapshot.index + 1)                           
+              |             |            2. snapshot failure                                    
+              |             |               (no change)                                         
+              |             |            3. receives msgAppResp(rej=false&amp;&amp;index&gt;lastsnap.index)
+              |             |               (match=m.index,next=match+1)                        
+receives msgAppResp(rej=true)                                                                   
+(next=match+1)|             |                                                                   
+              |             |                                                                   
+              |             |                                                                   
+              |             |   receives msgAppResp(rej=false&amp;&amp;index&gt;match)                     
+              |             |   (match=m.index,next=match+1)                                    
+              |             |                                                                   
+              |             |                                                                   
+              |             |                                                                   
+              |   +---------v----------+                                                        
+              |   |     replicate      |                                                        
+              +---+  max inflight = n  |                                                        
+                  +--------------------+                                                        
+</code></pre>
+
+<p>如果 follower 处于 <code>probe</code> 状态，则 leader 每个心跳包最多只发送一个 <code>replication message</code>。leader 会缓慢发送 <code>replication message</code> 并探测 follower 的处理速度。leader 收到 <code>msgHeartbeatResp</code> 或者收到 <code>msgAppResp</code>（其中 reject 值为 true）时，leader 会发送下 一个 <code>replication message</code>。</p>
+
+<p>当 follower 给 leader 的 <code>msgAppResp</code> 的 reject 为 false 的时候，它会被置为 <code>replicate</code> 状态，reject 为 false 就意味着 follower 能够跟上 leader 的发送速度。leader 会启动 stream 方式向以求最快的方式向 follower 发送 <code>replication message</code>。当 follower 与 leader 之间的连接断连或者 follower 给 leader 回复的 <code>msgAppResp</code> 的 reject 为 true 时，就会被重新置为 <code>probe</code> 状态，leader 当然也会把 <code>next</code> 置为 <code>match+1</code>。</p>
+
+<p>当 follower 处于 <code>replicate</code> 状态时，leader 会一次尽量多地把批量 <code>replication message</code> 发送给 follower，并把 <code>next</code> 取值为当前 log entry sent 的最大值，以让 follower 尽可能快地跟上 leader 的最新数据。</p>
+
+<p>当 follower 的 log entry set 与 leader 的 log entry sent 相差甚巨的时候，leader 会把 follower 的状态置为 <code>snapshot</code>，然后以 <code>msgSnap</code> 请求方式向其发送 <code>snapshot</code> 数据，发送完后 leader 就等待 follower 直到超时或者成功或者失败或者连接中断。当 follower 接收完毕 snapshot 数据后，就会回到 <code>probe</code> 状态。</p>
+
+<p>当 follower 处于 <code>snapshot</code> 状态时候，leader 不再发送 <code>replication message</code> 给 follower。</p>
+
+<p>新当选的 leader 会把所有 follower 的 state 置为 <code>probe</code>，把 <code>match</code> 置为0，把 <code>next</code> 置为自身 log entry set 的最大值。</p>
+
+<p>leader 与 follower 之间进行数据同步的时候，可以通过下面两个步骤进行流量控制：</p>
+
+<ol>
+<li>限制 message 的 max size。这个值是可以通过相关参数进行限定的，限定后可以降低探测 follower 接收速度的成本；</li>
+<li>当 follower 处于 <code>replicate</code> 状态时候，限定每次批量发送消息的数目。leader 在网络层之上有一个发送 buffer，通过类似于 tcp 的发送窗口的算法动态调整 buffer 的大小，以防止 leader 由于发包过快导致 follower 大量地丢包，提高发送成功率。</li>
+</ol>
+
+<h2 id="span-id-inline-toc-2-span-集群成员变更"><span id="inline-toc">2.</span> 集群成员变更</h2>
 
 <hr />
 
-<p>假设有两个 etcd 集群，分别是 2 个节点和 1 个节点，2 节点集群需要所有节点接受投票才能选举成功（N=2），只要有一个节点发生故障，etcd 集群就会变成不可用状态，因为这时不可能选举成功。因此 2 节点集群的容错能力不如单节点集群，2 节点集群的容错能力为 <code>0%</code>。</p>
+<p>当集群加入新节点时，新加入的节点是没有任何数据的，因此新节点的 log entry sent 与 leader 的 log entry sent 相差很大，所以 leader 会向该节点发送 <code>snapshot</code> 数据。这时 leader 的网络有可能会过载、阻塞甚至丢弃 leader 发送给 follower 的 <code>heartbeat</code>，一段时间以后某个 follower 会因为选举超时将自己的状态切换为 candidate 并发起选举。所以新加入的节点很容易对集群造成影响，无论是 leader 选举还是将后续的更新传播给新成员，都很容易导致集群不可用。</p>
+
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fzoo6p4b5zj30ps0krjv9.jpg" alt="" /></p>
+
+<h3 id="网络隔离">网络隔离</h3>
+
+<p><strong>如果发生了网络隔离，集群还会正常工作吗？主要还是取决于 leader 被隔离到哪个区域。</strong></p>
+
+<p>当集群的 Leader 在多数节点这一侧时，集群仍可以正常工作。例如一个 3 节点集群，它的 <code>quorum</code> 为 2，其中一个 follower 被网络隔离，因为 leader 所在的这一侧的 <code>majority</code> 为 2，所以不会发生重新选举。</p>
 
 <blockquote>
-<p>我们把“超过半数节点接受投票的节点数量”称为 <code>majority</code>。</p>
+<p>Quorum 机制，是一种分布式系统中常用的，用来保证数据冗余和最终一致性的投票算法，具体参考 <a href="https://blog.csdn.net/tb3039450/article/details/80249664" target="_blank">分布式系统之 Quorum 机制</a>。应用在 etcd 的场景中，quorum 表示能保证集群正常工作的最少节点数。而 <code>majority</code> 表示集群当前能参加投票的节点数量。</p>
 </blockquote>
 
-<p>同样的方式，比较 3 节点集群和 4 节点集群。对于 3 节点集群来说，如果其中一个节点发生故障，<code>majority</code> 仍然是 2，集群依然可用。而对于 4 节点集群而言，<code>majority</code> 是 3，只允许一个节点发生故障，如果有两个节点发生故障，<code>majority</code> 就会变成 2，而 2 不满足 <code>&gt; N/2</code> 的要求（N=4）。现在你应该理解为什么奇数个节点与和其配对的偶数个节点相比(比如 3 节点和 4 节点对比)，容错能力相同了。</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fzooo9x7cpj30t80cu77h.jpg" alt="" /></p>
 
-<p>这里能选择偶数个节点吗？ 最好不要这样。原因有二：</p>
+<p>如果 leader 被整个集群都隔离了，这时 leader 的 <code>majority</code> 为 1，无法发起选举，leader 就会将自己的状态切换为 follower，影响到了集群的可用性。</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzooxeyjahj30tv0m0td1.jpg" alt="" /></p>
+
+<p>拥有 3 个节点的集群加入 1 个新节点之后集群节点数量变为 <code>4</code>，quorum 大小变为 <code>3</code>。</p>
+
+<h3 id="新加入节点后隔离网络">新加入节点后隔离网络</h3>
+
+<p><strong>如果加入新节点之后发生了网络隔离，集群还会正常工作吗？主要还是取决于新加入的节点被隔离到了哪个区域。</strong></p>
+
+<p>如果新加入的节点与 leader 被隔离在同一个区域内，leader 的 <code>majority</code> 数量仍然为 <code>3</code>，不会导致重新选举，也不会影响集群的可用性。</p>
+
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fzop5dkzbuj30kc0fnjud.jpg" alt="" /></p>
+
+<p>如果新节点与 leader 不在同一区域内，并且集群被对半隔离，这时任何一侧的 majority 都不是 <code>3</code>，从而会发生重新选举，leader 将状态切换为 follower。</p>
+
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fzopb6j8wlj30mm0hkgp8.jpg" alt="" /></p>
+
+<h3 id="隔离网络后再加入新节点">隔离网络后再加入新节点</h3>
+
+<p><strong>如果先发生网络隔离，后加入新节点，集群还会正常工作吗？</strong></p>
+
+<p>假设一个拥有 3 个节点的集群已经有一个 foloower 被隔离了，这时再加入新节点，quorum 就会从 2 变为 3。但此时新加入的节点还没有启动，集群的 <code>majority</code> 为 2，从而会发生重新选举。</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzopl5e89aj30og0k90x5.jpg" alt="" /></p>
+
+<p>因为 <code>member add</code> 命令会改变集群的 quorum 大小，所以建议先通过 <code>member remove</code> 命令移除处于崩溃状态的 follower。</p>
+
+<h3 id="加入新节点带来的问题">加入新节点带来的问题</h3>
+
+<p>向一个单节点集群中加入新节点后，集群的 quorum 大小变为 2，但这时还会发生重新选举，为什么呢？因为加入节点的操作是分成两步进行的：</p>
+
+<ol>
+<li>执行 <code>member add</code> 命令</li>
+<li>启动新节点</li>
+</ol>
+
+<p>当你执行完 <code>member add</code> 命令后，集群的 quorum 大小变为 2，但此时新节点还没有启动，从 leader 的视角来看，<code>majority</code> 仍然是 1，不满足 quorum，所以会重新选举。</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzoq4pekxgj30lw09eq4y.jpg" alt="" /></p>
+
+<p>来看一种更糟糕的场景，如果新加入的节点配置错误（比如 <code>--peer-urls</code> 是非法的），当执行 <code>member add</code> 命令之后，单节点集群的 quorum 大小变为 2，发生重新选举，但此时新节点不会启动成功的，所以无法满足 quorum。一旦集群无法满足 quorum，就再也无法完成集群成员变更。</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzoqcok67mj30n609ftav.jpg" alt="" /></p>
+
+<p>多节点集群类似。例如一个拥有 3 个节点的集群，新加入一个配置错误的节点后，quorum 大小从 2 变为 <code>3</code>。此时只要有 1 个 follower 发生故障，整个集群就会变为不可用状态，因为集群的 majority 为 2，不满足 quorum（其中 1 个 follower 发生故障，另一个配置错误）。</p>
+
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fzoqjg3nqij30my0goad6.jpg" alt="" /></p>
+
+<p>这就带来了一个很严峻的问题：<strong>只要新加入的节点配置上出了点什么差错，整个集群的容错能力就会减 1。</strong>这时你只能通过 <code>etcd --force-new-cluster</code> 命令来重新创建集群。</p>
+
+<p>但 etcd 可是 Kubernetes 集群至关重要的组件啊，即使是最轻微的中断也可能会对用户的生产环境产生重大影响。怎样才能使成员变更的操作更安全呢？相对于其他方面来说，leader 选举对 etcd 集群的可用性有着至关重要的影响：有没有办法在集群成员变更的时候不改变集群的 quorum 大小？能否让新加入的节点处于备用的空闲状态，缓慢接收 leader 的 <code>replication message</code>，直到与 leader 保持同步？新加入的节点如果配置错误，有没有办法能让其回退？或者有没有更安全的办法来完成集群成员变更的操作（新加入节点配置错误不会导致集群的容错能力下降）？集群管理员新加入节点时需要关心网络协议吗？无论节点的位置在哪，无论是否发生网络隔离，有没有办法让用来加入新节点的 API 都可以正常工作？</p>
+
+<h2 id="span-id-inline-toc-3-span-引入-raft-learner-角色"><span id="inline-toc">3.</span> 引入 Raft Learner 角色</h2>
+
+<hr />
+
+<p>为了解决上一节提到的加入新节点带来的容错能力下降的问题，<a href="https://ramcloud.stanford.edu/~ongaro/thesis.pdf" target="_blank">rfat 4.2.1 论文</a> 中介绍了一种新的节点角色：<code>Learner</code>。以该角色加入集群的节点不参与投票选举，近接收 leader 的 <code>replication message</code>，直到与 leader 保持同步为止。</p>
+
+<h3 id="v3-4-中的新特性">v3.4 中的新特性</h3>
+
+<p>集群管理员向集群中添加新节点时要尽可能减少不必要的操作项。通过 <code>member add --learner</code> 命令可以向 etcd 集群中添加 learner 节点，不参加投票，只接收 <code>replication message</code>。</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzorokcbh2j30jd0f6tb0.jpg" alt="" /></p>
+
+<p>当 <code>Learner</code> 节点与 leader 保持同步之后，可以通过 <code>member promote</code> 来将该节点的状态提升为 follower，然后将其计入 quorum 的大小之中。</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzors6d1kdj30jp09ymyw.jpg" alt="" /></p>
+
+<p>leader 会验证 <code>promote</code> 请求来确保其操作的安全性。只有当 learner 的 log 数据与 leader 保持一致后，learner 才能被提升为 follower 节点。</p>
+
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fzorvscsllj30j109475m.jpg" alt="" /></p>
+
+<p>Learner 被提升为 follower 之前会一直被当成备用节点，且 leader 节点不能被转换为 learner 节点。learner 节点也不会接受客户端的读写操作，这就意味着 learner 不需要向 leader 发送 <code>Read Index</code> 请求。这种限制简化了 etcd v3.4 中 learner 的实现方式。</p>
+
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fzos29ubiyj30j409a401.jpg" alt="" /></p>
+
+<p>除此之外，etcd 还限制了集群中 <code>Learner</code> 节点数量的上限，以避免大量的 <code>replication message</code> 使 leader 过载。Learner 节点自身不能改变自己的状态，etcd 提供了 learner 状态检测和安全性检测，集群管理员必须自己决定要不要改变 learner 的状态。</p>
+
+<h3 id="v3-5-中的新特性">v3.5 中的新特性</h3>
 
 <ul>
-<li>偶数个节点集群不可用风险更高，表现在选主过程中，有较大概率获得等额选票，从而触发下一轮选举。</li>
-<li>偶数个节点集群在某些网络分割的场景下无法正常工作。试想，当网络分割发生后，将集群节点对半分割开。此时集群将无法工作。按照 raft 协议，此时集群写操作无法使得大多数节点同意，从而导致写失败，集群无法正常工作。</li>
+<li>新加入的节点默认就是 Learner 角色</li>
+<li>当 learner 的 log 数据与 leader 保持一致后，集群会自动将 learner 转换为 follower。从用户的角度来看，你仍然可以使用 <code>member add</code> 命令来加入新节点，但集群会自动帮你把新加入的节点设置为 learner 状态。</li>
+<li>新加入的节点被视为备用节点，一旦集群的可用性受到影响，就会被提升为 follower 状态。</li>
+<li>learner 节点可以被设置为只读状态，被设置成只读状态后就永远不能被提升为 follower 状态。在弱一致性模式中，learner 只接收 leader 发送的数据，并且永远不会响应写操作。在没有共识开销的情况下从本地读取数据会大大减少 leader 的工作量，但向客户端提供的数据可能会过时。在强一致性模式中，learner 会向 leader 发送 <code>read index</code> 以获取最新的数据，但仍然拒绝写请求。</li>
 </ul>
-
-<p>当网络分割后，etcd 集群如何处理的呢?</p>
-
-<ul>
-<li>当集群的 <code>Leader</code> 在多数节点这一侧时，集群仍可以正常工作。少数节点那一侧无法收到 Leader 心跳，也无法完成选举。</li>
-<li>当集群的 Leader 在少数节点这一侧时，集群仍可以正常工作，多数派的节点能够选出新的 Leader, 集群服务正常进行。</li>
-</ul>
-
-<p>当网络分割恢复后，少数派的节点会接受集群 Leader 的日志，直到和其他节点状态一致。</p>
-
-<p>所以综合考虑性能和容错能力，etcd 官方文档推荐的 etcd 集群大小是 3, 5, 7。至于到底选择 3，5 还是 7，根据需要的容错能力而定。</p>
-
-<p>关于节点数和容错能力对应关系，如下表所示：</p>
-
-<table>
-<thead>
-<tr>
-<th align="center">集群大小</th>
-<th align="center">最大容错</th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="center">1</td>
-<td align="center">0</td>
-</tr>
-
-<tr>
-<td align="center">3</td>
-<td align="center">1</td>
-</tr>
-
-<tr>
-<td align="center">4</td>
-<td align="center">1</td>
-</tr>
-
-<tr>
-<td align="center">5</td>
-<td align="center">2</td>
-</tr>
-
-<tr>
-<td align="center">6</td>
-<td align="center">2</td>
-</tr>
-
-<tr>
-<td align="center">7</td>
-<td align="center">3</td>
-</tr>
-
-<tr>
-<td align="center">8</td>
-<td align="center">3</td>
-</tr>
-
-<tr>
-<td align="center">9</td>
-<td align="center">4</td>
-</tr>
-</tbody>
-</table>
                 <br />
                 <div style="text-align:center;color: #ccc;font-size:16px;font-family: cursive;">-----------他日江湖相逢 <i class="fa fa-umbrella"></i> 再当杯酒言欢-----------</div>
                 <script src="https://www.yangcs.net/js/particle.js"></script>
@@ -655,11 +727,11 @@ autocomplete('#aa-search-input',
             <ul class="pager blog-pager">
                 
                 <li class="previous">
-                    <a href="https://www.yangcs.net/posts/nginx-mirror/" data-toggle="tooltip" data-placement="top" title="Nginx 流量镜像使用技巧">&larr; Previous Post</a>
+                    <a href="https://www.yangcs.net/posts/etcd-cluster-number/" data-toggle="tooltip" data-placement="top" title="etcd 集群大小迷思">&larr; Previous Post</a>
                 </li>
                  
                 <li class="next">
-                    <a href="https://www.yangcs.net/posts/etcd-server-learner/" data-toggle="tooltip" data-placement="top" title="通过集群成员变更来看 etcd 的分布式一致性">Next Post &rarr;</a>
+                    <a href="https://www.yangcs.net/posts/linux-circumvent/" data-toggle="tooltip" data-placement="top" title="Linux全局智能分流方案">Next Post &rarr;</a>
                 </li>
                 
             </ul>
@@ -669,6 +741,8 @@ autocomplete('#aa-search-input',
                 <h2>See Also</h2>
                 <ul>
                     
+                    <li><a href="/posts/etcd-cluster-number/">etcd 集群大小迷思</a></li>
+                    
                     <li><a href="/posts/optimizing-kubernetes-resource-allocation-production/">优化生产环境中的 Kubernetes 资源分配</a></li>
                     
                     <li><a href="/posts/kubernetes-design-and-development-explained/">Kubernetes 设计与开发原则</a></li>
@@ -676,8 +750,6 @@ autocomplete('#aa-search-input',
                     <li><a href="/posts/life-of-a-packet-through-istio/">数据包在 Istio 网格中的生命周期</a></li>
                     
                     <li><a href="/posts/conflictingvirtualservicehost/">Istio 中 VirtualService 的注意事项</a></li>
-                    
-                    <li><a href="/posts/migrating-from-nginx-to-envoy/">从 Nginx 迁移到 Envoy Proxy</a></li>
                     
                 </ul>
                 

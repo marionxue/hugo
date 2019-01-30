@@ -6,10 +6,19 @@
     <description>Recent content in Etcd on Ryan Yang</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Wed, 30 Jan 2019 13:13:56 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 30 Jan 2019 18:45:42 +0800</lastBuildDate>
     
 	<atom:link href="https://www.yangcs.net/tags/etcd/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>通过集群成员变更来看 etcd 的分布式一致性</title>
+      <link>https://www.yangcs.net/posts/etcd-server-learner/</link>
+      <pubDate>Wed, 30 Jan 2019 18:45:42 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/etcd-server-learner/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>etcd 集群大小迷思</title>

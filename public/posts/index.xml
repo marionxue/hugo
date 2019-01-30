@@ -21,6 +21,15 @@
     </item>
     
     <item>
+      <title>通过集群成员变更来看 etcd 的分布式一致性</title>
+      <link>https://www.yangcs.net/posts/etcd-server-learner/</link>
+      <pubDate>Wed, 30 Jan 2019 18:45:42 +0800</pubDate>
+      
+      <guid>https://www.yangcs.net/posts/etcd-server-learner/</guid>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
+    </item>
+    
+    <item>
       <title>etcd 集群大小迷思</title>
       <link>https://www.yangcs.net/posts/etcd-cluster-number/</link>
       <pubDate>Wed, 30 Jan 2019 13:13:56 +0800</pubDate>
