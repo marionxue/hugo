@@ -458,7 +458,7 @@ autocomplete('#aa-search-input',
     <section id="datecount">
         <h4 id="date"> Wed Jan 30, 2019</h4>
     </section>
-    <h5 id="wc">3500 Words|Read in about 7 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
+    <h5 id="wc">3600 Words|Read in about 8 Min|本文总阅读量<span id="busuanzi_value_page_pv"></span>次</h5>
     <h5 id="tags">Tags: 
         
         <a href="https://www.yangcs.net/tags/etcd/">etcd</a> &nbsp;
@@ -561,6 +561,11 @@ receives msgAppResp(rej=true)
 <li>限制 message 的 max size。这个值是可以通过相关参数进行限定的，限定后可以降低探测 follower 接收速度的成本；</li>
 <li>当 follower 处于 <code>replicate</code> 状态时候，限定每次批量发送消息的数目。leader 在网络层之上有一个发送 buffer，通过类似于 tcp 的发送窗口的算法动态调整 buffer 的大小，以防止 leader 由于发包过快导致 follower 大量地丢包，提高发送成功率。</li>
 </ol>
+
+<div class="notices note" ><p><code>snapshot</code>，故名思议，是某个时间节点上系统状态的一个快照，保存的是此刻系统状态数据，以便于让用户可以恢复到系统任意时刻的状态。
+etcd-raft 中的 snapshot 代表了应用的状态数据，而执行 snapshot 的动作也就是将应用状态数据持久化存储，这样，在该 snapshot 之前的所有日志便成为无效数据，可以删除。</p>
+</div>
+
 
 <h2 id="span-id-inline-toc-2-span-集群成员变更"><span id="inline-toc">2.</span> 集群成员变更</h2>
 

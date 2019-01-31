@@ -78,6 +78,11 @@ leader 与 follower 之间进行数据同步的时候，可以通过下面两个
 1. 限制 message 的 max size。这个值是可以通过相关参数进行限定的，限定后可以降低探测 follower 接收速度的成本；
 2. 当 follower 处于 `replicate` 状态时候，限定每次批量发送消息的数目。leader 在网络层之上有一个发送 buffer，通过类似于 tcp 的发送窗口的算法动态调整 buffer 的大小，以防止 leader 由于发包过快导致 follower 大量地丢包，提高发送成功率。
 
+{{% notice note %}}
+<code>snapshot</code>，故名思议，是某个时间节点上系统状态的一个快照，保存的是此刻系统状态数据，以便于让用户可以恢复到系统任意时刻的状态。
+etcd-raft 中的 snapshot 代表了应用的状态数据，而执行 snapshot 的动作也就是将应用状态数据持久化存储，这样，在该 snapshot 之前的所有日志便成为无效数据，可以删除。
+{{% /notice %}}
+
 ## <span id="inline-toc">2.</span> 集群成员变更
 
 ----
