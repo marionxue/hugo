@@ -436,7 +436,7 @@
         "objectID": "posts/etcd-server-learner",
         "title": "通过集群成员变更来看 etcd 的分布式一致性",
         "subtitle": "etcd 新增角色 learner 介绍",
-        "description": "本文带你了解 etcd 内部的 raft 实现，并带你通过集群成员变更来看 etcd 的分布式一致性。",
+        "description": "本文将会带你发现 etcd 集群成员变更过程中遇到的问题，并告诉你如何通过引入 Learner 节点来解决这个问题",
         "date": "2019-01-30T10:45:42.000Z",
         "draft": false,
         "toc": true,
