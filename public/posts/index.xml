@@ -17,7 +17,7 @@
       <pubDate>Tue, 23 Jan 2018 08:26:58 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/linux-circumvent/</guid>
-      <description>Github 地址：Linux 和 MacOS 设备智能分流方案 本来我是决定不再写这样的文章了的。但是呢，最近连续配置了两次 ArchLinux，在配置这种东西的时候连</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Wed, 30 Jan 2019 18:45:42 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/etcd-server-learner/</guid>
-      <description>集群成员变更一直是 etcd 最棘手的问题之一，在变更过程中会遇到各种各样的挑战，我们稍后一一来看。为了把问题描述清楚，首先需要了解 etcd 内部的 raft 实现。 1.</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -35,7 +35,7 @@
       <pubDate>Wed, 30 Jan 2019 13:13:56 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/etcd-cluster-number/</guid>
-      <description>etcd 使用 raft 协议保证各个节点之间的状态一致。根据 raft 算法原理，节点数目越多，会降低集群的写性能。这是因为每一次写操作，需要集群中大多数节点将日志落</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -44,7 +44,7 @@
       <pubDate>Mon, 28 Jan 2019 16:39:48 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/nginx-mirror/</guid>
-      <description>原文链接：nginx mirroring tips and tricks 最近我在研究 Nginx 1.13.4 最新的 mirror 模块，利用 mirror 模块，你可以将线上实时流量拷贝至其他环境同时不影响源站请求的响应，因为 Nginx 会丢</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -53,7 +53,7 @@
       <pubDate>Fri, 28 Dec 2018 17:23:43 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/circuit_breaking-and-outlier-detection-in-istio/</guid>
-      <description>在微服务领域，各个服务需要在网络上执行大量的调用。而网络是很脆弱的，如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -62,7 +62,7 @@
       <pubDate>Tue, 18 Dec 2018 16:15:12 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/optimizing-kubernetes-resource-allocation-production/</guid>
-      <description>原文链接：Optimizing Kubernetes resource allocation in production 我和 Kubernetes 的初次接触就涉及到将应用容器化并部署到生产环境集群中，当时我的工作重点是把 buffer 吞吐量最高（低风险</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -71,7 +71,7 @@
       <pubDate>Mon, 17 Dec 2018 16:05:24 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/life-of-a-packet-through-istio/</guid>
-      <description>众所周知，当我们讨论 Istio 时，性能并不是它最大的痛点，最大的痛点是有时候会出现一些莫名其妙的问题，而我们根本不知道问题出在哪里，也无从下手，在很</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -80,7 +80,7 @@
       <pubDate>Sat, 15 Dec 2018 18:28:30 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/conflictingvirtualservicehost/</guid>
-      <description>Istio 要求集群中 VirtualService 定义的所有目标主机都是唯一的。当使用目标主机的短名称时（不包含 &#39;.&#39; 的目标主机，例如使用 reviews，而不是 reviews.de</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -89,7 +89,7 @@
       <pubDate>Fri, 14 Dec 2018 17:39:06 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/migrating-from-nginx-to-envoy/</guid>
-      <description>原文链接：Migrating from NGINX to Envoy Proxy 本文将会手把手教你如何从 Nginx 迁移到 Envoy Proxy，你可以将任何以前的经验和对 Nginx 的理解直接应用于 Envoy Proxy 中。 主要</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -98,7 +98,7 @@
       <pubDate>Tue, 04 Dec 2018 17:35:59 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/kubernetes-design-and-development-explained/</guid>
-      <description>原文地址：Kubernetes Design and Development Explained 本文是 8 月 29 日至 31 日在温哥华举行的开源峰会上作者演讲内容的一部分，详细内容请查看下文。 Kubernetes 正迅速成为在分</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -107,7 +107,7 @@
       <pubDate>Fri, 30 Nov 2018 17:45:57 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/how-to-deal-with-increasing-of-cpu-usage/</guid>
-      <description>本文经作者许可，转载自 极客时间 你好，我是倪朋飞。 通过前两节对平均负载和 CPU 上下文切换的学习，我相信你对 CPU 的性能已经有了初步了解。不过我还是想问</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -116,7 +116,7 @@
       <pubDate>Wed, 28 Nov 2018 18:19:56 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/egress-gateway-2/</guid>
-      <description>上一节我演示了如何通过 Egress Gateway 引导 Istio 的出口 HTTP 流量，但到 443 端口的 HTTPS 流量没有通过 Egress Gateway，而是直接转到 edition.cnn.com 。Istio 出口流量的 TLS 演示了如何在</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -125,7 +125,7 @@
       <pubDate>Wed, 28 Nov 2018 11:43:54 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/</guid>
-      <description>随着越来越多的企业开始大量使用 Kubernetes，持续交付越来越趋向于标准化，软件版本的更新也越来越趋向于自动化。但你有没有想过，如果新发</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -134,7 +134,7 @@
       <pubDate>Mon, 26 Nov 2018 14:43:51 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/egress-gateway-1/</guid>
-      <description>在上一篇文章 Istio 出口流量的 TLS 中，我演示了如何在网格内部直接通过 HTTP 协议访问外部加密服务，并揭示了其背后 Envoy 的配置逻辑。 本文将会通过 Egress Gateway 来引导 Istio 的出</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -143,7 +143,7 @@
       <pubDate>Fri, 23 Nov 2018 14:18:48 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/egress-tcp/</guid>
-      <description>原文地址：使用外部 TCP 服务 英文作者：VADIM EISENBERG 修订：杨传胜 本篇博客于 2018 年 7 月 23 日更新。新版本使用了 Istio 1.0，并使用了新的 v1alpha3 流量管理 API。如</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -152,7 +152,7 @@
       <pubDate>Wed, 21 Nov 2018 17:09:25 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/egress-https/</guid>
-      <description>原文地址：使用外部 Web 服务 英文作者：VADIM EISENBERG 修订：杨传胜 此博客文章于 2018 年 8 月 9 日更新。新版本使用了 Istio 1.0，并使用了新的 v1alpha3 流量管理 API。</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -161,7 +161,7 @@
       <pubDate>Mon, 19 Nov 2018 13:42:03 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/kubernetes-api-server-part-1/</guid>
-      <description>原文地址：Kubernetes API Server, Part I 作者：Andrew Chen，Dominik Tornow 译者：杨传胜 概念架构 Kubernetes 是一个用于在一组节点（通常称之为集群</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -170,7 +170,7 @@
       <pubDate>Fri, 16 Nov 2018 15:56:49 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/egress-tls-origination/</guid>
-      <description>本文主要内容来自 Istio 官方文档，并对其进行了大量扩展和补充。 控制出口流量任务演示了如何从网格内部的应用程序访问 Kubernetes 集群外部的 HTTP 和 HTTPS 服务, 如该主题中</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -179,7 +179,7 @@
       <pubDate>Tue, 13 Nov 2018 19:02:55 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-2/</guid>
-      <description>转载自：现代网络负载均衡与代理（下） 本文的上半卷已经对负载均衡技术的概念、功能和拓扑结构进行了详尽的介绍，接下来将主要介绍各种负载均衡技术的</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -188,7 +188,7 @@
       <pubDate>Tue, 13 Nov 2018 13:26:17 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/</guid>
-      <description>转载自：现代网络负载均衡与代理（上） 最近我注意到，关于当代网络负载均衡和代理的入门教材非常匮乏。我心想：为什么会这样？负载均衡是构建可靠的分</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -197,7 +197,7 @@
       <pubDate>Mon, 12 Nov 2018 15:30:35 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/hugo-add-busuanzi/</guid>
-      <description>不蒜子 是 Bruce 开发的一款轻量级的网页计数器，它的口号是（非官方）： 轻量级，但好用。 如果你想尝试不蒜子计数器，可以查阅 不蒜子计数器的介绍文档。 不蒜</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -206,7 +206,7 @@
       <pubDate>Sun, 11 Nov 2018 18:10:14 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/service-mesh-performance-testing/</guid>
-      <description>原文地址：Understanding How the Service Mesh Fits with Performance Testing 作者：Bob Reselman 译者：杨传胜 现代 IT 企业的数字基础设施极其复杂，通过手动配置防火墙来保护一台</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -215,7 +215,7 @@
       <pubDate>Sat, 10 Nov 2018 13:32:30 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/understanding-resource-limits-in-kubernetes-cpu-time/</guid>
-      <description>原文地址：Understanding resource limits in kubernetes: cpu time 作者：Mark Betz 译者：杨传胜 在关于 Kubernetes 资源限制的系列文章的第一篇文章中，我讨论了如何使用 ResourceRequirements 对象</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -224,7 +224,7 @@
       <pubDate>Wed, 07 Nov 2018 01:22:31 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/hugo-social-share-plugin/</guid>
-      <description>很多站长开发网站时为了推广页面，或者获得更多的回访和流量，会在网站页面添加 “分享到” 插件，用来发布到某些社交网站。因此社会化分享是很多网站常</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -233,7 +233,7 @@
       <pubDate>Thu, 01 Nov 2018 17:55:47 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/</guid>
-      <description>原文地址：https://medium.com/dm03514-tech-blog/sre-resiliency-bolt-on-sidec</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -242,7 +242,7 @@
       <pubDate>Thu, 25 Oct 2018 16:34:20 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/extending-the-envoy-admin-interface/</guid>
-      <description>原文地址：Extending the Envoy Admin Interface 译者：杨传胜 Envoy 是一个动态可配置的高性能现代化代理工具，现在几乎所有的 IT 潮男都用它来构建服务网格。Envo</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -251,7 +251,7 @@
       <pubDate>Thu, 11 Oct 2018 15:59:54 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/</guid>
-      <description>原文链接：Istio, mTLS, debugging a 503 error 译者：杨传胜 大家好，本文我将与你们分享我在 Istio 官方文档中尝试熔断教程时遇到的问题。我会记录下解决此问题的所有步</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -260,7 +260,7 @@
       <pubDate>Wed, 10 Oct 2018 22:23:51 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/envoy-xds-protocol/</guid>
-      <description>转载自：Envoy 中的 xDS REST 和 gRPC 协议详解 原文地址：https://github.com/envoyproxy/data-plane-api/b</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -269,7 +269,7 @@
       <pubDate>Tue, 09 Oct 2018 20:00:17 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/istio-traffic-management-impl-intro/</guid>
-      <description>本文转载自 赵化冰的博客。 前言 Istio 作为一个 service mesh 开源项目,其中最重要的功能就是对网格中微服务之间的流量进行管理,包括服务发现,请求路由和服务间的可</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -278,7 +278,7 @@
       <pubDate>Fri, 28 Sep 2018 16:38:15 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</guid>
-      <description>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 L7 层实现高效流畅的入口流量管理。自从第一批 Kubernetes Ingress Controller 开发完成以来，Envoy（由 Matt Klein</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -287,7 +287,7 @@
       <pubDate>Wed, 26 Sep 2018 17:43:00 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/</guid>
-      <description>我的博客之前是使用 Nginx 来反代的，由于 Nginx 性能优异，目前有很多国内网站采用 Nginx 作为 Web 服务器，而且参考文档比较丰富，无论是对于其部署，配置还是调优都更</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -296,7 +296,7 @@
       <pubDate>Sat, 22 Sep 2018 11:17:11 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/kubernetes-extensible-admission/</guid>
-      <description>1. 什么是准入控制 准入控制（Admission Controller）是 Kubernetes API Server 用于拦截请求的一种手段。Admission 可以做到对请求的资源对象</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -305,7 +305,7 @@
       <pubDate>Fri, 21 Sep 2018 13:10:18 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/increasing-security-of-istio-deployments/</guid>
-      <description>原文链接：Increasing Security of Istio Deployments by Removing the Need for Privileged Containers 随着 1.0 版本的发布，Istio 正在为开发云原生应用并希望采用服务网格解决方案的公司准备黄金</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -314,7 +314,7 @@
       <pubDate>Mon, 17 Sep 2018 13:14:55 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/expose-gateway-of-istio/</guid>
-      <description>在之前的文章 Istio 服务网格中的网关 中，我已经介绍了简单的暴露 Ingress Gateway 的方案。当时的方案只是用于临时测试，不适合在大规模场景下使用，本文将探讨更加优化</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -323,7 +323,7 @@
       <pubDate>Sat, 08 Sep 2018 12:32:27 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-8/</guid>
-      <description>这是《干货与湿货分享》系列的第8期，主要记录过去一周我所见到的听到的值得分享的东西。 近年来，传统计算机发展中已经逐渐遭遇功耗墙、通信墙等一系</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -332,7 +332,7 @@
       <pubDate>Sat, 01 Sep 2018 17:49:18 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-7/</guid>
-      <description>这是《干货与湿货分享》系列的第7期，主要记录过去一周我所见到的听到的值得分享的东西。 现在人工智能这么火，一个初创企业如果不加上点相关内容都不</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -341,7 +341,7 @@
       <pubDate>Mon, 27 Aug 2018 18:11:52 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/kubernetes-dns/</guid>
-      <description>DNS 是 Kubernetes 的核心功能之一，Kubernetes 通过 kube-dns 或 CoreDNS 作为集群的必备扩展来提供命名服务，通过 DNS 扩展，每一个 Service 都会产生一个独一无二的 FQDN（F</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -350,7 +350,7 @@
       <pubDate>Sat, 25 Aug 2018 14:33:39 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-6/</guid>
-      <description>这是《干货与湿货分享》系列的第六期，主要记录过去一周我所见到的听到的值得分享的东西。 科技让生活更美好，似乎是一句不可否认的口号，但在网络审查</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -359,7 +359,7 @@
       <pubDate>Sat, 18 Aug 2018 19:09:02 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-5/</guid>
-      <description>这是《干货与湿货分享》系列的第五期，主要记录过去一周我所见到的听到的值得分享的东西。 新闻 1. “国产”红芯浏览器被指造假 8 月 16 日，自称“打破美国</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -368,7 +368,7 @@
       <pubDate>Thu, 16 Aug 2018 13:40:27 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/control-egress-traffic/</guid>
-      <description>本文主要内容来自 Istio 官方文档，并对其进行了大量扩展和补充。 缺省情况下，Istio 服务网格内的 Pod，由于其 iptables 将所有外发流量都透明的转发给了 Si</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -377,7 +377,7 @@
       <pubDate>Mon, 13 Aug 2018 16:30:30 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/where-is-the-request-2/</guid>
-      <description>书接前文，上文我们通过跟踪集群外通过 ingressgateway 发起的请求来探寻流量在 Istio 服务网格之间的流动方向，先部署 bookinfo 示例应用，然后创建一个监听在 ingressgateway 上的 GateWay 和 Virt</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -386,7 +386,7 @@
       <pubDate>Sat, 11 Aug 2018 18:17:12 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-4/</guid>
-      <description>这是《干货与湿货分享》系列的第四期，主要记录过去一周我所见到的听到的值得分享的东西。 新闻 1. 摩拜女员工举报领导性骚扰 8月9日，网络上出现一张截</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -395,7 +395,7 @@
       <pubDate>Wed, 08 Aug 2018 16:56:31 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/where-is-the-request-1/</guid>
-      <description>通过前几篇文章的学习与实践，我们对 Gateway、VirtualService 和 Destinationrule 的概念和原理有了初步的认知，本篇将对这几个对象资源的配置文</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -404,7 +404,7 @@
       <pubDate>Fri, 03 Aug 2018 17:34:19 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/kubernetes-resource-management/</guid>
-      <description>本文转载自 Cizixs 的博客。 1. 什么是资源？ 在 kubernetes 中，有两个基础但是非常重要的概念：node 和 pod。node 翻译成节点，是对集群资源的抽象；pod 是对</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -413,7 +413,7 @@
       <pubDate>Fri, 03 Aug 2018 15:29:37 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/vistio-visualize-your-istio-mesh-using-netflixs-vizceral/</guid>
-      <description>本文转载自 Jimmy Song 的博客，并且有很多改动。 Vizceral 是 Netflix 发布的一个开源项目，用于近乎实时地监控应用程序和集群之间的网络流量。Vistio 是使用 Vizceral 对 Istio 和网</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -422,7 +422,7 @@
       <pubDate>Thu, 02 Aug 2018 13:29:08 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/istio-ingress/</guid>
-      <description>在一个典型的网格中，通常有一个或多个用于终结外部 TLS 链接，将流量引入网格的负载均衡器（我们称之为 gateway）。 然后流量通过边车网关（sid</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -431,7 +431,7 @@
       <pubDate>Wed, 01 Aug 2018 20:59:11 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/istio-traffic-management/</guid>
-      <description>Istio 从 0.8 版本开始出现了一个新的 API 组：networking.istio.io/v1alpha3，应该会替代现有的 config.istio.io/v1alpha2 API。新的 API 不管是结构上还是</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -440,7 +440,7 @@
       <pubDate>Wed, 01 Aug 2018 15:33:46 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/istio-1.0-deploy/</guid>
-      <description>北京时间 2018 年 8 月 1 日（建军节）凌晨 0 点，Istio 宣布推出 1.0 正式版本，并表示已可用于生产环境。这距离最初的 0.1 版本发布已过去一年多的时间。这个</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -449,7 +449,7 @@
       <pubDate>Sun, 29 Jul 2018 09:38:28 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-3/</guid>
-      <description>这是《干货与湿货分享》系列的第三期，主要记录过去一周我所见到的听到的值得分享的东西。（由于本周六事情比较多，所以推迟到了周日发布） 新闻 1. 单身</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -458,7 +458,7 @@
       <pubDate>Sat, 21 Jul 2018 11:01:26 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-2/</guid>
-      <description>这是《干货与湿货分享》系列的第二期，主要记录过去一周我所见到的听到的值得分享的东西。 新闻 1. 谷歌推出首款微信小程序“猜画小歌” 为了让每个人都有</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -467,7 +467,7 @@
       <pubDate>Sat, 14 Jul 2018 05:31:48 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/weekly-1/</guid>
-      <description>人类社会未来几十年肯定会发生天翻地覆的变化，自从我坚信这一点之后，我就把所有的精力都投在了技术领域。所有的变化从根本上来说都是技术的变革引起</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -476,7 +476,7 @@
       <pubDate>Fri, 13 Jul 2018 09:22:49 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/circuit-breaking/</guid>
-      <description>在微服务领域，各个服务之间经常会相互调用。如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而造成整个系统不可用，通常把</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -485,7 +485,7 @@
       <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/routing-with-a-control-plane/</guid>
-      <description>当微服务集群规模非常庞大时，控制平面包含了大量的 Envoy 配置项和基础设施状态，这时最好将数据平面与控制平面分离。控制平面最主要的功能包括自动重试和</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -494,7 +494,7 @@
       <pubDate>Wed, 04 Jul 2018 10:12:43 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/</guid>
-      <description>在微服务中使用 Envoy，需要明确两个核心概念：数据平面和控制平面。 数据平面 由一组 Envoy 实例组成，用来调解和控制微服务之间的所有网络通信。 控制平</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -503,7 +503,7 @@
       <pubDate>Tue, 03 Jul 2018 06:43:33 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</guid>
-      <description>如果你准备将服务暴露在互联网上，最好启用 SSL/TLS 加密协议。当使用 Envoy 作为前端代理或者服务网格代理时，可以通过 SSL/TLS 协议来加密客户端和代理之间的所有通信流</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -512,7 +512,7 @@
       <pubDate>Mon, 02 Jul 2018 05:37:37 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/incremental-deploys/</guid>
-      <description>微服务最常见的工作流程之一就是版本更新。不同于基础架构更新，通过流量管理可以优雅地实现微服务的版本更新。当新发布的版本有缺陷时，这种方法就可</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -521,7 +521,7 @@
       <pubDate>Fri, 29 Jun 2018 09:57:33 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/routing-basics/</guid>
-      <description>本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：在你的笔记本上运行 Envoy，现在就可以更深入地了解如何在静态文件中配置路由（R</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -530,7 +530,7 @@
       <pubDate>Thu, 28 Jun 2018 08:54:18 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/run-envoy-on-your-laptop/</guid>
-      <description>1. 前言 过去一年中，Kubernetes 已经赢得了容器编排大战，如果说 2017 年是 Kubernetes 的元年，那么 2018 将会是 Service Mesh（服务网格） 的元年，在未来两年中，</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -539,7 +539,7 @@
       <pubDate>Fri, 22 Jun 2018 08:22:07 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/envoy-docker-shim/</guid>
-      <description>在过去一年中，服务网格技术的崛起引发了吃瓜群众对 Istio 的持续关注，而 Istio 的核心组件 Envoy 是一款由 Lyft 开源的，使用 C++ 编写的 L7 代理和通信总线，目前是 CNCF 旗下的</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -548,7 +548,7 @@
       <pubDate>Tue, 19 Jun 2018 09:02:52 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/custom-metrics-hpa/</guid>
-      <description>从 Kubernetes 1.8 开始，资源使用指标（如容器 CPU 和内存使用率）可以通过 Metrics API 在 Kubernetes 中获取。 这些指标可以直接被用户访问(例如通过使用 kubectl top 命令)，或由集群中的控制</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -557,7 +557,7 @@
       <pubDate>Tue, 19 Jun 2018 06:15:06 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/api-aggregation/</guid>
-      <description>Aggregated（聚合的）API server 是为了将原来的 API server 这个巨石（monolithic）应用给拆分开，为了方便用户开发自己的 API server 集成进来，而</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -566,7 +566,7 @@
       <pubDate>Fri, 15 Jun 2018 14:02:11 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/kubernetes-fixing-delayed-service-endpoint-updates/</guid>
-      <description>几个月前，我在更新 Kubernetes 集群中的 Deployment 时发现了一个很奇怪的连接超时现象，在更新 Deployment 之后的 30 秒到两分钟左右，所有与以该 Deployment 作为服务后端的 Service 的连接都会超时或</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -575,7 +575,7 @@
       <pubDate>Mon, 11 Jun 2018 04:35:48 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/kubernetes-fucking-trick/</guid>
-      <description>Kubernetes 作为云原生时代的“操作系统”，熟悉和使用它是每名用户（User）的必备技能。如果你正在 Kubernetes 上工作，你需要正确的工具和技巧来确保 Kubernetes 集群的高可用</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -584,7 +584,7 @@
       <pubDate>Fri, 01 Jun 2018 11:36:45 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/what-happens-when-k8s/</guid>
-      <description>想象一下，如果我想将 nginx 部署到 Kubernetes 集群，我可能会在终端中输入类似这样的命令： $ kubectl run --image=nginx --replicas=3 然后回车。几秒钟后，你就会看到三个 nginx pod 分布在所有的工作节点</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -593,7 +593,7 @@
       <pubDate>Wed, 23 May 2018 10:23:29 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/introduce-kubernetes-descheduler/</guid>
-      <description>kube-scheduler 是 Kubernetes 中负责调度的组件，它本身的调度功能已经很强大了。但由于 Kubernetes 集群非常活跃，它的状态会随时间而改变，由于各种原因，你可能需要将已经运行的 Pod 移</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -602,7 +602,7 @@
       <pubDate>Thu, 03 May 2018 12:08:01 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/pods-life/</guid>
-      <description>本文我们将从实践者的角度仔细研究整个pod生命周期，包括如何影响启动和关闭行为，并通过实践来理解对应用程序健康状况的检查。 1. Pod 的生命周期 Pod phase</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -611,7 +611,7 @@
       <pubDate>Fri, 20 Apr 2018 04:36:40 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/kube-router/</guid>
-      <description>Kube-router 是一个挺有想法的项目，兼备了 calico 和 kube-proxy 的功能，是基于 Kubernetes 网络设计的一个集负载均衡器、防火墙和容器网络的综合方案。 1. 体系架构 Kube-router 是围绕 观察者 和 控制器</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -620,7 +620,7 @@
       <pubDate>Wed, 18 Apr 2018 11:18:06 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/lvs-persistent-connection/</guid>
-      <description>1. 前言 在实际生产环境中，往往需要根据业务应用场景来设置 lvs 的会话超时时间以及防止 session 连接丢失的问题，如在业务支付环节，如若 session 丢失会导致重复扣款问</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -629,7 +629,7 @@
       <pubDate>Tue, 03 Apr 2018 08:11:38 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/cri-o/</guid>
-      <description>上一篇 https://www.yangcs.net/posts/container-runtime/ 介绍了什么是容器运行时，并列出了不同的容器运行时。本篇重点介绍其中的一种容器运行时 CRI-O。 1. CRI-O 的诞生 当容器运行时（Contain</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -638,7 +638,7 @@
       <pubDate>Tue, 03 Apr 2018 06:50:43 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/container-runtime/</guid>
-      <description>容器运行时（Container Runtime）是 Kubernetes 最重要的组件之一，负责真正管理镜像和容器的生命周期。Kubelet 通过 Container Runtime Interface (CRI) 与容器运行时</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -647,7 +647,7 @@
       <pubDate>Mon, 02 Apr 2018 05:12:18 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/how-manage-image/</guid>
-      <description>docker 里面可以通过 docker pull、docker build、docker commit、docker load、docker import 等方式得到一个 image，得</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -656,7 +656,7 @@
       <pubDate>Thu, 22 Mar 2018 09:36:27 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/federation/</guid>
-      <description>在云计算环境中，服务的作用距离范围从近到远一般可以有： 同主机（Host，Node） 跨主机同可用区（Available Zone） 跨可用区同地区</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -665,7 +665,7 @@
       <pubDate>Sun, 11 Feb 2018 10:40:33 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/k8s-network-expand/</guid>
-      <description>1. Kubernetes 中服务暴露的方式 k8s 的服务暴露分为以下几种情况： hostNetwork hostPort NodePort LoadBalancer Ingress 说是暴露 Pod 其实跟暴露 Service 是一回事，因为 Pod 就是 Service 的 backend。 HostNetwork 这是一种直接定义</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -674,7 +674,7 @@
       <pubDate>Thu, 01 Feb 2018 11:03:49 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/calico-rr/</guid>
-      <description>1. 名词解释 endpoint：接入到网络中的设备称为 endpoint ❤️ AS：网络自治系统，一个完全自治的网络，通过 BGP 协议与其它 AS 交换路由信息 ibgp：AS</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -683,7 +683,7 @@
       <pubDate>Mon, 22 Jan 2018 16:17:11 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/use-devicemapper/</guid>
-      <description>1. 准备条件 devicemapper 存储驱动是 RHEL, CentOS 和 Oracle Linux 系统上唯一一个支持 Docker EE 和 Commercially Supported Docker Engine (CS-Engine) 的存储驱动，具体参考 Product compatibility matrix. devicemapper 在 CentOS, Fedora, Ubuntu 和 Debian 上也支持 Docker CE。 如果你更改了 Docker 的存</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -692,7 +692,7 @@
       <pubDate>Mon, 22 Jan 2018 16:00:22 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/thin-provisioning/</guid>
-      <description>1. Thin Provisioning Snapshot 演示 上一篇我们介绍了 Device Mapper 框架的技术原理及其核心概念，下面，我们用一系列的命令来演示一下 Device Mapper 的 Thin Provisioning Snapshot 是怎么玩的。 首先，我们需要先建两个</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -701,7 +701,7 @@
       <pubDate>Sun, 21 Jan 2018 09:28:41 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/devicemapper-theory/</guid>
-      <description>1. Device Mapper 简介 Device Mapper 是 linux 的内核用来将块设备映射到虚拟块设备的 framework，它支持许多高级卷管理技术。docker 的 devicemapper 存储驱动程序利用此框架的</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -710,7 +710,7 @@
       <pubDate>Thu, 27 Jul 2017 18:38:59 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/python3-iterator-and-generator/</guid>
-      <description>1. 迭代器 迭代器是访问集合元素的一种方式，迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问结束。迭代器只能往前不会后退，不过这也没什</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -728,7 +728,7 @@
       <pubDate>Mon, 23 Jan 2017 11:42:11 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/linux-gns3-start/</guid>
-      <description>1. GNS3 简介 GNS3 是一款具有图形化界面可以运行在多平台（包括 Windows, Linux, and MacOS 等）的网络虚拟软件。Cisco 网络设备管理员或是想要通过 CCNA,CCNP,CCIE 等 Cisco 认证考试的相关人士</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -737,7 +737,7 @@
       <pubDate>Thu, 05 Jan 2017 10:19:18 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/zabbix-api-introduce-and-use/</guid>
-      <description>1. API简介 Zabbix API 开始扮演着越来越重要的角色，尤其是在集成第三方软件和自动化日常任务时。很难想象管理数千台服务器而没有自动化是多么的困难。 Zabbix API</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -746,7 +746,7 @@
       <pubDate>Tue, 03 Jan 2017 08:51:06 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/python3%E7%B3%BB%E5%88%97%E4%B9%8B%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99/</guid>
-      <description>1. 文件与文件路径 用到的模块：os 1.1 当前工作目录 在交互模式下输入以下代码： &amp;gt;&amp;gt;&amp;gt; import os &amp;gt;&amp;gt;&amp;gt; os.getcwd() &#39;/tmp&#39; &amp;gt;&amp;gt;&amp;gt; os.chdir(&#39;/home/yang/test&#39;) &amp;gt;&amp;gt;&amp;gt; os.getcwd() &#39;/home/yang/test&#39; 如果要更改的当前目录不存在，Pyhton就会显</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -755,7 +755,7 @@
       <pubDate>Sat, 03 Dec 2016 23:59:48 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/%E5%90%91%E9%87%8F%E7%9A%84%E5%8F%89%E4%B9%98%E4%B8%8E%E8%A1%8C%E5%88%97%E5%BC%8F/</guid>
-      <description>为了循序渐进，先从二维开始讲起，然后过渡到三维 1. 二维空间 我们从一个五边形的面积开始说起 比如我们要求这个正五边形的面积，该怎样用向量求呢？ 先简</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -764,7 +764,7 @@
       <pubDate>Sat, 04 Jun 2016 17:18:59 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/%E5%AD%90%E7%A9%BA%E9%97%B4%E6%8A%95%E5%BD%B1/</guid>
-      <description>为了弄明白子空间投影是怎么一回事，我们遵循从低维到高维的规律，先从二维开始讲起。 1. 二维空间 &amp;emsp;&amp;emsp;如下图所示（我随手画的，不</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -773,7 +773,7 @@
       <pubDate>Sat, 04 Jun 2016 13:28:25 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/%E5%8D%81%E5%88%86%E9%92%9F%E5%91%8A%E8%AF%89%E4%BD%A0%E4%BB%80%E4%B9%88%E6%98%AF%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95/</guid>
-      <description>&amp;emsp;&amp;emsp;曾经看过国内各种关于讲解最小二乘法的教科书，但都是一大堆枯燥的推导公式，看起来很高深的样子，其实根本不知道它在说些什</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

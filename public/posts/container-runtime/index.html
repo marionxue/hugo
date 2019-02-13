@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.49" />
   <link rel="canonical" href="https://www.yangcs.net/posts/container-runtime/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
@@ -492,7 +492,9 @@ autocomplete('#aa-search-input',
 </aside>
 
 
-                <p>容器运行时（Container Runtime）是 Kubernetes 最重要的组件之一，负责真正管理镜像和容器的生命周期。Kubelet 通过 <code>Container Runtime Interface (CRI)</code> 与容器运行时交互，以管理镜像和容器。</p>
+                <p></p>
+
+<p>容器运行时（Container Runtime）是 Kubernetes 最重要的组件之一，负责真正管理镜像和容器的生命周期。Kubelet 通过 <code>Container Runtime Interface (CRI)</code> 与容器运行时交互，以管理镜像和容器。</p>
 
 <p>容器运行时接口(<code>Container Runtime Interface (CRI)</code>) 是 Kubelet 1.5 和 kubelet 1.6 中主要负责的一块项目，它重新定义了 Kubelet Container Runtime API，将原来完全面向 Pod 级别的 API 拆分成面向 <code>Sandbox</code> 和 <code>Container</code> 的 API，并分离镜像管理和容器引擎到不同的服务。</p>
 
@@ -829,7 +831,7 @@ autocomplete('#aa-search-input',
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.54.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           &nbsp;&bull;&nbsp;[<a href="true"></a>]
           <center><section class="credits theme-by text-muted">
     <span class="footer__copyright">

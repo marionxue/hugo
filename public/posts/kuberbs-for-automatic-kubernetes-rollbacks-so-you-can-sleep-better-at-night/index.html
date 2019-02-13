@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.49" />
   <link rel="canonical" href="https://www.yangcs.net/posts/kuberbs-for-automatic-kubernetes-rollbacks-so-you-can-sleep-better-at-night/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
@@ -469,7 +469,9 @@ autocomplete('#aa-search-input',
             <article role="main" class="blog-post" itemprop="articleBody" id="content">
                 
 
-                <p>随着越来越多的企业开始大量使用 Kubernetes，持续交付越来越趋向于标准化，软件版本的更新也越来越趋向于自动化。但你有没有想过，如果新发布的版本有缺陷时该怎么办？你需要多少时间和精力来回滚到之前的版本？</p>
+                <p></p>
+
+<p>随着越来越多的企业开始大量使用 Kubernetes，持续交付越来越趋向于标准化，软件版本的更新也越来越趋向于自动化。但你有没有想过，如果新发布的版本有缺陷时该怎么办？你需要多少时间和精力来回滚到之前的版本？</p>
 
 <p>人生苦短，不能把有限的精力浪费在无限的手动回滚中，最好的办法还是让系统自己决定要不要回滚，通过设定一系列指标，并对这些指标进行监控，就可以在应用不满足该指标时触发控制器对应用进行回滚。<a href="https://github.com/doitintl/kuberbs" target="_blank">kuberbs</a>（Kubernetes Rollback System）就是对该方案的一种尝试，它会监控 Kubernetes 的 <code>Deployment</code> 资源，如果该应用的错误率（用户定义的度量标准）高于指定的阈值，就会将该 <code>Deployment</code> 回滚到之前的版本。</p>
 
@@ -791,7 +793,7 @@ metadata:
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.54.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           &nbsp;&bull;&nbsp;[<a href="true"></a>]
           <center><section class="credits theme-by text-muted">
     <span class="footer__copyright">

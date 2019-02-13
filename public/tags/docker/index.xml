@@ -17,7 +17,7 @@
       <pubDate>Fri, 22 Jun 2018 08:22:07 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/envoy-docker-shim/</guid>
-      <description>在过去一年中，服务网格技术的崛起引发了吃瓜群众对 Istio 的持续关注，而 Istio 的核心组件 Envoy 是一款由 Lyft 开源的，使用 C++ 编写的 L7 代理和通信总线，目前是 CNCF 旗下的</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Tue, 03 Apr 2018 08:11:38 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/cri-o/</guid>
-      <description>上一篇 https://www.yangcs.net/posts/container-runtime/ 介绍了什么是容器运行时，并列出了不同的容器运行时。本篇重点介绍其中的一种容器运行时 CRI-O。 1. CRI-O 的诞生 当容器运行时（Contain</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -35,7 +35,7 @@
       <pubDate>Tue, 03 Apr 2018 06:50:43 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/container-runtime/</guid>
-      <description>容器运行时（Container Runtime）是 Kubernetes 最重要的组件之一，负责真正管理镜像和容器的生命周期。Kubelet 通过 Container Runtime Interface (CRI) 与容器运行时</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -44,7 +44,7 @@
       <pubDate>Mon, 02 Apr 2018 05:12:18 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/how-manage-image/</guid>
-      <description>docker 里面可以通过 docker pull、docker build、docker commit、docker load、docker import 等方式得到一个 image，得</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -53,7 +53,7 @@
       <pubDate>Sun, 11 Feb 2018 10:40:33 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/k8s-network-expand/</guid>
-      <description>1. Kubernetes 中服务暴露的方式 k8s 的服务暴露分为以下几种情况： hostNetwork hostPort NodePort LoadBalancer Ingress 说是暴露 Pod 其实跟暴露 Service 是一回事，因为 Pod 就是 Service 的 backend。 HostNetwork 这是一种直接定义</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -62,7 +62,7 @@
       <pubDate>Thu, 01 Feb 2018 11:03:49 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/calico-rr/</guid>
-      <description>1. 名词解释 endpoint：接入到网络中的设备称为 endpoint ❤️ AS：网络自治系统，一个完全自治的网络，通过 BGP 协议与其它 AS 交换路由信息 ibgp：AS</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -71,7 +71,7 @@
       <pubDate>Mon, 22 Jan 2018 16:17:11 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/use-devicemapper/</guid>
-      <description>1. 准备条件 devicemapper 存储驱动是 RHEL, CentOS 和 Oracle Linux 系统上唯一一个支持 Docker EE 和 Commercially Supported Docker Engine (CS-Engine) 的存储驱动，具体参考 Product compatibility matrix. devicemapper 在 CentOS, Fedora, Ubuntu 和 Debian 上也支持 Docker CE。 如果你更改了 Docker 的存</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -80,7 +80,7 @@
       <pubDate>Mon, 22 Jan 2018 16:00:22 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/thin-provisioning/</guid>
-      <description>1. Thin Provisioning Snapshot 演示 上一篇我们介绍了 Device Mapper 框架的技术原理及其核心概念，下面，我们用一系列的命令来演示一下 Device Mapper 的 Thin Provisioning Snapshot 是怎么玩的。 首先，我们需要先建两个</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -89,7 +89,7 @@
       <pubDate>Sun, 21 Jan 2018 09:28:41 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/devicemapper-theory/</guid>
-      <description>1. Device Mapper 简介 Device Mapper 是 linux 的内核用来将块设备映射到虚拟块设备的 framework，它支持许多高级卷管理技术。docker 的 devicemapper 存储驱动程序利用此框架的</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

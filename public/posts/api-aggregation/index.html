@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.54.0" />
+  <meta name="generator" content="Hugo 0.49" />
   <link rel="canonical" href="https://www.yangcs.net/posts/api-aggregation/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
@@ -492,7 +492,9 @@ autocomplete('#aa-search-input',
 </aside>
 
 
-                <p><code>Aggregated（聚合的）API server</code> 是为了将原来的 API server 这个巨石（monolithic）应用给拆分开，为了方便用户开发自己的 API server 集成进来，而不用直接修改 Kubernetes 官方仓库的代码，这样一来也能将 API server 解耦，方便用户使用实验特性。这些 API server 可以跟 <code>core API server</code> 无缝衔接，使用 kubectl 也可以管理它们。</p>
+                <p></p>
+
+<p><code>Aggregated（聚合的）API server</code> 是为了将原来的 API server 这个巨石（monolithic）应用给拆分开，为了方便用户开发自己的 API server 集成进来，而不用直接修改 Kubernetes 官方仓库的代码，这样一来也能将 API server 解耦，方便用户使用实验特性。这些 API server 可以跟 <code>core API server</code> 无缝衔接，使用 kubectl 也可以管理它们。</p>
 
 <p>在 <code>1.7+</code> 版本中，聚合层和 kube-apiserver 一起运行。在扩展资源被注册前，聚合层不执行任何操，要注册其 API,用户必需添加一个 <code>APIService</code> 对象，该对象需在 Kubernetes API 中声明 URL 路径，聚合层将发送到该 API 路径(e.g. /apis/myextension.mycompany.io/v1/…)的所有对象代理到注册的 APIService。</p>
 
@@ -964,7 +966,7 @@ $ systemctl restart kube-apiserver
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.54.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           &nbsp;&bull;&nbsp;[<a href="true"></a>]
           <center><section class="credits theme-by text-muted">
     <span class="footer__copyright">

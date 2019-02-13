@@ -17,7 +17,7 @@
       <pubDate>Fri, 14 Dec 2018 17:39:06 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/migrating-from-nginx-to-envoy/</guid>
-      <description>原文链接：Migrating from NGINX to Envoy Proxy 本文将会手把手教你如何从 Nginx 迁移到 Envoy Proxy，你可以将任何以前的经验和对 Nginx 的理解直接应用于 Envoy Proxy 中。 主要</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Tue, 13 Nov 2018 19:02:55 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-2/</guid>
-      <description>转载自：现代网络负载均衡与代理（下） 本文的上半卷已经对负载均衡技术的概念、功能和拓扑结构进行了详尽的介绍，接下来将主要介绍各种负载均衡技术的</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -35,7 +35,7 @@
       <pubDate>Tue, 13 Nov 2018 13:26:17 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/</guid>
-      <description>转载自：现代网络负载均衡与代理（上） 最近我注意到，关于当代网络负载均衡和代理的入门教材非常匮乏。我心想：为什么会这样？负载均衡是构建可靠的分</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -44,7 +44,7 @@
       <pubDate>Thu, 01 Nov 2018 17:55:47 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/sre-resiliency-bolt-on-sidecar-rate-limiting-with-envoy-sidecar/</guid>
-      <description>原文地址：https://medium.com/dm03514-tech-blog/sre-resiliency-bolt-on-sidec</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -53,7 +53,7 @@
       <pubDate>Thu, 25 Oct 2018 16:34:20 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/extending-the-envoy-admin-interface/</guid>
-      <description>原文地址：Extending the Envoy Admin Interface 译者：杨传胜 Envoy 是一个动态可配置的高性能现代化代理工具，现在几乎所有的 IT 潮男都用它来构建服务网格。Envo</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -62,7 +62,7 @@
       <pubDate>Wed, 10 Oct 2018 22:23:51 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/envoy-xds-protocol/</guid>
-      <description>转载自：Envoy 中的 xDS REST 和 gRPC 协议详解 原文地址：https://github.com/envoyproxy/data-plane-api/b</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -71,7 +71,7 @@
       <pubDate>Fri, 28 Sep 2018 16:38:15 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/</guid>
-      <description>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 L7 层实现高效流畅的入口流量管理。自从第一批 Kubernetes Ingress Controller 开发完成以来，Envoy（由 Matt Klein</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -80,7 +80,7 @@
       <pubDate>Wed, 26 Sep 2018 17:43:00 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/setting-up-ssl-in-envoy-practice/</guid>
-      <description>我的博客之前是使用 Nginx 来反代的，由于 Nginx 性能优异，目前有很多国内网站采用 Nginx 作为 Web 服务器，而且参考文档比较丰富，无论是对于其部署，配置还是调优都更</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -89,7 +89,7 @@
       <pubDate>Fri, 13 Jul 2018 09:22:49 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/circuit-breaking/</guid>
-      <description>在微服务领域，各个服务之间经常会相互调用。如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而造成整个系统不可用，通常把</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -98,7 +98,7 @@
       <pubDate>Fri, 06 Jul 2018 06:16:02 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/routing-with-a-control-plane/</guid>
-      <description>当微服务集群规模非常庞大时，控制平面包含了大量的 Envoy 配置项和基础设施状态，这时最好将数据平面与控制平面分离。控制平面最主要的功能包括自动重试和</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -107,7 +107,7 @@
       <pubDate>Wed, 04 Jul 2018 10:12:43 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/integrating-service-discovery-with-envoy/</guid>
-      <description>在微服务中使用 Envoy，需要明确两个核心概念：数据平面和控制平面。 数据平面 由一组 Envoy 实例组成，用来调解和控制微服务之间的所有网络通信。 控制平</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -116,7 +116,7 @@
       <pubDate>Tue, 03 Jul 2018 06:43:33 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/setting-up-ssl-in-envoy/</guid>
-      <description>如果你准备将服务暴露在互联网上，最好启用 SSL/TLS 加密协议。当使用 Envoy 作为前端代理或者服务网格代理时，可以通过 SSL/TLS 协议来加密客户端和代理之间的所有通信流</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -125,7 +125,7 @@
       <pubDate>Mon, 02 Jul 2018 05:37:37 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/incremental-deploys/</guid>
-      <description>微服务最常见的工作流程之一就是版本更新。不同于基础架构更新，通过流量管理可以优雅地实现微服务的版本更新。当新发布的版本有缺陷时，这种方法就可</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -134,7 +134,7 @@
       <pubDate>Fri, 29 Jun 2018 09:57:33 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/routing-basics/</guid>
-      <description>本文将更详细地讨论 Envoy 的 HTTP 路由，如果你已经看过了我的上篇文章：在你的笔记本上运行 Envoy，现在就可以更深入地了解如何在静态文件中配置路由（R</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
     <item>
@@ -143,7 +143,7 @@
       <pubDate>Thu, 28 Jun 2018 08:54:18 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/run-envoy-on-your-laptop/</guid>
-      <description>1. 前言 过去一年中，Kubernetes 已经赢得了容器编排大战，如果说 2017 年是 Kubernetes 的元年，那么 2018 将会是 Service Mesh（服务网格） 的元年，在未来两年中，</description>
+      <description>&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>
