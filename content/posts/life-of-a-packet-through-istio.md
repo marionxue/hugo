@@ -22,5 +22,5 @@ bigimg: [{src: "https://ws2.sinaimg.cn/large/006tNbRwgy1fwtkgo7kp3j31kw0d0750.jp
 
 {{% video mp4="http://olaindex.yangcs.net/item/download/01YZ4QQCLU5INJWIT4C5CKEFUJ3COL3TCG" poster="https://ws4.sinaimg.cn/large/006tNbRwgy1fy9s96fobzj30pu0dcaal.jpg" %}}
 
-视频中的 PPT 下载：<a id="download" href="http://olaindex.yangcs.net/item/download/01YZ4QQCLCSETPIGYCQFH3LWGTCQHVZ572"><i class="fa fa-download"></i><span> Download Now</span>
+视频中的 PPT 下载：<a id="download" href="https://olaindex.yangcs.net/item/download/01YZ4QQCLCSETPIGYCQFH3LWGTCQHVZ572"><i class="fa fa-download"></i><span> Download Now</span>
 </a>
