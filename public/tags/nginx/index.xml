@@ -17,7 +17,7 @@
       <pubDate>Mon, 28 Jan 2019 16:39:48 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/nginx-mirror/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
+      <description>原文链接：nginx mirroring tips and tricks 最近我在研究 Nginx 1.13.4 最新的 mirror 模块，利用 mirror 模块，你可以将线上实时流量拷贝至其他环境同时不影响源站请求的响应，因为 Nginx 会丢</description>
     </item>
     
   </channel>

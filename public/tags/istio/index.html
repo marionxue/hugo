@@ -21,7 +21,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.49" />
+  <meta name="generator" content="Hugo 0.54.0" />
   <link rel="canonical" href="https://www.yangcs.net/tags/istio/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
@@ -409,7 +409,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  在微服务领域，各个服务需要在网络上执行大量的调用。而网络是很脆弱的，如果某个服务繁忙或者无法响应请求，将有可能引发集群的大规模级联故障，从而
                   <a href="https://www.yangcs.net/posts/circuit_breaking-and-outlier-detection-in-istio/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -444,7 +444,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  众所周知，当我们讨论 Istio 时，性能并不是它最大的痛点，最大的痛点是有时候会出现一些莫名其妙的问题，而我们根本不知道问题出在哪里，也无从下手，在很
                   <a href="https://www.yangcs.net/posts/life-of-a-packet-through-istio/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -477,7 +477,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  Istio 要求集群中 VirtualService 定义的所有目标主机都是唯一的。当使用目标主机的短名称时（不包含 '.' 的目标主机，例如使用 reviews，而不是 reviews.de
                   <a href="https://www.yangcs.net/posts/conflictingvirtualservicehost/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -510,7 +510,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  上一节我演示了如何通过 Egress Gateway 引导 Istio 的出口 HTTP 流量，但到 443 端口的 HTTPS 流量没有通过 Egress Gateway，而是直接转到 edition.cnn.com 。Istio 出口流量的 TLS 演示了如何在
                   <a href="https://www.yangcs.net/posts/egress-gateway-2/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -545,7 +545,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  在上一篇文章 Istio 出口流量的 TLS 中，我演示了如何在网格内部直接通过 HTTP 协议访问外部加密服务，并揭示了其背后 Envoy 的配置逻辑。 本文将会通过 Egress Gateway 来引导 Istio 的出
                   <a href="https://www.yangcs.net/posts/egress-gateway-1/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -580,7 +580,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  原文地址：使用外部 TCP 服务 英文作者：VADIM EISENBERG 修订：杨传胜 本篇博客于 2018 年 7 月 23 日更新。新版本使用了 Istio 1.0，并使用了新的 v1alpha3 流量管理 API。如
                   <a href="https://www.yangcs.net/posts/egress-tcp/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -615,7 +615,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  原文地址：使用外部 Web 服务 英文作者：VADIM EISENBERG 修订：杨传胜 此博客文章于 2018 年 8 月 9 日更新。新版本使用了 Istio 1.0，并使用了新的 v1alpha3 流量管理 API。
                   <a href="https://www.yangcs.net/posts/egress-https/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -650,7 +650,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  本文主要内容来自 Istio 官方文档，并对其进行了大量扩展和补充。 控制出口流量任务演示了如何从网格内部的应用程序访问 Kubernetes 集群外部的 HTTP 和 HTTPS 服务, 如该主题中
                   <a href="https://www.yangcs.net/posts/egress-tls-origination/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -685,7 +685,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  原文链接：Istio, mTLS, debugging a 503 error 译者：杨传胜 大家好，本文我将与你们分享我在 Istio 官方文档中尝试熔断教程时遇到的问题。我会记录下解决此问题的所有步
                   <a href="https://www.yangcs.net/posts/istio-mtls-debugging-a-503-error/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -718,7 +718,7 @@ autocomplete('#aa-search-input',
               </p>
               <div class="post-entry">
                 
-                  <p></p>
+                  本文转载自 赵化冰的博客。 前言 Istio 作为一个 service mesh 开源项目,其中最重要的功能就是对网格中微服务之间的流量进行管理,包括服务发现,请求路由和服务间的可
                   <a href="https://www.yangcs.net/posts/istio-traffic-management-impl-intro/" class="post-read-more">[Read More]</a>
                 
               </div>
@@ -939,7 +939,7 @@ autocomplete('#aa-search-input',
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.54.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           &nbsp;&bull;&nbsp;[<a href="true"></a>]
           <center><section class="credits theme-by text-muted">
     <span class="footer__copyright">

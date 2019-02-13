@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.49" />
+  <meta name="generator" content="Hugo 0.54.0" />
   <link rel="canonical" href="https://www.yangcs.net/posts/etcd-cluster-number/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
@@ -487,9 +487,7 @@ autocomplete('#aa-search-input',
 </aside>
 
 
-                <p></p>
-
-<p>etcd 使用 <a href="https://ramcloud.stanford.edu/~ongaro/thesis.pdf" target="_blank">raft</a> 协议保证各个节点之间的状态一致。根据 raft 算法原理，节点数目越多，会降低集群的写性能。这是因为每一次写操作，需要集群中大多数节点将日志落盘成功后，<code>Leader</code> 节点才能将修改内部状态机，并返回将结果返回给客户端。但是根据 etcd 分布式数据冗余策略，集群节点越多，容错能力(Failure Tolerance)越强。所以关于集群大小的优化，其实就是容错和写性能的一个平衡。</p>
+                <p>etcd 使用 <a href="https://ramcloud.stanford.edu/~ongaro/thesis.pdf" target="_blank">raft</a> 协议保证各个节点之间的状态一致。根据 raft 算法原理，节点数目越多，会降低集群的写性能。这是因为每一次写操作，需要集群中大多数节点将日志落盘成功后，<code>Leader</code> 节点才能将修改内部状态机，并返回将结果返回给客户端。但是根据 etcd 分布式数据冗余策略，集群节点越多，容错能力(Failure Tolerance)越强。所以关于集群大小的优化，其实就是容错和写性能的一个平衡。</p>
 
 <blockquote>
 <p>集群的大小指集群节点的个数。</p>
@@ -852,7 +850,7 @@ autocomplete('#aa-search-input',
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.54.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           &nbsp;&bull;&nbsp;[<a href="true"></a>]
           <center><section class="credits theme-by text-muted">
     <span class="footer__copyright">

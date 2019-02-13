@@ -24,7 +24,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Ryan Yang" />
 
-  <meta name="generator" content="Hugo 0.49" />
+  <meta name="generator" content="Hugo 0.54.0" />
   <link rel="canonical" href="https://www.yangcs.net/posts/use-envoy-as-a-kubernetes-ingress/" />
   <link rel="alternate" href="https://www.yangcs.net/index.xml" type="application/rss+xml" title="Ryan Yang">
   <script src="https://res.cloudinary.com/jimmysong/raw/upload/rootsongjc-hugo/jquery-1.12.4.min.js"></script>
@@ -501,9 +501,7 @@ autocomplete('#aa-search-input',
 </aside>
 
 
-                <p></p>
-
-<p>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 <code>L7</code> 层实现高效流畅的入口流量管理。自从第一批 <code>Kubernetes Ingress Controller</code> 开发完成以来，<code>Envoy</code>（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。</p>
+                <p>在 Kubernetes 中运行大规模以 Web 为中心的工作负载，最关键的需求之一就是在 <code>L7</code> 层实现高效流畅的入口流量管理。自从第一批 <code>Kubernetes Ingress Controller</code> 开发完成以来，<code>Envoy</code>（由 Matt Klein 和 Lyft 团队开发）已经成为云原生生态系统中的新生力量。Envoy 之所以受到支持，因为它是一个 CNCF 托管的项目，与整个容器圈和云原生架构有着天然的支持。</p>
 
 <p>容器公司 <a href="https://heptio.com/" target="_blank">Heptio</a> 开源的项目 <a href="https://github.com/heptio/contour" target="_blank">Contour</a> 使用 <code>Envoy</code> 作为 Kubernetes 的 Ingress Controller 实现，为大家提供了一条新的 Kubernetes 外部负载均衡实现思路。</p>
 
@@ -1066,7 +1064,7 @@ $ curl localhost:6060/debug/dag | dot -T png &gt; contour-dag.png
         </p>
         
         <p class="credits theme-by text-muted">
-          <a href="http://gohugo.io">Hugo v0.49</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
+          <a href="http://gohugo.io">Hugo v0.54.0</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>
           &nbsp;&bull;&nbsp;[<a href="true"></a>]
           <center><section class="credits theme-by text-muted">
     <span class="footer__copyright">

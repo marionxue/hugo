@@ -17,7 +17,7 @@
       <pubDate>Mon, 28 Jan 2019 16:39:48 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/nginx-mirror/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
+      <description>原文链接：nginx mirroring tips and tricks 最近我在研究 Nginx 1.13.4 最新的 mirror 模块，利用 mirror 模块，你可以将线上实时流量拷贝至其他环境同时不影响源站请求的响应，因为 Nginx 会丢</description>
     </item>
     
     <item>
@@ -26,7 +26,7 @@
       <pubDate>Tue, 13 Nov 2018 19:02:55 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-2/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
+      <description>转载自：现代网络负载均衡与代理（下） 本文的上半卷已经对负载均衡技术的概念、功能和拓扑结构进行了详尽的介绍，接下来将主要介绍各种负载均衡技术的</description>
     </item>
     
     <item>
@@ -35,7 +35,7 @@
       <pubDate>Tue, 13 Nov 2018 13:26:17 +0800</pubDate>
       
       <guid>https://www.yangcs.net/posts/modern-network-load-balancing-and-proxying-1/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
+      <description>转载自：现代网络负载均衡与代理（上） 最近我注意到，关于当代网络负载均衡和代理的入门教材非常匮乏。我心想：为什么会这样？负载均衡是构建可靠的分</description>
     </item>
     
     <item>
@@ -44,7 +44,7 @@
       <pubDate>Wed, 18 Apr 2018 11:18:06 +0000</pubDate>
       
       <guid>https://www.yangcs.net/posts/lvs-persistent-connection/</guid>
-      <description>&lt;p&gt;&lt;/p&gt;</description>
+      <description>1. 前言 在实际生产环境中，往往需要根据业务应用场景来设置 lvs 的会话超时时间以及防止 session 连接丢失的问题，如在业务支付环节，如若 session 丢失会导致重复扣款问</description>
     </item>
     
   </channel>
