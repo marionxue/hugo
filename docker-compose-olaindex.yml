@@ -15,6 +15,8 @@ services:
   olaindex-envoy:
     image: envoyproxy/envoy-alpine:latest
     restart: always
+    depends_on:
+      - olaindex
     privileged: true
     volumes:
       - ./service-envoy.yaml:/etc/envoy/envoy.yaml
