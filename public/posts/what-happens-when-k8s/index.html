@@ -551,9 +551,9 @@ autocomplete('#aa-search-input',
 
 <p>API 组旨在对类似资源进行分类，以便使得 Kubernetes API 更容易扩展。API 的组别在 REST 路径或者序列化对象的 <code>apiVersion</code> 字段中指定。例如，Deployment 的 API 组名是 <code>apps</code>，最新的 API 版本是 <code>v1beta2</code>，这就是为什么你要在 Deployment manifests 顶部输入 <code>apiVersion: apps/v1beta2</code>。</p>
 
-<p>kubectl 在生成运行时对象后，开始为它<a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/kubectl/cmd/run.go#L580-L597" target="_blank">找到适当的 API 组和 API 版本</a>，然后<a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/kubectl/cmd/run.go#L598" target="_blank">组装成一个版本化客户端</a>，该客户端知道资源的各种 REST 语义。该阶段被称为版本协商，kubectl 会扫描 <code>remote API</code> 上的 <code>/apis</code> 路径来检索所有可能的 API 组。由于 kube-apiserver 在 <code>/apis</code> 路径上公开了 OpenAPI 格式的模式文档， 因此客户端很容易找到合适的 API。</p>
+<p>kubectl 在生成运行时对象后，开始为它<a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/kubectl/cmd/run.go#L580-L597" target="_blank">找到适当的 API 组和 API 版本</a>，然后<a href="https://github.com/kubernetes/kubernetes/blob/master/pkg/kubectl/cmd/run.go#L598" target="_blank">组装成一个版本化客户端</a>，该客户端知道资源的各种 REST 语义。该阶段被称为版本协商，kubectl 会扫描 <code>remote API</code> 上的 <code>/apis</code> 路径来检索所有可能的 API 组。由于 kube-apiserver 在 <code>/apis</code> 路径上公开了 OpenAPI 格式的架构文档， 因此客户端很容易找到合适的 API。</p>
 
-<p>为了提高性能，kubectl <a href="https://github.com/kubernetes/kubernetes/blob/7650665059e65b4b22375d1e28da5306536a12fb/pkg/kubectl/cmd/util/factory_client_access.go#L117" target="_blank">将 OpenAPI 模式缓存</a>到了 <code>~/.kube/cache</code> 目录。如果你想了解 API 发现的过程，请尝试删除该目录并在运行 kubectl 命令时将 <code>-v</code> 参数的值设为最大值，然后你将会看到所有试图找到这些 API 版本的HTTP 请求。参考 <a href="https://k8smeetup.github.io/docs/reference/kubectl/cheatsheet/" target="_blank">kubectl 备忘单</a>。</p>
+<p>为了提高性能，kubectl <a href="https://github.com/kubernetes/kubernetes/blob/7650665059e65b4b22375d1e28da5306536a12fb/pkg/kubectl/cmd/util/factory_client_access.go#L117" target="_blank">将 OpenAPI 架构缓存</a>到了 <code>~/.kube/cache</code> 目录。如果你想了解 API 发现的过程，请尝试删除该目录并在运行 kubectl 命令时将 <code>-v</code> 参数的值设为最大值，然后你将会看到所有试图找到这些 API 版本的HTTP 请求。参考 <a href="https://k8smeetup.github.io/docs/reference/kubectl/cheatsheet/" target="_blank">kubectl 备忘单</a>。</p>
 
 <p>最后一步才是真正地发送 HTTP 请求。一旦请求发送之后获得成功的响应，kubectl 将会根据所需的输出格式打印 success message。</p>
 
