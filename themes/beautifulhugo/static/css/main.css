@@ -123,7 +123,7 @@ img {
 /* --- Navbar --- */
 
 .navbar-custom {
-    background: #F5F5F5;
+    background: #FCF9DB;
     border-bottom: 1px solid #EAEAEA;
     font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -714,7 +714,7 @@ table {
 
 table tr {
     border-top: 1px solid #cccccc;
-    background-color: #ffffff;
+    background-color: #FCF9DB;
     margin: 0;
     padding: 0;
 }
